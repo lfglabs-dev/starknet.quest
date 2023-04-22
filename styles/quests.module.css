@@ -1,0 +1,156 @@
+/* Component quest on the /quests page  */
+.questCard {
+  width: 250px;
+  background-color: #fff;
+  border: 4px solid var(--background600);
+  border-radius: 8px;
+  padding: 0px;
+
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background600);
+  cursor: pointer;
+}
+
+.questImage {
+  border-radius: 8px;
+  border-width: 0px;
+}
+
+.questInfos {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.questTitle {
+  font-size: 1.3rem;
+  color: var(--secondary);
+  font-family: "Sora-Bold";
+  margin: 0px;
+}
+
+/* Quest page  */
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.nftStyle {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--secondary);
+  border-radius: 30px;
+}
+
+.issuer,
+.level {
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 24px;
+  gap: 61px;
+  margin-top: 1rem;
+
+  width: 101px;
+  height: 36px;
+
+  /* Background/600 */
+
+  background: var(--background600);
+  border-radius: 100px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.issuer {
+  width: fit-content;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  margin-top: 1rem;
+  gap: 12px;
+}
+
+.taskContainer {
+  /* Auto layout */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.task {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px 24px;
+
+  width: 728px;
+  height: 58px;
+  max-width: 90%;
+
+  /* Background/600 */
+
+  background: #29282b;
+  border-radius: 8px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.reward {
+  /* Reward wrapper */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  gap: 48px;
+
+  width: 728px;
+  height: 104px;
+  margin-top: 1.5rem;
+
+  /* Background/600 */
+  background: #29282b;
+
+  /* Small Shadow */
+  box-shadow: 0px 2px 30px rgba(16, 16, 18, 0.06);
+  border-radius: 8px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 3;
+  align-self: stretch;
+  flex-grow: 0;
+}

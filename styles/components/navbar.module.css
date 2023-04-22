@@ -1,0 +1,30 @@
+.menuItem {
+  margin-left: 2.5rem /* 40px */;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.menuItem {
+  text-transform: underline;
+}
+
+.menuItemSmall {
+  padding-top: 1rem /* 16px */;
+  padding-bottom: 1rem /* 16px */;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+}
+
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  height: 12vh;
+}

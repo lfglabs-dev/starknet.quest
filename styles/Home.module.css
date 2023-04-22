@@ -1,0 +1,47 @@
+.screen {
+  z-index: 0;
+  position: relative;
+  padding-top: 12vh;
+  background-color: var(--background);
+  width: 100%;
+}
+
+.questContainer,
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.questContainer {
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-shadow: 1px 1px var(--tertiary);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+}
