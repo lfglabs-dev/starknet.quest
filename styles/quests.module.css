@@ -61,7 +61,7 @@
   gap: 61px;
   margin-top: 1rem;
 
-  width: 101px;
+  width: 110px;
   height: 36px;
 
   /* Background/600 */
@@ -86,8 +86,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 0px;
-  margin-top: 1rem;
+  margin: 1rem 1rem 0 1rem;
   gap: 12px;
 }
 
@@ -106,9 +107,10 @@
 .task {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
   padding: 0px 24px;
-
+  cursor: pointer;
   width: 728px;
   height: 58px;
   max-width: 90%;
@@ -139,6 +141,7 @@
 
   width: 728px;
   height: 104px;
+  max-width: 90%;
   margin-top: 1.5rem;
 
   /* Background/600 */

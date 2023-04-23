@@ -4,16 +4,29 @@ import type { AppProps } from "next/app";
 import Navbar from "../components/UI/navbar";
 import Head from "next/head";
 import { ThemeProvider } from "@mui/material";
-import theme from "../styles/theme";
 import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
 import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
+import { createTheme } from "@mui/material/styles";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [
     new InjectedConnector({ options: { id: "argentX" } }),
     new InjectedConnector({ options: { id: "braavos" } }),
   ];
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#6affaf",
+        light: "#5ce3fe",
+      },
+      secondary: {
+        main: "#f4faff",
+        dark: "#eae0d5",
+      },
+    },
+  });
 
   return (
     <>
