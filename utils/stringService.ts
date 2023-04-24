@@ -88,20 +88,6 @@ export function isStarkDomain(domain: string) {
   );
 }
 
-export function getDomainKind(domain: string | undefined): DomainKind {
-  if (domain && isStarkDomain(domain)) {
-    if (isStarkRootDomain(domain)) {
-      return "root";
-    } else if (isBraavosSubdomain(domain)) {
-      return "braavos";
-    } else {
-      return "subdomain";
-    }
-  } else {
-    return "none";
-  }
-}
-
 export function numberToString(element: number | undefined): string {
   if (element === undefined) return "";
 
