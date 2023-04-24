@@ -12,18 +12,14 @@ const Quests: NextPage = () => {
         <h1 className="title">Get Started with Starknet</h1>
         <div className={styles.questContainer}>
           <Quest
-            title="Web wallet"
+            title="Fighter Score"
             onClick={() => router.push("/quest/1")}
             imgSrc="https://imgp.layer3cdn.com/cdn-cgi/image/fit=cover,width=400,height=400,anim=false,format=auto/ipfs/QmaC8d6746Z6QXqxJegDEtCpnURvtikUEEdcHFvPiWYX3N"
-            issuer="Argent-x"
-            xp={200}
-          />
-          <Quest
-            title="Hardware signer"
-            onClick={() => router.push("/quest/2")}
-            imgSrc="https://imgp.layer3cdn.com/cdn-cgi/image/fit=cover,width=400,height=400,anim=false,format=auto/ipfs/QmeNBYHQsMkn6GKj7LX5AC9ybYKu2fgxqMo6gkvvFPJbXY"
-            issuer="Braavos"
-            xp={200}
+            issuer={{
+              name: "StarkFighter",
+              logoFavicon: "/starkfighter/favicon.ico",
+            }}
+            reward="3 NFTs"
           />
         </div>
       </div>

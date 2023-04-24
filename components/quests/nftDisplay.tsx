@@ -8,18 +8,15 @@ type nft = {
 
 type NftDisplayProps = {
   nfts: nft[];
-  issuer: string;
+  issuer: Issuer;
 };
 
 const NftDisplay: FunctionComponent<NftDisplayProps> = ({ nfts, issuer }) => {
   return (
     <div className="flex flex-col-reverse justify-center items-center">
       <div className={styles.issuer}>
-        <img
-          width={25}
-          src="https://www.starknet.id/visuals/StarknetIdLogo.png"
-        />
-        <p>{issuer}</p>
+        <img width={25} src={issuer.logoFavicon} />
+        <p>{issuer.name}</p>
       </div>
       <div className="flex gap-5 flex-wrap justify-center items-center">
         {nfts.map((nft, index) => (

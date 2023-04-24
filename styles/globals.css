@@ -72,24 +72,6 @@ a {
   box-sizing: border-box;
 }
 
-.firstLeavesGroup {
-  position: fixed;
-  width: 300px;
-  z-index: -1000;
-  bottom: -20%;
-  left: -100px;
-  overflow: hidden;
-}
-
-.secondLeavesGroup {
-  position: fixed;
-  bottom: -20%;
-  right: -80px;
-  width: 180px;
-  z-index: -1000;
-  overflow: hidden;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -103,13 +85,5 @@ a {
 @media (max-width: 1024px) {
   .title {
     font-size: 2rem;
-  }
-
-  .firstLeavesGroup {
-    visibility: hidden;
-  }
-
-  .secondLeavesGroup {
-    visibility: hidden;
   }
 }

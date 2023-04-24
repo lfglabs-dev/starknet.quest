@@ -5,18 +5,24 @@ type ButtonProps = {
   onClick: () => void;
   children: string | ReactNode;
   disabled?: boolean;
+  color?: string;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
   children,
   onClick,
   disabled = false,
+  color = "primary",
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
-      className={styles["nq-button"]}
+      className={
+        color === "primary"
+          ? styles["nq-button"]
+          : styles["nq-button"] + " " + styles["nq-button-secondary"]
+      }
     >
       {children}
     </button>
