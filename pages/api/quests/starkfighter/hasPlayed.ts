@@ -42,9 +42,15 @@ export default async function handler(
     } else {
       res.status(400).json({ res: false, error_msg: "User has not played" });
     }
-  } catch (error: any) {
-    res
-      .status(error.status || 500)
-      .json({ res: false, error_msg: error.message });
+  } catch (error) {
+    res.status(500).json({
+      res: false,
+      error_msg:
+        error instanceof Error
+          ? error.message
+          : typeof error === "string"
+          ? error
+          : "Unknown error",
+    });
   }
 }

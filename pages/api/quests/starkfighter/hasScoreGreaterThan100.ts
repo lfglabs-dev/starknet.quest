@@ -6,19 +6,13 @@ export default async function handler(
   res: NextApiResponse<RequestResponse>
 ) {
   const {
-    query: { address, score },
+    query: { address },
   } = req;
 
   if (!address || Array.isArray(address)) {
     return res
       .status(400)
       .json({ res: false, error_msg: "Invalid address parameter" });
-  }
-
-  if (!score) {
-    return res
-      .status(400)
-      .json({ res: false, error_msg: "Invalid score parameter" });
   }
 
   try {
@@ -37,7 +31,7 @@ export default async function handler(
 
     if (response.ok) {
       const playerScore = await response.json();
-      if (playerScore && playerScore.score >= score) {
+      if (playerScore && playerScore.score >= 100) {
         res
           .setHeader("cache-control", "max-age=30")
           .status(200)
@@ -50,9 +44,15 @@ export default async function handler(
     } else {
       res.status(400).json({ res: false, error_msg: "User has not played" });
     }
-  } catch (error: any) {
-    res
-      .status(error.status || 500)
-      .json({ res: false, error_msg: error.message });
+  } catch (error) {
+    res.status(500).json({
+      res: false,
+      error_msg:
+        error instanceof Error
+          ? error.message
+          : typeof error === "string"
+          ? error
+          : "Unknown error",
+    });
   }
 }

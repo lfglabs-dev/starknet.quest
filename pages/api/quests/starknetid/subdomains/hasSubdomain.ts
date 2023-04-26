@@ -27,7 +27,7 @@ export default async function handler(
   try {
     const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
 
-    Boolean((name.match(/\./g) || []).length > 1)
+    (name.match(/\./g) || []).length > 1
       ? res
           .setHeader("cache-control", "max-age=30")
           .status(200)
@@ -36,9 +36,15 @@ export default async function handler(
           res: false,
           error_msg: "Domain is not a subdomain",
         });
-  } catch (error: any) {
-    res
-      .status(error.status || 500)
-      .json({ res: false, error_msg: error.message });
+  } catch (error) {
+    res.status(500).json({
+      res: false,
+      error_msg:
+        error instanceof Error
+          ? error.message
+          : typeof error === "string"
+          ? error
+          : "Unknown error",
+    });
   }
 }

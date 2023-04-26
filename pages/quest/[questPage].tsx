@@ -51,14 +51,14 @@ const QuestPage: NextPage = () => {
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
           href="https://starkfighter.xyz"
           cta="Play to starkfighter"
-          verifyEndpoint={`/api/quests/starkfighter/hasScoreGreater?address=${address}&score=50`}
+          verifyEndpoint={`/api/quests/starkfighter/hasScoreGreaterThan50?address=${address}`}
         />
         <Task
           name="Get a score of 100s or more (level 3)"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
           href="https://starkfighter.xyz"
           cta="Play to starkfighter"
-          verifyEndpoint={`/api/quests/starkfighter/hasScoreGreater?address=${address}&score=100`}
+          verifyEndpoint={`/api/quests/starkfighter/hasScoreGreaterThan100?address=${address}&score=100`}
         />
         <Reward
           reward="3 NFTs"

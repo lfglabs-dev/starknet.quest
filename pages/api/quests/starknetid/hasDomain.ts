@@ -30,9 +30,15 @@ export default async function handler(
       .setHeader("cache-control", "max-age=30")
       .status(200)
       .json({ res: true });
-  } catch (error: any) {
-    res
-      .status(error.status || 500)
-      .json({ res: false, error_msg: error.message });
+  } catch (error) {
+    res.status(500).json({
+      res: false,
+      error_msg:
+        error instanceof Error
+          ? error.message
+          : typeof error === "string"
+          ? error
+          : "Unknown error",
+    });
   }
 }
