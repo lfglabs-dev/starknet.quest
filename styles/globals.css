@@ -30,6 +30,7 @@ body {
   margin: 0;
   font-family: "Sora";
   background-color: var(--background);
+  color: var(--secondary);
 }
 
 a {
@@ -70,16 +71,6 @@ a {
 
 * {
   box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: var(--secondary);
-    background: var(--background);
-  }
 }
 
 @media (max-width: 1024px) {
