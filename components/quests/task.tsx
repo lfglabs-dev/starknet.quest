@@ -50,7 +50,7 @@ const Task: FunctionComponent<Task> = ({
           isClicked ? styles.visible : null
         }`}
       >
-        <p className="mb-3 text-color-secondary300">{description}</p>
+        <p className="mb-3">{description}</p>
         <div className="flex w-full justify-center items-center">
           <div className="w-2/3">
             <Button onClick={() => window.open(href)}>{cta}</Button>
