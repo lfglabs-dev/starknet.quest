@@ -5,14 +5,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
 
-type TaskProps = {
-  name: string;
-  description: string;
-  href: string;
-  cta?: string;
-};
-
-const Task: FunctionComponent<TaskProps> = ({
+const Task: FunctionComponent<Task> = ({
   name,
   description,
   href,
@@ -35,19 +28,11 @@ const Task: FunctionComponent<TaskProps> = ({
       >
         <div className="flex">
           {isClicked ? (
-            <KeyboardArrowDownIcon
-              className="mr-2"
-              width={25}
-              color="secondary"
-            />
+            <KeyboardArrowDownIcon width={25} color="secondary" />
           ) : (
-            <KeyboardArrowRightIcon
-              className="mr-2"
-              width={25}
-              color="secondary"
-            />
+            <KeyboardArrowRightIcon width={25} color="secondary" />
           )}
-          <p>{name}</p>
+          <p className="ml-2 mr-2">{name}</p>
         </div>
         {isVerified ? (
           <div className="flex">
@@ -56,7 +41,7 @@ const Task: FunctionComponent<TaskProps> = ({
           </div>
         ) : (
           <div onClick={verify} className={styles.verifyButton}>
-            Verify
+            <p>Verify</p>
           </div>
         )}
       </div>

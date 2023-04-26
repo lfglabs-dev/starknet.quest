@@ -70,7 +70,11 @@
 .nq-button {
   color: var(--background);
   background: var(--primary);
-  background: linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) -0.12%,
+    var(--primary2) 99.88%
+  );
 }
 
 .nq-button-secondary {

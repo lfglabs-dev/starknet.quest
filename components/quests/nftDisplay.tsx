@@ -1,13 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
 
-type nft = {
-  imgSrc: string;
-  level?: number;
-};
-
 type NftDisplayProps = {
-  nfts: nft[];
+  nfts: Nft[];
   issuer: Issuer;
 };
 

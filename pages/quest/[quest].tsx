@@ -3,9 +3,8 @@ import React from "react";
 import homeStyles from "../../styles/Home.module.css";
 import styles from "../../styles/quests.module.css";
 import NftDisplay from "../../components/quests/nftDisplay";
-
-import Button from "../../components/UI/button";
 import Task from "../../components/quests/task";
+import Reward from "../../components/quests/reward";
 
 const QuestPage: NextPage = () => {
   return (
@@ -17,16 +16,16 @@ const QuestPage: NextPage = () => {
             logoFavicon: "/starkfighter/favicon.ico",
           }}
           nfts={[
-            { imgSrc: "/starkfighter/level1.png", level: 1 },
-            { imgSrc: "/starkfighter/level2.png", level: 2 },
-            { imgSrc: "/starkfighter/level3.png", level: 3 },
+            { imgSrc: "/starkfighter/level1.webp", level: 1 },
+            { imgSrc: "/starkfighter/level2.webp", level: 2 },
+            { imgSrc: "/starkfighter/level3.webp", level: 3 },
           ]}
         />
       </div>
       <div className={styles.descriptionContainer}>
         <h1 className="title mt-5 mw-90">Become a StarkFighter OG</h1>
         <p className="text-center max-w-lg">
-          Mint different NFTs based on your score in the StarkFighter game.
+          Mint NFTs based on your score in the StarkFighter game.
         </p>
       </div>
       <div className={styles.taskContainer}>
@@ -54,16 +53,11 @@ const QuestPage: NextPage = () => {
           href="https://starkfighter.xyz"
           cta="Play to starkfighter"
         />
-
-        {/* To Do: transform it into a component */}
-        <div className={styles.reward}>
-          <div className="flex">
-            <p>Reward: Arcade NFTs</p>
-          </div>
-          <div className="max-w-lg">
-            <Button onClick={() => console.log("")}>Get Reward</Button>
-          </div>
-        </div>
+        <Reward
+          reward="3 NFTs"
+          imgSrc="/starkfighter/favicon.ico"
+          onClick={() => console.log("")}
+        />
       </div>
     </div>
   );

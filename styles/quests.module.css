@@ -218,3 +218,10 @@
   align-self: stretch;
   flex-grow: 0;
 }
+
+@media (max-width: 1024px) {
+  .verifyButton {
+    width: 100px;
+    height: 38px;
+  }
+}

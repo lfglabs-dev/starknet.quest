@@ -62,7 +62,7 @@ a {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #19aa6e50;
+  background: var(--background600);
   border-radius: 10px;
 }
 
@@ -85,5 +85,9 @@ a {
 @media (max-width: 1024px) {
   .title {
     font-size: 2rem;
+  }
+
+  p {
+    font-size: 0.8rem;
   }
 }

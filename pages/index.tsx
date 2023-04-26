@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 const Quests: NextPage = () => {
   const router = useRouter();
+
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
@@ -14,7 +15,7 @@ const Quests: NextPage = () => {
           <Quest
             title="Fighter Score"
             onClick={() => router.push("/quest/1")}
-            imgSrc="https://imgp.layer3cdn.com/cdn-cgi/image/fit=cover,width=400,height=400,anim=false,format=auto/ipfs/QmaC8d6746Z6QXqxJegDEtCpnURvtikUEEdcHFvPiWYX3N"
+            imgSrc="/starkfighter/level3.webp"
             issuer={{
               name: "StarkFighter",
               logoFavicon: "/starkfighter/favicon.ico",
