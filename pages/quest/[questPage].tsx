@@ -37,7 +37,7 @@ const QuestPage: NextPage = () => {
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
           href="https://app.starknet.id/"
           cta="Register my stark name"
-          verifyEndpoint={`/api/quests/starknetid/hasDomainWithExpiry?address=${address}&years=1`}
+          verifyEndpoint={`/api/quests/starknetid/hasDomain?address=${address}`}
         />
         <Task
           name="Play to StarkFighter (level 1)"

@@ -22,7 +22,6 @@ const Task: FunctionComponent<Task> = ({
     fetch(verifyEndpoint)
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
         if (data.res) setIsVerified(true);
       });
   };
