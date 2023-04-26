@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Provider } from "starknet";
+import { StarknetIdNavigator } from "starknetid.js";
 import { RequestResponse } from "../../../../types/backTypes";
 
 export default async function handler(
@@ -15,33 +17,25 @@ export default async function handler(
       .json({ res: false, error_msg: "Invalid address parameter" });
   }
 
-  try {
-    const response = await fetch(
-      "https://server.starkfighter.xyz/fetch_user_score",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_addr: address,
-        }),
-      }
-    );
+  const provider = new Provider({
+    sequencer: {
+      network: "mainnet-alpha",
+    },
+  });
+  const starknetIdNavigator = new StarknetIdNavigator(provider);
 
-    if (response.ok) {
-      const playerScore = await response.json();
-      if (playerScore) {
-        res
+  try {
+    const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
+
+    /^([a-z0-9-]){1,48}\.stark$/.test(name)
+      ? res
           .setHeader("cache-control", "max-age=30")
           .status(200)
-          .json({ res: true });
-      } else {
-        res.status(400).json({ res: false, error_msg: "User has not played" });
-      }
-    } else {
-      res.status(400).json({ res: false, error_msg: "User has not played" });
-    }
+          .json({ res: true })
+      : res
+          .setHeader("cache-control", "max-age=30")
+          .status(200)
+          .json({ res: false, error_msg: "Domain is a subdomain" });
   } catch (error: any) {
     res
       .status(error.status || 500)

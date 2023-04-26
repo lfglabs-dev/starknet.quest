@@ -10,6 +10,7 @@ const Task: FunctionComponent<Task> = ({
   description,
   href,
   cta = "open app",
+  verifyEndpoint,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -17,7 +18,13 @@ const Task: FunctionComponent<Task> = ({
   // a verify function that setIsVerified(true) and stoppropagation
   const verify = (e: any) => {
     e.stopPropagation();
-    setIsVerified(true);
+    if (!verifyEndpoint) return;
+    fetch(verifyEndpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data", data);
+        if (data.res) setIsVerified(true);
+      });
   };
 
   return (
