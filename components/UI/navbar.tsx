@@ -8,6 +8,7 @@ import Wallets from "./wallets";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
+import { useDomainFromAddress } from "../../hooks/naming";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -18,10 +19,16 @@ const Navbar: FunctionComponent = () => {
 
   const { available, connect, disconnect } = useConnectors();
   const { library } = useStarknet();
-  const domainOrAddress = useDisplayName(address ?? "");
+  const domainOrAddressMinified = useDisplayName(address ?? "");
+  const domain = useDomainFromAddress(address ?? "").domain;
+  const addressOrDomain =
+    domain && domain.endsWith(".stark") ? domain : address;
   const secondary = "#f4faff";
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const [navbarBg, setNavbarBg] = useState<"transparent" | "background">(
+    "transparent"
+  );
 
   function disconnectByClick(): void {
     disconnect();
@@ -70,14 +77,29 @@ const Navbar: FunctionComponent = () => {
   }
 
   function topButtonText(): string | undefined {
-    const textToReturn = isConnected ? domainOrAddress : "connect";
+    const textToReturn = isConnected ? domainOrAddressMinified : "connect";
 
     return textToReturn;
   }
 
+  const handleScroll = () => {
+    if (window.scrollY > 20) {
+      setNavbarBg("background");
+    } else {
+      setNavbarBg("transparent");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <div className={"fixed w-full z-[1] bg-background"}>
+      <div className={`fixed w-full z-[1] bg-${navbarBg}`}>
         <div className={styles.navbarContainer}>
           <div className="ml-4">
             <Link href="/" className="cursor-pointer">
@@ -95,7 +117,7 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/profile">
+              <Link href={`/${addressOrDomain}`}>
                 <li className={styles.menuItem}>My profile</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
@@ -112,7 +134,7 @@ const Navbar: FunctionComponent = () => {
                 >
                   {isConnected ? (
                     <div className="flex justify-center items-center">
-                      <div>{domainOrAddress}</div>
+                      <div>{domainOrAddressMinified}</div>
                       <LogoutIcon className="ml-3" />
                     </div>
                   ) : (

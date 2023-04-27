@@ -30,3 +30,23 @@ type Reward = {
   reward: string;
   imgSrc: string;
 };
+
+type Identity = {
+  id: string;
+  addr: string;
+  domain: string;
+  is_owner_main: Boolean;
+  error?: string;
+};
+
+type NftCard = {
+  onClick: () => void;
+  title: string;
+  image: string;
+};
+
+type SocialMediaActions = {
+  tokenId: string;
+  isOwner: boolean;
+  domain?: string;
+};

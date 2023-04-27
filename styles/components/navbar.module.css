@@ -27,4 +27,5 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   height: 12vh;
+  transition: background 0.5s ease;
 }
