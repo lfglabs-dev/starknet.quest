@@ -15,7 +15,7 @@ type Task = {
   description: string;
   href: string;
   cta?: string;
-  verifyEndpoint?: string;
+  verifyEndpoint: string;
 };
 
 type Quest = {

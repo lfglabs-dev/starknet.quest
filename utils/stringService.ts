@@ -72,10 +72,16 @@ export function isSubdomain(domain: string | undefined): boolean {
   return Boolean((domain.match(/\./g) || []).length > 1);
 }
 
+export function isRootDomain(domain: string | undefined): boolean {
+  if (!domain) return false;
+
+  return Boolean((domain.match(/\./g) || []).length == 1);
+}
+
 export function isBraavosSubdomain(domain: string): boolean {
   if (!domain) return false;
 
-  return /^([a-z0-9-]){1,48}\.braavos.stark$/.test(domain);
+  return domain.endsWith(".braavos.stark");
 }
 // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
 export function isStarkRootDomain(domain: string): boolean {

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Provider } from "starknet";
 import { StarknetIdNavigator } from "starknetid.js";
 import { RequestResponse } from "../../../../types/backTypes";
+import { isRootDomain } from "../../../../utils/stringService";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +20,9 @@ export default async function handler(
 
   const provider = new Provider({
     sequencer: {
-      network: "mainnet-alpha",
+      network: process.env.NEXT_PUBLIC_IS_TESTNET
+        ? "goerli-alpha"
+        : "mainnet-alpha",
     },
   });
   const starknetIdNavigator = new StarknetIdNavigator(provider);
@@ -27,7 +30,7 @@ export default async function handler(
   try {
     const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
 
-    (name.match(/\./g) || []).length == 1
+    isRootDomain(name)
       ? res
           .setHeader("cache-control", "max-age=30")
           .status(200)

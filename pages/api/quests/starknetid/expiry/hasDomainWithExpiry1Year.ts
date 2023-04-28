@@ -4,6 +4,7 @@ import { StarknetIdNavigator, utils } from "starknetid.js";
 import naming_abi from "../../../../../abi/naming_abi.json";
 import BN from "bn.js";
 import { RequestResponse } from "../../../../../types/backTypes";
+import { isRootDomain } from "../../../../../utils/stringService";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,7 +22,9 @@ export default async function handler(
 
   const provider = new Provider({
     sequencer: {
-      network: "mainnet-alpha",
+      network: process.env.NEXT_PUBLIC_IS_TESTNET
+        ? "goerli-alpha"
+        : "mainnet-alpha",
     },
   });
   const starknetIdNavigator = new StarknetIdNavigator(provider);
@@ -29,7 +32,7 @@ export default async function handler(
   try {
     const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
 
-    if ((name.match(/\./g) || []).length == 1) {
+    if (isRootDomain(name)) {
       const namingContract = new Contract(
         naming_abi,
         process.env.NEXT_PUBLIC_NAMING_CONTRACT as string,
