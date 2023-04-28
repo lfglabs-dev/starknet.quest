@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "../components/UI/button";
 import Wallets from "../components/UI/wallets";

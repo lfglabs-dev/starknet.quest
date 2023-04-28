@@ -15,7 +15,7 @@ const Task: FunctionComponent<Task> = ({
   const [isVerified, setIsVerified] = useState(false);
 
   // a verify function that setIsVerified(true) and stoppropagation
-  const verify = (e: any) => {
+  const verify = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsVerified(true);
   };
