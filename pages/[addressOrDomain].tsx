@@ -70,7 +70,13 @@ const AddressOrDomain: NextPage = () => {
   };
 
   if (notFound) {
-    return <h2 className={styles.notFound}>Profile not found</h2>;
+    return (
+      <div
+        className={`h-screen flex justify-center items-center ${styles.name}`}
+      >
+        <h2 className={styles.notFound}>Profile not found</h2>
+      </div>
+    );
   }
 
   return initProfile && identity ? (
@@ -175,7 +181,9 @@ const AddressOrDomain: NextPage = () => {
       </div>
     </>
   ) : (
-    <p>Loading</p>
+    <div className={`h-screen flex justify-center items-center ${styles.name}`}>
+      <h2>Loading</h2>
+    </div>
   );
 };
 
