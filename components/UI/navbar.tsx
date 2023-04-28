@@ -119,7 +119,7 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href={`/${addressOrDomain}`}>
+              <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My profile</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
@@ -200,7 +200,9 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/profile">
+                  <Link
+                    href={`/${address ? addressOrDomain : "not-connected"}`}
+                  >
                     <li
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}

@@ -34,33 +34,67 @@ const AddressOrDomain: NextPage = () => {
   }, [router]);
 
   useEffect(() => {
+    if (!address) setIsOwner(false);
+  }, [address]);
+
+  useEffect(() => {
     if (
       typeof addressOrDomain === "string" &&
-      (addressOrDomain?.toString().toLowerCase().endsWith(".stark") ||
-        isHexString(addressOrDomain as string))
+      addressOrDomain?.toString().toLowerCase().endsWith(".stark")
     ) {
       starknetIdNavigator
         ?.getStarknetId(addressOrDomain)
         .then((id) => {
-          fetch(`https://app.starknet.id/api/indexer/id_to_data?id=${id}`)
-            .then((response) => response.json())
-            .then((data: Identity) => {
-              if (data.error) return;
-              setIdentity({
-                ...data,
-                id: id.toString(),
-              });
-              if (hexToDecimal(address) === data.addr) setIsOwner(true);
-              setInitProfile(true);
+          getIdentityData(id).then((data: Identity) => {
+            if (data.error) return;
+            setIdentity({
+              ...data,
+              id: id.toString(),
             });
+            if (hexToDecimal(address) === data.addr) setIsOwner(true);
+            setInitProfile(true);
+          });
         })
         .catch(() => {
+          return;
+        });
+    } else if (
+      typeof addressOrDomain === "string" &&
+      isHexString(addressOrDomain as string)
+    ) {
+      starknetIdNavigator
+        ?.getStarkName(addressOrDomain)
+        .then((name) => {
+          console.log("name", name);
+          if (name) {
+            starknetIdNavigator?.getStarknetId(name).then((id) => {
+              getIdentityData(id).then((data: Identity) => {
+                if (data.error) return;
+                setIdentity({
+                  ...data,
+                  id: id.toString(),
+                });
+                if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                setInitProfile(true);
+              });
+            });
+          }
+        })
+        .catch(() => {
+          setNotFound(true);
           return;
         });
     } else {
       setNotFound(true);
     }
   }, [addressOrDomain, address]);
+
+  const getIdentityData = async (id: number) => {
+    const response = await fetch(
+      `https://app.starknet.id/api/indexer/id_to_data?id=${id}`
+    );
+    return response.json();
+  };
 
   const copyToClipboard = () => {
     setCopied(true);
