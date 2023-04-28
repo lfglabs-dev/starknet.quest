@@ -1,167 +1,163 @@
 .header {
-    background-image: url('/visuals/header-bg.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 300px;
+  background-image: url("/visuals/header-bg.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 180px;
 }
 
-
 .screen {
-    z-index: 0;
-    position: relative;
-    padding-top: 12vh;
-    background-color: var(--background);
-    width: 100%;
+  z-index: 0;
+  position: relative;
+  background-color: var(--background);
+  width: 100%;
+  padding-top: 12vh;
 }
 
 .profileContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    width: 1000px;
-    max-width: 90%;
-    margin: 2rem auto auto;
-    position: relative;
-}
-
-.profilePictureContainer {
-    position: absolute;
-    top: -12rem;
-    left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 1000px;
+  max-width: 90%;
+  margin: 2rem auto auto;
+  margin-bottom: 3rem;
+  position: relative;
 }
 
 .profilePicture {
-    border: 2px solid #F4FAFF;
-    filter: drop-shadow(0px 4.5px 60px rgba(191, 158, 123, 0.06));
-    border-radius: 75px;
-    width: 140px;
-    height: 140px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  border: 2px solid #f4faff;
+  filter: drop-shadow(0px 4.5px 60px rgba(191, 158, 123, 0.06));
+  border-radius: 75px;
+  width: 140px;
+  height: 140px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cameraIcon {
-    background-color: #FFFFFF;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 0;
-    bottom: 0px;
-    cursor: pointer;
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  cursor: pointer;
 }
 .cameraAlt {
-    color: var(--background600);
-    width: 25px;
-    height: 25px;
+  color: var(--background600);
+  width: 25px;
+  height: 25px;
 }
 
 .name {
-    font-family: "Sora-Bold";
-    font-size: 2.5rem;
-    text-align: center;
-    background: linear-gradient(45deg, var(--primary), var(--primary2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    text-transform: uppercase;
+  font-family: "Sora-Bold";
+  font-size: 2.3rem;
+  line-height: normal;
+  text-align: center;
+  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
 }
 
 .starknetInfo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; 
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .address {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 .contentContainer {
-    background-color: var(--background600);
-    box-shadow: 0px 2px 30px rgba(16, 16, 18, 0.06);
-    border-radius: 20px;
-    max-width: 90%;
-    width: 1000px;
-    margin: 2rem auto;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2rem;
+  background-color: var(--background600);
+  box-shadow: 0px 2px 30px rgba(16, 16, 18, 0.06);
+  border-radius: 20px;
+  max-width: 90%;
+  width: 1000px;
+  margin: 2rem auto;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2rem;
 }
 
 .menu {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .menuTitle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap; 
-    padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 .menuTitle p {
-    margin: 0 20px;
-    cursor: pointer;
+  margin: 0 20px;
+  cursor: pointer;
 }
 
 .active {
-    background: linear-gradient(45deg, var(--primary), var(--primary2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    font-family: "Sora-Bold";
-    text-decoration: underline;
-    font-size: 20px;
+  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-family: "Sora-Bold";
+  text-decoration: underline;
+  font-size: 20px;
 }
 
 .inactive {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; 
-    padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem;
 }
 
 .nftCard {
-    flex-basis: 25%;
+  flex-basis: 25%;
 }
 
 .nftImg {
-    height: 180px;
-    width: 180px;
-    overflow: hidden;
-    border: 2px solid #E1DCEA;
-    filter: drop-shadow(0px 6px 80px rgba(191, 158, 123, 0.06));
-    border-radius: 30px;
-    margin: 1rem auto;
+  height: 180px;
+  width: 180px;
+  overflow: hidden;
+  border: 2px solid #e1dcea;
+  filter: drop-shadow(0px 6px 80px rgba(191, 158, 123, 0.06));
+  border-radius: 30px;
+  margin: 1rem auto;
 }
-  
+
 .nftImg img {
-    width: 500px;
-    height: 500px;
+  width: 500px;
+  height: 500px;
 }
 
 .nftCard p {
-    color: white;
-    text-align: center;
+  color: white;
+  text-align: center;
 }

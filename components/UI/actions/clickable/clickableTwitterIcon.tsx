@@ -63,39 +63,43 @@ const ClickableTwitterIcon: FunctionComponent<ClickableTwitterIconProps> = ({
   }, [twitterId]);
 
   return isOwner ? (
-    <Tooltip
-      title={
-        twitterUsername
-          ? "Change your twitter verified account"
-          : "Start twitter verification"
-      }
-      arrow
-    >
-      <div
-        className={styles.clickableIconTwitter}
-        onClick={() =>
-          startVerification(
-            `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=Rkp6QlJxQzUzbTZtRVljY2paS0k6MTpjaQ&redirect_uri=${process.env.NEXT_PUBLIC_APP_LINK}/twitter&scope=users.read%20tweet.read&state=state&code_challenge=challenge&code_challenge_method=plain`
-          )
+    <div className="mr-1">
+      <Tooltip
+        title={
+          twitterUsername
+            ? "Change your twitter verified account"
+            : "Start twitter verification"
         }
+        arrow
       >
-        {twitterUsername ? (
-          <div className={styles.verifiedIcon}>
-            <VerifiedIcon width={width} color={"green"} />
-          </div>
-        ) : null}
-        <TwitterIcon width={width} color={"white"} />
-      </div>
-    </Tooltip>
+        <div
+          className={styles.clickableIconTwitter}
+          onClick={() =>
+            startVerification(
+              `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=Rkp6QlJxQzUzbTZtRVljY2paS0k6MTpjaQ&redirect_uri=${process.env.NEXT_PUBLIC_APP_LINK}/twitter&scope=users.read%20tweet.read&state=state&code_challenge=challenge&code_challenge_method=plain`
+            )
+          }
+        >
+          {twitterUsername ? (
+            <div className={styles.verifiedIcon}>
+              <VerifiedIcon width={width} color={"green"} />
+            </div>
+          ) : null}
+          <TwitterIcon width={width} color={"white"} />
+        </div>
+      </Tooltip>
+    </div>
   ) : twitterUsername ? (
-    <Tooltip title={`Check ${minifyDomain(domain)} twitter`} arrow>
-      <div
-        className={styles.clickableIconTwitter}
-        onClick={() => window.open(`https://twitter.com/${twitterUsername}`)}
-      >
-        <TwitterIcon width={width} color={"white"} />
-      </div>
-    </Tooltip>
+    <div className="mr-1">
+      <Tooltip title={`Check ${minifyDomain(domain)} twitter`} arrow>
+        <div
+          className={styles.clickableIconTwitter}
+          onClick={() => window.open(`https://twitter.com/${twitterUsername}`)}
+        >
+          <TwitterIcon width={width} color={"white"} />
+        </div>
+      </Tooltip>
+    </div>
   ) : null;
 };
 

@@ -50,41 +50,45 @@ const ClickableDiscordIcon: FunctionComponent<ClickableDiscordIconProps> = ({
   }
 
   return isOwner ? (
-    <Tooltip
-      title={
-        discordId
-          ? "Change your discord verified account"
-          : "Start Discord verification"
-      }
-      arrow
-    >
-      <div
-        className={styles.clickableIconDiscord}
-        onClick={() =>
-          startVerification(
-            `https://discord.com/oauth2/authorize?client_id=991638947451129886&redirect_uri=${process.env.NEXT_PUBLIC_APP_LINK}%2Fdiscord&response_type=code&scope=identify`
-          )
+    <div className="mr-1">
+      <Tooltip
+        title={
+          discordId
+            ? "Change your discord verified account"
+            : "Start Discord verification"
         }
+        arrow
       >
-        {discordId ? (
-          <div className={styles.verifiedIcon}>
-            <VerifiedIcon width={width} color={"green"} />
-          </div>
-        ) : null}
-        <DiscordIcon width={width} color={"white"} />
-      </div>
-    </Tooltip>
+        <div
+          className={styles.clickableIconDiscord}
+          onClick={() =>
+            startVerification(
+              `https://discord.com/oauth2/authorize?client_id=991638947451129886&redirect_uri=${process.env.NEXT_PUBLIC_APP_LINK}%2Fdiscord&response_type=code&scope=identify`
+            )
+          }
+        >
+          {discordId ? (
+            <div className={styles.verifiedIcon}>
+              <VerifiedIcon width={width} color={"green"} />
+            </div>
+          ) : null}
+          <DiscordIcon width={width} color={"white"} />
+        </div>
+      </Tooltip>
+    </div>
   ) : discordId ? (
-    <Tooltip title={`Check ${minifyDomain(domain)} discord`} arrow>
-      <div
-        className={styles.clickableIconDiscord}
-        onClick={() =>
-          window.open(`https://discord.com/channels/@me/${discordId}`)
-        }
-      >
-        <DiscordIcon width={width} color={"white"} />
-      </div>
-    </Tooltip>
+    <div className="mr-1">
+      <Tooltip title={`Check ${minifyDomain(domain)} discord`} arrow>
+        <div
+          className={styles.clickableIconDiscord}
+          onClick={() =>
+            window.open(`https://discord.com/channels/@me/${discordId}`)
+          }
+        >
+          <DiscordIcon width={width} color={"white"} />
+        </div>
+      </Tooltip>
+    </div>
   ) : null;
 };
 
