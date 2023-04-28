@@ -11,7 +11,6 @@ const NotConnected: NextPage = () => {
   const { available, connect } = useConnectors();
   const { push } = useRouter();
   const [hasWallet, setHasWallet] = useState<boolean>(true);
-  const [isWrongNetwork, setIsWrongNetwork] = useState(false);
 
   useEffect(() => {
     if (address) push(`/${address}`);
@@ -21,7 +20,7 @@ const NotConnected: NextPage = () => {
     <>
       <div className={`h-screen flex justify-center items-center flex-col`}>
         <h2 className={`${styles.notFound} ${styles.name} mb-5`}>
-          You're not connected
+          You&apos;re not connected
         </h2>
         <div className="text-background ml-5 mr-5">
           <Button
@@ -35,10 +34,7 @@ const NotConnected: NextPage = () => {
           </Button>
         </div>
       </div>
-      <Wallets
-        closeWallet={() => setHasWallet(false)}
-        hasWallet={Boolean(hasWallet && !isWrongNetwork)}
-      />
+      <Wallets closeWallet={() => setHasWallet(false)} hasWallet={hasWallet} />
     </>
   );
 };
