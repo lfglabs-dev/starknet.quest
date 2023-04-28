@@ -26,9 +26,7 @@ const Navbar: FunctionComponent = () => {
   const secondary = "#f4faff";
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
-  const [navbarBg, setNavbarBg] = useState<"transparent" | "background">(
-    "transparent"
-  );
+  const [navbarBg, setNavbarBg] = useState<boolean>(false);
 
   function disconnectByClick(): void {
     disconnect();
@@ -83,10 +81,10 @@ const Navbar: FunctionComponent = () => {
   }
 
   const handleScroll = () => {
-    if (window.scrollY > 20) {
-      setNavbarBg("background");
+    if (window.scrollY > 10) {
+      setNavbarBg(true);
     } else {
-      setNavbarBg("transparent");
+      setNavbarBg(false);
     }
   };
 
@@ -99,8 +97,12 @@ const Navbar: FunctionComponent = () => {
 
   return (
     <>
-      <div className={`fixed w-full z-[1] bg-${navbarBg}`}>
-        <div className={styles.navbarContainer}>
+      <div className={`fixed w-full z-[1]`}>
+        <div
+          className={`${styles.navbarContainer} ${
+            navbarBg ? styles.navbarScrolled : ""
+          }`}
+        >
           <div className="ml-4">
             <Link href="/" className="cursor-pointer">
               <img
