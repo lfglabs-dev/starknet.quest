@@ -6,7 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     | {
-        task_ids: Number[];
+        task_ids: number[];
       }
     | QueryError
   >
@@ -31,7 +31,7 @@ export default async function handler(
     if (completedTasks.length > 0) {
       const tasksFormatted = completedTasks.map((quest) => {
         const { task_id } = quest;
-        return task_id as Number;
+        return task_id as number;
       });
       res
         .setHeader("cache-control", "max-age=30")
