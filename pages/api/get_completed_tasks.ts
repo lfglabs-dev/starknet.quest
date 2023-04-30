@@ -4,7 +4,9 @@ import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Number[] | QueryError>
+    res: NextApiResponse<{
+        task_ids: Number[]
+    } | QueryError>
 ) {
     await NextCors(req, res, {
         methods: ["GET"],
@@ -28,7 +30,7 @@ export default async function handler(
             res
                 .setHeader("cache-control", "max-age=30")
                 .status(200)
-                .json(tasksFormatted);
+                .json({ task_ids: tasksFormatted });
         } else {
             res
                 .setHeader("cache-control", "max-age=30")
