@@ -60,12 +60,11 @@ const AddressOrDomain: NextPage = () => {
         });
     } else if (
       typeof addressOrDomain === "string" &&
-      isHexString(addressOrDomain as string)
+      isHexString(addressOrDomain)
     ) {
       starknetIdNavigator
         ?.getStarkName(addressOrDomain)
         .then((name) => {
-          console.log("name", name);
           if (name) {
             starknetIdNavigator?.getStarknetId(name).then((id) => {
               getIdentityData(id).then((data: Identity) => {
@@ -163,7 +162,7 @@ const AddressOrDomain: NextPage = () => {
               <SocialMediaActions
                 domain={identity?.domain}
                 isOwner={isOwner}
-                tokenId={identity?.id as string}
+                tokenId={identity?.id}
               />
             </div>
           </div>
