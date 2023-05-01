@@ -1,11 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { RequestProps, RequestResponse } from "../../../../types/backTypes";
+import type { NextApiResponse } from "next";
+import {
+  CustomNextApiRequest,
+  RequestResponse,
+} from "../../../../types/backTypes";
 
 export default async function handler(
-  req: NextApiRequest,
+  req: CustomNextApiRequest,
   res: NextApiResponse<RequestResponse>
 ) {
-  const { address }: RequestProps = req.body;
+  const { address } = req.query;
 
   if (!address || Array.isArray(address)) {
     return res
@@ -15,7 +18,7 @@ export default async function handler(
 
   try {
     const response = await fetch(
-      "https://server.starkfighter.xyz/fetch_user_score",
+      "https://muscledserver.starkfighter.xyz/fetch_user_score",
       {
         method: "POST",
         headers: {

@@ -1,14 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { Provider } from "starknet";
 import { StarknetIdNavigator } from "starknetid.js";
-import { RequestProps, RequestResponse } from "../../../../types/backTypes";
+import {
+  CustomNextApiRequest,
+  RequestResponse,
+} from "../../../../types/backTypes";
 import { isRootDomain } from "../../../../utils/stringService";
 
 export default async function handler(
-  req: NextApiRequest,
+  req: CustomNextApiRequest,
   res: NextApiResponse<RequestResponse>
 ) {
-  const { address }: RequestProps = req.body;
+  const { address } = req.query;
 
   if (!address || Array.isArray(address)) {
     return res
