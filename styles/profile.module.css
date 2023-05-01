@@ -150,6 +150,10 @@
   filter: drop-shadow(0px 6px 80px rgba(191, 158, 123, 0.06));
   border-radius: 30px;
   margin: 1rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .nftImg img {

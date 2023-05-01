@@ -25,8 +25,9 @@ const AddressOrDomain: NextPage = () => {
   const [copied, setCopied] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [active, setActive] = useState(0);
-
   const dynamicRoute = useRouter().asPath;
+  const [userNft, setUserNft] = useState<AspectNftProps[]>();
+
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
   useEffect(() => {
@@ -62,31 +63,46 @@ const AddressOrDomain: NextPage = () => {
       typeof addressOrDomain === "string" &&
       isHexString(addressOrDomain)
     ) {
-      starknetIdNavigator
-        ?.getStarkName(addressOrDomain)
-        .then((name) => {
-          if (name) {
-            starknetIdNavigator?.getStarknetId(name).then((id) => {
-              getIdentityData(id).then((data: Identity) => {
-                if (data.error) return;
-                setIdentity({
-                  ...data,
-                  id: id.toString(),
-                });
-                if (hexToDecimal(address) === data.addr) setIsOwner(true);
-                setInitProfile(true);
-              });
-            });
-          }
-        })
-        .catch(() => {
-          setNotFound(true);
-          return;
-        });
+      setIdentity({
+        id: "0",
+        addr: hexToDecimal(addressOrDomain),
+        domain: minifyAddress(addressOrDomain),
+        is_owner_main: false,
+      });
+      setIsOwner(false);
+      setInitProfile(true);
     } else {
       setNotFound(true);
     }
   }, [addressOrDomain, address]);
+
+  useEffect(() => {
+    if (identity) {
+      retrieveAssets(decimalToHex(identity.addr)).then((data) => {
+        setUserNft(data.assets);
+      });
+    }
+  }, [identity, addressOrDomain, address]);
+
+  const retrieveAssets = async (owner: string) => {
+    const data = await fetch(
+      `https://${
+        process.env.NEXT_PUBLIC_IS_TESTNET ? "api-testnet" : "api"
+      }.aspect.co/api/v0/assets?owner_address=${owner}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": `${
+            process.env.NEXT_PUBLIC_IS_TESTNET
+              ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
+              : process.env.NEXT_PUBLIC_ASPECT_MAINNET
+          }`,
+        },
+      }
+    );
+    return data.json();
+  };
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
@@ -142,7 +158,10 @@ const AddressOrDomain: NextPage = () => {
             <div className={styles.starknetInfo}>
               <StarknetIcon width="32px" color="" />
               <div className={styles.address}>
-                {minifyAddress(decimalToHex(identity?.addr))}
+                {typeof addressOrDomain === "string" &&
+                isHexString(addressOrDomain)
+                  ? minifyAddress(addressOrDomain)
+                  : minifyAddress(decimalToHex(identity?.addr))}
               </div>
 
               <div className="cursor-pointer">
@@ -190,26 +209,18 @@ const AddressOrDomain: NextPage = () => {
             {!active ? (
               <>
                 <div className={styles.content}>
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
+                  {userNft && userNft.length
+                    ? userNft.map((nft, index) => {
+                        return (
+                          <NftCard
+                            key={index}
+                            image={nft.image_uri as string}
+                            title={nft.name as string}
+                            url={nft.aspect_link as string}
+                          />
+                        );
+                      })
+                    : null}
                 </div>
               </>
             ) : null}

@@ -42,6 +42,8 @@ module.exports = {
       "starknet.id",
       "app.starknet.id",
       "starknetid.netlify.app",
+      "gateway.pinata.cloud",
+      "api.briq.construction",
     ],
   },
 };

@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { Client } from "twitter-api-sdk";
 import { CustomTwitterNextApiRequest } from "../../../types/backTypes";
 
