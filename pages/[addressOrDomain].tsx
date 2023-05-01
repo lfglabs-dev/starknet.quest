@@ -13,6 +13,7 @@ import { decimalToHex, hexToDecimal } from "../utils/feltService";
 import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
 import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
+import Button from "../components/UI/button";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const AddressOrDomain: NextPage = () => {
   const [active, setActive] = useState(0);
   const dynamicRoute = useRouter().asPath;
   const [userNft, setUserNft] = useState<AspectNftProps[]>();
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -78,31 +80,16 @@ const AddressOrDomain: NextPage = () => {
 
   useEffect(() => {
     if (identity) {
-      retrieveAssets(decimalToHex(identity.addr)).then((data) => {
+      retrieveAssets(
+        `https://${
+          process.env.NEXT_PUBLIC_IS_TESTNET ? "api-testnet" : "api"
+        }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
+      ).then((data) => {
         setUserNft(data.assets);
+        setNextUrl(data.next_url);
       });
     }
   }, [identity, addressOrDomain, address]);
-
-  const retrieveAssets = async (owner: string) => {
-    const data = await fetch(
-      `https://${
-        process.env.NEXT_PUBLIC_IS_TESTNET ? "api-testnet" : "api"
-      }.aspect.co/api/v0/assets?owner_address=${owner}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": `${
-            process.env.NEXT_PUBLIC_IS_TESTNET
-              ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
-              : process.env.NEXT_PUBLIC_ASPECT_MAINNET
-          }`,
-        },
-      }
-    );
-    return data.json();
-  };
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
@@ -117,6 +104,29 @@ const AddressOrDomain: NextPage = () => {
     setTimeout(() => {
       setCopied(false);
     }, 1500);
+  };
+
+  const retrieveAssets = async (url: string) => {
+    const data = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${
+          process.env.NEXT_PUBLIC_IS_TESTNET
+            ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
+            : process.env.NEXT_PUBLIC_ASPECT_MAINNET
+        }`,
+      },
+    });
+    return data.json();
+  };
+
+  const loadMore = () => {
+    if (nextUrl)
+      retrieveAssets(nextUrl).then((data) => {
+        setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
+        setNextUrl(data.next_url);
+      });
   };
 
   if (notFound) {
@@ -222,6 +232,11 @@ const AddressOrDomain: NextPage = () => {
                       })
                     : null}
                 </div>
+                {nextUrl ? (
+                  <div className="text-background ml-5 mr-5 flex justify-center items-center flex-col">
+                    <Button onClick={() => loadMore()}>Load More</Button>
+                  </div>
+                ) : null}
               </>
             ) : null}
           </div>
