@@ -3,16 +3,14 @@ import { Contract, Provider } from "starknet";
 import { StarknetIdNavigator, utils } from "starknetid.js";
 import naming_abi from "../../../../../abi/naming_abi.json";
 import BN from "bn.js";
-import { RequestResponse } from "../../../../../types/backTypes";
+import { RequestProps, RequestResponse } from "../../../../../types/backTypes";
 import { isRootDomain } from "../../../../../utils/stringService";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RequestResponse>
 ) {
-  const {
-    query: { address },
-  } = req;
+  const { address }: RequestProps = req.body;
 
   if (!address || Array.isArray(address)) {
     return res

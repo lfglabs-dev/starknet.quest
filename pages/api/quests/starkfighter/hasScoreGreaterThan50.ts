@@ -1,13 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { RequestResponse } from "../../../../types/backTypes";
+import { RequestProps, RequestResponse } from "../../../../types/backTypes";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RequestResponse>
 ) {
-  const {
-    query: { address },
-  } = req;
+  const { address }: RequestProps = req.body;
 
   if (!address || Array.isArray(address)) {
     return res
