@@ -19,6 +19,8 @@ type Task = {
   wasVerified?: boolean;
 };
 
+type TaskProps = Task & { id: number };
+
 type Quest = {
   issuer: Issuer;
   name: string;
