@@ -1,11 +1,10 @@
 import type { NextApiResponse } from "next";
 import { Provider } from "starknet";
-import { StarknetIdNavigator } from "starknetid.js";
+import { StarknetIdNavigator, utils } from "starknetid.js";
 import {
   CustomNextApiRequest,
   RequestResponse,
 } from "../../../../../types/backTypes";
-import { isSubdomain } from "../../../../../utils/stringService";
 
 export default async function handler(
   req: CustomNextApiRequest,
@@ -31,7 +30,7 @@ export default async function handler(
   try {
     const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
 
-    isSubdomain(name)
+    utils.isSubdomain(name)
       ? res
           .setHeader("cache-control", "max-age=30")
           .status(200)

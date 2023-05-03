@@ -27,7 +27,7 @@
     "react-icons": "^4.4.0",
     "react-loader-spinner": "^5.2.0",
     "starknet": "^4.22.0",
-    "starknetid.js": "^1.4.8"
+    "starknetid.js": "^1.4.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",

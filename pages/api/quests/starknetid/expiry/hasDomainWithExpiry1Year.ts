@@ -7,7 +7,6 @@ import {
   CustomNextApiRequest,
   RequestResponse,
 } from "../../../../../types/backTypes";
-import { isRootDomain } from "../../../../../utils/stringService";
 
 export default async function handler(
   req: CustomNextApiRequest,
@@ -33,7 +32,7 @@ export default async function handler(
   try {
     const name = await starknetIdNavigator.getStarkName(address.toLowerCase());
 
-    if (isRootDomain(name)) {
+    if (utils.isStarkRootDomain(name)) {
       const namingContract = new Contract(
         naming_abi,
         process.env.NEXT_PUBLIC_NAMING_CONTRACT as string,
