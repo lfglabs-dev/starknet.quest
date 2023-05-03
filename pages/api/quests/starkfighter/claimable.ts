@@ -12,8 +12,8 @@ export default async function handler(
     | {
         rewards: {
           task_id: number;
-          nft_contract: String;
-          token_id: String;
+          nft_contract: string;
+          token_id: string;
           sig: Signature;
         }[];
       }
@@ -87,8 +87,8 @@ export default async function handler(
 
     if (completedTasks.length > 0) {
       const claimable = completedTasks.map((task) => {
-        let task_id = task.task_id as number;
-        let [token_id, sig] = getNFT(task_id);
+        const task_id = task.task_id as number;
+        const [token_id, sig] = getNFT(task_id);
         return {
           task_id,
           nft_contract:
