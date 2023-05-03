@@ -6,13 +6,10 @@ type QuestDocument = {
     name: string;
     issuer: string;
     category: string;
-    to_win: ToWinItem[];
 };
 
 type ToWinItem = {
     type: string;
-    name: string;
-    desc: string;
     [key: string]: any;
 };
 
@@ -24,6 +21,7 @@ type TaskDocument = {
     href: string;
     cta?: string;
     verify_endpoint?: string;
+    to_win: ToWinItem[];
 };
 
 type UserDocument = {

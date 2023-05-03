@@ -6,8 +6,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     | {
-        task_ids: number[];
-      }
+      task_ids: number[];
+    }
     | QueryError
   >
 ) {
@@ -19,20 +19,45 @@ export default async function handler(
 
   const { db } = await connectToDatabase();
   const {
-    query: { addr },
+    query: { quest_id, addr },
   } = req;
   try {
+    const pipeline = [
+      {
+        $match: {
+          address: addr,
+        },
+      },
+      {
+        $lookup: {
+          from: "tasks",
+          localField: "task_id",
+          foreignField: "id",
+          as: "task",
+        },
+      },
+      {
+        $match: {
+          "task.0": { $exists: true },
+          "task.quest_id": Number(quest_id),
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          task_id: 1,
+        },
+      },
+    ];
+
     const completedTasks = await db
       .collection("completed_tasks")
-      .find({
-        address: addr,
-      })
+      .aggregate(pipeline)
       .toArray();
+
     if (completedTasks.length > 0) {
-      const tasksFormatted = completedTasks.map((quest) => {
-        const { task_id } = quest;
-        return task_id as number;
-      });
+      const tasksFormatted = completedTasks.map((quest) => quest.task_id as number);
+
       res
         .setHeader("cache-control", "max-age=30")
         .status(200)
