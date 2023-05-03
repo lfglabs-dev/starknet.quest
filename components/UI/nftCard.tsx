@@ -5,7 +5,7 @@ const NftCard: FunctionComponent<NftCard> = ({ title, image, url }) => {
   const [imageUri, setImageUri] = useState<string>("");
 
   useEffect(() => {
-    if (image.startsWith("ipfs://")) {
+    if (image && image.startsWith("ipfs://")) {
       setImageUri(
         image.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")
       );
@@ -14,7 +14,7 @@ const NftCard: FunctionComponent<NftCard> = ({ title, image, url }) => {
     }
   }, [image]);
 
-  return (
+  return image ? (
     <div className={styles.nftCard}>
       <div className={styles.nftImg}>
         <img
@@ -26,7 +26,7 @@ const NftCard: FunctionComponent<NftCard> = ({ title, image, url }) => {
       </div>
       <p>{title}</p>
     </div>
-  );
+  ) : null;
 };
 
 export default NftCard;
