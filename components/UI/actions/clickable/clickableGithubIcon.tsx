@@ -63,39 +63,43 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
   }
 
   return isOwner ? (
-    <Tooltip
-      title={
-        githubUsername
-          ? "Change your github verified account"
-          : "Start github verification"
-      }
-      arrow
-    >
-      <div
-        className={styles.clickableIconGithub}
-        onClick={() =>
-          startVerification(
-            `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENTID}`
-          )
+    <div className="mr-1">
+      <Tooltip
+        title={
+          githubUsername
+            ? "Change your github verified account"
+            : "Start github verification"
         }
+        arrow
       >
-        {githubUsername ? (
-          <div className={styles.verifiedIcon}>
-            <VerifiedIcon width={width} color={"green"} />
-          </div>
-        ) : null}
-        <GithubIcon width={width} color={"white"} />
-      </div>
-    </Tooltip>
+        <div
+          className={styles.clickableIconGithub}
+          onClick={() =>
+            startVerification(
+              `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENTID}`
+            )
+          }
+        >
+          {githubUsername ? (
+            <div className={styles.verifiedIcon}>
+              <VerifiedIcon width={width} color={"green"} />
+            </div>
+          ) : null}
+          <GithubIcon width={width} color={"white"} />
+        </div>
+      </Tooltip>
+    </div>
   ) : githubUsername ? (
-    <Tooltip title={`Check ${minifyDomain(domain)} github`} arrow>
-      <div
-        className={styles.clickableIconGithub}
-        onClick={() => window.open(`https://github.com/${githubUsername}`)}
-      >
-        <GithubIcon width={width} color="white" />
-      </div>
-    </Tooltip>
+    <div className="mr-1">
+      <Tooltip title={`Check ${minifyDomain(domain)} github`} arrow>
+        <div
+          className={styles.clickableIconGithub}
+          onClick={() => window.open(`https://github.com/${githubUsername}`)}
+        >
+          <GithubIcon width={width} color="white" />
+        </div>
+      </Tooltip>
+    </div>
   ) : null;
 };
 

@@ -7,11 +7,13 @@ import { useAccount } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
-import { Tooltip } from "@mui/material";
-import { ContentCopy, CameraAlt } from "@mui/icons-material";
+import { Divider, Tooltip } from "@mui/material";
+import { ContentCopy } from "@mui/icons-material";
 import { decimalToHex, hexToDecimal } from "../utils/feltService";
 import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
 import NftCard from "../components/UI/nftCard";
+import { minifyAddress } from "../utils/stringService";
+import Button from "../components/UI/button";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -24,8 +26,10 @@ const AddressOrDomain: NextPage = () => {
   const [copied, setCopied] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [active, setActive] = useState(0);
-
   const dynamicRoute = useRouter().asPath;
+  const [userNft, setUserNft] = useState<AspectNftProps[]>();
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
   useEffect(() => {
@@ -33,33 +37,90 @@ const AddressOrDomain: NextPage = () => {
   }, [router]);
 
   useEffect(() => {
+    if (!address) setIsOwner(false);
+  }, [address]);
+
+  useEffect(() => {
     if (
       typeof addressOrDomain === "string" &&
-      (addressOrDomain?.toString().toLowerCase().endsWith(".stark") ||
-        isHexString(addressOrDomain as string))
+      addressOrDomain?.toString().toLowerCase().endsWith(".stark")
     ) {
       starknetIdNavigator
         ?.getStarknetId(addressOrDomain)
         .then((id) => {
-          fetch(`https://app.starknet.id/api/indexer/id_to_data?id=${id}`)
-            .then((response) => response.json())
-            .then((data: Identity) => {
-              if (data.error) return;
-              setIdentity({
-                ...data,
-                id: id.toString(),
-              });
-              if (hexToDecimal(address) === data.addr) setIsOwner(true);
-              setInitProfile(true);
+          getIdentityData(id).then((data: Identity) => {
+            if (data.error) return;
+            setIdentity({
+              ...data,
+              id: id.toString(),
             });
+            if (hexToDecimal(address) === data.addr) setIsOwner(true);
+            setInitProfile(true);
+          });
         })
         .catch(() => {
           return;
+        });
+    } else if (
+      typeof addressOrDomain === "string" &&
+      isHexString(addressOrDomain)
+    ) {
+      starknetIdNavigator
+        ?.getStarkName(hexToDecimal(addressOrDomain))
+        .then((name) => {
+          console.log("name", name);
+          if (name) {
+            starknetIdNavigator
+              ?.getStarknetId(name)
+              .then((id) => {
+                getIdentityData(id).then((data: Identity) => {
+                  if (data.error) return;
+                  setIdentity({
+                    ...data,
+                    id: id.toString(),
+                  });
+                  if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                  setInitProfile(true);
+                });
+              })
+              .catch(() => {
+                return;
+              });
+          } else {
+            setIdentity({
+              id: "0",
+              addr: hexToDecimal(addressOrDomain),
+              domain: minifyAddress(addressOrDomain),
+              is_owner_main: false,
+            });
+            setIsOwner(false);
+            setInitProfile(true);
+          }
         });
     } else {
       setNotFound(true);
     }
   }, [addressOrDomain, address]);
+
+  useEffect(() => {
+    if (identity) {
+      retrieveAssets(
+        `https://${
+          process.env.NEXT_PUBLIC_IS_TESTNET ? "api-testnet" : "api"
+        }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
+      ).then((data) => {
+        setUserNft(data.assets);
+        setNextUrl(data.next_url);
+      });
+    }
+  }, [identity, addressOrDomain, address]);
+
+  const getIdentityData = async (id: number) => {
+    const response = await fetch(
+      `https://app.starknet.id/api/indexer/id_to_data?id=${id}`
+    );
+    return response.json();
+  };
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -67,6 +128,29 @@ const AddressOrDomain: NextPage = () => {
     setTimeout(() => {
       setCopied(false);
     }, 1500);
+  };
+
+  const retrieveAssets = async (url: string) => {
+    const data = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${
+          process.env.NEXT_PUBLIC_IS_TESTNET
+            ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
+            : process.env.NEXT_PUBLIC_ASPECT_MAINNET
+        }`,
+      },
+    });
+    return data.json();
+  };
+
+  const loadMore = () => {
+    if (nextUrl)
+      retrieveAssets(nextUrl).then((data) => {
+        setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
+        setNextUrl(data.next_url);
+      });
   };
 
   if (notFound) {
@@ -81,7 +165,6 @@ const AddressOrDomain: NextPage = () => {
 
   return initProfile && identity ? (
     <>
-      <div className={styles.header}></div>
       <div className={styles.screen}>
         <div className={styles.profileContainer}>
           <div className={styles.profilePictureContainer}>
@@ -93,39 +176,46 @@ const AddressOrDomain: NextPage = () => {
                 style={{ maxWidth: "150%" }}
               />
             </div>
-            <Tooltip title="Change profile picture" arrow>
+            {/* We do not enable the profile pic change atm */}
+            {/* <Tooltip title="Change profile picture" arrow>
               <div className={styles.cameraIcon}>
                 <CameraAlt
                   className={styles.cameraAlt}
                   onClick={() => console.log("changing pfp")}
                 />
               </div>
-            </Tooltip>
+            </Tooltip> */}
           </div>
-          <div className={styles.name}>{identity?.domain}</div>
-          <div className={styles.starknetInfo}>
-            <StarknetIcon width="32px" color="" />
-            <div className={styles.address}>{decimalToHex(identity?.addr)}</div>
+          <Divider variant="middle" orientation="vertical" />
+          <div className="flex flex-col flex-start gap-3">
+            <div className={styles.name}>{identity?.domain}</div>
+            <div className={styles.starknetInfo}>
+              <StarknetIcon width="32px" color="" />
+              <div className={styles.address}>
+                {typeof addressOrDomain === "string" &&
+                isHexString(addressOrDomain)
+                  ? minifyAddress(addressOrDomain)
+                  : minifyAddress(decimalToHex(identity?.addr))}
+              </div>
 
-            <div className="cursor-pointer">
-              {!copied ? (
-                <Tooltip title="Copy" arrow>
-                  <ContentCopy
-                    className={styles.contentCopy}
-                    onClick={() => copyToClipboard()}
-                  />
-                </Tooltip>
-              ) : (
-                <CopiedIcon color="#6affaf" width="25" />
-              )}
+              <div className="cursor-pointer">
+                {!copied ? (
+                  <Tooltip title="Copy" arrow>
+                    <ContentCopy
+                      className={styles.contentCopy}
+                      onClick={() => copyToClipboard()}
+                    />
+                  </Tooltip>
+                ) : (
+                  <CopiedIcon color="#6affaf" width="25" />
+                )}
+              </div>
             </div>
-          </div>
-          <div className={styles.socials}>
             <div className="flex lg:justify-start justify-center lg:items-start items-center">
               <SocialMediaActions
                 domain={identity?.domain}
                 isOwner={isOwner}
-                tokenId={identity?.id as string}
+                tokenId={identity?.id}
               />
             </div>
           </div>
@@ -133,14 +223,14 @@ const AddressOrDomain: NextPage = () => {
         <div className={styles.contentContainer}>
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
-              <p
+              {/* <p
                 className={
                   active === 1 ? `${styles.active}` : `${styles.inactive}`
                 }
                 onClick={() => setActive(1)}
               >
                 My analytics
-              </p>
+              </p> */}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
@@ -153,27 +243,24 @@ const AddressOrDomain: NextPage = () => {
             {!active ? (
               <>
                 <div className={styles.content}>
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
-                  <NftCard
-                    image={"/visuals/Card.png"}
-                    title="Un NFT"
-                    onClick={() => window.open("#")}
-                  />
+                  {userNft && userNft.length
+                    ? userNft.map((nft, index) => {
+                        return (
+                          <NftCard
+                            key={index}
+                            image={nft.image_uri as string}
+                            title={nft.name as string}
+                            url={nft.aspect_link as string}
+                          />
+                        );
+                      })
+                    : null}
                 </div>
+                {nextUrl ? (
+                  <div className="text-background ml-5 mr-5 flex justify-center items-center flex-col">
+                    <Button onClick={() => loadMore()}>Load More</Button>
+                  </div>
+                ) : null}
               </>
             ) : null}
           </div>
