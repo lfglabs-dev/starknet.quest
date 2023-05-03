@@ -27,4 +27,10 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   height: 12vh;
+  transition: background-color 1s ease;
+  background-color: transparent;
+}
+
+.navbarScrolled {
+  background-color: rgba(0, 0, 0, 1);
 }

@@ -8,6 +8,7 @@ import Wallets from "./wallets";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
+import { useDomainFromAddress } from "../../hooks/naming";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -18,10 +19,14 @@ const Navbar: FunctionComponent = () => {
 
   const { available, connect, disconnect } = useConnectors();
   const { library } = useStarknet();
-  const domainOrAddress = useDisplayName(address ?? "");
+  const domainOrAddressMinified = useDisplayName(address ?? "");
+  const domain = useDomainFromAddress(address ?? "").domain;
+  const addressOrDomain =
+    domain && domain.endsWith(".stark") ? domain : address;
   const secondary = "#f4faff";
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const [navbarBg, setNavbarBg] = useState<boolean>(false);
 
   function disconnectByClick(): void {
     disconnect();
@@ -70,15 +75,34 @@ const Navbar: FunctionComponent = () => {
   }
 
   function topButtonText(): string | undefined {
-    const textToReturn = isConnected ? domainOrAddress : "connect";
+    const textToReturn = isConnected ? domainOrAddressMinified : "connect";
 
     return textToReturn;
   }
 
+  const handleScroll = () => {
+    if (window.scrollY > 10) {
+      setNavbarBg(true);
+    } else {
+      setNavbarBg(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <div className={"fixed w-full z-[1] bg-background"}>
-        <div className={styles.navbarContainer}>
+      <div className={`fixed w-full z-[1]`}>
+        <div
+          className={`${styles.navbarContainer} ${
+            navbarBg ? styles.navbarScrolled : ""
+          }`}
+        >
           <div className="ml-4">
             <Link href="/" className="cursor-pointer">
               <img
@@ -95,7 +119,7 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/profile">
+              <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My profile</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
@@ -112,7 +136,7 @@ const Navbar: FunctionComponent = () => {
                 >
                   {isConnected ? (
                     <div className="flex justify-center items-center">
-                      <div>{domainOrAddress}</div>
+                      <div>{domainOrAddressMinified}</div>
                       <LogoutIcon className="ml-3" />
                     </div>
                   ) : (
@@ -176,7 +200,9 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/profile">
+                  <Link
+                    href={`/${address ? addressOrDomain : "not-connected"}`}
+                  >
                     <li
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
