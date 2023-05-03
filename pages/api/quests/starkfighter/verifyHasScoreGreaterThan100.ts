@@ -3,12 +3,23 @@ import {
   CustomNextApiRequest,
   RequestResponse,
 } from "../../../../types/backTypes";
+import NextCors from "nextjs-cors";
+import { connectToDatabase } from "../../../../lib/mongodb";
+import { hexToDecimal } from "../../../../utils/feltService";
 
 export default async function handler(
   req: CustomNextApiRequest,
   res: NextApiResponse<RequestResponse>
 ) {
+  await NextCors(req, res, {
+    methods: ["POST"],
+    origin: "*",
+    optionsSuccessStatus: 200,
+  });
+  const { db } = await connectToDatabase();
+
   const { address } = req.query;
+  const task_id = 4;
 
   if (!address || Array.isArray(address)) {
     return res
@@ -32,11 +43,30 @@ export default async function handler(
 
     if (response.ok) {
       const playerScore = await response.json();
-      if (playerScore && playerScore.score >= 50) {
-        res
-          .setHeader("cache-control", "max-age=30")
-          .status(200)
-          .json({ res: true });
+      if (playerScore && playerScore.score >= 100) {
+        try {
+          await db
+            .collection("completed_tasks")
+            .updateOne(
+              { address: hexToDecimal(address), task_id },
+              { $setOnInsert: { address: hexToDecimal(address), task_id } },
+              { upsert: true }
+            );
+          res
+            .setHeader("cache-control", "max-age=30")
+            .status(200)
+            .json({ res: true });
+        } catch (error) {
+          res.status(500).json({
+            res: false,
+            error_msg:
+              error instanceof Error
+                ? error.message
+                : typeof error === "string"
+                ? error
+                : "Unknown error",
+          });
+        }
       } else {
         res
           .status(400)
