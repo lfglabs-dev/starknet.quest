@@ -1,14 +1,64 @@
 import { NextPage } from "next";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
 import styles from "../../styles/quests.module.css";
 import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
-import { useAccount } from "@starknet-react/core";
+import { useQuestsNFTContract } from "../../hooks/contracts";
+import {
+  Call,
+  useAccount,
+  useStarknetCall,
+  useStarknetExecute,
+} from "@starknet-react/core";
+import { useRouter } from "next/router";
+import { hexToDecimal } from "../../utils/feltService";
 
 const QuestPage: NextPage = () => {
+  const router = useRouter();
+  const { questPage: questId } = router.query;
   const { address } = useAccount();
+  const { contract } = useQuestsNFTContract();
+  const [tasksCalldata, setTasksCalldata] = useState<any>([]);
+  const [mintCalldata, setMintCalldata] = useState<Call>();
+
+  const { data, error } = useStarknetCall({
+    contract,
+    method: "get_tasks_status",
+    args: [tasksCalldata],
+  });
+
+  // build get_tasks_status calldata
+  useEffect(() => {
+    if (address) {
+      // todo : query `get_eligible_rewards(quest, user_addr)` & map results to build calldata
+      // { task_id : 1, nft_contract: "123", token_id : "1287398872", sig: [ x, y ] }
+      let calldata = [];
+      for (let i = 1; i <= 4; i++)
+        calldata.push([questId as string, i.toString(), hexToDecimal(address)]);
+      console.log("calldata", calldata);
+      setTasksCalldata(calldata);
+    }
+  }, [address]);
+
+  const { execute: executeMint, data: mintData } = useStarknetExecute({
+    calls: mintCalldata,
+  });
+
+  useEffect(() => {
+    if (error || !data) {
+      console.log("error", error);
+    } else {
+      // todo: build multicall depending on data
+      console.log("data received", data);
+      // data?.["status"].map((elem) => {});
+    }
+  }, [data, error]);
+
+  const mintNft = () => {
+    executeMint();
+  };
 
   return (
     <div className={homeStyles.screen}>
