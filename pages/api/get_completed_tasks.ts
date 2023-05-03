@@ -1,13 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import { connectToDatabase } from "../../lib/mongodb";
+import { QueryError } from "../../types/backTypes";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     | {
-      task_ids: number[];
-    }
+        task_ids: number[];
+      }
     | QueryError
   >
 ) {
@@ -56,7 +57,9 @@ export default async function handler(
       .toArray();
 
     if (completedTasks.length > 0) {
-      const tasksFormatted = completedTasks.map((quest) => quest.task_id as number);
+      const tasksFormatted = completedTasks.map(
+        (quest) => quest.task_id as number
+      );
 
       res
         .setHeader("cache-control", "max-age=30")

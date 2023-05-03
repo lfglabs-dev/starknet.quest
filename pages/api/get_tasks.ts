@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import { connectToDatabase } from "../../lib/mongodb";
+import { QueryError, TaskDocument } from "../../types/backTypes";
 
 export default async function handler(
   req: NextApiRequest,
