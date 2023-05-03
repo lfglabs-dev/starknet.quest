@@ -40,7 +40,7 @@ const QuestPage: NextPage = () => {
         .then((data) => {
           setTasks(data);
           if (!data.error && data.length > 0) {
-            let calldata: string[][] = [];
+            const calldata: string[][] = [];
             data.map((elem: TaskProps) => {
               calldata.push([
                 questId as string,
@@ -83,7 +83,7 @@ const QuestPage: NextPage = () => {
         ? (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string)
         : (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string);
 
-      let calldata: Call[] = [];
+      const calldata: Call[] = [];
       eligibleRewards.map((reward: EligibleReward, index: number) => {
         if (Number(data?.["status"][index]) === 0) {
           calldata.push({
