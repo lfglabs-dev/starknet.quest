@@ -10,6 +10,7 @@ const Task: FunctionComponent<Task> = ({
   description,
   href,
   cta = "open app",
+  verifyEndpoint,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -17,7 +18,11 @@ const Task: FunctionComponent<Task> = ({
   // a verify function that setIsVerified(true) and stoppropagation
   const verify = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsVerified(true);
+    fetch(verifyEndpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.res) setIsVerified(true);
+      });
   };
 
   return (
@@ -40,7 +45,7 @@ const Task: FunctionComponent<Task> = ({
             <CheckCircleIcon className="ml-2" width={25} color="primary" />
           </div>
         ) : (
-          <div onClick={verify} className={styles.verifyButton}>
+          <div onClick={(e) => verify(e)} className={styles.verifyButton}>
             <p>Verify</p>
           </div>
         )}
