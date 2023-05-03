@@ -65,14 +65,38 @@ const AddressOrDomain: NextPage = () => {
       typeof addressOrDomain === "string" &&
       isHexString(addressOrDomain)
     ) {
-      setIdentity({
-        id: "0",
-        addr: hexToDecimal(addressOrDomain),
-        domain: minifyAddress(addressOrDomain),
-        is_owner_main: false,
-      });
-      setIsOwner(false);
-      setInitProfile(true);
+      starknetIdNavigator
+        ?.getStarkName(hexToDecimal(addressOrDomain))
+        .then((name) => {
+          console.log("name", name);
+          if (name) {
+            starknetIdNavigator
+              ?.getStarknetId(name)
+              .then((id) => {
+                getIdentityData(id).then((data: Identity) => {
+                  if (data.error) return;
+                  setIdentity({
+                    ...data,
+                    id: id.toString(),
+                  });
+                  if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                  setInitProfile(true);
+                });
+              })
+              .catch(() => {
+                return;
+              });
+          } else {
+            setIdentity({
+              id: "0",
+              addr: hexToDecimal(addressOrDomain),
+              domain: minifyAddress(addressOrDomain),
+              is_owner_main: false,
+            });
+            setIsOwner(false);
+            setInitProfile(true);
+          }
+        });
     } else {
       setNotFound(true);
     }
@@ -199,14 +223,14 @@ const AddressOrDomain: NextPage = () => {
         <div className={styles.contentContainer}>
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
-              <p
+              {/* <p
                 className={
                   active === 1 ? `${styles.active}` : `${styles.inactive}`
                 }
                 onClick={() => setActive(1)}
               >
                 My analytics
-              </p>
+              </p> */}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
