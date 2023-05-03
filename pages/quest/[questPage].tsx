@@ -20,7 +20,8 @@ const QuestPage: NextPage = () => {
   const { questPage: questId } = router.query;
   const { address } = useAccount();
   const { contract } = useQuestsNFTContract();
-  const [tasksCalldata, setTasksCalldata] = useState<any>([]);
+  const [eligibleRewards, setEligibaleRewards] = useState<EligibleReward[]>([]);
+  const [tasksCalldata, setTasksCalldata] = useState<string[][]>();
   const [mintCalldata, setMintCalldata] = useState<Call>();
 
   const { data, error } = useStarknetCall({
@@ -33,7 +34,8 @@ const QuestPage: NextPage = () => {
   useEffect(() => {
     if (address) {
       // todo : query `get_eligible_rewards(quest, user_addr)` & map results to build calldata
-      // { task_id : 1, nft_contract: "123", token_id : "1287398872", sig: [ x, y ] }
+      // returns: { task_id : 1, nft_contract: "123", token_id : "1287398872", sig: [ x, y ] }
+      // setEligibaleRewards
       let calldata = [];
       for (let i = 1; i <= 4; i++)
         calldata.push([questId as string, i.toString(), hexToDecimal(address)]);
@@ -46,13 +48,25 @@ const QuestPage: NextPage = () => {
     calls: mintCalldata,
   });
 
+  // build multicall for minting rewards
   useEffect(() => {
     if (error || !data) {
       console.log("error", error);
     } else {
-      // todo: build multicall depending on data
       console.log("data received", data);
-      // data?.["status"].map((elem) => {});
+      let calldata = [];
+      eligibleRewards.map((reward: EligibleReward, index: number) => {
+        if (Number(data?.["status"][index]) === 0) {
+          console.log("eligible");
+          // calldata.push
+        }
+      });
+      console.log("test", Number(data?.["status"][0]));
+      // {
+      //   contractAddress: process.env.NEXT_PUBLIC_IS_TESTNET ? process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string : process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string,
+      //   entrypoint: "mint",
+      //   calldata: [tokenId: Uint256, quest_id, task_id, sig: (felt, felt)],
+      // },
     }
   }, [data, error]);
 
@@ -113,7 +127,7 @@ const QuestPage: NextPage = () => {
         <Reward
           reward="3 NFTs"
           imgSrc="/starkfighter/favicon.ico"
-          onClick={() => console.log("")}
+          onClick={() => mintNft()}
         />
       </div>
     </div>

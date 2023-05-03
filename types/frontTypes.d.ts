@@ -78,3 +78,10 @@ type Attribute = {
   trait_type: string;
   value: string | number;
 };
+
+type EligibleReward = {
+  task_id: number;
+  nft_contract: string;
+  token_id: string;
+  sig: [string, string];
+};
