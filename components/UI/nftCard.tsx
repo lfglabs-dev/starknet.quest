@@ -21,7 +21,6 @@ const NftCard: FunctionComponent<NftCard> = ({ title, image, url }) => {
           src={imageUri}
           alt={`Image of ${title}`}
           onClick={() => window.open(url, "_blank")}
-          style={{ height: "200px", width: "200px" }}
         />
       </div>
       <p>{title}</p>
