@@ -16,7 +16,6 @@ import {
   shortenDomain,
 } from "../../utils/stringService";
 
-
 describe("Should test is1234Domain", () => {
   it("Should return false cause there are valid 1234 domains", () => {
     expect(is1234Domain("1231")).toBeTruthy();

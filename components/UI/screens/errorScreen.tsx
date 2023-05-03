@@ -16,12 +16,7 @@ const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({
 }) => {
   return (
     <div className="sm:w-2/3 w-4/5 flex flex-col justify-center items-center">
-      <img
-        src={imgSrc}
-        height={300}
-        width={300}
-        alt="error image"
-      />
+      <img src={imgSrc} height={300} width={300} alt="error image" />
       <h1 className="sm:text-4xl text-3xl mt-10">
         {errorMessage ? errorMessage : "Shit ... an error occurred !"}
       </h1>
