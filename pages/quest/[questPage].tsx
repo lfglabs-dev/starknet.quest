@@ -20,9 +20,30 @@ const QuestPage: NextPage = () => {
   const { questPage: questId } = router.query;
   const { address } = useAccount();
   const { contract } = useQuestsNFTContract();
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [eligibleRewards, setEligibaleRewards] = useState<EligibleReward[]>([]);
   const [tasksCalldata, setTasksCalldata] = useState<string[][]>();
-  const [mintCalldata, setMintCalldata] = useState<Call>();
+  const [mintCalldata, setMintCalldata] = useState<Call[]>();
+  const [disableRewards, setDisableRewards] = useState<boolean>(false);
+
+  // get Tasks from DB
+  useEffect(() => {
+    if (questId && address) {
+      fetch(`/api/get_tasks?quest_id=${questId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setTasks(data);
+        });
+
+      // fetch(
+      //   `/api/get_completed_tasks?quest_id=${questId}&user_addr=${hexToDecimal(
+      //     address
+      //   )}`
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {});
+    }
+  }, [questId, address]);
 
   const { data, error } = useStarknetCall({
     contract,
@@ -34,12 +55,27 @@ const QuestPage: NextPage = () => {
   useEffect(() => {
     if (address) {
       // todo : query `get_eligible_rewards(quest, user_addr)` & map results to build calldata
-      // returns: { task_id : 1, nft_contract: "123", token_id : "1287398872", sig: [ x, y ] }
-      // setEligibaleRewards
-      let calldata = [];
-      for (let i = 1; i <= 4; i++)
-        calldata.push([questId as string, i.toString(), hexToDecimal(address)]);
-      console.log("calldata", calldata);
+      // fake data for now
+      const rewardsData = [
+        {
+          task_id: 1,
+          nft_contract:
+            "0x39282ab844802d29d4d8b93f09be70c0c46304c36b036850a12f0d0a91a281a",
+          token_id: "1287398872",
+          sig: ["1", "2"],
+        },
+      ];
+      setEligibaleRewards(rewardsData);
+
+      let calldata: string[][] = [];
+      rewardsData.map((reward: EligibleReward) => {
+        calldata.push([
+          questId as string,
+          reward.task_id.toString(),
+          hexToDecimal(address),
+        ]);
+      });
+      console.log("tasks calldata", calldata);
       setTasksCalldata(calldata);
     }
   }, [address]);
@@ -52,21 +88,33 @@ const QuestPage: NextPage = () => {
   useEffect(() => {
     if (error || !data) {
       console.log("error", error);
+      setDisableRewards(true);
     } else {
       console.log("data received", data);
-      let calldata = [];
+
+      setDisableRewards(false);
+      const contractAddress = process.env.NEXT_PUBLIC_IS_TESTNET
+        ? (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string)
+        : (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string);
+
+      let calldata: Call[] = [];
       eligibleRewards.map((reward: EligibleReward, index: number) => {
         if (Number(data?.["status"][index]) === 0) {
-          console.log("eligible");
-          // calldata.push
+          calldata.push({
+            contractAddress,
+            entrypoint: "mint",
+            calldata: [
+              reward.token_id,
+              questId,
+              reward.task_id.toString(),
+              reward.sig[0],
+              reward.sig[1],
+            ],
+          });
         }
       });
-      console.log("test", Number(data?.["status"][0]));
-      // {
-      //   contractAddress: process.env.NEXT_PUBLIC_IS_TESTNET ? process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string : process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string,
-      //   entrypoint: "mint",
-      //   calldata: [tokenId: Uint256, quest_id, task_id, sig: (felt, felt)],
-      // },
+      console.log("minting calldata", calldata);
+      setMintCalldata(calldata);
     }
   }, [data, error]);
 
@@ -128,6 +176,7 @@ const QuestPage: NextPage = () => {
           reward="3 NFTs"
           imgSrc="/starkfighter/favicon.ico"
           onClick={() => mintNft()}
+          disabled={disableRewards}
         />
       </div>
     </div>

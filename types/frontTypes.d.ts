@@ -16,6 +16,7 @@ type Task = {
   href: string;
   cta?: string;
   verifyEndpoint: string;
+  wasVerified?: boolean;
 };
 
 type Quest = {
@@ -29,6 +30,7 @@ type Reward = {
   onClick: () => void;
   reward: string;
   imgSrc: string;
+  disabled: boolean;
 };
 
 type Identity = {
@@ -83,5 +85,5 @@ type EligibleReward = {
   task_id: number;
   nft_contract: string;
   token_id: string;
-  sig: [string, string];
+  sig: string[];
 };

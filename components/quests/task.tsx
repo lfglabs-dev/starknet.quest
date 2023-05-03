@@ -11,9 +11,11 @@ const Task: FunctionComponent<Task> = ({
   href,
   cta = "open app",
   verifyEndpoint,
+  // todo remove optional
+  wasVerified = false,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(wasVerified);
 
   // a verify function that setIsVerified(true) and stoppropagation
   const verify = (e: React.MouseEvent) => {
