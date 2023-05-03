@@ -14,3 +14,10 @@ export type RequestResponse = {
 export type RequestProps = {
   address: string;
 };
+export interface TwitterRequestProps {
+  query: {
+    id: string;
+  };
+}
+
+export type CustomTwitterNextApiRequest = NextApiRequest & TwitterRequestProps;
