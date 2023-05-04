@@ -91,9 +91,9 @@ const QuestPage: NextPage = () => {
             entrypoint: "mint",
             calldata: [
               reward.token_id,
+              0,
               questId?.toString(),
               reward.task_id,
-              2,
               reward.sig[0],
               reward.sig[1],
             ],
