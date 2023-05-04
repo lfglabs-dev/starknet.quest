@@ -14,7 +14,7 @@ const Quests: NextPage = () => {
         <div className={styles.questContainer}>
           <Quest
             title="Fighter Score"
-            onClick={() => router.push("/quest/1")}
+            onClick={() => router.push("/quest/123")}
             imgSrc="/starkfighter/level3.webp"
             issuer={{
               name: "StarkFighter",

@@ -14,17 +14,45 @@ import {
 } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import { hexToDecimal } from "../../utils/feltService";
+import {
+  NFTItem,
+  QueryError,
+  QuestDocument,
+  TaskDocument,
+} from "../../types/backTypes";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
   const { questPage: questId } = router.query;
+
   const { address } = useAccount();
+  const [quest, setQuest] = useState<QuestDocument>({
+    id: 0,
+    name: "loading",
+    desc: "loading",
+    issuer: "loading",
+    category: "loading",
+    logo: "",
+    rewards_img: "",
+    rewards_title: "loading",
+    rewards_nfts: [],
+  });
   const { contract } = useQuestsNFTContract();
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskDocument[]>([]);
   const [eligibleRewards, setEligibleRewards] = useState<EligibleReward[]>([]);
   const [tasksCalldata, setTasksCalldata] = useState<string[][]>();
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [disableRewards, setDisableRewards] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetch(`/api/get_quest?id=${questId}`)
+      .then((response) => response.json())
+      .then((data: QuestDocument | QueryError) => {
+        if ((data as QuestDocument).name) {
+          setQuest(data as QuestDocument);
+        }
+      });
+  }, [questId]);
 
   const { data, error } = useStarknetCall({
     contract,
@@ -32,27 +60,30 @@ const QuestPage: NextPage = () => {
     args: [tasksCalldata],
   });
 
-  // get Tasks from db & build get_tasks_status calldata
+  // get Tasks from db
   useEffect(() => {
     if (questId && address) {
       fetch(`/api/get_tasks?quest_id=${questId}`)
         .then((response) => response.json())
-        .then((data) => {
-          setTasks(data);
-          if (!data.error && data.length > 0) {
-            const calldata: string[][] = [];
-            data.map((elem: TaskProps) => {
-              calldata.push([
-                questId as string,
-                elem.id.toString(),
-                hexToDecimal(address),
-              ]);
-            });
-            setTasksCalldata(calldata);
-          }
+        .then((data: TaskDocument[] | QueryError) => {
+          if ((data as TaskDocument[]).length) setTasks(data as TaskDocument[]);
+          console.log(data);
         });
     }
   }, [questId, address]);
+
+  // build get_tasks_status calldata
+  useEffect(() => {
+    const calldata: string[][] = [];
+    tasks.forEach((task) => {
+      calldata.push([
+        questId as string,
+        task.id.toString(),
+        hexToDecimal(address),
+      ]);
+    });
+    setTasksCalldata(calldata);
+  }, [tasks]);
 
   // fetch claimable rewards
   useEffect(() => {
@@ -100,6 +131,7 @@ const QuestPage: NextPage = () => {
           });
         }
       });
+      console.log("calldata:", calldata);
       setMintCalldata(calldata);
     }
   }, [data, error, eligibleRewards, questId]);
@@ -113,54 +145,31 @@ const QuestPage: NextPage = () => {
       <div className={styles.imageContainer}>
         <NftDisplay
           issuer={{
-            name: "StarkFighter",
-            logoFavicon: "/starkfighter/favicon.ico",
+            name: quest.issuer,
+            logoFavicon: quest.logo,
           }}
-          nfts={[
-            { imgSrc: "/starkfighter/level1.webp", level: 1 },
-            { imgSrc: "/starkfighter/level2.webp", level: 2 },
-            { imgSrc: "/starkfighter/level3.webp", level: 3 },
-          ]}
+          nfts={quest.rewards_nfts.map((nft: NFTItem) => {
+            return { imgSrc: nft.img, level: nft.level };
+          })}
         />
       </div>
       <div className={styles.descriptionContainer}>
-        <h1 className="title mt-5 mw-90">Become a StarkFighter OG</h1>
-        <p className="text-center max-w-lg">
-          Mint NFTs based on your score in the StarkFighter game.
-        </p>
+        <h1 className="title mt-5 mw-90">{quest.name}</h1>
+        <p className="text-center max-w-lg">{quest.desc}</p>
       </div>
       <div className={styles.taskContainer}>
-        <Task
-          name="Register a stark name"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
-          href="https://app.starknet.id/"
-          cta="Register my stark name"
-          verifyEndpoint={`/api/quests/starknetid/verifyHasDomain?address=${address}`}
-        />
-        <Task
-          name="Play to StarkFighter (level 1)"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
-          href="https://starkfighter.xyz"
-          cta="Play to starkfighter"
-          verifyEndpoint={`/api/quests/starkfighter/verifyHasPlayed?address=${address}`}
-        />
-        <Task
-          name="Get a score of 50s or more (level 2)"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
-          href="https://starkfighter.xyz"
-          cta="Play to starkfighter"
-          verifyEndpoint={`/api/quests/starkfighter/verifyHasScoreGreaterThan50?address=${address}`}
-        />
-        <Task
-          name="Get a score of 100s or more (level 3)"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit ultricies augue, eget tempor magna pharetra sit amet. Integer nec felis vel velit convallis feugiat. Sed sagittis, nibh sed iaculis accumsan, enim ex consectetur lectus, ut posuere metus odio non risus. Proin aliquet sagittis ultrices."
-          href="https://starkfighter.xyz"
-          cta="Play to starkfighter"
-          verifyEndpoint={`/api/quests/starkfighter/verifyHasScoreGreaterThan100?address=${address}`}
-        />
+        {tasks.map((task) => (
+          <Task
+            name={task.name}
+            description={task.desc}
+            href={task.href}
+            cta={task.cta}
+            verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
+          />
+        ))}
         <Reward
-          reward="3 NFTs"
-          imgSrc="/starkfighter/favicon.ico"
+          reward={quest.rewards_title}
+          imgSrc={quest.rewards_img}
           onClick={() => mintNft()}
           disabled={disableRewards}
         />
