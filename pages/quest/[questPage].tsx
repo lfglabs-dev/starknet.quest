@@ -5,11 +5,12 @@ import styles from "../../styles/quests.module.css";
 import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
-import { useQuestsNFTContract } from "../../hooks/contracts";
+import quests_nft_abi from "../../abi/quests_nft_abi.json";
+
 import {
   Call,
   useAccount,
-  useStarknetCall,
+  useStarknet,
   useStarknetExecute,
 } from "@starknet-react/core";
 import { useRouter } from "next/router";
@@ -20,29 +21,47 @@ import {
   QuestDocument,
   TaskDocument,
 } from "../../types/backTypes";
+import { Contract } from "starknet";
+
+const splitByNftContract = (rewards: EligibleReward[]): Record<string, EligibleReward[]> => {
+  return rewards.reduce((acc: Record<string, EligibleReward[]>, reward: EligibleReward) => {
+    if (!acc[reward.nft_contract]) {
+      acc[reward.nft_contract] = [];
+    }
+
+    acc[reward.nft_contract].push(reward);
+    return acc;
+  }, {});
+};
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
   const { questPage: questId } = router.query;
 
   const { address } = useAccount();
+  const { library } = useStarknet();
+
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
     desc: "loading",
     issuer: "loading",
     category: "loading",
+    rewards_endpoint: "",
     logo: "",
     rewards_img: "",
     rewards_title: "loading",
     rewards_nfts: [],
   });
-  const { contract } = useQuestsNFTContract();
   const [tasks, setTasks] = useState<TaskDocument[]>([]);
-  const [eligibleRewards, setEligibleRewards] = useState<EligibleReward[]>([]);
-  const [tasksCalldata, setTasksCalldata] = useState<string[][]>();
+  const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
+  const [eligibleRewards, setEligibleRewards] = useState<Record<string, EligibleReward[]>>({});
+  const [unclaimedRewards, setUnclaimedRewards] = useState<string[][]>();
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
-  const [disableRewards, setDisableRewards] = useState<boolean>(false);
+  const { execute: executeMint } = useStarknetExecute({
+    calls: mintCalldata,
+  });
+
 
   useEffect(() => {
     fetch(`/api/get_quest?id=${questId}`)
@@ -54,12 +73,6 @@ const QuestPage: NextPage = () => {
       });
   }, [questId]);
 
-  const { data, error } = useStarknetCall({
-    contract,
-    method: "get_tasks_status",
-    args: [tasksCalldata],
-  });
-
   // get Tasks from db
   useEffect(() => {
     if (questId && address) {
@@ -67,78 +80,80 @@ const QuestPage: NextPage = () => {
         .then((response) => response.json())
         .then((data: TaskDocument[] | QueryError) => {
           if ((data as TaskDocument[]).length) setTasks(data as TaskDocument[]);
-          console.log(data);
+          //console.log(data);
         });
     }
   }, [questId, address]);
 
-  // build get_tasks_status calldata
-  useEffect(() => {
-    const calldata: string[][] = [];
-    tasks.forEach((task) => {
-      calldata.push([
-        questId as string,
-        task.id.toString(),
-        hexToDecimal(address),
-      ]);
-    });
-    setTasksCalldata(calldata);
-  }, [tasks]);
-
   // fetch claimable rewards
   useEffect(() => {
-    if (address) {
-      fetch(`/api/quests/starkfighter/claimable?addr=${hexToDecimal(address)}`)
+    if (address && quest.rewards_endpoint) {
+      fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
         .then((response) => response.json())
-        .then((data) => {
-          if (data.error || !data.rewards) {
-            setDisableRewards(true);
+        .then(data => {
+          if (!data.rewards) {
+            setRewardsEnabled(false);
           } else {
-            setEligibleRewards(data.rewards);
+            setRewardsEnabled(true);
+            setEligibleRewards(splitByNftContract(data.rewards));
           }
         });
     }
-  }, [address]);
+  }, [quest, address]);
 
-  const { execute: executeMint, data: mintData } = useStarknetExecute({
-    calls: mintCalldata,
-  });
-
-  // build multicall for minting rewards
   useEffect(() => {
-    if (error || !data) {
-      setDisableRewards(true);
-    } else {
-      setDisableRewards(false);
-      const contractAddress = process.env.NEXT_PUBLIC_IS_TESTNET
-        ? (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string)
-        : (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string);
+    for (const contractAddr in eligibleRewards) {
+      const perContractRewards = eligibleRewards[contractAddr];
+      const calldata = [perContractRewards.length.toString()];
+      for (const reward of perContractRewards) {
+        calldata.push(questId as string, reward.task_id.toString(), address as string);
+      }
 
-      const calldata: Call[] = [];
-      eligibleRewards.map((reward: EligibleReward, index: number) => {
-        if (Number(data?.["status"][index]) === 0) {
-          calldata.push({
-            contractAddress,
-            entrypoint: "mint",
-            calldata: [
-              reward.token_id,
-              0,
-              questId?.toString(),
-              reward.task_id,
-              reward.sig[0],
-              reward.sig[1],
-            ],
-          });
-        }
-      });
-      console.log("calldata:", calldata);
-      setMintCalldata(calldata);
+      const contract = new Contract(quests_nft_abi, contractAddr, library);
+
+      (async () => {
+        const result = await contract.call("get_tasks_status", [0]);
+
+        console.log("result:", result)
+      })()
+
     }
-  }, [data, error, eligibleRewards, questId]);
+  }, [eligibleRewards])
 
-  const mintNft = () => {
-    executeMint();
-  };
+
+  /*
+    // build multicall for minting rewards
+    useEffect(() => {
+      if (error || !data) {
+        setRewardsEnabled(false);
+      } else {
+        setRewardsEnabled(true);
+        const contractAddress = process.env.NEXT_PUBLIC_IS_TESTNET
+          ? (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string)
+          : (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string);
+  
+        const calldata: Call[] = [];
+        eligibleRewards.map((reward: EligibleReward, index: number) => {
+          if (Number(data?.["status"][index]) === 0) {
+            calldata.push({
+              contractAddress,
+              entrypoint: "mint",
+              calldata: [
+                reward.token_id,
+                0,
+                questId?.toString(),
+                reward.task_id,
+                reward.sig[0],
+                reward.sig[1],
+              ],
+            });
+          }
+        });
+        console.log("calldata:", calldata);
+        setMintCalldata(calldata);
+      }
+    }, [data, error, eligibleRewards, questId]);
+  */
 
   return (
     <div className={homeStyles.screen}>
@@ -170,8 +185,8 @@ const QuestPage: NextPage = () => {
         <Reward
           reward={quest.rewards_title}
           imgSrc={quest.rewards_img}
-          onClick={() => mintNft()}
-          disabled={disableRewards}
+          onClick={executeMint}
+          disabled={!rewardsEnabled}
         />
       </div>
     </div>

@@ -6,6 +6,7 @@ type QuestDocument = {
   desc: string;
   issuer: string;
   category: string;
+  rewards_endpoint: string;
   logo: string;
   rewards_img: string;
   rewards_title: string;
