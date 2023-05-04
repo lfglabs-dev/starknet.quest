@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import {
   CheckCircle as CheckCircleIcon,
@@ -38,6 +38,15 @@ const Task: FunctionComponent<Task> = ({
         setIsLoading(false);
       });
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className={styles.task}>
