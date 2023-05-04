@@ -19,10 +19,11 @@ const Button: FunctionComponent<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       className={
-        styles["nq-button"] + " " + (color === "primary"
-          ? "" : styles["nq-button-secondary"])
-          + " " + (disabled
-          ? styles.disabled_button : "")
+        styles["nq-button"] +
+        " " +
+        (color === "primary" ? "" : styles["nq-button-secondary"]) +
+        " " +
+        (disabled ? styles.disabled_button : "")
       }
     >
       {children}

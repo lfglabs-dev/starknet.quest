@@ -10,13 +10,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
     | {
-      rewards: {
-        task_id: number;
-        nft_contract: string;
-        token_id: string;
-        sig: Signature;
-      }[];
-    }
+        rewards: {
+          task_id: number;
+          nft_contract: string;
+          token_id: string;
+          sig: Signature;
+        }[];
+      }
     | QueryError
   >
 ) {

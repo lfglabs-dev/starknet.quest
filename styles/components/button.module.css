@@ -4,35 +4,35 @@
 }
 
 .nq-button {
-  position      : relative;
-  height        : 3rem;
-  line-height   : 2.5rem;
-  color         : var(--secondary);
-  font-size     : 1rem;
-  font-weight   : bold;
+  position: relative;
+  height: 3rem;
+  line-height: 2.5rem;
+  color: var(--secondary);
+  font-size: 1rem;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.094em;
-  border        : none;
-  padding       : 0 2rem;
-  border-radius : 10px;
-  min-width     : 5rem;
-  width         : 100%;
-  margin        : 0.25rem;
-  box-shadow    : 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
-  cursor        : pointer;
-  transition    : transform 450ms var(--nimiq-ease),
+  border: none;
+  padding: 0 2rem;
+  border-radius: 10px;
+  min-width: 5rem;
+  width: 100%;
+  margin: 0.25rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 450ms var(--nimiq-ease),
     box-shadow 450ms var(--nimiq-ease);
-  will-change    : box-shadow;
+  will-change: box-shadow;
   text-decoration: none;
-  display        : block;
-  text-align     : center;
-  font-family    : inherit;
+  display: block;
+  text-align: center;
+  font-family: inherit;
 }
 
 .nq-button:hover,
 .nq-button:focus {
   box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
-  transform : translate3D(0, -2px, 0);
+  transform: translate3D(0, -2px, 0);
 }
 
 .nq-button:hover::before,
@@ -42,43 +42,43 @@
 }
 
 .nq-button:active {
-  outline   : none;
+  outline: none;
   box-shadow: 0 0.2rem 0.3rem rgba(0, 0, 0, 0.2);
-  transform : translate3D(0, 1px, 0);
+  transform: translate3D(0, 1px, 0);
   transition: transform 200ms cubic-bezier(0.41, 0.34, 0.26, 1.55),
     box-shadow 200ms cubic-bezier(0.41, 0.34, 0.26, 1.55) !important;
 }
 
-
-
 .nq-button:disabled:hover,
 .nq-button:disabled:focus {
   box-shadow: none;
-  transform : none;
-  cursor    : not-allowed;
+  transform: none;
+  cursor: not-allowed;
 }
 
 /* Color variations */
 
 /* primary */
 .nq-button {
-  color     : var(--background);
+  color: var(--background);
   background: var(--primary);
-  background: linear-gradient(90deg,
-      var(--primary) -0.12%,
-      var(--primary2) 99.88%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) -0.12%,
+    var(--primary2) 99.88%
+  );
 }
 
 .nq-button:disabled,
 .nq-button[disabled] {
-  border    : 1px solid #999999;
+  border: 1px solid #999999;
   background: gray;
-  color     : #393939;
+  color: #393939;
   box-shadow: none;
 }
 
 .nq-button-secondary {
-  color     : var(--background);
+  color: var(--background);
   background: var(--secondary);
 }
 
@@ -100,7 +100,7 @@
 
 @media (max-width: 1024px) {
   .nq-button {
-    font-size  : 0.75rem;
+    font-size: 0.75rem;
     line-height: 1.2rem;
   }
 }

@@ -22,16 +22,22 @@ import {
   TaskDocument,
 } from "../../types/backTypes";
 import { Contract } from "starknet";
+import BN from "bn.js";
 
-const splitByNftContract = (rewards: EligibleReward[]): Record<string, EligibleReward[]> => {
-  return rewards.reduce((acc: Record<string, EligibleReward[]>, reward: EligibleReward) => {
-    if (!acc[reward.nft_contract]) {
-      acc[reward.nft_contract] = [];
-    }
+const splitByNftContract = (
+  rewards: EligibleReward[]
+): Record<string, EligibleReward[]> => {
+  return rewards.reduce(
+    (acc: Record<string, EligibleReward[]>, reward: EligibleReward) => {
+      if (!acc[reward.nft_contract]) {
+        acc[reward.nft_contract] = [];
+      }
 
-    acc[reward.nft_contract].push(reward);
-    return acc;
-  }, {});
+      acc[reward.nft_contract].push(reward);
+      return acc;
+    },
+    {}
+  );
 };
 
 const QuestPage: NextPage = () => {
@@ -55,14 +61,18 @@ const QuestPage: NextPage = () => {
   });
   const [tasks, setTasks] = useState<TaskDocument[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
-  const [eligibleRewards, setEligibleRewards] = useState<Record<string, EligibleReward[]>>({});
-  const [unclaimedRewards, setUnclaimedRewards] = useState<string[][]>();
+  const [eligibleRewards, setEligibleRewards] = useState<
+    Record<string, EligibleReward[]>
+  >({});
+  const [unclaimedRewards, setUnclaimedRewards] = useState<EligibleReward[]>(
+    []
+  );
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const { execute: executeMint } = useStarknetExecute({
     calls: mintCalldata,
   });
 
-
+  // this fetches quest data
   useEffect(() => {
     fetch(`/api/get_quest?id=${questId}`)
       .then((response) => response.json())
@@ -73,7 +83,7 @@ const QuestPage: NextPage = () => {
       });
   }, [questId]);
 
-  // get Tasks from db
+  // this fetches all tasks of this quest from db
   useEffect(() => {
     if (questId && address) {
       fetch(`/api/get_tasks?quest_id=${questId}`)
@@ -85,12 +95,12 @@ const QuestPage: NextPage = () => {
     }
   }, [questId, address]);
 
-  // fetch claimable rewards
+  // this fetches all rewards claimable by the user
   useEffect(() => {
     if (address && quest.rewards_endpoint) {
       fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
         .then((response) => response.json())
-        .then(data => {
+        .then((data) => {
           if (!data.rewards) {
             setRewardsEnabled(false);
           } else {
@@ -101,59 +111,53 @@ const QuestPage: NextPage = () => {
     }
   }, [quest, address]);
 
+  // this filters the claimable rewards to find only the unclaimed ones (on chain)
   useEffect(() => {
-    for (const contractAddr in eligibleRewards) {
-      const perContractRewards = eligibleRewards[contractAddr];
-      const calldata = [perContractRewards.length.toString()];
-      for (const reward of perContractRewards) {
-        calldata.push(questId as string, reward.task_id.toString(), address as string);
+    (async () => {
+      let unclaimed: EligibleReward[] = [];
+      for (const contractAddr in eligibleRewards) {
+        const perContractRewards = eligibleRewards[contractAddr];
+        const calldata = [];
+        for (const reward of perContractRewards) {
+          calldata.push([
+            questId as string,
+            reward.task_id.toString(),
+            address as string,
+          ]);
+        }
+        const contract = new Contract(quests_nft_abi, contractAddr, library);
+
+        const result = await (
+          await contract.call("get_tasks_status", [calldata])
+        ).status.map((x: BN) => x.toNumber());
+        const unclaimedPerContractRewards = perContractRewards.filter(
+          (_, index) => result[index] === 0
+        );
+        unclaimed = unclaimed.concat(unclaimedPerContractRewards);
       }
+      setUnclaimedRewards(unclaimed);
+    })();
+  }, [questId, eligibleRewards]);
 
-      const contract = new Contract(quests_nft_abi, contractAddr, library);
-
-      (async () => {
-        const result = await contract.call("get_tasks_status", [0]);
-
-        console.log("result:", result)
-      })()
-
-    }
-  }, [eligibleRewards])
-
-
-  /*
-    // build multicall for minting rewards
-    useEffect(() => {
-      if (error || !data) {
-        setRewardsEnabled(false);
-      } else {
-        setRewardsEnabled(true);
-        const contractAddress = process.env.NEXT_PUBLIC_IS_TESTNET
-          ? (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_TESTNET as string)
-          : (process.env.NEXT_PUBLIC_QUESTS_CONTRACT_MAINNET as string);
-  
-        const calldata: Call[] = [];
-        eligibleRewards.map((reward: EligibleReward, index: number) => {
-          if (Number(data?.["status"][index]) === 0) {
-            calldata.push({
-              contractAddress,
-              entrypoint: "mint",
-              calldata: [
-                reward.token_id,
-                0,
-                questId?.toString(),
-                reward.task_id,
-                reward.sig[0],
-                reward.sig[1],
-              ],
-            });
-          }
-        });
-        console.log("calldata:", calldata);
-        setMintCalldata(calldata);
-      }
-    }, [data, error, eligibleRewards, questId]);
-  */
+  // this builds multicall for minting rewards
+  useEffect(() => {
+    const calldata: Call[] = [];
+    unclaimedRewards.forEach((reward) => {
+      calldata.push({
+        contractAddress: reward.nft_contract,
+        entrypoint: "mint",
+        calldata: [
+          reward.token_id,
+          0,
+          questId?.toString(),
+          reward.task_id,
+          reward.sig[0],
+          reward.sig[1],
+        ],
+      });
+    });
+    setMintCalldata(calldata);
+  }, [questId, unclaimedRewards]);
 
   return (
     <div className={homeStyles.screen}>
@@ -175,6 +179,7 @@ const QuestPage: NextPage = () => {
       <div className={styles.taskContainer}>
         {tasks.map((task) => (
           <Task
+            key={task.id}
             name={task.name}
             description={task.desc}
             href={task.href}
