@@ -107,7 +107,7 @@ const Navbar: FunctionComponent = () => {
             <Link href="/" className="cursor-pointer">
               <img
                 className="cursor-pointer"
-                src="/visuals/starkpathLogo.svg"
+                src="/visuals/starknetquestLogo.svg"
                 alt="Starknet.id Logo"
                 width={70}
                 height={70}
@@ -170,8 +170,8 @@ const Navbar: FunctionComponent = () => {
                 <div className="">
                   <Link href="/">
                     <img
-                      src="/visuals/starkpathLogo.svg"
-                      alt="Starkpath Logo"
+                      src="/visuals/starknetquestLogo.svg"
+                      alt="Starknet Quest Logo"
                       width={70}
                       height={70}
                     />
