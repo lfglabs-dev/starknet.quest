@@ -2,7 +2,12 @@ import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 
-const Reward: FunctionComponent<Reward> = ({ onClick, reward, imgSrc }) => {
+const Reward: FunctionComponent<Reward> = ({
+  onClick,
+  reward,
+  imgSrc,
+  disabled,
+}) => {
   return (
     <div className={styles.reward}>
       <div className="flex">
@@ -11,7 +16,9 @@ const Reward: FunctionComponent<Reward> = ({ onClick, reward, imgSrc }) => {
         <p className="ml-1">{reward}</p>
       </div>
       <div className="max-w-lg">
-        <Button onClick={onClick}>Get Reward</Button>
+        <Button onClick={onClick} disabled={disabled}>
+          Get Reward
+        </Button>
       </div>
     </div>
   );

@@ -3,24 +3,29 @@ type QueryError = { error: string };
 type QuestDocument = {
   id: number;
   name: string;
+  desc: string;
   issuer: string;
   category: string;
+  rewards_endpoint: string;
+  logo: string;
+  rewards_img: string;
+  rewards_title: string;
+  rewards_nfts: NFTItem[];
 };
 
-type ToWinItem = {
-  type: string;
-  [key: string]: any;
+type NFTItem = {
+  img: string;
+  level: number;
 };
 
 type TaskDocument = {
   id: number;
   quest_id: number;
   name: string;
-  description: string;
+  desc: string;
   href: string;
   cta?: string;
   verify_endpoint?: string;
-  to_win: ToWinItem[];
 };
 
 type UserDocument = {

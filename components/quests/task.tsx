@@ -15,6 +15,8 @@ const Task: FunctionComponent<Task> = ({
   href,
   cta = "open app",
   verifyEndpoint,
+  // todo remove optional
+  wasVerified = false,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);

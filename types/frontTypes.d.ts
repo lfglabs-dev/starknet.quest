@@ -16,7 +16,10 @@ type Task = {
   href: string;
   cta?: string;
   verifyEndpoint: string;
+  wasVerified?: boolean;
 };
+
+type TaskProps = Task & { id: number };
 
 type Quest = {
   issuer: Issuer;
@@ -29,6 +32,7 @@ type Reward = {
   onClick: () => void;
   reward: string;
   imgSrc: string;
+  disabled: boolean;
 };
 
 type Identity = {
@@ -77,4 +81,11 @@ type AspectNftProps = {
 type Attribute = {
   trait_type: string;
   value: string | number;
+};
+
+type EligibleReward = {
+  task_id: number;
+  nft_contract: string;
+  token_id: string;
+  sig: string[];
 };

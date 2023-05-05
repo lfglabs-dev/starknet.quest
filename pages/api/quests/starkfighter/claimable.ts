@@ -65,24 +65,28 @@ export default async function handler(
       .toArray();
 
     const getNFT = (taskId: number): [number, Signature] => {
+      let nftLevel;
       if (taskId === 1) {
-        const nftLevel = 1;
-        const tokenId = nftLevel + 100 * Math.floor(Math.random() * 2 ** 32);
-        const hashed = hash.pedersen([
-          hash.pedersen([
-            hash.pedersen([hash.pedersen([tokenId, 0]), quest_id]),
-            taskId,
-          ]),
-          addr as string,
-        ]);
-        const sig = ec.sign(
-          ec.getKeyPair(process.env.NEXT_PUBLIC_PRIVATE_KEY as string),
-          hashed
-        );
-        return [tokenId, sig];
+        nftLevel = 1;
+      } else if (taskId === 2) {
+        nftLevel = 2;
+      } else {
+        return [0, []];
       }
 
-      return [0, []];
+      const tokenId = nftLevel + 100 * Math.floor(Math.random() * 2 ** 32);
+      const hashed = hash.pedersen([
+        hash.pedersen([
+          hash.pedersen([hash.pedersen([tokenId, 0]), quest_id]),
+          taskId,
+        ]),
+        addr as string,
+      ]);
+      const sig = ec.sign(
+        ec.getKeyPair(process.env.NEXT_PUBLIC_PRIVATE_KEY as string),
+        hashed
+      );
+      return [tokenId, sig];
     };
 
     if (completedTasks.length > 0) {
