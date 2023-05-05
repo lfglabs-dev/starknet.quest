@@ -18,7 +18,7 @@ type NFTItem = {
   level: number;
 };
 
-type TaskDocument = {
+type UserTask = {
   id: number;
   quest_id: number;
   name: string;
@@ -26,6 +26,7 @@ type TaskDocument = {
   href: string;
   cta?: string;
   verify_endpoint?: string;
+  completed: boolean;
 };
 
 type UserDocument = {

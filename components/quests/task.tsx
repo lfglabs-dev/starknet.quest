@@ -15,11 +15,11 @@ const Task: FunctionComponent<Task> = ({
   href,
   cta = "open app",
   verifyEndpoint,
-  // todo remove optional
-  wasVerified = false,
+  refreshRewards,
+  wasVerified,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(wasVerified);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
@@ -31,9 +31,9 @@ const Task: FunctionComponent<Task> = ({
     fetch(verifyEndpoint)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.res) {
           setIsVerified(true);
+          refreshRewards();
         } else {
           setError(data.error_msg);
         }
