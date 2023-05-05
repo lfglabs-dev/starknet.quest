@@ -1,9 +1,13 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {
+  CheckCircle as CheckCircleIcon,
+  ErrorRounded as ErrorRoundedIcon,
+} from "@mui/icons-material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
+import { CircularProgress, Skeleton } from "@mui/material";
 
 const Task: FunctionComponent<Task> = ({
   name,
@@ -15,17 +19,36 @@ const Task: FunctionComponent<Task> = ({
   wasVerified = false,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [isVerified, setIsVerified] = useState(wasVerified);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   // a verify function that setIsVerified(true) and stoppropagation
   const verify = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setIsLoading(true);
+
     fetch(verifyEndpoint)
       .then((response) => response.json())
       .then((data) => {
-        if (data.res) setIsVerified(true);
+        console.log(data);
+        if (data.res) {
+          setIsVerified(true);
+        } else {
+          setError(data.error_msg);
+        }
+        setIsLoading(false);
       });
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className={styles.task}>
@@ -45,6 +68,17 @@ const Task: FunctionComponent<Task> = ({
           <div className="flex">
             Done
             <CheckCircleIcon className="ml-2" width={25} color="primary" />
+          </div>
+        ) : isLoading ? (
+          <div className="w-20 flex justify-center items-center">
+            <>
+              <CircularProgress size={30} color="primary" />
+            </>
+          </div>
+        ) : error ? (
+          <div className="flex">
+            {error}
+            <ErrorRoundedIcon className="ml-2" width={25} color="error" />
           </div>
         ) : (
           <div onClick={(e) => verify(e)} className={styles.verifyButton}>

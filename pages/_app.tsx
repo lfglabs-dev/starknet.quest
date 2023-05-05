@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <StarknetIdJsProvider>
           <ThemeProvider theme={theme}>
             <Head>
-              <title>The Starkpath</title>
+              <title>Starknet Quest</title>
               <meta
                 name="viewport"
                 content="width=device-width, initial-scale=1"

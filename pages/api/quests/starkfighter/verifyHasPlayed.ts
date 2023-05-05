@@ -69,10 +69,10 @@ export default async function handler(
           });
         }
       } else {
-        res.status(400).json({ res: false, error_msg: "User has not played" });
+        res.status(400).json({ res: false, error_msg: "You have not played" });
       }
     } else {
-      res.status(400).json({ res: false, error_msg: "User has not played" });
+      res.status(400).json({ res: false, error_msg: "You have not played" });
     }
   } catch (error) {
     res.status(500).json({
