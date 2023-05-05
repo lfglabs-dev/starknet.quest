@@ -58,9 +58,11 @@ export default async function handler(
     const tasks = await db.collection("tasks").aggregate(pipeline).toArray();
 
     if (tasks.length > 0) {
-      const tasksFormatted = tasks.map((task) => {
-        return task as UserTask;
-      });
+      const tasksFormatted = tasks
+        .map((task) => {
+          return task as UserTask;
+        })
+        .sort((a, b) => a.id - b.id);
       res
         .setHeader("cache-control", "max-age=1")
         .status(200)
