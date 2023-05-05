@@ -95,8 +95,8 @@ export default async function handler(
         const [token_id, sig] = getNFT(task_id);
         return {
           task_id,
-          nft_contract:
-            "0x39282ab844802d29d4d8b93f09be70c0c46304c36b036850a12f0d0a91a281a",
+          nft_contract: process.env
+            .NEXT_PUBLIC_QUEST_NFT_STARKFIGHTER_CONTRACT as string,
           token_id: token_id.toString(),
           sig,
         };
