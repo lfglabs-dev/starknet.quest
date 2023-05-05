@@ -19,7 +19,7 @@ import {
   NFTItem,
   QueryError,
   QuestDocument,
-  TaskDocument,
+  UserTask,
 } from "../../types/backTypes";
 import { Contract } from "starknet";
 import BN from "bn.js";
@@ -59,7 +59,7 @@ const QuestPage: NextPage = () => {
     rewards_title: "loading",
     rewards_nfts: [],
   });
-  const [tasks, setTasks] = useState<TaskDocument[]>([]);
+  const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
   const [eligibleRewards, setEligibleRewards] = useState<
     Record<string, EligibleReward[]>
@@ -86,11 +86,10 @@ const QuestPage: NextPage = () => {
   // this fetches all tasks of this quest from db
   useEffect(() => {
     if (questId && address) {
-      fetch(`/api/get_tasks?quest_id=${questId}`)
+      fetch(`/api/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`)
         .then((response) => response.json())
-        .then((data: TaskDocument[] | QueryError) => {
-          if ((data as TaskDocument[]).length) setTasks(data as TaskDocument[]);
-          //console.log(data);
+        .then((data: UserTask[] | QueryError) => {
+          if ((data as UserTask[]).length) setTasks(data as UserTask[]);
         });
     }
   }, [questId, address]);
@@ -185,6 +184,7 @@ const QuestPage: NextPage = () => {
             href={task.href}
             cta={task.cta}
             verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
+            wasVerified={task.completed}
           />
         ))}
         <Reward

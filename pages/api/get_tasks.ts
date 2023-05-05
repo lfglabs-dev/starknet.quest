@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import { connectToDatabase } from "../../lib/mongodb";
-import { QueryError, TaskDocument } from "../../types/backTypes";
+import { QueryError, UserTask } from "../../types/backTypes";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TaskDocument[] | QueryError>
+  res: NextApiResponse<UserTask[] | QueryError>
 ) {
   await NextCors(req, res, {
     methods: ["GET"],
@@ -15,19 +15,51 @@ export default async function handler(
 
   const { db } = await connectToDatabase();
   const {
-    query: { quest_id },
+    query: { quest_id, addr },
   } = req;
+
   try {
-    const tasks = await db
-      .collection("tasks")
-      .find({
-        quest_id: Number(quest_id),
-      })
-      .toArray();
+    const pipeline = [
+      {
+        $match: {
+          quest_id: Number(quest_id),
+        },
+      },
+      {
+        $lookup: {
+          from: "completed_tasks",
+          let: { task_id: "$id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$task_id", "$$task_id"] },
+                address: addr,
+              },
+            },
+          ],
+          as: "completed",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          quest_id: 1,
+          name: 1,
+          href: 1,
+          cta: 1,
+          verify_endpoint: 1,
+          desc: 1,
+          completed: { $gt: [{ $size: "$completed" }, 0] },
+        },
+      },
+    ];
+
+    const tasks = await db.collection("tasks").aggregate(pipeline).toArray();
+
     if (tasks.length > 0) {
-      const tasksFormatted = tasks.map((quest) => {
-        const { _id, ...rest } = quest;
-        return rest as TaskDocument;
+      const tasksFormatted = tasks.map((task) => {
+        return task as UserTask;
       });
       res
         .setHeader("cache-control", "max-age=30")

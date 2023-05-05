@@ -16,10 +16,10 @@ const Task: FunctionComponent<Task> = ({
   cta = "open app",
   verifyEndpoint,
   // todo remove optional
-  wasVerified = false,
+  wasVerified,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(wasVerified);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
