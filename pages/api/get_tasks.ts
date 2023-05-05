@@ -62,7 +62,7 @@ export default async function handler(
         return task as UserTask;
       });
       res
-        .setHeader("cache-control", "max-age=30")
+        .setHeader("cache-control", "max-age=1")
         .status(200)
         .json(tasksFormatted);
     } else {

@@ -102,12 +102,12 @@ export default async function handler(
         };
       });
 
-      res.setHeader("cache-control", "max-age=30").status(200).json({
+      res.setHeader("cache-control", "max-age=1").status(200).json({
         rewards: claimable,
       });
     } else {
       res
-        .setHeader("cache-control", "max-age=30")
+        .setHeader("cache-control", "max-age=1")
         .status(200)
         .json({ error: "No completed tasks found for this user" });
     }

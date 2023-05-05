@@ -94,8 +94,10 @@ const QuestPage: NextPage = () => {
     }
   }, [questId, address]);
 
-  // this fetches all rewards claimable by the user
-  useEffect(() => {
+  const refreshRewards = (
+    quest: QuestDocument,
+    address: string | undefined
+  ) => {
     if (address && quest.rewards_endpoint) {
       fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
         .then((response) => response.json())
@@ -108,6 +110,11 @@ const QuestPage: NextPage = () => {
           }
         });
     }
+  };
+
+  // this fetches all rewards claimable by the user
+  useEffect(() => {
+    refreshRewards(quest, address);
   }, [quest, address]);
 
   // this filters the claimable rewards to find only the unclaimed ones (on chain)
@@ -184,6 +191,7 @@ const QuestPage: NextPage = () => {
             href={task.href}
             cta={task.cta}
             verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
+            refreshRewards={() => refreshRewards(quest, address)}
             wasVerified={task.completed}
           />
         ))}
