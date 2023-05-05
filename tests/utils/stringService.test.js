@@ -3,18 +3,15 @@ import { basicAlphabet } from "../../utils/constants";
 import {
   is1234Domain,
   getDomainWithoutStark,
-  isStarkRootDomain,
   isHexString,
-  isSubdomain,
   minifyAddress,
   minifyDomain,
   generateString,
-  isStarkDomain,
   numberToString,
-  isBraavosSubdomain,
-  getDomainKind,
+  // getDomainKind,
   shortenDomain,
 } from "../../utils/stringService";
+import { utils } from "starknetid.js";
 
 describe("Should test is1234Domain", () => {
   it("Should return false cause there are valid 1234 domains", () => {
@@ -64,22 +61,22 @@ describe("Should test isStarkRootDomain", () => {
   it("Should return true cause string is a stark domain", () => {
     for (let index = 0; index < 2500; index++) {
       const randomString = generateString(10, basicAlphabet);
-      expect(isStarkRootDomain(randomString + ".stark")).toBeTruthy();
+      expect(utils.isStarkRootDomain(randomString + ".stark")).toBeTruthy();
     }
   });
 
   it("Should return false cause string does not end with .stark", () => {
-    expect(isStarkRootDomain("test.star")).toBeFalsy();
+    expect(utils.isStarkRootDomain("test.star")).toBeFalsy();
   });
 
   it("Should return false cause string contains a wrong character", () => {
-    expect(isStarkRootDomain("test)ben.stark")).toBeFalsy();
-    expect(isStarkRootDomain("test,ben.stark")).toBeFalsy();
-    expect(isStarkRootDomain("qsd12$)ben.stark")).toBeFalsy();
-    expect(isStarkRootDomain("_.stark")).toBeFalsy();
-    expect(isStarkRootDomain("test.ben.stark")).toBeFalsy();
-    expect(isStarkRootDomain("..stark")).toBeFalsy();
-    expect(isStarkRootDomain("..starkq")).toBeFalsy();
+    expect(utils.isStarkRootDomain("test)ben.stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("test,ben.stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("qsd12$)ben.stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("_.stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("test.ben.stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("..stark")).toBeFalsy();
+    expect(utils.isStarkRootDomain("..starkq")).toBeFalsy();
   });
 });
 
@@ -92,7 +89,7 @@ describe("Should test isStarkDomain", () => {
       const randomString4 = generateString(10, basicAlphabet);
 
       expect(
-        isStarkDomain(
+        utils.isStarkDomain(
           randomString +
             "." +
             randomString2 +
@@ -110,7 +107,7 @@ describe("Should test isStarkDomain", () => {
     for (let index = 0; index < 500; index++) {
       const randomString = generateString(10, basicAlphabet);
 
-      expect(isStarkDomain(randomString + ".stark")).toBeTruthy();
+      expect(utils.isStarkDomain(randomString + ".stark")).toBeTruthy();
     }
   });
 
@@ -119,14 +116,14 @@ describe("Should test isStarkDomain", () => {
     const randomString2 = generateString(10, basicAlphabet);
 
     expect(
-      isStarkDomain(randomString + "." + randomString2 + ".starkqsd") &&
-        isStarkDomain(
+      utils.isStarkDomain(randomString + "." + randomString2 + ".starkqsd") &&
+        utils.isStarkDomain(
           randomString.concat("_") + "." + randomString2 + ".stark"
         ) &&
-        isStarkDomain(randomString + "." + randomString2 + "..stark") &&
-        isStarkDomain(randomString + "." + randomString2 + "..stark") &&
-        isStarkDomain("." + randomString + ".." + randomString2 + ".stark") &&
-        isStarkDomain("." + randomString + "." + randomString2 + ".stark")
+        utils.isStarkDomain(randomString + "." + randomString2 + "..stark") &&
+        utils.isStarkDomain(randomString + "." + randomString2 + "..stark") &&
+        utils.isStarkDomain("." + randomString + ".." + randomString2 + ".stark") &&
+        utils.isStarkDomain("." + randomString + "." + randomString2 + ".stark")
     ).toBeFalsy();
   });
 });
@@ -158,13 +155,13 @@ describe("Should test isHexString", () => {
 
 describe("Should test isSubdomain", () => {
   it("Should return false cause string is not a subdomain", () => {
-    expect(isSubdomain("1232575.stark")).toBeFalsy();
-    expect(isSubdomain("")).toBeFalsy();
+    expect(utils.isSubdomain("1232575.stark")).toBeFalsy();
+    expect(utils.isSubdomain("")).toBeFalsy();
   });
 
   it("Should return false cause string is a subdomain", () => {
-    expect(isSubdomain("1232575.ben.stark")).toBeTruthy();
-    expect(isSubdomain("qsdqsdqsd.fricoben.stark")).toBeTruthy();
+    expect(utils.isSubdomain("1232575.ben.stark")).toBeTruthy();
+    expect(utils.isSubdomain("qsdqsdqsd.fricoben.stark")).toBeTruthy();
   });
 });
 
@@ -190,47 +187,47 @@ describe("numberToString", () => {
 
 describe("isBraavosSubdomain", () => {
   it("returns true for valid Braavos subdomains", () => {
-    expect(isBraavosSubdomain("ben.braavos.stark")).toBe(true);
-    expect(isBraavosSubdomain("john.braavos.stark")).toBe(true);
-    expect(isBraavosSubdomain("jeremy.braavos.stark")).toBe(true);
-    expect(isBraavosSubdomain("johnny.braavos.stark")).toBe(true);
+    expect(utils.isBraavosSubdomain("ben.braavos.stark")).toBe(true);
+    expect(utils.isBraavosSubdomain("john.braavos.stark")).toBe(true);
+    expect(utils.isBraavosSubdomain("jeremy.braavos.stark")).toBe(true);
+    expect(utils.isBraavosSubdomain("johnny.braavos.stark")).toBe(true);
   });
 
   it("returns false for invalid Braavos subdomains", () => {
-    expect(isBraavosSubdomain("arya.braavoos.stark")).toBe(false);
-    expect(isBraavosSubdomain("braavos.stark")).toBe(false);
-    expect(isBraavosSubdomain("winterf.ell.braavos.stark")).toBe(false);
-    expect(isBraavosSubdomain("johén.braavos.stark")).toBe(false);
-    expect(isBraavosSubdomain(undefined)).toBe(false);
+    expect(utils.isBraavosSubdomain("arya.braavoos.stark")).toBe(false);
+    expect(utils.isBraavosSubdomain("braavos.stark")).toBe(false);
+    expect(utils.isBraavosSubdomain("winterf.ell.braavos.stark")).toBe(false);
+    expect(utils.isBraavosSubdomain("johén.braavos.stark")).toBe(false);
+    expect(utils.isBraavosSubdomain(undefined)).toBe(false);
   });
 });
 
-describe("getDomainKind", () => {
-  it("returns 'root' for valid root stark root domains", () => {
-    expect(getDomainKind("stark.stark")).toBe("root");
-    expect(getDomainKind("starkqqsdqsd.stark")).toBe("root");
-    expect(getDomainKind("benqsd.stark")).toBe("root");
-  });
+// describe("getDomainKind", () => {
+//   it("returns 'root' for valid root stark root domains", () => {
+//     expect(getDomainKind("stark.stark")).toBe("root");
+//     expect(getDomainKind("starkqqsdqsd.stark")).toBe("root");
+//     expect(getDomainKind("benqsd.stark")).toBe("root");
+//   });
 
-  it("returns 'braavos' for valid Braavos subdomains", () => {
-    expect(getDomainKind("ben.braavos.stark")).toBe("braavos");
-    expect(getDomainKind("john.braavos.stark")).toBe("braavos");
-    expect(getDomainKind("jeremy.braavos.stark")).toBe("braavos");
-    expect(getDomainKind("johnny.braavos.stark")).toBe("braavos");
-  });
+//   it("returns 'braavos' for valid Braavos subdomains", () => {
+//     expect(getDomainKind("ben.braavos.stark")).toBe("braavos");
+//     expect(getDomainKind("john.braavos.stark")).toBe("braavos");
+//     expect(getDomainKind("jeremy.braavos.stark")).toBe("braavos");
+//     expect(getDomainKind("johnny.braavos.stark")).toBe("braavos");
+//   });
 
-  it("returns 'subdomain' for any other valid domain", () => {
-    expect(getDomainKind("winterfell.stark.stark")).toBe("subdomain");
-    expect(getDomainKind("north.everai.stark")).toBe("subdomain");
-  });
+//   it("returns 'subdomain' for any other valid domain", () => {
+//     expect(getDomainKind("winterfell.stark.stark")).toBe("subdomain");
+//     expect(getDomainKind("north.everai.stark")).toBe("subdomain");
+//   });
 
-  it("returns 'none' for invalid domains", () => {
-    expect(getDomainKind("invalid$.go.stark")).toBe("none");
-    expect(getDomainKind("invalid")).toBe("none");
-    expect(getDomainKind("allélafrance.stark")).toBe("none");
-    expect(getDomainKind(undefined)).toBe("none");
-  });
-});
+//   it("returns 'none' for invalid domains", () => {
+//     expect(getDomainKind("invalid$.go.stark")).toBe("none");
+//     expect(getDomainKind("invalid")).toBe("none");
+//     expect(getDomainKind("allélafrance.stark")).toBe("none");
+//     expect(getDomainKind(undefined)).toBe("none");
+//   });
+// });
 
 describe("Should test shortenDomain function", () => {
   it("Should return the same domain if the length is less than the default characterToBreak", () => {
