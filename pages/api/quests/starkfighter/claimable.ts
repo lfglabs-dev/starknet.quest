@@ -66,10 +66,12 @@ export default async function handler(
 
     const getNFT = (taskId: number): [number, Signature] => {
       let nftLevel;
-      if (taskId === 1) {
+      if (taskId === 2) {
         nftLevel = 1;
-      } else if (taskId === 2) {
+      } else if (taskId === 3) {
         nftLevel = 2;
+      } else if (taskId === 4) {
+        nftLevel = 3;
       } else {
         return [0, []];
       }
@@ -89,18 +91,23 @@ export default async function handler(
       return [tokenId, sig];
     };
 
-    if (completedTasks.length > 0) {
-      const claimable = completedTasks.map((task) => {
-        const task_id = task.task_id as number;
-        const [token_id, sig] = getNFT(task_id);
-        return {
-          task_id,
-          nft_contract: process.env
-            .NEXT_PUBLIC_QUEST_NFT_STARKFIGHTER_CONTRACT as string,
-          token_id: token_id.toString(),
-          sig,
-        };
-      });
+    if (
+      completedTasks.length > 1 &&
+      completedTasks.find((task) => task.task_id == 1) != undefined
+    ) {
+      const claimable = completedTasks
+        .filter((task) => task.task_id != 1)
+        .map((task) => {
+          const task_id = task.task_id as number;
+          const [token_id, sig] = getNFT(task_id);
+          return {
+            task_id,
+            nft_contract: process.env
+              .NEXT_PUBLIC_QUEST_NFT_STARKFIGHTER_CONTRACT as string,
+            token_id: token_id.toString(),
+            sig,
+          };
+        });
 
       res.setHeader("cache-control", "max-age=1").status(200).json({
         rewards: claimable,
