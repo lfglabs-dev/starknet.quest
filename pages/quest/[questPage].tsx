@@ -23,6 +23,9 @@ import {
 } from "../../types/backTypes";
 import { Contract } from "starknet";
 import BN from "bn.js";
+import { Skeleton } from "@mui/material";
+import TasksSkeleton from "../../components/UI/tasksSqueleton";
+import RewardSkeleton from "../../components/UI/rewardSqueleton";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -168,39 +171,65 @@ const QuestPage: NextPage = () => {
   return (
     <div className={homeStyles.screen}>
       <div className={styles.imageContainer}>
-        <NftDisplay
-          issuer={{
-            name: quest.issuer,
-            logoFavicon: quest.logo,
-          }}
-          nfts={quest.rewards_nfts.map((nft: NFTItem) => {
-            return { imgSrc: nft.img, level: nft.level };
-          })}
-        />
+        {quest.issuer === "loading" ? (
+          <RewardSkeleton />
+        ) : (
+          <NftDisplay
+            issuer={{
+              name: quest.issuer,
+              logoFavicon: quest.logo,
+            }}
+            nfts={quest.rewards_nfts.map((nft: NFTItem) => {
+              return { imgSrc: nft.img, level: nft.level };
+            })}
+          />
+        )}
       </div>
       <div className={styles.descriptionContainer}>
-        <h1 className="title mt-5 mw-90">{quest.name}</h1>
-        <p className="text-center max-w-lg">{quest.desc}</p>
+        {quest.name === "loading" ? (
+          <Skeleton
+            variant="text"
+            width={400}
+            sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
+          />
+        ) : (
+          <h1 className="title mt-5 mw-90">{quest.name}</h1>
+        )}
+        {quest.desc === "loading" ? (
+          <Skeleton
+            variant="text"
+            width={350}
+            sx={{ fontSize: "0.8rem", bgcolor: "grey.900" }}
+          />
+        ) : (
+          <p className="text-center max-w-lg">{quest.desc}</p>
+        )}
       </div>
       <div className={styles.taskContainer}>
-        {tasks.map((task) => (
-          <Task
-            key={task.id}
-            name={task.name}
-            description={task.desc}
-            href={task.href}
-            cta={task.cta}
-            verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
-            refreshRewards={() => refreshRewards(quest, address)}
-            wasVerified={task.completed}
-          />
-        ))}
-        <Reward
-          reward={quest.rewards_title}
-          imgSrc={quest.rewards_img}
-          onClick={executeMint}
-          disabled={!rewardsEnabled}
-        />
+        {tasks.length === 0 || quest.rewards_title === "loading" ? (
+          <TasksSkeleton />
+        ) : (
+          <>
+            {tasks.map((task) => (
+              <Task
+                key={task.id}
+                name={task.name}
+                description={task.desc}
+                href={task.href}
+                cta={task.cta}
+                verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
+                refreshRewards={() => refreshRewards(quest, address)}
+                wasVerified={task.completed}
+              />
+            ))}
+            <Reward
+              reward={quest.rewards_title}
+              imgSrc={quest.rewards_img}
+              onClick={executeMint}
+              disabled={!rewardsEnabled}
+            />
+          </>
+        )}
       </div>
     </div>
   );
