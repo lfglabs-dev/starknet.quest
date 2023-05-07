@@ -88,8 +88,12 @@ const QuestPage: NextPage = () => {
 
   // this fetches all tasks of this quest from db
   useEffect(() => {
-    if (questId && address) {
-      fetch(`/api/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`)
+    if (questId) {
+      fetch(
+        `/api/get_tasks?quest_id=${questId}&addr=${
+          address ? hexToDecimal(address) : "O"
+        }`
+      )
         .then((response) => response.json())
         .then((data: UserTask[] | QueryError) => {
           if ((data as UserTask[]).length) setTasks(data as UserTask[]);

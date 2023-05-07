@@ -68,7 +68,6 @@ const AddressOrDomain: NextPage = () => {
       starknetIdNavigator
         ?.getStarkName(hexToDecimal(addressOrDomain))
         .then((name) => {
-          console.log("name", name);
           if (name) {
             starknetIdNavigator
               ?.getStarknetId(name)
