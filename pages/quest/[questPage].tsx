@@ -228,7 +228,10 @@ const QuestPage: NextPage = () => {
             <Reward
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
-              onClick={executeMint}
+              onClick={() => {
+                executeMint();
+                setRewardsEnabled(false);
+              }}
               disabled={!rewardsEnabled}
             />
           </>
