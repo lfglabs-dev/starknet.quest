@@ -166,8 +166,9 @@ const QuestPage: NextPage = () => {
         ],
       });
     });
-    if (unclaimedRewards) setRewardsEnabled(true);
-    else setRewardsEnabled(false);
+    if (unclaimedRewards && unclaimedRewards.length > 0) {
+      setRewardsEnabled(true);
+    } else setRewardsEnabled(false);
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
