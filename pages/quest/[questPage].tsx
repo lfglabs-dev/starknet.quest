@@ -109,10 +109,7 @@ const QuestPage: NextPage = () => {
       fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
         .then((response) => response.json())
         .then((data) => {
-          if (!data.rewards) {
-            setRewardsEnabled(false);
-          } else {
-            setRewardsEnabled(true);
+          if (data.rewards) {
             setEligibleRewards(splitByNftContract(data.rewards));
           }
         });
@@ -169,6 +166,8 @@ const QuestPage: NextPage = () => {
         ],
       });
     });
+    if (unclaimedRewards) setRewardsEnabled(true);
+    else setRewardsEnabled(false);
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
