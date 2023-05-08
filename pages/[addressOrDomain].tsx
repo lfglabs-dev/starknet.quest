@@ -105,7 +105,7 @@ const AddressOrDomain: NextPage = () => {
     if (identity) {
       retrieveAssets(
         `https://${
-          process.env.NEXT_PUBLIC_IS_TESTNET ? "api-testnet" : "api"
+          process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
         }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
       ).then((data) => {
         setUserNft(data.assets);
@@ -116,7 +116,9 @@ const AddressOrDomain: NextPage = () => {
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
-      `https://app.starknet.id/api/indexer/id_to_data?id=${id}`
+      `https://${
+        process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? `goerli.` : ``
+      }app.starknet.id/api/indexer/id_to_data?id=${id}`
     );
     return response.json();
   };
@@ -135,7 +137,7 @@ const AddressOrDomain: NextPage = () => {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": `${
-          process.env.NEXT_PUBLIC_IS_TESTNET
+          process.env.NEXT_PUBLIC_IS_TESTNET === "true"
             ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
             : process.env.NEXT_PUBLIC_ASPECT_MAINNET
         }`,

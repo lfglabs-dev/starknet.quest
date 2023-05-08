@@ -67,7 +67,7 @@ const ClickableTwitterIcon: FunctionComponent<ClickableTwitterIconProps> = ({
       <Tooltip
         title={
           twitterUsername
-            ? "Change your twitter verified account"
+            ? "Verify your twitter account on Starknet ID"
             : "Start twitter verification"
         }
         arrow
@@ -76,7 +76,7 @@ const ClickableTwitterIcon: FunctionComponent<ClickableTwitterIconProps> = ({
           className={styles.clickableIconTwitter}
           onClick={() =>
             startVerification(
-              `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=Rkp6QlJxQzUzbTZtRVljY2paS0k6MTpjaQ&redirect_uri=${process.env.NEXT_PUBLIC_APP_LINK}/twitter&scope=users.read%20tweet.read&state=state&code_challenge=challenge&code_challenge_method=plain`
+              `${process.env.NEXT_PUBLIC_STARKNETID_APP_LINK}/identities`
             )
           }
         >
