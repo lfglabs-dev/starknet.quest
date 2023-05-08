@@ -67,7 +67,7 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
       <Tooltip
         title={
           githubUsername
-            ? "Change your github verified account"
+            ? "Change your github on starknet ID"
             : "Start github verification"
         }
         arrow
@@ -76,7 +76,7 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
           className={styles.clickableIconGithub}
           onClick={() =>
             startVerification(
-              `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENTID}`
+              `${process.env.NEXT_PUBLIC_STARKNETID_APP_LINK}/identities`
             )
           }
         >
