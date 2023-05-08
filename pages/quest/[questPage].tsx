@@ -166,8 +166,9 @@ const QuestPage: NextPage = () => {
         ],
       });
     });
-    if (unclaimedRewards) setRewardsEnabled(true);
-    else setRewardsEnabled(false);
+    if (unclaimedRewards && unclaimedRewards.length > 0) {
+      setRewardsEnabled(true);
+    } else setRewardsEnabled(false);
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
@@ -228,7 +229,10 @@ const QuestPage: NextPage = () => {
             <Reward
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
-              onClick={executeMint}
+              onClick={() => {
+                executeMint();
+                setRewardsEnabled(false);
+              }}
               disabled={!rewardsEnabled}
             />
           </>
