@@ -89,15 +89,32 @@ const QuestPage: NextPage = () => {
   // this fetches all tasks of this quest from db
   useEffect(() => {
     if (questId) {
-      fetch(
-        `/api/get_tasks?quest_id=${questId}&addr=${
-          address ? hexToDecimal(address) : "O"
-        }`
-      )
-        .then((response) => response.json())
-        .then((data: UserTask[] | QueryError) => {
-          if ((data as UserTask[]).length) setTasks(data as UserTask[]);
-        });
+      let shouldFetchWithZeroAddress = true;
+      const timer = setTimeout(() => {
+        if (shouldFetchWithZeroAddress) {
+          fetch(`/api/get_tasks?quest_id=${questId}&addr=O`)
+            .then((response) => response.json())
+            .then((data: UserTask[] | QueryError) => {
+              if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+            });
+        }
+      }, 1000);
+
+      if (address) {
+        shouldFetchWithZeroAddress = false;
+        clearTimeout(timer);
+        fetch(
+          `/api/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`
+        )
+          .then((response) => response.json())
+          .then((data: UserTask[] | QueryError) => {
+            if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+          });
+      }
+
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [questId, address]);
 
