@@ -68,7 +68,6 @@ const AddressOrDomain: NextPage = () => {
       starknetIdNavigator
         ?.getStarkName(hexToDecimal(addressOrDomain))
         .then((name) => {
-          console.log("name", name);
           if (name) {
             starknetIdNavigator
               ?.getStarknetId(name)
@@ -117,7 +116,9 @@ const AddressOrDomain: NextPage = () => {
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
-      `https://app.starknet.id/api/indexer/id_to_data?id=${id}`
+      `https://${
+        process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? `goerli.` : ``
+      }app.starknet.id/api/indexer/id_to_data?id=${id}`
     );
     return response.json();
   };
