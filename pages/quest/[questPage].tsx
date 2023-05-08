@@ -89,8 +89,12 @@ const QuestPage: NextPage = () => {
   // this fetches all tasks of this quest from db
   useEffect(() => {
     if (questId) {
+      // If a call was made with an address in the first second, the call with 0 address should be cancelled
       let shouldFetchWithZeroAddress = true;
+
+      // Set a 1-second timer to allow time for address loading
       const timer = setTimeout(() => {
+        // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
           fetch(`/api/get_tasks?quest_id=${questId}&addr=O`)
             .then((response) => response.json())
@@ -100,6 +104,7 @@ const QuestPage: NextPage = () => {
         }
       }, 1000);
 
+      // If the address is loaded before the 1-second timer, make the API call with the loaded address
       if (address) {
         shouldFetchWithZeroAddress = false;
         clearTimeout(timer);
@@ -112,6 +117,7 @@ const QuestPage: NextPage = () => {
           });
       }
 
+      // Clear the timer when component unmounts or dependencies change to prevent memory leaks
       return () => {
         clearTimeout(timer);
       };
