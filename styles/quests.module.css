@@ -96,9 +96,9 @@
   /* Auto layout */
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -122,7 +122,6 @@
 
   flex: none;
   order: 0;
-  align-self: stretch;
   flex-grow: 0;
 }
 
@@ -215,7 +214,6 @@
   /* Inside auto layout */
   flex: none;
   order: 3;
-  align-self: stretch;
   flex-grow: 0;
 }
 
