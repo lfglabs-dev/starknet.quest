@@ -49,7 +49,10 @@ const AddressOrDomain: NextPage = () => {
         ?.getStarknetId(addressOrDomain)
         .then((id) => {
           getIdentityData(id).then((data: Identity) => {
-            if (data.error) return;
+            if (data.error) {
+              setNotFound(true);
+              return;
+            }
             setIdentity({
               ...data,
               id: id.toString(),
