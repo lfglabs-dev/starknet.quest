@@ -42,7 +42,7 @@ export default async function handler(
       .setHeader("cache-control", "max-age=30")
       .status(200)
       .json({
-        name: `StarkFighter ${getLevel(levelInt)} Arcade`,
+        name: `StarkFighter ${getLevel(levelInt)} arcade`,
         description: "A starknet.quest NFT won during the Starkfighter event.",
         image: `${process.env.NEXT_PUBLIC_APP_LINK}/starkfighter/level${level}.webp`,
         attributes: [
