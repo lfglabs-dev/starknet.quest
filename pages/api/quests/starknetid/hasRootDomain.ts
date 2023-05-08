@@ -20,9 +20,10 @@ export default async function handler(
 
   const provider = new Provider({
     sequencer: {
-      network: process.env.NEXT_PUBLIC_IS_TESTNET
-        ? "goerli-alpha"
-        : "mainnet-alpha",
+      network:
+        process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+          ? "goerli-alpha"
+          : "mainnet-alpha",
     },
   });
   const starknetIdNavigator = new StarknetIdNavigator(provider);

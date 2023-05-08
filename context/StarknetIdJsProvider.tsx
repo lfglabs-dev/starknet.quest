@@ -15,9 +15,10 @@ export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
     return new StarknetIdNavigator(
       new Provider({
         sequencer: {
-          network: process.env.NEXT_PUBLIC_IS_TESTNET
-            ? "goerli-alpha"
-            : "mainnet-alpha",
+          network:
+            process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+              ? "goerli-alpha"
+              : "mainnet-alpha",
         },
       })
     );
