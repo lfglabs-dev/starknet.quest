@@ -25,12 +25,24 @@ export default async function handler(
   const { level } = req.query;
   const levelInt = Number(level);
 
+  function getLevel(levelInt: number) {
+    // switch statement to return bronze if level 1, silver if level 2, gold if level 3
+    switch (levelInt) {
+      case 2:
+        return "silver";
+      case 3:
+        return "gold";
+      default:
+        return "bronze";
+    }
+  }
+
   if (levelInt > 0 && levelInt <= 3) {
     res
       .setHeader("cache-control", "max-age=30")
       .status(200)
       .json({
-        name: `Starkfighter LVL ${level}`,
+        name: `StarkFighter ${getLevel(levelInt)} Arcade`,
         description: "A starknet.quest NFT won during the Starkfighter event.",
         image: `${process.env.NEXT_PUBLIC_APP_LINK}/starkfighter/level${level}.webp`,
         attributes: [
