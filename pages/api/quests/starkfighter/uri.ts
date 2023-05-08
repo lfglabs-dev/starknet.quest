@@ -29,11 +29,11 @@ export default async function handler(
     // switch statement to return bronze if level 1, silver if level 2, gold if level 3
     switch (levelInt) {
       case 2:
-        return "silver";
+        return "Silver";
       case 3:
-        return "gold";
+        return "Gold";
       default:
-        return "bronze";
+        return "Bronze";
     }
   }
 
