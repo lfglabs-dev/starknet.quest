@@ -29,7 +29,7 @@ export default async function handler(
 
   try {
     const response = await fetch(
-      "https://muscledserver.starkfighter.xyz/fetch_user_score",
+      "https://starkfighter.xyz/api/fetch_user_score",
       {
         method: "POST",
         headers: {
