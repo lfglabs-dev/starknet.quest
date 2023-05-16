@@ -45,6 +45,11 @@ const splitByNftContract = (
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
+  useEffect(() => {
+    if (!router) return;
+    router.push("/");
+  }, [router]);
+
   const { questPage: questId } = router.query;
 
   const { address } = useAccount();
@@ -77,6 +82,8 @@ const QuestPage: NextPage = () => {
 
   // this fetches quest data
   useEffect(() => {
+    if (router) return;
+
     fetch(`/api/get_quest?id=${questId}`)
       .then((response) => response.json())
       .then((data: QuestDocument | QueryError) => {
@@ -88,6 +95,8 @@ const QuestPage: NextPage = () => {
 
   // this fetches all tasks of this quest from db
   useEffect(() => {
+    if (router) return;
+
     if (questId) {
       // If a call was made with an address in the first second, the call with 0 address should be cancelled
       let shouldFetchWithZeroAddress = true;
@@ -141,6 +150,8 @@ const QuestPage: NextPage = () => {
 
   // this fetches all rewards claimable by the user
   useEffect(() => {
+    if (router) return;
+
     refreshRewards(quest, address);
   }, [quest, address]);
 
