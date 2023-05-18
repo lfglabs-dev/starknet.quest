@@ -84,7 +84,7 @@ const QuestPage: NextPage = () => {
   useEffect(() => {
     if (router) return;
 
-    fetch(`/api/get_quest?id=${questId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`)
       .then((response) => response.json())
       .then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
@@ -105,7 +105,9 @@ const QuestPage: NextPage = () => {
       const timer = setTimeout(() => {
         // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
-          fetch(`/api/get_tasks?quest_id=${questId}&addr=O`)
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_LINK}/get_tasks?quest_id=${questId}&addr=O`
+          )
             .then((response) => response.json())
             .then((data: UserTask[] | QueryError) => {
               if ((data as UserTask[]).length) setTasks(data as UserTask[]);
@@ -118,7 +120,9 @@ const QuestPage: NextPage = () => {
         shouldFetchWithZeroAddress = false;
         clearTimeout(timer);
         fetch(
-          `/api/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`
+          `${
+            process.env.NEXT_PUBLIC_API_LINK
+          }/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`
         )
           .then((response) => response.json())
           .then((data: UserTask[] | QueryError) => {
