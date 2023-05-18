@@ -255,7 +255,9 @@ const QuestPage: NextPage = () => {
                 description={task.desc}
                 href={task.href}
                 cta={task.cta}
-                verifyEndpoint={`${task.verify_endpoint}?address=${address}`}
+                verifyEndpoint={`${task.verify_endpoint}?addr=${hexToDecimal(
+                  address
+                )}`}
                 refreshRewards={() => refreshRewards(quest, address)}
                 wasVerified={task.completed}
               />
