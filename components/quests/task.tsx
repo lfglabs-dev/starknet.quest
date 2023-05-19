@@ -29,16 +29,23 @@ const Task: FunctionComponent<Task> = ({
   const verify = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
+
     try {
       const response = await fetch(verifyEndpoint);
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
+        throw new Error(data.error);
       }
+
       setIsVerified(true);
       refreshRewards();
-    } catch (error: any) {
-      setError(address ? error.message : "Please connect your wallet first");
+    } catch (error) {
+      setError(
+        address
+          ? (error as { message: string }).message
+          : "Please connect your wallet first"
+      );
     } finally {
       setIsLoading(false);
     }
