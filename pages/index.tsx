@@ -10,10 +10,8 @@ const Quests: NextPage = () => {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <h1 className="title mx-5">
-          Due to a high demand starknet.quest is in maintenance
-        </h1>
-        {/* <div className={styles.questContainer}>
+        <h1 className="title">Get Started with Starknet</h1>
+        <div className={styles.questContainer}>
           <Quest
             title="Fighter Score"
             onClick={() => router.push("/quest/123")}
@@ -24,7 +22,7 @@ const Quests: NextPage = () => {
             }}
             reward="3 NFTs"
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
