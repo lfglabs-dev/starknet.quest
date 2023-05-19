@@ -26,25 +26,29 @@ const Task: FunctionComponent<Task> = ({
   const { address } = useAccount();
 
   // A verify function that setIsVerified(true) and stop propagation
-  const verify = (e: React.MouseEvent) => {
+  const verify = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
 
-    fetch(verifyEndpoint)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.res) {
-          setIsVerified(true);
-          refreshRewards();
-        } else {
-          if (!address) {
-            setError("Please connect your wallet first");
-          } else {
-            setError(data.error_msg);
-          }
-        }
-        setIsLoading(false);
-      });
+    try {
+      const response = await fetch(verifyEndpoint);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      setIsVerified(true);
+      refreshRewards();
+    } catch (error) {
+      setError(
+        address
+          ? (error as { message: string }).message
+          : "Please connect your wallet first"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
