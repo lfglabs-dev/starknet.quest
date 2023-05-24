@@ -22,6 +22,16 @@ const Quests: NextPage = () => {
             }}
             reward="3 NFTs"
           />
+          <Quest
+            title="StarknetID"
+            onClick={() => router.push("/quest/1")}
+            imgSrc="https://app.starknet.id/visuals/StarknetIdLogo.svg"
+            issuer={{
+              name: "StarknetID",
+              logoFavicon: "https://app.starknet.id/visuals/StarknetIdLogo.svg",
+            }}
+            reward="X NFTs"
+          />
         </div>
       </div>
     </div>
