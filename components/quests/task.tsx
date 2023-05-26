@@ -32,10 +32,9 @@ const Task: FunctionComponent<Task> = ({
 
     try {
       const response = await fetch(verifyEndpoint);
-      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error);
+        throw new Error(await response.text());
       }
 
       setIsVerified(true);
