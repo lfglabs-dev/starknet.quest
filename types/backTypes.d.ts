@@ -11,6 +11,9 @@ type QuestDocument = {
   rewards_img: string;
   rewards_title: string;
   rewards_nfts: NFTItem[];
+  // todo: below variables should not be optional
+  img_card?: string;
+  title_card?: string;
 };
 
 type NFTItem = {
