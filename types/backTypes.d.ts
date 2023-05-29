@@ -14,6 +14,7 @@ type QuestDocument = {
   // todo: below variables should not be optional
   img_card: string;
   title_card: string;
+  finished: boolean;
 };
 
 type NFTItem = {
