@@ -100,7 +100,7 @@ const QuestPage: NextPage = () => {
         // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
           fetch(
-            `${process.env.NEXT_PUBLIC_API_LINK}/get_tasks?quest_id=${questId}&addr=O`
+            `${process.env.NEXT_PUBLIC_API_LINK}/get_tasks?quest_id=${questId}&addr=0`
           )
             .then((response) => response.json())
             .then((data: UserTask[] | QueryError) => {
