@@ -11,7 +11,7 @@ import {
   Call,
   useAccount,
   useStarknet,
-  useStarknetExecute,
+  useContractWrite,
 } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import { hexToDecimal } from "../../utils/feltService";
@@ -74,7 +74,7 @@ const QuestPage: NextPage = () => {
     []
   );
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
-  const { execute: executeMint } = useStarknetExecute({
+  const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
 
