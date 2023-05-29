@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <StarknetProvider connectors={connectors}>
+      <StarknetProvider connectors={connectors} autoConnect>
         <StarknetIdJsProvider>
           <ThemeProvider theme={theme}>
             <Head>
