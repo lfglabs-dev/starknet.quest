@@ -69,7 +69,7 @@ const ClickableDiscordIcon: FunctionComponent<ClickableDiscordIconProps> = ({
         >
           {discordId ? (
             <div className={styles.verifiedIcon}>
-              <VerifiedIcon width={width} color={"green"} />
+              <VerifiedIcon width={"18"} color={"green"} />
             </div>
           ) : null}
           <DiscordIcon width={width} color={"white"} />
@@ -85,6 +85,9 @@ const ClickableDiscordIcon: FunctionComponent<ClickableDiscordIconProps> = ({
             window.open(`https://discord.com/channels/@me/${discordId}`)
           }
         >
+          <div className={styles.verifiedIcon}>
+            <VerifiedIcon width={"18"} color={"green"} />
+          </div>
           <DiscordIcon width={width} color={"white"} />
         </div>
       </Tooltip>
