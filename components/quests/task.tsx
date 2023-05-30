@@ -54,7 +54,7 @@ const Task: FunctionComponent<Task> = ({
     if (error) {
       const timer = setTimeout(() => {
         setError("");
-      }, 3000);
+      }, 9000);
       return () => clearTimeout(timer);
     }
   }, [error]);
