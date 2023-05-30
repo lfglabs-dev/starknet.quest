@@ -26,12 +26,14 @@ const Quests: NextPage = () => {
         <h1 className="title">Get Started with Starknet</h1>
         <div className={styles.questContainer}>
           {quests.map((quest: QuestDocument) => {
-            return (
+            return quest.finished ? (
+              <></>
+            ) : (
               <Quest
                 key={quest.id}
                 title={quest.title_card} // todo replace w/ title_card
                 onClick={() => router.push(`/quest/${quest.id}`)}
-                imgSrc={quest.img_card}// todo replace w/ img_card
+                imgSrc={quest.img_card} // todo replace w/ img_card
                 issuer={{
                   name: quest.issuer,
                   logoFavicon: quest.logo,
