@@ -25,21 +25,23 @@ const Quests: NextPage = () => {
       <div className={styles.container}>
         <h1 className="title">Get Started with Starknet</h1>
         <div className={styles.questContainer}>
-          {quests.map((quest: QuestDocument) => {
-            return (
-              <Quest
-                key={quest.id}
-                title={quest.title_card} // todo replace w/ title_card
-                onClick={() => router.push(`/quest/${quest.id}`)}
-                imgSrc={quest.img_card}// todo replace w/ img_card
-                issuer={{
-                  name: quest.issuer,
-                  logoFavicon: quest.logo,
-                }}
-                reward={quest.rewards_title}
-              />
-            );
-          })}
+          {quests
+            .filter((quest) => !quest.finished)
+            .map((quest) => {
+              return (
+                <Quest
+                  key={quest.id}
+                  title={quest.title_card} // todo replace w/ title_card
+                  onClick={() => router.push(`/quest/${quest.id}`)}
+                  imgSrc={quest.img_card} // todo replace w/ img_card
+                  issuer={{
+                    name: quest.issuer,
+                    logoFavicon: quest.logo,
+                  }}
+                  reward={quest.rewards_title}
+                />
+              );
+            })}
         </div>
       </div>
     </div>
