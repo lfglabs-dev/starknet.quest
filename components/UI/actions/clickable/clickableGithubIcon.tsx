@@ -82,7 +82,7 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
         >
           {githubUsername ? (
             <div className={styles.verifiedIcon}>
-              <VerifiedIcon width={width} color={"green"} />
+              <VerifiedIcon width={"18"} color={"green"} />
             </div>
           ) : null}
           <GithubIcon width={width} color={"white"} />
@@ -96,6 +96,9 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
           className={styles.clickableIconGithub}
           onClick={() => window.open(`https://github.com/${githubUsername}`)}
         >
+          <div className={styles.verifiedIcon}>
+            <VerifiedIcon width={"18"} color={"green"} />
+          </div>
           <GithubIcon width={width} color="white" />
         </div>
       </Tooltip>

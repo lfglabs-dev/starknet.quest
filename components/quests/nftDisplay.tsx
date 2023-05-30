@@ -20,7 +20,7 @@ const NftDisplay: FunctionComponent<NftDisplayProps> = ({ nfts, issuer }) => {
             className="flex justify-center items-center flex-col"
           >
             <img className={styles.nftStyle} src={nft.imgSrc} />
-            {nft.level ? (
+            {nft.level && nfts.length > 1 ? (
               <p className={styles.level}>Level {nft.level}</p>
             ) : null}
           </div>
