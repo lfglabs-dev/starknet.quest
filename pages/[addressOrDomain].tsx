@@ -30,6 +30,13 @@ const AddressOrDomain: NextPage = () => {
   const [userNft, setUserNft] = useState<AspectNftProps[]>();
   const [nextUrl, setNextUrl] = useState<string | null>(null);
 
+  // Filtered NFTs
+  const NFTContracts = [
+    process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT,
+    process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT,
+    process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT,
+  ];
+
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
   useEffect(() => {
@@ -111,7 +118,7 @@ const AddressOrDomain: NextPage = () => {
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
         }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
       ).then((data) => {
-        setUserNft(data.assets);
+        setUserNft(filterAssets(data.assets));
         setNextUrl(data.next_url);
       });
     }
@@ -149,10 +156,17 @@ const AddressOrDomain: NextPage = () => {
     return data.json();
   };
 
+  const filterAssets = (assets: AspectNftProps[]) => {
+    return assets.filter((obj) => NFTContracts.includes(obj.contract_address));
+  };
+
   const loadMore = () => {
     if (nextUrl)
       retrieveAssets(nextUrl).then((data) => {
-        setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
+        setUserNft((prev) => [
+          ...(prev as AspectNftProps[]),
+          ...filterAssets(data.assets),
+        ]);
         setNextUrl(data.next_url);
       });
   };
@@ -241,7 +255,7 @@ const AddressOrDomain: NextPage = () => {
                 }
                 onClick={() => setActive(0)}
               >
-                My NFT
+                My Starknet Achievements
               </p>
             </div>
             {!active ? (

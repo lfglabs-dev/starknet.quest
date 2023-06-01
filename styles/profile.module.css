@@ -142,6 +142,7 @@
 
 .nftCard {
   flex-basis: 25%;
+  padding: 0 10px;
 }
 
 .nftImg {
