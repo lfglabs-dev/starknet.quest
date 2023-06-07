@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
@@ -14,11 +14,13 @@ import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
 import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
+import PieChart from "../components/UI/pieChart";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
   const { address } = useAccount();
+  const { connectors } = useConnectors();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -30,11 +32,24 @@ const AddressOrDomain: NextPage = () => {
   const [userNft, setUserNft] = useState<AspectNftProps[]>();
   const [nextUrl, setNextUrl] = useState<string | null>(null);
 
+  const isBraavosWallet =
+    connectors &&
+    connectors.filter((wallet: any) => {
+      return (
+        wallet._wallet &&
+        wallet._wallet.id === "braavos" &&
+        wallet._wallet.isConnected === true
+      );
+    }).length > 0;
+
+  console.log("isBraavosWallet", isBraavosWallet);
+
   // Filtered NFTs
   const NFTContracts = [
     process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT,
     process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT,
     process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT,
+    process.env.NEXT_PUBLIC_BRAAVOS_JOURNEY_NFT_CONTRACT,
   ];
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
@@ -241,14 +256,16 @@ const AddressOrDomain: NextPage = () => {
         <div className={styles.contentContainer}>
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
-              {/* <p
-                className={
-                  active === 1 ? `${styles.active}` : `${styles.inactive}`
-                }
-                onClick={() => setActive(1)}
-              >
-                My analytics
-              </p> */}
+              {isOwner && isBraavosWallet ? (
+                <p
+                  className={
+                    active === 1 ? `${styles.active}` : `${styles.inactive}`
+                  }
+                  onClick={() => setActive(1)}
+                >
+                  My analytics
+                </p>
+              ) : null}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
@@ -280,7 +297,12 @@ const AddressOrDomain: NextPage = () => {
                   </div>
                 ) : null}
               </>
-            ) : null}
+            ) : (
+              <>
+                <PieChart />
+                <div className={styles.content}></div>
+              </>
+            )}
           </div>
         </div>
       </div>

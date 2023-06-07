@@ -90,3 +90,7 @@ type EligibleReward = {
   token_id: string;
   sig: string[];
 };
+
+type PieChartProps = {
+  wallet: any;
+};
