@@ -26,6 +26,7 @@ import BN from "bn.js";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "../../components/UI/tasksSqueleton";
 import RewardSkeleton from "../../components/UI/rewardSqueleton";
+import { generateCodeChallenge } from "../../utils/codeChallenge";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -203,6 +204,24 @@ const QuestPage: NextPage = () => {
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
+  const generateOAuthUrl = (task: UserTask): string => {
+    const codeChallenge = generateCodeChallenge(
+      process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+    );
+    const rootUrl = "https://twitter.com/i/oauth2/authorize";
+    const options = {
+      redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
+      client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+      state: "state",
+      response_type: "code",
+      code_challenge: codeChallenge,
+      code_challenge_method: "S256",
+      scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+    };
+    const qs = new URLSearchParams(options).toString();
+    return `${rootUrl}?${qs}`;
+  };
+
   return (
     <div className={homeStyles.screen}>
       <div className={styles.imageContainer}>
@@ -252,9 +271,13 @@ const QuestPage: NextPage = () => {
                 description={task.desc}
                 href={task.href}
                 cta={task.cta}
-                verifyEndpoint={`${task.verify_endpoint}?addr=${hexToDecimal(
-                  address
-                )}`}
+                verifyEndpoint={
+                  task.verify_endpoint_type &&
+                  task.verify_endpoint_type == "default"
+                    ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
+                    : generateOAuthUrl(task)
+                }
+                verifyEndpointType={`${task.verify_endpoint_type ?? "oauth"}`} // todo: change to default when server is updated
                 refreshRewards={() => refreshRewards(quest, address)}
                 wasVerified={task.completed}
               />

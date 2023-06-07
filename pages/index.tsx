@@ -31,9 +31,9 @@ const Quests: NextPage = () => {
               return (
                 <Quest
                   key={quest.id}
-                  title={quest.title_card} // todo replace w/ title_card
+                  title={quest.title_card}
                   onClick={() => router.push(`/quest/${quest.id}`)}
-                  imgSrc={quest.img_card} // todo replace w/ img_card
+                  imgSrc={quest.img_card}
                   issuer={{
                     name: quest.issuer,
                     logoFavicon: quest.logo,
