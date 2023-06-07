@@ -277,7 +277,7 @@ const QuestPage: NextPage = () => {
                     ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
                     : generateOAuthUrl(task)
                 }
-                verifyEndpointType={`${task.verify_endpoint_type ?? "oauth"}`} // todo: change to default when server is updated
+                verifyEndpointType={`${task.verify_endpoint_type ?? "default"}`}
                 refreshRewards={() => refreshRewards(quest, address)}
                 wasVerified={task.completed}
               />
