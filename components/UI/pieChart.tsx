@@ -2,7 +2,7 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 import { useConnectors } from "@starknet-react/core";
 import { useEffect, useState } from "react";
-import { getStarknet } from "get-starknet-core";
+// import { getStarknet } from "get-starknet-core";
 
 Chart.register(ArcElement);
 
@@ -16,17 +16,6 @@ const data = {
     },
   ],
 };
-
-// once having a reference to the wallet object, you can call -
-// `wallet.request({ type: "wallet_getStarknetProScore" })`
-// and it will return -
-// ```
-// {
-//    score: number; // overall scroll
-//     protocols: string[]; // ids of protocols from https://github.com/myBraavos/starknet-meta
-// }
-// ```
-// so, you'll have both the final score and the protocols/dapp with which the current account has interacted.
 
 const PieChart = () => {
   const { connectors } = useConnectors();
