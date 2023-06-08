@@ -24,10 +24,10 @@ const PieChart: FunctionComponent = () => {
         data: pieData,
         backgroundColor: [
           theme.palette.primary.main,
-          theme.palette.primary.light,
+          theme.palette.background.default,
         ],
         display: true,
-        borderColor: "#101012",
+        borderColor: theme.palette.background.default,
       },
     ],
   };

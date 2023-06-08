@@ -25,6 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         main: "#f4faff",
         dark: "#eae0d5",
       },
+      background: {
+        default: "#29282b",
+      },
     },
   });
 
