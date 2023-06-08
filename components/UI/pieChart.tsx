@@ -2,24 +2,29 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 import { useConnectors } from "@starknet-react/core";
 import { useEffect, useState } from "react";
-// import { getStarknet } from "get-starknet-core";
 
 Chart.register(ArcElement);
 
-const data = {
-  datasets: [
-    {
-      data: [60, 30],
-      backgroundColor: ["#6affaf", "#5ce3fe"],
-      display: true,
-      borderColor: "#101012",
-    },
-  ],
+type BraavosScoreProps = {
+  score: number;
+  protocols: string[];
 };
 
 const PieChart = () => {
   const { connectors } = useConnectors();
   const [braavosWallet, setBraavosWallet] = useState<null | any>(null);
+  const [pieData, setPieData] = useState<number[]>([0, 100]);
+
+  const data = {
+    datasets: [
+      {
+        data: pieData,
+        backgroundColor: ["#6affaf", "#5ce3fe"],
+        display: true,
+        borderColor: "#101012",
+      },
+    ],
+  };
 
   useEffect(() => {
     if (connectors) {
@@ -30,30 +35,21 @@ const PieChart = () => {
           wallet._wallet.isConnected === true
         );
       });
+      // @ts-ignore
       setBraavosWallet(wallet[0]._wallet);
     }
-    // const starknet = getStarknet();
-    // starknet.getAvailableWallets().then((installed) => {
-    //   const wallet = installed.filter(
-    //     (w) => w.id === "braavos" && w.isConnected == true
-    //   )[0];
-    //   console.log("wallet", wallet);
-    //   if (wallet) {
-    //     setBraavosWallet(wallet);
-    //   }
-    // });
   }, [connectors]);
 
   useEffect(() => {
     if (!braavosWallet) return;
     braavosWallet
       .request({ type: "wallet_getStarknetProScore" })
-      .then((res: any) => {
-        console.log("res", res);
+      .then((score: BraavosScoreProps) => {
+        console.log("res", score);
+        setPieData([score.score, 100 - score.score]);
       });
   }, [braavosWallet]);
 
-  console.log("wallet", braavosWallet);
   return (
     <div>
       <Doughnut
