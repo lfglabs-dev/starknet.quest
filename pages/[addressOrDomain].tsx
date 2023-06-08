@@ -121,7 +121,7 @@ const AddressOrDomain: NextPage = () => {
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
         }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
       ).then((data) => {
-        setUserNft(filterAssets(data.assets));
+        setUserNft(data.assets);
         setNextUrl(data.next_url);
       });
     }
@@ -144,8 +144,10 @@ const AddressOrDomain: NextPage = () => {
     }, 1500);
   };
 
-  const retrieveAssets = async (url: string) => {
-    const data = await fetch(url, {
+  const retrieveAssets = (
+    url: string
+  ): Promise<{ assets: any[]; next_url: string }> => {
+    return fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -155,8 +157,19 @@ const AddressOrDomain: NextPage = () => {
             : process.env.NEXT_PUBLIC_ASPECT_MAINNET
         }`,
       },
-    });
-    return data.json();
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const filteredAssets = filterAssets(data.assets);
+        if (filteredAssets.length === 0 && data.next_url) {
+          return retrieveAssets(data.next_url);
+        } else {
+          return {
+            assets: filteredAssets,
+            next_url: data.next_url,
+          };
+        }
+      });
   };
 
   const filterAssets = (assets: AspectNftProps[]) => {
@@ -246,8 +259,7 @@ const AddressOrDomain: NextPage = () => {
         <div className={styles.contentContainer}>
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
-              {/* {isOwner && isBraavosWallet ? (
-                <p
+              {/* <p
                   className={
                     active === 1 ? `${styles.active}` : `${styles.inactive}`
                   }
@@ -255,7 +267,7 @@ const AddressOrDomain: NextPage = () => {
                 >
                   My analytics
                 </p>
-              ) : null} */}
+              ) */}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
@@ -273,18 +285,20 @@ const AddressOrDomain: NextPage = () => {
                   </div>
                 ) : null}
                 <div className={styles.content}>
-                  {userNft && userNft.length
-                    ? userNft.map((nft, index) => {
-                        return (
-                          <NftCard
-                            key={index}
-                            image={nft.image_uri as string}
-                            title={nft.name as string}
-                            url={nft.aspect_link as string}
-                          />
-                        );
-                      })
-                    : null}
+                  {userNft && userNft.length ? (
+                    userNft.map((nft, index) => {
+                      return (
+                        <NftCard
+                          key={index}
+                          image={nft.image_uri as string}
+                          title={nft.name as string}
+                          url={nft.aspect_link as string}
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No Starknet achievements yet, start some quests !</p>
+                  )}
                 </div>
                 {nextUrl ? (
                   <div className="text-background ml-5 mr-5 flex justify-center items-center flex-col">
