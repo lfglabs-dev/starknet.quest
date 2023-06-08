@@ -91,10 +91,6 @@ type EligibleReward = {
   sig: string[];
 };
 
-type PieChartProps = {
-  wallet: any;
-};
-
 type BraavosScoreProps = {
   score: number;
   protocols: string[];

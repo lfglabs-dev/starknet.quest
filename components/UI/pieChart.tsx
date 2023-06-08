@@ -1,21 +1,31 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
-import { useConnectors } from "@starknet-react/core";
-import React, { useEffect, useState } from "react";
+import {
+  Connector,
+  IStarknetWindowObject,
+  useAccount,
+} from "@starknet-react/core";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/profile.module.css";
+import { useTheme } from "@mui/material/styles";
 
+// initialize chart.js to create a custom pie chart
 Chart.register(ArcElement);
 
-const PieChart = () => {
-  const { connectors } = useConnectors();
+const PieChart: FunctionComponent = () => {
+  const { connector } = useAccount();
   const [braavosWallet, setBraavosWallet] = useState<null | any>(null);
   const [pieData, setPieData] = useState<number[]>([0, 100]);
+  const theme = useTheme();
 
   const data = {
     datasets: [
       {
         data: pieData,
-        backgroundColor: ["#6affaf", "#5ce3fe"],
+        backgroundColor: [
+          theme.palette.primary.main,
+          theme.palette.primary.light,
+        ],
         display: true,
         borderColor: "#101012",
       },
@@ -23,17 +33,10 @@ const PieChart = () => {
   };
 
   useEffect(() => {
-    if (connectors) {
-      const wallet: any = connectors.filter((wallet: any) => {
-        return (
-          wallet._wallet &&
-          wallet._wallet.id === "braavos" &&
-          wallet._wallet.isConnected === true
-        );
-      });
-      setBraavosWallet(wallet[0]?._wallet);
-    }
-  }, [connectors]);
+    if (connector && connector.id() === "braavos")
+      setBraavosWallet(connector._wallet);
+    console.log("connector", connector);
+  }, [connector]);
 
   useEffect(() => {
     if (!braavosWallet) return;

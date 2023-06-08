@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
@@ -19,8 +19,7 @@ import PieChart from "../components/UI/pieChart";
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
-  const { address } = useAccount();
-  const { connectors } = useConnectors();
+  const { address, connector } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -31,16 +30,7 @@ const AddressOrDomain: NextPage = () => {
   const dynamicRoute = useRouter().asPath;
   const [userNft, setUserNft] = useState<AspectNftProps[]>();
   const [nextUrl, setNextUrl] = useState<string | null>(null);
-
-  const isBraavosWallet =
-    connectors &&
-    connectors.filter((wallet: any) => {
-      return (
-        wallet._wallet &&
-        wallet._wallet.id === "braavos" &&
-        wallet._wallet.isConnected === true
-      );
-    }).length > 0;
+  const isBraavosWallet = connector && connector.id() === "braavos";
 
   // Filtered NFTs
   const NFTContracts = [
@@ -296,9 +286,7 @@ const AddressOrDomain: NextPage = () => {
                 ) : null}
               </>
             ) : (
-              <>
-                <PieChart />
-              </>
+              <PieChart />
             )}
           </div>
         </div>
