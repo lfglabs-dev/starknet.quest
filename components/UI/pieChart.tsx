@@ -1,10 +1,6 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
-import {
-  Connector,
-  IStarknetWindowObject,
-  useAccount,
-} from "@starknet-react/core";
+import { useConnectors } from "@starknet-react/core";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/profile.module.css";
 import { useTheme } from "@mui/material/styles";
@@ -13,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 Chart.register(ArcElement);
 
 const PieChart: FunctionComponent = () => {
-  const { connector } = useAccount();
+  const { connectors } = useConnectors();
   const [braavosWallet, setBraavosWallet] = useState<null | any>(null);
   const [pieData, setPieData] = useState<number[]>([0, 100]);
   const theme = useTheme();
@@ -32,11 +28,18 @@ const PieChart: FunctionComponent = () => {
     ],
   };
 
-  useEffect(() => {
-    if (connector && connector.id() === "braavos")
-      setBraavosWallet(connector._wallet);
-    console.log("connector", connector);
-  }, [connector]);
+  if (connectors) {
+    // connectors is of type Connector<any> in starknet-react
+    // but _wallet which is supposed to be of type IStarknetWindowObject is set as private
+    const wallet: any = connectors.filter((wallet: any) => {
+      return (
+        wallet._wallet &&
+        wallet._wallet.id === "braavos" &&
+        wallet._wallet.isConnected === true
+      );
+    });
+    setBraavosWallet(wallet[0]?._wallet);
+  }
 
   useEffect(() => {
     if (!braavosWallet) return;
