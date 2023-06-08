@@ -5,11 +5,6 @@ import { useEffect, useState } from "react";
 
 Chart.register(ArcElement);
 
-type BraavosScoreProps = {
-  score: number;
-  protocols: string[];
-};
-
 const PieChart = () => {
   const { connectors } = useConnectors();
   const [braavosWallet, setBraavosWallet] = useState<null | any>(null);
@@ -45,7 +40,6 @@ const PieChart = () => {
     braavosWallet
       .request({ type: "wallet_getStarknetProScore" })
       .then((score: BraavosScoreProps) => {
-        console.log("res", score);
         setPieData([score.score, 100 - score.score]);
       });
   }, [braavosWallet]);
