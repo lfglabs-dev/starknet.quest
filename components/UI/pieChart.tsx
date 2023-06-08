@@ -70,9 +70,9 @@ const PieChart: FunctionComponent = () => {
         <div
           style={{
             position: "absolute",
-            bottom: "15%",
+            bottom: "26%",
             left: "50%",
-            transform: "translate(-50%, 15%)",
+            transform: "translate(-50%, 26%)",
             textAlign: "center",
           }}
         >

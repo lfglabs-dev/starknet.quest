@@ -34,10 +34,10 @@ const AddressOrDomain: NextPage = () => {
 
   // Filtered NFTs
   const NFTContracts = [
-    process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT,
-    process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT,
-    process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT,
-    process.env.NEXT_PUBLIC_BRAAVOS_JOURNEY_NFT_CONTRACT,
+    hexToDecimal(process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOS_JOURNEY_NFT_CONTRACT),
   ];
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
@@ -160,7 +160,9 @@ const AddressOrDomain: NextPage = () => {
   };
 
   const filterAssets = (assets: AspectNftProps[]) => {
-    return assets.filter((obj) => NFTContracts.includes(obj.contract_address));
+    return assets.filter((obj) =>
+      NFTContracts.includes(hexToDecimal(obj.contract_address))
+    );
   };
 
   const loadMore = () => {
@@ -244,7 +246,7 @@ const AddressOrDomain: NextPage = () => {
         <div className={styles.contentContainer}>
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
-              {isOwner && isBraavosWallet ? (
+              {/* {isOwner && isBraavosWallet ? (
                 <p
                   className={
                     active === 1 ? `${styles.active}` : `${styles.inactive}`
@@ -253,7 +255,7 @@ const AddressOrDomain: NextPage = () => {
                 >
                   My analytics
                 </p>
-              ) : null}
+              ) : null} */}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
@@ -265,6 +267,11 @@ const AddressOrDomain: NextPage = () => {
             </div>
             {!active ? (
               <>
+                {isOwner && isBraavosWallet ? (
+                  <div className={styles.pieChart}>
+                    <PieChart />
+                  </div>
+                ) : null}
                 <div className={styles.content}>
                   {userNft && userNft.length
                     ? userNft.map((nft, index) => {
@@ -285,9 +292,7 @@ const AddressOrDomain: NextPage = () => {
                   </div>
                 ) : null}
               </>
-            ) : (
-              <PieChart />
-            )}
+            ) : null}
           </div>
         </div>
       </div>
