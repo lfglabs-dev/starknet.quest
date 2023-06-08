@@ -1,7 +1,8 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from "chart.js";
 import { useConnectors } from "@starknet-react/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styles from "../../styles/profile.module.css";
 
 Chart.register(ArcElement);
 
@@ -23,15 +24,14 @@ const PieChart = () => {
 
   useEffect(() => {
     if (connectors) {
-      const wallet = connectors.filter((wallet: any) => {
+      const wallet: any = connectors.filter((wallet: any) => {
         return (
           wallet._wallet &&
           wallet._wallet.id === "braavos" &&
           wallet._wallet.isConnected === true
         );
       });
-      // @ts-ignore
-      setBraavosWallet(wallet[0]._wallet);
+      setBraavosWallet(wallet[0]?._wallet);
     }
   }, [connectors]);
 
@@ -45,37 +45,40 @@ const PieChart = () => {
   }, [braavosWallet]);
 
   return (
-    <div>
-      <Doughnut
-        data={data}
-        options={{
-          plugins: {
-            legend: {
-              display: false,
+    <>
+      <div className={styles.analyticsTitle}>Your Braavos score</div>
+      <div>
+        <Doughnut
+          data={data}
+          options={{
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                enabled: false,
+              },
             },
-            tooltip: {
-              enabled: true,
-            },
-          },
-          rotation: -90,
-          circumference: 180,
-          cutout: "60%",
-          maintainAspectRatio: true,
-          responsive: true,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "55%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          textAlign: "center",
-        }}
-      >
-        <div>Your Starknet score</div>
+            rotation: -90,
+            circumference: 180,
+            cutout: "60%",
+            maintainAspectRatio: true,
+            responsive: true,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "15%",
+            left: "50%",
+            transform: "translate(-50%, 15%)",
+            textAlign: "center",
+          }}
+        >
+          <div className={styles.braavosScore}>{pieData[0]}%</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

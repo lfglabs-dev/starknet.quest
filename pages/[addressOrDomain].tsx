@@ -42,8 +42,6 @@ const AddressOrDomain: NextPage = () => {
       );
     }).length > 0;
 
-  console.log("isBraavosWallet", isBraavosWallet);
-
   // Filtered NFTs
   const NFTContracts = [
     process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT,
@@ -300,7 +298,6 @@ const AddressOrDomain: NextPage = () => {
             ) : (
               <>
                 <PieChart />
-                <div className={styles.content}></div>
               </>
             )}
           </div>
