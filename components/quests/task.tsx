@@ -18,6 +18,7 @@ const Task: FunctionComponent<Task> = ({
   verifyEndpoint,
   refreshRewards,
   wasVerified,
+  verifyEndpointType,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -30,23 +31,28 @@ const Task: FunctionComponent<Task> = ({
     e.stopPropagation();
     setIsLoading(true);
 
-    try {
-      const response = await fetch(verifyEndpoint);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      setIsVerified(true);
-      refreshRewards();
-    } catch (error) {
-      setError(
-        address
-          ? (error as { message: string }).message
-          : "Please connect your wallet first"
-      );
-    } finally {
+    if (verifyEndpointType === "oauth") {
+      window.open(verifyEndpoint, "_blank");
       setIsLoading(false);
+    } else {
+      try {
+        const response = await fetch(verifyEndpoint);
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        setIsVerified(true);
+        refreshRewards();
+      } catch (error) {
+        setError(
+          address
+            ? (error as { message: string }).message
+            : "Please connect your wallet first"
+        );
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
