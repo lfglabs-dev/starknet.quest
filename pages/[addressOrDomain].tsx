@@ -270,7 +270,7 @@ const AddressOrDomain: NextPage = () => {
                 }
                 onClick={() => setActive(0)}
               >
-                My Starknet Achievements
+                Starknet Achievements
               </p>
             </div>
             {!active ? (
