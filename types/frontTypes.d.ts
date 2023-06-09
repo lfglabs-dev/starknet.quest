@@ -16,6 +16,7 @@ type Task = {
   href: string;
   cta?: string;
   verifyEndpoint: string;
+  verifyRedirect: string | null;
   verifyEndpointType: string;
   refreshRewards: () => void;
   wasVerified?: boolean;
