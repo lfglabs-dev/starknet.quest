@@ -46,8 +46,12 @@ const splitByNftContract = (
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
-  const { questPage: questId } = router.query;
-
+  const {
+    questPage: questId,
+    task_id: taskId,
+    res,
+    error_msg: errorMsg,
+  } = router.query;
   const { address } = useAccount();
   const { library } = useStarknet();
 
@@ -78,6 +82,7 @@ const QuestPage: NextPage = () => {
   const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
+  const [taskError, setTaskError] = useState<TaskError>();
 
   // this fetches quest data
   useEffect(() => {
@@ -204,6 +209,17 @@ const QuestPage: NextPage = () => {
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
+  useEffect(() => {
+    if (!taskId || res === "true") return;
+    if (taskId && res === "false") {
+      setTaskError({
+        taskId: parseInt(taskId.toString()),
+        res: false,
+        error: errorMsg?.toString(),
+      });
+    }
+  }, [taskId, res, errorMsg]);
+
   const generateOAuthUrl = (task: UserTask): string => {
     const codeChallenge = generateCodeChallenge(
       process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
@@ -280,6 +296,14 @@ const QuestPage: NextPage = () => {
                 verifyEndpointType={`${task.verify_endpoint_type ?? "default"}`}
                 refreshRewards={() => refreshRewards(quest, address)}
                 wasVerified={task.completed}
+                hasError={
+                  taskError && taskError.taskId === task.id ? true : false
+                }
+                verifyError={
+                  taskError && taskError.taskId === task.id
+                    ? taskError.error
+                    : ""
+                }
               />
             ))}
             <Reward
