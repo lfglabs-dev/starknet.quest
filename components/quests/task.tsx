@@ -18,6 +18,9 @@ const Task: FunctionComponent<Task> = ({
   verifyEndpoint,
   refreshRewards,
   wasVerified,
+  verifyEndpointType,
+  hasError,
+  verifyError,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -25,28 +28,38 @@ const Task: FunctionComponent<Task> = ({
   const [error, setError] = useState<string>("");
   const { address } = useAccount();
 
+  useEffect(() => {
+    if (hasError) {
+      setError(verifyError ?? "Something went wrong");
+    }
+  }, [hasError]);
+
   // A verify function that setIsVerified(true) and stop propagation
   const verify = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
 
-    try {
-      const response = await fetch(verifyEndpoint);
+    if (verifyEndpointType === "oauth") {
+      window.open(verifyEndpoint);
+    } else {
+      try {
+        const response = await fetch(verifyEndpoint);
 
-      if (!response.ok) {
-        throw new Error(await response.text());
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        setIsVerified(true);
+        refreshRewards();
+      } catch (error) {
+        setError(
+          address
+            ? (error as { message: string }).message
+            : "Please connect your wallet first"
+        );
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsVerified(true);
-      refreshRewards();
-    } catch (error) {
-      setError(
-        address
-          ? (error as { message: string }).message
-          : "Please connect your wallet first"
-      );
-    } finally {
-      setIsLoading(false);
     }
   };
 

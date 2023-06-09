@@ -16,11 +16,20 @@ type Task = {
   href: string;
   cta?: string;
   verifyEndpoint: string;
+  verifyEndpointType: string;
   refreshRewards: () => void;
   wasVerified?: boolean;
+  hasError?: boolean;
+  verifyError?: string;
 };
 
 type TaskProps = Task & { id: number };
+
+type TaskError = {
+  taskId: number;
+  res: boolean;
+  error?: string;
+};
 
 type Quest = {
   issuer: Issuer;
@@ -89,4 +98,15 @@ type EligibleReward = {
   nft_contract: string;
   token_id: string;
   sig: string[];
+};
+
+type BraavosScoreProps = {
+  score: number;
+  protocols: string[];
+};
+
+type AspectApiResult = {
+  assets: AspectNftProps[];
+  next_url: string;
+  remainder?: AspectNftProps[];
 };

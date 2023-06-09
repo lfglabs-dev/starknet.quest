@@ -26,6 +26,7 @@ import BN from "bn.js";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "../../components/UI/tasksSqueleton";
 import RewardSkeleton from "../../components/UI/rewardSqueleton";
+import { generateCodeChallenge } from "../../utils/codeChallenge";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -45,8 +46,12 @@ const splitByNftContract = (
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
-  const { questPage: questId } = router.query;
-
+  const {
+    questPage: questId,
+    task_id: taskId,
+    res,
+    error_msg: errorMsg,
+  } = router.query;
   const { address } = useAccount();
   const { library } = useStarknet();
 
@@ -77,6 +82,7 @@ const QuestPage: NextPage = () => {
   const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
+  const [taskError, setTaskError] = useState<TaskError>();
 
   // this fetches quest data
   useEffect(() => {
@@ -203,6 +209,35 @@ const QuestPage: NextPage = () => {
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards]);
 
+  useEffect(() => {
+    if (!taskId || res === "true") return;
+    if (taskId && res === "false") {
+      setTaskError({
+        taskId: parseInt(taskId.toString()),
+        res: false,
+        error: errorMsg?.toString(),
+      });
+    }
+  }, [taskId, res, errorMsg]);
+
+  const generateOAuthUrl = (task: UserTask): string => {
+    const codeChallenge = generateCodeChallenge(
+      process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+    );
+    const rootUrl = "https://twitter.com/i/oauth2/authorize";
+    const options = {
+      redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
+      client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+      state: "state",
+      response_type: "code",
+      code_challenge: codeChallenge,
+      code_challenge_method: "S256",
+      scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+    };
+    const qs = new URLSearchParams(options).toString();
+    return `${rootUrl}?${qs}`;
+  };
+
   return (
     <div className={homeStyles.screen}>
       <div className={styles.imageContainer}>
@@ -252,11 +287,23 @@ const QuestPage: NextPage = () => {
                 description={task.desc}
                 href={task.href}
                 cta={task.cta}
-                verifyEndpoint={`${task.verify_endpoint}?addr=${hexToDecimal(
-                  address
-                )}`}
+                verifyEndpoint={
+                  task.verify_endpoint_type &&
+                  task.verify_endpoint_type == "default"
+                    ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
+                    : generateOAuthUrl(task)
+                }
+                verifyEndpointType={`${task.verify_endpoint_type ?? "default"}`}
                 refreshRewards={() => refreshRewards(quest, address)}
                 wasVerified={task.completed}
+                hasError={
+                  taskError && taskError.taskId === task.id ? true : false
+                }
+                verifyError={
+                  taskError && taskError.taskId === task.id
+                    ? taskError.error
+                    : ""
+                }
               />
             ))}
             <Reward
