@@ -175,7 +175,7 @@
   line-height: normal;
   text-align: center;
   color: white;
-  margin: 1rem 0 -3rem 0px;
+  margin: -4rem 0 2rem 0;
 }
 
 .braavosScore {
@@ -193,4 +193,5 @@
 
 .pieChart {
   position: relative;
+  margin-top: -4rem;
 }

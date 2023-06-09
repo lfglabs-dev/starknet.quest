@@ -47,9 +47,6 @@ const PieChart: FunctionComponent = () => {
 
   return (
     <>
-      <div className={styles.analyticsTitle}>
-        Your Starknet Pro Score from Braavos
-      </div>
       <div>
         <Doughnut
           data={data}
@@ -80,6 +77,9 @@ const PieChart: FunctionComponent = () => {
         >
           <div className={styles.braavosScore}>{pieData[0]}%</div>
         </div>
+      </div>
+      <div className={styles.analyticsTitle}>
+        Your Starknet Pro Score from Braavos
       </div>
     </>
   );
