@@ -30,7 +30,7 @@ type UserTask = {
   cta?: string;
   verify_endpoint: string;
   verify_endpoint_type: string;
-  verify_redirect?: string;
+  verify_redirect: string | undefined;
   completed: boolean;
 };
 
