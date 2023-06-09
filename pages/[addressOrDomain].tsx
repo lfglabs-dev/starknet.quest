@@ -14,11 +14,12 @@ import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
 import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
+import PieChart from "../components/UI/pieChart";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
-  const { address } = useAccount();
+  const { address, connector } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -27,8 +28,18 @@ const AddressOrDomain: NextPage = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [active, setActive] = useState(0);
   const dynamicRoute = useRouter().asPath;
-  const [userNft, setUserNft] = useState<AspectNftProps[]>();
+  const [userNft, setUserNft] = useState<AspectNftProps[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const [unusedAssets, setUnusedAssets] = useState<AspectNftProps[]>([]);
+  const isBraavosWallet = connector && connector.id() === "braavos";
+
+  // Filtered NFTs
+  const NFTContracts = [
+    hexToDecimal(process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT),
+    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOS_JOURNEY_NFT_CONTRACT),
+  ];
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -113,6 +124,7 @@ const AddressOrDomain: NextPage = () => {
       ).then((data) => {
         setUserNft(data.assets);
         setNextUrl(data.next_url);
+        setUnusedAssets(data.remainder ?? []);
       });
     }
   }, [identity, addressOrDomain, address]);
@@ -134,8 +146,11 @@ const AddressOrDomain: NextPage = () => {
     }, 1500);
   };
 
-  const retrieveAssets = async (url: string) => {
-    const data = await fetch(url, {
+  const retrieveAssets = async (
+    url: string,
+    accumulatedAssets: AspectNftProps[] = []
+  ): Promise<AspectApiResult> => {
+    return fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -145,16 +160,65 @@ const AddressOrDomain: NextPage = () => {
             : process.env.NEXT_PUBLIC_ASPECT_MAINNET
         }`,
       },
-    });
-    return data.json();
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const filteredAssets = filterAssets(data.assets);
+        const assets = [...accumulatedAssets, ...filteredAssets];
+
+        if (assets.length < 8 && data.next_url) {
+          return retrieveAssets(data.next_url, assets);
+        } else if (assets.length > 8) {
+          // Split and save results
+          const { res, remainder } = splitAssets(assets);
+          return {
+            assets: res,
+            next_url: data.next_url ?? null,
+            remainder,
+          };
+        } else {
+          return {
+            assets: assets,
+            next_url: data.next_url,
+          };
+        }
+      });
+  };
+
+  const filterAssets = (assets: AspectNftProps[]) => {
+    return assets.filter((obj) =>
+      NFTContracts.includes(hexToDecimal(obj.contract_address))
+    );
+  };
+
+  const splitAssets = (
+    assets: AspectNftProps[]
+  ): { res: AspectNftProps[]; remainder: AspectNftProps[] } => {
+    const modulo = assets.length % 8;
+    const res = assets.slice(0, assets.length - modulo);
+    const remainder = assets.slice(assets.length - modulo);
+    return { res, remainder };
   };
 
   const loadMore = () => {
-    if (nextUrl)
-      retrieveAssets(nextUrl).then((data) => {
-        setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
-        setNextUrl(data.next_url);
-      });
+    if (unusedAssets.length > 0 && unusedAssets.length < 8) {
+      if (nextUrl) {
+        // fetch more assets from API
+        retrieveAssets(nextUrl, unusedAssets).then((data) => {
+          setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
+          setNextUrl(data.next_url);
+          setUnusedAssets(data.remainder ?? []);
+        });
+      } else {
+        // show unused assets
+        setUserNft((prev) => [...(prev as AspectNftProps[]), ...unusedAssets]);
+        setUnusedAssets([]);
+      }
+    } else {
+      const { res, remainder } = splitAssets(unusedAssets);
+      setUserNft((prev) => [...(prev as AspectNftProps[]), ...res]);
+      setUnusedAssets(remainder);
+    }
   };
 
   if (notFound) {
@@ -228,39 +292,47 @@ const AddressOrDomain: NextPage = () => {
           <div className={styles.menu}>
             <div className={styles.menuTitle}>
               {/* <p
-                className={
-                  active === 1 ? `${styles.active}` : `${styles.inactive}`
-                }
-                onClick={() => setActive(1)}
-              >
-                My analytics
-              </p> */}
+                  className={
+                    active === 1 ? `${styles.active}` : `${styles.inactive}`
+                  }
+                  onClick={() => setActive(1)}
+                >
+                  My analytics
+                </p>
+              ) */}
               <p
                 className={
                   active === 0 ? `${styles.active}` : `${styles.inactive}`
                 }
                 onClick={() => setActive(0)}
               >
-                My NFT
+                Starknet Achievements
               </p>
             </div>
             {!active ? (
               <>
+                {isOwner && isBraavosWallet ? (
+                  <div className={styles.pieChart}>
+                    <PieChart />
+                  </div>
+                ) : null}
                 <div className={styles.content}>
-                  {userNft && userNft.length
-                    ? userNft.map((nft, index) => {
-                        return (
-                          <NftCard
-                            key={index}
-                            image={nft.image_uri as string}
-                            title={nft.name as string}
-                            url={nft.aspect_link as string}
-                          />
-                        );
-                      })
-                    : null}
+                  {userNft && userNft.length ? (
+                    userNft.map((nft, index) => {
+                      return (
+                        <NftCard
+                          key={index}
+                          image={nft.image_uri as string}
+                          title={nft.name as string}
+                          url={nft.aspect_link as string}
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No Starknet achievements yet, start some quests !</p>
+                  )}
                 </div>
-                {nextUrl ? (
+                {nextUrl || unusedAssets.length > 0 ? (
                   <div className="text-background ml-5 mr-5 flex justify-center items-center flex-col">
                     <Button onClick={() => loadMore()}>Load More</Button>
                   </div>

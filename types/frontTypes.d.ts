@@ -99,3 +99,14 @@ type EligibleReward = {
   token_id: string;
   sig: string[];
 };
+
+type BraavosScoreProps = {
+  score: number;
+  protocols: string[];
+};
+
+type AspectApiResult = {
+  assets: AspectNftProps[];
+  next_url: string;
+  remainder?: AspectNftProps[];
+};
