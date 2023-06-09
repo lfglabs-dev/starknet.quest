@@ -96,3 +96,9 @@ type BraavosScoreProps = {
   score: number;
   protocols: string[];
 };
+
+type AspectApiResult = {
+  assets: AspectNftProps[];
+  next_url: string;
+  remainder?: AspectNftProps[];
+};
