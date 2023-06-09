@@ -29,8 +29,9 @@ type UserTask = {
   href: string;
   cta?: string;
   verify_endpoint: string;
+  verify_endpoint_type: string;
+  verify_redirect?: string;
   completed: boolean;
-  verify_endpoint_type?: string;
 };
 
 type UserDocument = {

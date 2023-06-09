@@ -16,6 +16,7 @@ const Task: FunctionComponent<Task> = ({
   href,
   cta = "open app",
   verifyEndpoint,
+  verifyRedirect,
   refreshRewards,
   wasVerified,
   verifyEndpointType,
@@ -109,7 +110,13 @@ const Task: FunctionComponent<Task> = ({
             <ErrorRoundedIcon className="ml-2" width={25} color="error" />
           </div>
         ) : (
-          <div onClick={(e) => verify(e)} className={styles.verifyButton}>
+          <div
+            onClick={(e) => {
+              if (verifyRedirect) window.open(verifyRedirect);
+              verify(e);
+            }}
+            className={styles.verifyButton}
+          >
             <p>Verify</p>
           </div>
         )}

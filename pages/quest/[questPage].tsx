@@ -280,32 +280,37 @@ const QuestPage: NextPage = () => {
           <TasksSkeleton />
         ) : (
           <>
-            {tasks.map((task) => (
-              <Task
-                key={task.id}
-                name={task.name}
-                description={task.desc}
-                href={task.href}
-                cta={task.cta}
-                verifyEndpoint={
-                  task.verify_endpoint_type &&
-                  task.verify_endpoint_type == "default"
-                    ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
-                    : generateOAuthUrl(task)
-                }
-                verifyEndpointType={`${task.verify_endpoint_type ?? "default"}`}
-                refreshRewards={() => refreshRewards(quest, address)}
-                wasVerified={task.completed}
-                hasError={
-                  taskError && taskError.taskId === task.id ? true : false
-                }
-                verifyError={
-                  taskError && taskError.taskId === task.id
-                    ? taskError.error
-                    : ""
-                }
-              />
-            ))}
+            {tasks.map((task) => {
+              return (
+                <Task
+                  key={task.id}
+                  name={task.name}
+                  description={task.desc}
+                  href={task.href}
+                  cta={task.cta}
+                  verifyRedirect={task.verify_redirect}
+                  verifyEndpoint={
+                    task.verify_endpoint_type &&
+                    task.verify_endpoint_type == "default"
+                      ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
+                      : generateOAuthUrl(task)
+                  }
+                  verifyEndpointType={`${
+                    task.verify_endpoint_type ?? "default"
+                  }`}
+                  refreshRewards={() => refreshRewards(quest, address)}
+                  wasVerified={task.completed}
+                  hasError={
+                    taskError && taskError.taskId === task.id ? true : false
+                  }
+                  verifyError={
+                    taskError && taskError.taskId === task.id
+                      ? taskError.error
+                      : ""
+                  }
+                />
+              );
+            })}
             <Reward
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
