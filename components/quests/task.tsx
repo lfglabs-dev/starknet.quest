@@ -19,6 +19,8 @@ const Task: FunctionComponent<Task> = ({
   refreshRewards,
   wasVerified,
   verifyEndpointType,
+  hasError,
+  verifyError,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -26,14 +28,19 @@ const Task: FunctionComponent<Task> = ({
   const [error, setError] = useState<string>("");
   const { address } = useAccount();
 
+  useEffect(() => {
+    if (hasError) {
+      setError(verifyError ?? "Something went wrong");
+    }
+  }, [hasError]);
+
   // A verify function that setIsVerified(true) and stop propagation
   const verify = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
 
     if (verifyEndpointType === "oauth") {
-      window.open(verifyEndpoint, "_blank");
-      setIsLoading(false);
+      window.open(verifyEndpoint);
     } else {
       try {
         const response = await fetch(verifyEndpoint);

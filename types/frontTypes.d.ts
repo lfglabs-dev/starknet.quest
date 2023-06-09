@@ -19,9 +19,17 @@ type Task = {
   verifyEndpointType: string;
   refreshRewards: () => void;
   wasVerified?: boolean;
+  hasError?: boolean;
+  verifyError?: string;
 };
 
 type TaskProps = Task & { id: number };
+
+type TaskError = {
+  taskId: number;
+  res: boolean;
+  error?: string;
+};
 
 type Quest = {
   issuer: Issuer;
