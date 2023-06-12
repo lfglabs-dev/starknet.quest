@@ -221,21 +221,34 @@ const QuestPage: NextPage = () => {
   }, [taskId, res, errorMsg]);
 
   const generateOAuthUrl = (task: UserTask): string => {
-    const codeChallenge = generateCodeChallenge(
-      process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
-    );
-    const rootUrl = "https://twitter.com/i/oauth2/authorize";
-    const options = {
-      redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
-      client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
-      state: "state",
-      response_type: "code",
-      code_challenge: codeChallenge,
-      code_challenge_method: "S256",
-      scope: ["follows.read", "tweet.read", "users.read"].join(" "),
-    };
-    const qs = new URLSearchParams(options).toString();
-    return `${rootUrl}?${qs}`;
+    if (task.verify_endpoint_type === "oauth_discord") {
+      const rootUrl = "https://discord.com/api/oauth2/authorize";
+      const options = {
+        redirect_uri: `${task.verify_endpoint}`,
+        client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
+        response_type: "code",
+        scope: ["identify", "guilds"].join(" "),
+        state: hexToDecimal(address),
+      };
+      const qs = new URLSearchParams(options).toString();
+      return `${rootUrl}?${qs}`;
+    } else {
+      const codeChallenge = generateCodeChallenge(
+        process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+      );
+      const rootUrl = "https://twitter.com/i/oauth2/authorize";
+      const options = {
+        redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
+        client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+        state: "state",
+        response_type: "code",
+        code_challenge: codeChallenge,
+        code_challenge_method: "S256",
+        scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+      };
+      const qs = new URLSearchParams(options).toString();
+      return `${rootUrl}?${qs}`;
+    }
   };
 
   return (
