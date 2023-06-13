@@ -46,7 +46,7 @@ const AddressOrDomain: NextPage = () => {
 
   useEffect(() => {
     setInitProfile(false);
-  }, [router]);
+  }, [address, addressOrDomain]);
 
   useEffect(() => {
     if (!address) setIsOwner(false);
