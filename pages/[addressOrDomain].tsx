@@ -52,6 +52,10 @@ const AddressOrDomain: NextPage = () => {
     if (!address) setIsOwner(false);
   }, [address]);
 
+  console.log("isOwner", isOwner);
+  console.log("isbraavoswallet", isBraavosWallet);
+  console.log("identity", identity);
+
   useEffect(() => {
     if (
       typeof addressOrDomain === "string" &&
