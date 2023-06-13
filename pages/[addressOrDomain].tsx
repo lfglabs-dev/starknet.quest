@@ -83,14 +83,15 @@ const AddressOrDomain: NextPage = () => {
       } else {
         starknetIdNavigator
           ?.getAddressFromStarkName(addressOrDomain)
-          .then((address) => {
+          .then((addr) => {
             setIdentity({
               id: "0",
-              addr: hexToDecimal(address),
+              addr: hexToDecimal(addr),
               domain: addressOrDomain,
               is_owner_main: false,
             });
             setInitProfile(true);
+            if (hexToDecimal(address) === addr) setIsOwner(true);
           })
           .catch(() => {
             return;
@@ -104,22 +105,37 @@ const AddressOrDomain: NextPage = () => {
         ?.getStarkName(hexToDecimal(addressOrDomain))
         .then((name) => {
           if (name) {
-            starknetIdNavigator
-              ?.getStarknetId(name)
-              .then((id) => {
-                getIdentityData(id).then((data: Identity) => {
-                  if (data.error) return;
-                  setIdentity({
-                    ...data,
-                    id: id.toString(),
+            if (
+              !utils.isBraavosSubdomain(name) &&
+              !utils.isXplorerSubdomain(name)
+            ) {
+              starknetIdNavigator
+                ?.getStarknetId(name)
+                .then((id) => {
+                  getIdentityData(id).then((data: Identity) => {
+                    if (data.error) return;
+                    setIdentity({
+                      ...data,
+                      id: id.toString(),
+                    });
+                    if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                    setInitProfile(true);
                   });
-                  if (hexToDecimal(address) === data.addr) setIsOwner(true);
-                  setInitProfile(true);
+                })
+                .catch(() => {
+                  return;
                 });
-              })
-              .catch(() => {
-                return;
+            } else {
+              setIdentity({
+                id: "0",
+                addr: hexToDecimal(addressOrDomain),
+                domain: name,
+                is_owner_main: false,
               });
+              setInitProfile(true);
+              if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+                setIsOwner(true);
+            }
           } else {
             setIdentity({
               id: "0",
