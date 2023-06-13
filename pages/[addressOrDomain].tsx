@@ -91,7 +91,7 @@ const AddressOrDomain: NextPage = () => {
               is_owner_main: false,
             });
             setInitProfile(true);
-            if (hexToDecimal(address) === addr) setIsOwner(true);
+            if (hexToDecimal(address) === hexToDecimal(addr)) setIsOwner(true);
           })
           .catch(() => {
             return;
