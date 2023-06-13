@@ -6,7 +6,6 @@ import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
-
 import {
   Call,
   useAccount,
@@ -24,8 +23,8 @@ import {
 import { Contract } from "starknet";
 import BN from "bn.js";
 import { Skeleton } from "@mui/material";
-import TasksSkeleton from "../../components/UI/tasksSqueleton";
-import RewardSkeleton from "../../components/UI/rewardSqueleton";
+import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
+import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 
 const splitByNftContract = (
