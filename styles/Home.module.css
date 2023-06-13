@@ -13,7 +13,7 @@
   align-items: center;
   flex-direction: column;
   text-align: center;
-  height: 88vh;
+  margin-top: 3rem;
 }
 
 .questContainer {
@@ -21,14 +21,19 @@
   flex-wrap: wrap;
   padding: 2rem;
   gap: 2rem;
+  max-width: 950px;
+  margin-bottom: 3rem;
 }
 
 .title {
+  font-family: "Sora-Bold";
   font-size: 2.5rem;
-  color: var(--primary);
-  text-shadow: 1px 1px var(--tertiary);
-  text-transform: uppercase;
   text-align: center;
+  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
