@@ -15,6 +15,7 @@ import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
 import PieChart from "../components/UI/pieChart";
+import { utils } from "starknetid.js";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -56,25 +57,45 @@ const AddressOrDomain: NextPage = () => {
       typeof addressOrDomain === "string" &&
       addressOrDomain?.toString().toLowerCase().endsWith(".stark")
     ) {
-      starknetIdNavigator
-        ?.getStarknetId(addressOrDomain)
-        .then((id) => {
-          getIdentityData(id).then((data: Identity) => {
-            if (data.error) {
-              setNotFound(true);
-              return;
-            }
-            setIdentity({
-              ...data,
-              id: id.toString(),
+      if (
+        !utils.isBraavosSubdomain(addressOrDomain) &&
+        !utils.isXplorerSubdomain(addressOrDomain)
+      ) {
+        starknetIdNavigator
+          ?.getStarknetId(addressOrDomain)
+          .then((id) => {
+            getIdentityData(id).then((data: Identity) => {
+              if (data.error) {
+                setNotFound(true);
+                return;
+              }
+              setIdentity({
+                ...data,
+                id: id.toString(),
+              });
+              if (hexToDecimal(address) === data.addr) setIsOwner(true);
+              setInitProfile(true);
             });
-            if (hexToDecimal(address) === data.addr) setIsOwner(true);
-            setInitProfile(true);
+          })
+          .catch(() => {
+            return;
           });
-        })
-        .catch(() => {
-          return;
-        });
+      } else {
+        starknetIdNavigator
+          ?.getAddressFromStarkName(addressOrDomain)
+          .then((address) => {
+            setIdentity({
+              id: "0",
+              addr: hexToDecimal(address),
+              domain: addressOrDomain,
+              is_owner_main: false,
+            });
+            setInitProfile(true);
+          })
+          .catch(() => {
+            return;
+          });
+      }
     } else if (
       typeof addressOrDomain === "string" &&
       isHexString(addressOrDomain)
