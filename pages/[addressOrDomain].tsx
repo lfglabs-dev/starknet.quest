@@ -52,10 +52,6 @@ const AddressOrDomain: NextPage = () => {
     if (!address) setIsOwner(false);
   }, [address]);
 
-  console.log("isOwner", isOwner);
-  console.log("isbraavoswallet", isBraavosWallet);
-  console.log("identity", identity);
-
   useEffect(() => {
     if (
       typeof addressOrDomain === "string" &&
@@ -154,7 +150,7 @@ const AddressOrDomain: NextPage = () => {
     } else {
       setNotFound(true);
     }
-  }, [addressOrDomain, address]);
+  }, [addressOrDomain, address, dynamicRoute]);
 
   useEffect(() => {
     if (identity) {
