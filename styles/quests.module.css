@@ -217,6 +217,46 @@
   flex-grow: 0;
 }
 
+.featuredQuest {
+  width: 950px;
+  height: 350px;
+  margin-bottom: 5rem;
+  background-color: var(--background600);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem;
+  gap: 0.5rem;
+}
+
+.featuredQuestInfos {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.1rem;
+  width: 100%;
+  margin-left: 3rem;
+}
+
+.featuredQuestImage {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.featuredQuestTitle {
+  font-family: "Sora-Bold";
+  font-size: 2.5rem;
+  background: var(--secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  align-items: flex-start;
+}
+
 @media (max-width: 1024px) {
   .verifyButton {
     width: 100px;

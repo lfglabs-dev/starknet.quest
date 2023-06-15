@@ -6,7 +6,6 @@ import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
-
 import {
   Call,
   useAccount,
@@ -24,8 +23,8 @@ import {
 import { Contract } from "starknet";
 import BN from "bn.js";
 import { Skeleton } from "@mui/material";
-import TasksSkeleton from "../../components/UI/tasksSqueleton";
-import RewardSkeleton from "../../components/UI/rewardSqueleton";
+import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
+import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 
 const splitByNftContract = (
@@ -221,21 +220,34 @@ const QuestPage: NextPage = () => {
   }, [taskId, res, errorMsg]);
 
   const generateOAuthUrl = (task: UserTask): string => {
-    const codeChallenge = generateCodeChallenge(
-      process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
-    );
-    const rootUrl = "https://twitter.com/i/oauth2/authorize";
-    const options = {
-      redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
-      client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
-      state: "state",
-      response_type: "code",
-      code_challenge: codeChallenge,
-      code_challenge_method: "S256",
-      scope: ["follows.read", "tweet.read", "users.read"].join(" "),
-    };
-    const qs = new URLSearchParams(options).toString();
-    return `${rootUrl}?${qs}`;
+    if (task.verify_endpoint_type === "oauth_discord") {
+      const rootUrl = "https://discord.com/api/oauth2/authorize";
+      const options = {
+        redirect_uri: `${task.verify_endpoint}`,
+        client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
+        response_type: "code",
+        scope: ["identify", "guilds"].join(" "),
+        state: hexToDecimal(address),
+      };
+      const qs = new URLSearchParams(options).toString();
+      return `${rootUrl}?${qs}`;
+    } else {
+      const codeChallenge = generateCodeChallenge(
+        process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+      );
+      const rootUrl = "https://twitter.com/i/oauth2/authorize";
+      const options = {
+        redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
+        client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+        state: "state",
+        response_type: "code",
+        code_challenge: codeChallenge,
+        code_challenge_method: "S256",
+        scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+      };
+      const qs = new URLSearchParams(options).toString();
+      return `${rootUrl}?${qs}`;
+    }
   };
 
   return (

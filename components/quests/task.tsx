@@ -40,8 +40,9 @@ const Task: FunctionComponent<Task> = ({
     e.stopPropagation();
     setIsLoading(true);
 
-    if (verifyEndpointType === "oauth") {
+    if (verifyEndpointType.startsWith("oauth")) {
       window.open(verifyEndpoint);
+      setIsLoading(false);
     } else {
       try {
         const response = await fetch(verifyEndpoint);
