@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { Connector, useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
@@ -21,7 +21,6 @@ const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
   const { address, connector } = useAccount();
-  const { connectors, connect } = useConnectors();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -44,42 +43,6 @@ const AddressOrDomain: NextPage = () => {
   ];
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
-
-  // Sometimes wallet is not injected in the window which results in address & connector being undefined.
-  useEffect(() => {
-    async function tryAutoConnect(connectors: Connector[]) {
-      const lastConnectedConnectorId =
-        localStorage.getItem("lastUsedConnector");
-      if (lastConnectedConnectorId === null) {
-        return;
-      }
-
-      const lastConnectedConnector = connectors.find(
-        (connector) => connector.id() === lastConnectedConnectorId
-      );
-      if (lastConnectedConnector === undefined) {
-        return;
-      }
-
-      try {
-        if (!(await lastConnectedConnector.ready())) {
-          // Not authorized anymore.
-          return;
-        }
-
-        await connect(lastConnectedConnector);
-      } catch {
-        // no-op
-      }
-    }
-
-    if (!address) {
-      tryAutoConnect(connectors);
-    }
-    // Dependencies intentionally omitted since we only want
-    // this executed once.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     setInitProfile(false);
