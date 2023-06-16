@@ -24,7 +24,6 @@ const Quest: FunctionComponent<QuestProps> = ({
         <div className="flex mt-2 mb-1 items-center">
           <p className="text-gray-400">{issuer.name}</p>
         </div>
-
         <div className="flex mt-2 mb-1 items-center">
           <img width={20} src={issuer.logoFavicon} />
           <p className="text-white ml-2">{reward}</p>

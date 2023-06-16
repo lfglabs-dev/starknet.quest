@@ -16,6 +16,7 @@ module.exports = {
       gray: {
         100: "#f7fafc",
         // ...
+        200: "#d1d5db",
         900: "#1a202c",
       },
       // ... Other colors you want to add
