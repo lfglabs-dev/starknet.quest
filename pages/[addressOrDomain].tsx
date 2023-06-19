@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { useAccount } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
@@ -15,11 +15,13 @@ import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
 import PieChart from "../components/UI/pieChart";
+import { utils } from "starknetid.js";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
   const { address, connector } = useAccount();
+  const { connectors, connect } = useConnectors();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -43,9 +45,41 @@ const AddressOrDomain: NextPage = () => {
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
+  useLayoutEffect(() => {
+    async function tryAutoConnect(connectors: Connector[]) {
+      const lastConnectedConnectorId =
+        localStorage.getItem("lastUsedConnector");
+      if (lastConnectedConnectorId === null) {
+        return;
+      }
+
+      const lastConnectedConnector = connectors.find(
+        (connector) => connector.id() === lastConnectedConnectorId
+      );
+      if (lastConnectedConnector === undefined) {
+        return;
+      }
+
+      try {
+        if (!(await lastConnectedConnector.ready())) {
+          // Not authorized anymore.
+          return;
+        }
+
+        await connect(lastConnectedConnector);
+      } catch {
+        // no-op
+      }
+    }
+
+    if (!address) {
+      tryAutoConnect(connectors);
+    }
+  }, []);
+
   useEffect(() => {
     setInitProfile(false);
-  }, [router]);
+  }, [address, addressOrDomain]);
 
   useEffect(() => {
     if (!address) setIsOwner(false);
@@ -56,25 +90,46 @@ const AddressOrDomain: NextPage = () => {
       typeof addressOrDomain === "string" &&
       addressOrDomain?.toString().toLowerCase().endsWith(".stark")
     ) {
-      starknetIdNavigator
-        ?.getStarknetId(addressOrDomain)
-        .then((id) => {
-          getIdentityData(id).then((data: Identity) => {
-            if (data.error) {
-              setNotFound(true);
-              return;
-            }
-            setIdentity({
-              ...data,
-              id: id.toString(),
+      if (
+        !utils.isBraavosSubdomain(addressOrDomain) &&
+        !utils.isXplorerSubdomain(addressOrDomain)
+      ) {
+        starknetIdNavigator
+          ?.getStarknetId(addressOrDomain)
+          .then((id) => {
+            getIdentityData(id).then((data: Identity) => {
+              if (data.error) {
+                setNotFound(true);
+                return;
+              }
+              setIdentity({
+                ...data,
+                id: id.toString(),
+              });
+              if (hexToDecimal(address) === data.addr) setIsOwner(true);
+              setInitProfile(true);
             });
-            if (hexToDecimal(address) === data.addr) setIsOwner(true);
-            setInitProfile(true);
+          })
+          .catch(() => {
+            return;
           });
-        })
-        .catch(() => {
-          return;
-        });
+      } else {
+        starknetIdNavigator
+          ?.getAddressFromStarkName(addressOrDomain)
+          .then((addr) => {
+            setIdentity({
+              id: "0",
+              addr: hexToDecimal(addr),
+              domain: addressOrDomain,
+              is_owner_main: false,
+            });
+            setInitProfile(true);
+            if (hexToDecimal(address) === hexToDecimal(addr)) setIsOwner(true);
+          })
+          .catch(() => {
+            return;
+          });
+      }
     } else if (
       typeof addressOrDomain === "string" &&
       isHexString(addressOrDomain)
@@ -83,22 +138,37 @@ const AddressOrDomain: NextPage = () => {
         ?.getStarkName(hexToDecimal(addressOrDomain))
         .then((name) => {
           if (name) {
-            starknetIdNavigator
-              ?.getStarknetId(name)
-              .then((id) => {
-                getIdentityData(id).then((data: Identity) => {
-                  if (data.error) return;
-                  setIdentity({
-                    ...data,
-                    id: id.toString(),
+            if (
+              !utils.isBraavosSubdomain(name) &&
+              !utils.isXplorerSubdomain(name)
+            ) {
+              starknetIdNavigator
+                ?.getStarknetId(name)
+                .then((id) => {
+                  getIdentityData(id).then((data: Identity) => {
+                    if (data.error) return;
+                    setIdentity({
+                      ...data,
+                      id: id.toString(),
+                    });
+                    if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                    setInitProfile(true);
                   });
-                  if (hexToDecimal(address) === data.addr) setIsOwner(true);
-                  setInitProfile(true);
+                })
+                .catch(() => {
+                  return;
                 });
-              })
-              .catch(() => {
-                return;
+            } else {
+              setIdentity({
+                id: "0",
+                addr: hexToDecimal(addressOrDomain),
+                domain: name,
+                is_owner_main: false,
               });
+              setInitProfile(true);
+              if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+                setIsOwner(true);
+            }
           } else {
             setIdentity({
               id: "0",
@@ -113,7 +183,7 @@ const AddressOrDomain: NextPage = () => {
     } else {
       setNotFound(true);
     }
-  }, [addressOrDomain, address]);
+  }, [addressOrDomain, address, dynamicRoute]);
 
   useEffect(() => {
     if (identity) {
@@ -131,7 +201,7 @@ const AddressOrDomain: NextPage = () => {
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
+      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
     return response.json();
   };
