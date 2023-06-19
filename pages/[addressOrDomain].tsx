@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { useAccount } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
@@ -21,6 +21,7 @@ const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
   const { address, connector } = useAccount();
+  const { connectors, connect } = useConnectors();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -43,6 +44,38 @@ const AddressOrDomain: NextPage = () => {
   ];
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
+
+  useLayoutEffect(() => {
+    async function tryAutoConnect(connectors: Connector[]) {
+      const lastConnectedConnectorId =
+        localStorage.getItem("lastUsedConnector");
+      if (lastConnectedConnectorId === null) {
+        return;
+      }
+
+      const lastConnectedConnector = connectors.find(
+        (connector) => connector.id() === lastConnectedConnectorId
+      );
+      if (lastConnectedConnector === undefined) {
+        return;
+      }
+
+      try {
+        if (!(await lastConnectedConnector.ready())) {
+          // Not authorized anymore.
+          return;
+        }
+
+        await connect(lastConnectedConnector);
+      } catch {
+        // no-op
+      }
+    }
+
+    if (!address) {
+      tryAutoConnect(connectors);
+    }
+  }, []);
 
   useEffect(() => {
     setInitProfile(false);
