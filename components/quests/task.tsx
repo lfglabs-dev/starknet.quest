@@ -51,8 +51,16 @@ const Task: FunctionComponent<Task> = ({
           throw new Error(await response.text());
         }
 
-        setIsVerified(true);
-        refreshRewards();
+        if (verifyRedirect) {
+          setTimeout(() => {
+            setIsVerified(true);
+            refreshRewards();
+            setIsLoading(false);
+          }, 15000);
+        } else {
+          setIsVerified(true);
+          refreshRewards();
+        }
       } catch (error) {
         setError(
           address
@@ -60,7 +68,7 @@ const Task: FunctionComponent<Task> = ({
             : "Please connect your wallet first"
         );
       } finally {
-        setIsLoading(false);
+        if (!verifyRedirect) setIsLoading(false);
       }
     }
   };
