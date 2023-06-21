@@ -131,7 +131,7 @@ const AddressOrDomain: NextPage = () => {
 
   const getIdentityData = async (id: number) => {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
+      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
     return response.json();
   };

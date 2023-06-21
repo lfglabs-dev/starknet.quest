@@ -52,23 +52,27 @@ const Task: FunctionComponent<Task> = ({
         }
 
         if (verifyRedirect) {
-          setTimeout(() => {
-            setIsVerified(true);
-            refreshRewards();
-            setIsLoading(false);
-          }, 15000);
+          await new Promise((resolve) =>
+            setTimeout(() => {
+              setIsVerified(true);
+              refreshRewards();
+              setIsLoading(false);
+              resolve(null);
+            }, 15000)
+          );
         } else {
           setIsVerified(true);
           refreshRewards();
+          setIsLoading(false);
         }
       } catch (error) {
+        console.log("error", error);
         setError(
           address
             ? (error as { message: string }).message
             : "Please connect your wallet first"
         );
-      } finally {
-        if (!verifyRedirect) setIsLoading(false);
+        setIsLoading(false);
       }
     }
   };
