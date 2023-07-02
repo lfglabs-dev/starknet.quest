@@ -6,12 +6,7 @@ import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
-import {
-  Call,
-  useAccount,
-  useStarknet,
-  useContractWrite,
-} from "@starknet-react/core";
+import { Call, useAccount, useStarknet } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import { hexToDecimal } from "../../utils/feltService";
 import {
@@ -78,9 +73,6 @@ const QuestPage: NextPage = () => {
     []
   );
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
-  const { writeAsync: executeMint } = useContractWrite({
-    calls: mintCalldata,
-  });
   const [taskError, setTaskError] = useState<TaskError>();
 
   // this fetches quest data
@@ -327,10 +319,10 @@ const QuestPage: NextPage = () => {
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
               onClick={() => {
-                executeMint();
                 setRewardsEnabled(false);
               }}
               disabled={!rewardsEnabled}
+              mintCalldata={mintCalldata}
             />
           </>
         )}

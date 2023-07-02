@@ -65,7 +65,7 @@
   font-size: 2.3rem;
   line-height: normal;
   text-align: center;
-  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  background: linear-gradient(45deg, var(--primary), var(--tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -118,7 +118,7 @@
 }
 
 .active {
-  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  background: linear-gradient(45deg, var(--primary), var(--tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -183,7 +183,7 @@
   font-size: 2.5rem;
   line-height: normal;
   text-align: center;
-  background: linear-gradient(45deg, var(--primary), var(--primary2));
+  background: linear-gradient(45deg, var(--primary), var(--tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
