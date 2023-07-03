@@ -65,7 +65,7 @@
   background: linear-gradient(
     90deg,
     var(--primary) -0.12%,
-    var(--primary2) 99.88%
+    var(--tertiary) 99.88%
   );
 }
 

@@ -50,7 +50,7 @@ type Identity = {
   id: string;
   addr: string;
   domain: string;
-  is_owner_main: Boolean;
+  is_owner_main: boolean;
   error?: string;
 };
 

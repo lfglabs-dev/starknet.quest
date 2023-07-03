@@ -21,6 +21,7 @@
     "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "chart.js": "^4.3.0",
+    "lottie-react": "^2.4.0",
     "mongodb": "^4.12.1",
     "next": "12.2.5",
     "nextjs-cors": "^2.1.2",
@@ -29,6 +30,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-loader-spinner": "^5.2.0",
+    "react-use": "^17.4.0",
     "starknet": "^4.22.0",
     "starknetid.js": "^1.5.0",
     "twitter-api-sdk": "^1.2.1"
