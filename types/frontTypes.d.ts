@@ -111,3 +111,11 @@ type AspectApiResult = {
   next_url: string;
   remainder?: AspectNftProps[];
 };
+
+type Step = {
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  banner: string;
+};

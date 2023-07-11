@@ -7,6 +7,11 @@ import QuestsSkeleton from "../components/skeletons/questsSkeleton";
 
 import { useRouter } from "next/router";
 import { QueryError, QuestDocument } from "../types/backTypes";
+import Corner from "../components/shapes/corner";
+import CategoryTitle from "../components/UI/titles/categoryTitle";
+import Steps from "../components/UI/steps";
+import Cross from "../components/shapes/cross";
+import Crosses from "../components/shapes/crosses";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -73,6 +78,44 @@ const Quests: NextPage = () => {
             <QuestsSkeleton />
           )}
         </div>
+        <section>
+          <CategoryTitle
+            title="How to Participate ?"
+            subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
+          />
+          <div className={styles.stepsContainer}>
+            <Steps
+              subTitleBefore={true}
+              steps={[
+                {
+                  title: "Get Your Stark Domain",
+                  subtitle: "01",
+                  description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                  icon: "/icons/starknet.svg",
+                  banner: "/visuals/getYourStarkDomain.png",
+                },
+                {
+                  title: "Collect NFTs in Starknet Quest",
+                  subtitle: "02",
+                  description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                  icon: "/icons/crown.svg",
+                  banner: "/visuals/collectNFTsInStarknetQuest.png",
+                },
+                {
+                  title: "Build your Starknet Land",
+                  subtitle: "03",
+                  description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                  icon: "/icons/verified.svg",
+                  banner: "/visuals/buildYourStarknetLand.png",
+                },
+              ]}
+            />
+            <Crosses xDecal={-300} />
+          </div>
+        </section>
       </div>
     </div>
   );

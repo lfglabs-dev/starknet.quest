@@ -32,6 +32,7 @@ export default async function handler(
         .json({ error: "No quests found" });
     }
   } catch (error) {
+    console.log(error);
     res
       .setHeader("cache-control", "max-age=30")
       .status(500)

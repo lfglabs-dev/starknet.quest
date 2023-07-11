@@ -1,0 +1,26 @@
+.shape {
+  stroke: var(--shapes);
+}
+
+.crossContainer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  display: flex;
+}
+
+.crossContainer .side {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 200px;
+  align-items: center;
+}
+
+.crossContainer .cross {
+  margin: auto 0;
+}
