@@ -24,3 +24,22 @@
 .crossContainer .cross {
   margin: auto 0;
 }
+
+.verticalBar {
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  margin: auto;
+  transform: translateX(-50%);
+  opacity: 0.5;
+  background: linear-gradient(45deg, #437aba5d 0%, #6affaf 50%, #70abee 100%);
+  -webkit-mask-image: url("/masks/verticalBarMask.png");
+  mask-image: url("/masks/verticalBarMask.png");
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+.verticalBar.even,
+.even .verticalBar {
+  background: linear-gradient(45deg, #70abee 0%, #6affaf 50%, #437aba5d 100%);
+}

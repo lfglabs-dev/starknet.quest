@@ -25,8 +25,12 @@ const Crosses = ({
         className={styles.side}
       >
         {Array.from(Array(number).keys()).map((i) => (
-          <div className={styles.cross} style={computeStyle(i - 5)}>
-            <Cross key={"cross_left_" + i} />
+          <div
+            key={"cross_left_" + i}
+            className={styles.cross}
+            style={computeStyle(i - 5)}
+          >
+            <Cross />
           </div>
         ))}
       </div>
@@ -37,8 +41,12 @@ const Crosses = ({
         className={styles.side}
       >
         {Array.from(Array(number).keys()).map((i) => (
-          <div className={styles.cross} style={computeStyle(i)}>
-            <Cross key={"cross_right_" + i} />
+          <div
+            key={"cross_right_" + i}
+            className={styles.cross}
+            style={computeStyle(i)}
+          >
+            <Cross />
           </div>
         ))}
       </div>

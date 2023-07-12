@@ -18,6 +18,7 @@
   background-blend-mode: overlay;
   position: relative;
   margin-bottom: 40px;
+  height: 280px;
 }
 
 .card::after {
@@ -31,6 +32,7 @@
   border-radius: 30px;
   z-index: -1;
 }
+
 .card::before {
   content: "";
   position: absolute;
@@ -38,9 +40,27 @@
   right: -1px;
   left: 1px;
   bottom: 1px;
-  background: linear-gradient(90deg, #437aba 0%, #6affaf 50%, #437aba50 100%);
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
   border-radius: 30px;
   z-index: -1;
+}
+
+.card.even::before {
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 45%,
+    #00fbff 60%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
 }
 
 .icon {
@@ -49,6 +69,7 @@
   padding: 11px;
   width: 46px;
   height: 46px;
+  z-index: 2;
 }
 
 .title {
@@ -100,6 +121,14 @@
   width: 250px;
 }
 
+.verticalBarContainer {
+  position: absolute;
+  margin-left: 23px;
+  z-index: 1;
+  height: 274px;
+  transform: translateY(46px);
+}
+
 @media (max-width: 950px) {
   .cards {
     max-width: min(400px, calc(100% - 16px));
@@ -107,11 +136,15 @@
   .card {
     flex-direction: column;
     padding: 40px;
+    height: unset;
   }
   .icon {
     display: none;
   }
   .banner {
     width: 100%;
+  }
+  .verticalBarContainer {
+    display: none;
   }
 }

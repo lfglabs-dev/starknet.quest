@@ -12,7 +12,7 @@ const Cross = () => {
       <path
         d="M1 8.5L8.5 1M1.5 1L8.5 8.5"
         stroke="#66666F"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );

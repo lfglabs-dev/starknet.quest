@@ -1,4 +1,6 @@
 import styles from "../../styles/components/steps.module.css";
+import shapeStyles from "../../styles/components/shapes.module.css";
+import VerticalBar from "../shapes/verticalBar";
 
 const Steps = ({
   subTitleBefore = false,
@@ -15,6 +17,16 @@ const Steps = ({
             key={"step_card_" + index}
             className={[styles.card, index % 2 && styles.even].join(" ")}
           >
+            {index !== steps.length - 1 && (
+              <div
+                className={[
+                  styles.verticalBarContainer,
+                  index % 2 && shapeStyles.even,
+                ].join(" ")}
+              >
+                <VerticalBar />
+              </div>
+            )}
             <img
               className={styles.icon}
               key={"step_icon_" + index}

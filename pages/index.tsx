@@ -7,10 +7,8 @@ import QuestsSkeleton from "../components/skeletons/questsSkeleton";
 
 import { useRouter } from "next/router";
 import { QueryError, QuestDocument } from "../types/backTypes";
-import Corner from "../components/shapes/corner";
 import CategoryTitle from "../components/UI/titles/categoryTitle";
 import Steps from "../components/UI/steps";
-import Cross from "../components/shapes/cross";
 import Crosses from "../components/shapes/crosses";
 
 const Quests: NextPage = () => {
