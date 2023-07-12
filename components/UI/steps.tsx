@@ -20,12 +20,7 @@ const Steps = ({
               key={"step_icon_" + index}
               src={step.icon}
             />
-            <div
-              className={[
-                styles.cardContent,
-                subTitleBefore && styles.subTitleBefore,
-              ].join(" ")}
-            >
+            <div className={(subTitleBefore && styles.subTitleBefore) || ""}>
               {[
                 <h1 key={`step_${index}_title`} className={styles.title}>
                   {step.title}
@@ -36,7 +31,9 @@ const Steps = ({
               ].sort(() => (subTitleBefore ? -1 : 1))}
               <p className={styles.description}>{step.description}</p>
             </div>
-            <img className={styles.banner} src={step.banner} />
+            <div>
+              <img className={styles.banner} src={step.banner} />
+            </div>
           </div>
         ))}
       </div>
