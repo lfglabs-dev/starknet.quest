@@ -91,7 +91,7 @@ const Quests: NextPage = () => {
                   description:
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                   icon: "/icons/starknet.svg",
-                  banner: "/visuals/getYourStarkDomain.png",
+                  banner: "/visuals/getYourStarkDomain.webp",
                 },
                 {
                   title: "Collect NFTs in Starknet Quest",
@@ -99,7 +99,7 @@ const Quests: NextPage = () => {
                   description:
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                   icon: "/icons/crown.svg",
-                  banner: "/visuals/collectNFTsInStarknetQuest.png",
+                  banner: "/visuals/collectNFTsInStarknetQuest.webp",
                 },
                 {
                   title: "Build your Starknet Land",
@@ -107,7 +107,7 @@ const Quests: NextPage = () => {
                   description:
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                   icon: "/icons/verified.svg",
-                  banner: "/visuals/buildYourStarknetLand.png",
+                  banner: "/visuals/buildYourStarknetLand.webp",
                 },
               ]}
             />
