@@ -1,0 +1,13 @@
+.onScrollIntoView {
+}
+
+.slideInFromTop {
+  transform: translateY(-90px);
+  transition: 0.4s ease-in-out;
+  opacity: 0;
+}
+
+.slideInFromTop.active {
+  transform: translateY(0);
+  opacity: 1;
+}

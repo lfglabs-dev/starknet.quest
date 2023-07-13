@@ -18,6 +18,7 @@
   background-blend-mode: overlay;
   position: relative;
   margin-bottom: 40px;
+  margin-left: 112px;
   height: 280px;
 }
 
@@ -63,7 +64,12 @@
   );
 }
 
+.barsContainer {
+  transform: translateY(40px);
+}
+
 .icon {
+  position: absolute;
   border-radius: 50%;
   width: 46px;
   height: 46px;
