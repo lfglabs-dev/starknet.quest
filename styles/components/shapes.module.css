@@ -43,3 +43,22 @@
 .even .verticalBar {
   background: linear-gradient(45deg, #70abee 0%, #6affaf 50%, #437aba5d 100%);
 }
+
+.dots {
+  display: flex;
+  flex-direction: column;
+  width: 2px;
+  padding-top: -28px;
+}
+
+.dot {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: var(--shapes);
+  margin-top: 26px;
+}
+
+.dot:first-child {
+  margin-top: 0;
+}

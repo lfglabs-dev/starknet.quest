@@ -1,0 +1,76 @@
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--secondary);
+  /* Body/normal/bold */
+  font-family: Sora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
+.container {
+  display: flex;
+  padding: 40px 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+  margin: 0 128px 64px;
+}
+
+@media screen and (max-width: 740px) {
+  .container {
+    margin: 0 24px 64px;
+  }
+}
+
+.elementsContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+  align-self: stretch;
+  overflow-x: scroll;
+}
+
+.statElement {
+  flex: 1 0 0;
+  aspect-ratio: 362 / 164;
+}
+
+.statValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  text-align: center;
+  font-family: Sora;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  /* text gradient */
+  background: linear-gradient(45deg, var(--primary), var(--tertiary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.statName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--secondary);
+  text-align: center;
+
+  /* Body/default/regular */
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+}

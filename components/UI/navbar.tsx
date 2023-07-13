@@ -116,6 +116,9 @@ const Navbar: FunctionComponent = () => {
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
+              <Link href="/partnership">
+                <li className={styles.menuItem}>Partnership</li>
+              </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>

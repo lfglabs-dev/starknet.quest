@@ -1,0 +1,155 @@
+.screen {
+  z-index: 0;
+  position: relative;
+  background-color: var(--background600);
+  width: 100%;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.stepsContainer {
+  position: relative;
+  width: fit-content;
+  display: block;
+  margin: 0 auto;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 2.5rem 0 1rem;
+}
+
+.headerContent {
+  display: flex;
+  padding: 1rem 128px;
+  z-index: 4;
+  height: 512px;
+  width: 100%;
+  margin-top: 7vh;
+}
+
+.headerImg {
+  position: absolute;
+  right: -180px;
+  bottom: -260px;
+  z-index: -6;
+  width: min(900px, 70%);
+  aspect-ratio: 1;
+}
+
+.mainTitleContainer {
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mainTitleContainer h1 {
+  width: 100%;
+}
+
+.divider {
+  width: 100vw;
+  position: absolute;
+  z-index: 4;
+  bottom: 0;
+  transform: translateY(calc(100% - 90px));
+}
+
+.dividerGradient {
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba57 0%,
+    #1e74d6bf 45%,
+    #00ddff 60%,
+    #1e74d6ba 70%,
+    #437aba2d 100%
+  );
+  width: 100%;
+  height: 90px;
+  mask: url("/utils/headerDivider.svg");
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  z-index: -3;
+}
+
+.main {
+  background-color: var(--background);
+  width: 100%;
+  z-index: 6;
+}
+
+.section {
+  width: 100%;
+  z-index: 6;
+}
+
+@media (max-width: 950px) {
+  .headerImg {
+    display: none;
+  }
+  .cross {
+    display: none;
+  }
+  .mainTitleContainer {
+    width: 100vw;
+    margin: 0;
+  }
+  .headerContent {
+    padding: 1rem 40px;
+  }
+  .header {
+    width: 100vw;
+    margin: 0;
+  }
+}
+
+.partnerSection {
+  padding: 2rem 128px 2rem;
+  position: relative;
+}
+
+.partnersContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.partnersContainer img {
+  margin: auto;
+}
+
+.cross1 {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cross2 {
+  position: absolute;
+  right: -100px;
+  top: -100px;
+}
+
+.dots1 {
+  position: absolute;
+  transform: translateY(-140px) translateX(-10px);
+}
+
+.dots2 {
+  position: absolute;
+  transform: translateY(-60px) translateX(70px);
+}
