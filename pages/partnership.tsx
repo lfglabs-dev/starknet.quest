@@ -39,6 +39,16 @@ const Partnership: NextPage = () => {
       });
   }, [router]);
 
+  useEffect(() => {
+    const body = document.body;
+    const parent = body.parentNode as HTMLElement;
+    const interval = setInterval(() => {
+      const scrollTop = body.scrollTop || parent?.scrollTop || 0;
+      document.documentElement.style.setProperty("--scroll", `${scrollTop}`);
+    }, 1);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className={styles.screen}>
       <div className={styles.container}>

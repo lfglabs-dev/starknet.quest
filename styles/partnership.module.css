@@ -45,6 +45,8 @@
   z-index: -6;
   width: min(900px, 70%);
   aspect-ratio: 1;
+  transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.1deg))
+    scale(min(calc(1 + var(--scroll) / 7000), 1.4));
 }
 
 .mainTitleContainer {
@@ -52,6 +54,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
 }
 
 .mainTitleContainer h1 {
