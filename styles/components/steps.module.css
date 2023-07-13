@@ -64,9 +64,7 @@
 }
 
 .icon {
-  background: linear-gradient(45deg, var(--primary), var(--tertiary));
   border-radius: 50%;
-  padding: 11px;
   width: 46px;
   height: 46px;
   z-index: 2;
