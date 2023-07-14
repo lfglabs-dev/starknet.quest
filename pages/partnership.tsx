@@ -93,7 +93,9 @@ const Partnership: NextPage = () => {
 
             <div className={styles.stepsContainer}>
               <div className={styles.dots1}>
-                <Dots />
+                <OnScrollIntoView animation="fadeIn">
+                  <Dots />
+                </OnScrollIntoView>
               </div>
               <div className={styles.cross2}>
                 <Cross />
@@ -206,7 +208,9 @@ const Partnership: NextPage = () => {
             />
           </section>
           <div className={styles.dots2}>
-            <Dots />
+            <OnScrollIntoView animation="fadeIn">
+              <Dots />
+            </OnScrollIntoView>
           </div>
           <section
             className={[styles.section, styles.partnerSection].join(" ")}

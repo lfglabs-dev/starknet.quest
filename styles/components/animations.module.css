@@ -11,3 +11,12 @@
   transform: translateY(0);
   opacity: 1;
 }
+
+.fadeIn {
+  opacity: 0;
+  transition: 0.4s ease-in-out;
+}
+
+.fadeIn.active {
+  opacity: 1;
+}
