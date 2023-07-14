@@ -2,15 +2,18 @@ import { useInView } from "react-intersection-observer";
 import styles from "../../styles/components/animations.module.css";
 
 const OnScrollIntoView = ({
-  animation,
+  animation = "",
   children,
+  callback,
 }: {
-  animation: string;
+  animation?: string;
   children: React.ReactNode;
+  callback?: () => void;
 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     rootMargin: "-100px 0px",
+    onChange: (inView) => callback && callback(),
   });
 
   return (

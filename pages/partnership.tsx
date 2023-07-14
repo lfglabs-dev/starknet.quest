@@ -12,6 +12,9 @@ import Cross from "../components/shapes/cross";
 import Stats from "../components/UI/stats/stats";
 import Box from "../components/UI/box";
 import Dots from "../components/shapes/dots";
+import { useLottie } from "lottie-react";
+import JedieSwapLottie from "../public/visuals/JediswapLottie.json";
+import OnScrollIntoView from "../components/animations/onScrollIntoView";
 
 const Partnership: NextPage = () => {
   const router = useRouter();
@@ -19,6 +22,12 @@ const Partnership: NextPage = () => {
   const [featuredQuest, setFeaturedQuest] = useState<
     QuestDocument | undefined
   >();
+
+  const { View: JediSwapView, play: jediSwapPlay } = useLottie({
+    animationData: JedieSwapLottie,
+    loop: false,
+    autoplay: false,
+  });
 
   // this fetches all available quests
   useEffect(() => {
@@ -107,6 +116,15 @@ const Partnership: NextPage = () => {
                       "Unlock the potential of tailored Starknet Quests designed to align with your project's vision and values, providing everlasting, organic, and cost-effective marketing on users' Starknet Quest profiles",
                     icon: "/icons/clipboard.svg",
                     banner: "/visuals/inspiredByYourProject.webp",
+                    overlay: (
+                      <OnScrollIntoView
+                        callback={() => setTimeout(jediSwapPlay, 1000)}
+                      >
+                        <div className={styles.jediSwapLottie}>
+                          {JediSwapView}
+                        </div>
+                      </OnScrollIntoView>
+                    ),
                   },
                   {
                     title: "Airdrops are so 2021",

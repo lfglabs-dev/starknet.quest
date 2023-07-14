@@ -49,6 +49,9 @@ const Steps = ({
                   ].sort(() => (subTitleBefore ? -1 : 1))}
                   <p className={styles.description}>{step.description}</p>
                 </div>
+                <div className={styles.overlay}>
+                  {step.overlay ? step.overlay : null}
+                </div>
                 <div>
                   <img className={styles.banner} src={step.banner} />
                 </div>

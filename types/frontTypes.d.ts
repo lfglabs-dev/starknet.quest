@@ -118,4 +118,5 @@ type Step = {
   description: string;
   icon: string;
   banner: string;
+  overlay?: React.ReactNode;
 };
