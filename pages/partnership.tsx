@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/partnership.module.css";
-
-import { useRouter } from "next/router";
-import { QueryError, QuestDocument } from "../types/backTypes";
 import CategoryTitle from "../components/UI/titles/categoryTitle";
 import Steps from "../components/UI/steps";
 import Crosses from "../components/shapes/crosses";
@@ -17,36 +14,11 @@ import JedieSwapLottie from "../public/visuals/JediswapLottie.json";
 import OnScrollIntoView from "../components/animations/onScrollIntoView";
 
 const Partnership: NextPage = () => {
-  const router = useRouter();
-  const [quests, setQuests] = useState<QuestDocument[]>([]);
-  const [featuredQuest, setFeaturedQuest] = useState<
-    QuestDocument | undefined
-  >();
-
   const { View: JediSwapView, play: jediSwapPlay } = useLottie({
     animationData: JedieSwapLottie,
     loop: false,
     autoplay: false,
   });
-
-  // this fetches all available quests
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
-      .then((response) => response.json())
-      .then((data: QuestDocument[] | QueryError) => {
-        if (!(data as QueryError).error) {
-          setQuests(data as QuestDocument[]);
-          const activeQuests = (data as QuestDocument[]).filter(
-            (quest) => !quest.finished
-          );
-          setFeaturedQuest(
-            activeQuests.length >= 1
-              ? activeQuests[activeQuests.length - 1]
-              : undefined
-          );
-        }
-      });
-  }, [router]);
 
   useEffect(() => {
     const body = document.body;

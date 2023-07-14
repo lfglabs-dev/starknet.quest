@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../../../styles/components/stats.module.css";
 import Box from "../box";
 

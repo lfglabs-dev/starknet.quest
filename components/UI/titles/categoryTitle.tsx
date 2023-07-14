@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../../../styles/components/titles.module.css";
 import Corner from "../../shapes/corner";
 import Squares from "../../shapes/squares";

@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../../styles/components/steps.module.css";
 import shapeStyles from "../../styles/components/shapes.module.css";
 import VerticalBar from "../shapes/verticalBar";
