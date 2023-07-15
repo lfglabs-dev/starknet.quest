@@ -59,7 +59,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 
       <ModalMessage
         open={modalTxOpen}
-        title={"Your NFT is on it's way !"}
+        title="Your NFT is on it's way !"
         closeModal={() => setModalTxOpen(false)}
         message={
           <div className="mt-7 flex flex-col items-center justify-center text-center">

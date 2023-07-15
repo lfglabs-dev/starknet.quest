@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 
 const NotFound: NextPage = () => {
   return (
-    <div className={styles.screen}>
+    <div className={styles.screen404}>
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
           <h1 className="title">404 - Page Not Found</h1>
