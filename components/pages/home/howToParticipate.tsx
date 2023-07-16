@@ -1,4 +1,5 @@
-import Steps from "../../UI/steps";
+import React from "react";
+import Steps from "../../UI/steps/steps";
 import CategoryTitle from "../../UI/titles/categoryTitle";
 import Crosses from "../../shapes/crosses";
 

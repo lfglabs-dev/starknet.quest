@@ -32,11 +32,11 @@ const Crosses: FunctionComponent<CrossesProps> = ({
           }}
           className={styles.side}
         >
-          {[...Array(number)].map((i) => (
+          {[...Array(number)].map((_, index) => (
             <div
-              key={"cross_left_" + i}
+              key={"cross_left_" + index}
               className={styles.cross}
-              style={computeStyle(i - 5)}
+              style={computeStyle(index - 5)}
             >
               <Cross />
             </div>
@@ -50,11 +50,11 @@ const Crosses: FunctionComponent<CrossesProps> = ({
           }}
           className={styles.side}
         >
-          {[...Array(number)].map((i) => (
+          {[...Array(number)].map((_, index) => (
             <div
-              key={"cross_right_" + i}
+              key={"cross_right_" + index}
               className={styles.cross}
-              style={computeStyle(i)}
+              style={computeStyle(index)}
             >
               <Cross />
             </div>
