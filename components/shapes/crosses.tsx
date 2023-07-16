@@ -32,7 +32,7 @@ const Crosses: FunctionComponent<CrossesProps> = ({
           }}
           className={styles.side}
         >
-          {Array.from(Array(number).keys()).map((i) => (
+          {[...Array(number)].map((i) => (
             <div
               key={"cross_left_" + i}
               className={styles.cross}
@@ -50,7 +50,7 @@ const Crosses: FunctionComponent<CrossesProps> = ({
           }}
           className={styles.side}
         >
-          {Array.from(Array(number).keys()).map((i) => (
+          {[...Array(number)].map((i) => (
             <div
               key={"cross_right_" + i}
               className={styles.cross}
