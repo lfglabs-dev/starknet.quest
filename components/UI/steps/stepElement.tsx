@@ -18,25 +18,17 @@ const StepElement: FunctionComponent<StepElementProps> = ({
   steps,
 }) => {
   return (
-    <div>
+    <div className={styles.cardContainer}>
       <div className={styles.barsContainer}>
         <img className={styles.icon} src={step.icon} />
         {index !== steps.length - 1 && (
-          <div
-            className={[
-              styles.verticalBarContainer,
-              index % 2 && shapeStyles.even,
-            ].join(" ")}
-          >
+          <div className={styles.verticalBarContainer}>
             <VerticalBar />
           </div>
         )}
       </div>
       <OnScrollIntoView animation="slideInFromTop">
-        <div
-          key={"step_card_" + index}
-          className={[styles.card, index % 2 && styles.even].join(" ")}
-        >
+        <div key={"step_card_" + index} className={styles.card}>
           <div className={(subTitleBefore && styles.subTitleBefore) || ""}>
             {[
               <h1 key={`step_${index}_title`} className={styles.title}>

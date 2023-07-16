@@ -53,7 +53,7 @@
   z-index: -1;
 }
 
-.card.even::before {
+.cardContainer:nth-child(even) .card::before {
   background: linear-gradient(
     90deg,
     #437aba 0%,
@@ -102,7 +102,7 @@
   margin-bottom: 8px;
 }
 
-.card.even .subtitle {
+.cardContainer:nth-child(even) .card .subtitle {
   color: var(--tertiary);
 }
 
