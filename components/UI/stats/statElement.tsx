@@ -1,8 +1,13 @@
-import React from "react";
+import { FunctionComponent } from "react";
 import styles from "../../../styles/components/stats.module.css";
 import Box from "../box";
 
-const StatElement = ({ name, value }: { name: string; value: string }) => {
+type StatElementProps = {
+  name: string;
+  value: string;
+};
+
+const StatElement: FunctionComponent<StatElementProps> = ({ name, value }) => {
   return (
     <div className={styles.statElement}>
       <Box>

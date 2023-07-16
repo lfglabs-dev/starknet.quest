@@ -1,14 +1,17 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { useInView } from "react-intersection-observer";
 import styles from "../../styles/components/animations.module.css";
-const OnScrollIntoView = ({
-  animation = "",
-  children,
-  callback,
-}: {
+
+type OnScrollIntoViewProps = {
   animation?: string;
   children: React.ReactNode;
   callback?: () => void;
+};
+
+const OnScrollIntoView: FunctionComponent<OnScrollIntoViewProps> = ({
+  animation = "",
+  children,
+  callback,
 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -19,11 +22,7 @@ const OnScrollIntoView = ({
   return (
     <div
       ref={ref}
-      className={[
-        styles.onScrollIntoView,
-        styles[animation],
-        inView ? styles.active : "",
-      ].join(" ")}
+      className={[styles[animation], inView && styles.active].join(" ")}
     >
       {children}
     </div>

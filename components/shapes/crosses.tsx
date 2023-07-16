@@ -1,17 +1,19 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/shapes.module.css";
 import Cross from "./cross";
 
-const Crosses = ({
-  number = 2,
-  xDecal = 0,
-  leftSide = true,
-  rightSide = true,
-}: {
+type CrossesProps = {
   number?: number;
   xDecal?: number;
   leftSide?: boolean;
   rightSide?: boolean;
+};
+
+const Crosses: FunctionComponent<CrossesProps> = ({
+  number = 2,
+  xDecal = 0,
+  leftSide = true,
+  rightSide = true,
 }) => {
   const computeStyle = (i: number) => {
     const mutliplier = i % 2 ? 1 : -1;

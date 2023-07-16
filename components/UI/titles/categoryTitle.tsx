@@ -1,18 +1,20 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/titles.module.css";
 import Corner from "../../shapes/corner";
 import Squares from "../../shapes/squares";
 
-const CategoryTitle = ({
-  title,
-  subtitle,
-  corner = "topLeft",
-  squares = null,
-}: {
+type CategoryTitleProps = {
   title: string;
   subtitle: string;
   corner?: string | null;
   squares?: string | null;
+};
+
+const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
+  title,
+  subtitle,
+  corner = "topLeft",
+  squares = null,
 }) => {
   return (
     <div className={styles.container}>

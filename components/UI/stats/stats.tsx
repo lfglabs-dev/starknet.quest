@@ -1,17 +1,16 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/stats.module.css";
 import StatElement from "./statElement";
 
-const Stats = ({
-  title,
-  stats,
-}: {
+type StatsProps = {
   title: string;
   stats: {
     name: string;
     value: string;
   }[];
-}) => {
+};
+
+const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>{title}</h2>

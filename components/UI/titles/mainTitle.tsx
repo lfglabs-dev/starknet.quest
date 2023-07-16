@@ -1,20 +1,22 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/titles.module.css";
 import Corner from "../../shapes/corner";
 import Squares from "../../shapes/squares";
 
-const MainTitle = ({
-  title,
-  highlighted,
-  subtitle,
-  corner = "topLeft",
-  squares = null,
-}: {
+type MainTitleProps = {
   title: string;
   highlighted: string;
   subtitle: string;
   corner?: string | null;
   squares?: string | null;
+};
+
+const MainTitle: FunctionComponent<MainTitleProps> = ({
+  title,
+  highlighted,
+  subtitle,
+  corner = "topLeft",
+  squares = null,
 }) => {
   return (
     <div className={[styles.container, styles.mainTitleContainer].join(" ")}>

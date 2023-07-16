@@ -1,7 +1,11 @@
-import React from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import styles from "../../styles/components/box.module.css";
 
-const Box = ({ children }: { children: React.ReactNode }) => {
+type BoxProps = {
+  children: ReactNode;
+};
+
+const Box: FunctionComponent<BoxProps> = ({ children }) => {
   return <div className={styles.container}>{children}</div>;
 };
 
