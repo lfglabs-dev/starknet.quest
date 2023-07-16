@@ -65,16 +65,28 @@
   .mainTitle {
     width: 100%;
     font-size: max(min(7vw, 34px), 24px);
-    line-height: 8vw;
+    line-height: max(8vw, 25px);
     margin-top: 24px;
+    text-align: center;
   }
   .mainSubtitle {
     width: 100%;
     font-size: max(3vw, 16px);
     margin-top: 16px;
-    line-height: max(4vw, 18px);
+    line-height: max(4vw, 19px);
+    text-align: center;
   }
   .corner {
+    display: none;
+  }
+  .container {
+    position: relative;
+    padding: 0;
+    width: fit-content;
+    display: block;
+    margin: 0 auto;
+  }
+  .squares {
     display: none;
   }
 }

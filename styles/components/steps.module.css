@@ -141,6 +141,7 @@
     flex-direction: column;
     padding: 40px;
     height: unset;
+    margin-left: 0;
   }
   .icon {
     display: none;

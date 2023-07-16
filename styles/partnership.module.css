@@ -26,16 +26,17 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  margin: 2.5rem 0 1rem;
+  margin-left: 1rem;
+  height: 100vh;
 }
 
 .headerContent {
   display: flex;
-  padding: 1rem 128px;
+  padding: 0 128px;
   z-index: 4;
-  height: 512px;
   width: 100%;
   margin-top: 7vh;
+  height: 100%;
 }
 
 .headerImg {
@@ -45,16 +46,16 @@
   z-index: -6;
   width: min(900px, 70%);
   aspect-ratio: 1;
-  transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.1deg))
-    scale(min(calc(1 + var(--scroll) / 7000), 1.4));
+  transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.04deg))
+    scale(min(calc(1 + var(--scroll) / 10000), 1.4));
 }
 
 .mainTitleContainer {
-  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
+  transform: translateY(-45px);
 }
 
 .mainTitleContainer h1 {
@@ -89,8 +90,9 @@
 
 .main {
   background-color: var(--background);
-  width: 100%;
+  width: 100vw;
   z-index: 6;
+  margin: 0;
 }
 
 .section {
@@ -113,10 +115,7 @@
   }
   .mainTitleContainer {
     width: 100vw;
-    margin: 0;
-  }
-  .headerContent {
-    padding: 1rem 40px;
+    margin: 20px;
   }
   .header {
     width: 100vw;
@@ -125,6 +124,12 @@
   .jediSwapLottie {
     bottom: 45px;
     right: 140px;
+  }
+}
+
+@media (max-width: 800px) {
+  .headerContent {
+    padding: 0 0px;
   }
 }
 
@@ -138,6 +143,7 @@
   width: 100%;
   margin-top: 2rem;
   padding: 1rem;
+  flex-wrap: wrap;
 }
 
 .partnersContainer img {
@@ -165,4 +171,16 @@
 .dots2 {
   position: absolute;
   transform: translateY(-60px) translateX(70px);
+}
+
+@media screen and (max-width: 740px) {
+  .partnerSection {
+    padding: 2rem 24px 2rem;
+  }
+  .cross2 {
+    display: none;
+  }
+  .lastCrosses {
+    display: none;
+  }
 }

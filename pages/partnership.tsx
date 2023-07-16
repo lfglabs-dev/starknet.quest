@@ -39,7 +39,7 @@ const Partnership: NextPage = () => {
               <MainTitle
                 title="Unlock Starknet Quests:"
                 highlighted="Engage, Reward & Thrive"
-                subtitle="Experience a groundbreaking platform that revolutionizes user engagement and rewards through specialized on-chain quests on Starknet. Explore the possibilities, foster loyalty, and take your project to new heights."
+                subtitle="Experience a groundbreaking platform that revolutionizes user engagement and rewards through specialized on-chain quests on Starknet."
                 corner="topRight"
                 squares="bottomLeft"
               />
@@ -201,7 +201,9 @@ const Partnership: NextPage = () => {
                 <img src="/partners/AVNULogo.svg" />
               </div>
             </Box>
-            <Crosses leftSide={false} number={2} xDecal={-50} />
+            <div className={styles.lastCrosses}>
+              <Crosses leftSide={false} number={2} xDecal={-50} />
+            </div>
           </section>
         </main>
       </div>
