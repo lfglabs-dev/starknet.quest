@@ -11,6 +11,7 @@ const HowToParticipate = () => {
       <CategoryTitle
         title="How to Participate ?"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
+        corner="topLeft"
       />
       <div className={styles.stepsContainer}>
         <Steps

@@ -14,11 +14,12 @@ import JedieSwapLottie from "../public/visuals/JediswapLottie.json";
 import OnScrollIntoView from "../components/animations/onScrollIntoView";
 
 const Partnership: NextPage = () => {
-  const { View: JediSwapView, play: jediSwapPlay } = useLottie({
-    animationData: JedieSwapLottie,
-    loop: false,
-    autoplay: false,
-  });
+  const { View: JediSwapBannerLottieView, play: jediSwapBannerLottiePlay } =
+    useLottie({
+      animationData: JedieSwapLottie,
+      loop: false,
+      autoplay: false,
+    });
 
   useEffect(() => {
     const body = document.body;
@@ -60,7 +61,6 @@ const Partnership: NextPage = () => {
             <CategoryTitle
               title="Starknet Quests Lead the Way"
               subtitle="Revolutionizing Rewards"
-              corner={null}
             />
 
             <div className={styles.stepsContainer}>
@@ -92,10 +92,12 @@ const Partnership: NextPage = () => {
                     banner: "/visuals/inspiredByYourProject.webp",
                     overlay: (
                       <OnScrollIntoView
-                        callback={() => setTimeout(jediSwapPlay, 1000)}
+                        callback={() =>
+                          setTimeout(jediSwapBannerLottiePlay, 1000)
+                        }
                       >
                         <div className={styles.jediSwapLottie}>
-                          {JediSwapView}
+                          {JediSwapBannerLottieView}
                         </div>
                       </OnScrollIntoView>
                     ),
@@ -191,14 +193,13 @@ const Partnership: NextPage = () => {
               <CategoryTitle
                 subtitle="Our partners"
                 title="They worked with us"
-                corner={null}
               />
               <div className={styles.partnersContainer}>
                 <img src="/partners/braavosLogo.svg" />
                 <img src="/partners/zklendLogo.svg" />
-                <img src="/partners/SithswapLogo.svg" />
-                <img src="/partners/JEDIswapLogo.svg" />
-                <img src="/partners/AVNULogo.svg" />
+                <img src="/partners/sithswapLogo.svg" />
+                <img src="/partners/jediswapLogo.svg" />
+                <img src="/partners/avnuLogo.svg" />
               </div>
             </Box>
             <div className={styles.lastCrosses}>

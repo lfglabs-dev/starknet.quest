@@ -120,3 +120,6 @@ type Step = {
   banner: string;
   overlay?: React.ReactNode;
 };
+
+type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";

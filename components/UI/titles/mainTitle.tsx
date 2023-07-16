@@ -7,15 +7,15 @@ type MainTitleProps = {
   title: string;
   highlighted: string;
   subtitle: string;
-  corner?: string | null;
-  squares?: string | null;
+  corner?: CornerStyle;
+  squares?: SquareStyle;
 };
 
 const MainTitle: FunctionComponent<MainTitleProps> = ({
   title,
   highlighted,
   subtitle,
-  corner = "topLeft",
+  corner = null,
   squares = null,
 }) => {
   return (

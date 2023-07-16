@@ -1,13 +1,15 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/steps.module.css";
 import StepElement from "./stepElement";
 
-const Steps = ({
-  subTitleBefore = false,
-  steps,
-}: {
+type StepsProps = {
   subTitleBefore?: boolean;
   steps: Step[];
+};
+
+const Steps: FunctionComponent<StepsProps> = ({
+  subTitleBefore = false,
+  steps,
 }) => {
   return (
     <div className={styles.container}>

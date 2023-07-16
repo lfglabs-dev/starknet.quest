@@ -6,15 +6,15 @@ import Squares from "../../shapes/squares";
 type CategoryTitleProps = {
   title: string;
   subtitle: string;
-  corner?: string | null;
-  squares?: string | null;
+  corner?: CornerStyle;
+  squares?: SquareStyle;
 };
 
 const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
   title,
   subtitle,
-  corner = "topLeft",
-  squares = null,
+  corner,
+  squares,
 }) => {
   return (
     <div className={styles.container}>
