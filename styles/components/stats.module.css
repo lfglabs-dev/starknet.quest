@@ -27,21 +27,18 @@
   align-items: flex-start;
   gap: 48px;
   align-self: stretch;
-  overflow-x: scroll;
+  flex-wrap: wrap;
 }
 
 .statElement {
   flex: 1 0 0;
-  aspect-ratio: 362 / 164;
+  min-width: fit-content;
+  min-height: fit-content;
 }
 
 @media screen and (max-width: 740px) {
   .container {
     margin: 0 24px 64px;
-  }
-  .statElement {
-    flex: 1 0 0;
-    aspect-ratio: unset;
   }
 }
 
