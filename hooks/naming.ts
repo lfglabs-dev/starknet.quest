@@ -1,14 +1,7 @@
 import BN from "bn.js";
 import { useContext, useEffect, useState } from "react";
-import { utils } from "starknetid.js";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import { basicAlphabet } from "../utils/constants";
-
-// TODO: remove and use utils.decodeDomain when dapp uses starknet.js v5
-export function useDecoded(encoded: BN[]): string {
-  const convertEncoded = encoded.map((element) => BigInt(element.toString()));
-  return utils.decodeDomain(convertEncoded);
-}
 
 type DomainData = {
   domain: string;

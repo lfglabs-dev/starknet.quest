@@ -3,12 +3,13 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
-import { useConnectors, useAccount, useStarknet } from "@starknet-react/core";
+import { useConnectors, useAccount, useProvider } from "@starknet-react/core";
 import Wallets from "./wallets";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
+import { constants } from "starknet";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -18,7 +19,7 @@ const Navbar: FunctionComponent = () => {
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
 
   const { available, connect, disconnect } = useConnectors();
-  const { library } = useStarknet();
+  const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -41,22 +42,15 @@ const Navbar: FunctionComponent = () => {
   useEffect(() => {
     if (!isConnected) return;
 
-    const STARKNET_NETWORK = {
-      mainnet: "0x534e5f4d41494e",
-      testnet: "0x534e5f474f45524c49",
-    };
-
-    if (library.chainId === STARKNET_NETWORK.testnet && network === "mainnet") {
-      setIsWrongNetwork(true);
-    } else if (
-      library.chainId === STARKNET_NETWORK.mainnet &&
-      network === "testnet"
-    ) {
-      setIsWrongNetwork(true);
-    } else {
-      setIsWrongNetwork(false);
-    }
-  }, [library, network, isConnected]);
+    provider.getChainId().then((chainId) => {
+      const isWrongNetwork =
+        (chainId === constants.StarknetChainId.SN_GOERLI &&
+          network === "mainnet") ||
+        (chainId === constants.StarknetChainId.SN_MAIN &&
+          network === "testnet");
+      setIsWrongNetwork(isWrongNetwork);
+    });
+  }, [provider, network, isConnected]);
 
   function handleNav(): void {
     setNav(!nav);
