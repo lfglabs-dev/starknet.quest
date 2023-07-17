@@ -45,7 +45,7 @@
   margin-top: 32px;
 }
 
-@media screen and (max-width: 740px) {
+@media screen and (max-width: 950px) {
   .mainTitle {
     width: 100%;
     font-size: 40px;
@@ -79,7 +79,7 @@
   .corner {
     display: none;
   }
-  .container {
+  .mainTitleContainer {
     position: relative;
     padding: 0;
     width: fit-content;
