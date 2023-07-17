@@ -2,14 +2,11 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
-import {
-  Call,
-  useContractWrite,
-  useTransactionManager,
-} from "@starknet-react/core";
+import { useContractWrite, useTransactionManager } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
+import { Call } from "starknet";
 
 type RewardProps = {
   onClick: () => void;
