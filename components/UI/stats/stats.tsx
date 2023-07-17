@@ -3,7 +3,7 @@ import styles from "../../../styles/components/stats.module.css";
 import StatElement from "./statElement";
 
 type StatsProps = {
-  title: string;
+  title?: string;
   stats: {
     name: string;
     value: string;

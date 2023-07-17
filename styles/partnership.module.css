@@ -99,12 +99,6 @@
   z-index: 6;
 }
 
-.jediSwapLottie {
-  position: absolute;
-  bottom: 65px;
-  right: 185px;
-}
-
 @media (max-width: 950px) {
   .headerImg {
     display: none;
@@ -119,10 +113,6 @@
   .header {
     width: 100vw;
     margin: 0;
-  }
-  .jediSwapLottie {
-    bottom: 45px;
-    right: 140px;
   }
 }
 
@@ -143,6 +133,7 @@
   margin-top: 2rem;
   padding: 1rem;
   flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .partnersContainer img {

@@ -9,18 +9,9 @@ import Cross from "../components/shapes/cross";
 import Stats from "../components/UI/stats/stats";
 import Box from "../components/UI/box";
 import Dots from "../components/shapes/dots";
-import { useLottie } from "lottie-react";
-import JedieSwapLottie from "../public/visuals/JediswapLottie.json";
 import OnScrollIntoView from "../components/animations/onScrollIntoView";
 
 const Partnership: NextPage = () => {
-  const { View: jediSwapBannerLottieView, play: jediSwapBannerLottiePlay } =
-    useLottie({
-      animationData: JedieSwapLottie,
-      loop: false,
-      autoplay: false,
-    });
-
   useEffect(() => {
     const body = document.body;
     const parent = body.parentNode as HTMLElement;
@@ -40,7 +31,7 @@ const Partnership: NextPage = () => {
               <MainTitle
                 title="Unlock Starknet Quests:"
                 highlighted="Engage, Reward & Thrive"
-                subtitle="Experience a groundbreaking platform that revolutionizes user engagement and rewards through specialized on-chain quests on Starknet."
+                subtitle="Experience a Starknet native platform that revolutionizes user engagement and web3 marketing with on-chain quests."
                 corner="topRight"
                 squares="bottomLeft"
               />
@@ -59,8 +50,8 @@ const Partnership: NextPage = () => {
         <main className={styles.main}>
           <section className={styles.section}>
             <CategoryTitle
-              title="Starknet Quests Lead the Way"
-              subtitle="Revolutionizing Rewards"
+              title="Why Starknet Quest ?"
+              subtitle="Revolutionizing web3 Marketing"
             />
 
             <div className={styles.stepsContainer}>
@@ -76,63 +67,44 @@ const Partnership: NextPage = () => {
                 subTitleBefore={false}
                 steps={[
                   {
-                    title: "Starknet On-Chain quests",
-                    subtitle: "/Seamless onboarding, authentic rewards",
+                    title: "Starknet native Quests",
+                    subtitle: "Seamless onboarding",
                     description:
-                      "Accelerate user onboarding and reward authenticity with seamless Starknet quests that showcase the unique capabilities and benefits of the Starknet ecosystem.",
+                      "Accelerate user onboarding and reward authenticity with on-chain quests that showcase the unique capabilities and benefits of your Starknet app.",
                     icon: "/icons/starknet.svg",
                     banner: "/visuals/getYourStarkDomain.webp",
                   },
                   {
-                    title: "Inspired by your project",
-                    subtitle: "/Tailored quests, organic marketing",
+                    title: "Completely Customizable",
+                    subtitle: "Mix on and off chain tasks",
                     description:
-                      "Unlock the potential of tailored Starknet Quests designed to align with your project's vision and values, providing everlasting, organic, and cost-effective marketing on users' Starknet Quest profiles",
+                      "Unlock the potential of a quest designed to align with your project's style and need. Quest's tasks and rewards are completely programmable with on and off-chain services to perfectly fit your need. ",
                     icon: "/icons/clipboard.svg",
-                    banner: "/visuals/inspiredByYourProject.webp",
-                    overlay: (
-                      <OnScrollIntoView
-                        callback={() =>
-                          setTimeout(jediSwapBannerLottiePlay, 1000)
-                        }
-                      >
-                        <div className={styles.jediSwapLottie}>
-                          {jediSwapBannerLottieView}
-                        </div>
-                      </OnScrollIntoView>
-                    ),
+                    banner: "/visuals/buildYourStarknetLand.webp",
                   },
                   {
                     title: "Airdrops are so 2021",
-                    subtitle: "/Authentic engagement, better approach",
+                    subtitle: "Authentic engagement",
                     description:
-                      "Move beyond ineffective token distribution. Our innovative approach ensures genuine user engagement, leaving behind the flaws of traditional airdrops. Experience a better way to reward authenticity and provide real value to users",
+                      "Move beyond ineffective reward distribution. Experience a better way to reward authenticity without spending your precious tokens.",
                     icon: "/icons/user.svg",
                     banner: "/visuals/airdropsAreSo2021.webp",
                   },
                   {
                     title: "Meaningful Rewards",
-                    subtitle: "/Empower, captivate, foster loyalty",
+                    subtitle: "Empower, captivate, foster loyalty",
                     description:
-                      "Empower your community with meaningful rewards that hold intrinsic value within the Starknet ecosystem. Cultivate loyalty and unlock new dimensions of engagement through Starknet Quests, offering unique and captivating experiences.",
+                      "Cultivate loyalty and unlock new dimensions of engagement through Starknet Quests, offering a unique gamification experience.",
                     icon: "/icons/crown.svg",
                     banner: "/visuals/meaningfulRewards.webp",
                   },
                   {
                     title: "Sybil-resistant marketing",
-                    subtitle: "/Genuine interactions, fraud protection",
+                    subtitle: "Genuine interactions, fraud protection",
                     description:
-                      "Ensure genuine user interactions and protect your community from fraudulent activities by leveraging secure Starknet Quests, eliminating bots, and fostering authentic growth and sustainable success.",
+                      "Eliminate bots and robots from your campaigns and stimulate your growth with real Starknet users.",
                     icon: "/icons/shield.svg",
                     banner: "/visuals/sybilResistantMarketing.webp",
-                  },
-                  {
-                    title: "A Quest that fits your need",
-                    subtitle: "/Customized quests, maximum participation",
-                    description:
-                      "Customize Starknet Quests to meet your project's needs, seamlessly executing captivating quests on the blockchain or integrating with external interactions, maximizing user participation and satisfaction.",
-                    icon: "/icons/verified.svg",
-                    banner: "/visuals/buildYourStarknetLand.webp",
                   },
                 ]}
               />
@@ -141,42 +113,25 @@ const Partnership: NextPage = () => {
           </section>
           <section className={styles.section}>
             <CategoryTitle
-              title="Starknet Quests Lead the Way"
-              subtitle="Revolutionizing Rewards"
+              title="About Starknet Quests"
+              subtitle="Revolutionizing web3 Marketing"
               corner="bottomLeft"
               squares="bottomRight"
             />
+
             <Stats
-              title="Community interactions"
               stats={[
                 {
-                  name: "Lorem Ipsum",
-                  value: "3x",
+                  name: "Twitter subs earned on average",
+                  value: "+28 676",
                 },
                 {
-                  name: "Lorem Ipsum",
-                  value: "+10%",
+                  name: "TVL earned by DeFi protocols",
+                  value: "+140k$",
                 },
                 {
-                  name: "Lorem Ipsum",
-                  value: "40",
-                },
-              ]}
-            />
-            <Stats
-              title="Business Returns Examples"
-              stats={[
-                {
-                  name: "Lorem Ipsum",
-                  value: "3250",
-                },
-                {
-                  name: "Lorem Ipsum",
-                  value: "478x",
-                },
-                {
-                  name: "Lorem Ipsum",
-                  value: "78%",
+                  name: "Unique visitors on your website",
+                  value: "+31 000",
                 },
               ]}
             />
