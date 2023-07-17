@@ -43,19 +43,12 @@ const Navbar: FunctionComponent = () => {
     if (!isConnected) return;
 
     provider.getChainId().then((chainId) => {
-      if (
-        chainId === constants.StarknetChainId.SN_GOERLI &&
-        network === "mainnet"
-      ) {
-        setIsWrongNetwork(true);
-      } else if (
-        chainId === constants.StarknetChainId.SN_MAIN &&
-        network === "testnet"
-      ) {
-        setIsWrongNetwork(true);
-      } else {
-        setIsWrongNetwork(false);
-      }
+      const isWrongNetwork =
+        (chainId === constants.StarknetChainId.SN_GOERLI &&
+          network === "mainnet") ||
+        (chainId === constants.StarknetChainId.SN_MAIN &&
+          network === "testnet");
+      setIsWrongNetwork(isWrongNetwork);
     });
   }, [provider, network, isConnected]);
 
