@@ -31,7 +31,7 @@ const PieChart: FunctionComponent = () => {
   useEffect(() => {
     // connector is of type Connector<any> in starknet-react
     // but _wallet which is supposed to be of type IStarknetWindowObject is set as private
-    if (connector && connector.id() === "braavos") {
+    if (connector && connector.id === "braavos") {
       setBraavosWallet((connector as any)._wallet);
     }
   }, [connector]);
