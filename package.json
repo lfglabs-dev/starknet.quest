@@ -21,6 +21,7 @@
     "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "chart.js": "^4.3.0",
+    "get-starknet-core": "^3.1.0",
     "lottie-react": "^2.4.0",
     "mongodb": "^4.12.1",
     "next": "12.2.5",
