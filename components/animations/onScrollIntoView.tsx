@@ -22,7 +22,7 @@ const OnScrollIntoView: FunctionComponent<OnScrollIntoViewProps> = ({
   return (
     <div
       ref={ref}
-      className={[styles[animation], inView && styles.active].join(" ")}
+      className={`${styles[animation]} ${inView && styles.active}`}
     >
       {children}
     </div>

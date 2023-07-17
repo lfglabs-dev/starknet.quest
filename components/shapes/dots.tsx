@@ -6,11 +6,7 @@ type DotsProps = {
   number?: number;
 };
 
-const Dots: FunctionComponent<DotsProps> = ({
-  number = 5,
-}: {
-  number?: number;
-}) => {
+const Dots: FunctionComponent<DotsProps> = ({ number = 5 }) => {
   return (
     <div className={styles.dots}>
       {Array.from(Array(number).keys()).map((i) => (

@@ -15,18 +15,18 @@ const MainTitle: FunctionComponent<MainTitleProps> = ({
   title,
   highlighted,
   subtitle,
-  corner = null,
-  squares = null,
+  corner,
+  squares,
 }) => {
   return (
-    <div className={[styles.container, styles.mainTitleContainer].join(" ")}>
+    <div className={`${styles.container} ${styles.mainTitleContainer}`}>
       {corner && (
-        <div className={[styles.corner, styles[corner]].join(" ")}>
+        <div className={`${styles.corner} ${styles[corner]}`}>
           <Corner />
         </div>
       )}
       {squares && (
-        <div className={[styles.squares, styles[squares]].join(" ")}>
+        <div className={`${styles.squares} ${styles[squares]}`}>
           <Squares />
         </div>
       )}

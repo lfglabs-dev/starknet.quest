@@ -14,7 +14,7 @@ import JedieSwapLottie from "../public/visuals/JediswapLottie.json";
 import OnScrollIntoView from "../components/animations/onScrollIntoView";
 
 const Partnership: NextPage = () => {
-  const { View: JediSwapBannerLottieView, play: jediSwapBannerLottiePlay } =
+  const { View: jediSwapBannerLottieView, play: jediSwapBannerLottiePlay } =
     useLottie({
       animationData: JedieSwapLottie,
       loop: false,
@@ -53,7 +53,7 @@ const Partnership: NextPage = () => {
           <div className={styles.cross1}>
             <Cross />
           </div>
-          <div className={[styles.divider, styles.dividerGradient].join(" ")} />
+          <div className={`${styles.divider} ${styles.dividerGradient}`} />
           <img src="/utils/headerDivider.svg" className={styles.divider} />
         </header>
         <main className={styles.main}>
@@ -97,7 +97,7 @@ const Partnership: NextPage = () => {
                         }
                       >
                         <div className={styles.jediSwapLottie}>
-                          {JediSwapBannerLottieView}
+                          {jediSwapBannerLottieView}
                         </div>
                       </OnScrollIntoView>
                     ),
@@ -186,9 +186,7 @@ const Partnership: NextPage = () => {
               <Dots />
             </OnScrollIntoView>
           </div>
-          <section
-            className={[styles.section, styles.partnerSection].join(" ")}
-          >
+          <section className={`${styles.section} ${styles.partnerSection}`}>
             <Box>
               <CategoryTitle
                 subtitle="Our partners"

@@ -2,7 +2,6 @@ import React from "react";
 import Steps from "../../UI/steps/steps";
 import CategoryTitle from "../../UI/titles/categoryTitle";
 import Crosses from "../../shapes/crosses";
-
 import styles from "../../../styles/components/pages/home/howToParticipate.module.css";
 
 const HowToParticipate = () => {

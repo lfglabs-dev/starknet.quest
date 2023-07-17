@@ -4,7 +4,7 @@ import styles from "../../styles/components/shapes.module.css";
 const Corner = () => {
   return (
     <svg
-      className={[styles.shape, styles.corner].join(" ")}
+      className={`${styles.shape} ${styles.corner}`}
       width="23"
       height="23"
       viewBox="0 0 23 23"

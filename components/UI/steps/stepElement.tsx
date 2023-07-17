@@ -1,4 +1,3 @@
-import shapeStyles from "../../../styles/components/shapes.module.css";
 import VerticalBar from "../../shapes/verticalBar";
 import OnScrollIntoView from "../../animations/onScrollIntoView";
 import styles from "../../../styles/components/steps.module.css";
@@ -29,20 +28,20 @@ const StepElement: FunctionComponent<StepElementProps> = ({
       </div>
       <OnScrollIntoView animation="slideInFromTop">
         <div key={"step_card_" + index} className={styles.card}>
-          <div className={(subTitleBefore && styles.subTitleBefore) || ""}>
-            {[
+          <div>
+            <div className={(subTitleBefore && styles.subTitleBefore) || ""}>
               <h1 key={`step_${index}_title`} className={styles.title}>
                 {step.title}
-              </h1>,
+              </h1>
               <h2 key={`step_${index}_subtitle`} className={styles.subtitle}>
                 {step.subtitle}
-              </h2>,
-            ].sort(() => (subTitleBefore ? -1 : 1))}
+              </h2>
+            </div>
             <p className={styles.description}>{step.description}</p>
           </div>
-          <div className={styles.overlay}>
-            {step.overlay ? step.overlay : null}
-          </div>
+          {step.overlay ? (
+            <div className={styles.overlay}>{step.overlay}</div>
+          ) : null}
           <div>
             <img className={styles.banner} src={step.banner} />
           </div>

@@ -17,16 +17,14 @@ const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
   squares,
 }) => {
   return (
-    <div
-      className={[styles.container, styles.categoryTitleContainer].join(" ")}
-    >
+    <div className={`${styles.container} ${styles.categoryTitleContainer}`}>
       {corner && (
-        <div className={[styles.corner, styles[corner]].join(" ")}>
+        <div className={`${styles.corner} ${styles[corner]}`}>
           <Corner />
         </div>
       )}
       {squares && (
-        <div className={[styles.squares, styles[squares]].join(" ")}>
+        <div className={`${styles.squares} ${styles[squares]}`}>
           <Squares />
         </div>
       )}
