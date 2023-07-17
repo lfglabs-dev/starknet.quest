@@ -21,6 +21,7 @@
   --background: #101012;
   --background600: #29282b;
   --nimiq-ease: cubic-bezier(0.25, 0, 0, 1);
+  --shapes: #66666f;
 }
 
 html,
