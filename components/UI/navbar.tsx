@@ -6,17 +6,17 @@ import Button from "./button";
 import {
   useConnectors,
   useAccount,
-  useStarknet,
-  useTransactions,
+  useProvider,
   useTransactionManager,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
+import { constants } from "starknet";
 import ModalWallet from "./modalWallet";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { CircularProgress } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -26,7 +26,7 @@ const Navbar: FunctionComponent = () => {
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
   const { available, connect, disconnect } = useConnectors();
-  const { library } = useStarknet();
+  const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -36,24 +36,7 @@ const Navbar: FunctionComponent = () => {
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const { hashes } = useTransactionManager();
-  const transactions = useTransactions({ hashes, watch: true });
   const [showWallet, setShowWallet] = useState<boolean>(false);
-
-  // A useEffect that logs hashes and transactions
-  useEffect(() => {
-    console.log("hashes:", hashes);
-    console.log("hashes:", transactions);
-  }, [hashes, transactions]);
-
-  // TODO: Check for starknet react fix and delete that code
-  useEffect(() => {
-    const interval = setInterval(() => {
-      for (const tx of transactions) {
-        tx.refetch();
-      }
-    }, 3_000);
-    return () => clearInterval(interval);
-  }, [transactions?.length]);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
@@ -68,32 +51,15 @@ const Navbar: FunctionComponent = () => {
   useEffect(() => {
     if (!isConnected) return;
 
-    const STARKNET_NETWORK = {
-      mainnet: "0x534e5f4d41494e",
-      testnet: "0x534e5f474f45524c49",
-    };
-
-    if (library.chainId === STARKNET_NETWORK.testnet && network === "mainnet") {
-      setIsWrongNetwork(true);
-    } else if (
-      library.chainId === STARKNET_NETWORK.mainnet &&
-      network === "testnet"
-    ) {
-      setIsWrongNetwork(true);
-    } else {
-      setIsWrongNetwork(false);
-    }
-  }, [library, network, isConnected]);
-
-  useEffect(() => {
-    if (transactions) {
-      // Give the number of tx that are loading (I use any because there is a problem on Starknet React types)
-      setTxLoading(
-        transactions.filter((tx) => (tx?.data as any)?.status === "RECEIVED")
-          .length
-      );
-    }
-  }, [transactions]);
+    provider.getChainId().then((chainId) => {
+      const isWrongNetwork =
+        (chainId === constants.StarknetChainId.SN_GOERLI &&
+          network === "mainnet") ||
+        (chainId === constants.StarknetChainId.SN_MAIN &&
+          network === "testnet");
+      setIsWrongNetwork(isWrongNetwork);
+    });
+  }, [provider, network, isConnected]);
 
   function disconnectByClick(): void {
     disconnect();
@@ -160,6 +126,9 @@ const Navbar: FunctionComponent = () => {
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
+              <Link href="/partnership">
+                <li className={styles.menuItem}>Partnership</li>
+              </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
@@ -250,6 +219,14 @@ const Navbar: FunctionComponent = () => {
               </div>
               <div className="py-4 flex flex-col">
                 <ul className="uppercase text-babe-blue">
+                  <Link href="/partnership">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Partnership
+                    </li>
+                  </Link>
                   <Link href="/">
                     <li
                       onClick={() => setNav(false)}
@@ -308,7 +285,8 @@ const Navbar: FunctionComponent = () => {
         open={showWallet}
         closeModal={() => setShowWallet(false)}
         disconnectByClick={disconnectByClick}
-        transactions={transactions}
+        hashes={hashes}
+        setTxLoading={setTxLoading}
       />
       <Wallets
         closeWallet={() => setHasWallet(false)}

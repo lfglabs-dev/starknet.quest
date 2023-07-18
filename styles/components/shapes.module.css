@@ -1,0 +1,59 @@
+.shape {
+  stroke: var(--shapes);
+}
+
+.crossContainer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  display: flex;
+}
+
+.crossContainer .side {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 200px;
+  align-items: center;
+}
+
+.crossContainer .cross {
+  margin: auto 0;
+}
+
+.verticalBar {
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  margin: auto;
+  transform: translateX(-50%);
+  opacity: 0.5;
+  background: linear-gradient(45deg, #70abee 0%, #6affaf 50%, #70abee 100%);
+  -webkit-mask-image: url("/masks/verticalBarMask.png");
+  mask-image: url("/masks/verticalBarMask.png");
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+.dots {
+  display: flex;
+  flex-direction: column;
+  width: 2px;
+  padding-top: -28px;
+}
+
+.dot {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: var(--shapes);
+  margin-top: 26px;
+}
+
+.dot:first-child {
+  margin-top: 0;
+}

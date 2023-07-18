@@ -7,6 +7,7 @@ import QuestsSkeleton from "../components/skeletons/questsSkeleton";
 
 import { useRouter } from "next/router";
 import { QueryError, QuestDocument } from "../types/backTypes";
+import HowToParticipate from "../components/pages/home/howToParticipate";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -73,6 +74,7 @@ const Quests: NextPage = () => {
             <QuestsSkeleton />
           )}
         </div>
+        <HowToParticipate />
       </div>
     </div>
   );

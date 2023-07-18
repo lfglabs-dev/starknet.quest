@@ -19,6 +19,7 @@
   flex-direction: column;
   text-align: center;
   margin-top: 3rem;
+  overflow: hidden;
 }
 
 .questContainer {

@@ -33,7 +33,7 @@ const AddressOrDomain: NextPage = () => {
   const [userNft, setUserNft] = useState<AspectNftProps[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [unusedAssets, setUnusedAssets] = useState<AspectNftProps[]>([]);
-  const isBraavosWallet = connector && connector.id() === "braavos";
+  const isBraavosWallet = connector && connector.id === "braavos";
 
   // Filtered NFTs
   const NFTContracts = [
@@ -54,7 +54,7 @@ const AddressOrDomain: NextPage = () => {
       }
 
       const lastConnectedConnector = connectors.find(
-        (connector) => connector.id() === lastConnectedConnectorId
+        (connector) => connector.id === lastConnectedConnectorId
       );
       if (lastConnectedConnector === undefined) {
         return;

@@ -6,7 +6,7 @@ import NftDisplay from "../../components/quests/nftDisplay";
 import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
-import { Call, useAccount, useStarknet } from "@starknet-react/core";
+import { useAccount, useProvider } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import { hexToDecimal } from "../../utils/feltService";
 import {
@@ -15,8 +15,7 @@ import {
   QuestDocument,
   UserTask,
 } from "../../types/backTypes";
-import { Contract } from "starknet";
-import BN from "bn.js";
+import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
@@ -47,7 +46,7 @@ const QuestPage: NextPage = () => {
     error_msg: errorMsg,
   } = router.query;
   const { address } = useAccount();
-  const { library } = useStarknet();
+  const { provider } = useProvider();
 
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
@@ -156,21 +155,34 @@ const QuestPage: NextPage = () => {
         const perContractRewards = eligibleRewards[contractAddr];
         const calldata = [];
         for (const reward of perContractRewards) {
-          calldata.push([
-            questId as string,
-            reward.task_id.toString(),
-            address as string,
-          ]);
+          calldata.push({
+            quest_id: questId as string,
+            task_id: reward.task_id.toString(),
+            user_addr: address as string,
+          });
         }
-        const contract = new Contract(quests_nft_abi, contractAddr, library);
+        const contract = new Contract(quests_nft_abi, contractAddr, provider);
 
-        const result = await (
-          await contract.call("get_tasks_status", [calldata])
-        ).status.map((x: BN) => x.toNumber());
-        const unclaimedPerContractRewards = perContractRewards.filter(
-          (_, index) => result[index] === 0
-        );
-        unclaimed = unclaimed.concat(unclaimedPerContractRewards);
+        const response = await contract.call("get_tasks_status", [calldata]);
+        if (
+          typeof response === "object" &&
+          response !== null &&
+          !Array.isArray(response)
+        ) {
+          const status = response["status"];
+
+          if (Array.isArray(status)) {
+            const result = status.map((x: any) => {
+              if (typeof x === "bigint") {
+                return Number(x);
+              }
+            });
+            const unclaimedPerContractRewards = perContractRewards.filter(
+              (_, index) => result[index] === 0
+            );
+            unclaimed = unclaimed.concat(unclaimedPerContractRewards);
+          }
+        }
       }
       setUnclaimedRewards(unclaimed);
     })();
@@ -186,7 +198,7 @@ const QuestPage: NextPage = () => {
         calldata: [
           reward.token_id,
           0,
-          questId?.toString(),
+          questId as string,
           reward.task_id,
           reward.sig[0],
           reward.sig[1],

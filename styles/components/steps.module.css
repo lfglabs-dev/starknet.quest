@@ -1,0 +1,169 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.cards {
+  max-width: min(1000px, calc(100% - 32px));
+  text-align: left;
+  margin-top: 42px;
+}
+
+.card {
+  display: flex;
+  padding: 40px 64px 40px 0px;
+  gap: 56px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, var(--background), #070708);
+  background-blend-mode: overlay;
+  position: relative;
+  margin-bottom: 40px;
+  margin-left: 112px;
+  height: 280px;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(5deg, var(--background) 80%, transparent);
+  border-radius: 30px;
+  z-index: -1;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
+  border-radius: 30px;
+  z-index: -1;
+}
+
+.cardContainer:nth-child(even) .card::before {
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 45%,
+    #00fbff 60%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
+}
+
+.barsContainer {
+  transform: translateY(40px);
+}
+
+.icon {
+  position: absolute;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  z-index: 2;
+}
+
+.title {
+  color: var(--secondary);
+  font-family: Sora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--primary);
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  margin-top: 8px;
+}
+
+.subTitleBefore {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.subTitleBefore .subtitle {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.cardContainer:nth-child(even) .card .subtitle {
+  color: var(--tertiary);
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  margin-top: 16px;
+  color: #f8f7f7;
+  font-family: Sora;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px;
+  opacity: 0.8;
+  max-width: 420px;
+}
+
+.banner {
+  width: 250px;
+}
+
+.verticalBarContainer {
+  position: absolute;
+  margin-left: 23px;
+  z-index: 1;
+  height: 274px;
+  transform: translateY(46px);
+}
+
+@media (max-width: 950px) {
+  .cards {
+    max-width: min(400px, calc(100% - 16px));
+  }
+  .card {
+    flex-direction: column;
+    padding: 40px;
+    height: unset;
+    margin-left: 0;
+  }
+  .icon {
+    display: none;
+  }
+  .banner {
+    width: 100%;
+  }
+  .verticalBarContainer {
+    display: none;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
