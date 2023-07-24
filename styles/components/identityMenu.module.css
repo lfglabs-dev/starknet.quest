@@ -1,0 +1,109 @@
+.actionsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clickableActionPrimary,
+.clickableActionSecondary {
+  /* Frame 2 */
+  box-sizing: border-box;
+
+  /* Auto layout */
+  margin-top: 15px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 32px;
+  gap: 8px;
+  width: 358px;
+  background: radial-gradient(
+    382.53% 14823.28% at 46.39% 50%,
+    --background 0%,
+    --background600 100%
+  );
+
+  /* Secondary/700 */
+  border-width: 2px 2px 2px 2px;
+  border-style: solid;
+  border-color: var(--secondary);
+
+  /* Button */
+  box-shadow: 0px 6px 80px rgba(191, 158, 123, 0.07);
+  border-radius: 20px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+.clickableActionAutoWidth {
+  width: auto;
+}
+
+.clickableActionPrimary {
+  border-color: var(--primary);
+}
+
+.clickableActionSecondary:active,
+.clickableActionPrimary:active {
+  transform: translateY(1px);
+}
+
+.clickableActionTitle {
+  /* Button/16px */
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  text-align: left;
+  /* identical to box height, or 150% */
+
+  /* Secondary/700 */
+  color: var(--secondary);
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.clickableActionDescription {
+  font-size: 12px;
+  text-align: left;
+}
+
+.viewMore {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.clickableIconPrimary,
+.clickableIconSecondary {
+  background-color: var(--primary300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25%;
+  width: 45px;
+  height: 45px;
+}
+
+.clickableIconSecondary {
+  background-color: rgba(128, 128, 128, 0.204);
+}
+
+@media (max-width: 1024px) {
+  .clickableActionPrimary,
+  .clickableActionSecondary {
+    width: 100%;
+  }
+}
