@@ -1,9 +1,14 @@
+.screen404,
 .screen {
   z-index: 0;
   position: relative;
   padding-top: 12vh;
   background-color: var(--background);
   width: 100%;
+}
+
+.screen404 {
+  height: 100vh;
 }
 
 .questContainer,
