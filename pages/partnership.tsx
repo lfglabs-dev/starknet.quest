@@ -102,7 +102,7 @@ const Partnership: NextPage = () => {
                     title: "Sybil-resistant marketing",
                     subtitle: "Genuine interactions, fraud protection",
                     description:
-                      "Eliminate bots and robots from your campaigns and stimulate your growth with real Starknet users.",
+                      "By using the Starknet ID infrastructure we eliminate bots and robots from your campaigns and stimulate your growth with real Starknet users.",
                     icon: "/icons/shield.svg",
                     banner: "/visuals/sybilResistantMarketing.webp",
                   },
@@ -113,8 +113,8 @@ const Partnership: NextPage = () => {
           </section>
           <section className={styles.section}>
             <CategoryTitle
-              title="About Starknet Quests"
-              subtitle="Revolutionizing web3 Marketing"
+              subtitle="Get access to our community"
+              title="About our quests"
               corner="bottomLeft"
               squares="bottomRight"
             />
@@ -122,16 +122,16 @@ const Partnership: NextPage = () => {
             <Stats
               stats={[
                 {
-                  name: "Twitter subs earned on average",
-                  value: "+28 676",
+                  name: "Quests NFT minted",
+                  value: "+1M",
                 },
                 {
-                  name: "TVL earned by DeFi protocols",
-                  value: "+140k$",
+                  name: "Unique addresses",
+                  value: "398K",
                 },
                 {
-                  name: "Unique visitors on your website",
-                  value: "+31 000",
+                  name: "Unique visitors on our website",
+                  value: "+200K",
                 },
               ]}
             />
