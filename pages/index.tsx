@@ -23,9 +23,7 @@ const Quests: NextPage = () => {
       .then((data: QuestDocument[] | QueryError) => {
         if (!(data as QueryError).error) {
           setQuests(data as QuestDocument[]);
-          const activeQuests = (data as QuestDocument[]).filter(
-            (quest) => !quest.hidden
-          );
+          const activeQuests = (data as QuestDocument[]);
           setFeaturedQuest(
             activeQuests.length >= 1
               ? activeQuests[activeQuests.length - 1]
@@ -54,7 +52,6 @@ const Quests: NextPage = () => {
         <div className={styles.questContainer}>
           {quests ? (
             quests
-              .filter((quest) => !quest.hidden)
               .map((quest) => {
                 return (
                   <Quest
