@@ -14,6 +14,7 @@ type QuestDocument = {
   img_card: string;
   title_card: string;
   hidden: boolean;
+  disabled: boolean;
 };
 
 type NFTItem = {
