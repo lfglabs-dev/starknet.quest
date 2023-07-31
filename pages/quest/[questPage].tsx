@@ -61,7 +61,7 @@ const QuestPage: NextPage = () => {
     rewards_nfts: [],
     img_card: "",
     title_card: "",
-    finished: false,
+    hidden: false,
   });
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);

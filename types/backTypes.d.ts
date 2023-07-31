@@ -13,7 +13,7 @@ type QuestDocument = {
   rewards_nfts: NFTItem[];
   img_card: string;
   title_card: string;
-  finished: boolean;
+  hidden: boolean;
 };
 
 type NFTItem = {
