@@ -20,7 +20,7 @@ const HowToParticipate = () => {
               title: "Get Your Stark Domain",
               subtitle: "01",
               description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "Participation in Starknet quests requires a Stark Domain. This domain will serve as your on-chain representation and is compatible with all major Starknet apps such as ArgentX, Braavos, and Starkscan.",
               icon: "/icons/starknet.svg",
               banner: "/visuals/getYourStarkDomain.webp",
             },
@@ -28,7 +28,7 @@ const HowToParticipate = () => {
               title: "Collect NFTs in Starknet Quest",
               subtitle: "02",
               description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "Complete Starknet quests to earn exclusive NFTs for each protocol, or simply purchase them to enhance your collection!",
               icon: "/icons/crown.svg",
               banner: "/visuals/collectNFTsInStarknetQuest.webp",
             },
@@ -36,7 +36,7 @@ const HowToParticipate = () => {
               title: "Build your Starknet Land",
               subtitle: "03",
               description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "Experience your Starknet on-chain reputation like never before with your Starknet land, directly influenced by your Starknet Quest NFT collection and overall Starknet activities. The more you engage and develop your land, the greater are your chances of receiving rewards for your on-chain activities. ",
               icon: "/icons/verified.svg",
               banner: "/visuals/buildYourStarknetLand.webp",
             },
