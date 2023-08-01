@@ -163,13 +163,26 @@ const QuestPage: NextPage = () => {
         }
         const contract = new Contract(quests_nft_abi, contractAddr, provider);
 
-        const result = await (
-          await contract.call("get_tasks_status", [calldata])
-        )["status"].map((x: bigint) => Number(x));
-        const unclaimedPerContractRewards = perContractRewards.filter(
-          (_, index) => result[index] === 0
-        );
-        unclaimed = unclaimed.concat(unclaimedPerContractRewards);
+        const response = await contract.call("get_tasks_status", [calldata]);
+        if (
+          typeof response === "object" &&
+          response !== null &&
+          !Array.isArray(response)
+        ) {
+          const status = response["status"];
+
+          if (Array.isArray(status)) {
+            const result = status.map((x: any) => {
+              if (typeof x === "bigint") {
+                return Number(x);
+              }
+            });
+            const unclaimedPerContractRewards = perContractRewards.filter(
+              (_, index) => result[index] === 0
+            );
+            unclaimed = unclaimed.concat(unclaimedPerContractRewards);
+          }
+        }
       }
       setUnclaimedRewards(unclaimed);
     })();

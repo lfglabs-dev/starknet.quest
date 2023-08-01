@@ -111,3 +111,15 @@ type AspectApiResult = {
   next_url: string;
   remainder?: AspectNftProps[];
 };
+
+type Step = {
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  banner: string;
+  overlay?: React.ReactNode;
+};
+
+type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
