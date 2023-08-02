@@ -17,10 +17,11 @@ import { constants } from "starknet";
 import ModalWallet from "./modalWallet";
 import { CircularProgress } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useRouter } from "next/router";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
-  const [hasWallet, setHasWallet] = useState<boolean>(true);
+  const [hasWallet, setHasWallet] = useState<boolean>(false);
   const { address } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
@@ -37,6 +38,7 @@ const Navbar: FunctionComponent = () => {
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
@@ -290,7 +292,7 @@ const Navbar: FunctionComponent = () => {
       />
       <Wallets
         closeWallet={() => setHasWallet(false)}
-        hasWallet={Boolean(hasWallet && !isWrongNetwork)}
+        hasWallet={Boolean(hasWallet && !isWrongNetwork && router?.pathname !== "/partnership")}
       />
     </>
   );
