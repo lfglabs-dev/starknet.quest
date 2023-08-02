@@ -66,27 +66,21 @@ type SocialMediaActions = {
   domain?: string;
 };
 
-type AspectNftProps = {
+type StarkscanNftProps = {
+  animation_url: string | null;
+  attributes: Attribute[];
   contract_address: string;
+  description: string | null;
+  external_url: string;
+  image_url: string | null;
+  image_medium_url: string | null;
+  image_small_url: string | null;
+  minted_at_transaction_hash: string | null;
+  minted_by_address: string | null;
   token_id: string;
   name: string | null;
-  description: string | null;
+  nft_id: string | null;
   token_uri: string | null;
-  image_uri: string | null;
-  image_blur_hash: string | null;
-  image_url_copy: string | null;
-  image_small_url_copy: string | null;
-  image_medium_url_copy: string | null;
-  animation_uri: string | null;
-  external_uri: string;
-  null;
-  attributes: Attribute[];
-  contract: any;
-  owner: {
-    account_address: string;
-    quantity: string;
-  };
-  aspect_link: string;
 };
 
 type Attribute = {
@@ -106,10 +100,10 @@ type BraavosScoreProps = {
   protocols: string[];
 };
 
-type AspectApiResult = {
-  assets: AspectNftProps[];
-  next_url: string;
-  remainder?: AspectNftProps[];
+type StarkscanApiResult = {
+  data: StarkscanNftProps[];
+  next_url?: string;
+  remainder?: StarkscanNftProps[];
 };
 
 type Step = {
