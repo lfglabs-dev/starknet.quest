@@ -30,9 +30,9 @@ const AddressOrDomain: NextPage = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [active, setActive] = useState(0);
   const dynamicRoute = useRouter().asPath;
-  const [userNft, setUserNft] = useState<AspectNftProps[]>([]);
+  const [userNft, setUserNft] = useState<StarkscanNftProps[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
-  const [unusedAssets, setUnusedAssets] = useState<AspectNftProps[]>([]);
+  const [unusedAssets, setUnusedAssets] = useState<StarkscanNftProps[]>([]);
   const isBraavosWallet = connector && connector.id === "braavos";
 
   // Filtered NFTs
@@ -190,10 +190,10 @@ const AddressOrDomain: NextPage = () => {
       retrieveAssets(
         `https://${
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
-        }.aspect.co/api/v0/assets?owner_address=${decimalToHex(identity.addr)}`
+        }.starkscan.co/api/v0/nfts?owner_address=${decimalToHex(identity.addr)}`
       ).then((data) => {
-        setUserNft(data.assets);
-        setNextUrl(data.next_url);
+        setUserNft(data.data);
+        setNextUrl(data.next_url as string);
         setUnusedAssets(data.remainder ?? []);
       });
     }
@@ -216,22 +216,18 @@ const AddressOrDomain: NextPage = () => {
 
   const retrieveAssets = async (
     url: string,
-    accumulatedAssets: AspectNftProps[] = []
-  ): Promise<AspectApiResult> => {
+    accumulatedAssets: StarkscanNftProps[] = []
+  ): Promise<StarkscanApiResult> => {
     return fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": `${
-          process.env.NEXT_PUBLIC_IS_TESTNET === "true"
-            ? process.env.NEXT_PUBLIC_ASPECT_TESTNET
-            : process.env.NEXT_PUBLIC_ASPECT_MAINNET
-        }`,
+        "x-api-key": `${process.env.NEXT_PUBLIC_STARKSCAN}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        const filteredAssets = filterAssets(data.assets);
+        const filteredAssets = filterAssets(data.data);
         const assets = [...accumulatedAssets, ...filteredAssets];
 
         if (assets.length < 8 && data.next_url) {
@@ -240,28 +236,28 @@ const AddressOrDomain: NextPage = () => {
           // Split and save results
           const { res, remainder } = splitAssets(assets);
           return {
-            assets: res,
+            data: res,
             next_url: data.next_url ?? null,
             remainder,
           };
         } else {
           return {
-            assets: assets,
+            data: assets,
             next_url: data.next_url,
           };
         }
       });
   };
 
-  const filterAssets = (assets: AspectNftProps[]) => {
+  const filterAssets = (assets: StarkscanNftProps[]) => {
     return assets.filter((obj) =>
       NFTContracts.includes(hexToDecimal(obj.contract_address))
     );
   };
 
   const splitAssets = (
-    assets: AspectNftProps[]
-  ): { res: AspectNftProps[]; remainder: AspectNftProps[] } => {
+    assets: StarkscanNftProps[]
+  ): { res: StarkscanNftProps[]; remainder: StarkscanNftProps[] } => {
     const modulo = assets.length % 8;
     const res = assets.slice(0, assets.length - modulo);
     const remainder = assets.slice(assets.length - modulo);
@@ -273,18 +269,24 @@ const AddressOrDomain: NextPage = () => {
       if (nextUrl) {
         // fetch more assets from API
         retrieveAssets(nextUrl, unusedAssets).then((data) => {
-          setUserNft((prev) => [...(prev as AspectNftProps[]), ...data.assets]);
-          setNextUrl(data.next_url);
+          setUserNft((prev) => [
+            ...(prev as StarkscanNftProps[]),
+            ...data.data,
+          ]);
+          setNextUrl(data.next_url as string);
           setUnusedAssets(data.remainder ?? []);
         });
       } else {
         // show unused assets
-        setUserNft((prev) => [...(prev as AspectNftProps[]), ...unusedAssets]);
+        setUserNft((prev) => [
+          ...(prev as StarkscanNftProps[]),
+          ...unusedAssets,
+        ]);
         setUnusedAssets([]);
       }
     } else {
       const { res, remainder } = splitAssets(unusedAssets);
-      setUserNft((prev) => [...(prev as AspectNftProps[]), ...res]);
+      setUserNft((prev) => [...(prev as StarkscanNftProps[]), ...res]);
       setUnusedAssets(remainder);
     }
   };
@@ -390,9 +392,14 @@ const AddressOrDomain: NextPage = () => {
                       return (
                         <NftCard
                           key={index}
-                          image={nft.image_uri as string}
+                          image={nft.image_url as string}
                           title={nft.name as string}
-                          url={nft.aspect_link as string}
+                          url={
+                            ((("https://unframed.co/item/" +
+                              nft.contract_address) as string) +
+                              "/" +
+                              nft.token_id) as string
+                          }
                         />
                       );
                     })
