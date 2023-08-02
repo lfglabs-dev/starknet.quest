@@ -40,10 +40,10 @@ const Navbar: FunctionComponent = () => {
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => {
+  useEffect(() => { 
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
-    if (!localStorage.getItem("lastUsedConnector")) setHasWallet(true);
+    if (!localStorage.getItem("lastUsedConnector") && router?.pathname !== "/partnership") setHasWallet(true);
   }, []);
 
   useEffect(() => {
@@ -292,7 +292,7 @@ const Navbar: FunctionComponent = () => {
       />
       <Wallets
         closeWallet={() => setHasWallet(false)}
-        hasWallet={Boolean(hasWallet && !isWrongNetwork && router?.pathname !== "/partnership")}
+        hasWallet={Boolean(hasWallet && !isWrongNetwork)}
       />
     </>
   );
