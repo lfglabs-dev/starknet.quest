@@ -16,6 +16,7 @@ import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
 import PieChart from "../components/UI/pieChart";
 import { utils } from "starknetid.js";
+import ErrorScreen from "../components/UI/screens/errorScreen";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -293,11 +294,11 @@ const AddressOrDomain: NextPage = () => {
 
   if (notFound) {
     return (
-      <div
-        className={`h-screen flex justify-center items-center ${styles.name}`}
-      >
-        <h2 className={styles.notFound}>Profile not found</h2>
-      </div>
+      <ErrorScreen
+        errorMessage="Profile or Page not found"
+        buttonText="Go back to quests"
+        onClick={() => router.push("/")}
+      />
     );
   }
 
