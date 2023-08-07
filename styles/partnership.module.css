@@ -43,7 +43,7 @@
   right: 0;
   bottom: 0;
   z-index: -6;
-  width: max(900px, 65%);
+  width: max(400px, 60%);
   aspect-ratio: 1;
   transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.04deg))
     scale(min(calc(1 + var(--scroll) / 10000), 1.4)) translate(20%, 20%);
