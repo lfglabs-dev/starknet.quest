@@ -20,6 +20,7 @@ import { Skeleton } from "@mui/material";
 import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
+import ErrorScreen from "../../components/UI/screens/errorScreen";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -47,7 +48,6 @@ const QuestPage: NextPage = () => {
   } = router.query;
   const { address } = useAccount();
   const { provider } = useProvider();
-
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
@@ -74,6 +74,7 @@ const QuestPage: NextPage = () => {
   );
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
+  const [errorPageDisplay, setErrorPageDisplay] = useState(false);
 
   // this fetches quest data
   useEffect(() => {
@@ -82,6 +83,12 @@ const QuestPage: NextPage = () => {
       .then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
           setQuest(data as QuestDocument);
+        }
+      })
+      .catch((err) => {
+        if (questId) {
+          console.log(err);
+          setErrorPageDisplay(true);
         }
       });
   }, [questId]);
@@ -255,7 +262,13 @@ const QuestPage: NextPage = () => {
     }
   };
 
-  return (
+  return errorPageDisplay ? (
+    <ErrorScreen
+      errorMessage="This quest doesn't exist !"
+      buttonText="Go back to quests"
+      onClick={() => router.push("/")}
+    />
+  ) : (
     <div className={homeStyles.screen}>
       <div className={styles.imageContainer}>
         {quest.issuer === "loading" ? (
