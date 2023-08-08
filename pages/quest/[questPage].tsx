@@ -71,7 +71,7 @@ const QuestPage: NextPage = () => {
   >({});
   const [unclaimedRewards, setUnclaimedRewards] = useState<
     EligibleReward[] | undefined
-  >(undefined);
+  >();
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
@@ -193,6 +193,8 @@ const QuestPage: NextPage = () => {
         }
       }
       setUnclaimedRewards(unclaimed);
+      console.log("uclaimed:", unclaimed);
+      console.log("eligible:", eligibleRewards);
     })();
   }, [questId, eligibleRewards]);
 
@@ -202,7 +204,7 @@ const QuestPage: NextPage = () => {
 
     // if the sequencer query failed, let's consider the eligible as unclaimed
     const to_claim =
-      unclaimedRewards == undefined
+      unclaimedRewards === undefined
         ? ([] as EligibleReward[]).concat(...Object.values(eligibleRewards))
         : unclaimedRewards;
 
@@ -221,7 +223,7 @@ const QuestPage: NextPage = () => {
       });
     });
 
-    if (to_claim && to_claim.length > 0) {
+    if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
     setMintCalldata(calldata);
