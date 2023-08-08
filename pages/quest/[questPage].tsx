@@ -193,8 +193,6 @@ const QuestPage: NextPage = () => {
         }
       }
       setUnclaimedRewards(unclaimed);
-      console.log("uclaimed:", unclaimed);
-      console.log("eligible:", eligibleRewards);
     })();
   }, [questId, eligibleRewards]);
 
