@@ -35,13 +35,15 @@
   width: 100%;
   margin-top: 7vh;
   height: 100%;
+  justify-content: center;
 }
 
 .headerImg {
-  max-height: 73%;
+  height: 85%;
+  max-height: 1000px;
   aspect-ratio: 1;
   transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.04deg))
-    scale(min(calc(1 + var(--scroll) / 10000), 1.4)) translate(20%, 20%);
+    scale(min(calc(1 + var(--scroll) / 10000), 1.4));
 }
 
 .mainTitleContainer {
