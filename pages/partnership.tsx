@@ -26,6 +26,7 @@ const Partnership: NextPage = () => {
     <div className={styles.screen}>
       <div className={styles.container}>
         <header className={styles.header}>
+          <div className={styles.blueBlur} />
           <div className={styles.headerContent}>
             <div className={styles.mainTitleContainer}>
               <MainTitle
