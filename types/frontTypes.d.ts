@@ -117,3 +117,5 @@ type Step = {
 
 type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+
+type QuizStep = {};
