@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import QuizControls from "./quizControls";
 import Menu from "./menu";
 import styles from "../../../styles/components/quests/quizzes.module.css";
@@ -20,9 +20,9 @@ const HomeScreen: FunctionComponent<HomeScreenProps> = ({ move, quit }) => {
           <p>
             Welcome to the Uniswap Unraveled quiz – an exhilarating journey into
             the heart of decentralized finance (DeFi). Test your knowledge, dive
-            into Uniswap's ecosystem, and unlock the secrets of DeFi. Get ready
-            to become a DeFi expert as you answer questions and earn rewards.
-            Are you up for the challenge? Let's get started!
+            into Uniswap&apos;s ecosystem, and unlock the secrets of DeFi. Get
+            ready to become a DeFi expert as you answer questions and earn
+            rewards. Are you up for the challenge? Let&apos;s get started!
           </p>
         </Menu>
       </div>

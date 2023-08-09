@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/quests/progressBar.module.css";
 import CheckMarkIcon from "../../UI/iconsComponents/icons/checkMarkIcon";
 

@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 import QuizControls from "./quizControls";
 import styles from "../../../styles/components/quests/quizzes.module.css";
 import ProgressBar from "./progressBar";

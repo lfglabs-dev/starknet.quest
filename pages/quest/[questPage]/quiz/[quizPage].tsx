@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import React, { NextPage } from "next";
 import { useRouter } from "next/router";
 import HomeScreen from "../../../../components/quests/quizzes/homeScreen";
 import styles from "../../../../styles/components/quests/quizzes.module.css";
