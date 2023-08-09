@@ -12,7 +12,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({ quit }) => {
     <>
       <div className={styles.content}>
         <Menu
-          title="Well done ! "
+          title="Well done !"
           actionBar={<Button onClick={quit}>Go back to the quest</Button>}
           highlightTitle={false}
         >
