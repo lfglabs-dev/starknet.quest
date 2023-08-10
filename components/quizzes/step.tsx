@@ -6,13 +6,13 @@ import ProgressBar from "./progressBar";
 type StepProps = {
   setStep: Dispatch<SetStateAction<number>>;
   step: number;
-  steps: Array<QuizStep>;
+  questions: Array<QuizQuestion>;
 };
 
-const Step: FunctionComponent<StepProps> = ({ setStep, step, steps }) => {
+const Step: FunctionComponent<StepProps> = ({ setStep, step, questions }) => {
   return (
     <>
-      <ProgressBar currentStep={step} totalSteps={steps.length} />
+      <ProgressBar currentStep={step} totalSteps={questions.length} />
       <div className={styles.content}>
         <button onClick={() => setStep((step) => step + 1)}>Ok</button>
       </div>

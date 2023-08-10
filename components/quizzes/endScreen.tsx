@@ -1,5 +1,5 @@
 import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
-import Menu from "./menu";
+import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 
@@ -11,7 +11,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
   return (
     <>
       <div className={styles.content}>
-        <Menu
+        <ScreenLayout
           title="Well done !"
           actionBar={
             <Button onClick={() => setStep(-2)}>Go back to the quest</Button>
@@ -23,7 +23,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
             Keep up the good work and continue to explore new challenges.
           </p>
           <img src="/icons/success.svg" alt="success" width="255" />
-        </Menu>
+        </ScreenLayout>
       </div>
     </>
   );

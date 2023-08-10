@@ -1,14 +1,14 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "../../styles/components/quests/quizzes.module.css";
 
-type MenuProps = {
+type ScreenLayoutProps = {
   title: string;
   children: ReactNode;
   actionBar?: ReactNode;
   highlightTitle?: boolean;
 };
 
-const Menu: FunctionComponent<MenuProps> = ({
+const ScreenLayout: FunctionComponent<ScreenLayoutProps> = ({
   title,
   actionBar,
   children,
@@ -25,4 +25,4 @@ const Menu: FunctionComponent<MenuProps> = ({
   );
 };
 
-export default Menu;
+export default ScreenLayout;

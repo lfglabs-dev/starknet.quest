@@ -1,18 +1,18 @@
 import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
 import QuizControls from "./quizControls";
-import Menu from "./menu";
+import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 
-type HomeScreenProps = {
+type StartScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
 };
 
-const HomeScreen: FunctionComponent<HomeScreenProps> = ({ setStep }) => {
+const StartScreen: FunctionComponent<StartScreenProps> = ({ setStep }) => {
   return (
     <>
       <div className={styles.content}>
-        <Menu
+        <ScreenLayout
           title="Uniswap Oracle"
           actionBar={
             <Button onClick={() => setStep((step) => step + 1)}>
@@ -27,11 +27,11 @@ const HomeScreen: FunctionComponent<HomeScreenProps> = ({ setStep }) => {
             ready to become a DeFi expert as you answer questions and earn
             rewards. Are you up for the challenge? Let&apos;s get started!
           </p>
-        </Menu>
+        </ScreenLayout>
       </div>
       <QuizControls setStep={setStep} />
     </>
   );
 };
 
-export default HomeScreen;
+export default StartScreen;
