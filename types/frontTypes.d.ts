@@ -22,7 +22,7 @@ type Task = {
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
-  questName?: string;
+  quizName?: string;
 };
 
 type TaskProps = Task & { id: number };
