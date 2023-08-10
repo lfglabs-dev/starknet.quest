@@ -54,6 +54,10 @@
   font-size: 0.7em;
 }
 
+.progressBarStep[data-completed="true"] .stepIcon {
+  border: none;
+}
+
 .progressBarStep[data-current="true"]::after {
   content: "";
   position: absolute;
