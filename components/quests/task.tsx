@@ -9,6 +9,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
 import { CircularProgress } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
+import Quiz from "../quizzes/quiz";
 
 const Task: FunctionComponent<Task> = ({
   name,
@@ -22,6 +23,7 @@ const Task: FunctionComponent<Task> = ({
   verifyEndpointType,
   hasError,
   verifyError,
+  setMenu,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -96,6 +98,12 @@ const Task: FunctionComponent<Task> = ({
     setIsVerified(wasVerified);
   }, [wasVerified]);
 
+  const openTask = () => {
+    if (verifyEndpointType === "quiz")
+      return setMenu(<Quiz setMenu={setMenu} name={name} />);
+    window.open(href);
+  };
+
   return (
     <div className={styles.task}>
       <div
@@ -146,7 +154,7 @@ const Task: FunctionComponent<Task> = ({
         <p className="mb-3">{description}</p>
         <div className="flex w-full justify-center items-center">
           <div className="w-2/3">
-            <Button onClick={() => window.open(href)}>{cta}</Button>
+            <Button onClick={() => openTask()}>{cta}</Button>
           </div>
         </div>
       </div>

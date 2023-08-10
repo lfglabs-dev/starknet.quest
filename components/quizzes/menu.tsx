@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import styles from "../../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quizzes.module.css";
 
 type MenuProps = {
   title: string;

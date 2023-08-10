@@ -1,21 +1,24 @@
-import React, { FunctionComponent } from "react";
+import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
 import QuizControls from "./quizControls";
 import Menu from "./menu";
-import styles from "../../../styles/components/quests/quizzes.module.css";
-import Button from "../../UI/button";
+import styles from "../../styles/components/quests/quizzes.module.css";
+import Button from "../UI/button";
 
 type HomeScreenProps = {
-  move: (direction?: number) => void;
-  quit: () => void;
+  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const HomeScreen: FunctionComponent<HomeScreenProps> = ({ move, quit }) => {
+const HomeScreen: FunctionComponent<HomeScreenProps> = ({ setStep }) => {
   return (
     <>
       <div className={styles.content}>
         <Menu
           title="Uniswap Oracle"
-          actionBar={<Button onClick={() => move()}>Start Quiz</Button>}
+          actionBar={
+            <Button onClick={() => setStep((step) => step + 1)}>
+              Start Quiz
+            </Button>
+          }
         >
           <p>
             Welcome to the Uniswap Unraveled quiz – an exhilarating journey into
@@ -26,7 +29,7 @@ const HomeScreen: FunctionComponent<HomeScreenProps> = ({ move, quit }) => {
           </p>
         </Menu>
       </div>
-      <QuizControls move={move} quit={quit} />
+      <QuizControls setStep={setStep} />
     </>
   );
 };

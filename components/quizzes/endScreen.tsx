@@ -1,19 +1,21 @@
-import React, { FunctionComponent } from "react";
+import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
 import Menu from "./menu";
-import styles from "../../../styles/components/quests/quizzes.module.css";
-import Button from "../../UI/button";
+import styles from "../../styles/components/quests/quizzes.module.css";
+import Button from "../UI/button";
 
 type EndScreenProps = {
-  quit: () => void;
+  setStep: Dispatch<SetStateAction<number>>;
 };
 
-const EndScreen: FunctionComponent<EndScreenProps> = ({ quit }) => {
+const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
   return (
     <>
       <div className={styles.content}>
         <Menu
           title="Well done !"
-          actionBar={<Button onClick={quit}>Go back to the quest</Button>}
+          actionBar={
+            <Button onClick={() => setStep(-2)}>Go back to the quest</Button>
+          }
           highlightTitle={false}
         >
           <p>
