@@ -104,6 +104,11 @@ const Task: FunctionComponent<Task> = ({
     window.open(href);
   };
 
+  const getButtonName = () => {
+    if (verifyEndpointType === "quiz") return "start quiz";
+    return "Verify";
+  };
+
   return (
     <div className={styles.task}>
       <div
@@ -137,12 +142,13 @@ const Task: FunctionComponent<Task> = ({
         ) : (
           <div
             onClick={(e) => {
+              if (verifyEndpointType === "quiz") return openTask();
               if (verifyRedirect && address) window.open(verifyRedirect);
               verify(e);
             }}
             className={styles.verifyButton}
           >
-            <p>Verify</p>
+            <p>{getButtonName()}</p>
           </div>
         )}
       </div>
