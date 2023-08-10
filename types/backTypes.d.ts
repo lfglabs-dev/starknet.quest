@@ -33,7 +33,7 @@ type UserTask = {
   verify_endpoint_type: string;
   verify_redirect: string | null;
   completed: boolean;
-  quest_name: string | null;
+  quiz_name: string | null;
 };
 
 type UserDocument = {
