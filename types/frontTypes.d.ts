@@ -22,6 +22,7 @@ type Task = {
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
+  questName?: string;
 };
 
 type TaskProps = Task & { id: number };
