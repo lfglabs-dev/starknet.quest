@@ -69,9 +69,9 @@ const QuestPage: NextPage = () => {
   const [eligibleRewards, setEligibleRewards] = useState<
     Record<string, EligibleReward[]>
   >({});
-  const [unclaimedRewards, setUnclaimedRewards] = useState<EligibleReward[]>(
-    []
-  );
+  const [unclaimedRewards, setUnclaimedRewards] = useState<
+    EligibleReward[] | undefined
+  >();
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
@@ -199,7 +199,14 @@ const QuestPage: NextPage = () => {
   // this builds multicall for minting rewards
   useEffect(() => {
     const calldata: Call[] = [];
-    unclaimedRewards.forEach((reward) => {
+
+    // if the sequencer query failed, let's consider the eligible as unclaimed
+    const to_claim =
+      unclaimedRewards === undefined
+        ? ([] as EligibleReward[]).concat(...Object.values(eligibleRewards))
+        : unclaimedRewards;
+
+    to_claim.forEach((reward) => {
       calldata.push({
         contractAddress: reward.nft_contract,
         entrypoint: "mint",
@@ -214,11 +221,11 @@ const QuestPage: NextPage = () => {
       });
     });
 
-    if (unclaimedRewards && unclaimedRewards.length > 0) {
+    if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
     setMintCalldata(calldata);
-  }, [questId, unclaimedRewards]);
+  }, [questId, unclaimedRewards, eligibleRewards]);
 
   useEffect(() => {
     if (!taskId || res === "true") return;
