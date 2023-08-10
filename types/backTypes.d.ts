@@ -15,6 +15,13 @@ type QuestDocument = {
   title_card: string;
   hidden: boolean;
   disabled: boolean;
+  expiry: ExpiryObject;
+};
+
+type ExpiryObject = {
+  $date: {
+    $numberLong: string;
+  };
 };
 
 type NFTItem = {

@@ -3,6 +3,7 @@ import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import { useMediaQuery } from "@mui/material";
 import FeaturedQuestSkeleton from "../skeletons/featuredQuestSkeleton";
+import Timer from "./timer";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -11,6 +12,7 @@ type FeaturedQuestProps = {
   issuer?: Issuer;
   reward?: string;
   desc?: string;
+  expiry: number;
 };
 
 const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
@@ -20,6 +22,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   issuer,
   reward,
   desc,
+  expiry,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
 
@@ -38,6 +41,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         </div>
       </div>
       <img src={imgSrc} className={styles.featuredQuestImage} />
+      <Timer expiry={expiry} />
     </div>
   ) : !onClick && !isSmallScreen ? (
     <FeaturedQuestSkeleton />
