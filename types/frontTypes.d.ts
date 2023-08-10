@@ -19,7 +19,7 @@ type Task = {
   verifyRedirect: string | null;
   verifyEndpointType: string;
   refreshRewards: () => void;
-  setMenu: Dispatch<SetStateAction<ReactNode>>;
+  setShowQuiz: Dispatch<SetStateAction<ReactNode>>;
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;

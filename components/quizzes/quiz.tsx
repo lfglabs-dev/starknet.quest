@@ -6,18 +6,18 @@ import Step from "./step";
 import EndScreen from "./endScreen";
 
 type QuizProps = {
-  setMenu: (menu: ReactNode) => void;
+  setShowQuiz: (menu: ReactNode) => void;
   name: string;
 };
 
-const Quiz: FunctionComponent<QuizProps> = ({ setMenu, name }) => {
+const Quiz: FunctionComponent<QuizProps> = ({ setShowQuiz, name }) => {
   const [step, setStep] = useState<number>(-1);
 
   // TODO: Load data dynamically using quiz name
   const steps: Array<QuizStep> = [{}, {}, {}, {}];
 
   useEffect(() => {
-    if (step === -2) setMenu(null);
+    if (step === -2) setShowQuiz(null);
   }, [step]);
 
   return (

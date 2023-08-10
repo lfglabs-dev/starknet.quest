@@ -75,7 +75,7 @@ const QuestPage: NextPage = () => {
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
-  const [menu, setMenu] = useState<ReactNode>();
+  const [showQuiz, setShowQuiz] = useState<ReactNode>();
 
   // this fetches quest data
   useEffect(() => {
@@ -342,7 +342,7 @@ const QuestPage: NextPage = () => {
                         ? taskError.error
                         : ""
                     }
-                    setMenu={setMenu}
+                    setShowQuiz={setShowQuiz}
                   />
                 );
               })}
@@ -359,7 +359,7 @@ const QuestPage: NextPage = () => {
           )}
         </div>
       </div>
-      {menu}
+      {showQuiz}
     </>
   );
 };
