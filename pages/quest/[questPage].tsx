@@ -314,7 +314,9 @@ const QuestPage: NextPage = () => {
           <p className="text-center max-w-lg">{quest.desc}</p>
         )}
       </div>
-      <Timer expiry={Number(quest?.expiry.$date.$numberLong)} fixed={false} />
+      {quest?.expiry ? (
+        <Timer expiry={Number(quest?.expiry.$date.$numberLong)} fixed={false} />
+      ) : null}
       <div className={styles.taskContainer}>
         {tasks.length === 0 || quest.rewards_title === "loading" ? (
           <TasksSkeleton />

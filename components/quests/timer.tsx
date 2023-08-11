@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/components/timer.module.css";
 
-type RewardProps = {
+type TimerProps = {
   expiry: number;
   fixed?: boolean;
 };
 
-const Timer: FunctionComponent<RewardProps> = ({ expiry, fixed = true }) => {
+const Timer: FunctionComponent<TimerProps> = ({ expiry, fixed = true }) => {
   const [timeLeft, setTimeLeft] = useState(expiry - Date.now());
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Timer: FunctionComponent<RewardProps> = ({ expiry, fixed = true }) => {
 
   return (
     <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
-      <div className={styles.title}>Expire in</div>
+      <div className={styles.title}>Expires in</div>
       <div className={styles.categories}>
         <div>days</div>
         <div>hours</div>
