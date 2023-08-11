@@ -64,7 +64,7 @@ const QuestPage: NextPage = () => {
     title_card: "",
     hidden: false,
     disabled: false,
-    expiry: { $date: { $numberLong: "0" } },
+    expiry_timestamp: "loading",
   });
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
@@ -314,8 +314,8 @@ const QuestPage: NextPage = () => {
           <p className="text-center max-w-lg">{quest.desc}</p>
         )}
       </div>
-      {quest?.expiry ? (
-        <Timer expiry={Number(quest?.expiry.$date.$numberLong)} fixed={false} />
+      {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
+        <Timer expiry={Number(quest?.expiry_timestamp)} fixed={false} />
       ) : null}
       <div className={styles.taskContainer}>
         {tasks.length === 0 || quest.rewards_title === "loading" ? (

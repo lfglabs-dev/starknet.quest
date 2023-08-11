@@ -12,7 +12,7 @@ type FeaturedQuestProps = {
   issuer?: Issuer;
   reward?: string;
   desc?: string;
-  expiry: number;
+  expiry: string | null | undefined;
 };
 
 const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
@@ -41,7 +41,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         </div>
       </div>
       <img src={imgSrc} className={styles.featuredQuestImage} />
-      <Timer expiry={expiry} />
+      {expiry ? <Timer expiry={Number(expiry)} /> : null}
     </div>
   ) : !onClick && !isSmallScreen ? (
     <FeaturedQuestSkeleton />

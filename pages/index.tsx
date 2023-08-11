@@ -47,7 +47,7 @@ const Quests: NextPage = () => {
           }}
           reward={featuredQuest?.rewards_title}
           desc={featuredQuest?.desc}
-          expiry={Number(featuredQuest?.expiry.$date.$numberLong)}
+          expiry={featuredQuest?.expiry_timestamp}
         />
         <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
         <div className={styles.questContainer}>
