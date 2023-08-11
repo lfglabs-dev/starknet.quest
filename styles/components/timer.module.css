@@ -44,19 +44,7 @@
     z-index: -1;
   }
 
-.timerFixed::after {
-    content: "";
-    position: absolute;
-    border-radius: 8px;
-    z-index: -1;
-    top: -10px;
-    right: -10px;
-    left: 0;
-    bottom: 0;
-    background: linear-gradient(5deg, var(--background) 98%, transparent);
-}
-  
-.timer::before, .timerFixed::before {
+.timer::before {
     content: "";
     position: absolute;
     top: -1px;
@@ -73,6 +61,24 @@
     );
     border-radius: 8px;
     z-index: -1;
+  } 
+
+  .timerBackground {
+    position: absolute;
+    right: 23px;
+    bottom: 25px;
+    border-radius: 8px;
+    background: linear-gradient(
+      90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%
+    );
+    width: 298px;
+    height: 84px;
+    mask: linear-gradient(3deg, transparent 80%, black);
   }
 
 .title {
