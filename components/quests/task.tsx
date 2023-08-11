@@ -24,6 +24,8 @@ const Task: FunctionComponent<Task> = ({
   hasError,
   verifyError,
   setShowQuiz,
+  quizName,
+  issuer,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -99,8 +101,14 @@ const Task: FunctionComponent<Task> = ({
   }, [wasVerified]);
 
   const openTask = () => {
-    if (verifyEndpointType === "quiz")
-      return setShowQuiz(<Quiz setShowQuiz={setShowQuiz} name={name} />);
+    if (verifyEndpointType === "quiz" && issuer)
+      return setShowQuiz(
+        <Quiz
+          setShowQuiz={setShowQuiz}
+          quizId={quizName as string}
+          issuer={issuer}
+        />
+      );
     window.open(href);
   };
 

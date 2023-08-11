@@ -295,7 +295,7 @@ const QuestPage: NextPage = () => {
               sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
             />
           ) : (
-            <h1 className="title mt-5 mw-90">{quest.name}</h1>
+            <h1 className="title extrabold mt-5 mw-90">{quest.name}</h1>
           )}
           {quest.desc === "loading" ? (
             <Skeleton
@@ -343,6 +343,11 @@ const QuestPage: NextPage = () => {
                         : ""
                     }
                     setShowQuiz={setShowQuiz}
+                    quizName={task.quiz_name}
+                    issuer={{
+                      name: quest.issuer,
+                      logoFavicon: quest.logo,
+                    }}
                   />
                 );
               })}

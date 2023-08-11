@@ -4,17 +4,42 @@ import styles from "../../styles/components/quests/quizzes.module.css";
 import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import Step from "./step";
 import EndScreen from "./endScreen";
+import Loading from "../UI/loading";
 
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
-  name: string;
+  quizId: string;
+  issuer: Issuer;
 };
 
-const Quiz: FunctionComponent<QuizProps> = ({ setShowQuiz, name }) => {
+const Quiz: FunctionComponent<QuizProps> = ({
+  setShowQuiz,
+  quizId,
+  issuer,
+}) => {
   const [step, setStep] = useState<number>(-1);
+  const [quiz, setQuiz] = useState<Quiz>({
+    name: "",
+    description: "",
+    questions: [],
+  });
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // TODO: Load data dynamically using quiz name
-  const questions: Array<QuizQuestion> = [{}, {}, {}, {}];
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`
+    ).then(async (res) => {
+      const data = await res.json();
+      const quizObj: Quiz = {
+        name: data.name,
+        description: data.description,
+        questions: data.questions,
+      };
+      setQuiz(quizObj);
+      setLoading(false);
+    });
+  }, [quizId]);
 
   useEffect(() => {
     if (step === -2) setShowQuiz(null);
@@ -22,12 +47,23 @@ const Quiz: FunctionComponent<QuizProps> = ({ setShowQuiz, name }) => {
 
   return (
     <div className={styles.mainContainer}>
-      {step === -1 ? (
-        <StartScreen setStep={setStep} />
-      ) : step === questions.length ? (
+      {loading ? (
+        <Loading />
+      ) : step === -1 ? (
+        <StartScreen
+          setStep={setStep}
+          name={quiz.name}
+          description={quiz.description}
+        />
+      ) : step === quiz?.questions.length ? (
         <EndScreen setStep={setStep} />
       ) : (
-        <Step setStep={setStep} step={step} questions={questions} />
+        <Step
+          setStep={setStep}
+          step={step}
+          questions={quiz?.questions}
+          issuer={issuer}
+        />
       )}
     </div>
   );

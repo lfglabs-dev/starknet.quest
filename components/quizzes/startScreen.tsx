@@ -6,27 +6,27 @@ import Button from "../UI/button";
 
 type StartScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
+  name: string;
+  description: string;
 };
 
-const StartScreen: FunctionComponent<StartScreenProps> = ({ setStep }) => {
+const StartScreen: FunctionComponent<StartScreenProps> = ({
+  setStep,
+  name,
+  description,
+}) => {
   return (
     <>
-      <div className={styles.content}>
+      <div className={styles.contentContainer}>
         <ScreenLayout
-          title="Uniswap Oracle"
+          title={name}
           actionBar={
             <Button onClick={() => setStep((step) => step + 1)}>
               Start Quiz
             </Button>
           }
         >
-          <p>
-            Welcome to the Uniswap Unraveled quiz – an exhilarating journey into
-            the heart of decentralized finance (DeFi). Test your knowledge, dive
-            into Uniswap&apos;s ecosystem, and unlock the secrets of DeFi. Get
-            ready to become a DeFi expert as you answer questions and earn
-            rewards. Are you up for the challenge? Let&apos;s get started!
-          </p>
+          <p>{description}</p>
         </ScreenLayout>
       </div>
       <QuizControls setStep={setStep} />

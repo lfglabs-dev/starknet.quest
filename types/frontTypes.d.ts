@@ -23,6 +23,8 @@ type Task = {
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
+  quizName?: string;
+  issuer?: Issuer;
 };
 
 type TaskProps = Task & { id: number };
@@ -31,6 +33,19 @@ type TaskError = {
   taskId: number;
   res: boolean;
   error?: string;
+};
+
+type Quiz = {
+  name: string;
+  description: string;
+  questions: QuizQuestion[];
+};
+
+type QuizQuestion = {
+  kind: "text_choice" | "image_choice" | "ordering";
+  layout: "default";
+  question: string;
+  options: string[];
 };
 
 type Quest = {
@@ -118,5 +133,3 @@ type Step = {
 
 type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
-
-type QuizQuestion = {};

@@ -14,11 +14,19 @@
   background-color: var(--background);
 }
 
-.content {
+.contentContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .controls {
@@ -60,4 +68,44 @@
   font-family: "Sora-ExtraBold";
   font-size: 2.5rem;
   text-align: center;
+}
+
+.okButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 200px;
+  margin: auto;
+}
+
+.okButtonContainer button {
+  background-color: var(--secondary);
+  color: var(--background);
+  display: flex;
+  padding: 14px 32px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.okButtonContainer button svg {
+  margin-left: 10px;
+}
+
+.okButtonContainer button.disabled {
+  display: none;
+}
+
+.questionTitle {
+  color: var(--secondary-700, #f4faff);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px; /* 105.556% */
 }

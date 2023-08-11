@@ -10,7 +10,7 @@ type EndScreenProps = {
 const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
   return (
     <>
-      <div className={styles.content}>
+      <div className={styles.contentContainer}>
         <ScreenLayout
           title="Well done !"
           actionBar={
