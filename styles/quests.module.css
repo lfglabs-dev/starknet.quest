@@ -229,6 +229,7 @@
   align-items: center;
   padding: 0.4rem;
   gap: 0.5rem;
+  position: relative;
 }
 
 .featuredQuestInfos {

@@ -21,6 +21,7 @@ import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 import ErrorScreen from "../../components/UI/screens/errorScreen";
+import Timer from "../../components/quests/timer";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -63,6 +64,7 @@ const QuestPage: NextPage = () => {
     title_card: "",
     hidden: false,
     disabled: false,
+    expiry_timestamp: "loading",
   });
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
@@ -312,6 +314,9 @@ const QuestPage: NextPage = () => {
           <p className="text-center max-w-lg">{quest.desc}</p>
         )}
       </div>
+      {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
+        <Timer expiry={Number(quest?.expiry_timestamp)} fixed={false} />
+      ) : null}
       <div className={styles.taskContainer}>
         {tasks.length === 0 || quest.rewards_title === "loading" ? (
           <TasksSkeleton />

@@ -15,6 +15,7 @@ type QuestDocument = {
   title_card: string;
   hidden: boolean;
   disabled: boolean;
+  expiry_timestamp: string | null;
 };
 
 type NFTItem = {
