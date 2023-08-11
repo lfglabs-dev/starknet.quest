@@ -9,10 +9,11 @@
     align-items: center;
     gap: 8px;
     border-radius: 8px;
-    background: var(--background);
+    background: linear-gradient(90deg, var(--background), #070708);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     width: 298px;
     height: 84px;
+    z-index: 0;
 }
 
 .timer {
@@ -24,12 +25,55 @@
     align-items: center;
     gap: 8px;
     border-radius: 8px;
-    background: var(--background);
+    background: linear-gradient(90deg, var(--background), #070708);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     width: 298px;
     height: 84px;
     margin: 48px auto;
 }
+
+.timer::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(5deg, var(--background) 70%, transparent);
+    border-radius: 30px;
+    z-index: -1;
+  }
+
+.timerFixed::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -1px;
+    left: -10px;
+    bottom: 0;
+    background: linear-gradient(5deg, var(--background) 98%, transparent);
+    border-radius: 30px;
+    z-index: -1;
+}
+  
+.timer::before, .timerFixed::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    left: 1px;
+    bottom: 1px;
+    background: linear-gradient(
+      90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%
+    );
+    border-radius: 30px;
+    z-index: -1;
+  }
 
 .title {
     text-align: center;

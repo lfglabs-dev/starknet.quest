@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import style from "../../styles/components/timer.module.css";
+import styles from "../../styles/components/timer.module.css";
 
 type RewardProps = {
   expiry: number;
@@ -25,25 +25,25 @@ const Timer: FunctionComponent<RewardProps> = ({ expiry, fixed = true }) => {
   const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
   return (
-    <div className={`${fixed ? `${style.timerFixed}` : `${style.timer}`}`}>
-      <div className={style.title}>Expire in</div>
-      <div className={style.categories}>
+    <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
+      <div className={styles.title}>Expire in</div>
+      <div className={styles.categories}>
         <div>days</div>
         <div>hours</div>
         <div>minutes</div>
         <div>seconds</div>
       </div>
-      <div className={style.dates}>
+      <div className={styles.dates}>
         <div>
-          <span className={style.day}>{days}</span>:
+          <span className={styles.day}>{days}</span>:
         </div>
         <div>
-          <span className={style.hour}>{hours}</span>:
+          <span className={styles.hour}>{hours}</span>:
         </div>
         <div>
-          <span className={style.minute}>{minutes}</span>:
+          <span className={styles.minute}>{minutes}</span>:
         </div>
-        <div className={style.second}>{seconds}</div>
+        <div className={styles.second}>{seconds}</div>
       </div>
     </div>
   );
