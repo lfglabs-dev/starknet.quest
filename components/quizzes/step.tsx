@@ -38,7 +38,9 @@ const Step: FunctionComponent<StepProps> = ({
       {question ? (
         <section className={styles.contentContainer}>
           <div className={styles.content}>
-            <NftIssuer issuer={issuer} />
+            <div className={styles.issuer}>
+              <NftIssuer issuer={issuer} />
+            </div>
             <h1 className={styles.questionTitle}>{question.question}</h1>
             <QuestionRouter setSelected={setSelected} question={question} />
             <div className={styles.okButtonContainer}>

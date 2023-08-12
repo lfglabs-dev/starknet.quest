@@ -1,5 +1,6 @@
 import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
 import TextChoice from "./questionKinds/textChoice";
+import ImageChoice from "./questionKinds/imageChoice";
 
 type QuestionRouterProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;
@@ -11,12 +12,12 @@ const QuestionRouter: FunctionComponent<QuestionRouterProps> = ({
   question,
 }) => {
   const kind = question.kind;
-  return (
-    <>
-      {kind === "text_choice" ? (
-        <TextChoice question={question} setSelected={setSelected} />
-      ) : null}
-    </>
+  return kind === "text_choice" ? (
+    <TextChoice question={question} setSelected={setSelected} />
+  ) : kind === "image_choice" ? (
+    <ImageChoice question={question} setSelected={setSelected} />
+  ) : (
+    <p>Not implemented yet</p>
   );
 };
 

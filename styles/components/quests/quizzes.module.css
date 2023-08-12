@@ -27,6 +27,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .controls {
@@ -108,4 +110,9 @@
   font-style: normal;
   font-weight: 700;
   line-height: 38px; /* 105.556% */
+  margin-bottom: auto;
+}
+
+.issuer {
+  margin-top: auto;
 }
