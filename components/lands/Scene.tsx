@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { NoToneMapping } from "three";
 import { Camera } from "./Camera";
 import { LdtkReader } from "../../utils/parser";
@@ -19,8 +19,7 @@ type SceneProps = {
 };
 
 export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
-  const refCanvas = useRef<any>();
-  const indexRef = useRef<any>();
+  const indexRef = useRef<number>();
   const [index, setIndex] = useState(25);
   indexRef.current = index;
   const [windowWidth, setWindowWidth] = useState(0);
@@ -28,12 +27,12 @@ export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
   const [mouseRightPressed, setMouseRightPressed] = useState(0);
   const [isFirstTouch, setIsFirstTouch] = useState(false);
   const [data, setData] = useState<iLDtk>();
-  const [citySize, setCitySize] = useState(100);
-  const [mapReader, setMapReader] = useState<any>(null);
+  const citySize = 100;
+  const [mapReader, setMapReader] = useState<LdtkReader | null>(null);
 
   useEffect(() => {
     if (data) {
-      let mapReader = new LdtkReader(data, address, citySize, userNft);
+      const mapReader = new LdtkReader(data, address, citySize, userNft);
       mapReader.CreateMap("Level_0", "SIDCity_TilesetSheet");
       console.log("mapReader", mapReader);
       setMapReader(mapReader);
@@ -82,7 +81,6 @@ export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
         id="canvasScene"
         gl={{ antialias: false, toneMapping: NoToneMapping }}
         linear
-        ref={refCanvas}
         {...bind()}
         onContextMenu={(event) => {
           event.preventDefault();
@@ -94,13 +92,15 @@ export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
             <color attach="background" args={["#1a1528"]} />
             <directionalLight color="#ffffff" intensity={3} />
             <ambientLight color="#9902fc" intensity={0.1} />
-            <Camera
-              aspect={windowWidth / windowHeight}
-              mouseRightPressed={mouseRightPressed}
-              index={index}
-              isFirstTouch={isFirstTouch}
-              cityCenter={mapReader.cityCenter}
-            />
+            {mapReader.cityCenter ? (
+              <Camera
+                aspect={windowWidth / windowHeight}
+                mouseRightPressed={mouseRightPressed}
+                index={index}
+                isFirstTouch={isFirstTouch}
+                cityCenter={mapReader.cityCenter}
+              />
+            ) : null}
             {data && mapReader && mapReader.cityBuilded ? (
               <Ground
                 tileset={data?.defs.tilesets[0]}

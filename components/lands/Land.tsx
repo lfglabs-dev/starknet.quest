@@ -55,13 +55,13 @@ export const Land = ({ address, isOwner, setNFTCounter }: LandProps) => {
   };
 
   const filterAssets = (assets: StarkscanNftProps[]) => {
-    let finalNFTCounters: NFTCounters = {
+    const finalNFTCounters: NFTCounters = {
       totalNFTs: 0,
       braavosCounter: 0,
       argentxCounter: 0,
       starkFighterLevel: 0,
     };
-    let finalNFTFlags: boolean[] = [];
+    const finalNFTFlags: boolean[] = [];
 
     const braavosTarget = new Set(LandsNFTs.braavos.nft_names as string[]);
     const argentxTarget = new Set(LandsNFTs.argentx.nft_names as string[]);

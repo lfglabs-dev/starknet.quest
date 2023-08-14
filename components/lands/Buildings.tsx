@@ -7,7 +7,7 @@ import { useLoader } from "@react-three/fiber";
 
 type IBuildings = {
   tilesets: Tileset[];
-  buildingData: any;
+  buildingData: Array<Array<CityBuildings | null>>;
 };
 
 export default function Buildings({
@@ -18,26 +18,17 @@ export default function Buildings({
     TextureLoader,
     "/land/textures/SID_BuildingSheet.png"
   );
-  const neonTexture = useLoader(
-    TextureLoader,
-    "/land/textures/SID_BuildingSheetr_Neons.png"
-  );
   const tileset = tilesets[2];
   buildingTexture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
   buildingTexture.magFilter = NearestFilter;
   buildingTexture.wrapS = RepeatWrapping;
   buildingTexture.wrapT = RepeatWrapping;
 
-  neonTexture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
-  neonTexture.magFilter = NearestFilter;
-  neonTexture.wrapS = RepeatWrapping;
-  neonTexture.wrapT = RepeatWrapping;
-
   return (
     <>
       {buildingTexture &&
-        buildingData.map((tileX: any, iY: number) => {
-          return tileX.map((tileData: CityBuildings, iX: number) => {
+        buildingData.map((tileX: Array<CityBuildings | null>, iY: number) => {
+          return tileX.map((tileData: CityBuildings | null, iX: number) => {
             if (
               tileData === null ||
               tileData.tile === undefined ||
@@ -54,7 +45,6 @@ export default function Buildings({
                   )[0]
                 }
                 textureLoader={buildingTexture}
-                neonTexture={neonTexture}
                 tileData={tileData.tile}
                 pos={{ posX: iX, posY: iY }}
               />

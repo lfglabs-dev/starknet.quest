@@ -14,7 +14,7 @@ import {
 } from "three";
 
 export const TerrainBackground = (): ReactElement | null => {
-  const skyRef = useRef<any>();
+  const skyRef = useRef<THREE.MeshBasicMaterial>(null);
   const [spriteData, setSpriteData] = useState<any>();
   const posX = [-20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80];
   const posY = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80];

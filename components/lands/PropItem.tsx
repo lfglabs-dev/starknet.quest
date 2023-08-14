@@ -1,10 +1,11 @@
 import { propsOffset } from "../../constants/tiles";
 import { CityProps, TileData } from "../../types/land";
-import { memo, useMemo, useState } from "react";
+import React, { ReactElement, memo, useMemo, useState } from "react";
 import { Texture } from "three";
+import { Tileset } from "../../types/ldtk";
 
 type IElem = {
-  tileset: any;
+  tileset: Tileset;
   pos: { posX: number; posY: number };
   textureLoader: Texture;
   propData: CityProps;
@@ -12,7 +13,7 @@ type IElem = {
 };
 
 const PropItem = memo<IElem>(
-  ({ tileset, pos, textureLoader, propData, tileData }): any => {
+  ({ tileset, pos, textureLoader, propData, tileData }): ReactElement => {
     const [offset, setOffset] = useState<{ x: number; y: number; z: number }>({
       x: 0,
       y: 0,

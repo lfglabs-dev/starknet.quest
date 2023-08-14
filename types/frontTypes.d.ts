@@ -55,12 +55,6 @@ type Identity = {
   error?: string;
 };
 
-type NftCard = {
-  title: string;
-  image: string;
-  url: string;
-};
-
 type SocialMediaActions = {
   tokenId: string;
   isOwner: boolean;

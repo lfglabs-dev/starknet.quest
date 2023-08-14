@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/profile.module.css";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({

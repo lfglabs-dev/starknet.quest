@@ -7,7 +7,7 @@ import PropItem from "./PropItem";
 
 type IProps = {
   tilesets: Tileset[];
-  cityData: any;
+  cityData: Array<Array<CityProps | null>>;
   tileData: TileData[];
 };
 
@@ -31,8 +31,9 @@ export default function RoadProps({
   return (
     <>
       {buildingTexture &&
-        cityData.map((tileX: any, iY: number) => {
-          return tileX.map((elem: CityProps, iX: number) => {
+        tileset &&
+        cityData.map((tileX: (CityProps | null)[], iY: number) => {
+          return tileX.map((elem: CityProps | null, iX: number) => {
             if (elem === null) {
               return null;
             }

@@ -1,19 +1,20 @@
 import { CityBuilded } from "../../types/land";
 import { useFrame } from "@react-three/fiber";
-import { memo, useMemo, useRef, useState } from "react";
+import React, { ReactElement, memo, useMemo, useRef, useState } from "react";
 import { MeshPhongMaterial, PlaneGeometry, Texture } from "three";
+import { Tileset } from "../../types/ldtk";
 
 type IElem = {
-  tileset: any;
+  tileset: Tileset;
   pos: { posX: number; posY: number };
   tileData: CityBuilded;
   textureLoader: Texture;
 };
 
 const ResourceItem = memo<IElem>(
-  ({ tileset, tileData, pos, textureLoader }): any => {
-    const meshRef = useRef<any>();
-    const [localTexture, setLocalTexture] = useState<any>(null);
+  ({ tileset, tileData, pos, textureLoader }): ReactElement => {
+    const meshRef = useRef<THREE.Mesh>(null);
+    const [localTexture, setLocalTexture] = useState<Texture>();
     const plane = new PlaneGeometry(1, 1, 1, 1);
     const material = new MeshPhongMaterial({
       map: localTexture,

@@ -14,9 +14,9 @@ import { minifyAddress } from "../utils/stringService";
 import { utils } from "starknetid.js";
 import ErrorScreen from "../components/UI/screens/errorScreen";
 import ProfileCard from "../components/UI/profileCard";
-import VerifyBadgeIcon from "../components/UI/iconsComponents/icons/verifyBadgeIcon";
 import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/Land";
+import { getIdentityData } from "../utils/identity";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -190,13 +190,6 @@ const AddressOrDomain: NextPage = () => {
     }
   }, [connector, addressOrDomain, address]);
 
-  const getIdentityData = async (id: number) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
-    );
-    return response.json();
-  };
-
   const copyToClipboard = () => {
     setCopied(true);
     navigator.clipboard.writeText(decimalToHex(identity?.addr));
@@ -287,7 +280,11 @@ const AddressOrDomain: NextPage = () => {
                 <span>12</span>
               </div>
               <div className="flex flex-col gap-1">
-                <VerifyBadgeIcon width="25" />
+                <img
+                  src="/icons/verifyBadge.svg"
+                  alt="verfy badge icon"
+                  width={25}
+                />
                 <span>{totalNFTs}</span>
               </div>
               {isOwner && isBraavosWallet ? (

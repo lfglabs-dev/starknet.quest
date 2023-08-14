@@ -1,22 +1,17 @@
-import { TileRect } from "../../types/ldtk";
-import React from "react";
-import { memo, useMemo, useState } from "react";
+import { TileRect, Tileset } from "../../types/ldtk";
+import React, { ReactElement } from "react";
+import { memo, useMemo } from "react";
 import { PlaneGeometry, Texture } from "three";
-import { Coord } from "../../types/land";
 
 type IElem = {
-  tileset: any;
+  tileset: Tileset;
   pos: { posX: number; posY: number };
   tileData: TileRect;
   textureLoader: Texture;
-  neonTexture: Texture;
 };
 
 const BuildingItem = memo<IElem>(
-  ({ tileset, tileData, pos, textureLoader, neonTexture }): any => {
-    const [offset, setOffset] = useState<Coord>();
-    const [repeat, setRepeat] = useState<Coord>();
-
+  ({ tileset, tileData, pos, textureLoader }): ReactElement => {
     const elemTexture = useMemo(() => {
       if (tileset && textureLoader) {
         const localT = textureLoader.clone();
@@ -34,25 +29,9 @@ const BuildingItem = memo<IElem>(
           1 / (spritesPerRow / (tileData.w / tileset.tileGridSize)),
           1 / (spritesPerColumn / (tileData.h / tileset.tileGridSize))
         );
-
-        setOffset({ x: xOffset, y: yOffset });
-        setRepeat({
-          x: 1 / (spritesPerRow / (tileData.w / tileset.tileGridSize)),
-          y: 1 / (spritesPerColumn / (tileData.h / tileset.tileGridSize)),
-        });
         return localT;
       }
     }, [textureLoader, tileset, tileData]);
-
-    const neon = useMemo(() => {
-      if (neonTexture && offset && repeat) {
-        const localT = neonTexture.clone();
-        localT.needsUpdate = true;
-        localT.offset.set(offset.x, offset.y);
-        localT.repeat.set(repeat.x, repeat.y);
-        return localT;
-      }
-    }, [neonTexture, tileset, tileData, offset, repeat]);
 
     const plane = useMemo(() => {
       return new PlaneGeometry(tileData.w / 16, tileData.h / 16, 1, 1);
