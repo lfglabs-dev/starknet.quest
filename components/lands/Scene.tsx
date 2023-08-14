@@ -16,11 +16,16 @@ import { tileTypes } from "../../constants/tiles";
 type SceneProps = {
   address: string;
   userNft: NFTData;
+  isMobile: boolean;
 };
 
-export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
+export const Scene: FunctionComponent<SceneProps> = ({
+  address,
+  userNft,
+  isMobile,
+}) => {
   const indexRef = useRef<number>();
-  const [index, setIndex] = useState(25);
+  const [index, setIndex] = useState(isMobile ? 40 : 25);
   indexRef.current = index;
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -99,6 +104,7 @@ export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
                 index={index}
                 isFirstTouch={isFirstTouch}
                 cityCenter={mapReader.cityCenter}
+                isMobile={isMobile}
               />
             ) : null}
             {data && mapReader && mapReader.cityBuilded ? (
@@ -124,7 +130,10 @@ export const Scene: FunctionComponent<SceneProps> = ({ address, userNft }) => {
           </>
         ) : null}
       </Canvas>
-      <ZoomSlider updateZoomIndex={updateZoomIndex} />
+      <ZoomSlider
+        updateZoomIndex={updateZoomIndex}
+        maxValue={isMobile ? 40 : 25}
+      />
     </>
   );
 };

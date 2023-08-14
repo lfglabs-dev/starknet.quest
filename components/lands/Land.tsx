@@ -10,9 +10,15 @@ type LandProps = {
   address: string;
   isOwner: boolean;
   setNFTCounter: (nb: number) => void;
+  isMobile: boolean;
 };
 
-export const Land = ({ address, isOwner, setNFTCounter }: LandProps) => {
+export const Land = ({
+  address,
+  isOwner,
+  setNFTCounter,
+  isMobile,
+}: LandProps) => {
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
   const [userNft, setUserNft] = useState<NFTData>();
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -112,7 +118,7 @@ export const Land = ({ address, isOwner, setNFTCounter }: LandProps) => {
       >
         {isReady ? (
           userNft && hasNFTs ? (
-            <Scene address={address} userNft={userNft} />
+            <Scene address={address} userNft={userNft} isMobile={isMobile} />
           ) : (
             <div
               className={`md:h-screen flex justify-center items-center flex-col mt-[100px] mx-5 md:mr-[250px] md:ml-0 md:mt-0`}

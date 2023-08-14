@@ -16,6 +16,7 @@ type CameraProps = {
   index: number;
   isFirstTouch: boolean;
   cityCenter: CityCenterProps;
+  isMobile: boolean;
 };
 
 export const Camera: FunctionComponent<CameraProps> = ({
@@ -24,13 +25,14 @@ export const Camera: FunctionComponent<CameraProps> = ({
   index,
   isFirstTouch,
   cityCenter,
+  isMobile,
 }) => {
   const cameraRef = useRef<THREE.PerspectiveCamera>();
   const set = useThree(({ set }) => set);
   const size = useThree(({ size }) => size);
   const [tempMousePos, setTempMousePos] = useState(new Vector2(0, 0));
   const [cameraPositionX, setCameraPositionX] = useState(
-    cityCenter.boundaries.maxX - 8
+    isMobile ? cityCenter.center.x : cityCenter.boundaries.maxX - 8
   );
   const [cameraPositionY, setCameraPositionY] = useState(cityCenter.center.y);
   const [cameraPositionZ, setCameraPositionZ] = useState(cityCenter.center.y);

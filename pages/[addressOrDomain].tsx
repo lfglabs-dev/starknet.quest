@@ -17,6 +17,7 @@ import ProfileCard from "../components/UI/profileCard";
 import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/Land";
 import { getIdentityData } from "../utils/identity";
+import { useMediaQuery } from "@mui/material";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -33,6 +34,7 @@ const AddressOrDomain: NextPage = () => {
   const isBraavosWallet = connector && connector.id === "braavos";
   const [braavosScore, setBraavosScore] = useState<number>(0);
   const [totalNFTs, setTotalNfts] = useState<number>(0);
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -214,6 +216,7 @@ const AddressOrDomain: NextPage = () => {
         address={decimalToHex(identity.addr)}
         isOwner={isOwner}
         setNFTCounter={setTotalNfts}
+        isMobile={isMobile}
       />
       <div className={styles.profiles}>
         <ProfileCard
