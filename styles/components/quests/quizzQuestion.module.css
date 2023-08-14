@@ -148,3 +148,22 @@
 .labelNumberIcon + * {
   margin-right: auto;
 }
+
+@media (max-width: 600px) {
+  .questionContainer {
+    width: calc(100% - 70px) !important;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: baseline;
+  }
+  .checkBoxContainer {
+    width: 100%;
+    margin: 25px 0 !important;
+  }
+  .tableLayout {
+    width: 100%;
+  }
+  .listLayout {
+    width: 100%;
+  }
+}

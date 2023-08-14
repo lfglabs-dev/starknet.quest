@@ -54,6 +54,10 @@
   font-size: 0.7em;
 }
 
+.stepIcon p {
+  line-height: 10px;
+}
+
 .progressBarStep[data-completed="true"] .stepIcon {
   border: none;
 }

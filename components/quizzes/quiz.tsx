@@ -28,18 +28,17 @@ const Quiz: FunctionComponent<QuizProps> = ({
 
   useEffect(() => {
     setLoading(true);
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`
-    ).then(async (res) => {
-      const data = await res.json();
-      const quizObj: Quiz = {
-        name: data.name,
-        description: data.description,
-        questions: data.questions,
-      };
-      setQuiz(quizObj);
-      setLoading(false);
-    });
+    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`)
+      .then((res) => res.json())
+      .then((data) => {
+        const quizObj: Quiz = {
+          name: data.name,
+          description: data.desc,
+          questions: data.questions,
+        };
+        setQuiz(quizObj);
+        setLoading(false);
+      });
   }, [quizId]);
 
   useEffect(() => {

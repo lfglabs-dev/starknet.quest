@@ -3,7 +3,6 @@ import React, {
   FunctionComponent,
   SetStateAction,
   useEffect,
-  useState,
 } from "react";
 import styles from "../../../styles/components/quests/quizzQuestion.module.css";
 
@@ -27,7 +26,7 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
 
   return (
     <div className={`${styles.questionContainer} ${styles.full}`}>
-      <div className={`${styles.tableLayout} ${styles.images} `}>
+      <div className={styles.tableLayout}>
         {question.options.map((option, index) => (
           <div
             key={index}

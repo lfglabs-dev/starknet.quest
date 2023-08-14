@@ -39,13 +39,18 @@ const Task: FunctionComponent<Task> = ({
     }
   }, [hasError]);
 
-  // A verify function that setIsVerified(true) and stop propagation
-  const verify = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const checkCanDoTask = () => {
     if (!address) {
       setError("Please connect your wallet first");
-      return;
+      return false;
     }
+    return true;
+  };
+
+  // A verify function that setIsVerified(true) and stop propagation
+  const verify = async (e: React.MouseEvent) => {
+    checkCanDoTask();
+    e.stopPropagation();
     setIsLoading(true);
 
     if (verifyEndpointType.startsWith("oauth")) {
@@ -101,6 +106,7 @@ const Task: FunctionComponent<Task> = ({
   }, [wasVerified]);
 
   const openTask = () => {
+    if (!checkCanDoTask()) return;
     if (verifyEndpointType === "quiz" && issuer)
       return setShowQuiz(
         <Quiz
@@ -113,7 +119,7 @@ const Task: FunctionComponent<Task> = ({
   };
 
   const getButtonName = () => {
-    if (verifyEndpointType === "quiz") return "start quiz";
+    if (verifyEndpointType === "quiz") return "Start quiz";
     return "Verify";
   };
 

@@ -12,6 +12,7 @@
   height: 100vh;
   padding: 30px 15vw;
   background-color: var(--background);
+  overflow: hidden auto;
 }
 
 .contentContainer {
@@ -52,6 +53,10 @@
 
 .menu {
   max-width: 600px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .menuButtons {
@@ -106,7 +111,7 @@
 
   /* Title/H2 */
   font-family: Sora;
-  font-size: 36px;
+  font-size: min(36px, 5vh, 5vw);
   font-style: normal;
   font-weight: 700;
   line-height: 38px; /* 105.556% */
@@ -115,4 +120,15 @@
 
 .issuer {
   margin-top: auto;
+}
+
+@media (max-width: 600px) {
+  .mainContainer {
+    padding: 0 5vw 15px;
+    display: block;
+  }
+  .contentContainer {
+    height: fit-content;
+    min-height: calc(100vh - 50px);
+  }
 }
