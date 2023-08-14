@@ -17,12 +17,12 @@ const BuildingItem = memo<IElem>(
         const localT = textureLoader.clone();
         localT.needsUpdate = true;
 
-        let spritesPerRow = tileset.pxWid / tileset.tileGridSize; // 80 sprites per row : 1280/16
-        let spritesPerColumn = tileset.pxHei / tileset.tileGridSize; // 80 sprites per column:  1280/16
-        let xIndex = tileData.x / tileset.tileGridSize;
-        let yIndex = tileData.y / tileset.tileGridSize;
-        let xOffset = xIndex / spritesPerRow;
-        let yOffset = 1 - (yIndex + tileData.h / 16) / spritesPerColumn; // Add 1 to yIndex because the y-axis starts from the bottom, not from the top
+        const spritesPerRow = tileset.pxWid / tileset.tileGridSize; // 80 sprites per row : 1280/16
+        const spritesPerColumn = tileset.pxHei / tileset.tileGridSize; // 80 sprites per column:  1280/16
+        const xIndex = tileData.x / tileset.tileGridSize;
+        const yIndex = tileData.y / tileset.tileGridSize;
+        const xOffset = xIndex / spritesPerRow;
+        const yOffset = 1 - (yIndex + tileData.h / 16) / spritesPerColumn; // Add 1 to yIndex because the y-axis starts from the bottom, not from the top
 
         localT.offset.set(xOffset, yOffset);
         localT.repeat.set(

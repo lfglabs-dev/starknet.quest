@@ -26,13 +26,13 @@ const ResourceItem = memo<IElem>(
         const localT = textureLoader.clone();
         localT.needsUpdate = true;
 
-        let spritesPerRow = tileset.pxWid / tileset.tileGridSize; // 40 sprites per row : 640/16
-        let spritesPerColumn = tileset.pxHei / tileset.tileGridSize; // 40 sprites per column:  640/16
-        let xIndex = tileData.tileId % spritesPerRow;
-        let yIndex = Math.floor(tileData.tileId / spritesPerColumn);
+        const spritesPerRow = tileset.pxWid / tileset.tileGridSize; // 40 sprites per row : 640/16
+        const spritesPerColumn = tileset.pxHei / tileset.tileGridSize; // 40 sprites per column:  640/16
+        const xIndex = tileData.tileId % spritesPerRow;
+        const yIndex = Math.floor(tileData.tileId / spritesPerColumn);
         // Texture coordinates are normalized between 0 and 1. We divide by the number of sprites per row or column to get the offset.
-        let xOffset = xIndex / spritesPerRow;
-        let yOffset = 1 - (yIndex / spritesPerColumn + 1 / spritesPerColumn);
+        const xOffset = xIndex / spritesPerRow;
+        const yOffset = 1 - (yIndex / spritesPerColumn + 1 / spritesPerColumn);
         localT.offset.set(xOffset, yOffset);
         setLocalTexture(localT);
         return localT;

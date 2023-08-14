@@ -3,10 +3,11 @@ import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import ResourceItem from "./Item";
 import { CityBuilded } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
+import { Tileset } from "../../types/ldtk";
 
 type IGround = {
-  tileset: any;
-  cityData: any;
+  tileset: Tileset;
+  cityData: Array<Array<CityBuilded | null>>;
 };
 
 export default function Ground({
@@ -25,8 +26,8 @@ export default function Ground({
   return (
     <>
       {groundTexture &&
-        cityData.map((tileX: any, iY: number) => {
-          return tileX.map((tileData: CityBuilded, iX: number) => {
+        cityData.map((tileX: Array<CityBuilded | null>, iY: number) => {
+          return tileX.map((tileData: CityBuilded | null, iX: number) => {
             if (tileData === null || tileData.tileId === undefined) {
               return null;
             }
