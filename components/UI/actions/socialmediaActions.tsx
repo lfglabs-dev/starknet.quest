@@ -9,22 +9,22 @@ const SocialMediaActions: FunctionComponent<SocialMediaActions> = ({
   domain = "",
 }) => {
   return (
-    <div className="flex flex-row gap-1">
+    <div className="flex flex-row gap-3 w-full">
       <ClickableTwitterIcon
         isOwner={isOwner}
-        width="25"
+        width="16"
         tokenId={tokenId}
         domain={domain}
       />
       <ClickableDiscordIcon
         isOwner={isOwner}
-        width="25"
+        width="16"
         tokenId={tokenId}
         domain={domain}
       />
       <ClickableGithubIcon
         isOwner={isOwner}
-        width="25"
+        width="16"
         tokenId={tokenId}
         domain={domain}
       />

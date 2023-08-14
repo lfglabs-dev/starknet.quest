@@ -118,3 +118,9 @@ type Step = {
 
 type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+
+type ProfileCard = {
+  title: string;
+  isUppercase?: boolean;
+  content: React.ReactNode;
+};
