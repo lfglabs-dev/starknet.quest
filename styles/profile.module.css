@@ -112,7 +112,6 @@
   flex-direction: row;
   text-align: center;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
 }
 
@@ -172,3 +171,18 @@
   height: 25px;
 }
 
+@media (max-width: 768px) {
+  .profiles {
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 32px;
+    z-index: 0;
+  }
+
+  .profileCard {
+    width: calc(100% - 32px);
+    margin-left: 38px;
+  }
+}

@@ -210,6 +210,11 @@ const AddressOrDomain: NextPage = () => {
 
   return initProfile && identity ? (
     <>
+      <Land
+        address={decimalToHex(identity.addr)}
+        isOwner={isOwner}
+        setNFTCounter={setTotalNfts}
+      />
       <div className={styles.profiles}>
         <ProfileCard
           title={identity?.domain}
@@ -265,7 +270,13 @@ const AddressOrDomain: NextPage = () => {
         <ProfileCard
           title="Progress"
           content={
-            <div className={styles.progress}>
+            <div
+              className={`${styles.progress} ${
+                isBraavosWallet && isOwner
+                  ? "justify-between"
+                  : "justify-around"
+              }`}
+            >
               <div className="flex flex-col gap-1">
                 <div className={styles.polygonContainer}>
                   <img src="/icons/polygon.svg" alt="polygon icon" />
@@ -311,11 +322,6 @@ const AddressOrDomain: NextPage = () => {
           }
         />
       </div>
-      <Land
-        address={decimalToHex(identity.addr)}
-        isOwner={isOwner}
-        setNFTCounter={setTotalNfts}
-      />
     </>
   ) : (
     <div className={`h-screen flex justify-center items-center ${styles.name}`}>

@@ -115,7 +115,7 @@ export const Land = ({ address, isOwner, setNFTCounter }: LandProps) => {
             <Scene address={address} userNft={userNft} />
           ) : (
             <div
-              className={`h-screen flex justify-center items-center flex-col`}
+              className={`md:h-screen flex justify-center items-center flex-col mt-[100px] mx-5 md:mr-[250px] md:ml-0 md:mt-0`}
             >
               <h2 className={`${styles.notFound} ${styles.name} mb-5`}>
                 {isOwner ? "You have" : "User has"} not fulfilled any quest yet
