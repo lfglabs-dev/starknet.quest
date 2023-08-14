@@ -9,19 +9,22 @@ import styles from "../../../styles/components/quests/quizzQuestion.module.css";
 
 type TextChoiceProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
+  selectedOptions: string[];
   question: QuizQuestion;
 };
 
 const TextChoice: FunctionComponent<TextChoiceProps> = ({
   setSelected,
+  setSelectedOptions,
+  selectedOptions,
   question,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
   useEffect(() => {
     if (selectedOptions.length > 0) setSelected(true);
     else setSelected(false);
   }, [selectedOptions]);
+
   return (
     <div className={styles.questionContainer}>
       <div className={styles.tableLayout}>

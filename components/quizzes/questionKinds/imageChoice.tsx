@@ -9,19 +9,22 @@ import styles from "../../../styles/components/quests/quizzQuestion.module.css";
 
 type ImageChoiceProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
+  selectedOptions: string[];
   question: QuizQuestion;
 };
 
 const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
   setSelected,
+  setSelectedOptions,
+  selectedOptions,
   question,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
   useEffect(() => {
     if (selectedOptions.length > 0) setSelected(true);
     else setSelected(false);
   }, [selectedOptions]);
+
   return (
     <div className={`${styles.questionContainer} ${styles.full}`}>
       <div className={`${styles.tableLayout} ${styles.images} `}>

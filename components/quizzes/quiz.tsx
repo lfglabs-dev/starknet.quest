@@ -24,6 +24,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     questions: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
+  const [answers, setAnswers] = useState<string[][]>([]);
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +64,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           step={step}
           questions={quiz?.questions}
           issuer={issuer}
+          setAnswers={setAnswers}
         />
       )}
     </div>

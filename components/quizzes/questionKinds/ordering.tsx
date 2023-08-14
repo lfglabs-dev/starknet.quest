@@ -9,15 +9,17 @@ import styles from "../../../styles/components/quests/quizzQuestion.module.css";
 
 type OrderingProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
+  selectedOptions: string[];
   question: QuizQuestion;
 };
 
 const Ordering: FunctionComponent<OrderingProps> = ({
   setSelected,
+  setSelectedOptions,
+  selectedOptions,
   question,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
   useEffect(() => {
     if (selectedOptions.length === question.options.length) setSelected(true);
     else setSelected(false);

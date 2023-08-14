@@ -17,6 +17,7 @@ type StepProps = {
   step: number;
   questions: Array<QuizQuestion>;
   issuer: Issuer;
+  setAnswers: Dispatch<SetStateAction<string[][]>>;
 };
 
 const Step: FunctionComponent<StepProps> = ({
@@ -24,13 +25,21 @@ const Step: FunctionComponent<StepProps> = ({
   step,
   questions,
   issuer,
+  setAnswers,
 }) => {
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
   const question = questions[step];
 
   useEffect(() => {
     setSelected(false);
   }, [step]);
+
+  const handleNext = () => {
+    setAnswers((answers) => [...answers, selectedOptions]);
+    setStep((step) => step + 1);
+    setSelectedOptions([]);
+  };
 
   return (
     <>
@@ -42,10 +51,15 @@ const Step: FunctionComponent<StepProps> = ({
               <NftIssuer issuer={issuer} />
             </div>
             <h1 className={styles.questionTitle}>{question.question}</h1>
-            <QuestionRouter setSelected={setSelected} question={question} />
+            <QuestionRouter
+              setSelected={setSelected}
+              setSelectedOptions={setSelectedOptions}
+              selectedOptions={selectedOptions}
+              question={question}
+            />
             <div className={styles.okButtonContainer}>
               <button
-                onClick={() => selected && setStep((step) => step + 1)}
+                onClick={() => selected && handleNext()}
                 className={selected ? "" : styles.disabled}
               >
                 OK <CheckMarkIcon width="24" />
