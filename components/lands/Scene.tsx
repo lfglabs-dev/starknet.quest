@@ -24,8 +24,9 @@ export const Scene: FunctionComponent<SceneProps> = ({
   userNft,
   isMobile,
 }) => {
+  const maxZoom = isMobile ? 50 : 30;
   const indexRef = useRef<number>();
-  const [index, setIndex] = useState(isMobile ? 40 : 25);
+  const [index, setIndex] = useState(maxZoom);
   indexRef.current = index;
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
@@ -130,10 +131,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
           </>
         ) : null}
       </Canvas>
-      <ZoomSlider
-        updateZoomIndex={updateZoomIndex}
-        maxValue={isMobile ? 40 : 25}
-      />
+      <ZoomSlider updateZoomIndex={updateZoomIndex} maxValue={maxZoom} />
     </>
   );
 };

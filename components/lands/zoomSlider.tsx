@@ -10,11 +10,12 @@ const ZoomSlider: FunctionComponent<ZoomSliderProps> = ({
   updateZoomIndex,
   maxValue,
 }) => {
-  const [value, setValue] = useState<number>(maxValue);
+  const minValue = 8;
+  const [value, setValue] = useState<number>(minValue);
 
   const handleChange = (_event: Event, newValue: number | number[]) => {
     if (typeof newValue === "number" && newValue !== value) {
-      updateZoomIndex(newValue);
+      updateZoomIndex(maxValue + minValue - newValue);
       setValue(newValue);
     }
   };
@@ -22,10 +23,10 @@ const ZoomSlider: FunctionComponent<ZoomSliderProps> = ({
   return (
     <Slider
       value={value}
-      min={8}
+      min={minValue}
       step={1}
       max={maxValue}
-      defaultValue={maxValue}
+      defaultValue={minValue}
       onChange={handleChange}
       aria-labelledby="non-linear-slider"
       sx={{
