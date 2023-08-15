@@ -25,7 +25,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [answers, setAnswers] = useState<string[][]>([]);
-  const [passed, setPassed] = useState<"loading" | boolean>(false);
+  const [passed, setPassed] = useState<"loading" | boolean>("loading");
   const [restart, setRestart] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,6 +53,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     if (step === -1) return;
     if (answers.length !== quiz.questions.length) return;
+    setPassed("loading");
     fetch(`${process.env.NEXT_PUBLIC_API_LINK}/verify_quiz`, {
       method: "POST",
       headers: {

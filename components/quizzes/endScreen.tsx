@@ -3,6 +3,8 @@ import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 import Loading from "../UI/loading";
+import wrongAnimation from "../../public/lotties/wrongLottie.json";
+import { useLottie } from "lottie-react";
 
 type EndScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
@@ -15,6 +17,11 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
   setRestart,
   passed,
 }) => {
+  const { View: wrongLottieView } = useLottie({
+    animationData: wrongAnimation,
+    loop: false,
+  });
+
   return passed === "loading" ? (
     <Loading />
   ) : (
@@ -55,7 +62,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           <p>
             You didn't pass the quiz. You can try again or go back to the quest.
           </p>
-          <img src="/icons/failed.svg" alt="success" width="255" />
+          {wrongLottieView}
         </ScreenLayout>
       )}
     </div>
