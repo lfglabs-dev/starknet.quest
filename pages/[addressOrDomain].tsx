@@ -37,6 +37,8 @@ const AddressOrDomain: NextPage = () => {
   const [totalNFTs, setTotalNfts] = useState<number>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [sinceDate, setSinceDate] = useState<string | null>(null);
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [tooltipData, setTooltipData] = useState<number | null>(0);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -226,6 +228,8 @@ const AddressOrDomain: NextPage = () => {
         setNFTCounter={setTotalNfts}
         isMobile={isMobile}
         setSinceDate={setSinceDate}
+        setShowTooltip={setShowTooltip}
+        setTooltipData={setTooltipData}
       />
       <div className={styles.profiles}>
         <ProfileCard

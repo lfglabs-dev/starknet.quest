@@ -16,6 +16,8 @@ type LandProps = {
   setNFTCounter: (nb: number) => void;
   isMobile: boolean;
   setSinceDate: (s: string | null) => void;
+  setShowTooltip: (show: boolean) => void;
+  setTooltipData: (data: number) => void;
 };
 
 export const Land = ({
