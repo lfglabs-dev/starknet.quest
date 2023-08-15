@@ -4,6 +4,7 @@ import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 import Loading from "../UI/loading";
 import wrongAnimation from "../../public/lotties/wrongLottie.json";
+import successAnimation from "../../public/lotties/successLottie.json";
 import { useLottie } from "lottie-react";
 
 type EndScreenProps = {
@@ -19,6 +20,10 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
 }) => {
   const { View: wrongLottieView } = useLottie({
     animationData: wrongAnimation,
+    loop: false,
+  });
+  const { View: successLottieView } = useLottie({
+    animationData: successAnimation,
     loop: false,
   });
 
@@ -38,7 +43,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </p>
-          <img src="/icons/success.svg" alt="success" width="255" />
+          <div className={styles.successLottie}>{successLottieView}</div>
         </ScreenLayout>
       ) : (
         <ScreenLayout
