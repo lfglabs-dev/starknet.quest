@@ -3,15 +3,12 @@ import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { NoToneMapping } from "three";
 import { Camera } from "./Camera";
 import { LdtkReader } from "../../utils/parser";
-import Ground from "./Ground";
 import { iLDtk } from "../../types/ldtk";
-import Buildings from "./Buildings";
 import { useGesture } from "@use-gesture/react";
-import RoadProps from "./RoadProps";
 import { TerrainBackground } from "./TerrainBackground";
 import ZoomSlider from "./zoomSlider";
 import { NFTData } from "../../types/nft";
-import { tileTypes } from "../../constants/tiles";
+import { Map } from "./Map";
 
 type SceneProps = {
   address: string;
@@ -108,26 +105,10 @@ export const Scene: FunctionComponent<SceneProps> = ({
                 isMobile={isMobile}
               />
             ) : null}
-            {data && mapReader && mapReader.cityBuilded ? (
-              <Ground
-                tileset={data?.defs.tilesets[0]}
-                cityData={mapReader.cityBuilded}
-              />
+            {data && mapReader ? (
+              <Map mapReader={mapReader} data={data} />
             ) : null}
-            {data && mapReader && mapReader.cityProps ? (
-              <RoadProps
-                tilesets={data?.defs.tilesets}
-                cityData={mapReader.cityProps}
-                tileData={mapReader.tileData[tileTypes.PROPS]}
-              />
-            ) : null}
-            {data && mapReader && mapReader.buildings ? (
-              <Buildings
-                tilesets={data?.defs.tilesets}
-                buildingData={mapReader.buildings}
-              />
-            ) : null}
-            <TerrainBackground />
+            {/* <TerrainBackground /> */}
           </>
         ) : null}
       </Canvas>

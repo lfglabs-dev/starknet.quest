@@ -18,6 +18,7 @@ import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/Land";
 import { getIdentityData } from "../utils/identity";
 import { useMediaQuery } from "@mui/material";
+import BuildingTooltip from "../components/lands/BuildingTooltip";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -212,6 +213,12 @@ const AddressOrDomain: NextPage = () => {
 
   return initProfile && identity ? (
     <>
+      {/* <BuildingTooltip
+        level={2}
+        name="Building name"
+        description="NFT won during quest"
+        tileData={{ tilesetUid: 169, x: 416, y: 400, w: 64, h: 96 }}
+      /> */}
       <Land
         address={decimalToHex(identity.addr)}
         isOwner={isOwner}

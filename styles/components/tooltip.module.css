@@ -1,0 +1,75 @@
+.tooltip {
+    display: flex;
+    padding: 12px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border-radius: 12px;
+    background: var(--background, #101012);
+    width: 250px;
+    height: 90px;
+  
+    position: absolute;
+    top: 100px;
+    z-index: 1;
+    left: 189px;
+  }
+  
+  .miniature {
+    background-color: #29282B;
+    border-radius: 36px;
+    box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px rgba(191, 158, 123, 0.06);
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+
+  .img {
+    display: inline-block;
+    background-image: url("/land/textures/SID_BuildingSheet.png");
+    height: 45px;
+    width: 45px;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .level {
+    color: var(--secondary, #F4FAFF);
+    font-family: Sora;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(225, 220, 234, 0.2) 0%, rgba(225, 220, 234, 0.2) 100%);
+    background-blend-mode: overlay;
+    padding: 2px 8px;
+  }
+  
+  .name {
+    color: var(--background500, #E1DCEA);
+    font-family: Sora;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  
+  .description {
+    color: var(--background500, #E1DCEA);
+    font-family: Sora;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    opacity: 0.8;
+  }
