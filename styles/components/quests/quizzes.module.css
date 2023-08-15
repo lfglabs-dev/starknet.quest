@@ -15,6 +15,10 @@
   overflow: hidden auto;
 }
 
+.mainContainer:has(.menu) {
+  background: url("/utils/dotBackground.svg") no-repeat center var(--background);
+}
+
 .contentContainer {
   display: flex;
   align-items: center;
@@ -85,6 +89,9 @@
   }
   .menuButtons * {
     width: 100%;
+  }
+  .mainContainer:has(.menu) {
+    background: var(--background);
   }
 }
 
