@@ -15,7 +15,6 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
   name,
   description,
 }) => {
-  console.log(description);
   return (
     <>
       <div className={styles.contentContainer}>
