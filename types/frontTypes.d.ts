@@ -76,6 +76,7 @@ type StarkscanNftProps = {
   name: string | null;
   nft_id: string | null;
   token_uri: string | null;
+  minted_at_timestamp: number;
 };
 
 type Attribute = {

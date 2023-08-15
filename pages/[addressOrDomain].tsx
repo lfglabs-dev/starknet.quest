@@ -36,6 +36,7 @@ const AddressOrDomain: NextPage = () => {
   const [braavosScore, setBraavosScore] = useState<number>(0);
   const [totalNFTs, setTotalNfts] = useState<number>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
+  const [sinceDate, setSinceDate] = useState<string | null>(null);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -224,6 +225,7 @@ const AddressOrDomain: NextPage = () => {
         isOwner={isOwner}
         setNFTCounter={setTotalNfts}
         isMobile={isMobile}
+        setSinceDate={setSinceDate}
       />
       <div className={styles.profiles}>
         <ProfileCard
@@ -270,9 +272,11 @@ const AddressOrDomain: NextPage = () => {
                       : minifyAddressWithChars(decimalToHex(identity?.addr), 8)}
                   </div>
                 </div>
-                <div className={styles.memberSince}>
-                  <p>Member since 4 months</p>
-                </div>
+                {sinceDate ? (
+                  <div className={styles.memberSince}>
+                    <p>{sinceDate}</p>
+                  </div>
+                ) : null}
               </div>
             </div>
           }

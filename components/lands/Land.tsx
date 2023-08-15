@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Scene } from "./Scene";
-import { checkAssetInLands, checkAssetInSq } from "../../utils/sortNfts";
+import {
+  checkAssetInLands,
+  checkAssetInSq,
+  memberSince,
+} from "../../utils/sortNfts";
 import styles from "../../styles/profile.module.css";
 import Button from "../UI/button";
 import { NFTCounters, NFTData } from "../../types/nft";
@@ -11,6 +15,7 @@ type LandProps = {
   isOwner: boolean;
   setNFTCounter: (nb: number) => void;
   isMobile: boolean;
+  setSinceDate: (s: string | null) => void;
 };
 
 export const Land = ({
@@ -18,6 +23,7 @@ export const Land = ({
   isOwner,
   setNFTCounter,
   isMobile,
+  setSinceDate,
 }: LandProps) => {
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
   const [userNft, setUserNft] = useState<NFTData>();
@@ -61,6 +67,7 @@ export const Land = ({
   };
 
   const filterAssets = (assets: StarkscanNftProps[]) => {
+    let sinceDate = 0;
     const finalNFTCounters: NFTCounters = {
       totalNFTs: 0,
       braavosCounter: 0,
@@ -74,6 +81,8 @@ export const Land = ({
 
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
+      if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
+        sinceDate = asset.minted_at_timestamp;
       checkAssetInLands(
         asset,
         braavosTarget,
@@ -99,6 +108,7 @@ export const Land = ({
     else setHasNFTs(false);
     setIsReady(true);
     setNFTCounter(finalNFTCounters.totalNFTs);
+    setSinceDate(memberSince(sinceDate));
     console.log("finalNFTs", {
       counters: finalNFTCounters,
       flags: finalNFTFlags,
