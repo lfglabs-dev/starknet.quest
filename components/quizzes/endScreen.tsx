@@ -60,7 +60,8 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           highlightTitle={false}
         >
           <p>
-            You didn't pass the quiz. You can try again or go back to the quest.
+            You didn&apos;t pass the quiz. You can try again or go back to the
+            quest.
           </p>
           {wrongLottieView}
         </ScreenLayout>
