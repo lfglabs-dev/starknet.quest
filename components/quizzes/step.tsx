@@ -18,6 +18,7 @@ type StepProps = {
   questions: Array<QuizQuestion>;
   issuer: Issuer;
   setAnswers: Dispatch<SetStateAction<string[][]>>;
+  moveBack: () => void;
 };
 
 const Step: FunctionComponent<StepProps> = ({
@@ -26,6 +27,7 @@ const Step: FunctionComponent<StepProps> = ({
   questions,
   issuer,
   setAnswers,
+  moveBack,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
@@ -68,7 +70,7 @@ const Step: FunctionComponent<StepProps> = ({
           </div>
         </section>
       ) : null}
-      <QuizControls setStep={setStep} />
+      <QuizControls setStep={setStep} moveBack={moveBack} />
     </>
   );
 };

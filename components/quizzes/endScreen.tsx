@@ -6,10 +6,15 @@ import Loading from "../UI/loading";
 
 type EndScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
+  setRestart: Dispatch<SetStateAction<boolean>>;
   passed: "loading" | boolean;
 };
 
-const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep, passed }) => {
+const EndScreen: FunctionComponent<EndScreenProps> = ({
+  setStep,
+  setRestart,
+  passed,
+}) => {
   return passed === "loading" ? (
     <Loading />
   ) : (
@@ -39,7 +44,9 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep, passed }) => {
                 </Button>
               </div>
               <div>
-                <Button onClick={() => setStep(-2)}>Restart the quiz</Button>
+                <Button onClick={() => setRestart(true)}>
+                  Restart the quiz
+                </Button>
               </div>
             </>
           }

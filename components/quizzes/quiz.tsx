@@ -25,9 +25,11 @@ const Quiz: FunctionComponent<QuizProps> = ({
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [answers, setAnswers] = useState<string[][]>([]);
-  const [passed, setPassed] = useState<"loading" | boolean>("loading");
+  const [passed, setPassed] = useState<"loading" | boolean>(false);
+  const [restart, setRestart] = useState<boolean>(false);
 
   useEffect(() => {
+    if (restart) return setRestart(false);
     setLoading(true);
     fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`)
       .then((res) => res.json())
@@ -37,10 +39,12 @@ const Quiz: FunctionComponent<QuizProps> = ({
           description: data.desc,
           questions: data.questions,
         };
+        setAnswers([]);
         setQuiz(quizObj);
+        setStep(-1);
         setLoading(false);
       });
-  }, [quizId]);
+  }, [quizId, restart]);
 
   useEffect(() => {
     if (step === -2) setShowQuiz(null);
@@ -63,6 +67,12 @@ const Quiz: FunctionComponent<QuizProps> = ({
       .then((data) => setPassed(data.passed));
   }, [answers, step, quiz]);
 
+  const moveBack = () => {
+    setStep(step - 1);
+    if (step === -1) return;
+    setAnswers(answers.slice(0, answers.length - 1));
+  };
+
   return (
     <div className={styles.mainContainer}>
       {loading ? (
@@ -74,7 +84,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           description={quiz.description}
         />
       ) : step === quiz?.questions.length ? (
-        <EndScreen setStep={setStep} passed={passed} />
+        <EndScreen setStep={setStep} passed={passed} setRestart={setRestart} />
       ) : (
         <Step
           setStep={setStep}
@@ -82,6 +92,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           questions={quiz?.questions}
           issuer={issuer}
           setAnswers={setAnswers}
+          moveBack={moveBack}
         />
       )}
     </div>

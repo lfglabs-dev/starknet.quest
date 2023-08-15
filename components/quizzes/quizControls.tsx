@@ -3,12 +3,16 @@ import styles from "../../styles/components/quests/quizzes.module.css";
 
 type QuizControlsProps = {
   setStep: Dispatch<SetStateAction<number>>;
+  moveBack: () => void;
 };
 
-const QuizControls: FunctionComponent<QuizControlsProps> = ({ setStep }) => {
+const QuizControls: FunctionComponent<QuizControlsProps> = ({
+  setStep,
+  moveBack,
+}) => {
   return (
     <div className={styles.controls}>
-      <button onClick={() => setStep((step) => step - 1)}>
+      <button onClick={moveBack}>
         <svg
           fill="none"
           viewBox="0 0 24 24"
