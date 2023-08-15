@@ -35,14 +35,14 @@ const TextChoice: FunctionComponent<TextChoiceProps> = ({
               name="option"
               id={option}
               onChange={() => {
-                if (selectedOptions.includes(option))
+                if (selectedOptions.includes(index.toString()))
                   setSelectedOptions(
-                    selectedOptions.filter((item) => item !== option)
+                    selectedOptions.filter((item) => item !== index.toString())
                   );
-                else setSelectedOptions([...selectedOptions, option]);
+                else setSelectedOptions([...selectedOptions, index.toString()]);
               }}
               className={styles.checkbox}
-              checked={selectedOptions.includes(option)}
+              checked={selectedOptions.includes(index.toString())}
             />
             <label className={styles.checkboxLabel} htmlFor={option}>
               {option}

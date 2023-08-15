@@ -34,21 +34,21 @@ const Ordering: FunctionComponent<OrderingProps> = ({
               name="option"
               id={option}
               onChange={() => {
-                if (selectedOptions.includes(option))
+                if (selectedOptions.includes(index.toString()))
                   setSelectedOptions(
-                    selectedOptions.filter((item) => item !== option)
+                    selectedOptions.filter((item) => item !== index.toString())
                   );
-                else setSelectedOptions([...selectedOptions, option]);
+                else setSelectedOptions([...selectedOptions, index.toString()]);
               }}
               className={styles.checkbox}
-              checked={selectedOptions.includes(option)}
+              checked={selectedOptions.includes(index.toString())}
             />
             <label className={styles.checkboxLabel} htmlFor={option}>
-              {selectedOptions.indexOf(option) !== -1 && (
+              {selectedOptions.indexOf(index.toString()) !== -1 && (
                 <strong className={styles.labelNumberIcon}>
                   {
                     // Get the index of the option in the selectedOptions array
-                    selectedOptions.indexOf(option) + 1
+                    selectedOptions.indexOf(index.toString()) + 1
                   }
                 </strong>
               )}

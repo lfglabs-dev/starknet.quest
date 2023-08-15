@@ -60,9 +60,36 @@
 }
 
 .menuButtons {
-  width: fit-content;
-  display: block;
+  width: calc(100% - 10px);
+  display: flex;
   margin: 2em auto 0 auto;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButtons div + div {
+  margin-left: auto;
+}
+
+.menuButtons button {
+  margin: auto;
+}
+
+@media (max-width: 1000px) {
+  .menuButtons {
+    flex-direction: column;
+  }
+  .menuButtons div + div {
+    margin: 1em;
+  }
+  .menuButtons * {
+    width: 100%;
+  }
+}
+
+.soft button {
+  background: white;
 }
 
 .menu img {

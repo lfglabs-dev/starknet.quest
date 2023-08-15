@@ -2,15 +2,19 @@ import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
 import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
+import Loading from "../UI/loading";
 
 type EndScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
+  passed: "loading" | boolean;
 };
 
-const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
-  return (
-    <>
-      <div className={styles.contentContainer}>
+const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep, passed }) => {
+  return passed === "loading" ? (
+    <Loading />
+  ) : (
+    <div className={styles.contentContainer}>
+      {passed ? (
         <ScreenLayout
           title="Well done !"
           actionBar={
@@ -24,8 +28,30 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({ setStep }) => {
           </p>
           <img src="/icons/success.svg" alt="success" width="255" />
         </ScreenLayout>
-      </div>
-    </>
+      ) : (
+        <ScreenLayout
+          title="Too bad ! "
+          actionBar={
+            <>
+              <div className={styles.soft}>
+                <Button onClick={() => setStep(-2)}>
+                  Go back to the quest
+                </Button>
+              </div>
+              <div>
+                <Button onClick={() => setStep(-2)}>Restart the quiz</Button>
+              </div>
+            </>
+          }
+          highlightTitle={false}
+        >
+          <p>
+            You didn't pass the quiz. You can try again or go back to the quest.
+          </p>
+          <img src="/icons/failed.svg" alt="success" width="255" />
+        </ScreenLayout>
+      )}
+    </div>
   );
 };
 

@@ -25,6 +25,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [answers, setAnswers] = useState<string[][]>([]);
+  const [passed, setPassed] = useState<"loading" | boolean>("loading");
 
   useEffect(() => {
     setLoading(true);
@@ -45,6 +46,23 @@ const Quiz: FunctionComponent<QuizProps> = ({
     if (step === -2) setShowQuiz(null);
   }, [step]);
 
+  useEffect(() => {
+    if (step === -1) return;
+    if (answers.length !== quiz.questions.length) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/verify_quiz`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_answers_list: answers,
+        quiz_name: quizId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => setPassed(data.passed));
+  }, [answers, step, quiz]);
+
   return (
     <div className={styles.mainContainer}>
       {loading ? (
@@ -56,7 +74,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           description={quiz.description}
         />
       ) : step === quiz?.questions.length ? (
-        <EndScreen setStep={setStep} />
+        <EndScreen setStep={setStep} passed={passed} />
       ) : (
         <Step
           setStep={setStep}
