@@ -3,8 +3,8 @@ import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 import Loading from "../UI/loading";
-import wrongAnimation from "../../public/lotties/wrongLottie.json";
-import successAnimation from "../../public/lotties/successLottie.json";
+import wrongAnimation from "../../public/visuals/wrongLottie.json";
+import successAnimation from "../../public/visuals/verifiedLottie.json";
 import { useLottie } from "lottie-react";
 
 type EndScreenProps = {
