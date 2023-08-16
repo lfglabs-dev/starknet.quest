@@ -113,6 +113,7 @@ const Task: FunctionComponent<Task> = ({
           setShowQuiz={setShowQuiz}
           quizId={quizName as string}
           issuer={issuer}
+          verifyEndpoint={verifyEndpoint}
         />
       );
     window.open(href);

@@ -327,6 +327,8 @@ const QuestPage: NextPage = () => {
                         ? `${task.verify_endpoint}?addr=${hexToDecimal(
                             address
                           )}`
+                        : task.verify_endpoint_type === "quiz"
+                        ? task.verify_endpoint
                         : generateOAuthUrl(task)
                     }
                     verifyEndpointType={`${

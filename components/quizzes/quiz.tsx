@@ -5,18 +5,23 @@ import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import Step from "./step";
 import EndScreen from "./endScreen";
 import Loading from "../UI/loading";
+import { useAccount } from "@starknet-react/core";
+import { hexToDecimal } from "../../utils/feltService";
 
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
   quizId: string;
   issuer: Issuer;
+  verifyEndpoint: string;
 };
 
 const Quiz: FunctionComponent<QuizProps> = ({
   setShowQuiz,
   quizId,
   issuer,
+  verifyEndpoint,
 }) => {
+  const { address } = useAccount();
   const [step, setStep] = useState<number>(-1);
   const [quiz, setQuiz] = useState<Quiz>({
     name: "",
@@ -54,7 +59,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     if (step === -1) return;
     if (answers.length !== quiz.questions.length) return;
     setPassed("loading");
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/verify_quiz`, {
+    fetch(verifyEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,10 +67,9 @@ const Quiz: FunctionComponent<QuizProps> = ({
       body: JSON.stringify({
         user_answers_list: answers,
         quiz_name: quizId,
+        addr: hexToDecimal(address),
       }),
-    })
-      .then((res) => res.json())
-      .then((data) => setPassed(data.passed));
+    }).then((res) => setPassed(res.status === 200));
   }, [answers, step, quiz]);
 
   const moveBack = () => {
