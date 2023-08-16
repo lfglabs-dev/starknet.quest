@@ -3,9 +3,8 @@ import React, {
   FunctionComponent,
   SetStateAction,
   useEffect,
-  useState,
 } from "react";
-import styles from "../../../styles/components/quests/quizzQuestion.module.css";
+import styles from "../../../styles/components/quests/quizzes.module.css";
 
 type OrderingProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;

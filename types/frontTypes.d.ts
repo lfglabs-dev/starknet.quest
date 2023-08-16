@@ -43,9 +43,10 @@ type Quiz = {
 
 type QuizQuestion = {
   kind: "text_choice" | "image_choice" | "ordering";
-  layout: "default";
+  layout: "default" | "illustrated_left";
   question: string;
   options: string[];
+  image_for_layout: string;
 };
 
 type Quest = {

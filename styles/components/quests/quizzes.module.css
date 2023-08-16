@@ -192,3 +192,222 @@
     min-height: calc(100vh - 50px);
   }
 }
+
+.contentContainer:has(.leftIllustration) .content {
+  padding-bottom: 4em;
+}
+
+.leftIllustration {
+  margin: 0 2em 4em 0;
+  padding: 4em 2em;
+  background-color: var(--background600);
+  position: relative;
+  border-radius: 20px;
+  height: calc(100% - 4em);
+  display: flex;
+  width: 70%;
+}
+
+.leftIllustration img {
+  width: 100%;
+}
+
+.leftIllustration::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e885 35%,
+    #00ff77ad 50%,
+    #59c2e861 70%,
+    #437aba30 100%
+  );
+  border-radius: 20px;
+  z-index: -1;
+  mask: linear-gradient(8deg, transparent 85%, black);
+}
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.questionContainer.full {
+  height: fit-content;
+  width: min(50vw, 50vh);
+  aspect-ratio: 1/1;
+}
+
+.tableLayout {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.listLayout {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.checkBoxContainer {
+  display: flex;
+  height: 40px;
+  margin: 0 10px;
+  position: relative;
+  width: calc(50% - 20px);
+}
+
+.listLayout .checkBoxContainer {
+  width: 100%;
+  margin: auto 10px;
+}
+
+.checkboxImageContainer {
+  height: auto;
+  aspect-ratio: 1/1;
+}
+
+.checkbox {
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  padding: 24px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  flex: 1 0 0;
+  opacity: 0;
+  z-index: 10;
+}
+
+.checkboxLabel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 16px;
+  border-radius: 10px;
+  background-color: var(--background600);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkboxLabel:after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(1deg, var(--background) 65%, transparent);
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.checkboxLabel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 40%,
+    #00fbff 50%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.checkbox:checked + .checkboxLabel {
+  background-color: var(--secondary);
+  color: var(--background);
+}
+
+.checkbox:checked + .checkboxLabel::after,
+.checkbox:checked + .checkboxLabel::before {
+  display: none;
+}
+
+.checkboxImageContainer .checkboxLabel {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.checkboxImage {
+  max-width: 70%;
+  max-height: 70%;
+}
+
+.labelNumberIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background600);
+  color: var(--secondary);
+  flex-shrink: 0;
+  border: 1px solid var(--secondary500);
+  border-radius: 50%;
+  padding: 0px;
+  width: 30px;
+  aspect-ratio: 1/1;
+  margin-right: auto;
+}
+
+.labelNumberIcon + * {
+  margin-right: auto;
+}
+
+@media (max-width: 600px) {
+  .questionContainer {
+    width: calc(100% - 70px) !important;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: baseline;
+  }
+  .checkBoxContainer {
+    width: 100%;
+    margin: 25px 0 !important;
+  }
+  .tableLayout {
+    width: 100%;
+  }
+  .listLayout {
+    width: 100%;
+  }
+}
+
+.contentContainer:has(.leftIllustration) .issuer,
+.contentContainer:has(.leftIllustration) .issuer > div {
+  margin-top: 0;
+}
+
+.contentContainer:has(.leftIllustration) .tableLayout .checkBoxContainer {
+  margin: 24px 20px;
+  width: 100%;
+}

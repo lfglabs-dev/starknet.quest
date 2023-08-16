@@ -4,7 +4,7 @@ import React, {
   SetStateAction,
   useEffect,
 } from "react";
-import styles from "../../../styles/components/quests/quizzQuestion.module.css";
+import styles from "../../../styles/components/quests/quizzes.module.css";
 
 type ImageChoiceProps = {
   setSelected: Dispatch<SetStateAction<boolean>>;

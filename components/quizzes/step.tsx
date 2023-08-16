@@ -48,6 +48,11 @@ const Step: FunctionComponent<StepProps> = ({
       <ProgressBar currentStep={step} totalSteps={questions.length} />
       {question ? (
         <section className={styles.contentContainer}>
+          {question.layout === "illustrated_left" ? (
+            <div className={styles.leftIllustration}>
+              <img src={question.image_for_layout} alt="illustration" />
+            </div>
+          ) : null}
           <div className={styles.content}>
             <div className={styles.issuer}>
               <NftIssuer issuer={issuer} />
