@@ -5,7 +5,7 @@ import Button from "../UI/button";
 import Loading from "../UI/loading";
 import wrongAnimation from "../../public/visuals/wrongLottie.json";
 import successAnimation from "../../public/visuals/verifiedLottie.json";
-import { useLottie } from "lottie-react";
+import Lottie from "lottie-react";
 
 type EndScreenProps = {
   setStep: Dispatch<SetStateAction<number>>;
@@ -18,15 +18,6 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
   setRestart,
   passed,
 }) => {
-  const { View: wrongLottieView } = useLottie({
-    animationData: wrongAnimation,
-    loop: false,
-  });
-  const { View: successLottieView } = useLottie({
-    animationData: successAnimation,
-    loop: false,
-  });
-
   return passed === "loading" ? (
     <Loading />
   ) : (
@@ -43,7 +34,9 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </p>
-          <div className={styles.successLottie}>{successLottieView}</div>
+          <div className={styles.successLottie}>
+            <Lottie animationData={successAnimation} loop={false} />
+          </div>
         </ScreenLayout>
       ) : (
         <ScreenLayout
@@ -68,7 +61,9 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
             You didn&apos;t pass the quiz. You can try again or go back to the
             quest.
           </p>
-          {wrongLottieView}
+          <div className={styles.wrongLottie}>
+            <Lottie animationData={wrongAnimation} loop={false} />
+          </div>
         </ScreenLayout>
       )}
     </div>
