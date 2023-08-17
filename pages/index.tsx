@@ -23,7 +23,7 @@ const Quests: NextPage = () => {
       .then((data: QuestDocument[] | QueryError) => {
         if (!(data as QueryError).error) {
           setQuests(data as QuestDocument[]);
-          const activeQuests = (data as QuestDocument[]);
+          const activeQuests = data as QuestDocument[];
           setFeaturedQuest(
             activeQuests.length >= 1
               ? activeQuests[activeQuests.length - 1]
@@ -47,26 +47,26 @@ const Quests: NextPage = () => {
           }}
           reward={featuredQuest?.rewards_title}
           desc={featuredQuest?.desc}
+          expiry={featuredQuest?.expiry_timestamp}
         />
         <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
         <div className={styles.questContainer}>
           {quests ? (
-            quests
-              .map((quest) => {
-                return (
-                  <Quest
-                    key={quest.id}
-                    title={quest.title_card}
-                    onClick={() => router.push(`/quest/${quest.id}`)}
-                    imgSrc={quest.img_card}
-                    issuer={{
-                      name: quest.issuer,
-                      logoFavicon: quest.logo,
-                    }}
-                    reward={quest.rewards_title}
-                  />
-                );
-              })
+            quests.map((quest) => {
+              return (
+                <Quest
+                  key={quest.id}
+                  title={quest.title_card}
+                  onClick={() => router.push(`/quest/${quest.id}`)}
+                  imgSrc={quest.img_card}
+                  issuer={{
+                    name: quest.issuer,
+                    logoFavicon: quest.logo,
+                  }}
+                  reward={quest.rewards_title}
+                />
+              );
+            })
           ) : (
             <QuestsSkeleton />
           )}

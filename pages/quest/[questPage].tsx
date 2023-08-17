@@ -21,6 +21,7 @@ import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 import ErrorScreen from "../../components/UI/screens/errorScreen";
+import Timer from "../../components/quests/timer";
 
 const splitByNftContract = (
   rewards: EligibleReward[]
@@ -63,15 +64,16 @@ const QuestPage: NextPage = () => {
     title_card: "",
     hidden: false,
     disabled: false,
+    expiry_timestamp: "loading",
   });
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
   const [eligibleRewards, setEligibleRewards] = useState<
     Record<string, EligibleReward[]>
   >({});
-  const [unclaimedRewards, setUnclaimedRewards] = useState<EligibleReward[]>(
-    []
-  );
+  const [unclaimedRewards, setUnclaimedRewards] = useState<
+    EligibleReward[] | undefined
+  >();
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
@@ -200,7 +202,14 @@ const QuestPage: NextPage = () => {
   // this builds multicall for minting rewards
   useEffect(() => {
     const calldata: Call[] = [];
-    unclaimedRewards.forEach((reward) => {
+
+    // if the sequencer query failed, let's consider the eligible as unclaimed
+    const to_claim =
+      unclaimedRewards === undefined
+        ? ([] as EligibleReward[]).concat(...Object.values(eligibleRewards))
+        : unclaimedRewards;
+
+    to_claim.forEach((reward) => {
       calldata.push({
         contractAddress: reward.nft_contract,
         entrypoint: "mint",
@@ -215,11 +224,11 @@ const QuestPage: NextPage = () => {
       });
     });
 
-    if (unclaimedRewards && unclaimedRewards.length > 0) {
+    if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
     setMintCalldata(calldata);
-  }, [questId, unclaimedRewards]);
+  }, [questId, unclaimedRewards, eligibleRewards]);
 
   useEffect(() => {
     if (!taskId || res === "true") return;
@@ -307,6 +316,9 @@ const QuestPage: NextPage = () => {
             <p className="text-center max-w-lg">{quest.desc}</p>
           )}
         </div>
+        {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
+          <Timer expiry={Number(quest?.expiry_timestamp)} fixed={false} />
+        ) : null}
         <div className={styles.taskContainer}>
           {tasks.length === 0 || quest.rewards_title === "loading" ? (
             <TasksSkeleton />
