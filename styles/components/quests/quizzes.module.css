@@ -144,6 +144,7 @@
   height: 80px;
   width: 200px;
   margin: auto;
+  z-index: 10;
 }
 
 .okButtonContainer button {
@@ -182,17 +183,6 @@
   margin-top: auto;
 }
 
-@media (max-width: 600px) {
-  .mainContainer {
-    padding: 0 5vw 15px;
-    display: block;
-  }
-  .contentContainer {
-    height: fit-content;
-    min-height: calc(100vh - 50px);
-  }
-}
-
 .contentContainer:has(.leftIllustration) .content {
   padding-bottom: 4em;
 }
@@ -206,6 +196,10 @@
   height: calc(100% - 4em);
   display: flex;
   width: 70%;
+}
+
+.content .leftIllustration {
+  display: none;
 }
 
 .leftIllustration img {
@@ -269,7 +263,6 @@
 
 .checkBoxContainer {
   display: flex;
-  height: 40px;
   margin: 0 10px;
   position: relative;
   width: calc(50% - 20px);
@@ -286,10 +279,10 @@
 }
 
 .checkbox {
-  height: 40px;
+  height: 54px;
   cursor: pointer;
   display: flex;
-  padding: 24px 16px;
+  padding: 24px 48px;
   justify-content: center;
   align-items: center;
   gap: 56px;
@@ -384,6 +377,28 @@
 }
 
 @media (max-width: 600px) {
+  .mainContainer {
+    padding: 0 5vw 15px;
+    display: block;
+  }
+  .contentContainer {
+    height: fit-content;
+    min-height: calc(100vh - 50px);
+    flex-direction: column;
+  }
+  .leftIllustration {
+    width: calc(100% - 70px);
+    display: block;
+    margin: auto;
+  }
+  .leftIllustration {
+    display: none;
+  }
+  .content .leftIllustration {
+    display: flex;
+    margin-top: 25px;
+    margin-bottom: 50px;
+  }
   .questionContainer {
     width: calc(100% - 70px) !important;
     flex-direction: column;

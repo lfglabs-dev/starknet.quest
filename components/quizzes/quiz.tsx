@@ -34,6 +34,17 @@ const Quiz: FunctionComponent<QuizProps> = ({
   const [restart, setRestart] = useState<boolean>(false);
 
   useEffect(() => {
+    const documentBody = document.querySelector("body");
+    if (!documentBody) return;
+    // Mount
+    documentBody.style.overflow = "hidden";
+    // Unmount
+    return () => {
+      documentBody.style.removeProperty("overflow");
+    };
+  }, []);
+
+  useEffect(() => {
     if (restart) return setRestart(false);
     setLoading(true);
     fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`)

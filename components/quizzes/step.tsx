@@ -49,6 +49,12 @@ const Step: FunctionComponent<StepProps> = ({
   };
 
   useEffect(() => {
+    if (question.kind === "ordering") return;
+    if (question.options.length === selectedOptions.length)
+      setSelectedOptions(selectedOptions.slice(1));
+  }, [selectedOptions]);
+
+  useEffect(() => {
     if (answers[step]) {
       setSelectedOptions(answers[step]);
       setSelected(true);
@@ -58,19 +64,19 @@ const Step: FunctionComponent<StepProps> = ({
     }
   }, [step, answers]);
 
+  const layoutElements =
+    question && question.layout === "illustrated_left" ? (
+      <div className={styles.leftIllustration}>
+        <img src={question.image_for_layout as string} alt="illustration" />
+      </div>
+    ) : null;
+
   return (
     <>
       <ProgressBar currentStep={step} totalSteps={questions.length} />
       {question ? (
         <section className={styles.contentContainer}>
-          {question.layout === "illustrated_left" ? (
-            <div className={styles.leftIllustration}>
-              <img
-                src={question.image_for_layout as string}
-                alt="illustration"
-              />
-            </div>
-          ) : null}
+          {layoutElements}
           <div className={styles.content}>
             <div className={styles.issuer}>
               <NftIssuer issuer={issuer} />
@@ -82,6 +88,7 @@ const Step: FunctionComponent<StepProps> = ({
               selectedOptions={selectedOptions}
               question={question}
             />
+            {layoutElements}
             <div className={styles.okButtonContainer}>
               <button
                 onClick={() => selected && handleNext()}
