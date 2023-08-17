@@ -357,7 +357,7 @@ const QuestPage: NextPage = () => {
                         : ""
                     }
                     setShowQuiz={setShowQuiz}
-                    quizName={task.quiz_name}
+                    quizName={task.quiz_name || undefined}
                     issuer={{
                       name: quest.issuer,
                       logoFavicon: quest.logo,
