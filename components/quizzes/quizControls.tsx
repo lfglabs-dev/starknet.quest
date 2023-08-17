@@ -1,18 +1,20 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/quests/quizzes.module.css";
 
 type QuizControlsProps = {
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: (s: number) => void;
   moveBack?: () => void;
+  step: number;
 };
 
 const QuizControls: FunctionComponent<QuizControlsProps> = ({
   setStep,
   moveBack,
+  step,
 }) => {
   return (
     <div className={styles.controls}>
-      <button onClick={moveBack || (() => setStep((s) => s - 1))}>
+      <button onClick={moveBack || (() => setStep(step - 1))}>
         <svg
           fill="none"
           viewBox="0 0 24 24"

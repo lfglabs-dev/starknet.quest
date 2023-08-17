@@ -19,7 +19,7 @@ type Task = {
   verifyRedirect: string | null;
   verifyEndpointType: string;
   refreshRewards: () => void;
-  setShowQuiz: Dispatch<SetStateAction<ReactNode>>;
+  setShowQuiz: (s: ReactNode) => void;
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
@@ -46,7 +46,7 @@ type QuizQuestion = {
   layout: "default" | "illustrated_left";
   question: string;
   options: string[];
-  image_for_layout: string;
+  image_for_layout: string | null;
 };
 
 type Quest = {

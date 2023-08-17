@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  FunctionComponent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import QuizControls from "./quizControls";
 import ProgressBar from "./progressBar";
 import QuestionRouter from "./questionRouter";
@@ -13,11 +7,12 @@ import CheckMarkIcon from "../UI/iconsComponents/icons/checkMarkIcon";
 import NftIssuer from "../quests/nftIssuer";
 
 type StepProps = {
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: (s: number) => void;
   step: number;
   questions: Array<QuizQuestion>;
   issuer: Issuer;
-  setAnswers: Dispatch<SetStateAction<string[][]>>;
+  setAnswers: (a: number[][]) => void;
+  answers: number[][];
   moveBack: () => void;
 };
 
@@ -27,9 +22,10 @@ const Step: FunctionComponent<StepProps> = ({
   questions,
   issuer,
   setAnswers,
+  answers,
   moveBack,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
   const question = questions[step];
 
@@ -38,8 +34,8 @@ const Step: FunctionComponent<StepProps> = ({
   }, [step]);
 
   const handleNext = () => {
-    setAnswers((answers) => [...answers, selectedOptions]);
-    setStep((step) => step + 1);
+    setAnswers([...answers, selectedOptions]);
+    setStep(step + 1);
     setSelectedOptions([]);
   };
 
@@ -50,7 +46,10 @@ const Step: FunctionComponent<StepProps> = ({
         <section className={styles.contentContainer}>
           {question.layout === "illustrated_left" ? (
             <div className={styles.leftIllustration}>
-              <img src={question.image_for_layout} alt="illustration" />
+              <img
+                src={question.image_for_layout as string}
+                alt="illustration"
+              />
             </div>
           ) : null}
           <div className={styles.content}>
@@ -75,7 +74,7 @@ const Step: FunctionComponent<StepProps> = ({
           </div>
         </section>
       ) : null}
-      <QuizControls setStep={setStep} moveBack={moveBack} />
+      <QuizControls step={step} setStep={setStep} moveBack={moveBack} />
     </>
   );
 };

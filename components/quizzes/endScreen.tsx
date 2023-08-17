@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
+import React, { FunctionComponent } from "react";
 import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
@@ -8,8 +8,8 @@ import successAnimation from "../../public/visuals/verifiedLottie.json";
 import Lottie from "lottie-react";
 
 type EndScreenProps = {
-  setStep: Dispatch<SetStateAction<number>>;
-  setRestart: Dispatch<SetStateAction<boolean>>;
+  setStep: (s: number) => void;
+  setRestart: (r: boolean) => void;
   passed: "loading" | boolean;
 };
 

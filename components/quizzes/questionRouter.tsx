@@ -1,12 +1,12 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
+import React, { FunctionComponent } from "react";
 import TextChoice from "./questionKinds/textChoice";
 import ImageChoice from "./questionKinds/imageChoice";
 import Ordering from "./questionKinds/ordering";
 
 type QuestionRouterProps = {
-  setSelected: Dispatch<SetStateAction<boolean>>;
-  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
-  selectedOptions: string[];
+  setSelected: (s: boolean) => void;
+  setSelectedOptions: (selectedOptions: number[]) => void;
+  selectedOptions: number[];
   question: QuizQuestion;
 };
 

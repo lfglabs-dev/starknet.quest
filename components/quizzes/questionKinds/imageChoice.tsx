@@ -1,15 +1,10 @@
-import React, {
-  Dispatch,
-  FunctionComponent,
-  SetStateAction,
-  useEffect,
-} from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import styles from "../../../styles/components/quests/quizzes.module.css";
 
 type ImageChoiceProps = {
-  setSelected: Dispatch<SetStateAction<boolean>>;
-  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
-  selectedOptions: string[];
+  setSelected: (s: boolean) => void;
+  setSelectedOptions: (selectedOptions: number[]) => void;
+  selectedOptions: number[];
   question: QuizQuestion;
 };
 
@@ -37,14 +32,14 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
               name="option"
               id={option}
               onChange={() => {
-                if (selectedOptions.includes(index.toString()))
+                if (selectedOptions.includes(index))
                   setSelectedOptions(
-                    selectedOptions.filter((item) => item !== index.toString())
+                    selectedOptions.filter((item) => item !== index)
                   );
-                else setSelectedOptions([...selectedOptions, index.toString()]);
+                else setSelectedOptions([...selectedOptions, index]);
               }}
               className={styles.checkbox}
-              checked={selectedOptions.includes(index.toString())}
+              checked={selectedOptions.includes(index)}
             />
             <label className={styles.checkboxLabel} htmlFor={option}>
               <img src={option} className={styles.checkboxImage} />

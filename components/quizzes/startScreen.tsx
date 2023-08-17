@@ -1,19 +1,21 @@
-import React, { Dispatch, FunctionComponent, SetStateAction } from "react";
+import React, { FunctionComponent } from "react";
 import QuizControls from "./quizControls";
 import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
 
 type StartScreenProps = {
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: (s: number) => void;
   name: string;
   description: string;
+  step: number;
 };
 
 const StartScreen: FunctionComponent<StartScreenProps> = ({
   setStep,
   name,
   description,
+  step,
 }) => {
   return (
     <>
@@ -21,15 +23,13 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
         <ScreenLayout
           title={name}
           actionBar={
-            <Button onClick={() => setStep((step) => step + 1)}>
-              Start Quiz
-            </Button>
+            <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
           }
         >
           <p>{description}</p>
         </ScreenLayout>
       </div>
-      <QuizControls setStep={setStep} />
+      <QuizControls step={step} setStep={setStep} />
     </>
   );
 };

@@ -29,7 +29,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     questions: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const [answers, setAnswers] = useState<string[][]>([]);
+  const [answers, setAnswers] = useState<number[][]>([]);
   const [passed, setPassed] = useState<"loading" | boolean>("loading");
   const [restart, setRestart] = useState<boolean>(false);
 
@@ -58,18 +58,25 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     if (step === -1) return;
     if (answers.length !== quiz.questions.length) return;
-    setPassed("loading");
-    fetch(verifyEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_answers_list: answers,
-        quiz_name: quizId,
-        addr: hexToDecimal(address),
-      }),
-    }).then((res) => setPassed(res.status === 200));
+    const load = () => {
+      setPassed("loading");
+      fetch(verifyEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_answers_list: answers.map((answer) =>
+            answer.map((value) => value.toString())
+          ),
+          quiz_name: quizId,
+          addr: hexToDecimal(address),
+        }),
+      })
+        .then((res) => setPassed(res.status === 200))
+        .catch(load);
+    };
+    load();
   }, [answers, step, quiz]);
 
   const moveBack = () => {
@@ -87,6 +94,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           setStep={setStep}
           name={quiz.name}
           description={quiz.description}
+          step={step}
         />
       ) : step === quiz?.questions.length ? (
         <EndScreen setStep={setStep} passed={passed} setRestart={setRestart} />
@@ -98,6 +106,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
           issuer={issuer}
           setAnswers={setAnswers}
           moveBack={moveBack}
+          answers={answers}
         />
       )}
     </div>
