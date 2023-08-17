@@ -13,7 +13,6 @@ type StepProps = {
   issuer: Issuer;
   setAnswers: (a: number[][]) => void;
   answers: number[][];
-  moveBack: () => void;
 };
 
 const Step: FunctionComponent<StepProps> = ({
@@ -23,7 +22,6 @@ const Step: FunctionComponent<StepProps> = ({
   issuer,
   setAnswers,
   answers,
-  moveBack,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [selected, setSelected] = useState<boolean>(false);
@@ -34,10 +32,31 @@ const Step: FunctionComponent<StepProps> = ({
   }, [step]);
 
   const handleNext = () => {
-    setAnswers([...answers, selectedOptions]);
-    setStep(step + 1);
-    setSelectedOptions([]);
+    if (answers[step]) {
+      setAnswers(
+        answers.map((item, index) => {
+          if (index === step) return selectedOptions;
+          else return item;
+        })
+      );
+      setStep(step + 1);
+      setSelectedOptions(answers[step]);
+    } else {
+      setAnswers([...answers, selectedOptions]);
+      setStep(step + 1);
+      setSelectedOptions([]);
+    }
   };
+
+  useEffect(() => {
+    if (answers[step]) {
+      setSelectedOptions(answers[step]);
+      setSelected(true);
+    } else {
+      setSelectedOptions([]);
+      setSelected(false);
+    }
+  }, [step, answers]);
 
   return (
     <>
@@ -74,7 +93,7 @@ const Step: FunctionComponent<StepProps> = ({
           </div>
         </section>
       ) : null}
-      <QuizControls step={step} setStep={setStep} moveBack={moveBack} />
+      <QuizControls step={step} setStep={setStep} />
     </>
   );
 };

@@ -79,12 +79,6 @@ const Quiz: FunctionComponent<QuizProps> = ({
     load();
   }, [answers, step, quiz]);
 
-  const moveBack = () => {
-    setStep(step - 1);
-    if (step === -1) return;
-    setAnswers(answers.slice(0, answers.length - 1));
-  };
-
   return (
     <div className={styles.mainContainer}>
       {loading ? (
@@ -105,7 +99,6 @@ const Quiz: FunctionComponent<QuizProps> = ({
           questions={quiz?.questions}
           issuer={issuer}
           setAnswers={setAnswers}
-          moveBack={moveBack}
           answers={answers}
         />
       )}
