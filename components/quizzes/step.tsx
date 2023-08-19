@@ -51,7 +51,7 @@ const Step: FunctionComponent<StepProps> = ({
   useEffect(() => {
     if (!question) return;
     if (question.kind === "ordering") return;
-    if (question.options.length === selectedOptions.length)
+    if (selectedOptions.length > 1)
       setSelectedOptions(selectedOptions.slice(1));
   }, [question, selectedOptions]);
 
