@@ -48,9 +48,9 @@ const Task: FunctionComponent<Task> = ({
   };
 
   // A verify function that setIsVerified(true) and stop propagation
-  const verify = async (e: React.MouseEvent) => {
+  const verify = async (e?: React.MouseEvent) => {
     checkCanDoTask();
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     setIsLoading(true);
 
     if (verifyEndpointType.startsWith("oauth")) {
@@ -114,6 +114,7 @@ const Task: FunctionComponent<Task> = ({
           quizId={quizName as string}
           issuer={issuer}
           verifyEndpoint={verifyEndpoint}
+          setIsVerified={setIsVerified}
         />
       );
     window.open(href);

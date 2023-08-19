@@ -10,6 +10,7 @@ import { hexToDecimal } from "../../utils/feltService";
 
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
+  setIsVerified: (isVerified: boolean) => void;
   quizId: string;
   issuer: Issuer;
   verifyEndpoint: string;
@@ -17,6 +18,7 @@ type QuizProps = {
 
 const Quiz: FunctionComponent<QuizProps> = ({
   setShowQuiz,
+  setIsVerified,
   quizId,
   issuer,
   verifyEndpoint,
@@ -43,6 +45,10 @@ const Quiz: FunctionComponent<QuizProps> = ({
       documentBody.style.removeProperty("overflow");
     };
   }, []);
+
+  useEffect(() => {
+    setIsVerified(passed === true);
+  }, [passed]);
 
   useEffect(() => {
     if (restart) return setRestart(false);
