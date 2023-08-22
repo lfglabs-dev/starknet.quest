@@ -343,14 +343,12 @@ const QuestPage: NextPage = () => {
                         ? task.verify_endpoint
                         : generateOAuthUrl(task)
                     }
-                    verifyEndpointType={`${
-                      task.verify_endpoint_type ?? "default"
-                    }`}
+                    verifyEndpointType={task.verify_endpoint_type ?? "default"}
                     refreshRewards={() => refreshRewards(quest, address)}
                     wasVerified={task.completed}
-                    hasError={
-                      taskError && taskError.taskId === task.id ? true : false
-                    }
+                    hasError={Boolean(
+                      taskError && taskError.taskId === task.id
+                    )}
                     verifyError={
                       taskError && taskError.taskId === task.id
                         ? taskError.error
