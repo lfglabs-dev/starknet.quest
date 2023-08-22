@@ -1,10 +1,10 @@
 import React from "next";
 import StartScreen from "./startScreen";
-import styles from "../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quiz.module.css";
 import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import Step from "./step";
 import EndScreen from "./endScreen";
-import QuizLoading from "../../components/quizzes/quizLoading";
+import QuizLoading from "../../components/quiz/quizLoading";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "../../utils/feltService";
 

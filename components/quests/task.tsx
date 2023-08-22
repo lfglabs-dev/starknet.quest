@@ -9,7 +9,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
 import { CircularProgress } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
-import Quiz from "../quizzes/quiz";
+import Quiz from "../quiz/quiz";
 
 const Task: FunctionComponent<Task> = ({
   name,

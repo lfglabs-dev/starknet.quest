@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import QuizControls from "./quizControls";
 import ScreenLayout from "./screenLayout";
-import styles from "../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quiz.module.css";
 import Button from "../UI/button";
 
 type StartScreenProps = {

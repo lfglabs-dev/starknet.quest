@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import ScreenLayout from "./screenLayout";
-import styles from "../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quiz.module.css";
 import Button from "../UI/button";
-import QuizLoading from "../../components/quizzes/quizLoading";
+import QuizLoading from "../../components/quiz/quizLoading";
 import wrongAnimation from "../../public/visuals/wrongLottie.json";
 import successAnimation from "../../public/visuals/verifiedLottie.json";
 import Lottie from "lottie-react";

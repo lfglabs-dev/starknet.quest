@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quiz.module.css";
 
 type QuizControlsProps = {
   setStep: (s: number) => void;

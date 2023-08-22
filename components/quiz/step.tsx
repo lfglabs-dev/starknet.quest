@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import QuizControls from "./quizControls";
 import ProgressBar from "./progressBar";
 import QuestionRouter from "./questionRouter";
-import styles from "../../styles/components/quests/quizzes.module.css";
+import styles from "../../styles/components/quests/quiz.module.css";
 import CheckMarkIcon from "../UI/iconsComponents/icons/checkMarkIcon";
 import NftIssuer from "../quests/nftIssuer";
 

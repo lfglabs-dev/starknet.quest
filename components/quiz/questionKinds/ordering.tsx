@@ -1,32 +1,28 @@
 import React, { FunctionComponent, useEffect } from "react";
-import styles from "../../../styles/components/quests/quizzes.module.css";
+import styles from "../../../styles/components/quests/quiz.module.css";
 
-type ImageChoiceProps = {
+type OrderingProps = {
   setSelected: (s: boolean) => void;
   setSelectedOptions: (selectedOptions: number[]) => void;
   selectedOptions: number[];
   question: QuizQuestion;
 };
 
-const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
+const Ordering: FunctionComponent<OrderingProps> = ({
   setSelected,
   setSelectedOptions,
   selectedOptions,
   question,
 }) => {
   useEffect(() => {
-    if (selectedOptions.length > 0) setSelected(true);
+    if (selectedOptions.length === question.options.length) setSelected(true);
     else setSelected(false);
   }, [selectedOptions]);
-
   return (
     <div className={`${styles.questionContainer} ${styles.full}`}>
-      <div className={styles.tableLayout}>
+      <div className={styles.listLayout}>
         {question.options.map((option, index) => (
-          <div
-            key={index}
-            className={`${styles.checkBoxContainer} ${styles.checkboxImageContainer}`}
-          >
+          <div key={index} className={styles.checkBoxContainer}>
             <input
               type="checkbox"
               name="option"
@@ -42,7 +38,15 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
               checked={selectedOptions.includes(index)}
             />
             <label className={styles.checkboxLabel} htmlFor={option}>
-              <img src={option} className={styles.checkboxImage} />
+              {selectedOptions.indexOf(index) !== -1 && (
+                <strong className={styles.labelNumberIcon}>
+                  {
+                    // Get the index of the option in the selectedOptions array
+                    selectedOptions.indexOf(index) + 1
+                  }
+                </strong>
+              )}
+              <strong>{option}</strong>
             </label>
           </div>
         ))}
@@ -51,4 +55,4 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
   );
 };
 
-export default ImageChoice;
+export default Ordering;
