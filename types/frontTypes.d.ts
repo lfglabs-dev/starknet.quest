@@ -118,3 +118,19 @@ type Step = {
 
 type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+
+type UserAchievement = {
+  name: string;
+  shortDescription: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  verifyType: string;
+};
+
+type UserAchievements = {
+  name: string;
+  description: string;
+  img_url: string;
+  achievements: Achievement[];
+};

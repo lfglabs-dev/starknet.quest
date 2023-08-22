@@ -46,6 +46,7 @@ type CompletedTaskDocument = {
   task_id: number;
   address: string;
 };
+
 export interface RequestProps {
   query: {
     address: string;
@@ -69,3 +70,25 @@ export interface TwitterRequestProps {
 }
 
 export type CustomTwitterNextApiRequest = NextApiRequest & TwitterRequestProps;
+
+type AchievementsDocument = {
+  category_name: string;
+  category_desc: string;
+  category_img_url: string;
+  achievements: AchievementDocument[];
+};
+
+type AchievementDocument = {
+  id: number;
+  name: string;
+  short_desc: string;
+  title: string;
+  desc: string;
+  completed: boolean;
+  img_url: string;
+  verify_type: string;
+};
+
+type CompletedDocument = {
+  achieved: boolean;
+};

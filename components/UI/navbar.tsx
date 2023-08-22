@@ -40,10 +40,14 @@ const Navbar: FunctionComponent = () => {
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => { 
+  useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
-    if (!localStorage.getItem("lastUsedConnector") && router?.pathname !== "/partnership") setHasWallet(true);
+    if (
+      !localStorage.getItem("lastUsedConnector") &&
+      router?.pathname !== "/partnership"
+    )
+      setHasWallet(true);
   }, []);
 
   useEffect(() => {
@@ -133,6 +137,9 @@ const Navbar: FunctionComponent = () => {
               </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
+              </Link>
+              <Link href="/achievements">
+                <li className={styles.menuItem}>Achievements</li>
               </Link>
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My profile</li>
@@ -235,6 +242,14 @@ const Navbar: FunctionComponent = () => {
                       className={styles.menuItemSmall}
                     >
                       Quests
+                    </li>
+                  </Link>
+                  <Link href="/achievements">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Achievements
                     </li>
                   </Link>
                   <Link
