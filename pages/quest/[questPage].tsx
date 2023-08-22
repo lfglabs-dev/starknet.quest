@@ -335,7 +335,7 @@ const QuestPage: NextPage = () => {
                     verifyRedirect={task.verify_redirect}
                     verifyEndpoint={
                       task.verify_endpoint_type &&
-                      task.verify_endpoint_type == "default"
+                      task.verify_endpoint_type === "default"
                         ? `${task.verify_endpoint}?addr=${hexToDecimal(
                             address
                           )}`
