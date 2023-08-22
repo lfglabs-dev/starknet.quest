@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
+import NftIssuer from "./nftIssuer";
 
 type NftDisplayProps = {
   nfts: Nft[];
@@ -8,11 +9,8 @@ type NftDisplayProps = {
 
 const NftDisplay: FunctionComponent<NftDisplayProps> = ({ nfts, issuer }) => {
   return (
-    <div className="flex flex-col-reverse justify-center items-center">
-      <div className={styles.issuer}>
-        <img width={25} src={issuer.logoFavicon} />
-        <p>{issuer.name}</p>
-      </div>
+    <div className="flex flex-col justify-center items-center">
+      <NftIssuer issuer={issuer} />
       <div className="flex gap-5 flex-wrap justify-center items-center">
         {nfts.map((nft, index) => (
           <div

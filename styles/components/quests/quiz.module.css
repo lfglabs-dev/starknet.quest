@@ -1,0 +1,428 @@
+.mainContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  height: 100vh;
+  padding: 30px 15vw;
+  background-color: var(--background);
+  overflow: hidden auto;
+}
+
+.mainContainer:has(.menu) {
+  background: url("/utils/dotBackground.svg") no-repeat center var(--background);
+}
+
+.contentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.controls {
+  display: flex;
+  width: 100%;
+}
+
+.controls button:has(+ button) {
+  margin-right: auto;
+}
+
+.controls button {
+  display: flex;
+  align-items: center;
+}
+
+.controls button svg {
+  width: 16px;
+  margin-right: 8px;
+}
+
+.menu {
+  max-width: 600px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menuButtons {
+  width: calc(100% - 10px);
+  display: flex;
+  margin: 2em auto 0 auto;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButtons div + div {
+  margin-left: auto;
+}
+
+.menuButtons button {
+  margin: auto;
+}
+
+@media (max-width: 1000px) {
+  .menuButtons {
+    flex-direction: column;
+  }
+  .menuButtons div + div {
+    margin: 1em;
+  }
+  .menuButtons * {
+    width: 100%;
+  }
+  .mainContainer:has(.menu) {
+    background: var(--background);
+  }
+}
+
+.soft button {
+  background: white;
+}
+
+.menu img {
+  width: fit-content;
+  display: block;
+  margin: 2em auto;
+}
+
+.menuTitle {
+  font-family: "Sora-ExtraBold";
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.successLottie {
+  width: 255px;
+  height: 218px;
+  max-width: 100%;
+  display: block;
+  margin: 2em auto;
+}
+
+.wrongLottie {
+  width: 400px;
+  height: 218px;
+  max-width: 100%;
+  display: block;
+  margin: 2em auto;
+}
+
+.successLottie div {
+  width: 100%;
+  height: 100%;
+}
+
+.successLottie.wrong {
+  width: 198px;
+  height: 216px;
+}
+
+.okButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 200px;
+  margin: auto;
+  z-index: 10;
+}
+
+.okButtonContainer button {
+  background-color: var(--secondary);
+  color: var(--background);
+  display: flex;
+  padding: 14px 32px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.okButtonContainer button svg {
+  margin-left: 10px;
+}
+
+.okButtonContainer button.disabled {
+  display: none;
+}
+
+.questionTitle {
+  color: var(--secondary-700, #f4faff);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: min(36px, 5vh, 5vw);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px; /* 105.556% */
+  margin-bottom: auto;
+}
+
+.issuer {
+  margin-top: auto;
+}
+
+.contentContainer:has(.leftIllustration) .content {
+  padding-bottom: 4em;
+}
+
+.leftIllustration {
+  margin: 0 2em 4em 0;
+  padding: 4em 2em;
+  background-color: var(--background600);
+  position: relative;
+  border-radius: 20px;
+  height: calc(100% - 4em);
+  display: flex;
+  width: 70%;
+}
+
+.content .leftIllustration {
+  display: none;
+}
+
+.leftIllustration img {
+  width: 100%;
+}
+
+.leftIllustration::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e885 35%,
+    #00ff77ad 50%,
+    #59c2e861 70%,
+    #437aba30 100%
+  );
+  border-radius: 20px;
+  z-index: -1;
+  mask: linear-gradient(8deg, transparent 85%, black);
+}
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.questionContainer.full {
+  height: fit-content;
+  width: min(50vw, 50vh);
+  aspect-ratio: 1/1;
+}
+
+.tableLayout {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.listLayout {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.checkBoxContainer {
+  display: flex;
+  margin: 0 10px;
+  position: relative;
+  width: calc(50% - 20px);
+}
+
+.listLayout .checkBoxContainer {
+  width: 100%;
+  margin: auto 10px;
+}
+
+.checkboxImageContainer {
+  height: auto;
+  aspect-ratio: 1/1;
+}
+
+.checkbox {
+  height: 54px;
+  cursor: pointer;
+  display: flex;
+  padding: 24px 48px;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  flex: 1 0 0;
+  opacity: 0;
+  z-index: 10;
+}
+
+.checkboxLabel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 16px;
+  border-radius: 10px;
+  background-color: var(--background600);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkboxLabel:after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(1deg, var(--background) 65%, transparent);
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.checkboxLabel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 40%,
+    #00fbff 50%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.checkbox:checked + .checkboxLabel {
+  background-color: var(--secondary);
+  color: var(--background);
+}
+
+.checkbox:checked + .checkboxLabel::after,
+.checkbox:checked + .checkboxLabel::before {
+  display: none;
+}
+
+.checkboxImageContainer .checkboxLabel {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.checkboxImage {
+  max-width: 70%;
+  max-height: 70%;
+}
+
+.labelNumberIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background600);
+  color: var(--secondary);
+  flex-shrink: 0;
+  border: 1px solid var(--secondary500);
+  border-radius: 50%;
+  padding: 0px;
+  width: 30px;
+  aspect-ratio: 1/1;
+  margin-right: auto;
+}
+
+.labelNumberIcon + * {
+  margin-right: auto;
+}
+
+@media (max-width: 600px) {
+  .mainContainer {
+    padding: 0 5vw 15px;
+    display: block;
+  }
+  .contentContainer {
+    height: fit-content;
+    min-height: calc(100vh - 50px);
+    flex-direction: column;
+  }
+  .leftIllustration {
+    width: calc(100% - 70px);
+    display: block;
+    margin: auto;
+  }
+  .leftIllustration {
+    display: none;
+  }
+  .content .leftIllustration {
+    display: flex;
+    margin-top: 25px;
+    margin-bottom: 50px;
+  }
+  .questionContainer {
+    width: calc(100% - 70px) !important;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: baseline;
+  }
+  .checkBoxContainer {
+    width: 100%;
+    margin: 25px 0 !important;
+  }
+  .tableLayout {
+    width: 100%;
+  }
+  .listLayout {
+    width: 100%;
+  }
+}
+
+.contentContainer:has(.leftIllustration) .issuer,
+.contentContainer:has(.leftIllustration) .issuer > div {
+  margin-top: 0;
+}
+
+.contentContainer:has(.leftIllustration) .tableLayout .checkBoxContainer {
+  margin: 24px 20px;
+  width: 100%;
+}

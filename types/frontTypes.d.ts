@@ -19,10 +19,12 @@ type Task = {
   verifyRedirect: string | null;
   verifyEndpointType: string;
   refreshRewards: () => void;
+  setShowQuiz: (s: ReactNode) => void;
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
   quizName?: string;
+  issuer?: Issuer;
 };
 
 type TaskProps = Task & { id: number };
@@ -31,6 +33,20 @@ type TaskError = {
   taskId: number;
   res: boolean;
   error?: string;
+};
+
+type Quiz = {
+  name: string;
+  description: string;
+  questions: QuizQuestion[];
+};
+
+type QuizQuestion = {
+  kind: "text_choice" | "image_choice" | "ordering";
+  layout: "default" | "illustrated_left";
+  question: string;
+  options: string[];
+  image_for_layout: string | null;
 };
 
 type Quest = {
