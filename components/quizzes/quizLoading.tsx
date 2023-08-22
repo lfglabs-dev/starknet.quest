@@ -1,7 +1,7 @@
 import styles from "../../styles/components/loading.module.css";
 import React from "react";
 
-const Loading = () => {
+const QuizLoading = () => {
   return (
     <div className={styles.spinner}>
       <div className={styles.bar1} />
@@ -20,4 +20,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default QuizLoading;

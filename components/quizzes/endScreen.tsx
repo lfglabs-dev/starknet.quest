@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import ScreenLayout from "./screenLayout";
 import styles from "../../styles/components/quests/quizzes.module.css";
 import Button from "../UI/button";
-import Loading from "../UI/loading";
+import QuizLoading from "../../components/quizzes/quizLoading";
 import wrongAnimation from "../../public/visuals/wrongLottie.json";
 import successAnimation from "../../public/visuals/verifiedLottie.json";
 import Lottie from "lottie-react";
@@ -19,7 +19,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
   passed,
 }) => {
   return passed === "loading" ? (
-    <Loading />
+    <QuizLoading />
   ) : (
     <div className={styles.contentContainer}>
       {passed ? (

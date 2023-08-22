@@ -4,7 +4,7 @@ import styles from "../../styles/components/quests/quizzes.module.css";
 import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import Step from "./step";
 import EndScreen from "./endScreen";
-import Loading from "../UI/loading";
+import QuizLoading from "../../components/quizzes/quizLoading";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "../../utils/feltService";
 
@@ -99,7 +99,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   return (
     <div className={styles.mainContainer}>
       {loading ? (
-        <Loading />
+        <QuizLoading />
       ) : step === -1 ? (
         <StartScreen
           setStep={setStep}
