@@ -90,8 +90,10 @@ const Navbar: FunctionComponent = () => {
     if (
       !localStorage.getItem("lastUsedConnector") &&
       router?.pathname !== "/partnership"
-    )
+    ) {
+      refresh();
       setHasWallet(true);
+    }
   }, []);
 
   useEffect(() => {
