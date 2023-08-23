@@ -26,7 +26,7 @@ const Navbar: FunctionComponent = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect } = useConnectors();
+  const { available, connect, disconnect, refresh } = useConnectors();
   const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -40,10 +40,14 @@ const Navbar: FunctionComponent = () => {
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => { 
+  useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
-    if (!localStorage.getItem("lastUsedConnector") && router?.pathname !== "/partnership") setHasWallet(true);
+    if (
+      !localStorage.getItem("lastUsedConnector") &&
+      router?.pathname !== "/partnership"
+    )
+      setHasWallet(true);
   }, []);
 
   useEffect(() => {
@@ -75,6 +79,7 @@ const Navbar: FunctionComponent = () => {
   }
 
   function onTopButtonClick(): void {
+    refresh();
     if (available.length > 0) {
       if (available.length === 1) {
         connect(available[0]);
@@ -106,6 +111,12 @@ const Navbar: FunctionComponent = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Refresh available connectors before showing wallet modal
+  function refreshAndShowWallet(): void {
+    refresh();
+    setHasWallet(true);
+  }
 
   return (
     <>
@@ -144,9 +155,7 @@ const Navbar: FunctionComponent = () => {
                   onClick={
                     isConnected
                       ? () => setShowWallet(true)
-                      : available.length === 1
-                      ? () => connect(available[0])
-                      : () => setHasWallet(true)
+                      : () => refreshAndShowWallet()
                   }
                 >
                   {isConnected ? (
