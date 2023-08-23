@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navbar from "../components/UI/navbar";
 import Head from "next/head";
 import { ThemeProvider } from "@mui/material";
-import { InjectedConnector, StarknetConfig } from "@starknet-react/core";
+import {
+  Connector,
+  InjectedConnector,
+  StarknetConfig,
+} from "@starknet-react/core";
 import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const connectors = [
-    new InjectedConnector({ options: { id: "argentX" } }),
-    new InjectedConnector({ options: { id: "braavos" } }),
-  ];
+  const connectors: Connector<any>[] = useMemo(
+    () => [
+      new InjectedConnector({ options: { id: "argentX" } }),
+      new InjectedConnector({ options: { id: "braavos" } }),
+    ],
+    []
+  );
 
   const theme = createTheme({
     palette: {
