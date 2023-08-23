@@ -1,10 +1,5 @@
 import Link from "next/link";
-import React, {
-  useState,
-  useEffect,
-  FunctionComponent,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
@@ -13,7 +8,6 @@ import {
   useAccount,
   useProvider,
   useTransactionManager,
-  Connector,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -23,7 +17,6 @@ import { constants } from "starknet";
 import ModalWallet from "./modalWallet";
 import { CircularProgress } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useRouter } from "next/router";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -45,56 +38,6 @@ const Navbar: FunctionComponent = () => {
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  const router = useRouter();
-
-  // useLayoutEffect(() => {
-  //   async function tryAutoConnect(connectors: Connector[]) {
-  //     // to handle autoconnect starknet-react adds connector id in local storage
-  //     // if there is no value stored, we show the wallet modal
-  //     const lastConnectedConnectorId =
-  //       localStorage.getItem("lastUsedConnector");
-  //     if (lastConnectedConnectorId === null) {
-  //       return;
-  //     }
-
-  //     const lastConnectedConnector = connectors.find(
-  //       (connector) => connector.id === lastConnectedConnectorId
-  //     );
-  //     if (lastConnectedConnector === undefined) {
-  //       return;
-  //     }
-
-  //     try {
-  //       if (!(await lastConnectedConnector.ready())) {
-  //         // Not authorized anymore.
-  //         return;
-  //       }
-
-  //       await connect(lastConnectedConnector);
-  //     } catch {
-  //       // no-op
-  //     }
-  //   }
-
-  //   const timeout = setTimeout(() => {
-  //     if (!address) {
-  //       tryAutoConnect(connectors);
-  //     }
-  //   }, 1000);
-  //   return () => clearTimeout(timeout);
-  // }, []);
-
-  useEffect(() => {
-    // to handle autoconnect starknet-react adds connector id in local storage
-    // if there is no value stored, we show the wallet modal
-    if (
-      !localStorage.getItem("lastUsedConnector") &&
-      router?.pathname !== "/partnership"
-    ) {
-      refresh();
-      setHasWallet(true);
-    }
-  }, []);
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
