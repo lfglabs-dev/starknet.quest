@@ -1,5 +1,10 @@
 import Link from "next/link";
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React, {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useLayoutEffect,
+} from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
@@ -8,6 +13,7 @@ import {
   useAccount,
   useProvider,
   useTransactionManager,
+  Connector,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -26,7 +32,8 @@ const Navbar: FunctionComponent = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect, refresh } = useConnectors();
+  const { available, connect, disconnect, refresh, connectors } =
+    useConnectors();
   const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -39,6 +46,43 @@ const Navbar: FunctionComponent = () => {
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
+
+  useLayoutEffect(() => {
+    async function tryAutoConnect(connectors: Connector[]) {
+      // to handle autoconnect starknet-react adds connector id in local storage
+      // if there is no value stored, we show the wallet modal
+      const lastConnectedConnectorId =
+        localStorage.getItem("lastUsedConnector");
+      if (lastConnectedConnectorId === null) {
+        return;
+      }
+
+      const lastConnectedConnector = connectors.find(
+        (connector) => connector.id === lastConnectedConnectorId
+      );
+      if (lastConnectedConnector === undefined) {
+        return;
+      }
+
+      try {
+        if (!(await lastConnectedConnector.ready())) {
+          // Not authorized anymore.
+          return;
+        }
+
+        await connect(lastConnectedConnector);
+      } catch {
+        // no-op
+      }
+    }
+
+    const timeout = setTimeout(() => {
+      if (!address) {
+        tryAutoConnect(connectors);
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
