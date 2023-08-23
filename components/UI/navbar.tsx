@@ -47,42 +47,42 @@ const Navbar: FunctionComponent = () => {
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
-  useLayoutEffect(() => {
-    async function tryAutoConnect(connectors: Connector[]) {
-      // to handle autoconnect starknet-react adds connector id in local storage
-      // if there is no value stored, we show the wallet modal
-      const lastConnectedConnectorId =
-        localStorage.getItem("lastUsedConnector");
-      if (lastConnectedConnectorId === null) {
-        return;
-      }
+  // useLayoutEffect(() => {
+  //   async function tryAutoConnect(connectors: Connector[]) {
+  //     // to handle autoconnect starknet-react adds connector id in local storage
+  //     // if there is no value stored, we show the wallet modal
+  //     const lastConnectedConnectorId =
+  //       localStorage.getItem("lastUsedConnector");
+  //     if (lastConnectedConnectorId === null) {
+  //       return;
+  //     }
 
-      const lastConnectedConnector = connectors.find(
-        (connector) => connector.id === lastConnectedConnectorId
-      );
-      if (lastConnectedConnector === undefined) {
-        return;
-      }
+  //     const lastConnectedConnector = connectors.find(
+  //       (connector) => connector.id === lastConnectedConnectorId
+  //     );
+  //     if (lastConnectedConnector === undefined) {
+  //       return;
+  //     }
 
-      try {
-        if (!(await lastConnectedConnector.ready())) {
-          // Not authorized anymore.
-          return;
-        }
+  //     try {
+  //       if (!(await lastConnectedConnector.ready())) {
+  //         // Not authorized anymore.
+  //         return;
+  //       }
 
-        await connect(lastConnectedConnector);
-      } catch {
-        // no-op
-      }
-    }
+  //       await connect(lastConnectedConnector);
+  //     } catch {
+  //       // no-op
+  //     }
+  //   }
 
-    const timeout = setTimeout(() => {
-      if (!address) {
-        tryAutoConnect(connectors);
-      }
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, []);
+  //   const timeout = setTimeout(() => {
+  //     if (!address) {
+  //       tryAutoConnect(connectors);
+  //     }
+  //   }, 1000);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
