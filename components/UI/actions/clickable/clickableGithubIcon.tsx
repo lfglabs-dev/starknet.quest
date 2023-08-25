@@ -1,50 +1,23 @@
 import { Tooltip } from "@mui/material";
-import { useRouter } from "next/router";
-import React, {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import GithubIcon from "../../../UI/iconsComponents/icons/githubIcon";
 import styles from "../../../../styles/components/icons.module.css";
 import { minifyDomain } from "../../../../utils/stringService";
 import VerifiedIcon from "../../../UI/iconsComponents/icons/verifiedIcon";
-import { StarknetIdJsContext } from "../../../../context/StarknetIdJsProvider";
+import theme from "../../../../styles/theme";
 
 type ClickableGithubIconProps = {
   width: string;
-  tokenId: string;
-  isOwner: boolean;
-  domain: string;
+  githubId?: string;
+  domain?: string;
 };
 
 const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
   width,
-  tokenId,
-  isOwner,
+  githubId,
   domain,
 }) => {
-  const router = useRouter();
-  const [githubId, setGithubId] = useState<string | undefined>();
   const [githubUsername, setGithubUsername] = useState<string | undefined>();
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
-
-  useEffect(() => {
-    starknetIdNavigator
-      ?.getVerifierData(tokenId, "github")
-      .then((response) => {
-        if (response.toString(10) !== "0") {
-          setGithubId(response.toString(10));
-        } else {
-          setGithubId(undefined);
-          setGithubUsername(undefined);
-        }
-      })
-      .catch(() => {
-        return;
-      });
-  }, [tokenId, domain]);
 
   useEffect(() => {
     if (githubId) {
@@ -57,52 +30,18 @@ const ClickableGithubIcon: FunctionComponent<ClickableGithubIconProps> = ({
     }
   }, [githubId]);
 
-  function startVerification(link: string): void {
-    sessionStorage.setItem("tokenId", tokenId);
-    router.push(link);
-  }
-
-  return isOwner ? (
-    <div className="mr-1">
-      <Tooltip
-        title={
-          githubUsername
-            ? "Change your github on starknet ID"
-            : "Start github verification"
-        }
-        arrow
+  return githubUsername ? (
+    <Tooltip title={`Check ${minifyDomain(domain ?? "")} github`} arrow>
+      <div
+        className={styles.clickableIconGithub}
+        onClick={() => window.open(`https://github.com/${githubUsername}`)}
       >
-        <div
-          className={styles.clickableIconGithub}
-          onClick={() =>
-            startVerification(
-              `${process.env.NEXT_PUBLIC_STARKNETID_APP_LINK}/identities`
-            )
-          }
-        >
-          {githubUsername ? (
-            <div className={styles.verifiedIcon}>
-              <VerifiedIcon width={"18"} color={"green"} />
-            </div>
-          ) : null}
-          <GithubIcon width={width} color={"white"} />
+        <div className={styles.verifiedIcon}>
+          <VerifiedIcon width={"18"} color={theme.palette.primary.main} />
         </div>
-      </Tooltip>
-    </div>
-  ) : githubUsername ? (
-    <div className="mr-1">
-      <Tooltip title={`Check ${minifyDomain(domain)} github`} arrow>
-        <div
-          className={styles.clickableIconGithub}
-          onClick={() => window.open(`https://github.com/${githubUsername}`)}
-        >
-          <div className={styles.verifiedIcon}>
-            <VerifiedIcon width={"18"} color={"green"} />
-          </div>
-          <GithubIcon width={width} color="white" />
-        </div>
-      </Tooltip>
-    </div>
+        <GithubIcon width={width} color="white" />
+      </div>
+    </Tooltip>
   ) : null;
 };
 
