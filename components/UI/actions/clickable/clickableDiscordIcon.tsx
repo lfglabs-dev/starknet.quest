@@ -18,13 +18,11 @@ const ClickableDiscordIcon: FunctionComponent<ClickableDiscordIconProps> = ({
   discordId,
 }) => {
   return discordId ? (
-    <Tooltip title={`Check ${minifyDomain(domain ?? "")} discord`} arrow>
-      <div
-        className={styles.clickableIconDiscord}
-        onClick={() =>
-          window.open(`https://discord.com/channels/@me/${discordId}`)
-        }
-      >
+    <Tooltip
+      title={`${minifyDomain(domain ?? "")}'s discord is verified`}
+      arrow
+    >
+      <div className={styles.clickableIconDiscord}>
         <div className={styles.verifiedIcon}>
           <VerifiedIcon width={"18"} color={theme.palette.primary.main} />
         </div>
