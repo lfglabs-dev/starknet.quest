@@ -1,5 +1,10 @@
 import Link from "next/link";
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React, {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useCallback,
+} from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
@@ -8,6 +13,7 @@ import {
   useAccount,
   useProvider,
   useTransactionManager,
+  Connector,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -43,14 +49,27 @@ const Navbar: FunctionComponent = () => {
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
-    if (
-      !localStorage.getItem("lastUsedConnector") &&
-      router?.pathname !== "/partnership"
-    ) {
-      setTimeout(() => {
-        if (connectors.length > 0) setHasWallet(true);
-      }, 1000);
-    }
+    const timeout = setTimeout(() => {
+      if (!address) {
+        if (
+          !localStorage.getItem("lastUsedConnector") &&
+          router?.pathname !== "/partnership"
+        ) {
+          if (connectors.length > 0) setHasWallet(true);
+        } else {
+          const lastConnectedConnectorId =
+            localStorage.getItem("lastUsedConnector");
+          if (lastConnectedConnectorId === null) return;
+
+          const lastConnectedConnector = connectors.find(
+            (connector) => connector.id === lastConnectedConnectorId
+          );
+          if (lastConnectedConnector === undefined) return;
+          tryConnect(lastConnectedConnector);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -69,6 +88,18 @@ const Navbar: FunctionComponent = () => {
       setIsWrongNetwork(isWrongNetwork);
     });
   }, [provider, network, isConnected]);
+
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (address) return;
+      if (await connector.ready()) {
+        connect(connector);
+
+        return;
+      }
+    },
+    [address, connectors]
+  );
 
   function disconnectByClick(): void {
     disconnect();
