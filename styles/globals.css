@@ -11,11 +11,16 @@
     font-family: "Sora-Bold";
     src: url(../public/fonts/sora/Sora-Bold.ttf);
   }
+  @font-face {
+    font-family: "Sora-ExtraBold";
+    src: url(../public/fonts/sora/Sora-ExtraBold.ttf);
+  }
 }
 
 :root {
   --primary: #6affaf;
   --secondary: #f4faff;
+  --secondary500: #e1dcea;
   --secondary300: #eae0d5;
   --tertiary: #5ce3fe;
   --background: #101012;
@@ -47,6 +52,10 @@ a {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+.title.extrabold {
+  font-family: "Sora-ExtraBold";
 }
 
 /* Scroll bar */

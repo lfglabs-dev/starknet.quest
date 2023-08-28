@@ -72,14 +72,13 @@
   /* Inside auto layout */
 
   flex: none;
-  order: 1;
   flex-grow: 0;
 }
 
 .issuer {
   width: fit-content;
   gap: 10px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .descriptionContainer {
@@ -229,6 +228,7 @@
   align-items: center;
   padding: 0.4rem;
   gap: 0.5rem;
+  position: relative;
 }
 
 .featuredQuestInfos {

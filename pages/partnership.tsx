@@ -26,6 +26,7 @@ const Partnership: NextPage = () => {
     <div className={styles.screen}>
       <div className={styles.container}>
         <header className={styles.header}>
+          <div className={styles.blueBlur} />
           <div className={styles.headerContent}>
             <div className={styles.mainTitleContainer}>
               <MainTitle
@@ -37,7 +38,7 @@ const Partnership: NextPage = () => {
               />
             </div>
             <img
-              src="/visuals/partnershipHeader.webp"
+              src="/visuals/partners/partnershipHeader.webp"
               className={styles.headerImg}
             />
           </div>
@@ -72,7 +73,7 @@ const Partnership: NextPage = () => {
                     description:
                       "Accelerate user onboarding and reward authenticity with on-chain quests that showcase the unique capabilities and benefits of your Starknet app.",
                     icon: "/icons/starknet.svg",
-                    banner: "/visuals/getYourStarkDomain.webp",
+                    banner: "/visuals/partners/getYourStarkDomain.webp",
                   },
                   {
                     title: "Completely Customizable",
@@ -80,7 +81,7 @@ const Partnership: NextPage = () => {
                     description:
                       "Unlock the potential of a quest designed to align with your project's style and need. Quest's tasks and rewards are completely programmable with on and off-chain services to perfectly fit your need. ",
                     icon: "/icons/clipboard.svg",
-                    banner: "/visuals/buildYourStarknetLand.webp",
+                    banner: "/visuals/partners/buildYourStarknetLand.webp",
                   },
                   {
                     title: "Airdrops are so 2021",
@@ -88,7 +89,7 @@ const Partnership: NextPage = () => {
                     description:
                       "Move beyond ineffective reward distribution. Experience a better way to reward authenticity without spending your precious tokens.",
                     icon: "/icons/user.svg",
-                    banner: "/visuals/airdropsAreSo2021.webp",
+                    banner: "/visuals/partners/airdropsAreSo2021.webp",
                   },
                   {
                     title: "Meaningful Rewards",
@@ -96,7 +97,7 @@ const Partnership: NextPage = () => {
                     description:
                       "Cultivate loyalty and unlock new dimensions of engagement through Starknet Quests, offering a unique gamification experience.",
                     icon: "/icons/crown.svg",
-                    banner: "/visuals/meaningfulRewards.webp",
+                    banner: "/visuals/partners/meaningfulRewards.webp",
                   },
                   {
                     title: "Sybil-resistant marketing",
@@ -104,7 +105,7 @@ const Partnership: NextPage = () => {
                     description:
                       "By using the Starknet ID infrastructure we eliminate bots and robots from your campaigns and stimulate your growth with real Starknet users.",
                     icon: "/icons/shield.svg",
-                    banner: "/visuals/sybilResistantMarketing.webp",
+                    banner: "/visuals/partners/sybilResistantMarketing.webp",
                   },
                 ]}
               />

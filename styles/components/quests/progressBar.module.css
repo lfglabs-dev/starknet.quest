@@ -1,0 +1,79 @@
+.progressBarContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.progressBarContainer::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: translateX(100%);
+  background-color: var(--background);
+}
+
+.progressBarStep {
+  width: 25px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progressBarStep + .progressBarStep {
+  margin-left: auto;
+}
+
+.progressBarStep:has(+ .progressBarStep)::before {
+  content: "";
+  position: absolute;
+  background-color: var(--background600);
+  height: 4px;
+  width: 50vw;
+  transform: translateX(50%);
+}
+
+.progressBarStep:has(+ .progressBarStep)[data-completed="true"]::before,
+.progressBarStep[data-completed="true"] .stepIcon {
+  background-color: var(--primary);
+}
+
+.stepIcon {
+  position: absolute;
+  z-index: 2;
+  background-color: var(--background600);
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--secondary500);
+  font-size: 0.7em;
+}
+
+.stepIcon p {
+  line-height: 10px;
+}
+
+.progressBarStep[data-completed="true"] .stepIcon {
+  border: none;
+}
+
+.progressBarStep[data-current="true"]::after {
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  box-shadow: 0 0 50px 1px var(--primary);
+  z-index: 10;
+}
+
+.stepIcon svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--background);
+}

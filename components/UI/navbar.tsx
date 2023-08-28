@@ -1,5 +1,10 @@
 import Link from "next/link";
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React, {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useCallback,
+} from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
@@ -8,6 +13,7 @@ import {
   useAccount,
   useProvider,
   useTransactionManager,
+  Connector,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -17,15 +23,16 @@ import { constants } from "starknet";
 import ModalWallet from "./modalWallet";
 import { CircularProgress } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useRouter } from "next/router";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
-  const [hasWallet, setHasWallet] = useState<boolean>(true);
+  const [hasWallet, setHasWallet] = useState<boolean>(false);
   const { address } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect } = useConnectors();
+  const { available, connect, disconnect, connectors } = useConnectors();
   const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -37,11 +44,32 @@ const Navbar: FunctionComponent = () => {
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
-    if (!localStorage.getItem("lastUsedConnector")) setHasWallet(true);
+    const timeout = setTimeout(() => {
+      if (!address) {
+        if (
+          !localStorage.getItem("lastUsedConnector") &&
+          router?.pathname !== "/partnership"
+        ) {
+          if (connectors.length > 0) setHasWallet(true);
+        } else {
+          const lastConnectedConnectorId =
+            localStorage.getItem("lastUsedConnector");
+          if (lastConnectedConnectorId === null) return;
+
+          const lastConnectedConnector = connectors.find(
+            (connector) => connector.id === lastConnectedConnectorId
+          );
+          if (lastConnectedConnector === undefined) return;
+          tryConnect(lastConnectedConnector);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -60,6 +88,18 @@ const Navbar: FunctionComponent = () => {
       setIsWrongNetwork(isWrongNetwork);
     });
   }, [provider, network, isConnected]);
+
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (address) return;
+      if (await connector.ready()) {
+        connect(connector);
+
+        return;
+      }
+    },
+    [address, connectors]
+  );
 
   function disconnectByClick(): void {
     disconnect();

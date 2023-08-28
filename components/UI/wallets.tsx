@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { Connector, useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
@@ -15,7 +15,7 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   closeWallet,
   hasWallet,
 }) => {
-  const { connect, connectors } = useConnectors();
+  const { connect, connectors, refresh } = useConnectors();
   const { account } = useAccount();
 
   useEffect(() => {
@@ -23,11 +23,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
       closeWallet();
     }
   }, [account, closeWallet]);
-
-  function connectWallet(connector: Connector): void {
-    connect(connector);
-    closeWallet();
-  }
 
   return (
     <Modal
@@ -58,7 +53,7 @@ const Wallets: FunctionComponent<WalletsProps> = ({
           if (connector.available()) {
             return (
               <div className="mt-5 flex justify-center" key={connector.id}>
-                <Button onClick={() => connectWallet(connector)}>
+                <Button onClick={() => connect(connector)}>
                   <div className="flex justify-center items-center">
                     <WalletIcons id={connector.id} />
                     {`Connect ${connector.name}`}

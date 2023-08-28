@@ -1,7 +1,6 @@
 .screen {
   z-index: 0;
   position: relative;
-  background-color: var(--background600);
   width: 100%;
   overflow: hidden;
 }
@@ -36,17 +35,15 @@
   width: 100%;
   margin-top: 7vh;
   height: 100%;
+  justify-content: center;
 }
 
 .headerImg {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: -6;
-  width: max(900px, 65%);
+  height: 85%;
+  max-height: 1000px;
   aspect-ratio: 1;
   transform: rotate3d(10, -2, -1.4, calc(var(--scroll) * 0.04deg))
-    scale(min(calc(1 + var(--scroll) / 10000), 1.4)) translate(20%, 20%);
+    scale(min(calc(1 + var(--scroll) / 10000), 1.4));
 }
 
 .mainTitleContainer {
@@ -99,7 +96,19 @@
   z-index: 6;
 }
 
-@media (max-width: 950px) {
+.blueBlur {
+  position: absolute;
+  border-radius: 488px;
+  opacity: 0.15;
+  background: var(--primary-blue, #5ce3fe);
+  filter: blur(100px);
+  left: -200px;
+  top: -100px;
+  width: 488px;
+  height: 285px;
+}
+
+@media (max-width: 1300px) {
   .headerImg {
     display: none;
   }

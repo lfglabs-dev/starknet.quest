@@ -15,6 +15,7 @@ type QuestDocument = {
   title_card: string;
   hidden: boolean;
   disabled: boolean;
+  expiry_timestamp: string | null;
 };
 
 type NFTItem = {
@@ -33,6 +34,7 @@ type UserTask = {
   verify_endpoint_type: string;
   verify_redirect: string | null;
   completed: boolean;
+  quiz_name: string | null;
 };
 
 type UserDocument = {

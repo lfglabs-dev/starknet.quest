@@ -16,6 +16,7 @@ import { minifyAddress } from "../utils/stringService";
 import Button from "../components/UI/button";
 import PieChart from "../components/UI/pieChart";
 import { utils } from "starknetid.js";
+import ErrorScreen from "../components/UI/screens/errorScreen";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -104,7 +105,7 @@ const AddressOrDomain: NextPage = () => {
               }
               setIdentity({
                 ...data,
-                id: id.toString(),
+                starknet_id: id.toString(),
               });
               if (hexToDecimal(address) === data.addr) setIsOwner(true);
               setInitProfile(true);
@@ -118,7 +119,7 @@ const AddressOrDomain: NextPage = () => {
           ?.getAddressFromStarkName(addressOrDomain)
           .then((addr) => {
             setIdentity({
-              id: "0",
+              starknet_id: "0",
               addr: hexToDecimal(addr),
               domain: addressOrDomain,
               is_owner_main: false,
@@ -149,7 +150,7 @@ const AddressOrDomain: NextPage = () => {
                     if (data.error) return;
                     setIdentity({
                       ...data,
-                      id: id.toString(),
+                      starknet_id: id.toString(),
                     });
                     if (hexToDecimal(address) === data.addr) setIsOwner(true);
                     setInitProfile(true);
@@ -160,7 +161,7 @@ const AddressOrDomain: NextPage = () => {
                 });
             } else {
               setIdentity({
-                id: "0",
+                starknet_id: "0",
                 addr: hexToDecimal(addressOrDomain),
                 domain: name,
                 is_owner_main: false,
@@ -171,7 +172,7 @@ const AddressOrDomain: NextPage = () => {
             }
           } else {
             setIdentity({
-              id: "0",
+              starknet_id: "0",
               addr: hexToDecimal(addressOrDomain),
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
@@ -293,11 +294,11 @@ const AddressOrDomain: NextPage = () => {
 
   if (notFound) {
     return (
-      <div
-        className={`h-screen flex justify-center items-center ${styles.name}`}
-      >
-        <h2 className={styles.notFound}>Profile not found</h2>
-      </div>
+      <ErrorScreen
+        errorMessage="Profile or Page not found"
+        buttonText="Go back to quests"
+        onClick={() => router.push("/")}
+      />
     );
   }
 
@@ -309,7 +310,7 @@ const AddressOrDomain: NextPage = () => {
             <div className={styles.profilePicture}>
               <img
                 width={"350px"}
-                src={`https://www.starknet.id/api/identicons/${identity?.id}`}
+                src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
                 alt="starknet.id avatar"
                 style={{ maxWidth: "150%" }}
               />
@@ -350,11 +351,7 @@ const AddressOrDomain: NextPage = () => {
               </div>
             </div>
             <div className="flex lg:justify-start justify-center lg:items-start items-center">
-              <SocialMediaActions
-                domain={identity?.domain}
-                isOwner={isOwner}
-                tokenId={identity?.id}
-              />
+              <SocialMediaActions identity={identity} />
             </div>
           </div>
         </div>

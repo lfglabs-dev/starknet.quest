@@ -6,33 +6,33 @@ const TasksSkeleton: FunctionComponent = () => {
     <>
       <Skeleton
         variant="rectangular"
-        width={728}
         height={68}
-        sx={{ bgcolor: "grey.900" }}
+        sx={{ bgcolor: "grey.900", maxWidth: "768px", width: "90%" }}
       />
       <Skeleton
         variant="rectangular"
-        width={728}
         height={68}
-        sx={{ bgcolor: "grey.900" }}
+        sx={{ bgcolor: "grey.900", maxWidth: "768px", width: "90%" }}
       />
       <Skeleton
         variant="rectangular"
-        width={728}
         height={68}
-        sx={{ bgcolor: "grey.900" }}
+        sx={{ bgcolor: "grey.900", maxWidth: "768px", width: "90%" }}
       />
       <Skeleton
         variant="rectangular"
-        width={728}
         height={68}
-        sx={{ bgcolor: "grey.900" }}
+        sx={{ bgcolor: "grey.900", maxWidth: "768px", width: "90%" }}
       />
       <Skeleton
         variant="rectangular"
-        width={728}
         height={104}
-        sx={{ bgcolor: "grey.900", marginTop: "1.5rem" }}
+        sx={{
+          bgcolor: "grey.900",
+          marginTop: "1.5rem",
+          maxWidth: "768px",
+          width: "90%",
+        }}
       />
     </>
   );
