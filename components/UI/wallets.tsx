@@ -27,7 +27,9 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   const tryConnect = useCallback(
     async (connector: Connector) => {
       if (account) return;
+      console.log("connectors", connectors);
       if (await connector.ready()) {
+        console.log("is ready", connector);
         connect(connector);
 
         return;
