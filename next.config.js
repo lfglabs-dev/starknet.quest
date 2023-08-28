@@ -29,7 +29,7 @@ module.exports = {
       ],
     };
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;

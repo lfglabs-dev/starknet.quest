@@ -56,7 +56,7 @@ const Wallets: FunctionComponent<WalletsProps> = ({
                 <Button onClick={() => connect(connector)}>
                   <div className="flex justify-center items-center">
                     <WalletIcons id={connector.id} />
-                    {`Connect ${connector.id}`}
+                    {`Connect ${connector.name}`}
                   </div>
                 </Button>
               </div>
