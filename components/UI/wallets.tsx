@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { Connector, useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
@@ -23,20 +23,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
       closeWallet();
     }
   }, [account, closeWallet]);
-
-  // const tryConnect = useCallback(
-  //   async (connector: Connector) => {
-  //     if (account) return;
-  //     if (connector.available()) {
-  //       connect(connector);
-
-  //       return;
-  //     } else {
-  //       refresh();
-  //     }
-  //   },
-  //   [account, connectors]
-  // );
 
   return (
     <Modal
