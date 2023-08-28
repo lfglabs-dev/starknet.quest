@@ -27,13 +27,11 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   const tryConnect = useCallback(
     async (connector: Connector) => {
       if (account) return;
-      // for (const conn of connectors) {
       if (await connector.ready()) {
         connect(connector);
 
         return;
       }
-      // }
     },
     [account, connectors]
   );
@@ -64,7 +62,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
         </button>
         <p className={styles.menu_title}>You need a Starknet wallet</p>
         {connectors.map((connector) => {
-          // if (connector.available()) {
           return (
             <div className="mt-5 flex justify-center" key={connector.id}>
               <Button onClick={() => tryConnect(connector)}>
@@ -75,7 +72,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
               </Button>
             </div>
           );
-          // }
         })}
       </div>
     </Modal>
