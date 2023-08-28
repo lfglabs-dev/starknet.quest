@@ -10,14 +10,6 @@ import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // const connectors = useMemo(
-  //   () => [
-  //     new InjectedConnector({ options: { id: "argentX" } }),
-  //     new InjectedConnector({ options: { id: "braavos" } }),
-  //   ],
-  //   []
-  // );
-
   const connectors = [
     new InjectedConnector({ options: { id: "argentX" } }),
     new InjectedConnector({ options: { id: "braavos" } }),
