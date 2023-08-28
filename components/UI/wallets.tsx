@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { Connector, useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
@@ -23,21 +23,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
       closeWallet();
     }
   }, [account, closeWallet]);
-
-  function connectWallet(connector: Connector) {
-    try {
-      connect(connector);
-    } finally {
-      if (!connector.available() && !account) {
-        if (connector.id === "argentX")
-          window.open("https://www.argent.xyz/argent-x/");
-        else if (connector.id === "braavos")
-          window.open("https://braavos.app/download-braavos-wallet/");
-      } else {
-        closeWallet();
-      }
-    }
-  }
 
   return (
     <Modal
@@ -65,18 +50,18 @@ const Wallets: FunctionComponent<WalletsProps> = ({
         </button>
         <p className={styles.menu_title}>You need a Starknet wallet</p>
         {connectors.map((connector) => {
-          // if (connector.available()) {
-          return (
-            <div className="mt-5 flex justify-center" key={connector.id}>
-              <Button onClick={() => connectWallet(connector)}>
-                <div className="flex justify-center items-center">
-                  <WalletIcons id={connector.id} />
-                  {`Connect ${connector.id}`}
-                </div>
-              </Button>
-            </div>
-          );
-          // }
+          if (connector.available()) {
+            return (
+              <div className="mt-5 flex justify-center" key={connector.id}>
+                <Button onClick={() => connect(connector)}>
+                  <div className="flex justify-center items-center">
+                    <WalletIcons id={connector.id} />
+                    {`Connect ${connector.id}`}
+                  </div>
+                </Button>
+              </div>
+            );
+          }
         })}
       </div>
     </Modal>
