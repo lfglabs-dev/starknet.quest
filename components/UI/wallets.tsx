@@ -24,19 +24,19 @@ const Wallets: FunctionComponent<WalletsProps> = ({
     }
   }, [account, closeWallet]);
 
-  const tryConnect = useCallback(
-    async (connector: Connector) => {
-      if (account) return;
-      if (connector.available()) {
-        connect(connector);
+  // const tryConnect = useCallback(
+  //   async (connector: Connector) => {
+  //     if (account) return;
+  //     if (connector.available()) {
+  //       connect(connector);
 
-        return;
-      } else {
-        refresh();
-      }
-    },
-    [account, connectors]
-  );
+  //       return;
+  //     } else {
+  //       refresh();
+  //     }
+  //   },
+  //   [account, connectors]
+  // );
 
   return (
     <Modal
@@ -64,16 +64,18 @@ const Wallets: FunctionComponent<WalletsProps> = ({
         </button>
         <p className={styles.menu_title}>You need a Starknet wallet</p>
         {connectors.map((connector) => {
-          return (
-            <div className="mt-5 flex justify-center" key={connector.id}>
-              <Button onClick={() => tryConnect(connector)}>
-                <div className="flex justify-center items-center">
-                  <WalletIcons id={connector.id} />
-                  {`Connect ${connector.id}`}
-                </div>
-              </Button>
-            </div>
-          );
+          if (connector.available()) {
+            return (
+              <div className="mt-5 flex justify-center" key={connector.id}>
+                <Button onClick={() => connect(connector)}>
+                  <div className="flex justify-center items-center">
+                    <WalletIcons id={connector.id} />
+                    {`Connect ${connector.name}`}
+                  </div>
+                </Button>
+              </div>
+            );
+          }
         })}
       </div>
     </Modal>
