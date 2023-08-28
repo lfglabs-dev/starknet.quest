@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState, useEffect, FunctionComponent, useRef } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
@@ -38,27 +38,20 @@ const Navbar: FunctionComponent = () => {
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  const mounted = useRef(false);
   const router = useRouter();
-
-  useEffect(() => {
-    mounted.current = true;
-
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
     // if there is no value stored, we show the wallet modal
     if (
       !localStorage.getItem("lastUsedConnector") &&
-      router?.pathname !== "/partnership" &&
-      mounted.current
-    )
-      setHasWallet(true);
-  }, [mounted]);
+      router?.pathname !== "/partnership"
+    ) {
+      setTimeout(() => {
+        setHasWallet(true);
+      }, 1000);
+    }
+  }, []);
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
