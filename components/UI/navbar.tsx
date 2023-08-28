@@ -26,7 +26,7 @@ const Navbar: FunctionComponent = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect } = useConnectors();
+  const { available, connect, disconnect, connectors } = useConnectors();
   const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -48,7 +48,7 @@ const Navbar: FunctionComponent = () => {
       router?.pathname !== "/partnership"
     ) {
       setTimeout(() => {
-        setHasWallet(true);
+        if (connectors.length > 0) setHasWallet(true);
       }, 1000);
     }
   }, []);

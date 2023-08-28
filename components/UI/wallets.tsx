@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
@@ -23,6 +23,20 @@ const Wallets: FunctionComponent<WalletsProps> = ({
       closeWallet();
     }
   }, [account, closeWallet]);
+
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (account) return;
+      // for (const conn of connectors) {
+      if (await connector.ready()) {
+        connect(connector);
+
+        return;
+      }
+      // }
+    },
+    [account, connectors]
+  );
 
   return (
     <Modal
@@ -50,18 +64,18 @@ const Wallets: FunctionComponent<WalletsProps> = ({
         </button>
         <p className={styles.menu_title}>You need a Starknet wallet</p>
         {connectors.map((connector) => {
-          if (connector.available()) {
-            return (
-              <div className="mt-5 flex justify-center" key={connector.id}>
-                <Button onClick={() => connect(connector)}>
-                  <div className="flex justify-center items-center">
-                    <WalletIcons id={connector.id} />
-                    {`Connect ${connector.name}`}
-                  </div>
-                </Button>
-              </div>
-            );
-          }
+          // if (connector.available()) {
+          return (
+            <div className="mt-5 flex justify-center" key={connector.id}>
+              <Button onClick={() => tryConnect(connector)}>
+                <div className="flex justify-center items-center">
+                  <WalletIcons id={connector.id} />
+                  {`Connect ${connector.id}`}
+                </div>
+              </Button>
+            </div>
+          );
+          // }
         })}
       </div>
     </Modal>
