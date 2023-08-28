@@ -64,10 +64,15 @@ type Reward = {
 };
 
 type Identity = {
-  id: string;
   addr: string;
-  domain: string;
-  is_owner_main: boolean;
+  domain?: string;
+  domain_expiry?: number | null;
+  is_owner_main?: boolean;
+  owner_addr?: string;
+  old_discord?: string;
+  old_twitter?: string;
+  old_github?: string;
+  starknet_id?: string;
   error?: string;
 };
 
@@ -75,12 +80,6 @@ type NftCard = {
   title: string;
   image: string;
   url: string;
-};
-
-type SocialMediaActions = {
-  tokenId: string;
-  isOwner: boolean;
-  domain?: string;
 };
 
 type StarkscanNftProps = {
