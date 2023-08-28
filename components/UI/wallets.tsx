@@ -15,7 +15,7 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   closeWallet,
   hasWallet,
 }) => {
-  const { connect, connectors } = useConnectors();
+  const { connect, connectors, refresh } = useConnectors();
   const { account } = useAccount();
 
   useEffect(() => {
@@ -31,6 +31,8 @@ const Wallets: FunctionComponent<WalletsProps> = ({
         connect(connector);
 
         return;
+      } else {
+        refresh();
       }
     },
     [account, connectors]
