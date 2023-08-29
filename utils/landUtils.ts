@@ -293,30 +293,30 @@ export const getCustomDataArr = (
   return res;
 };
 
-export const findBottomLeftCorner = (
-  map: Array<Array<CityBuildings | null>>,
-  x: number,
-  y: number
-): { x: number; y: number; tileData: TileRect } | null => {
-  if (map[y][x] === null) {
-    return null;
-  }
+// export const findBottomLeftCorner = (
+//   map: Array<Array<CityBuildings | null>>,
+//   x: number,
+//   y: number
+// ): { x: number; y: number; tileData: TileRect } | null => {
+//   if (map[y][x] === null) {
+//     return null;
+//   }
 
-  let currentX = x;
-  let currentY = y;
-  while (
-    map[currentY + 1] &&
-    map[currentY + 1][currentX] &&
-    map[currentY + 1][currentX]?.tile === null
-  ) {
-    currentY++;
-  }
-  while (
-    map[currentY][currentX - 1] &&
-    map[currentY][currentX - 1]?.tile === null
-  ) {
-    currentX--;
-  }
+//   let currentX = x;
+//   let currentY = y;
+//   while (
+//     map[currentY + 1] &&
+//     map[currentY + 1][currentX] &&
+//     map[currentY + 1][currentX]?.tile === null
+//   ) {
+//     currentY++;
+//   }
+//   while (
+//     map[currentY][currentX - 1] &&
+//     map[currentY][currentX - 1]?.tile === null
+//   ) {
+//     currentX--;
+//   }
 
-  return { x: currentX, y: currentY, tileData: map[currentY][currentX]?.tile };
-};
+//   return { x: currentX, y: currentY, tileData: map[currentY][currentX]?.tile };
+// };

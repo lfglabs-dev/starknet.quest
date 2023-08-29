@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Scene } from "./Scene";
-import {
-  checkAssetInLands,
-  checkAssetInSq,
-  memberSince,
-} from "../../utils/sortNfts";
+import { memberSince } from "../../utils/sortNfts";
 import styles from "../../styles/profile.module.css";
 import Button from "../UI/button";
-import { NFTCounters, NFTData } from "../../types/nft";
-import { LandsNFTs } from "../../constants/nft";
+import { soloBuildings, starkFighterBuildings } from "../../constants/nft";
 
 type LandProps = {
   address: string;
@@ -18,6 +13,7 @@ type LandProps = {
   setSinceDate: (s: string | null) => void;
   setShowTooltip: (show: boolean) => void;
   setTooltipData: (data: number) => void;
+  hasDomain: boolean;
 };
 
 export const Land = ({
@@ -26,9 +22,10 @@ export const Land = ({
   setNFTCounter,
   isMobile,
   setSinceDate,
+  hasDomain,
 }: LandProps) => {
+  const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
-  const [userNft, setUserNft] = useState<NFTData>();
   const [isReady, setIsReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -68,53 +65,79 @@ export const Land = ({
       });
   };
 
-  const filterAssets = (assets: StarkscanNftProps[]) => {
+  const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
+      );
+      const results: UserAchievements[] = await response.json();
+      console.log("results", results);
+
+      if (results) {
+        results.forEach((result: UserAchievements) => {
+          console.log("result", result);
+          for (let i = 0; i < result.achievements.length; i++) {
+            if (!result.achievements[i].completed) {
+              if (i > 0) filteredAssets.push(result.achievements[i - 1].id);
+              break;
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching achievements", error);
+    }
+  };
+
+  const getBuildingsInfo = async (filteredAssets: number[]) => {
+    try {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_LINK
+        }/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
+      );
+      const results: BuildingsInfo[] = await response.json();
+      console.log("results", results);
+      if (results) setUserNft(results);
+    } catch (error) {
+      console.error("An error occurred while fetching buildings info", error);
+    }
+  };
+
+  const filterAssets = async (assets: StarkscanNftProps[]) => {
+    console.log("assets", assets);
+    let filteredAssets: number[] = [];
+    let starkFighter: number[] = [];
     let sinceDate = 0;
-    const finalNFTCounters: NFTCounters = {
-      totalNFTs: 0,
-      braavosCounter: 0,
-      argentxCounter: 0,
-      starkFighterLevel: 0,
-    };
-    const finalNFTFlags: boolean[] = [];
 
-    const braavosTarget = new Set(LandsNFTs.braavos.nft_names as string[]);
-    const argentxTarget = new Set(LandsNFTs.argentx.nft_names as string[]);
-
-    for (let i = 0; i < assets.length; i++) {
-      const asset = assets[i];
+    assets.forEach((asset: StarkscanNftProps) => {
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
         sinceDate = asset.minted_at_timestamp;
-      checkAssetInLands(
-        asset,
-        braavosTarget,
-        LandsNFTs.braavos.contract_address,
-        "braavos",
-        finalNFTCounters
-      );
-      checkAssetInLands(
-        asset,
-        argentxTarget,
-        LandsNFTs.argentx.contract_address,
-        "argentx",
-        finalNFTCounters
-      );
-      checkAssetInSq(asset, finalNFTCounters, finalNFTFlags);
-    }
 
-    setUserNft({
-      counters: finalNFTCounters,
-      flags: finalNFTFlags,
+      if (asset.name && soloBuildings[asset.name]) {
+        filteredAssets.push(soloBuildings[asset.name]);
+      }
+      if (asset.name && starkFighterBuildings[asset.name]) {
+        starkFighter.push(starkFighterBuildings[asset.name]);
+      }
     });
-    if (finalNFTCounters.totalNFTs > 0) setHasNFTs(true);
+    // get starkfighter highest level
+    const highestValue = Math.max(
+      ...starkFighter.filter((x) => x >= 64005 && x <= 64007)
+    );
+    filteredAssets.push(highestValue);
+    if (hasDomain) filteredAssets.push(64000); // add starknetid building if user has a .stark domain
+
+    await getBuildingsFromAchievements(filteredAssets);
+    await getBuildingsInfo(filteredAssets);
+
+    console.log("filtered assets", filteredAssets);
+
+    if (filteredAssets.length > 0) setHasNFTs(true);
     else setHasNFTs(false);
     setIsReady(true);
-    setNFTCounter(finalNFTCounters.totalNFTs);
+    setNFTCounter(filteredAssets.length);
     setSinceDate(memberSince(sinceDate));
-    console.log("finalNFTs", {
-      counters: finalNFTCounters,
-      flags: finalNFTFlags,
-    });
   };
 
   return (

@@ -119,3 +119,29 @@ type ProfileCard = {
   isUppercase?: boolean;
   content: React.ReactNode;
 };
+
+type UserAchievement = {
+  name: string;
+  shortDescription: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  verifyType: string;
+  id: number;
+};
+
+type UserAchievements = {
+  name: string;
+  description: string;
+  img_url: string;
+  achievements: Achievement[];
+};
+
+type BuildingsInfo = {
+  id: number;
+  name: string;
+  description: string;
+  entity: string;
+  level: number;
+  tileData?: TileRect;
+};

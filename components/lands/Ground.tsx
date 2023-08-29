@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import ResourceItem from "./Item";
 import { CityBuilded } from "../../types/land";
@@ -14,14 +14,17 @@ export default function Ground({
   tileset,
   cityData,
 }: IGround): ReactElement | null {
-  const groundTexture = useLoader(
-    TextureLoader,
-    "/land/textures/SIDCity_TilesetSheet.png"
-  );
-  groundTexture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
-  groundTexture.magFilter = NearestFilter;
-  groundTexture.wrapS = RepeatWrapping;
-  groundTexture.wrapT = RepeatWrapping;
+  const groundTexture = useMemo(() => {
+    const texture = useLoader(
+      TextureLoader,
+      "/land/textures/SIDCity_TilesetSheet.png"
+    );
+    texture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
+    texture.magFilter = NearestFilter;
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    return texture;
+  }, []);
 
   return (
     <>

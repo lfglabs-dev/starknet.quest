@@ -1,36 +1,30 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, RefObject } from "react";
 import styles from "../../styles/components/tooltip.module.css";
-import { TileRect } from "../../types/ldtk";
 
 type BuildingTooltipProps = {
-  level: number;
-  name: string;
-  description: string;
-  tileData: TileRect;
+  buildingRef: RefObject<BuildingsInfo | null>;
 };
 
 const BuildingTooltip: FunctionComponent<BuildingTooltipProps> = ({
-  level,
-  name,
-  description,
-  tileData,
+  buildingRef,
 }) => {
-  // {tilesetUid: 169, x: 416, y: 400, w: 64, h: 96}
+  const building = buildingRef.current;
+  if (!building || !building.tileData) return null;
   return (
     <div className={styles.tooltip}>
       <div className={styles.miniature}>
         <div
           className={styles.img}
           style={{
-            backgroundPosition: `calc((-${tileData.x}px * 45 / ${tileData.h}) + 8px) calc((-${tileData.y}px * 45 / ${tileData.h}))`,
-            backgroundSize: `calc(1280px * 45 / ${tileData.h}) calc(1280px * 45 / ${tileData.h})`,
+            backgroundPosition: `calc((-${building.tileData.x}px * 45 / ${building.tileData.h})) calc((-${building.tileData.y}px * 45 / ${building.tileData.h}))`,
+            backgroundSize: `calc(1280px * 45 / ${building.tileData.h}) calc(1280px * 45 / ${building.tileData.h})`,
           }}
         />
       </div>
       <div className={styles.info}>
-        <div className={styles.level}>Level {level}</div>
-        <div className={styles.name}>{name}</div>
-        <div className={styles.description}>{description}</div>
+        <div className={styles.level}>Level {building.level}</div>
+        <div className={styles.name}>{building.name}</div>
+        <div className={styles.description}>{building.description}</div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, RefObject } from "react";
 import { LdtkReader } from "../../utils/parser";
 import Ground from "./Ground";
 import RoadProps from "./RoadProps";
@@ -6,14 +6,19 @@ import Buildings from "./Buildings";
 import { tileTypes } from "../../constants/tiles";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3 } from "three";
-import { findBottomLeftCorner } from "../../utils/landUtils";
+import build from "next/dist/build";
 
 type MapProps = {
   mapReader: LdtkReader;
   data: any;
+  updateBuildingRef: (newBuilding: BuildingsInfo | null) => void;
 };
 
-export const Map: FunctionComponent<MapProps> = ({ mapReader, data }) => {
+export const Map: FunctionComponent<MapProps> = ({
+  mapReader,
+  data,
+  updateBuildingRef,
+}) => {
   const { scene } = useThree();
 
   useFrame(({ mouse, raycaster }) => {
@@ -57,19 +62,16 @@ export const Map: FunctionComponent<MapProps> = ({ mapReader, data }) => {
 
       if (rayX > 0 && rayY > 0) {
         if (mapReader.buildings[rayY + 1][rayX]) {
-          console.log("mapReader", mapReader.buildings[rayY + 1][rayX]);
-          if (!mapReader.buildings[rayY + 1][rayX]?.tile) {
-            // if tile: null we find the tileData to get tileId
-            const data = findBottomLeftCorner(
-              mapReader.buildings,
-              rayX,
-              rayY + 1
-            );
-            if (data) {
-              console.log("data", data);
-              // todo: check that we need to show the tooltip for this buildingId
-            }
-          }
+          const building: BuildingsInfo | undefined = mapReader.userNft.find(
+            (nft) => nft.entity === mapReader.buildings[rayY + 1][rayX]?.ref
+          );
+          if (building)
+            updateBuildingRef({
+              ...building,
+              tileData: mapReader.buildings[rayY + 1][rayX]?.tileRef,
+            });
+        } else {
+          updateBuildingRef(null);
         }
       }
     }

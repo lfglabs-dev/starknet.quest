@@ -8,6 +8,8 @@ export interface CityBuildings {
   tile: TileRect | null;
   isOccupied: boolean;
   isHidden: boolean;
+  ref: string;
+  tileRef: TileRect;
 }
 
 export interface CityProps {

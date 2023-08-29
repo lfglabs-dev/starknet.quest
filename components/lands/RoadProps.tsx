@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { CityProps, TileData } from "../../types/land";
 import { Tileset } from "../../types/ldtk";
@@ -16,17 +16,24 @@ export default function RoadProps({
   cityData,
   tileData,
 }: IProps): ReactElement | null {
-  const buildingTexture = useLoader(
-    TextureLoader,
-    "/land/textures/SID_BuildingSheet.png"
-  );
-  const tileset = tilesets.find(
-    (tileset: Tileset) => tileset.identifier === "SID_BuildingSheet"
-  );
-  buildingTexture.repeat = new Vector2(1 / 80, 1 / 80);
-  buildingTexture.magFilter = NearestFilter;
-  buildingTexture.wrapS = RepeatWrapping;
-  buildingTexture.wrapT = RepeatWrapping;
+  const buildingTexture = useMemo(() => {
+    const texture = useLoader(
+      TextureLoader,
+      "/land/textures/SID_BuildingSheet.png"
+    );
+    texture.repeat = new Vector2(1 / 80, 1 / 80);
+    texture.magFilter = NearestFilter;
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+
+    return texture;
+  }, []);
+
+  const tileset = useMemo(() => {
+    return tilesets.find(
+      (tileset: Tileset) => tileset.identifier === "SID_BuildingSheet"
+    );
+  }, []);
 
   return (
     <>

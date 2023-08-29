@@ -18,12 +18,17 @@ export const TerrainBackground = (): ReactElement | null => {
   const [spriteData, setSpriteData] = useState<any>();
   const posX = [-20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80];
   const posY = [-10, 0, 10, 20, 30, 40, 50, 60, 70, 80];
-  const skyTexture = useLoader(
-    TextureLoader,
-    "land/textures/background/SID_Background_SpaceLoop_old.png"
-  );
-  skyTexture.wrapS = skyTexture.wrapT = RepeatWrapping;
-  skyTexture.magFilter = NearestFilter;
+
+  const skyTexture = useMemo(() => {
+    const texture = useLoader(
+      TextureLoader,
+      "land/textures/background/SID_Background_SpaceLoop_old.png"
+    );
+    texture.wrapS = skyTexture.wrapT = RepeatWrapping;
+    texture.magFilter = NearestFilter;
+
+    return texture;
+  }, []);
 
   useEffect(() => {
     fetch("land/data/SID_Background_SpaceLoop.json")

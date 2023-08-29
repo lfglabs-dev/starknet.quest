@@ -42,8 +42,6 @@ import {
   setDirectionBasedOnCorner,
   shuffleAndHandleCorners,
 } from "./landUtils";
-import { LandsNFTsType, NFTCounters, NFTData } from "../types/nft";
-import { LandsNFTs, NFTKeys, totalNFTsNamesMapping } from "../constants/nft";
 import {
   LightTypes,
   LightsTypesNames,
@@ -60,7 +58,7 @@ export class LdtkReader {
   cityCenter: CityCenterProps | null = null;
   TILE_LAND: number;
   TILE_ROAD: number;
-  userNft: NFTData;
+  userNft: BuildingsInfo[];
   cityIntGrid: Array<Array<number>>;
   cityBuilded: Array<Array<CityBuilded | null>>; // Ground tiles
   buildings: Array<Array<CityBuildings | null>>; // Buildings tiles
@@ -78,7 +76,7 @@ export class LdtkReader {
     filejson: any,
     address: string,
     citySize: number,
-    userNft: NFTData
+    userNft: BuildingsInfo[]
   ) {
     this.tilesets = filejson.defs.tilesets;
     this.ldtk = filejson;
@@ -107,7 +105,7 @@ export class LdtkReader {
     this.TILE_LAND = this.idxToRule["Sidewalk"];
     this.TILE_ROAD = this.idxToRule["Roads"];
 
-    this.entities = this.sortEntities(userNft.counters, userNft.flags);
+    this.entities = this.sortEntities(userNft);
     this.userNft = userNft;
 
     for (let propType in PropsTypes) {
@@ -199,57 +197,62 @@ export class LdtkReader {
     });
   }
 
-  sortEntities(userNftCounters: NFTCounters, userNftFlags: boolean[]) {
+  sortEntities(userNft: BuildingsInfo[]) {
     let nftNames: string[] = [];
-    if (userNftCounters && userNftFlags) {
-      const countersLevelsMapping = {
-        argentxCounter: "argentx",
-        braavosCounter: "braavos",
-      };
 
-      for (const [counterKey, levelKey] of Object.entries(
-        countersLevelsMapping
-      )) {
-        const key = counterKey as keyof NFTCounters;
-        const counterValue: number = userNftCounters[key];
-        if (counterValue >= 2) {
-          const levelKeyLandsNFTs = levelKey as keyof LandsNFTsType;
-          const levels: { [key: number]: string[] } =
-            LandsNFTs[levelKeyLandsNFTs]["levels"];
-          nftNames.push(...levels[counterValue]);
-        }
-      }
+    userNft.forEach((nft: BuildingsInfo) => {
+      nftNames.push(nft.entity);
+    });
 
-      // Starknet Quest NFTs
-      const SQLevels: { [key: string]: string[] } = LandsNFTs["sq"]["levels"];
-      nftNames.push(SQLevels.starknetID[0]);
-      for (const value of Object.values(NFTKeys)) {
-        if (userNftFlags[value as number]) {
-          nftNames.push(SQLevels[value][0]);
-        }
-      }
+    // if (userNftCounters && userNftFlags) {
+    //   const countersLevelsMapping = {
+    //     argentxCounter: "argentx",
+    //     braavosCounter: "braavos",
+    //   };
 
-      // handle starkFighterLevel
-      const starkFighterLevel = userNftCounters.starkFighterLevel;
-      if (starkFighterLevel > 0) {
-        nftNames.push(
-          starkFighterLevel < 3
-            ? SQLevels.starkFighterLevel + starkFighterLevel.toString()
-            : "NFT_StarkFighter_4x2_H5_3"
-        );
-      }
+    //   for (const [counterKey, levelKey] of Object.entries(
+    //     countersLevelsMapping
+    //   )) {
+    //     const key = counterKey as keyof NFTCounters;
+    //     const counterValue: number = userNftCounters[key];
+    //     if (counterValue >= 2) {
+    //       const levelKeyLandsNFTs = levelKey as keyof LandsNFTsType;
+    //       const levels: { [key: number]: string[] } =
+    //         LandsNFTs[levelKeyLandsNFTs]["levels"];
+    //       nftNames.push(...levels[counterValue]);
+    //     }
+    //   }
 
-      // Additional NFTs based on total NFT owned
-      nftNames.push("NFT_StarkNews_4x3_H7");
-      const totalNFTs = userNftCounters.totalNFTs;
-      for (const [counter, name] of Object.entries(totalNFTsNamesMapping)) {
-        if (totalNFTs >= Number(counter)) {
-          nftNames.push(name);
-        }
-      }
+    //   // Starknet Quest NFTs
+    //   const SQLevels: { [key: string]: string[] } = LandsNFTs["sq"]["levels"];
+    //   nftNames.push(SQLevels.starknetID[0]);
+    //   for (const value of Object.values(NFTKeys)) {
+    //     if (userNftFlags[value as number]) {
+    //       nftNames.push(SQLevels[value][0]);
+    //     }
+    //   }
 
-      console.log("nftNames", nftNames);
-    }
+    // // handle starkFighterLevel
+    // const starkFighterLevel = userNftCounters.starkFighterLevel;
+    // if (starkFighterLevel > 0) {
+    //   nftNames.push(
+    //     starkFighterLevel < 3
+    //       ? SQLevels.starkFighterLevel + starkFighterLevel.toString()
+    //       : "NFT_StarkFighter_4x2_H5_3"
+    //   );
+    // }
+
+    // // Additional NFTs based on total NFT owned
+    // nftNames.push("NFT_StarkNews_4x3_H7");
+    // const totalNFTs = userNftCounters.totalNFTs;
+    // for (const [counter, name] of Object.entries(totalNFTsNamesMapping)) {
+    //   if (totalNFTs >= Number(counter)) {
+    //     nftNames.push(name);
+    //   }
+    // }
+
+    //   console.log("nftNames", nftNames);
+    // }
 
     let entitiesSorted: { [key: string]: { [key: number]: EntityProps[] } } =
       {};
@@ -1299,12 +1302,16 @@ export class LdtkReader {
               tile: entity.tileRect,
               isOccupied: true,
               isHidden: false,
+              ref: entity.identifier,
+              tileRef: entity.tileRect,
             };
           } else {
             this.buildings[y - h][xOffset + w] = {
               tile: null,
               isOccupied: true,
               isHidden: true,
+              ref: entity.identifier,
+              tileRef: entity.tileRect,
             };
           }
         }

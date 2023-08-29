@@ -7,12 +7,12 @@ import { iLDtk } from "../../types/ldtk";
 import { useGesture } from "@use-gesture/react";
 import { TerrainBackground } from "./TerrainBackground";
 import ZoomSlider from "./zoomSlider";
-import { NFTData } from "../../types/nft";
 import { Map } from "./Map";
+import BuildingTooltip from "./BuildingTooltip";
 
 type SceneProps = {
   address: string;
-  userNft: NFTData;
+  userNft: BuildingsInfo[];
   isMobile: boolean;
 };
 
@@ -32,6 +32,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
   const [data, setData] = useState<iLDtk>();
   const citySize = 100;
   const [mapReader, setMapReader] = useState<LdtkReader | null>(null);
+  const buildingRef = useRef<BuildingsInfo | null>(null);
 
   useEffect(() => {
     if (data) {
@@ -78,6 +79,10 @@ export const Scene: FunctionComponent<SceneProps> = ({
     setIndex(() => newValue);
   };
 
+  const updateBuildingRef = (newBuilding: BuildingsInfo | null) => {
+    buildingRef.current = newBuilding;
+  };
+
   return (
     <>
       <Canvas
@@ -106,13 +111,20 @@ export const Scene: FunctionComponent<SceneProps> = ({
               />
             ) : null}
             {data && mapReader ? (
-              <Map mapReader={mapReader} data={data} />
+              <Map
+                mapReader={mapReader}
+                data={data}
+                updateBuildingRef={updateBuildingRef}
+              />
             ) : null}
             {/* <TerrainBackground /> */}
           </>
         ) : null}
       </Canvas>
       <ZoomSlider updateZoomIndex={updateZoomIndex} maxValue={maxZoom} />
+      {buildingRef.current ? (
+        <BuildingTooltip buildingRef={buildingRef} />
+      ) : null}
     </>
   );
 };

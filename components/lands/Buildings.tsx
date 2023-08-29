@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { CityBuildings } from "../../types/land";
 import BuildingItem from "./BuildingItem";
@@ -14,15 +14,18 @@ export default function Buildings({
   tilesets,
   buildingData,
 }: IBuildings): ReactElement | null {
-  const buildingTexture = useLoader(
-    TextureLoader,
-    "/land/textures/SID_BuildingSheet.png"
-  );
-  const tileset = tilesets[2];
-  buildingTexture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
-  buildingTexture.magFilter = NearestFilter;
-  buildingTexture.wrapS = RepeatWrapping;
-  buildingTexture.wrapT = RepeatWrapping;
+  const buildingTexture = useMemo(() => {
+    const texture = useLoader(
+      TextureLoader,
+      "/land/textures/SID_BuildingSheet.png"
+    );
+    const tileset = tilesets[2];
+    texture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
+    texture.magFilter = NearestFilter;
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    return texture;
+  }, []);
 
   return (
     <>

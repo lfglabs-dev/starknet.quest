@@ -8,23 +8,23 @@
     border-radius: 12px;
     background: var(--background, #101012);
     width: 250px;
-    height: 90px;
   
     position: absolute;
     top: 100px;
     z-index: 1;
     left: 189px;
+    box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04), 0px 1px 1px 0px rgba(23, 15, 73, 0.04), 0px 0px 1px 0px rgba(23, 15, 73, 0.03);
   }
   
   .miniature {
     background-color: #29282B;
-    border-radius: 36px;
+    border-radius: 50%;
     box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px rgba(191, 158, 123, 0.06);
     width: 45px;
     height: 45px;
-    overflow: hidden;
     display: flex;
     justify-content: center;
+    overflow: hidden;
   }
 
   .img {
