@@ -8,6 +8,7 @@ import {
   QueryError,
 } from "../types/backTypes";
 import Achievement from "../components/achievements/achievement";
+import { hexToDecimal } from "../utils/feltService";
 
 const Achievements: NextPage = () => {
   const { address } = useAccount();
@@ -38,7 +39,9 @@ const Achievements: NextPage = () => {
       shouldFetchWithZeroAddress = false;
       clearTimeout(timer);
       fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
+        `${
+          process.env.NEXT_PUBLIC_API_LINK
+        }/achievements/fetch?addr=${hexToDecimal(address)}`
       )
         .then((response) => response.json())
         .then((data: AchievementsDocument[] | QueryError) => {
@@ -61,7 +64,11 @@ const Achievements: NextPage = () => {
           if (!achievement.completed) {
             if (achievement.verify_type === "default") {
               const fetchPromise = fetch(
-                `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_default?addr=${address}&id=${achievement.id}`
+                `${
+                  process.env.NEXT_PUBLIC_API_LINK
+                }/achievements/verify_default?addr=${hexToDecimal(
+                  address
+                )}&id=${achievement.id}`
               )
                 .then((response) => response.json())
                 .then((data: CompletedDocument) => {
