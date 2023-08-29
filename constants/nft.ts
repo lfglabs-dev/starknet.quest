@@ -30,6 +30,18 @@ export enum WalletKeys {
   Argentx = "argentx",
 }
 
+export const soloBuildings = {
+  "Zklend Artemis": 64001,
+  "AVNU Astronaut": 64002,
+  "JediSwap Light Saber": 64003,
+  "Starknet ID Tribe Totem": 64004,
+  "StarkFighter Bronze Arcade": 64005,
+  "StarkFighter Silver Arcade": 64006,
+  "StarkFighter Gold Arcade": 64007,
+  "Sithswap Helmet": 64008,
+  // 64000: "NFT_StarkID_6x4_H6",
+};
+
 export const LandsNFTs: LandsNFTsType = {
   braavos: {
     contract_address:
