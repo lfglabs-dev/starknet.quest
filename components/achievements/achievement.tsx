@@ -21,7 +21,10 @@ const Achievement: FunctionComponent<AchievementProps> = ({
         className={styles.background}
         style={{
           backgroundImage: `url('/${achievements.category_img_url}')`,
-          backgroundPosition: `${index % 2 === 0 ? "right top" : "left top"}`,
+          backgroundPosition: `${
+            index % 2 === 0 ? "right center" : "left center"
+          }`,
+          backgroundSize: "30%",
         }}
       />
       <div className={styles.backgroundFilter} />
