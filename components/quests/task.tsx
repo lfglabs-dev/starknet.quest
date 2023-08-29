@@ -9,6 +9,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
 import { CircularProgress } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
+import Quiz from "../quiz/quiz";
 
 const Task: FunctionComponent<Task> = ({
   name,
@@ -22,6 +23,9 @@ const Task: FunctionComponent<Task> = ({
   verifyEndpointType,
   hasError,
   verifyError,
+  setShowQuiz,
+  quizName,
+  issuer,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -35,13 +39,18 @@ const Task: FunctionComponent<Task> = ({
     }
   }, [hasError]);
 
-  // A verify function that setIsVerified(true) and stop propagation
-  const verify = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const checkCanDoTask = () => {
     if (!address) {
       setError("Please connect your wallet first");
-      return;
+      return false;
     }
+    return true;
+  };
+
+  // A verify function that setIsVerified(true) and stop propagation
+  const verify = async (e?: React.MouseEvent) => {
+    checkCanDoTask();
+    if (e) e.stopPropagation();
     setIsLoading(true);
 
     if (verifyEndpointType.startsWith("oauth")) {
@@ -96,6 +105,26 @@ const Task: FunctionComponent<Task> = ({
     setIsVerified(wasVerified);
   }, [wasVerified]);
 
+  const openTask = () => {
+    if (!checkCanDoTask()) return;
+    if (verifyEndpointType === "quiz" && issuer)
+      return setShowQuiz(
+        <Quiz
+          setShowQuiz={setShowQuiz}
+          quizId={quizName as string}
+          issuer={issuer}
+          verifyEndpoint={verifyEndpoint}
+          setIsVerified={setIsVerified}
+        />
+      );
+    window.open(href);
+  };
+
+  const getButtonName = () => {
+    if (verifyEndpointType === "quiz") return "Start quiz";
+    return "Verify";
+  };
+
   return (
     <div className={styles.task}>
       <div
@@ -129,12 +158,13 @@ const Task: FunctionComponent<Task> = ({
         ) : (
           <div
             onClick={(e) => {
+              if (verifyEndpointType === "quiz") return openTask();
               if (verifyRedirect && address) window.open(verifyRedirect);
               verify(e);
             }}
             className={styles.verifyButton}
           >
-            <p>Verify</p>
+            <p>{getButtonName()}</p>
           </div>
         )}
       </div>
@@ -146,7 +176,7 @@ const Task: FunctionComponent<Task> = ({
         <p className="mb-3">{description}</p>
         <div className="flex w-full justify-center items-center">
           <div className="w-2/3">
-            <Button onClick={() => window.open(href)}>{cta}</Button>
+            <Button onClick={() => openTask()}>{cta}</Button>
           </div>
         </div>
       </div>
