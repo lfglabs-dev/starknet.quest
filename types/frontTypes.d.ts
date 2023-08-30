@@ -143,5 +143,6 @@ type BuildingsInfo = {
   description: string;
   entity: string;
   level: number;
-  tileData?: TileRect;
+  tileData: TileRect;
+  pos: THREE.Vector2;
 };

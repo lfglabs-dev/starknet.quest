@@ -1,22 +1,23 @@
-import React, { FunctionComponent, RefObject } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/tooltip.module.css";
 
 type BuildingTooltipProps = {
-  buildingRef: RefObject<BuildingsInfo | null>;
+  building?: BuildingsInfo | null;
+  pos: { x: number; y: number };
 };
 
 const BuildingTooltip: FunctionComponent<BuildingTooltipProps> = ({
-  buildingRef,
+  building,
+  pos,
 }) => {
-  const building = buildingRef.current;
   if (!building || !building.tileData) return null;
   return (
-    <div className={styles.tooltip}>
+    <div className={styles.tooltip} style={{ left: pos.x, top: pos.y }}>
       <div className={styles.miniature}>
         <div
           className={styles.img}
           style={{
-            backgroundPosition: `calc((-${building.tileData.x}px * 45 / ${building.tileData.h})) calc((-${building.tileData.y}px * 45 / ${building.tileData.h}))`,
+            backgroundPosition: `calc((-${building.tileData.x}px * 45 / ${building.tileData.h}) + 8px) calc((-${building.tileData.y}px * 45 / ${building.tileData.h}))`,
             backgroundSize: `calc(1280px * 45 / ${building.tileData.h}) calc(1280px * 45 / ${building.tileData.h})`,
           }}
         />

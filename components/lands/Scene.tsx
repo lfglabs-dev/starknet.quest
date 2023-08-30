@@ -32,7 +32,11 @@ export const Scene: FunctionComponent<SceneProps> = ({
   const [data, setData] = useState<iLDtk>();
   const citySize = 100;
   const [mapReader, setMapReader] = useState<LdtkReader | null>(null);
-  const buildingRef = useRef<BuildingsInfo | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeBuilding, setActiveBuilding] = useState<BuildingsInfo | null>(
+    null
+  );
 
   useEffect(() => {
     if (data) {
@@ -80,7 +84,25 @@ export const Scene: FunctionComponent<SceneProps> = ({
   };
 
   const updateBuildingRef = (newBuilding: BuildingsInfo | null) => {
-    buildingRef.current = newBuilding;
+    if (
+      (!newBuilding && activeBuilding) ||
+      (newBuilding && !activeBuilding) ||
+      newBuilding?.name !== activeBuilding?.name
+    ) {
+      setActiveBuilding(newBuilding);
+      if (newBuilding) {
+        setShowTooltip(true);
+        if (newBuilding.pos) {
+          let posX = ((newBuilding.pos.x + 1) / 2) * windowWidth;
+          const posY = (-(newBuilding.pos.y - 1) / 2) * windowHeight;
+          // If the building is too close to the profile menu, move it to the left
+          if (posX > windowWidth - 475) {
+            posX = posX - 285;
+          }
+          setMousePosition({ x: posX, y: posY });
+        }
+      } else setShowTooltip(false);
+    }
   };
 
   return (
@@ -122,8 +144,8 @@ export const Scene: FunctionComponent<SceneProps> = ({
         ) : null}
       </Canvas>
       <ZoomSlider updateZoomIndex={updateZoomIndex} maxValue={maxZoom} />
-      {buildingRef.current ? (
-        <BuildingTooltip buildingRef={buildingRef} />
+      {showTooltip ? (
+        <BuildingTooltip building={activeBuilding} pos={mousePosition} />
       ) : null}
     </>
   );

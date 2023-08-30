@@ -25,7 +25,7 @@ export default function Buildings({
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     return texture;
-  }, []);
+  }, [tilesets]);
 
   return (
     <>
@@ -50,6 +50,7 @@ export default function Buildings({
                 textureLoader={buildingTexture}
                 tileData={tileData.tile}
                 pos={{ posX: iX, posY: iY }}
+                isNFT={tileData.isNFT}
               />
             );
           });

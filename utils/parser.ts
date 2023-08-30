@@ -204,44 +204,6 @@ export class LdtkReader {
       nftNames.push(nft.entity);
     });
 
-    // if (userNftCounters && userNftFlags) {
-    //   const countersLevelsMapping = {
-    //     argentxCounter: "argentx",
-    //     braavosCounter: "braavos",
-    //   };
-
-    //   for (const [counterKey, levelKey] of Object.entries(
-    //     countersLevelsMapping
-    //   )) {
-    //     const key = counterKey as keyof NFTCounters;
-    //     const counterValue: number = userNftCounters[key];
-    //     if (counterValue >= 2) {
-    //       const levelKeyLandsNFTs = levelKey as keyof LandsNFTsType;
-    //       const levels: { [key: number]: string[] } =
-    //         LandsNFTs[levelKeyLandsNFTs]["levels"];
-    //       nftNames.push(...levels[counterValue]);
-    //     }
-    //   }
-
-    //   // Starknet Quest NFTs
-    //   const SQLevels: { [key: string]: string[] } = LandsNFTs["sq"]["levels"];
-    //   nftNames.push(SQLevels.starknetID[0]);
-    //   for (const value of Object.values(NFTKeys)) {
-    //     if (userNftFlags[value as number]) {
-    //       nftNames.push(SQLevels[value][0]);
-    //     }
-    //   }
-
-    // // handle starkFighterLevel
-    // const starkFighterLevel = userNftCounters.starkFighterLevel;
-    // if (starkFighterLevel > 0) {
-    //   nftNames.push(
-    //     starkFighterLevel < 3
-    //       ? SQLevels.starkFighterLevel + starkFighterLevel.toString()
-    //       : "NFT_StarkFighter_4x2_H5_3"
-    //   );
-    // }
-
     // // Additional NFTs based on total NFT owned
     // nftNames.push("NFT_StarkNews_4x3_H7");
     // const totalNFTs = userNftCounters.totalNFTs;
@@ -249,9 +211,6 @@ export class LdtkReader {
     //   if (totalNFTs >= Number(counter)) {
     //     nftNames.push(name);
     //   }
-    // }
-
-    //   console.log("nftNames", nftNames);
     // }
 
     let entitiesSorted: { [key: string]: { [key: number]: EntityProps[] } } =
@@ -435,7 +394,6 @@ export class LdtkReader {
       }
     });
 
-    // todo: sort entities
     let arr = [];
     for (const key in this.entities["NFT"]) {
       const times = this.entities["NFT"][key].length;
@@ -1296,6 +1254,9 @@ export class LdtkReader {
         w < (entity.corner ? entity.activeWidth + 1 : entity.activeWidth);
         w++
       ) {
+        const isNFT = this.userNft.find(
+          (nft) => entity.identifier === nft.entity
+        );
         for (let h = 0; h < entity.activeHeight; h++) {
           if (w === 0 && h === 0) {
             this.buildings[y][xOffset] = {
@@ -1304,6 +1265,7 @@ export class LdtkReader {
               isHidden: false,
               ref: entity.identifier,
               tileRef: entity.tileRect,
+              isNFT: isNFT ? true : false,
             };
           } else {
             this.buildings[y - h][xOffset + w] = {
@@ -1312,6 +1274,7 @@ export class LdtkReader {
               isHidden: true,
               ref: entity.identifier,
               tileRef: entity.tileRect,
+              isNFT: isNFT ? true : false,
             };
           }
         }

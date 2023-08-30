@@ -106,8 +106,8 @@ export const Land = ({
 
   const filterAssets = async (assets: StarkscanNftProps[]) => {
     console.log("assets", assets);
-    let filteredAssets: number[] = [];
-    let starkFighter: number[] = [];
+    const filteredAssets: number[] = [];
+    const starkFighter: number[] = [];
     let sinceDate = 0;
 
     assets.forEach((asset: StarkscanNftProps) => {

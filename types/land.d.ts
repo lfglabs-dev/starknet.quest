@@ -10,6 +10,7 @@ export interface CityBuildings {
   isHidden: boolean;
   ref: string;
   tileRef: TileRect;
+  isNFT: boolean;
 }
 
 export interface CityProps {

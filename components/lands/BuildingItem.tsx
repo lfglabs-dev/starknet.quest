@@ -8,10 +8,11 @@ type IElem = {
   pos: { posX: number; posY: number };
   tileData: TileRect;
   textureLoader: Texture;
+  isNFT: boolean;
 };
 
 const BuildingItem = memo<IElem>(
-  ({ tileset, tileData, pos, textureLoader }): ReactElement => {
+  ({ tileset, tileData, pos, textureLoader, isNFT }): ReactElement => {
     const elemTexture = useMemo(() => {
       if (tileset && textureLoader) {
         const localT = textureLoader.clone();
@@ -45,7 +46,9 @@ const BuildingItem = memo<IElem>(
             0.22 + pos.posY * 0.02,
             pos.posY - tileData.h / 32,
           ]}
-          name={`${tileData.tilesetUid}_building`.toString()}
+          name={`${tileData.tilesetUid}_building${
+            isNFT ? "_isNFT" : ""
+          }`.toString()}
           rotation={[-Math.PI * 0.5, 0, 0]}
           geometry={plane}
         >

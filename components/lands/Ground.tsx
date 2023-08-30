@@ -24,7 +24,7 @@ export default function Ground({
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     return texture;
-  }, []);
+  }, [tileset]);
 
   return (
     <>
