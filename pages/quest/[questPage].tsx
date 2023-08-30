@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
 import styles from "../../styles/quests.module.css";
 import NftDisplay from "../../components/quests/nftDisplay";
@@ -77,6 +77,7 @@ const QuestPage: NextPage = () => {
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
+  const [showQuiz, setShowQuiz] = useState<ReactNode>();
 
   // this fetches quest data
   useEffect(() => {
@@ -278,94 +279,105 @@ const QuestPage: NextPage = () => {
       onClick={() => router.push("/")}
     />
   ) : (
-    <div className={homeStyles.screen}>
-      <div className={styles.imageContainer}>
-        {quest.issuer === "loading" ? (
-          <RewardSkeleton />
-        ) : (
-          <NftDisplay
-            issuer={{
-              name: quest.issuer,
-              logoFavicon: quest.logo,
-            }}
-            nfts={quest.rewards_nfts.map((nft: NFTItem) => {
-              return { imgSrc: nft.img, level: nft.level };
-            })}
-          />
-        )}
-      </div>
-      <div className={styles.descriptionContainer}>
-        {quest.name === "loading" ? (
-          <Skeleton
-            variant="text"
-            width={400}
-            sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
-          />
-        ) : (
-          <h1 className="title mt-5 mw-90">{quest.name}</h1>
-        )}
-        {quest.desc === "loading" ? (
-          <Skeleton
-            variant="text"
-            width={350}
-            sx={{ fontSize: "0.8rem", bgcolor: "grey.900" }}
-          />
-        ) : (
-          <p className="text-center max-w-lg">{quest.desc}</p>
-        )}
-      </div>
-      {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
-        <Timer expiry={Number(quest?.expiry_timestamp)} fixed={false} />
-      ) : null}
-      <div className={styles.taskContainer}>
-        {tasks.length === 0 || quest.rewards_title === "loading" ? (
-          <TasksSkeleton />
-        ) : (
-          <>
-            {tasks.map((task) => {
-              return (
-                <Task
-                  key={task.id}
-                  name={task.name}
-                  description={task.desc}
-                  href={task.href}
-                  cta={task.cta}
-                  verifyRedirect={task.verify_redirect}
-                  verifyEndpoint={
-                    task.verify_endpoint_type &&
-                    task.verify_endpoint_type == "default"
-                      ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
-                      : generateOAuthUrl(task)
-                  }
-                  verifyEndpointType={`${
-                    task.verify_endpoint_type ?? "default"
-                  }`}
-                  refreshRewards={() => refreshRewards(quest, address)}
-                  wasVerified={task.completed}
-                  hasError={
-                    taskError && taskError.taskId === task.id ? true : false
-                  }
-                  verifyError={
-                    taskError && taskError.taskId === task.id
-                      ? taskError.error
-                      : ""
-                  }
-                />
-              );
-            })}
-            <Reward
-              reward={quest.rewards_title}
-              imgSrc={quest.rewards_img}
-              onClick={() => {
-                setRewardsEnabled(false);
+    <>
+      <div className={homeStyles.screen}>
+        <div className={styles.imageContainer}>
+          {quest.issuer === "loading" ? (
+            <RewardSkeleton />
+          ) : (
+            <NftDisplay
+              issuer={{
+                name: quest.issuer,
+                logoFavicon: quest.logo,
               }}
-              disabled={!rewardsEnabled}
-              mintCalldata={mintCalldata}
+              nfts={quest.rewards_nfts.map((nft: NFTItem) => {
+                return { imgSrc: nft.img, level: nft.level };
+              })}
             />
-          </>
-        )}
+          )}
+        </div>
+        <div className={styles.descriptionContainer}>
+          {quest.name === "loading" ? (
+            <Skeleton
+              variant="text"
+              width={400}
+              sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
+            />
+          ) : (
+            <h1 className="title extrabold mt-5 mw-90">{quest.name}</h1>
+          )}
+          {quest.desc === "loading" ? (
+            <Skeleton
+              variant="text"
+              width={350}
+              sx={{ fontSize: "0.8rem", bgcolor: "grey.900" }}
+            />
+          ) : (
+            <p className="text-center max-w-lg">{quest.desc}</p>
+          )}
+        </div>
+        {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
+          <Timer expiry={Number(quest?.expiry_timestamp)} fixed={false} />
+        ) : null}
+        <div className={styles.taskContainer}>
+          {tasks.length === 0 || quest.rewards_title === "loading" ? (
+            <TasksSkeleton />
+          ) : (
+            <>
+              {tasks.map((task) => {
+                return (
+                  <Task
+                    key={task.id}
+                    name={task.name}
+                    description={task.desc}
+                    href={task.href}
+                    cta={task.cta}
+                    verifyRedirect={task.verify_redirect}
+                    verifyEndpoint={
+                      task.verify_endpoint_type &&
+                      task.verify_endpoint_type === "default"
+                        ? `${task.verify_endpoint}?addr=${hexToDecimal(
+                            address
+                          )}`
+                        : task.verify_endpoint_type === "quiz"
+                        ? task.verify_endpoint
+                        : generateOAuthUrl(task)
+                    }
+                    verifyEndpointType={task.verify_endpoint_type ?? "default"}
+                    refreshRewards={() => refreshRewards(quest, address)}
+                    wasVerified={task.completed}
+                    hasError={Boolean(
+                      taskError && taskError.taskId === task.id
+                    )}
+                    verifyError={
+                      taskError && taskError.taskId === task.id
+                        ? taskError.error
+                        : ""
+                    }
+                    setShowQuiz={setShowQuiz}
+                    quizName={task.quiz_name || undefined}
+                    issuer={{
+                      name: quest.issuer,
+                      logoFavicon: quest.logo,
+                    }}
+                  />
+                );
+              })}
+              <Reward
+                reward={quest.rewards_title}
+                imgSrc={quest.rewards_img}
+                onClick={() => {
+                  setRewardsEnabled(false);
+                }}
+                disabled={!rewardsEnabled}
+                mintCalldata={mintCalldata}
+              />
+            </>
+          )}
+        </div>
       </div>
-    </div>
+      {showQuiz}
+    </>
   );
 };
 

@@ -27,7 +27,6 @@
   background-color: #55acee;
   border-radius: 25%;
   padding: 0.5rem;
-  cursor: pointer;
   position: relative;
 }
 
@@ -39,11 +38,13 @@
 
 .clickableIconGithub {
   background-color: var(--secondary);
+  cursor: pointer;
 }
 
 .clickableIconDiscord {
   background-color: #7289d9;
 }
+
 .button_icon {
   width: 24px;
   margin-right: 12px;

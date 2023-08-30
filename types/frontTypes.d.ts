@@ -19,10 +19,12 @@ type Task = {
   verifyRedirect: string | null;
   verifyEndpointType: string;
   refreshRewards: () => void;
+  setShowQuiz: (s: ReactNode) => void;
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
   quizName?: string;
+  issuer?: Issuer;
 };
 
 type TaskProps = Task & { id: number };
@@ -31,6 +33,20 @@ type TaskError = {
   taskId: number;
   res: boolean;
   error?: string;
+};
+
+type Quiz = {
+  name: string;
+  description: string;
+  questions: QuizQuestion[];
+};
+
+type QuizQuestion = {
+  kind: "text_choice" | "image_choice" | "ordering";
+  layout: "default" | "illustrated_left";
+  question: string;
+  options: string[];
+  image_for_layout: string | null;
 };
 
 type Quest = {
@@ -48,17 +64,22 @@ type Reward = {
 };
 
 type Identity = {
-  id: string;
   addr: string;
-  domain: string;
-  is_owner_main: boolean;
+  domain?: string;
+  domain_expiry?: number | null;
+  is_owner_main?: boolean;
+  owner_addr?: string;
+  old_discord?: string;
+  old_twitter?: string;
+  old_github?: string;
+  starknet_id?: string;
   error?: string;
 };
 
-type SocialMediaActions = {
-  tokenId: string;
-  isOwner: boolean;
-  domain?: string;
+type NftCard = {
+  title: string;
+  image: string;
+  url: string;
 };
 
 type StarkscanNftProps = {

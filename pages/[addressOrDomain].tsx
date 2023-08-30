@@ -100,7 +100,7 @@ const AddressOrDomain: NextPage = () => {
               }
               setIdentity({
                 ...data,
-                id: id.toString(),
+                starknet_id: id.toString(),
               });
               if (hexToDecimal(address) === data.addr) setIsOwner(true);
               setInitProfile(true);
@@ -114,7 +114,7 @@ const AddressOrDomain: NextPage = () => {
           ?.getAddressFromStarkName(addressOrDomain)
           .then((addr) => {
             setIdentity({
-              id: "0",
+              starknet_id: "0",
               addr: hexToDecimal(addr),
               domain: addressOrDomain,
               is_owner_main: false,
@@ -145,7 +145,7 @@ const AddressOrDomain: NextPage = () => {
                     if (data.error) return;
                     setIdentity({
                       ...data,
-                      id: id.toString(),
+                      starknet_id: id.toString(),
                     });
                     if (hexToDecimal(address) === data.addr) setIsOwner(true);
                     setInitProfile(true);
@@ -156,7 +156,7 @@ const AddressOrDomain: NextPage = () => {
                 });
             } else {
               setIdentity({
-                id: "0",
+                starknet_id: "0",
                 addr: hexToDecimal(addressOrDomain),
                 domain: name,
                 is_owner_main: false,
@@ -167,7 +167,7 @@ const AddressOrDomain: NextPage = () => {
             }
           } else {
             setIdentity({
-              id: "0",
+              starknet_id: "0",
               addr: hexToDecimal(addressOrDomain),
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
@@ -221,6 +221,7 @@ const AddressOrDomain: NextPage = () => {
         setNFTCounter={setTotalNfts}
         isMobile={isMobile}
         setSinceDate={setSinceDate}
+        // todo: delete this ?
         setShowTooltip={setShowTooltip}
         setTooltipData={setTooltipData}
         hasDomain={identity.domain ? true : false}
@@ -234,7 +235,7 @@ const AddressOrDomain: NextPage = () => {
               <div className={styles.profilePicture}>
                 <img
                   width={"350px"}
-                  src={`https://www.starknet.id/api/identicons/${identity?.id}`}
+                  src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
                   alt="starknet.id avatar"
                   style={{ maxWidth: "150%" }}
                 />
@@ -325,13 +326,7 @@ const AddressOrDomain: NextPage = () => {
         />
         <ProfileCard
           title="Social network"
-          content={
-            <SocialMediaActions
-              domain={identity?.domain}
-              isOwner={isOwner}
-              tokenId={identity?.id}
-            />
-          }
+          content={<SocialMediaActions identity={identity} />}
         />
       </div>
     </>

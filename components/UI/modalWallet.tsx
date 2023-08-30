@@ -80,7 +80,7 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
           <div className={styles.menu_title}>
             {connector && connector.id === "braavos" ? (
               <img
-                width={"25px"}
+                width="25px"
                 src="/braavos/braavosLogo.svg"
                 alt="braavos logo"
               />
