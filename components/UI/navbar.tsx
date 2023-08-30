@@ -166,9 +166,6 @@ const Navbar: FunctionComponent = () => {
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
-              <Link href="/partnership">
-                <li className={styles.menuItem}>Partnership</li>
-              </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
@@ -262,14 +259,6 @@ const Navbar: FunctionComponent = () => {
               </div>
               <div className="py-4 flex flex-col">
                 <ul className="uppercase text-babe-blue">
-                  <Link href="/partnership">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Partnership
-                    </li>
-                  </Link>
                   <Link href="/">
                     <li
                       onClick={() => setNav(false)}
