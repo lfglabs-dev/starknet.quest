@@ -23,7 +23,6 @@ export const Map: FunctionComponent<MapProps> = ({
     const intersects = raycaster.intersectObjects(scene.children, true);
 
     let buildingData = null;
-    let tileData = null;
     let tooltipPosition = null;
 
     // Loop through all intersected objects
@@ -42,17 +41,15 @@ export const Map: FunctionComponent<MapProps> = ({
           );
 
           if (buildingData) {
-            tileData = mapReader.buildings[rayY + 1][rayX]?.tileRef; // Get the tile data
             tooltipPosition = mouse; // send mouse position to place tooltip
             break; // Break the loop as we've found our object
           }
         }
       }
     }
-    if (buildingData && tooltipPosition && tileData) {
+    if (buildingData && tooltipPosition) {
       updateBuildingRef({
         ...buildingData,
-        tileData: tileData,
         pos: tooltipPosition,
       });
     } else {

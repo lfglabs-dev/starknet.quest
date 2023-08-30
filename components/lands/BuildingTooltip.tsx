@@ -10,15 +10,14 @@ const BuildingTooltip: FunctionComponent<BuildingTooltipProps> = ({
   building,
   pos,
 }) => {
-  if (!building || !building.tileData) return null;
+  if (!building) return null;
   return (
     <div className={styles.tooltip} style={{ left: pos.x, top: pos.y }}>
       <div className={styles.miniature}>
         <div
           className={styles.img}
           style={{
-            backgroundPosition: `calc((-${building.tileData.x}px * 45 / ${building.tileData.h}) + 8px) calc((-${building.tileData.y}px * 45 / ${building.tileData.h}))`,
-            backgroundSize: `calc(1280px * 45 / ${building.tileData.h}) calc(1280px * 45 / ${building.tileData.h})`,
+            backgroundImage: `url("${building.img_url}")`,
           }}
         />
       </div>
