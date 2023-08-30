@@ -113,14 +113,19 @@ const Navbar: FunctionComponent = () => {
   }
 
   function onTopButtonClick(): void {
-    if (available.length > 0) {
-      if (available.length === 1) {
-        connect(available[0]);
+    if (!isConnected) {
+      if (available.length > 0) {
+        if (available.length === 1) {
+          connect(available[0]);
+        } else {
+          setHasWallet(true);
+        }
       } else {
         setHasWallet(true);
       }
     } else {
-      setHasWallet(true);
+      // disconnectByClick();
+      setShowWallet(true);
     }
   }
 
