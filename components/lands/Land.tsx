@@ -146,9 +146,11 @@ export const Land = ({
         style={{
           height: "100vh",
           width: "100vw",
-          zIndex: "0",
+          zIndex: 0,
           touchAction: "none",
           overflow: "hidden",
+          backgroundImage: `url("/land/textures/SID_Background_SpaceLoop.gif")`,
+          backgroundRepeat: "repeat",
         }}
       >
         {isReady ? (

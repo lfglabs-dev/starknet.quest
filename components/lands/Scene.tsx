@@ -5,7 +5,6 @@ import { Camera } from "./Camera";
 import { LdtkReader } from "../../utils/parser";
 import { iLDtk } from "../../types/ldtk";
 import { useGesture } from "@use-gesture/react";
-import { TerrainBackground } from "./TerrainBackground";
 import ZoomSlider from "./zoomSlider";
 import { Map } from "./Map";
 import BuildingTooltip from "./BuildingTooltip";
@@ -109,7 +108,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
     <>
       <Canvas
         id="canvasScene"
-        gl={{ antialias: false, toneMapping: NoToneMapping }}
+        gl={{ antialias: false, toneMapping: NoToneMapping, alpha: true }}
         linear
         {...bind()}
         onContextMenu={(event) => {
@@ -119,7 +118,6 @@ export const Scene: FunctionComponent<SceneProps> = ({
       >
         {mapReader ? (
           <>
-            <color attach="background" args={["#1a1528"]} />
             <directionalLight color="#ffffff" intensity={3} />
             <ambientLight color="#9902fc" intensity={0.1} />
             {mapReader.cityCenter ? (
@@ -139,7 +137,6 @@ export const Scene: FunctionComponent<SceneProps> = ({
                 updateBuildingRef={updateBuildingRef}
               />
             ) : null}
-            {/* <TerrainBackground /> */}
           </>
         ) : null}
       </Canvas>
