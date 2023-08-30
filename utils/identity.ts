@@ -4,3 +4,10 @@ export const getIdentityData = async (id: number) => {
   );
   return response.json();
 };
+
+export const hasVerifiedSocials = (identity: Identity) => {
+  if (identity.old_discord || identity.old_twitter || identity.old_github) {
+    return true;
+  }
+  return false;
+};

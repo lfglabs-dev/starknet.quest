@@ -16,7 +16,7 @@ import ErrorScreen from "../components/UI/screens/errorScreen";
 import ProfileCard from "../components/UI/profileCard";
 import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/Land";
-import { getIdentityData } from "../utils/identity";
+import { getIdentityData, hasVerifiedSocials } from "../utils/identity";
 import { useMediaQuery } from "@mui/material";
 
 const AddressOrDomain: NextPage = () => {
@@ -228,7 +228,7 @@ const AddressOrDomain: NextPage = () => {
       />
       <div className={styles.profiles}>
         <ProfileCard
-          title={identity?.domain}
+          title={identity?.domain ?? minifyAddress(identity.addr)}
           isUppercase={true}
           content={
             <div className={styles.nameCard}>
@@ -324,10 +324,12 @@ const AddressOrDomain: NextPage = () => {
             </div>
           }
         />
-        <ProfileCard
-          title="Social network"
-          content={<SocialMediaActions identity={identity} />}
-        />
+        {hasVerifiedSocials(identity) ? (
+          <ProfileCard
+            title="Social network"
+            content={<SocialMediaActions identity={identity} />}
+          />
+        ) : null}
       </div>
     </>
   ) : (
