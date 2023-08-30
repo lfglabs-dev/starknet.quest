@@ -27,7 +27,7 @@ export const Camera: FunctionComponent<CameraProps> = ({
   cityCenter,
   isMobile,
 }) => {
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const set = useThree(({ set }) => set);
   const size = useThree(({ size }) => size);
   const [tempMousePos, setTempMousePos] = useState(new Vector2(0, 0));
@@ -87,7 +87,7 @@ export const Camera: FunctionComponent<CameraProps> = ({
         cameraPositionZ
       );
       cameraRef.current.updateProjectionMatrix();
-    } // END
+    }
   });
 
   useLayoutEffect(() => {
