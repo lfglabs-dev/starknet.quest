@@ -89,7 +89,7 @@ const Achievements: NextPage = () => {
         setHasChecked(true);
       });
     }
-  }, [userAchievements, address, hasChecked]);
+  }, [userAchievements.length, address]);
 
   return (
     <div className={styles.screen}>
