@@ -124,7 +124,6 @@ const Navbar: FunctionComponent = () => {
         setHasWallet(true);
       }
     } else {
-      // disconnectByClick();
       setShowWallet(true);
     }
   }

@@ -13,12 +13,12 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
   return (
     <CustomTooltip
       title={
-        <React.Fragment>
+        <>
           <div>
             <div className={styles.tooltipTitle}>{achievement.title}</div>
             <div className={styles.tooltipSub}>{achievement.desc}</div>
           </div>
-        </React.Fragment>
+        </>
       }
       placement="bottom-end"
     >
