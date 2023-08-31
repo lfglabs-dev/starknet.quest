@@ -1,4 +1,4 @@
-import { CityBuilded } from "../../types/land";
+import { GroundTileProps } from "../../types/land";
 import React, { ReactElement, memo, useMemo } from "react";
 import { MeshPhongMaterial, PlaneGeometry, Texture } from "three";
 import { Tileset } from "../../types/ldtk";
@@ -6,7 +6,7 @@ import { Tileset } from "../../types/ldtk";
 type IElem = {
   tileset: Tileset;
   pos: { posX: number; posY: number };
-  tileData: CityBuilded;
+  tileData: GroundTileProps;
   groundTexture: Texture;
   plane: PlaneGeometry;
 };
