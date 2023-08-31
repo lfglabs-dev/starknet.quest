@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import styles from "../../styles/achievements.module.css";
 import {
   AchievementDocument,
@@ -15,15 +15,16 @@ const Achievement: FunctionComponent<AchievementProps> = ({
   achievements,
   index,
 }) => {
+  const position = useMemo(() => {
+    return index % 2 === 0 ? "right center" : "left center";
+  }, [index]);
   return (
     <div className={styles.card}>
       <div
         className={styles.background}
         style={{
           backgroundImage: `url('/${achievements.category_img_url}')`,
-          backgroundPosition: `${
-            index % 2 === 0 ? "right center" : "left center"
-          }`,
+          backgroundPosition: `${position}`,
           backgroundSize: "30%",
         }}
       />

@@ -97,7 +97,7 @@ const Achievements: NextPage = () => {
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Achievements</h1>
           <p className={styles.subtitle}>
-            Earn achievements to unlock lands and showcase them on your profile!
+            Complete achievements and grow your Starknet on-chain reputation
           </p>
         </div>
         <div className={styles.cardWrapper}>
