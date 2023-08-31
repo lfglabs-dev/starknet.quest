@@ -102,18 +102,17 @@ const Achievements: NextPage = () => {
         </div>
         <div className={styles.cardWrapper}>
           <div className={styles.cards}>
-            {userAchievements &&
-              userAchievements.map(
-                (achievementCategory: AchievementsDocument, index: number) => {
-                  return (
-                    <Achievement
-                      achievements={achievementCategory}
-                      key={achievementCategory.category_name}
-                      index={index}
-                    />
-                  );
-                }
-              )}
+            {userAchievements.map(
+              (achievementCategory: AchievementsDocument, index: number) => {
+                return (
+                  <Achievement
+                    achievements={achievementCategory}
+                    key={achievementCategory.category_name}
+                    index={index}
+                  />
+                );
+              }
+            )}
           </div>
         </div>
       </div>
