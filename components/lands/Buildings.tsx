@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { CityBuildings } from "../../types/land";
-import BuildingItem from "./BuildingItem";
+import BuildingItem from "./buildingItem";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 

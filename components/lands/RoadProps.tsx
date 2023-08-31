@@ -9,7 +9,7 @@ import {
 import { CityProps, TileData } from "../../types/land";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
-import PropItem from "./PropItem";
+import RoadItem from "./roadItem";
 
 type IProps = {
   tilesets: Tileset[];
@@ -40,9 +40,19 @@ export default function RoadProps({
     );
   }, []);
 
-  // const streetLightPlane = useMemo(() => {
-  //   return new PlaneGeometry(1, 1, 1, 1);
-  // }, []);
+  // Reuse same planes for props
+  const simplePlane = useMemo(() => {
+    // used for bench, sewerPlate & firehydrant props
+    return new PlaneGeometry(1, 1, 1, 1);
+  }, []);
+
+  const streetLightPlane = useMemo(() => {
+    return new PlaneGeometry(1, 2, 1, 1);
+  }, []);
+
+  const treePlane = useMemo(() => {
+    return new PlaneGeometry(2, 2, 1, 1);
+  }, []);
 
   return (
     <>
@@ -54,13 +64,20 @@ export default function RoadProps({
               return null;
             }
             return (
-              <PropItem
+              <RoadItem
                 key={`props-${iX}-${iY}`}
                 tileset={tileset}
                 buildingTexture={buildingTexture}
                 tileData={tileData[elem.entityType]}
                 pos={{ posX: iX, posY: iY }}
                 propData={elem}
+                plane={
+                  elem.entityType === 0
+                    ? streetLightPlane
+                    : elem.entityType === 1
+                    ? treePlane
+                    : simplePlane
+                }
               />
             );
           });

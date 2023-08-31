@@ -6,7 +6,7 @@ import {
   Vector2,
   PlaneGeometry,
 } from "three";
-import GroundItem from "./GroundItem";
+import GroundItem from "./groundItem";
 import { CityBuilded } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
 import { Tileset } from "../../types/ldtk";

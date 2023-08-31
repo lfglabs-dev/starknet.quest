@@ -1,13 +1,13 @@
 import { Canvas } from "@react-three/fiber";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { NoToneMapping } from "three";
-import { Camera } from "./Camera";
+import { Camera } from "./camera";
 import { LdtkReader } from "../../utils/parser";
 import { iLDtk } from "../../types/ldtk";
 import { useGesture } from "@use-gesture/react";
 import ZoomSlider from "./zoomSlider";
-import { Map } from "./Map";
-import BuildingTooltip from "./BuildingTooltip";
+import { Map } from "./map";
+import BuildingTooltip from "./buildingTooltip";
 
 type SceneProps = {
   address: string;

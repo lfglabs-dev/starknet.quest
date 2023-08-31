@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Scene } from "./Scene";
+import { Scene } from "./scene";
 import { memberSince } from "../../utils/sortNfts";
 import styles from "../../styles/profile.module.css";
 import Button from "../UI/button";

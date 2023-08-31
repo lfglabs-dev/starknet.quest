@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { LdtkReader } from "../../utils/parser";
-import Ground from "./Ground";
-import RoadProps from "./RoadProps";
-import Buildings from "./Buildings";
+import Ground from "./ground";
+import RoadProps from "./roadProps";
+import Buildings from "./buildings";
 import { tileTypes } from "../../constants/tiles";
 import { useFrame, useThree } from "@react-three/fiber";
 

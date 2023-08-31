@@ -1,7 +1,7 @@
 import { propsOffset } from "../../constants/tiles";
 import { CityProps, TileData } from "../../types/land";
 import React, { ReactElement, memo, useMemo, useState } from "react";
-import { Texture } from "three";
+import { PlaneGeometry, Texture } from "three";
 import { Tileset } from "../../types/ldtk";
 
 type IElem = {
@@ -10,10 +10,18 @@ type IElem = {
   buildingTexture: Texture;
   propData: CityProps;
   tileData: TileData;
+  plane: PlaneGeometry;
 };
 
-const PropItem = memo<IElem>(
-  ({ tileset, pos, buildingTexture, propData, tileData }): ReactElement => {
+const RoadItem = memo<IElem>(
+  ({
+    tileset,
+    pos,
+    buildingTexture,
+    propData,
+    tileData,
+    plane,
+  }): ReactElement => {
     const [offset, setOffset] = useState<{ x: number; y: number; z: number }>({
       x: 0,
       y: 0,
@@ -22,6 +30,7 @@ const PropItem = memo<IElem>(
 
     const elemTexture = useMemo(() => {
       if (tileset && buildingTexture) {
+        // console.log("tileData", tileData);
         const localT = buildingTexture.clone();
         localT.needsUpdate = true;
         localT.offset.set(tileData.textureOffset.x, tileData.textureOffset.y);
@@ -43,14 +52,8 @@ const PropItem = memo<IElem>(
         ]}
         name={`${tileData.entity.tileRect.tilesetUid}_props`.toString()}
         rotation={[-Math.PI * 0.5, 0, 0]}
+        geometry={plane}
       >
-        <planeGeometry
-          name={
-            `${tileData.entity.tileRect.tilesetUid}_props`.toString() + "_geom"
-          }
-          attach="geometry"
-          args={[tileData.plane.w, tileData.plane.h, 1, 1]}
-        />
         <meshPhongMaterial
           attach="material"
           map={elemTexture}
@@ -66,5 +69,5 @@ const PropItem = memo<IElem>(
   }
 );
 
-PropItem.displayName = "PropItem";
-export default PropItem;
+RoadItem.displayName = "RoadItem";
+export default RoadItem;
