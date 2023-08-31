@@ -30,7 +30,6 @@ const RoadItem = memo<IElem>(
 
     const elemTexture = useMemo(() => {
       if (tileset && buildingTexture) {
-        // console.log("tileData", tileData);
         const localT = buildingTexture.clone();
         localT.needsUpdate = true;
         localT.offset.set(tileData.textureOffset.x, tileData.textureOffset.y);
