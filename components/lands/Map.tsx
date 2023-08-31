@@ -19,6 +19,7 @@ export const Map: FunctionComponent<MapProps> = ({
 }) => {
   const { scene } = useThree();
 
+  // Raycaster to detect if we're hovering a building
   useFrame(({ mouse, raycaster }) => {
     const intersects = raycaster.intersectObjects(scene.children, true);
 
@@ -42,7 +43,7 @@ export const Map: FunctionComponent<MapProps> = ({
 
           if (buildingData) {
             tooltipPosition = mouse; // send mouse position to place tooltip
-            break; // Break the loop as we've found our object
+            break; // Break the loop as we've found our object and 2 buildings cannot be on top of one another
           }
         }
       }

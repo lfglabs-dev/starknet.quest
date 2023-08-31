@@ -24,8 +24,8 @@ export const Scene: FunctionComponent<SceneProps> = ({
   const indexRef = useRef<number>();
   const [index, setIndex] = useState(maxZoom);
   indexRef.current = index;
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
+  // const [windowWidth, setWindowWidth] = useState(0);
+  // const [windowHeight, setWindowHeight] = useState(0);
   const [mouseRightPressed, setMouseRightPressed] = useState(0);
   const [isFirstTouch, setIsFirstTouch] = useState(false);
   const [data, setData] = useState<iLDtk>();
@@ -40,16 +40,16 @@ export const Scene: FunctionComponent<SceneProps> = ({
   useEffect(() => {
     if (data) {
       const mapReader = new LdtkReader(data, address, citySize, userNft);
-      mapReader.CreateMap("Level_0", "SIDCity_TilesetSheet");
+      mapReader.CreateMap("Level_0", "SIDCity_TilesetSheet"); // init land data
       console.log("mapReader", mapReader);
       setMapReader(mapReader);
     }
   }, [data]);
 
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    setWindowHeight(window.innerHeight);
-  }, []);
+  // useEffect(() => {
+  //   setWindowWidth(window.innerWidth);
+  //   setWindowHeight(window.innerHeight);
+  // }, []);
 
   useEffect(() => {
     fetch("/land/data/SIDCity_Base_V5.json")
@@ -92,10 +92,10 @@ export const Scene: FunctionComponent<SceneProps> = ({
       if (newBuilding) {
         setShowTooltip(true);
         if (newBuilding.pos) {
-          let posX = ((newBuilding.pos.x + 1) / 2) * windowWidth;
-          const posY = (-(newBuilding.pos.y - 1) / 2) * windowHeight;
+          let posX = ((newBuilding.pos.x + 1) / 2) * window.innerWidth;
+          const posY = (-(newBuilding.pos.y - 1) / 2) * window.innerHeight;
           // If the building is too close to the profile menu, move it to the left
-          if (posX > windowWidth - 475) {
+          if (posX > window.innerWidth - 475) {
             posX = posX - 285;
           }
           setMousePosition({ x: posX, y: posY });
@@ -122,7 +122,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
             <ambientLight color="#9902fc" intensity={0.1} />
             {mapReader.cityCenter ? (
               <Camera
-                aspect={windowWidth / windowHeight}
+                aspect={window.innerWidth / window.innerHeight}
                 mouseRightPressed={mouseRightPressed}
                 index={index}
                 isFirstTouch={isFirstTouch}
