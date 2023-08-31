@@ -7,13 +7,13 @@ import {
   PlaneGeometry,
 } from "three";
 import GroundItem from "./groundItem";
-import { CityBuilded } from "../../types/land";
+import { GroundTileProps } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
 import { Tileset } from "../../types/ldtk";
 
 type IGround = {
   tileset: Tileset;
-  cityData: Array<Array<CityBuilded | null>>;
+  cityData: Array<Array<GroundTileProps | null>>;
 };
 
 export default function Ground({
@@ -38,8 +38,8 @@ export default function Ground({
   return (
     <>
       {groundTexture &&
-        cityData.map((tileX: Array<CityBuilded | null>, iY: number) => {
-          return tileX.map((tileData: CityBuilded | null, iX: number) => {
+        cityData.map((tileX: Array<GroundTileProps | null>, iY: number) => {
+          return tileX.map((tileData: GroundTileProps | null, iX: number) => {
             if (tileData === null || tileData.tileId === undefined) {
               return null;
             }

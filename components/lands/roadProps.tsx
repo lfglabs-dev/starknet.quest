@@ -6,14 +6,14 @@ import {
   Vector2,
   PlaneGeometry,
 } from "three";
-import { CityProps, TileData } from "../../types/land";
+import { RoadObjects, TileData } from "../../types/land";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 import RoadItem from "./roadItem";
 
 type IProps = {
   tilesets: Tileset[];
-  cityData: Array<Array<CityProps | null>>;
+  cityData: Array<Array<RoadObjects | null>>;
   tileData: TileData[];
 };
 
@@ -58,8 +58,8 @@ export default function RoadProps({
     <>
       {buildingTexture &&
         tileset &&
-        cityData.map((tileX: (CityProps | null)[], iY: number) => {
-          return tileX.map((elem: CityProps | null, iX: number) => {
+        cityData.map((tileX: (RoadObjects | null)[], iY: number) => {
+          return tileX.map((elem: RoadObjects | null, iX: number) => {
             if (elem === null) {
               return null;
             }

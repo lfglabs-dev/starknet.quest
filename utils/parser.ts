@@ -8,12 +8,10 @@ import {
   TileRect,
 } from "../types/ldtk";
 import {
-  CityBuilded,
-  CityBuildings,
+  GroundTileProps,
+  BuildingTileProps,
   CityCenterProps,
-  CityLight,
-  CityObjectsProps,
-  CityProps,
+  RoadObjects,
   CitySize,
   Coord,
   SpriteBounds,
@@ -32,7 +30,7 @@ import {
   tileTypes,
 } from "../constants/tiles";
 import {
-  calculateCityCenter,
+  computeCityCenter,
   convertTo2D,
   findClosestCorner,
   getCustomDataArr,
@@ -40,37 +38,41 @@ import {
   getSubArray,
   needsDirectionChange,
   setDirectionBasedOnCorner,
-  shuffleAndHandleCorners,
-} from "./landUtils";
-import {
-  LightTypes,
-  LightsTypesNames,
-  pointLightsData,
-} from "../constants/lights";
+  // shuffleAndHandleCorners,
+} from "./land";
 import { Vector2 } from "three";
 
 export class LdtkReader {
+  /// data related to LDTK
+  ldtk: iLDtk;
   level!: Level;
   tilesets: Array<Tileset>;
-  ldtk: iLDtk;
-  address: string;
-  citySize: number;
-  cityCenter: CityCenterProps | null = null;
-  TILE_LAND: number;
-  TILE_ROAD: number;
-  userNft: BuildingsInfo[];
-  cityIntGrid: Array<Array<number>>;
-  cityBuilded: Array<Array<CityBuilded | null>>; // Ground tiles
-  buildings: Array<Array<CityBuildings | null>>; // Buildings tiles
-  cityProps: Array<Array<CityProps | null>>;
   idxToRule: { [key: string]: number }; // Mapping between tileset rules and tileset values
+  TILE_LAND: number; // tile index we get from LDTK
+  TILE_ROAD: number;
+
+  /// User data
+  address: string; // user address use to compute pseudo random numbers
+  userNft: BuildingsInfo[]; // user NFTs
+
+  /// Data related to the land
+  // Array containing all the entities sorted by type and width, computed from LDTK json file
+  // (NFT buildings, generic buildings we place behind, road props)
   entities: { [key: string]: { [key: number]: EntityProps[] } };
-  currentDirection: string | null = null;
-  lights: CityLight[] = [];
-  blockedPaths: Array<Coord> = []; // array of tiles where it's not possible to place a prop
-  props: Array<Array<CityObjectsProps>> = [];
+  citySize: number;
+  cityCenter: CityCenterProps | null = null; // city center coordinates needed to place the camera
+  // array of blocks of buildings (a block is a group of buildings that can be placed together, they are calculated depending on the number of NFTs owned by the user)
+  blocks: Array<{ w: number; h: number; nfts: EntityProps[] }> = [];
+  cityIntGrid: Array<Array<number>>; // int grid representing roads, sidewalk, borders, used to check rules patterns
+  groundTiles: Array<Array<GroundTileProps | null>>; // Ground tiles generated after checking ground rules patterns
+  buildingTiles: Array<Array<BuildingTileProps | null>>; // Buildings tiles
+  currentDirection: string | null = null; // used to keep track of the direction we're building in
+  // array of tiles where it's not possible to place a prop (in front of a door for ex)
+  blockedPaths: Array<Coord> = [];
+  // array of road props (lights, trees, ...) to be placed
+  roadProps: Array<Array<RoadObjects | null>>;
+  // data for props (and lights) pre-computed to avoid recomputing everything everytime there's a render
   tileData: Record<tileTypes, TileData[]>;
-  blocks: Array<{ w: number; h: number; nfts: EntityProps[] }> = []; // array of blocks of buildings
 
   constructor(
     filejson: any,
@@ -85,13 +87,13 @@ export class LdtkReader {
     this.cityIntGrid = new Array(citySize)
       .fill(0)
       .map(() => new Array(citySize).fill(TILE_EMPTY));
-    this.buildings = new Array(citySize)
+    this.buildingTiles = new Array(citySize)
       .fill(0)
       .map(() => new Array(citySize).fill(null));
-    this.cityBuilded = new Array(citySize)
+    this.groundTiles = new Array(citySize)
       .fill(0)
       .map(() => new Array(citySize).fill(null));
-    this.cityProps = new Array(citySize)
+    this.roadProps = new Array(citySize)
       .fill(0)
       .map(() => new Array(citySize).fill(null));
 
@@ -108,9 +110,12 @@ export class LdtkReader {
     this.entities = this.sortEntities(userNft);
     this.userNft = userNft;
 
-    for (let propType in PropsTypes) {
-      this.props[propType] = [];
-    }
+    // for (let propType in PropsTypes) {
+    //   const asNumber = parseInt(propType, 10);
+    //   if (!isNaN(asNumber)) {
+    //     this.roadProps[asNumber] = [];
+    //   }
+    // }
     this.tileData = {
       [tileTypes.PROPS]: [],
       [tileTypes.LIGHTS]: [],
@@ -157,46 +162,19 @@ export class LdtkReader {
         z: 0.23,
       });
     });
-
-    Object.values(LightTypes).forEach((lightType) => {
-      const propTypeName = LightsTypesNames[lightType as LightTypes];
-      const entity = this.entities["Lights"][0].find(
-        (elem) => elem.identifier === propTypeName
-      );
-      const tileset = this.tilesets.find(
-        (t) => t.uid === entity?.tileRect.tilesetUid
-      );
-      if (!entity || !tileset) return;
-      let spritesPerRow = tileset?.pxWid / tileset?.tileGridSize ?? 1;
-      let spritesPerColumn = tileset?.pxHei / tileset?.tileGridSize ?? 1;
-      let xIndex = entity?.tileRect.x / tileset?.tileGridSize ?? 0;
-      let yIndex = entity?.tileRect.y / tileset?.tileGridSize ?? 0;
-      let xOffset = xIndex / spritesPerRow;
-      let yOffset =
-        1 - (yIndex + (entity?.tileRect.h ?? 0) / 16) / spritesPerColumn;
-
-      this.tileData[tileTypes.LIGHTS].push({
-        entity,
-        plane: {
-          w: (entity?.tileRect.w ?? 0) / 16,
-          h: (entity?.tileRect.h ?? 0) / 16,
-        },
-        textureOffset: { x: xOffset, y: yOffset },
-        textureRepeat: {
-          x:
-            1 /
-            (spritesPerRow /
-              ((entity?.tileRect.w ?? 0) / tileset?.tileGridSize ?? 1)),
-          y:
-            1 /
-            (spritesPerColumn /
-              ((entity?.tileRect.h ?? 0) / tileset?.tileGridSize ?? 1)),
-        },
-        z: 0.23,
-      });
-    });
   }
 
+  /**
+   * Function to build EntityProps from entity name
+   * Entities like NFTs have name composed of different parts:
+   * - a type : NFT, Generic building, Props, Lights (we do not use them for now)
+   * - a heightGroup : height of the building grouped
+   * - activeWidth : width of the building without the corners
+   * - activeHeight : part of the height of the building which is on the ground
+   * - corner : a building can have some elements that exceed its active width (ex: mySwap building)
+   *
+   * @param identifier
+   */
   sortEntities(userNft: BuildingsInfo[]) {
     let nftNames: string[] = [];
 
@@ -204,23 +182,12 @@ export class LdtkReader {
       nftNames.push(nft.entity);
     });
 
-    // // Additional NFTs based on total NFT owned
-    // nftNames.push("NFT_StarkNews_4x3_H7");
-    // const totalNFTs = userNftCounters.totalNFTs;
-    // for (const [counter, name] of Object.entries(totalNFTsNamesMapping)) {
-    //   if (totalNFTs >= Number(counter)) {
-    //     nftNames.push(name);
-    //   }
-    // }
-
     let entitiesSorted: { [key: string]: { [key: number]: EntityProps[] } } =
       {};
     this.ldtk.defs.entities.forEach((entity: Entity) => {
-      let heightGroup = 0;
       let activeWidth = 0;
       let activeHeight = 0;
       let corner = "";
-      let level = 0;
       let key = "";
       const splittedId = entity.identifier.split("_");
       let needToBeAdded = false;
@@ -236,15 +203,10 @@ export class LdtkReader {
           ) {
             activeWidth = parseInt(splittedId[2][0]);
             activeHeight = parseInt(splittedId[2][2]);
-            heightGroup = parseInt(splittedId[3][1]);
-            level = parseInt(splittedId[4][0]);
           } else if (
             splittedId.length === 5 &&
             splittedId[1].startsWith("ArgentExplorer")
           ) {
-            // we have to do this until we fix the json file
-            level = parseInt(splittedId[2][0]);
-            heightGroup = parseInt(splittedId[4][1]);
             activeWidth = parseInt(splittedId[3][0]);
             activeHeight = parseInt(splittedId[3][2]);
           } else if (
@@ -253,13 +215,10 @@ export class LdtkReader {
             !splittedId[1].startsWith("ArgentMain") &&
             !splittedId[1].startsWith("ArgentExplorer")
           ) {
-            // no levels but a corner
             corner = splittedId[4];
-            heightGroup = parseInt(splittedId[3][1]);
             activeWidth = parseInt(splittedId[2][0]);
             activeHeight = parseInt(splittedId[2][2]);
           } else {
-            heightGroup = parseInt(splittedId[3][1]);
             activeWidth = parseInt(splittedId[2][0]);
             activeHeight = parseInt(splittedId[2][2]);
           }
@@ -272,24 +231,21 @@ export class LdtkReader {
         key = "Generic";
         activeWidth = parseInt(splittedId[2][0]);
         activeHeight = parseInt(splittedId[2][2]);
-        heightGroup = parseInt(splittedId[3][1]);
       } else if (splittedId[0] === "Building") {
         needToBeAdded = true;
         key = "Generic";
         activeWidth = parseInt(splittedId[1][0]);
         activeHeight = parseInt(splittedId[1][2]);
-        heightGroup = parseInt(splittedId[2][1]);
       } else if (splittedId[0] === "Props") {
         needToBeAdded = true;
         key = "Props";
-      } else if (splittedId[0] === "Light" && splittedId[2] === "Small") {
-        needToBeAdded = true;
-        key = "Lights";
       }
 
       if (needToBeAdded) {
         // Get custom data for entities
-        let customData = null;
+        // In LTDK we can only pass additional custom information about entities through tilesets
+        // here we calculate where the entity is positioned on the spritesheet (tileId)
+        // and get the custom data for those tiles
         let customDatas: { [key: string]: any }[] = [];
         let tileIdsArr: number[][] | null = null;
         const tileset = this.ldtk.defs.tilesets.find(
@@ -316,19 +272,14 @@ export class LdtkReader {
               ...getCustomDataArr(elem.data),
             };
           });
-          if (entity.identifier === "Props_StreetLight") {
-            customDatas = [{ tileId: 1, pointlight: "street1" }];
-          }
         }
 
         const entityProps: EntityProps = {
           ...entity,
           activeWidth,
           activeHeight,
-          heightGroup,
           isBuilt: false,
           corner,
-          level,
           tileIdsArr,
           customDatas,
         };
@@ -340,6 +291,7 @@ export class LdtkReader {
       }
     });
 
+    // Sort entities by activeWidth and activeHeight
     for (let entityType in entitiesSorted) {
       for (let activeWidth in entitiesSorted[entityType]) {
         entitiesSorted[entityType][activeWidth].sort(
@@ -359,57 +311,29 @@ export class LdtkReader {
     return entitiesSorted;
   }
 
-  CreateMap(levelName: string, tileset: string | string[]): any {
-    let j = this.ldtk;
-    this.level = j.levels.find(
-      (l: Level) => l.identifier === levelName
-    ) as Level;
-
-    if (!this.level) throw new Error("Level not found");
-
-    let mappack: any = {};
-    mappack.name = this.level.identifier;
-    mappack.entityLayers = [];
-
-    this.level.layerInstances.forEach((layer) => {
-      let usedTileset;
-      if (typeof tileset === "string") usedTileset = tileset;
-      else
-        usedTileset = tileset.find(
-          (t) =>
-            t ===
-            this.tilesets
-              .find((t2) => t2.uid === layer.__tilesetDefUid)
-              ?.identifier.toLowerCase()
-        );
-
-      if (!usedTileset) {
-        console.warn("No tileset found for layer " + layer.__identifier);
-      }
-    });
-
-    this.level.layerInstances.forEach((layer) => {
-      if (layer.__type === "Entities") {
-        mappack.entityLayers?.push(layer);
-      }
-    });
-
+  /**
+   * Function to generate the user land based on NFTs owned
+   */
+  CreateMap() {
+    // build an array of buildings represented by their width
     let arr = [];
     for (const key in this.entities["NFT"]) {
+      console.log("key", key);
       const times = this.entities["NFT"][key].length;
       for (let i = 0; i < times; i++) {
         arr.push(parseInt(key));
       }
     }
+
     // Generate blocks & rules
-    this.GenerateBlocks(arr);
+    this.generateBlocks(arr);
     this.addBoundariesAroundLand();
-    this.ApplyRules();
+    this.applyRules();
     this.placeProps();
 
     // calculate city center for Camera position
     const citySize = this.calculateCitySize();
-    const center = calculateCityCenter(
+    const center = computeCityCenter(
       citySize.minX,
       citySize.maxX,
       citySize.minY,
@@ -422,13 +346,15 @@ export class LdtkReader {
       },
       boundaries: citySize,
     };
-    console.log("center", citySize);
-    console.log("this.city", this.cityIntGrid);
-
-    return mappack;
   }
 
-  GenerateBlocks(arr: number[]): void {
+  /**
+   * Given an array of building width, it computes the right number of blocks of buildings
+   * So we don't get empty spaces between buildings and place NFTs inside the blocks
+   *
+   * @param arr of building width
+   */
+  generateBlocks(arr: number[]): void {
     let blocks = [];
     let block: number[] = [];
     let totalWidth = 0;
@@ -474,18 +400,24 @@ export class LdtkReader {
     }
 
     for (let b = 0; b < this.blocks.length; b++) {
-      this.GenerateBlock(b);
+      this.generateBlock(b);
     }
   }
 
-  GenerateBlock(blockNb: number): void {
+  /**
+   * Given a block index, it places the block on the land
+   * It avoids spaces between blocks
+   *
+   * @param blockIndex: number
+   */
+  generateBlock(blockIndex: number): void {
     let center: Coord | null;
     const blockSize = new Vector2(
-      this.blocks[blockNb].w,
-      this.blocks[blockNb].h
+      this.blocks[blockIndex].w,
+      this.blocks[blockIndex].h
     );
 
-    if (blockNb == 0) {
+    if (blockIndex == 0) {
       center = {
         x: Math.floor(this.citySize / 2),
         y: Math.floor(this.citySize / 2),
@@ -495,12 +427,11 @@ export class LdtkReader {
         y: center.y - Math.floor(blockSize.y / 2),
         direction: "bottom",
       };
-      const coordinates = this.PlaceRectangle(corner, blockSize);
+      const coordinates = this.PlaceBlock(corner, blockSize);
       if (!coordinates) return;
       this.addRoadsAroundLand();
-      // this.generateBuildings(blockSize, coordinates);
       this.build(
-        this.blocks[blockNb].nfts,
+        this.blocks[blockIndex].nfts,
         coordinates.startX + 1,
         coordinates.endY - 2,
         true
@@ -514,7 +445,7 @@ export class LdtkReader {
       const coordinates = this.findNextBlockCorners(blockSize);
       if (!coordinates) return;
       this.build(
-        this.blocks[blockNb].nfts,
+        this.blocks[blockIndex].nfts,
         coordinates.startX + 1,
         coordinates.endY - 2,
         true
@@ -527,6 +458,11 @@ export class LdtkReader {
     }
   }
 
+  /**
+   * Function to find which tiles we can start building new blocks
+   * @param direction : on which side to start looking
+   * @returns array of tiles : (x, y, direction)
+   */
   findValidRoadTiles(
     direction: string
   ): { x: number; y: number; direction: string }[] {
@@ -639,12 +575,13 @@ export class LdtkReader {
         }
 
         counter++;
-        if (counter === 1000) return null; // avoid inifinite loop
+        if (counter === 1000) return null; // avoid inifinite loop for debugging
       }
     }
     return null;
   }
 
+  // Given the land intGrid, it returns the 4 extremities of the land
   findCitySize(): { minX: number; maxX: number; minY: number; maxY: number } {
     let minX = this.citySize,
       minY = this.citySize,
@@ -666,6 +603,7 @@ export class LdtkReader {
     return { minX, maxX, minY, maxY };
   }
 
+  // Finds empty corners in the land to place new blocks and avoid empty spaces
   findEmptyCorners(arr: number[][]) {
     let rows = arr.length;
     let cols = arr[0].length;
@@ -717,13 +655,14 @@ export class LdtkReader {
     return corners;
   }
 
+  // Find where to place the next block of buildings, given the block size
   findNextBlockCorners(
     blockSize: Vector2
   ): { startX: number; startY: number; endX: number; endY: number } | null {
     if (!this.currentDirection) this.currentDirection = "top";
 
     const citySize = this.calculateCitySize();
-    const center = calculateCityCenter(
+    const center = computeCityCenter(
       citySize.minX,
       citySize.maxX,
       citySize.minY,
@@ -751,16 +690,15 @@ export class LdtkReader {
         citySize
       );
       if (roadTile) {
-        const coordinates = this.PlaceRectangle(
+        const coordinates = this.PlaceBlock(
           { x: roadTile.x, y: roadTile.y, direction: roadTile.corner },
           blockSize
         );
-        // this.generateBuildings(blockSize, coordinates as any);
         this.addRoadsAroundLand();
         return coordinates;
       }
     } else {
-      const coordinates = this.PlaceRectangle(
+      const coordinates = this.PlaceBlock(
         {
           x: closestCorner.col + citySize.minX,
           y: closestCorner.row + citySize.minY,
@@ -769,7 +707,6 @@ export class LdtkReader {
         blockSize
       );
       this.addRoadsAroundLand();
-      // this.generateBuildings(blockSize, coordinates as any);
       this.currentDirection = setDirectionBasedOnCorner(closestCorner);
       return coordinates;
     }
@@ -784,7 +721,8 @@ export class LdtkReader {
     return { minX, maxX, minY, maxY, citySizeX, citySizeY };
   }
 
-  changeDirection(citySize: { citySizeX: number; citySizeY: number }) {
+  // function called if we cannot place another block in the current direction
+  changeDirection(citySize: CitySize) {
     if (
       citySize.citySizeX >= citySize.citySizeY &&
       this.currentDirection !== "top" &&
@@ -802,7 +740,8 @@ export class LdtkReader {
     }
   }
 
-  PlaceRectangle(
+  // Place block on land
+  PlaceBlock(
     corner: { x: number; y: number; direction: string },
     rectangleSize: Vector2
   ): { startX: number; startY: number; endX: number; endY: number } | null {
@@ -852,6 +791,8 @@ export class LdtkReader {
     return { startX, startY, endX, endY };
   }
 
+  // Place road on intGrid
+  // Function called after placing a new block on land
   addRoadsAroundLand(): void {
     let copyCityGrid = JSON.parse(JSON.stringify(this.cityIntGrid));
 
@@ -884,6 +825,8 @@ export class LdtkReader {
     this.cityIntGrid = copyCityGrid;
   }
 
+  // Adds boundaries around land
+  // Function called after placing all blocks and roads on land
   addBoundariesAroundLand(): void {
     let copyCityGrid = JSON.parse(JSON.stringify(this.cityIntGrid));
 
@@ -1009,8 +952,8 @@ export class LdtkReader {
     return new Vector2(width, height);
   }
 
-  // Applying rules on each ground tile type
-  ApplyRules(): void {
+  // Applying rules on each ground tile type following patterns including in LDTK
+  applyRules(): void {
     let rules = this.ldtk.defs.layers[1];
 
     // parse rulegroups to build grounds
@@ -1047,7 +990,7 @@ export class LdtkReader {
                       rule.chance === 1 ||
                       (rule.chance !== 1 && rand < rule.chance)
                     ) {
-                      this.cityBuilded[y][x] = {
+                      this.groundTiles[y][x] = {
                         tileId:
                           rule.tileIds.length > 0
                             ? rule.tileIds[
@@ -1139,108 +1082,13 @@ export class LdtkReader {
     return { match: false, needFlipX: false, needFlipY: false };
   }
 
-  generateBuildings(
-    rectangleSize: Vector2,
-    coordinates: { startX: number; startY: number; endX: number; endY: number }
-  ): void {
-    // @ts-ignore
-    let possibleCombinations = buildingsOrdered[rectangleSize.x - 2]; // substract sidewalk width
-
-    // start at a random index
-    const rand = this.randomGround(rectangleSize.x + rectangleSize.y);
-    let indexStart = Math.floor(rand * possibleCombinations.length);
-
-    const copyEntities = JSON.parse(JSON.stringify(this.entities));
-
-    let counter = 0;
-    while (counter < possibleCombinations.length) {
-      let toBuild: EntityProps[] = [];
-      let nftCounter = rectangleSize.x < 9 ? 3 : rectangleSize.x < 12 ? 4 : 5;
-
-      const combination = possibleCombinations[indexStart];
-
-      let isBuilt = true;
-      let x = coordinates.startX + 1; // add sidewalk
-      let y = coordinates.endY - 1 - 1; // substract sidewalk
-
-      for (let i = 0; i < combination.length; i++) {
-        // Depending on leftNFts, we choose between NFT or Generic
-        const leftNfts =
-          copyEntities["NFT"][combination[i]] &&
-          copyEntities["NFT"][combination[i]].filter(
-            (elem: EntityProps) => !elem.isBuilt
-          );
-        const entityType =
-          nftCounter > 0 && leftNfts && leftNfts.length > 0 ? "NFT" : "Generic";
-
-        if (
-          entityType === "Generic" &&
-          !copyEntities["Generic"][combination[i]]
-        ) {
-          isBuilt = false;
-          break;
-        }
-        // Check if an entity with 'CornerLeft' or 'CornerRight' already exists in the 'toBuild' array
-        const hasCornerLeft = toBuild.some(
-          (entity: EntityProps) => entity.corner === "CornerLeft"
-        );
-        const hasCornerRight = toBuild.some(
-          (entity: EntityProps) => entity.corner === "CornerRight"
-        );
-
-        copyEntities[entityType][combination[i]].sort(
-          (a: EntityProps, b: EntityProps) => {
-            if (entityType === "Generic") {
-              if (
-                a.tileRect.h / 16 === rectangleSize.y &&
-                b.tileRect.h / 16 !== rectangleSize.y
-              ) {
-                return -1;
-              } else if (
-                b.tileRect.h / 16 === rectangleSize.y &&
-                a.tileRect.h / 16 !== rectangleSize.y
-              ) {
-                return 1;
-              }
-            }
-            return b.tileRect.h / 16 - a.tileRect.h / 16;
-          }
-        );
-
-        // Find next NFT Index from left buildings
-        const entityIndex = copyEntities[entityType][combination[i]].findIndex(
-          (elem: EntityProps) =>
-            !elem.isBuilt &&
-            ((hasCornerLeft && elem.corner !== "CornerLeft") ||
-              (hasCornerRight && elem.corner !== "CornerRight") ||
-              (!hasCornerLeft && !hasCornerRight))
-        );
-        if (entityIndex !== -1) {
-          // if entity is found, we keep it
-          const entity = copyEntities[entityType][combination[i]][entityIndex];
-          toBuild.push(entity);
-          copyEntities[entityType][combination[i]][entityIndex].isBuilt = true;
-          if (entityType === "NFT") nftCounter--;
-        } else {
-          isBuilt = false;
-          break;
-        }
-      }
-
-      if (isBuilt) {
-        this.entities = copyEntities;
-        const shuffledBuildings = shuffleAndHandleCorners(toBuild, rand);
-        // todo: when building (in case we're au-dessus a sidewalk), we check we can place props (no = -1)
-        this.build(shuffledBuildings, x, y, true);
-        this.fillRemainingSpace(rectangleSize, x, y);
-        break;
-      }
-      if (indexStart === possibleCombinations.length - 1) indexStart = 0;
-      counter++;
-      indexStart++;
-    }
-  }
-
+  /**
+   * Function to place buildings on the land
+   * @param entities EntityProps[]
+   * @param x : position on the x axis
+   * @param y : position on the y axis
+   * @param isFirstLine : if the building is place on the row of the block
+   */
   build(
     entities: EntityProps[],
     x: number,
@@ -1259,7 +1107,7 @@ export class LdtkReader {
         );
         for (let h = 0; h < entity.activeHeight; h++) {
           if (w === 0 && h === 0) {
-            this.buildings[y][xOffset] = {
+            this.buildingTiles[y][xOffset] = {
               tile: entity.tileRect,
               isOccupied: true,
               isHidden: false,
@@ -1268,7 +1116,7 @@ export class LdtkReader {
               isNFT: isNFT ? true : false,
             };
           } else {
-            this.buildings[y - h][xOffset + w] = {
+            this.buildingTiles[y - h][xOffset + w] = {
               tile: null,
               isOccupied: true,
               isHidden: true,
@@ -1290,15 +1138,6 @@ export class LdtkReader {
       }
 
       x = x + entity.activeWidth;
-      if (entity.customDatas) {
-        this.addLight(
-          entity.tileIdsArr,
-          entity.customDatas,
-          { x: 0, y: 0 },
-          xOffset,
-          y
-        );
-      }
     });
   }
 
@@ -1309,8 +1148,7 @@ export class LdtkReader {
 
     for (let i = y; i > y - innerHeight - 1; i--) {
       for (let j = x; j < x + innerWidth; j++) {
-        const remainingWidth = x + innerWidth - j;
-        if (!this.buildings[i][j]) {
+        if (!this.buildingTiles[i][j]) {
           let counter = this.findCounter(i, j, x + innerWidth);
           const entityIndex = this.findEntityIndex(
             counter,
@@ -1324,7 +1162,6 @@ export class LdtkReader {
             entityIndex !== 1
           ) {
             const entity = this.entities["Generic"][counter][entityIndex];
-            const activeHeight = entity.activeHeight;
             this.build([entity], j, i, false);
           }
         }
@@ -1334,43 +1171,15 @@ export class LdtkReader {
     }
   }
 
-  fillRemainingSpaceOld(rectangleSize: Vector2, x: number, y: number): void {
-    const innerWidth = rectangleSize.x - 2;
-    const innerHeight = rectangleSize.y - 2;
-    for (let i = y; i > y - innerHeight - 1; i--) {
-      for (let j = x; j < x + innerWidth; j++) {
-        const remainingWidth = x + innerWidth - j;
-        if (!this.buildings[i][j]) {
-          let counter = this.findCounter(i, j, x + innerWidth);
-          const entityIndex = this.findEntityIndex(
-            counter,
-            innerHeight + 1,
-            remainingWidth
-          );
-          if (
-            entityIndex !== -1 &&
-            entityIndex < this.entities["Generic"][counter].length
-          ) {
-            if (counter === 5) counter = 4;
-            if (counter === 1) counter = 2;
-            const entity = this.entities["Generic"][counter][entityIndex];
-            const activeHeight = entity.activeHeight;
-            this.build([entity], j, i + activeHeight, false);
-          }
-        }
-      }
-    }
-  }
-
   findCounter(i: number, j: number, limit: number): number {
     let counter = 0;
     while (
-      (!this.buildings[i][j + counter] ||
-        !this.buildings[i][j + counter]?.isOccupied) &&
+      (!this.buildingTiles[i][j + counter] ||
+        !this.buildingTiles[i][j + counter]?.isOccupied) &&
       j + counter < limit
     ) {
       counter++;
-      if (counter === 100) break; // todo: remove this as it's for debugging
+      if (counter === 100) break;
     }
     if (counter > 5) {
       if (counter > 14) counter = 14;
@@ -1397,11 +1206,11 @@ export class LdtkReader {
     return entityIndex;
   }
 
+  // get a random generic building
   getRandomBuilding(width: number, maxHeight: number): number {
     const copyEntities = JSON.parse(JSON.stringify(this.entities));
     if (!copyEntities["Generic"][width]) return -1;
     const entityIndex = copyEntities["Generic"][width].findIndex(
-      // (elem: EntityProps) => !elem.isBuilt && elem.tileRect.h / 16 <= maxHeight
       (elem: EntityProps) => !elem.isBuilt && elem.activeHeight < maxHeight - 1
     );
     if (entityIndex === -1) return -1;
@@ -1410,6 +1219,14 @@ export class LdtkReader {
     return entityIndex;
   }
 
+  /**
+   * Function to place street props on sidewalk
+   * - Some props can only be places on bottom sidewalks : bench
+   * - Lights need to placed on every road corners
+   * - Other props can be placed on every sidewalks : tree, fire hydrant, sewer plate
+   * - Props cannot be placed on blocked sidewalks (in front of a door)
+   *
+   */
   placeProps(): void {
     const tileset = this.ldtk.defs.tilesets[0];
     const corners = tileset.customData;
@@ -1424,7 +1241,7 @@ export class LdtkReader {
         if (this.blockedPaths.find((elem) => elem.x === j && elem.y === i))
           continue; // if blocked sidewalk continue
 
-        const tile = this.cityBuilded[i][j];
+        const tile = this.groundTiles[i][j];
         const isCorner = this.checkWhichCorner(i, j);
         const isSide = this.checkWhichSidewalkSide(i, j);
         if (
@@ -1438,27 +1255,11 @@ export class LdtkReader {
             (elem) => elem.identifier === "Props_StreetLight"
           );
           if (!entity) continue;
-          this.cityProps[i][j] = {
+          this.roadProps[i][j] = {
             entityType: PropsTypes.LIGHT,
             corner: isCorner,
             z: 0,
           };
-          const offset = propsOffset[entity.identifier][isCorner];
-          this.props[PropsTypes.LIGHT].push({
-            corner: isCorner,
-            posX: j + entity.tileRect.h / 32 - 1,
-            posY: i - entity.tileRect.w / 32 - 1,
-            offset, // offset of props
-          });
-          if (entity.customDatas) {
-            this.addLight(
-              entity.tileIdsArr,
-              entity.customDatas,
-              propsOffset[entity.identifier][isCorner],
-              j - 0.35,
-              i
-            );
-          }
         } else if (isSide) {
           const hashed = this.hash(this.address);
           let rand = this.createSeededRandom(hashed + i * j);
@@ -1486,13 +1287,7 @@ export class LdtkReader {
               y: 0,
               z: 0,
             };
-            this.props[propType].push({
-              posX: j,
-              posY: i - 1,
-              side: isSide,
-              offset, // offset of props
-            });
-            this.cityProps[i][j] = {
+            this.roadProps[i][j] = {
               entityType: propType,
               corner: isSide,
               z: isSide === "bottom" ? 0.01 : 0,
@@ -1503,6 +1298,12 @@ export class LdtkReader {
     }
   }
 
+  /**
+   * Function to check if an entity is placed on the corner of a sidewalk
+   * @param y coordinate of the entity
+   * @param x coordinate of the entity
+   * @returns corner : "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | null
+   */
   checkWhichCorner(y: number, x: number): string | null {
     if (this.cityIntGrid[y][x - 1] === 2 && this.cityIntGrid[y - 1][x] === 2) {
       return "topLeft";
@@ -1525,6 +1326,12 @@ export class LdtkReader {
     return null;
   }
 
+  /**
+   * Function to check on which side of a sidewalk an entity is placed
+   * @param y coordinate of the entity
+   * @param x coordinate of the entity
+   * @returns side : "left" | "right" | "top" | "bottom" | null
+   */
   checkWhichSidewalkSide(y: number, x: number): string | null {
     if (this.cityIntGrid[y][x - 1] === 2 && this.cityIntGrid[y][x + 1] === 1) {
       return "left";
@@ -1547,6 +1354,12 @@ export class LdtkReader {
     return null;
   }
 
+  /**
+   * Function to get the boundaries of a sprite on a sprite sheet given its TileRect (x, y, h, w)
+   * @param tileRect : TileRect
+   * @param cWid : width of the sprite sheet
+   * @returns SpriteBounds
+   */
   getTileIdsFromSprite(tileRect: TileRect, cWid: number): SpriteBounds {
     const { x, y, h, w } = tileRect;
     let spriteTileIdTopLeft = (y / 16) * cWid + x / 16; // This is your `spriteTileIdStart`
@@ -1582,51 +1395,7 @@ export class LdtkReader {
     return tileIds;
   }
 
-  addLight(
-    tileIdsArr: number[][] | null,
-    customDatas: { [key: string]: any }[],
-    offset: Coord,
-    x: number,
-    y: number
-  ) {
-    const lights = customDatas.filter((elem) => elem.pointlight);
-    lights?.map((light) => {
-      let tempOffset = offset;
-      const lightType = light.pointlight;
-      const lightProps = light ? pointLightsData[lightType] : null;
-      if (tempOffset.x === 0 && tempOffset.y === 0 && tileIdsArr) {
-        tempOffset = this.findTileIn2DArray(light.tileId, tileIdsArr);
-        if (light.offset) {
-          if (light.offset.x === 0) tempOffset.x -= 0.5;
-          if (light.offset.x === 1) tempOffset.x += 0.5;
-          if (light.offset.y === 0) tempOffset.y += 0.5;
-          if (light.offset.y === 1) tempOffset.y -= 0.5;
-        }
-      }
-      // todo: add z in lights array
-      this.lights.push({
-        x,
-        y,
-        offset: tempOffset,
-        posX: x + tempOffset.x + 0.5,
-        posY: y + tempOffset.y - 0.5,
-        type: lightType,
-        props: lightProps,
-      });
-    });
-  }
-
-  findTileIn2DArray(tileId: number, arr: number[][]): Coord {
-    for (let y = 0; y < arr.length; y++) {
-      for (let x = 0; x < arr[y].length; x++) {
-        if (arr[y][x] === tileId) {
-          return { x, y: -(arr.length - 1 - y) };
-        }
-      }
-    }
-    return { x: 0, y: 0 };
-  }
-
+  // Functions to generate a random number based on user address
   randomGround(spec: number): number {
     const x = Math.sin(this.seedFromWallet(this.address) + spec) * 10000;
     return x - Math.floor(x);

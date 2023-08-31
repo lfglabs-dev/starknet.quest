@@ -38,7 +38,7 @@ export const Map: FunctionComponent<MapProps> = ({
           const rayY = parseInt(point.z.toFixed(2));
           // Find the building data based on the intersected object
           buildingData = mapReader.userNft.find(
-            (nft) => nft.entity === mapReader.buildings[rayY + 1][rayX]?.ref
+            (nft) => nft.entity === mapReader.buildingTiles[rayY + 1][rayX]?.ref
           );
 
           if (buildingData) {
@@ -60,23 +60,23 @@ export const Map: FunctionComponent<MapProps> = ({
 
   return (
     <>
-      {mapReader.cityBuilded ? (
+      {mapReader.groundTiles ? (
         <Ground
           tileset={data?.defs.tilesets[0]}
-          cityData={mapReader.cityBuilded}
+          cityData={mapReader.groundTiles}
         />
       ) : null}
-      {mapReader.cityProps ? (
+      {mapReader.roadProps ? (
         <RoadProps
           tilesets={data?.defs.tilesets}
-          cityData={mapReader.cityProps}
+          cityData={mapReader.roadProps}
           tileData={mapReader.tileData[tileTypes.PROPS]}
         />
       ) : null}
-      {mapReader.buildings ? (
+      {mapReader.buildingTiles ? (
         <Buildings
           tilesets={data?.defs.tilesets}
-          buildingData={mapReader.buildings}
+          buildingData={mapReader.buildingTiles}
         />
       ) : null}
     </>

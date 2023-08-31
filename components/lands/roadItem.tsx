@@ -1,5 +1,5 @@
 import { propsOffset } from "../../constants/tiles";
-import { CityProps, TileData } from "../../types/land";
+import { RoadObjects, TileData } from "../../types/land";
 import React, { ReactElement, memo, useMemo, useState } from "react";
 import { PlaneGeometry, Texture } from "three";
 import { Tileset } from "../../types/ldtk";
@@ -8,7 +8,7 @@ type IElem = {
   tileset: Tileset;
   pos: { posX: number; posY: number };
   buildingTexture: Texture;
-  propData: CityProps;
+  propData: RoadObjects;
   tileData: TileData;
   plane: PlaneGeometry;
 };

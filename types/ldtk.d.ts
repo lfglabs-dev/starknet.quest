@@ -419,11 +419,8 @@ export interface EntityProps {
   // custom data
   activeWidth: number;
   activeHeight: number;
-  heightGroup: number;
   isBuilt: boolean;
   corner: string;
-  level: number;
-  customData?: { [key: string]: any } | null;
   customDatas?: { [key: string]: any }[] | null;
   tileIdsArr: number[][] | null;
 }

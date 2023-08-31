@@ -16,7 +16,7 @@ import ErrorScreen from "../components/UI/screens/errorScreen";
 import ProfileCard from "../components/UI/profileCard";
 import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/land";
-import { getIdentityData, hasVerifiedSocials } from "../utils/identity";
+import { getIdentityData, hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
 
 const AddressOrDomain: NextPage = () => {

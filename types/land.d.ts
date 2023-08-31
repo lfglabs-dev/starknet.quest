@@ -1,10 +1,10 @@
-export interface CityBuilded {
+export interface GroundTileProps {
   tileId: number;
   flipX: boolean;
   flipY: boolean;
 }
 
-export interface CityBuildings {
+export interface BuildingTileProps {
   tile: TileRect | null;
   isOccupied: boolean;
   isHidden: boolean;
@@ -13,7 +13,7 @@ export interface CityBuildings {
   isNFT: boolean;
 }
 
-export interface CityProps {
+export interface RoadObjects {
   entityType: PropsTypes;
   corner: string;
   z: number;
@@ -27,16 +27,6 @@ export interface ClosestCorner {
   corner: string;
 }
 
-export interface Pos {
-  x: number;
-  y: number;
-}
-
-export interface Size {
-  x: number;
-  y: number;
-}
-
 export interface CitySize {
   minX: number;
   maxX: number;
@@ -46,25 +36,15 @@ export interface CitySize {
   citySizeY: number;
 }
 
-export interface pointLightProps {
-  intensity: number;
-  color: string;
-  z: number;
-  distance?: number;
-  decay?: number;
-  power?: number;
-  type: LightTypes;
-}
-
-export interface CityLight {
-  x: number;
-  y: number;
-  offset: Coord;
-  type: string;
-  props: pointLightProps | null;
-  posX: number;
-  posY: number;
-}
+// export interface pointLightProps {
+//   intensity: number;
+//   color: string;
+//   z: number;
+//   distance?: number;
+//   decay?: number;
+//   power?: number;
+//   type: LightTypes;
+// }
 
 export interface SpriteBounds {
   spriteTileIdTopLeft: number;
@@ -83,14 +63,6 @@ export interface userNFTsProps {
   hasJediSwap: boolean;
   hasSIDShield: boolean;
   hasSIDTotem: boolean;
-}
-
-export interface CityObjectsProps {
-  posX: number;
-  posY: number;
-  offset: { x: number; y: number; z: number };
-  corner?: string;
-  side?: string;
 }
 
 export interface TileData {

@@ -1,13 +1,13 @@
 import React, { ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
-import { CityBuildings } from "../../types/land";
+import { BuildingTileProps } from "../../types/land";
 import BuildingItem from "./buildingItem";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 
 type IBuildings = {
   tilesets: Tileset[];
-  buildingData: Array<Array<CityBuildings | null>>;
+  buildingData: Array<Array<BuildingTileProps | null>>;
 };
 
 export default function Buildings({
@@ -29,31 +29,35 @@ export default function Buildings({
   return (
     <>
       {buildingTexture &&
-        buildingData.map((tileX: Array<CityBuildings | null>, iY: number) => {
-          return tileX.map((tileData: CityBuildings | null, iX: number) => {
-            if (
-              tileData === null ||
-              tileData.tile === undefined ||
-              tileData.tile === null
-            ) {
-              return null;
-            }
-            return (
-              <BuildingItem
-                key={`building-${iX}-${iY}`}
-                tileset={
-                  tilesets.filter(
-                    (tileset) => tileset.uid === tileData.tile.tilesetUid
-                  )[0]
+        buildingData.map(
+          (tileX: Array<BuildingTileProps | null>, iY: number) => {
+            return tileX.map(
+              (tileData: BuildingTileProps | null, iX: number) => {
+                if (
+                  tileData === null ||
+                  tileData.tile === undefined ||
+                  tileData.tile === null
+                ) {
+                  return null;
                 }
-                textureLoader={buildingTexture}
-                tileData={tileData.tile}
-                pos={{ posX: iX, posY: iY }}
-                isNFT={tileData.isNFT}
-              />
+                return (
+                  <BuildingItem
+                    key={`building-${iX}-${iY}`}
+                    tileset={
+                      tilesets.filter(
+                        (tileset) => tileset.uid === tileData.tile.tilesetUid
+                      )[0]
+                    }
+                    textureLoader={buildingTexture}
+                    tileData={tileData.tile}
+                    pos={{ posX: iX, posY: iY }}
+                    isNFT={tileData.isNFT}
+                  />
+                );
+              }
             );
-          });
-        })}
+          }
+        )}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Scene } from "./scene";
-import { memberSince } from "../../utils/sortNfts";
+import { memberSince } from "../../utils/profile";
 import styles from "../../styles/profile.module.css";
 import Button from "../UI/button";
 import { soloBuildings, starkFighterBuildings } from "../../constants/nft";

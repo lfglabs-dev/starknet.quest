@@ -24,8 +24,6 @@ export const Scene: FunctionComponent<SceneProps> = ({
   const indexRef = useRef<number>();
   const [index, setIndex] = useState(maxZoom);
   indexRef.current = index;
-  // const [windowWidth, setWindowWidth] = useState(0);
-  // const [windowHeight, setWindowHeight] = useState(0);
   const [mouseRightPressed, setMouseRightPressed] = useState(0);
   const [isFirstTouch, setIsFirstTouch] = useState(false);
   const [data, setData] = useState<iLDtk>();
@@ -40,16 +38,11 @@ export const Scene: FunctionComponent<SceneProps> = ({
   useEffect(() => {
     if (data) {
       const mapReader = new LdtkReader(data, address, citySize, userNft);
-      mapReader.CreateMap("Level_0", "SIDCity_TilesetSheet"); // init land data
+      mapReader.CreateMap(); // init land data
       console.log("mapReader", mapReader);
       setMapReader(mapReader);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   setWindowWidth(window.innerWidth);
-  //   setWindowHeight(window.innerHeight);
-  // }, []);
 
   useEffect(() => {
     fetch("/land/data/SIDCity_Base_V5.json")
