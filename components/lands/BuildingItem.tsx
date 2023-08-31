@@ -36,7 +36,7 @@ const BuildingItem = memo<IElem>(
 
     const plane = useMemo(() => {
       return new PlaneGeometry(tileData.w / 16, tileData.h / 16, 1, 1);
-    }, [tileData]);
+    }, [tileData.w, tileData.h]);
 
     return (
       <>

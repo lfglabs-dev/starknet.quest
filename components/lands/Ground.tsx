@@ -1,6 +1,12 @@
 import React, { ReactElement, useMemo } from "react";
-import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
-import ResourceItem from "./Item";
+import {
+  TextureLoader,
+  RepeatWrapping,
+  NearestFilter,
+  Vector2,
+  PlaneGeometry,
+} from "three";
+import GroundItem from "./GroundItem";
 import { CityBuilded } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
 import { Tileset } from "../../types/ldtk";
@@ -15,16 +21,19 @@ export default function Ground({
   cityData,
 }: IGround): ReactElement | null {
   const groundTexture = useMemo(() => {
-    const texture = useLoader(
+    const textObj = useLoader(
       TextureLoader,
       "/land/textures/SIDCity_TilesetSheet.png"
     );
-    texture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
-    texture.magFilter = NearestFilter;
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
-    return texture;
+    textObj.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
+    textObj.magFilter = NearestFilter;
+    textObj.wrapS = textObj.wrapT = RepeatWrapping;
+    return textObj;
   }, [tileset]);
+
+  const plane = useMemo(() => {
+    return new PlaneGeometry(1, 1, 1, 1);
+  }, []);
 
   return (
     <>
@@ -35,12 +44,13 @@ export default function Ground({
               return null;
             }
             return (
-              <ResourceItem
-                key={`tile-${iX}-${iY}`}
+              <GroundItem
+                key={`ground-${iX}-${iY}`}
                 tileset={tileset}
-                textureLoader={groundTexture}
+                groundTexture={groundTexture}
                 tileData={tileData}
                 pos={{ posX: iX, posY: iY }}
+                plane={plane}
               />
             );
           });

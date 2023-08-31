@@ -7,13 +7,13 @@ import { Tileset } from "../../types/ldtk";
 type IElem = {
   tileset: Tileset;
   pos: { posX: number; posY: number };
-  textureLoader: Texture;
+  buildingTexture: Texture;
   propData: CityProps;
   tileData: TileData;
 };
 
 const PropItem = memo<IElem>(
-  ({ tileset, pos, textureLoader, propData, tileData }): ReactElement => {
+  ({ tileset, pos, buildingTexture, propData, tileData }): ReactElement => {
     const [offset, setOffset] = useState<{ x: number; y: number; z: number }>({
       x: 0,
       y: 0,
@@ -21,8 +21,8 @@ const PropItem = memo<IElem>(
     });
 
     const elemTexture = useMemo(() => {
-      if (tileset && textureLoader) {
-        const localT = textureLoader.clone();
+      if (tileset && buildingTexture) {
+        const localT = buildingTexture.clone();
         localT.needsUpdate = true;
         localT.offset.set(tileData.textureOffset.x, tileData.textureOffset.y);
         localT.repeat.set(tileData.textureRepeat.x, tileData.textureRepeat.y);
@@ -32,7 +32,7 @@ const PropItem = memo<IElem>(
 
         return localT;
       }
-    }, [textureLoader, tileset]);
+    }, [buildingTexture, tileset]);
 
     return (
       <mesh

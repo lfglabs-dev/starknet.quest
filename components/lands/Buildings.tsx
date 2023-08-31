@@ -22,8 +22,7 @@ export default function Buildings({
     const tileset = tilesets[2];
     texture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
     texture.magFilter = NearestFilter;
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
+    texture.wrapS = texture.wrapT = RepeatWrapping;
     return texture;
   }, [tilesets]);
 

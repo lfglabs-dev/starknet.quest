@@ -1,5 +1,11 @@
 import React, { ReactElement, useMemo } from "react";
-import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
+import {
+  TextureLoader,
+  RepeatWrapping,
+  NearestFilter,
+  Vector2,
+  PlaneGeometry,
+} from "three";
 import { CityProps, TileData } from "../../types/land";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
@@ -23,8 +29,7 @@ export default function RoadProps({
     );
     texture.repeat = new Vector2(1 / 80, 1 / 80);
     texture.magFilter = NearestFilter;
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
+    texture.wrapS = texture.wrapT = RepeatWrapping;
 
     return texture;
   }, []);
@@ -34,6 +39,10 @@ export default function RoadProps({
       (tileset: Tileset) => tileset.identifier === "SID_BuildingSheet"
     );
   }, []);
+
+  // const streetLightPlane = useMemo(() => {
+  //   return new PlaneGeometry(1, 1, 1, 1);
+  // }, []);
 
   return (
     <>
@@ -48,7 +57,7 @@ export default function RoadProps({
               <PropItem
                 key={`props-${iX}-${iY}`}
                 tileset={tileset}
-                textureLoader={buildingTexture}
+                buildingTexture={buildingTexture}
                 tileData={tileData[elem.entityType]}
                 pos={{ posX: iX, posY: iY }}
                 propData={elem}
