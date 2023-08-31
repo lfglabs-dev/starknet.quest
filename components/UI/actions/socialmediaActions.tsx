@@ -35,7 +35,7 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   }, [identity]);
 
   return (
-    <div className="flex flex-row gap-3 w-full">
+    <div className="flex flex-row gap-3 w-full justify-evenly">
       <ClickableTwitterIcon
         width="16"
         domain={identity?.domain}

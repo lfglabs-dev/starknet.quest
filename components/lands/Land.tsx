@@ -8,20 +8,20 @@ import { soloBuildings, starkFighterBuildings } from "../../constants/nft";
 type LandProps = {
   address: string;
   isOwner: boolean;
-  setNFTCounter: (nb: number) => void;
   isMobile: boolean;
   setSinceDate: (s: string | null) => void;
-  setShowTooltip: (show: boolean) => void;
-  setTooltipData: (data: number) => void;
+  setTotalNfts: (nb: number) => void;
+  setAchievementCount: (n: number) => void;
   hasDomain: boolean;
 };
 
 export const Land = ({
   address,
   isOwner,
-  setNFTCounter,
   isMobile,
   setSinceDate,
+  setTotalNfts,
+  setAchievementCount,
   hasDomain,
 }: LandProps) => {
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
@@ -66,6 +66,7 @@ export const Land = ({
   };
 
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
+    let count = 0;
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
@@ -75,15 +76,16 @@ export const Land = ({
 
       if (results) {
         results.forEach((result: UserAchievements) => {
-          console.log("result", result);
-          for (let i = 0; i < result.achievements.length; i++) {
-            if (!result.achievements[i].completed) {
-              if (i > 0) filteredAssets.push(result.achievements[i - 1].id);
+          for (let i = result.achievements.length - 1; i >= 0; i--) {
+            if (result.achievements[i].completed) {
+              filteredAssets.push(result.achievements[i].id);
+              if (i === 2) count++;
               break;
             }
           }
         });
       }
+      setAchievementCount(count);
     } catch (error) {
       console.error("An error occurred while fetching achievements", error);
     }
@@ -98,7 +100,10 @@ export const Land = ({
       );
       const results: BuildingsInfo[] = await response.json();
       console.log("results", results);
-      if (results) setUserNft(results);
+      if (results) {
+        setUserNft(results);
+        setHasNFTs(true);
+      } else setHasNFTs(false);
     } catch (error) {
       console.error("An error occurred while fetching buildings info", error);
     }
@@ -109,8 +114,11 @@ export const Land = ({
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
     let sinceDate = 0;
+    let nftCounter = 0;
 
     assets.forEach((asset: StarkscanNftProps) => {
+      if (asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT)
+        nftCounter++;
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
         sinceDate = asset.minted_at_timestamp;
 
@@ -133,10 +141,8 @@ export const Land = ({
 
     console.log("filtered assets", filteredAssets);
 
-    if (filteredAssets.length > 0) setHasNFTs(true);
-    else setHasNFTs(false);
     setIsReady(true);
-    setNFTCounter(filteredAssets.length);
+    setTotalNfts(nftCounter);
     setSinceDate(memberSince(sinceDate));
   };
 

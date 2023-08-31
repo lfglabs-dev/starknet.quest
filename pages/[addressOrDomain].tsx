@@ -33,11 +33,10 @@ const AddressOrDomain: NextPage = () => {
   const dynamicRoute = useRouter().asPath;
   const isBraavosWallet = connector && connector.id === "braavos";
   const [braavosScore, setBraavosScore] = useState<number>(0);
-  const [totalNFTs, setTotalNfts] = useState<number>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [sinceDate, setSinceDate] = useState<string | null>(null);
-  const [showTooltip, setShowTooltip] = useState<boolean>(false);
-  const [tooltipData, setTooltipData] = useState<number | null>(0);
+  const [totalNFTs, setTotalNfts] = useState<number>(0);
+  const [achievementCount, setAchievementCount] = useState<number>(0);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -218,12 +217,10 @@ const AddressOrDomain: NextPage = () => {
       <Land
         address={decimalToHex(identity.addr)}
         isOwner={isOwner}
-        setNFTCounter={setTotalNfts}
         isMobile={isMobile}
         setSinceDate={setSinceDate}
-        // todo: delete this ?
-        setShowTooltip={setShowTooltip}
-        setTooltipData={setTooltipData}
+        setTotalNfts={setTotalNfts}
+        setAchievementCount={setAchievementCount}
         hasDomain={identity.domain ? true : false}
       />
       <div className={styles.profiles}>
@@ -283,25 +280,20 @@ const AddressOrDomain: NextPage = () => {
         <ProfileCard
           title="Progress"
           content={
-            <div
-              className={`${styles.progress} ${
-                isBraavosWallet && isOwner
-                  ? "justify-between"
-                  : "justify-around"
-              }`}
-            >
-              <div className="flex flex-col gap-1">
+            <div className={styles.progress}>
+              {/* We do not have xp yet */}
+              {/* <div className="flex flex-col gap-1">
                 <div className={styles.polygonContainer}>
                   <img src="/icons/polygon.svg" alt="polygon icon" />
                   <span className={styles.xp}>XP</span>
                 </div>
                 <span>12</span>
-              </div>
+              </div> */}
               <div className="flex flex-col gap-1">
                 <span className={styles.trophy}>
                   <TrophyIcon width="20" color="#696045" />
                 </span>
-                <span>12</span>
+                <span>{totalNFTs}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <img
@@ -309,7 +301,7 @@ const AddressOrDomain: NextPage = () => {
                   alt="verfy badge icon"
                   width={25}
                 />
-                <span>{totalNFTs}</span>
+                <span>{achievementCount}</span>
               </div>
               {isOwner && isBraavosWallet ? (
                 <div className="flex flex-col gap-1">
