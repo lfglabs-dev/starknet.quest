@@ -6,9 +6,7 @@ import { isHexString, minifyAddressWithChars } from "../utils/stringService";
 import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
-import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
 import { Tooltip } from "@mui/material";
-import { ContentCopy } from "@mui/icons-material";
 import { decimalToHex, hexToDecimal } from "../utils/feltService";
 import { minifyAddress } from "../utils/stringService";
 import { utils } from "starknetid.js";
@@ -18,6 +16,8 @@ import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/land";
 import { getIdentityData, hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
+import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
+import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -251,14 +251,12 @@ const AddressOrDomain: NextPage = () => {
                   <div className="cursor-pointer absolute">
                     {!copied ? (
                       <Tooltip title="Copy" arrow>
-                        <ContentCopy
-                          className={styles.contentCopy}
-                          onClick={() => copyToClipboard()}
-                          sx={{ width: "16px", height: "16px" }}
-                        />
+                        <div onClick={() => copyToClipboard()}>
+                          <CopyIcon width={"18"} color="#F4FAFF" />
+                        </div>
                       </Tooltip>
                     ) : (
-                      <CopiedIcon color="#6affaf" width="16" />
+                      <VerifiedIcon width={"18"} />
                     )}
                   </div>
                   <div className={styles.address}>
