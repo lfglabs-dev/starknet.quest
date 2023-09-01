@@ -310,7 +310,6 @@ export class LdtkReader {
     // build an array of buildings represented by their width
     let arr = [];
     for (const key in this.entities["NFT"]) {
-      console.log("key", key);
       const times = this.entities["NFT"][key].length;
       for (let i = 0; i < times; i++) {
         arr.push(parseInt(key));

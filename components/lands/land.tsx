@@ -54,7 +54,6 @@ export const Land = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("data", data);
         const assets = [...accumulatedAssets, ...data.data];
         if (data.next_url) {
           return retrieveAssets(data.next_url, assets);
@@ -139,8 +138,6 @@ export const Land = ({
 
     await getBuildingsFromAchievements(filteredAssets);
     await getBuildingsInfo(filteredAssets);
-
-    console.log("filtered assets", filteredAssets);
 
     setIsReady(true);
     setTotalNfts(nftCounter);
