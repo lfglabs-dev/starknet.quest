@@ -72,6 +72,9 @@ type Identity = {
   old_discord?: string;
   old_twitter?: string;
   old_github?: string;
+  discord?: string;
+  twitter?: string;
+  github?: string;
   starknet_id?: string;
   error?: string;
 };

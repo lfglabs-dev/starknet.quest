@@ -39,17 +39,17 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
       <ClickableTwitterIcon
         width="16"
         domain={identity?.domain}
-        twitterId={apiIdentity?.old_twitter}
+        twitterId={apiIdentity?.twitter ?? apiIdentity?.old_twitter}
       />
       <ClickableDiscordIcon
         width="16"
         domain={identity?.domain}
-        discordId={apiIdentity?.old_discord}
+        discordId={apiIdentity?.discord ?? apiIdentity?.old_discord}
       />
       <ClickableGithubIcon
         width="16"
         domain={identity?.domain}
-        githubId={apiIdentity?.old_github}
+        githubId={apiIdentity?.github ?? apiIdentity?.old_github}
       />
     </div>
   );
