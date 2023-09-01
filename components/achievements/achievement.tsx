@@ -15,19 +15,16 @@ const Achievement: FunctionComponent<AchievementProps> = ({
   achievements,
   index,
 }) => {
-  const position = useMemo(() => {
-    return index % 2 === 0 ? "right center" : "left center";
+  const backgroundStyle = useMemo(() => {
+    return {
+      backgroundImage: `url('/${achievements.category_img_url}')`,
+      backgroundPosition: `${index % 2 === 0 ? "right center" : "left center"}`,
+      backgroundSize: "30%",
+    };
   }, [index]);
   return (
     <div className={styles.card}>
-      <div
-        className={styles.background}
-        style={{
-          backgroundImage: `url('/${achievements.category_img_url}')`,
-          backgroundPosition: `${position}`,
-          backgroundSize: "30%",
-        }}
-      />
+      <div className={styles.background} style={backgroundStyle} />
       <div className={styles.backgroundFilter} />
       <div className={styles.cardContainer}>
         <div>
