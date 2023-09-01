@@ -44,6 +44,7 @@ const GroundItem = memo<IElem>(
         rotation={[-Math.PI * 0.5, 0, 0]}
         geometry={plane}
         material={material}
+        // scale is used for flipping the texture on the x or y axis
         scale={[tileData.flipX ? -1 : 1, tileData.flipY ? -1 : 1, 1]}
       ></mesh>
     );

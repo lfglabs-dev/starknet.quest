@@ -38,7 +38,6 @@ import {
   getSubArray,
   needsDirectionChange,
   setDirectionBasedOnCorner,
-  // shuffleAndHandleCorners,
 } from "./land";
 import { Vector2 } from "three";
 
@@ -110,12 +109,6 @@ export class LdtkReader {
     this.entities = this.sortEntities(userNft);
     this.userNft = userNft;
 
-    // for (let propType in PropsTypes) {
-    //   const asNumber = parseInt(propType, 10);
-    //   if (!isNaN(asNumber)) {
-    //     this.roadProps[asNumber] = [];
-    //   }
-    // }
     this.tileData = {
       [tileTypes.PROPS]: [],
       [tileTypes.LIGHTS]: [],
@@ -167,8 +160,7 @@ export class LdtkReader {
   /**
    * Function to build EntityProps from entity name
    * Entities like NFTs have name composed of different parts:
-   * - a type : NFT, Generic building, Props, Lights (we do not use them for now)
-   * - a heightGroup : height of the building grouped
+   * - type : NFT, Generic building, Props, Lights (we do not use them for now)
    * - activeWidth : width of the building without the corners
    * - activeHeight : part of the height of the building which is on the ground
    * - corner : a building can have some elements that exceed its active width (ex: mySwap building)
