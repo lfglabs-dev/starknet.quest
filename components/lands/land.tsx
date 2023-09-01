@@ -179,7 +179,7 @@ export const Land = ({
           </div>
         )
       ) : (
-        <h2 className={`${styles.notFound} ${styles.name} mb-5`}>Loading</h2>
+        <h2 className={`${styles.name} ${styles.loading}`}>Loading</h2>
       )}
     </div>
   );

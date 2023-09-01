@@ -248,7 +248,7 @@ const AddressOrDomain: NextPage = () => {
               </div>
               <div>
                 <div className={styles.starknetInfo}>
-                  <div className="cursor-pointer">
+                  <div className="cursor-pointer absolute">
                     {!copied ? (
                       <Tooltip title="Copy" arrow>
                         <ContentCopy
@@ -289,29 +289,35 @@ const AddressOrDomain: NextPage = () => {
                 </div>
                 <span>12</span>
               </div> */}
-              <div className="flex flex-col gap-1">
-                <span className={styles.trophy}>
-                  <TrophyIcon width="20" color="#696045" />
-                </span>
-                <span>{totalNFTs}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <img
-                  src="/icons/verifyBadge.svg"
-                  alt="verfy badge icon"
-                  width={25}
-                />
-                <span>{achievementCount}</span>
-              </div>
-              {isOwner && isBraavosWallet ? (
+              <Tooltip title="Number of NFTs owned from starknet quest" arrow>
+                <div className="flex flex-col gap-1">
+                  <span className={styles.trophy}>
+                    <TrophyIcon width="20" color="#696045" />
+                  </span>
+                  <span>{totalNFTs}</span>
+                </div>
+              </Tooltip>
+              <Tooltip title="Number of achievements completed" arrow>
                 <div className="flex flex-col gap-1">
                   <img
-                    src="/braavos/braavosLogo.svg"
-                    alt="braavos icon"
-                    width={24}
+                    src="/icons/verifyBadge.svg"
+                    alt="verfy badge icon"
+                    width={25}
                   />
-                  <span>{braavosScore}</span>
+                  <span>{achievementCount}</span>
                 </div>
+              </Tooltip>
+              {isOwner && isBraavosWallet ? (
+                <Tooltip title="Your Braavos Pro score" arrow>
+                  <div className="flex flex-col gap-1">
+                    <img
+                      src="/braavos/braavosLogo.svg"
+                      alt="braavos icon"
+                      width={24}
+                    />
+                    <span>{braavosScore}</span>
+                  </div>
+                </Tooltip>
               ) : null}
             </div>
           }

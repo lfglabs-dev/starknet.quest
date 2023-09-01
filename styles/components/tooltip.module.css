@@ -1,48 +1,17 @@
 .tooltip {
     display: flex;
     padding: 12px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    border-radius: 12px;
-    background: var(--background, #101012);
-    width: 250px;
-  
-    position: absolute;
-    z-index: 1;
-    box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04), 0px 1px 1px 0px rgba(23, 15, 73, 0.04), 0px 0px 1px 0px rgba(23, 15, 73, 0.03);
-  }
-  
-  .miniature {
-    background-color: #29282B;
-    border-radius: 50%;
-    box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px rgba(191, 158, 123, 0.06);
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    flex-grow: 0;
-  }
-
-  .img {
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  
-  .info {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 4px;
+    border-radius: 12px;
+    background: var(--background, #101012);
+    max-width: 250px;
+  
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04), 0px 1px 1px 0px rgba(23, 15, 73, 0.04), 0px 0px 1px 0px rgba(23, 15, 73, 0.03);
   }
   
   .level {
