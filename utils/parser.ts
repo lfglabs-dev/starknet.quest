@@ -255,8 +255,6 @@ export class LdtkReader {
               flatArr.includes(data.tileId)
           );
           data.map((elem) => {
-            console.log("elem", elem.data);
-            console.log("customArr", getCustomDataArr(elem.data));
             customDatas[customDatas.length] = {
               tileId: elem.tileId,
               ...getCustomDataArr(elem.data),
