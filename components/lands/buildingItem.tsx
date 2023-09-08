@@ -67,5 +67,5 @@ const BuildingItem = memo<BuildingItemProps>(
   }
 );
 
-// BuildingItem.displayName = "BuildingItem";
+BuildingItem.displayName = "BuildingItem";
 export default BuildingItem;
