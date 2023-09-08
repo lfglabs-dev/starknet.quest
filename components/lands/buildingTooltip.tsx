@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/tooltip.module.css";
 
 type BuildingTooltipProps = {
-  building?: BuildingsInfo | null;
+  building: BuildingsInfo | null;
   pos: { x: number; y: number };
 };
 
