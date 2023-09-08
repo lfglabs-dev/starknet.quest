@@ -15,6 +15,8 @@ export function minifyAddressWithChars(
 ): string {
   if (!address) return "";
 
+  if (address.length <= chars * 2) return address.toLowerCase();
+
   const firstPart = address.substring(0, chars);
   const secondPart = address.substring(address.length - chars, address.length);
 
