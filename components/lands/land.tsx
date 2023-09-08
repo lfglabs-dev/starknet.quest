@@ -4,7 +4,7 @@ import { memberSince } from "../../utils/profile";
 import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import Button from "../UI/button";
-import { soloBuildings, starkFighterBuildings } from "../../constants/nft";
+import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
 
 type LandProps = {
   address: string;
@@ -123,11 +123,17 @@ export const Land = ({
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
         sinceDate = asset.minted_at_timestamp;
 
-      if (asset.name && soloBuildings[asset.name] !== undefined) {
-        filteredAssets.push(soloBuildings[asset.name]);
+      if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
+        filteredAssets.push(
+          SoloBuildings[asset.name as keyof typeof SoloBuildings]
+        );
       }
-      if (asset.name && starkFighterBuildings[asset.name]) {
-        starkFighter.push(starkFighterBuildings[asset.name]);
+      if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
+        filteredAssets.push(
+          StarkFighterBuildings[
+            asset.name as keyof typeof StarkFighterBuildings
+          ]
+        );
       }
     });
     // get starkfighter highest level

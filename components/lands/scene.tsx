@@ -39,7 +39,6 @@ export const Scene: FunctionComponent<SceneProps> = ({
     if (data) {
       const mapReader = new LdtkReader(data, address, citySize, userNft);
       mapReader.CreateMap(); // init land data
-      console.log("mapReader", mapReader);
       setMapReader(mapReader);
     }
   }, [data]);

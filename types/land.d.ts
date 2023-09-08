@@ -77,3 +77,5 @@ export type CityCenterProps = {
     maxY: number;
   };
 };
+
+export type Offset = { x: number; y: number; z: number };

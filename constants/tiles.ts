@@ -1,3 +1,5 @@
+import { Offset } from "../types/land";
+
 export enum BLOCK {
   MIN_WIDTH = 7,
   MAX_WIDTH = 16,
@@ -5,11 +7,37 @@ export enum BLOCK {
   MAX_HEIGHT = 7,
 }
 
-export const propsOffset: {
-  [key: string]: {
-    [key: string]: { x: number; y: number; z: number };
-  };
-} = {
+export enum PropsTypes {
+  LIGHT = 0,
+  TREE = 1,
+  SEWER_PLATE = 2,
+  FIRE_HYDRANT = 3,
+  BENCH = 4,
+}
+
+export const PropsTypesNames = {
+  [PropsTypes.LIGHT]: "Props_StreetLight",
+  [PropsTypes.TREE]: "Props_Tree_1x1",
+  [PropsTypes.SEWER_PLATE]: "Props_SewerPlate",
+  [PropsTypes.FIRE_HYDRANT]: "Props_FireHydrant",
+  [PropsTypes.BENCH]: "Props_BenchGrey",
+};
+
+export enum tileTypes {
+  PROPS = 0,
+  LIGHTS = 1,
+}
+
+type OffsetPosition = "top" | "left" | "bottom" | "right";
+type CornerOffsetPosition =
+  | "topLeft"
+  | "topRight"
+  | "bottomLeft"
+  | "bottomRight";
+type OffsetProps = Partial<Record<OffsetPosition, Offset>> &
+  Partial<Record<CornerOffsetPosition, Offset>>;
+
+export const propsOffset: Record<string, OffsetProps> = {
   Props_StreetLight: {
     topLeft: { x: 0.5, y: -0.3, z: 0 },
     topRight: { x: 0.4, y: -0.3, z: 0 },
@@ -116,24 +144,3 @@ export const buildingsOrdered = {
     [4, 4, 6],
   ],
 };
-
-export enum PropsTypes {
-  LIGHT = 0,
-  TREE = 1,
-  SEWER_PLATE = 2,
-  FIRE_HYDRANT = 3,
-  BENCH = 4,
-}
-
-export const PropsTypesNames = {
-  [PropsTypes.LIGHT]: "Props_StreetLight",
-  [PropsTypes.TREE]: "Props_Tree_1x1",
-  [PropsTypes.SEWER_PLATE]: "Props_SewerPlate",
-  [PropsTypes.FIRE_HYDRANT]: "Props_FireHydrant",
-  [PropsTypes.BENCH]: "Props_BenchGrey",
-};
-
-export enum tileTypes {
-  PROPS = 0,
-  LIGHTS = 1,
-}
