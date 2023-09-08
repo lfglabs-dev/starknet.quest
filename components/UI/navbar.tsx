@@ -113,14 +113,18 @@ const Navbar: FunctionComponent = () => {
   }
 
   function onTopButtonClick(): void {
-    if (available.length > 0) {
-      if (available.length === 1) {
-        connect(available[0]);
+    if (!isConnected) {
+      if (available.length > 0) {
+        if (available.length === 1) {
+          connect(available[0]);
+        } else {
+          setHasWallet(true);
+        }
       } else {
         setHasWallet(true);
       }
     } else {
-      setHasWallet(true);
+      setShowWallet(true);
     }
   }
 
@@ -166,11 +170,11 @@ const Navbar: FunctionComponent = () => {
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
-              <Link href="/partnership">
-                <li className={styles.menuItem}>Partnership</li>
-              </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
+              </Link>
+              <Link href="/achievements">
+                <li className={styles.menuItem}>Achievements</li>
               </Link>
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My profile</li>
@@ -259,20 +263,20 @@ const Navbar: FunctionComponent = () => {
               </div>
               <div className="py-4 flex flex-col">
                 <ul className="uppercase text-babe-blue">
-                  <Link href="/partnership">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Partnership
-                    </li>
-                  </Link>
                   <Link href="/">
                     <li
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
                     >
                       Quests
+                    </li>
+                  </Link>
+                  <Link href="/achievements">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Achievements
                     </li>
                   </Link>
                   <Link

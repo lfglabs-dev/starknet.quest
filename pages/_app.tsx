@@ -8,6 +8,7 @@ import { InjectedConnector, StarknetConfig } from "@starknet-react/core";
 import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
+import Footer from "../components/UI/footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [
