@@ -13,7 +13,7 @@ import RoadItem from "./roadItem";
 
 type IProps = {
   tilesets: Tileset[];
-  cityData: Array<Array<RoadObjects | null>>;
+  cityData: (RoadObjects | null)[][];
   tileData: TileData[];
 };
 
@@ -69,7 +69,7 @@ export default function RoadProps({
                 tileset={tileset}
                 buildingTexture={buildingTexture}
                 tileData={tileData[elem.entityType]}
-                pos={{ posX: iX, posY: iY }}
+                pos={{ x: iX, y: iY }}
                 propData={elem}
                 plane={
                   elem.entityType === 0

@@ -1,17 +1,17 @@
-import { GroundTileProps } from "../../types/land";
+import { GroundTileProps, Coord } from "../../types/land";
 import React, { ReactElement, memo, useMemo } from "react";
 import { MeshPhongMaterial, PlaneGeometry, Texture } from "three";
 import { Tileset } from "../../types/ldtk";
 
-type IElem = {
+type GroundItemsProps = {
   tileset: Tileset;
-  pos: { posX: number; posY: number };
+  pos: Coord;
   tileData: GroundTileProps;
   groundTexture: Texture;
   plane: PlaneGeometry;
 };
 
-const GroundItem = memo<IElem>(
+const GroundItem = memo<GroundItemsProps>(
   ({ tileset, tileData, pos, groundTexture, plane }): ReactElement => {
     const itemTexture = useMemo(() => {
       if (tileset && groundTexture) {
@@ -39,8 +39,8 @@ const GroundItem = memo<IElem>(
 
     return (
       <mesh
-        position={[pos.posX + 0.5, 0.22, pos.posY - 0.5]}
-        name={`groundItem_${pos.posX}_${pos.posY}`.toString()}
+        position={[pos.x + 0.5, 0.22, pos.y - 0.5]}
+        name={`groundItem_${pos.x}_${pos.y}`.toString()}
         rotation={[-Math.PI * 0.5, 0, 0]}
         geometry={plane}
         material={material}

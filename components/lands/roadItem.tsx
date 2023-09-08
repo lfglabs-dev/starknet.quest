@@ -1,19 +1,19 @@
 import { propsOffset } from "../../constants/tiles";
-import { RoadObjects, TileData } from "../../types/land";
+import { Coord, RoadObjects, TileData } from "../../types/land";
 import React, { ReactElement, memo, useMemo, useState } from "react";
 import { PlaneGeometry, Texture } from "three";
 import { Tileset } from "../../types/ldtk";
 
-type IElem = {
+type RoadItemProps = {
   tileset: Tileset;
-  pos: { posX: number; posY: number };
+  pos: Coord;
   buildingTexture: Texture;
   propData: RoadObjects;
   tileData: TileData;
   plane: PlaneGeometry;
 };
 
-const RoadItem = memo<IElem>(
+const RoadItem = memo<RoadItemProps>(
   ({
     tileset,
     pos,
@@ -45,9 +45,9 @@ const RoadItem = memo<IElem>(
     return (
       <mesh
         position={[
-          pos.posX + offset.x,
-          0.22 + offset.z + propData.z + pos.posY * 0.02,
-          pos.posY - 1 + offset.y,
+          pos.x + offset.x,
+          0.22 + offset.z + propData.z + pos.y * 0.02,
+          pos.y - 1 + offset.y,
         ]}
         name={`${tileData.entity.tileRect.tilesetUid}_props`.toString()}
         rotation={[-Math.PI * 0.5, 0, 0]}

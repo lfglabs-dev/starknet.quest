@@ -5,15 +5,15 @@ import BuildingItem from "./buildingItem";
 import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 
-type IBuildings = {
+type BuildingsProps = {
   tilesets: Tileset[];
-  buildingData: Array<Array<BuildingTileProps | null>>;
+  buildingData: (BuildingTileProps | null)[][];
 };
 
 export default function Buildings({
   tilesets,
   buildingData,
-}: IBuildings): ReactElement | null {
+}: BuildingsProps): ReactElement | null {
   const buildingTexture = useMemo(() => {
     const texture = useLoader(
       TextureLoader,
@@ -29,35 +29,31 @@ export default function Buildings({
   return (
     <>
       {buildingTexture &&
-        buildingData.map(
-          (tileX: Array<BuildingTileProps | null>, iY: number) => {
-            return tileX.map(
-              (tileData: BuildingTileProps | null, iX: number) => {
-                if (
-                  tileData === null ||
-                  tileData.tile === undefined ||
-                  tileData.tile === null
-                ) {
-                  return null;
+        buildingData.map((tileX: (BuildingTileProps | null)[], iY: number) => {
+          return tileX.map((tileData: BuildingTileProps | null, iX: number) => {
+            if (
+              tileData === null ||
+              tileData.tile === undefined ||
+              tileData.tile === null
+            ) {
+              return null;
+            }
+            return (
+              <BuildingItem
+                key={`building-${iX}-${iY}`}
+                tileset={
+                  tilesets.filter(
+                    (tileset) => tileset.uid === tileData.tile.tilesetUid
+                  )[0]
                 }
-                return (
-                  <BuildingItem
-                    key={`building-${iX}-${iY}`}
-                    tileset={
-                      tilesets.filter(
-                        (tileset) => tileset.uid === tileData.tile.tilesetUid
-                      )[0]
-                    }
-                    textureLoader={buildingTexture}
-                    tileData={tileData.tile}
-                    pos={{ posX: iX, posY: iY }}
-                    isNFT={tileData.isNFT}
-                  />
-                );
-              }
+                textureLoader={buildingTexture}
+                tileData={tileData.tile}
+                pos={{ x: iX, y: iY }}
+                isNFT={tileData.isNFT}
+              />
             );
-          }
-        )}
+          });
+        })}
     </>
   );
 }

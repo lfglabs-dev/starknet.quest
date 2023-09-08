@@ -11,15 +11,15 @@ import { GroundTileProps } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
 import { Tileset } from "../../types/ldtk";
 
-type IGround = {
+type GroundProps = {
   tileset: Tileset;
-  cityData: Array<Array<GroundTileProps | null>>;
+  cityData: (GroundTileProps | null)[][];
 };
 
 export default function Ground({
   tileset,
   cityData,
-}: IGround): ReactElement | null {
+}: GroundProps): ReactElement | null {
   const groundTexture = useMemo(() => {
     const textObj = useLoader(
       TextureLoader,
@@ -38,7 +38,7 @@ export default function Ground({
   return (
     <>
       {groundTexture &&
-        cityData.map((tileX: Array<GroundTileProps | null>, iY: number) => {
+        cityData.map((tileX: (GroundTileProps | null)[], iY: number) => {
           return tileX.map((tileData: GroundTileProps | null, iX: number) => {
             if (tileData === null || tileData.tileId === undefined) {
               return null;
@@ -49,7 +49,7 @@ export default function Ground({
                 tileset={tileset}
                 groundTexture={groundTexture}
                 tileData={tileData}
-                pos={{ posX: iX, posY: iY }}
+                pos={{ x: iX, y: iY }}
                 plane={plane}
               />
             );

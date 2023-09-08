@@ -2,16 +2,17 @@ import { TileRect, Tileset } from "../../types/ldtk";
 import React, { ReactElement } from "react";
 import { memo, useMemo } from "react";
 import { PlaneGeometry, Texture } from "three";
+import { Coord } from "../../types/land";
 
-type IElem = {
+type BuildingItemProps = {
   tileset: Tileset;
-  pos: { posX: number; posY: number };
+  pos: Coord;
   tileData: TileRect;
   textureLoader: Texture;
   isNFT: boolean;
 };
 
-const BuildingItem = memo<IElem>(
+const BuildingItem = memo<BuildingItemProps>(
   ({ tileset, tileData, pos, textureLoader, isNFT }): ReactElement => {
     const elemTexture = useMemo(() => {
       if (tileset && textureLoader) {
@@ -42,9 +43,9 @@ const BuildingItem = memo<IElem>(
       <>
         <mesh
           position={[
-            pos.posX + tileData.w / 32,
-            0.22 + pos.posY * 0.02,
-            pos.posY - tileData.h / 32,
+            pos.x + tileData.w / 32,
+            0.22 + pos.y * 0.02,
+            pos.y - tileData.h / 32,
           ]}
           name={`${tileData.tilesetUid}_building${
             isNFT ? "_isNFT" : ""
@@ -66,5 +67,5 @@ const BuildingItem = memo<IElem>(
   }
 );
 
-BuildingItem.displayName = "BuildingItem";
+// BuildingItem.displayName = "BuildingItem";
 export default BuildingItem;

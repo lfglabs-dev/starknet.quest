@@ -5,10 +5,11 @@ import RoadProps from "./roadProps";
 import Buildings from "./buildings";
 import { tileTypes } from "../../constants/tiles";
 import { useFrame, useThree } from "@react-three/fiber";
+import { iLDtk } from "../../types/ldtk";
 
 type MapProps = {
   mapReader: LdtkReader;
-  data: any;
+  data: iLDtk;
   updateBuildingRef: (newBuilding: BuildingsInfo | null) => void;
 };
 

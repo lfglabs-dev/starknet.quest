@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Scene } from "./scene";
 import { memberSince } from "../../utils/profile";
 import styles from "../../styles/profile.module.css";
+import landStyles from "../../styles/components/land.module.css";
 import Button from "../UI/button";
 import { soloBuildings, starkFighterBuildings } from "../../constants/nft";
 
@@ -145,31 +146,20 @@ export const Land = ({
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100vw",
-        zIndex: 0,
-        touchAction: "none",
-        overflow: "hidden",
-        backgroundImage: `url("/land/textures/SID_Background_SpaceLoop.gif")`,
-        backgroundRepeat: "repeat",
-      }}
-    >
+    <div className={landStyles.landContainer}>
       {isReady ? (
         userNft && hasNFTs ? (
           <Scene address={address} userNft={userNft} isMobile={isMobile} />
         ) : (
-          <div
-            className={`md:h-screen flex justify-center items-center flex-col mt-[100px] mx-5 md:mr-[250px] md:ml-0 md:mt-0`}
-          >
+          <div className={landStyles.error}>
             <h2 className={`${styles.notFound} ${styles.name} mb-5`}>
-              {isOwner ? "You have" : "User has"} not fulfilled any quest yet
+              {isOwner ? "You have" : "User has"} not fulfilled any achievement
+              yet
             </h2>
             {isOwner ? (
               <div className="text-background ml-5 mr-5">
                 <Button onClick={() => window.open("https://starknet.quest")}>
-                  Begin
+                  Start Achievements
                 </Button>
               </div>
             ) : null}

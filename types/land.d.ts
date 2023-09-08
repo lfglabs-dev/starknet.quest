@@ -36,16 +36,6 @@ export interface CitySize {
   citySizeY: number;
 }
 
-// export interface pointLightProps {
-//   intensity: number;
-//   color: string;
-//   z: number;
-//   distance?: number;
-//   decay?: number;
-//   power?: number;
-//   type: LightTypes;
-// }
-
 export interface SpriteBounds {
   spriteTileIdTopLeft: number;
   spriteTileIdTopRight: number;
