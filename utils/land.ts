@@ -1,8 +1,8 @@
 import { Vector2 } from "three";
 import { ClosestCorner, Coord } from "../types/land";
 
-export const convertTo2D = (array: Array<number>, size: number) => {
-  let result: Array<Array<number>> = [];
+export const convertTo2D = (array: number[], size: number) => {
+  let result: number[][] = [];
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size));
   }
@@ -55,7 +55,10 @@ export const getSubArray = (
   return myArr;
 };
 
-const distance = (center: Coord, corner: { row: number; col: number }) => {
+export const distance = (
+  center: Coord,
+  corner: { row: number; col: number }
+) => {
   return Math.sqrt(
     Math.pow(corner.col - center.x, 2) + Math.pow(corner.row - center.y, 2)
   );
@@ -79,6 +82,7 @@ export const findClosestCorner = (
   return closestCorner;
 };
 
+// Computes the relative center of a bounding box given its min and max coordinates
 export const computeCityCenter = (
   minX: number,
   maxX: number,
@@ -95,7 +99,7 @@ export const needsDirectionChange = (
   closestCorner: ClosestCorner,
   subArr: any[],
   blockSize: Vector2
-) => {
+): boolean => {
   if (
     ((closestCorner?.corner === "topRight" ||
       closestCorner?.corner === "bottomRight") &&

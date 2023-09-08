@@ -123,7 +123,7 @@ export const Land = ({
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
         sinceDate = asset.minted_at_timestamp;
 
-      if (asset.name && soloBuildings[asset.name]) {
+      if (asset.name && soloBuildings[asset.name] !== undefined) {
         filteredAssets.push(soloBuildings[asset.name]);
       }
       if (asset.name && starkFighterBuildings[asset.name]) {

@@ -18,12 +18,8 @@ import {
   TileData,
 } from "../types/land";
 import {
-  MAX_LAND_HEIGHT,
-  MAX_LAND_WIDTH,
-  MIN_LAND_HEIGHT,
-  MIN_LAND_WIDTH,
   buildingsOrdered,
-  TILE_EMPTY,
+  BLOCK,
   propsOffset,
   PropsTypes,
   PropsTypesNames,
@@ -45,7 +41,7 @@ export class LdtkReader {
   /// data related to LDTK
   ldtk: iLDtk;
   level!: Level;
-  tilesets: Array<Tileset>;
+  tilesets: Tileset[];
   idxToRule: { [key: string]: number }; // Mapping between tileset rules and tileset values
   TILE_LAND: number; // tile index we get from LDTK
   TILE_ROAD: number;
@@ -61,15 +57,15 @@ export class LdtkReader {
   citySize: number;
   cityCenter: CityCenterProps | null = null; // city center coordinates needed to place the camera
   // array of blocks of buildings (a block is a group of buildings that can be placed together, they are calculated depending on the number of NFTs owned by the user)
-  blocks: Array<{ w: number; h: number; nfts: EntityProps[] }> = [];
-  cityIntGrid: Array<Array<number>>; // int grid representing roads, sidewalk, borders, used to check rules patterns
-  groundTiles: Array<Array<GroundTileProps | null>>; // Ground tiles generated after checking ground rules patterns
-  buildingTiles: Array<Array<BuildingTileProps | null>>; // Buildings tiles
+  blocks: { w: number; h: number; nfts: EntityProps[] }[] = [];
+  cityIntGrid: number[][]; // int grid representing roads, sidewalk, borders, used to check rules patterns
+  groundTiles: (GroundTileProps | null)[][]; // Ground tiles generated after checking ground rules patterns
+  buildingTiles: (BuildingTileProps | null)[][]; // Buildings tiles
   currentDirection: string | null = null; // used to keep track of the direction we're building in
   // array of tiles where it's not possible to place a prop (in front of a door for ex)
-  blockedPaths: Array<Coord> = [];
+  blockedPaths: Coord[] = [];
   // array of road props (lights, trees, ...) to be placed
-  roadProps: Array<Array<RoadObjects | null>>;
+  roadProps: (RoadObjects | null)[][];
   // data for props (and lights) pre-computed to avoid recomputing everything everytime there's a render
   tileData: Record<tileTypes, TileData[]>;
 
@@ -85,7 +81,7 @@ export class LdtkReader {
     this.citySize = citySize;
     this.cityIntGrid = new Array(citySize)
       .fill(0)
-      .map(() => new Array(citySize).fill(TILE_EMPTY));
+      .map(() => new Array(citySize).fill(0));
     this.buildingTiles = new Array(citySize)
       .fill(0)
       .map(() => new Array(citySize).fill(null));
@@ -259,6 +255,8 @@ export class LdtkReader {
               flatArr.includes(data.tileId)
           );
           data.map((elem) => {
+            console.log("elem", elem.data);
+            console.log("customArr", getCustomDataArr(elem.data));
             customDatas[customDatas.length] = {
               tileId: elem.tileId,
               ...getCustomDataArr(elem.data),
@@ -669,7 +667,6 @@ export class LdtkReader {
     );
     const corners = this.findEmptyCorners(subArr);
     let closestCorner = findClosestCorner(center, corners);
-
     if (
       !closestCorner ||
       needsDirectionChange(closestCorner, subArr, blockSize)
@@ -932,12 +929,12 @@ export class LdtkReader {
   GetRandomBlockSize(blockNb: number): Vector2 {
     let rand = this.randomGround(blockNb * 10);
     let width = Math.round(
-      MIN_LAND_WIDTH + rand * (MAX_LAND_WIDTH - MIN_LAND_WIDTH)
+      BLOCK.MIN_WIDTH + rand * (BLOCK.MAX_WIDTH - BLOCK.MIN_WIDTH)
     );
 
     rand = this.randomGround(blockNb * 100);
     let height = Math.round(
-      MIN_LAND_HEIGHT + rand * (MAX_LAND_HEIGHT - MIN_LAND_HEIGHT)
+      BLOCK.MIN_HEIGHT + rand * (BLOCK.MAX_HEIGHT - BLOCK.MIN_HEIGHT)
     );
 
     return new Vector2(width, height);
@@ -1007,8 +1004,8 @@ export class LdtkReader {
   }
 
   MatchesPattern(
-    mapData: Array<Array<number>>,
-    pattern: Array<Array<number>>,
+    mapData: number[][],
+    pattern: number[][],
     x: number,
     y: number,
     ruleNb: number,

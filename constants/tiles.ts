@@ -1,10 +1,9 @@
-export const TILE_SIZE = 16;
-export const MIN_LAND_WIDTH = 7;
-export const MAX_LAND_WIDTH = 16;
-export const MIN_LAND_HEIGHT = 6;
-export const MAX_LAND_HEIGHT = 7;
-export const ROAD_SIZE = 2;
-export const TILE_EMPTY = 0;
+export enum BLOCK {
+  MIN_WIDTH = 7,
+  MAX_WIDTH = 16,
+  MIN_HEIGHT = 6,
+  MAX_HEIGHT = 7,
+}
 
 export const propsOffset: {
   [key: string]: {

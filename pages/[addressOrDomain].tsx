@@ -14,7 +14,7 @@ import ErrorScreen from "../components/UI/screens/errorScreen";
 import ProfileCard from "../components/UI/profileCard";
 import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/land";
-import { getIdentityData, hasVerifiedSocials } from "../utils/profile";
+import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
 import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
 import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
@@ -211,6 +211,13 @@ const AddressOrDomain: NextPage = () => {
       />
     );
   }
+
+  const getIdentityData = async (id: number) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
+    );
+    return response.json();
+  };
 
   return initProfile && identity ? (
     <>
