@@ -6,11 +6,12 @@ import { useAccount, useTransactions } from "@starknet-react/core";
 import { ContentCopy } from "@mui/icons-material";
 import CopiedIcon from "./iconsComponents/icons/copiedIcon";
 import ClickableAction from "./iconsComponents/clickableAction";
-import { CommonTransactionReceiptResponse } from "starknet";
+// import { CommonTransactionReceiptResponse } from "starknet";
 import CloseIcon from "./iconsComponents/icons/closeIcon";
 import ArgentIcon from "./iconsComponents/icons/argentIcon";
 import theme from "../../styles/theme";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { TransactionStatus } from "starknet";
 
 type ModalWalletProps = {
   closeModal: () => void;
@@ -116,6 +117,8 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
           <div>
             {transactions && transactions.length > 0 ? (
               transactions.map((tx) => {
+                // if (tx.data?.status !== TransactionStatus.REJECTED) {
+                // }
                 return (
                   <div
                     className={styles.menu_tx}
