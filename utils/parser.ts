@@ -20,7 +20,6 @@ import {
 import {
   buildingsOrdered,
   BLOCK,
-  propsOffset,
   PropsTypes,
   PropsTypesNames,
   tileTypes,
@@ -1268,11 +1267,6 @@ export class LdtkReader {
               (elem) => elem.identifier === PropsTypesNames[propType]
             );
             if (!entity) continue;
-            const offset = propsOffset[entity.identifier][isSide] ?? {
-              x: 0,
-              y: 0,
-              z: 0,
-            };
             this.roadProps[i][j] = {
               entityType: propType,
               corner: isSide,
