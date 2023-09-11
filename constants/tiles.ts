@@ -36,6 +36,7 @@ type CornerOffsetPosition =
   | "bottomRight";
 type OffsetProps = Partial<Record<OffsetPosition, Offset>> &
   Partial<Record<CornerOffsetPosition, Offset>>;
+export type OffsetKey = OffsetPosition | CornerOffsetPosition;
 
 export const propsOffset: Record<string, OffsetProps> = {
   Props_StreetLight: {

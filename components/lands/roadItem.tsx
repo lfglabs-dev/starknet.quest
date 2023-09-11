@@ -1,4 +1,4 @@
-import { propsOffset } from "../../constants/tiles";
+import { propsOffset, OffsetKey } from "../../constants/tiles";
 import { Coord, RoadObjects, TileData } from "../../types/land";
 import React, { ReactElement, memo, useMemo, useState } from "react";
 import { PlaneGeometry, Texture } from "three";
@@ -35,7 +35,10 @@ const RoadItem = memo<RoadItemProps>(
         localT.offset.set(tileData.textureOffset.x, tileData.textureOffset.y);
         localT.repeat.set(tileData.textureRepeat.x, tileData.textureRepeat.y);
 
-        const offset = propsOffset[tileData.entity.identifier][propData.corner];
+        const entityOffsets = propsOffset[tileData.entity.identifier];
+        const offset = entityOffsets
+          ? entityOffsets[propData.corner as OffsetKey]
+          : undefined;
         if (offset) setOffset(offset);
 
         return localT;
