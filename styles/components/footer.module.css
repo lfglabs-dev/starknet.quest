@@ -61,5 +61,19 @@
 @media (max-width: 740px) {
   .footer {
     max-width: calc(100% - 48px);
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .content {
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .socials {
+    gap: 20px;
+    flex-direction: column;
   }
 }

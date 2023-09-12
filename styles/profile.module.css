@@ -187,6 +187,7 @@
     position: relative;
     margin-bottom: 32px;
     z-index: 0;
+    top: 0;
   }
 
   .profileCard {
