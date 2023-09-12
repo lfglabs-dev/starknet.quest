@@ -179,6 +179,11 @@
   position: absolute;
 }
 
+.profileBg {
+  background-image: url("/land/textures/SID_Background_SpaceLoop.gif");
+  background-repeat: repeat;
+}
+
 @media (max-width: 768px) {
   .profiles {
     gap: 16px;

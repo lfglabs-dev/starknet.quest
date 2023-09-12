@@ -219,32 +219,34 @@ const AddressOrDomain: NextPage = () => {
     return response.json();
   };
 
-  return initProfile && identity ? (
-    <>
-      <Land
-        address={decimalToHex(identity.addr)}
-        isOwner={isOwner}
-        isMobile={isMobile}
-        setSinceDate={setSinceDate}
-        setTotalNfts={setTotalNfts}
-        setAchievementCount={setAchievementCount}
-        hasDomain={identity.domain ? true : false}
-      />
-      <div className={styles.profiles}>
-        <ProfileCard
-          title={identity?.domain ?? minifyAddress(identity.addr)}
-          isUppercase={true}
-          content={
-            <div className={styles.nameCard}>
-              <div className={styles.profilePicture}>
-                <img
-                  width={"350px"}
-                  src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
-                  alt="starknet.id avatar"
-                  style={{ maxWidth: "150%" }}
-                />
-                {/* We do not enable the profile pic change atm */}
-                {/* <Tooltip title="Change profile picture" arrow>
+  return (
+    <div className={styles.profileBg}>
+      {initProfile && identity ? (
+        <>
+          <Land
+            address={decimalToHex(identity.addr)}
+            isOwner={isOwner}
+            isMobile={isMobile}
+            setSinceDate={setSinceDate}
+            setTotalNfts={setTotalNfts}
+            setAchievementCount={setAchievementCount}
+            hasDomain={identity.domain ? true : false}
+          />
+          <div className={styles.profiles}>
+            <ProfileCard
+              title={identity?.domain ?? minifyAddress(identity.addr)}
+              isUppercase={true}
+              content={
+                <div className={styles.nameCard}>
+                  <div className={styles.profilePicture}>
+                    <img
+                      width={"350px"}
+                      src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                      alt="starknet.id avatar"
+                      style={{ maxWidth: "150%" }}
+                    />
+                    {/* We do not enable the profile pic change atm */}
+                    {/* <Tooltip title="Change profile picture" arrow>
               <div className={styles.cameraIcon}>
                 <CameraAlt
                   className={styles.cameraAlt}
@@ -252,92 +254,102 @@ const AddressOrDomain: NextPage = () => {
                 />
               </div>
             </Tooltip> */}
-              </div>
-              <div>
-                <div className={styles.starknetInfo}>
-                  <div className="cursor-pointer absolute">
-                    {!copied ? (
-                      <Tooltip title="Copy" arrow>
-                        <div onClick={() => copyToClipboard()}>
-                          <CopyIcon width={"18"} color="#F4FAFF" />
-                        </div>
-                      </Tooltip>
-                    ) : (
-                      <VerifiedIcon width={"18"} />
-                    )}
                   </div>
-                  <div className={styles.address}>
-                    {typeof addressOrDomain === "string" &&
-                    isHexString(addressOrDomain)
-                      ? minifyAddressWithChars(addressOrDomain, 8)
-                      : minifyAddressWithChars(decimalToHex(identity?.addr), 8)}
+                  <div>
+                    <div className={styles.starknetInfo}>
+                      <div className="cursor-pointer absolute">
+                        {!copied ? (
+                          <Tooltip title="Copy" arrow>
+                            <div onClick={() => copyToClipboard()}>
+                              <CopyIcon width={"18"} color="#F4FAFF" />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <VerifiedIcon width={"18"} />
+                        )}
+                      </div>
+                      <div className={styles.address}>
+                        {typeof addressOrDomain === "string" &&
+                        isHexString(addressOrDomain)
+                          ? minifyAddressWithChars(addressOrDomain, 8)
+                          : minifyAddressWithChars(
+                              decimalToHex(identity?.addr),
+                              8
+                            )}
+                      </div>
+                    </div>
+                    {sinceDate ? (
+                      <div className={styles.memberSince}>
+                        <p>{sinceDate}</p>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
-                {sinceDate ? (
-                  <div className={styles.memberSince}>
-                    <p>{sinceDate}</p>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-          }
-        />
-        <ProfileCard
-          title="Progress"
-          content={
-            <div className={styles.progress}>
-              {/* We do not have xp yet */}
-              {/* <div className="flex flex-col gap-1">
+              }
+            />
+            <ProfileCard
+              title="Progress"
+              content={
+                <div className={styles.progress}>
+                  {/* We do not have xp yet */}
+                  {/* <div className="flex flex-col gap-1">
                 <div className={styles.polygonContainer}>
                   <img src="/icons/polygon.svg" alt="polygon icon" />
                   <span className={styles.xp}>XP</span>
                 </div>
                 <span>12</span>
               </div> */}
-              <Tooltip title="Number of NFTs owned from starknet quest" arrow>
-                <div className="flex flex-col gap-1">
-                  <span className={styles.trophy}>
-                    <TrophyIcon width="20" color="#696045" />
-                  </span>
-                  <span>{totalNFTs}</span>
+                  <Tooltip
+                    title="Number of NFTs owned from starknet quest"
+                    arrow
+                  >
+                    <div className="flex flex-col gap-1">
+                      <span className={styles.trophy}>
+                        <TrophyIcon width="20" color="#696045" />
+                      </span>
+                      <span>{totalNFTs}</span>
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="Number of achievements completed" arrow>
+                    <div className="flex flex-col gap-1">
+                      <img
+                        src="/icons/verifyBadge.svg"
+                        alt="verfy badge icon"
+                        width={25}
+                      />
+                      <span>{achievementCount}</span>
+                    </div>
+                  </Tooltip>
+                  {isOwner && isBraavosWallet ? (
+                    <Tooltip title="Your Braavos Pro score" arrow>
+                      <div className="flex flex-col gap-1">
+                        <img
+                          src="/braavos/braavosLogo.svg"
+                          alt="braavos icon"
+                          width={24}
+                        />
+                        <span>{braavosScore}</span>
+                      </div>
+                    </Tooltip>
+                  ) : null}
                 </div>
-              </Tooltip>
-              <Tooltip title="Number of achievements completed" arrow>
-                <div className="flex flex-col gap-1">
-                  <img
-                    src="/icons/verifyBadge.svg"
-                    alt="verfy badge icon"
-                    width={25}
-                  />
-                  <span>{achievementCount}</span>
-                </div>
-              </Tooltip>
-              {isOwner && isBraavosWallet ? (
-                <Tooltip title="Your Braavos Pro score" arrow>
-                  <div className="flex flex-col gap-1">
-                    <img
-                      src="/braavos/braavosLogo.svg"
-                      alt="braavos icon"
-                      width={24}
-                    />
-                    <span>{braavosScore}</span>
-                  </div>
-                </Tooltip>
-              ) : null}
-            </div>
-          }
-        />
-        {hasVerifiedSocials(identity) ? (
-          <ProfileCard
-            title="Social network"
-            content={<SocialMediaActions identity={identity} />}
-          />
-        ) : null}
-      </div>
-    </>
-  ) : (
-    <div className={`h-screen flex justify-center items-center ${styles.name}`}>
-      <h2>Loading</h2>
+              }
+            />
+            {hasVerifiedSocials(identity) ? (
+              <ProfileCard
+                title="Social network"
+                content={<SocialMediaActions identity={identity} />}
+              />
+            ) : null}
+          </div>
+        </>
+      ) : (
+        <div
+          className={`h-screen flex justify-center items-center ${styles.name}`}
+        >
+          <h2>Loading</h2>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,8 +4,6 @@
     z-index: 0;
     touch-action: none;
     overflow: hidden;
-    background-image: url("/land/textures/SID_Background_SpaceLoop.gif");
-    background-repeat: repeat;
 }
 
 .error {
