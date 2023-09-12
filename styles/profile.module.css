@@ -15,7 +15,6 @@
   position: absolute;
   right: 25px;
   top: 100px;
-  z-index: 1;
   gap: 16px;
   display: flex;
   flex-direction: column;
