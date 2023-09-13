@@ -7,7 +7,7 @@
   border-top: 1px solid rgba(225, 220, 234, 0.40);
   max-width: calc(100% - 126px);
   padding: 48px 0;
-  margin: 24px auto 0;
+  margin: 0 auto;
 
   color: var(--secondary);
   font-family: Sora;
@@ -56,6 +56,11 @@
   align-items: center;
   border-radius: 2px;
   background: var(--secondary);
+}
+
+.profileBg {
+  background-image: url("/land/textures/SID_Background_SpaceLoop.gif");
+  background-repeat: repeat;
 }
 
 @media (max-width: 740px) {

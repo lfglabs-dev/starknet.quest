@@ -3,35 +3,41 @@ import styles from "../../styles/components/footer.module.css";
 import Link from "next/link";
 import TwitterIcon from "./iconsComponents/icons/twitterIcon";
 import DiscordIcon from "./iconsComponents/icons/discordIcon";
+import { useRouter } from "next/router";
 
 const Footer: FunctionComponent = () => {
+  const route = useRouter().route;
   return (
-    <div className="footer">
-      <footer className={styles.footer}>
-        <div className={styles.content}>
-          <Link href="/partnership">Partnership</Link>
-        </div>
-        <div className={styles.socials}>
-          <div
-            className={styles.social}
-            onClick={() => window.open("https://twitter.com/starknet_quest")}
-          >
-            <span>
-              <TwitterIcon width="16" color="#101012" />
-            </span>
-            Twitter
+    <div
+      className={`${route.includes("addressOrDomain") ? styles.profileBg : ""}`}
+    >
+      <div className="footer">
+        <footer className={styles.footer}>
+          <div className={styles.content}>
+            <Link href="/partnership">Partnership</Link>
           </div>
-          <div
-            className={styles.social}
-            onClick={() => window.open("http://discord.gg/8uS2Mgcsza")}
-          >
-            <span>
-              <DiscordIcon width="17" color="#101012" />
-            </span>
-            Discord
+          <div className={styles.socials}>
+            <div
+              className={styles.social}
+              onClick={() => window.open("https://twitter.com/starknet_quest")}
+            >
+              <span>
+                <TwitterIcon width="16" color="#101012" />
+              </span>
+              Twitter
+            </div>
+            <div
+              className={styles.social}
+              onClick={() => window.open("http://discord.gg/8uS2Mgcsza")}
+            >
+              <span>
+                <DiscordIcon width="17" color="#101012" />
+              </span>
+              Discord
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };
