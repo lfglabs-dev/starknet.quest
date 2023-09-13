@@ -137,7 +137,11 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
                               "..." +
                               tx_hash.slice(tx_hash.length - 6, tx_hash.length)}
                           </a>
-                          <div>{tx.status === "success" && tx.data.status}</div>
+                          <div>
+                            {tx.status === "success"
+                              ? tx.data.status
+                              : tx.status}
+                          </div>
                         </div>
                       );
                     }
