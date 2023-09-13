@@ -6,7 +6,6 @@ import { useAccount, useTransactions } from "@starknet-react/core";
 import { ContentCopy } from "@mui/icons-material";
 import CopiedIcon from "./iconsComponents/icons/copiedIcon";
 import ClickableAction from "./iconsComponents/clickableAction";
-// import { CommonTransactionReceiptResponse } from "starknet";
 import CloseIcon from "./iconsComponents/icons/closeIcon";
 import ArgentIcon from "./iconsComponents/icons/argentIcon";
 import theme from "../../styles/theme";
@@ -116,36 +115,31 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
           <div className={styles.tx_title}>My transactions</div>
           <div>
             {transactions && transactions.length > 0 ? (
-              transactions.map((tx) => {
-                // if (tx.data?.status !== TransactionStatus.REJECTED) {
-                // }
-                return (
-                  <div
-                    className={styles.menu_tx}
-                    key={tx.data?.transaction_hash}
-                  >
-                    <a
-                      href={`https://${
-                        network === "testnet" ? "testnet." : ""
-                      }starkscan.co/tx/${tx.data?.transaction_hash}`}
-                      className={styles.tx_hash}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {tx.data?.transaction_hash?.slice(0, 6) +
-                        "..." +
-                        tx.data?.transaction_hash?.slice(
-                          tx.data?.transaction_hash.length - 6,
-                          tx.data?.transaction_hash.length
-                        )}
-                    </a>
-                    <div>
-                      {tx.status === "success" &&
-                        tx.data &&
-                        (tx.data as CommonTransactionReceiptResponse).status}
-                    </div>
-                  </div>
-                );
+              transactions.map((tx, index) => {
+                if (tx.data && "status" in tx?.data) {
+                  if (tx.data?.status !== TransactionStatus.REJECTED) {
+                    if ("transaction_hash" in tx.data) {
+                      const tx_hash = tx.data?.transaction_hash as string;
+                      return (
+                        <div className={styles.menu_tx} key={index}>
+                          <a
+                            href={`https://${
+                              network === "testnet" ? "testnet." : ""
+                            }starkscan.co/tx/${tx_hash}`}
+                            className={styles.tx_hash}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {tx_hash.slice(0, 6) +
+                              "..." +
+                              tx_hash.slice(tx_hash.length - 6, tx_hash.length)}
+                          </a>
+                          <div>{tx.status === "success" && tx.data.status}</div>
+                        </div>
+                      );
+                    }
+                  }
+                }
               })
             ) : (
               <p className={styles.tx_empty}>No ongoing transactions</p>
