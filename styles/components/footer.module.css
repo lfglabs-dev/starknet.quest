@@ -58,11 +58,6 @@
   background: var(--secondary);
 }
 
-.profileBg {
-  background-image: url("/land/textures/SID_Background_SpaceLoop.gif");
-  background-repeat: repeat;
-}
-
 @media (max-width: 740px) {
   .footer {
     max-width: calc(100% - 48px);

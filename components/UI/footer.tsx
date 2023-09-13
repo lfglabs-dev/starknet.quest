@@ -7,37 +7,34 @@ import { useRouter } from "next/router";
 
 const Footer: FunctionComponent = () => {
   const route = useRouter().route;
+  if (route.includes("addressOrDomain")) return null;
   return (
-    <div
-      className={`${route.includes("addressOrDomain") ? styles.profileBg : ""}`}
-    >
-      <div className="footer">
-        <footer className={styles.footer}>
-          <div className={styles.content}>
-            <Link href="/partnership">Partnership</Link>
+    <div className="footer">
+      <footer className={styles.footer}>
+        <div className={styles.content}>
+          <Link href="/partnership">Partnership</Link>
+        </div>
+        <div className={styles.socials}>
+          <div
+            className={styles.social}
+            onClick={() => window.open("https://twitter.com/starknet_quest")}
+          >
+            <span>
+              <TwitterIcon width="16" color="#101012" />
+            </span>
+            Twitter
           </div>
-          <div className={styles.socials}>
-            <div
-              className={styles.social}
-              onClick={() => window.open("https://twitter.com/starknet_quest")}
-            >
-              <span>
-                <TwitterIcon width="16" color="#101012" />
-              </span>
-              Twitter
-            </div>
-            <div
-              className={styles.social}
-              onClick={() => window.open("http://discord.gg/8uS2Mgcsza")}
-            >
-              <span>
-                <DiscordIcon width="17" color="#101012" />
-              </span>
-              Discord
-            </div>
+          <div
+            className={styles.social}
+            onClick={() => window.open("http://discord.gg/8uS2Mgcsza")}
+          >
+            <span>
+              <DiscordIcon width="17" color="#101012" />
+            </span>
+            Discord
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   );
 };
