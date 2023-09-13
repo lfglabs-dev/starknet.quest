@@ -117,7 +117,10 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
             {transactions && transactions.length > 0 ? (
               transactions.map((tx, index) => {
                 if (tx.data && "status" in tx?.data) {
-                  if (tx.data?.status !== TransactionStatus.REJECTED) {
+                  if (
+                    tx.data?.status &&
+                    tx.data?.status !== TransactionStatus.REJECTED
+                  ) {
                     if ("transaction_hash" in tx.data) {
                       const tx_hash = tx.data?.transaction_hash as string;
                       return (
