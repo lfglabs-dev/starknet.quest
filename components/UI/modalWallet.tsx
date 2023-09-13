@@ -122,7 +122,7 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
                     tx.data.status !== TransactionStatus.REJECTED
                   ) {
                     if ("transaction_hash" in tx.data) {
-                      const tx_hash = tx.data?.transaction_hash as string;
+                      const tx_hash = tx.data.transaction_hash as string;
                       return (
                         <div className={styles.menu_tx} key={index}>
                           <a
@@ -141,8 +141,6 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
                         </div>
                       );
                     }
-                  } else {
-                    return null;
                   }
                 }
               })
