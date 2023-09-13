@@ -118,22 +118,29 @@ export const Land = ({
     let nftCounter = 0;
 
     assets.forEach((asset: StarkscanNftProps) => {
-      if (asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT)
-        nftCounter++;
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
         sinceDate = asset.minted_at_timestamp;
 
-      if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
-        filteredAssets.push(
-          SoloBuildings[asset.name as keyof typeof SoloBuildings]
-        );
-      }
-      if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
-        filteredAssets.push(
-          StarkFighterBuildings[
-            asset.name as keyof typeof StarkFighterBuildings
-          ]
-        );
+      if (
+        asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT
+      ) {
+        nftCounter++;
+
+        if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
+          filteredAssets.push(
+            SoloBuildings[asset.name as keyof typeof SoloBuildings]
+          );
+        }
+        if (
+          asset.name &&
+          Object.values(StarkFighterBuildings).includes(asset.name)
+        ) {
+          starkFighter.push(
+            StarkFighterBuildings[
+              asset.name as keyof typeof StarkFighterBuildings
+            ]
+          );
+        }
       }
     });
     // get starkfighter highest level
