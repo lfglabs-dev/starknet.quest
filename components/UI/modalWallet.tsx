@@ -141,6 +141,8 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
                         </div>
                       );
                     }
+                  } else {
+                    return null;
                   }
                 }
               })
