@@ -133,21 +133,25 @@ export const Land = ({
         }
         if (
           asset.name &&
-          Object.values(StarkFighterBuildings).includes(asset.name)
+          Object.values(StarkFighterBuildings).includes(
+            asset.name.toLowerCase()
+          )
         ) {
           starkFighter.push(
             StarkFighterBuildings[
-              asset.name as keyof typeof StarkFighterBuildings
+              asset.name.toLowerCase() as keyof typeof StarkFighterBuildings
             ]
           );
         }
       }
     });
     // get starkfighter highest level
-    const highestValue = Math.max(
-      ...starkFighter.filter((x) => x >= 64005 && x <= 64007)
-    );
-    filteredAssets.push(highestValue);
+    if (starkFighter.length > 0) {
+      const highestValue = Math.max(
+        ...starkFighter.filter((x) => x >= 64005 && x <= 64007)
+      );
+      filteredAssets.push(highestValue);
+    }
     if (hasDomain) filteredAssets.push(64000); // add starknetid building if user has a .stark domain
 
     await getBuildingsFromAchievements(filteredAssets);

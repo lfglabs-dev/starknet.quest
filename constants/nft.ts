@@ -7,7 +7,7 @@ export enum SoloBuildings {
 }
 
 export enum StarkFighterBuildings {
-  "StarkFighter Bronze Arcade" = 64005,
-  "StarkFighter Silver Arcade" = 64006,
-  "StarkFighter Gold Arcade" = 64007,
+  "starkfighter bronze arcade" = 64005,
+  "starkfighter silver arcade" = 64006,
+  "starkfighter gold arcade" = 64007,
 }
