@@ -1,0 +1,27 @@
+.landContainer {
+    height: 100vh;
+    width: 100%;
+    z-index: 0;
+    touch-action: none;
+    overflow: hidden;
+}
+
+.error {
+    display: flex; 
+    margin-left: 1.25rem;
+    margin-right: 1.25rem; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 100px;
+}
+
+
+@media (min-width: 768px) { 
+    .error {
+        margin-top: 0; 
+        margin-left: 0; 
+        height: 100vh; 
+        margin-right: 250px;
+    }
+}

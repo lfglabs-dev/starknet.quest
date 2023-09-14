@@ -35,19 +35,19 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   }, [identity]);
 
   return (
-    <div className="flex flex-row gap-1">
+    <div className="flex flex-row gap-3 w-full justify-evenly">
       <ClickableTwitterIcon
-        width="25"
+        width="16"
         domain={identity?.domain}
         twitterId={apiIdentity?.twitter ?? apiIdentity?.old_twitter}
       />
       <ClickableDiscordIcon
-        width="25"
+        width="16"
         domain={identity?.domain}
         discordId={apiIdentity?.discord ?? apiIdentity?.old_discord}
       />
       <ClickableGithubIcon
-        width="25"
+        width="16"
         domain={identity?.domain}
         githubId={apiIdentity?.github ?? apiIdentity?.old_github}
       />

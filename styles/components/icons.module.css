@@ -37,7 +37,7 @@
 }
 
 .clickableIconGithub {
-  background-color: #24292e;
+  background-color: var(--secondary);
   cursor: pointer;
 }
 

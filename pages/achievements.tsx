@@ -9,6 +9,7 @@ import {
 } from "../types/backTypes";
 import Achievement from "../components/achievements/achievement";
 import { hexToDecimal } from "../utils/feltService";
+import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
 
 const Achievements: NextPage = () => {
   const { address } = useAccount();
@@ -102,16 +103,20 @@ const Achievements: NextPage = () => {
         </div>
         <div className={styles.cardWrapper}>
           <div className={styles.cards}>
-            {userAchievements.map(
-              (achievementCategory: AchievementsDocument, index: number) => {
-                return (
-                  <Achievement
-                    achievements={achievementCategory}
-                    key={achievementCategory.category_name}
-                    index={index}
-                  />
-                );
-              }
+            {userAchievements.length > 0 ? (
+              userAchievements.map(
+                (achievementCategory: AchievementsDocument, index: number) => {
+                  return (
+                    <Achievement
+                      achievements={achievementCategory}
+                      key={achievementCategory.category_name}
+                      index={index}
+                    />
+                  );
+                }
+              )
+            ) : (
+              <AchievementSkeleton />
             )}
           </div>
         </div>

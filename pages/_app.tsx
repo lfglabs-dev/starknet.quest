@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navbar from "../components/UI/navbar";
@@ -46,6 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Head>
             <Navbar />
             <Component {...pageProps} />
+            <Footer />
           </ThemeProvider>
           <Analytics />
         </StarknetIdJsProvider>

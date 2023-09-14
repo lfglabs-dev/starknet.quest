@@ -10,6 +10,7 @@ import {
   numberToString,
   // getDomainKind,
   shortenDomain,
+  minifyAddressWithChars,
 } from "../../utils/stringService";
 import { utils } from "starknetid.js";
 
@@ -256,5 +257,26 @@ describe("Should test shortenDomain function", () => {
 
   it("Should return an empty string if the domain is an empty string", () => {
     expect(shortenDomain("")).toEqual("");
+  });
+});
+
+describe('minifyAddressWithChars function', () => {
+  it('should return empty string if address is undefined', () => {
+    expect(minifyAddressWithChars(undefined, 4)).toBe('');
+  });
+
+  it('should return minified address with specified number of characters at the start and end', () => {
+    const address = '1234567890abcdef';
+    expect(minifyAddressWithChars(address, 4)).toBe('1234...cdef');
+  });
+
+  it('should return the original address if number of characters is equal to half the length of the address', () => {
+    const address = '12345678';
+    expect(minifyAddressWithChars(address, 4)).toBe('12345678');
+  });
+
+  it('should return minified address in lowercase', () => {
+    const address = 'ABCDEFGH';
+    expect(minifyAddressWithChars(address, 3)).toBe('abc...fgh');
   });
 });
