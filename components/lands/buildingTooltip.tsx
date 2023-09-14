@@ -1,9 +1,10 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/tooltip.module.css";
+import { Coord } from "../../types/land";
 
 type BuildingTooltipProps = {
   building: BuildingsInfo | null;
-  pos: { x: number; y: number };
+  pos: Coord;
 };
 
 const BuildingTooltip: FunctionComponent<BuildingTooltipProps> = ({

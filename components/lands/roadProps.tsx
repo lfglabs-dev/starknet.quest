@@ -11,7 +11,7 @@ import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 import RoadItem from "./roadItem";
 
-type IProps = {
+type RoadItemProps = {
   tilesets: Tileset[];
   cityData: (RoadObjects | null)[][];
   tileData: TileData[];
@@ -21,7 +21,7 @@ export default function RoadProps({
   tilesets,
   cityData,
   tileData,
-}: IProps): ReactElement | null {
+}: RoadItemProps): ReactElement | null {
   const buildingTexture = useMemo(() => {
     const texture = useLoader(
       TextureLoader,
