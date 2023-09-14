@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import {
   TextureLoader,
   RepeatWrapping,
@@ -16,10 +16,7 @@ type GroundProps = {
   cityData: (GroundTileProps | null)[][];
 };
 
-export default function Ground({
-  tileset,
-  cityData,
-}: GroundProps): ReactElement | null {
+const Ground: FunctionComponent<GroundProps> = ({ tileset, cityData }) => {
   const groundTexture = useMemo(() => {
     const textObj = useLoader(
       TextureLoader,
@@ -57,4 +54,6 @@ export default function Ground({
         })}
     </>
   );
-}
+};
+
+export default Ground;

@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import {
   TextureLoader,
   RepeatWrapping,
@@ -11,17 +11,17 @@ import { Tileset } from "../../types/ldtk";
 import { useLoader } from "@react-three/fiber";
 import RoadItem from "./roadItem";
 
-type RoadItemProps = {
+type RoadItemsProps = {
   tilesets: Tileset[];
   cityData: (RoadObjects | null)[][];
   tileData: TileData[];
 };
 
-export default function RoadProps({
+const RoadProps: FunctionComponent<RoadItemsProps> = ({
   tilesets,
   cityData,
   tileData,
-}: RoadItemProps): ReactElement | null {
+}) => {
   const buildingTexture = useMemo(() => {
     const texture = useLoader(
       TextureLoader,
@@ -84,4 +84,6 @@ export default function RoadProps({
         })}
     </>
   );
-}
+};
+
+export default RoadProps;

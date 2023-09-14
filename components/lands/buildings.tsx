@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { BuildingTileProps } from "../../types/land";
 import BuildingItem from "./buildingItem";
@@ -10,10 +10,10 @@ type BuildingsProps = {
   buildingData: (BuildingTileProps | null)[][];
 };
 
-export default function Buildings({
+const Buildings: FunctionComponent<BuildingsProps> = ({
   tilesets,
   buildingData,
-}: BuildingsProps): ReactElement | null {
+}) => {
   const buildingTexture = useMemo(() => {
     const texture = useLoader(
       TextureLoader,
@@ -56,4 +56,6 @@ export default function Buildings({
         })}
     </>
   );
-}
+};
+
+export default Buildings;
