@@ -63,7 +63,7 @@
   height: 220px;
   flex-shrink: 0;
   border-radius: 376px;
-  opacity: 0.18;
+  opacity: 0.16;
   background: var(--primary-green, #5ce3fe);
   filter: blur(100px);
   z-index: -1;
@@ -71,5 +71,5 @@
 
 .blur.green {
   background: var(--primary-green, #6affaf);
-  opacity: 0.14;
+  opacity: 0.1;
 }
