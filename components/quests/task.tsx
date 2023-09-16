@@ -131,7 +131,7 @@ const Task: FunctionComponent<Task> = ({
         onClick={() => setIsClicked(!isClicked)}
       >
         <div className="flex items-center">
-          <div className={isClicked ? "rotate-90" : null}>
+          <div className={isClicked ? "rotate-90" : undefined}>
             <ArrowRightIcon width={"16"} color="white" />
           </div>
           <p className="ml-2 mr-2">{name}</p>
