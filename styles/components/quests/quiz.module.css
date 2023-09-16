@@ -50,11 +50,6 @@
   align-items: center;
 }
 
-.controls button svg {
-  width: 16px;
-  margin-right: 8px;
-}
-
 .menu {
   max-width: 600px;
   height: 100%;

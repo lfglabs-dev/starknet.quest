@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import Quest from "../components/quests/quest";
 import FeaturedQuest from "../components/quests/featuredQuest";
-import QuestsSkeleton from "../components/skeletons/questsSkeleton";
 
 import { useRouter } from "next/router";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import HowToParticipate from "../components/pages/home/howToParticipate";
+import QuestCategories from "../components/pages/home/questCategories";
+import TrendingQuests from "../components/pages/home/trending";
+import Blur from "../components/shapes/blur";
+import HomeControls from "../components/pages/home/homeControls";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -36,6 +38,10 @@ const Quests: NextPage = () => {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
+        <HomeControls />
+        <div className={styles.blur1}>
+          <Blur />
+        </div>
         <FeaturedQuest
           key={featuredQuest?.id}
           title={featuredQuest?.title_card}
@@ -49,28 +55,11 @@ const Quests: NextPage = () => {
           desc={featuredQuest?.desc}
           expiry={featuredQuest?.expiry_timestamp}
         />
-        <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
-        <div className={styles.questContainer}>
-          {quests ? (
-            quests.map((quest) => {
-              return (
-                <Quest
-                  key={quest.id}
-                  title={quest.title_card}
-                  onClick={() => router.push(`/quest/${quest.id}`)}
-                  imgSrc={quest.img_card}
-                  issuer={{
-                    name: quest.issuer,
-                    logoFavicon: quest.logo,
-                  }}
-                  reward={quest.rewards_title}
-                />
-              );
-            })
-          ) : (
-            <QuestsSkeleton />
-          )}
+        <QuestCategories quests={quests} />
+        <div className={styles.blur2}>
+          <Blur green />
         </div>
+        <TrendingQuests quests={quests} />
         <HowToParticipate />
       </div>
     </div>

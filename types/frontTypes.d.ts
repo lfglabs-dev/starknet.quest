@@ -169,3 +169,9 @@ type BuildingsInfo = {
   level: number;
   pos?: THREE.Vector2;
 };
+
+type QuestCategory = {
+  name: string;
+  img: string;
+  questNumber: number;
+};
