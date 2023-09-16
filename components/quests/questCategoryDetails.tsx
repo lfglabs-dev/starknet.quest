@@ -47,7 +47,7 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
                 setMenu(
                   <QuestDetails
                     quest={quest}
-                    setShowMenu={(_) => setMenu(null)}
+                    setShowMenu={() => setMenu(null)}
                   />
                 )
               }

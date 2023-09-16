@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { QuestDocument } from "../../types/backTypes";
 import ScreenLayout from "./screenLayout";
-import { useRouter } from "next/router";
 import QuestMenu from "./questMenu";
 
 type QuestDetailsProps = {
@@ -13,8 +12,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   quest,
   setShowMenu,
 }) => {
-  const router = useRouter();
-
   useEffect(() => {
     const documentBody = document.querySelector("body");
     if (!documentBody) return;

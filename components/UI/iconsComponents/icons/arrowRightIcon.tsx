@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
 
 const ArrowRightIcon: FunctionComponent<IconProps> = ({
   width = 24,

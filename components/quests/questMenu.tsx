@@ -9,7 +9,6 @@ import Task from "../../components/quests/task";
 import Reward from "../../components/quests/reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
-import { useRouter } from "next/router";
 import { hexToDecimal } from "../../utils/feltService";
 import {
   NFTItem,
@@ -53,7 +52,6 @@ const QuestMenu: FunctionComponent<QuestMenuProps> = ({
   res,
   errorMsg,
 }) => {
-  const router = useRouter();
   const { address } = useAccount();
   const { provider } = useProvider();
   const [tasks, setTasks] = useState<UserTask[]>([]);

@@ -17,7 +17,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
     const res: {
       [key: string]: QuestCategory;
     } = {};
-    for (let quest of quests) {
+    for (const quest of quests) {
       const key = quest.category as string;
       const value = res[key];
       if (!value) {
