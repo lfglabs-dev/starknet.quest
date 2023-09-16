@@ -1,5 +1,5 @@
 import styles from "../../styles/Home.module.css";
-import { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import BackButton from "../UI/backButton";
 import Footer from "../UI/footer";
 import Blur from "../shapes/blur";
