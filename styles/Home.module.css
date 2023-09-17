@@ -137,7 +137,7 @@
   width: 100%;
 }
 
-.categoryDetails .backButton {
+.backButton {
   margin-left: 63px;
 }
 
@@ -229,7 +229,7 @@
   .categoryDetails .content {
     max-width: calc(100% - 24px);
   }
-  .categoryDetails .backButton {
+  .backButton {
     margin-left: 24px;
   }
 }

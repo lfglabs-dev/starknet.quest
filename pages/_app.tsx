@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
 import Footer from "../components/UI/footer";
+import { QuestsContextProvider } from "../context/QuestsProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [
@@ -44,9 +45,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                 content="width=device-width, initial-scale=1"
               />
             </Head>
-            <Navbar />
-            <Component {...pageProps} />
-            <Footer />
+            <QuestsContextProvider>
+              <Navbar />
+              <Component {...pageProps} />
+              <Footer />
+            </QuestsContextProvider>
           </ThemeProvider>
           <Analytics />
         </StarknetIdJsProvider>

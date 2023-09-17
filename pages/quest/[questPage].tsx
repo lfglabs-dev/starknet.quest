@@ -8,6 +8,7 @@ import { QueryError, QuestDocument } from "../../types/backTypes";
 import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import ErrorScreen from "../../components/UI/screens/errorScreen";
 import NftIssuer from "../../components/quests/nftIssuer";
+import BackButton from "../../components/UI/backButton";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
@@ -61,6 +62,9 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <div className={homeStyles.screen}>
+      <div className={homeStyles.backButton}>
+        <BackButton onClick={() => router.back()} />
+      </div>
       <div className={styles.imageContainer}>
         {quest.issuer === "loading" ? (
           <RewardSkeleton />

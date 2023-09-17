@@ -1,39 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import FeaturedQuest from "../components/quests/featuredQuest";
 
 import { useRouter } from "next/router";
-import { QueryError, QuestDocument } from "../types/backTypes";
 import HowToParticipate from "../components/pages/home/howToParticipate";
 import QuestCategories from "../components/pages/home/questCategories";
 import TrendingQuests from "../components/pages/home/trending";
 import Blur from "../components/shapes/blur";
 import HomeControls from "../components/pages/home/homeControls";
+import { QuestsContext } from "../context/QuestsProvider";
 
 const Quests: NextPage = () => {
   const router = useRouter();
-  const [quests, setQuests] = useState<QuestDocument[]>([]);
-  const [featuredQuest, setFeaturedQuest] = useState<
-    QuestDocument | undefined
-  >();
+  const { quests, featuredQuest } = useContext(QuestsContext);
 
-  // this fetches all available quests
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
-      .then((response) => response.json())
-      .then((data: QuestDocument[] | QueryError) => {
-        if (!(data as QueryError).error) {
-          setQuests(data as QuestDocument[]);
-          const activeQuests = data as QuestDocument[];
-          setFeaturedQuest(
-            activeQuests.length >= 1
-              ? activeQuests[activeQuests.length - 1]
-              : undefined
-          );
-        }
-      });
-  }, [router]);
+  console.log(quests);
 
   return (
     <div className={styles.screen}>

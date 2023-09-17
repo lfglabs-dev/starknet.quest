@@ -1,14 +1,9 @@
-import React, {
-  FunctionComponent,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import { QuestDocument } from "../../types/backTypes";
 import ScreenLayout from "./screenLayout";
 import Quest from "./quest";
-import QuestDetails from "./questDetails";
+import { useRouter } from "next/router";
 
 type QuestCategoryDetailsProps = {
   quests: QuestDocument[];
@@ -19,7 +14,7 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
   quests,
   setShowMenu,
 }) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const documentBody = document.querySelector("body");
@@ -38,11 +33,11 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
     <ScreenLayout close={() => setShowMenu(false)}>
       <h1 className={styles.title}>Onboarding quests</h1>
       <div className={styles.questList}>
-        {quests.map((quest, index) => (
+        {quests.map((quest) => (
           <Quest
             key={quest.id}
             title={quest.title_card}
-            onClick={() => setSelectedIndex(index)}
+            onClick={() => router.push(`/quest/${quest.id}`)}
             imgSrc={quest.img_card}
             issuer={{
               name: quest.issuer,
@@ -52,12 +47,6 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
           />
         ))}
       </div>
-      {selectedIndex !== null && (
-        <QuestDetails
-          quest={quests[selectedIndex]}
-          close={() => setSelectedIndex(null)}
-        />
-      )}
     </ScreenLayout>
   );
 };
