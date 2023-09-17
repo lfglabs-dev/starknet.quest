@@ -13,9 +13,7 @@ import { QuestsContext } from "../context/QuestsProvider";
 
 const Quests: NextPage = () => {
   const router = useRouter();
-  const { quests, featuredQuest } = useContext(QuestsContext);
-
-  console.log(quests);
+  const { quests, featuredQuest, categories } = useContext(QuestsContext);
 
   return (
     <div className={styles.screen}>
@@ -37,7 +35,7 @@ const Quests: NextPage = () => {
           desc={featuredQuest?.desc}
           expiry={featuredQuest?.expiry_timestamp}
         />
-        <QuestCategories quests={quests} />
+        <QuestCategories categories={categories} />
         <div className={styles.blur2}>
           <Blur green />
         </div>

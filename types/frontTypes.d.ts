@@ -174,4 +174,5 @@ type QuestCategory = {
   name: string;
   img: string;
   questNumber: number;
+  quests: QuestDocument[];
 };

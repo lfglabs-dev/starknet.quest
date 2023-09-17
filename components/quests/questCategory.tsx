@@ -1,17 +1,12 @@
 import React, { FunctionComponent, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import QuestCategoryDetails from "./questCategoryDetails";
-import { QuestDocument } from "../../types/backTypes";
 
 type QuestCategoryProps = {
   category: QuestCategory;
-  quests: QuestDocument[];
 };
 
-const QuestCategory: FunctionComponent<QuestCategoryProps> = ({
-  category,
-  quests,
-}) => {
+const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -26,7 +21,10 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({
         <img src={category.img} />
       </div>
       {showMenu && (
-        <QuestCategoryDetails setShowMenu={setShowMenu} quests={quests} />
+        <QuestCategoryDetails
+          setShowMenu={setShowMenu}
+          quests={category.quests}
+        />
       )}
     </>
   );

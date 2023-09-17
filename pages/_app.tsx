@@ -34,27 +34,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <>
-      <StarknetConfig connectors={connectors} autoConnect>
-        <StarknetIdJsProvider>
-          <ThemeProvider theme={theme}>
-            <Head>
-              <title>Starknet Quest</title>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
-              />
-            </Head>
-            <QuestsContextProvider>
-              <Navbar />
-              <Component {...pageProps} />
-              <Footer />
-            </QuestsContextProvider>
-          </ThemeProvider>
-          <Analytics />
-        </StarknetIdJsProvider>
-      </StarknetConfig>
-    </>
+    <StarknetConfig connectors={connectors} autoConnect>
+      <StarknetIdJsProvider>
+        <ThemeProvider theme={theme}>
+          <Head>
+            <title>Starknet Quest</title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+          </Head>
+          <QuestsContextProvider>
+            <Navbar />
+            <Component {...pageProps} />
+            <Footer />
+          </QuestsContextProvider>
+        </ThemeProvider>
+        <Analytics />
+      </StarknetIdJsProvider>
+    </StarknetConfig>
   );
 }
 
