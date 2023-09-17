@@ -5,9 +5,10 @@ interface QuestsConfig {
   quests: QuestDocument[];
   featuredQuest?: QuestDocument;
   categories: QuestCategory[];
+  trendingQuests: QuestDocument[];
 }
 
-type Res =
+type GetQuestsRes =
   | {
       [key: string]: QuestDocument[];
     }
@@ -17,6 +18,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   quests: [],
   featuredQuest: undefined,
   categories: [],
+  trendingQuests: [],
 });
 
 export const QuestsContextProvider = ({
@@ -29,11 +31,12 @@ export const QuestsContextProvider = ({
     QuestDocument | undefined
   >();
   const [categories, setCategories] = useState<QuestCategory[]>([]);
+  const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
 
   useMemo(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
       .then((response) => response.json())
-      .then((data: Res) => {
+      .then((data: GetQuestsRes) => {
         if ((data as QueryError).error) return;
         const q = Object.values(data).flat();
         setCategories(
@@ -49,13 +52,23 @@ export const QuestsContextProvider = ({
       });
   }, []);
 
+  useMemo(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`)
+      .then((response) => response.json())
+      .then((data: QuestDocument[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        setTrendingQuests(data as QuestDocument[]);
+      });
+  }, []);
+
   const contextValues = useMemo(() => {
     return {
       quests,
       featuredQuest,
       categories,
+      trendingQuests: trendingQuests,
     };
-  }, [quests, featuredQuest, categories]);
+  }, [quests, featuredQuest, categories, trendingQuests]);
 
   return (
     <QuestsContext.Provider value={contextValues}>

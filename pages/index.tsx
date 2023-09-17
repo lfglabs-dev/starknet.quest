@@ -13,7 +13,8 @@ import { QuestsContext } from "../context/QuestsProvider";
 
 const Quests: NextPage = () => {
   const router = useRouter();
-  const { quests, featuredQuest, categories } = useContext(QuestsContext);
+  const { quests, featuredQuest, categories, trendingQuests } =
+    useContext(QuestsContext);
 
   return (
     <div className={styles.screen}>
@@ -39,7 +40,7 @@ const Quests: NextPage = () => {
         <div className={styles.blur2}>
           <Blur green />
         </div>
-        <TrendingQuests quests={quests} />
+        <TrendingQuests trendingQuests={trendingQuests} />
         <HowToParticipate />
       </div>
     </div>

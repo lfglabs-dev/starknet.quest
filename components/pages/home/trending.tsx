@@ -6,17 +6,19 @@ import { useRouter } from "next/router";
 import { QuestDocument } from "../../../types/backTypes";
 
 type TrendingQuestsProps = {
-  quests: QuestDocument[];
+  trendingQuests: QuestDocument[];
 };
 
-const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({ quests }) => {
+const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
+  trendingQuests,
+}) => {
   const router = useRouter();
   return (
     <>
       <h1 className={styles.title}>Trending quests</h1>
       <div className={styles.questContainer}>
-        {quests ? (
-          quests.slice(0, 6).map((quest) => {
+        {trendingQuests ? (
+          trendingQuests.map((quest) => {
             return (
               <Quest
                 key={quest.id}
