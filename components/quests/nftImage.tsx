@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
 
-type NftsProps = {
+type NftImageProps = {
   nfts: Nft[];
 };
 
-const Nfts: FunctionComponent<NftsProps> = ({ nfts }) => {
+const NftImage: FunctionComponent<NftImageProps> = ({ nfts }) => {
   return (
     <div className="flex gap-5 flex-wrap justify-center items-center">
       {nfts.map((nft, index) => (
@@ -20,4 +20,4 @@ const Nfts: FunctionComponent<NftsProps> = ({ nfts }) => {
   );
 };
 
-export default Nfts;
+export default NftImage;

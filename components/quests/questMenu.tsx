@@ -21,7 +21,7 @@ import { Skeleton } from "@mui/material";
 import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 import Timer from "../../components/quests/timer";
-import Nfts from "./nfts";
+import NftImage from "./nftImage";
 import { splitByNftContract } from "../../utils/rewards";
 
 type QuestMenuProps = {
@@ -230,7 +230,7 @@ const QuestMenu: FunctionComponent<QuestMenuProps> = ({
 
   return (
     <>
-      <Nfts
+      <NftImage
         nfts={quest.rewards_nfts.map((nft: NFTItem) => {
           return { imgSrc: nft.img, level: nft.level };
         })}
