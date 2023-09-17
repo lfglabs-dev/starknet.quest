@@ -22,22 +22,7 @@ import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
 import Timer from "../../components/quests/timer";
 import Nfts from "./nfts";
-
-const splitByNftContract = (
-  rewards: EligibleReward[]
-): Record<string, EligibleReward[]> => {
-  return rewards.reduce(
-    (acc: Record<string, EligibleReward[]>, reward: EligibleReward) => {
-      if (!acc[reward.nft_contract]) {
-        acc[reward.nft_contract] = [];
-      }
-
-      acc[reward.nft_contract].push(reward);
-      return acc;
-    },
-    {}
-  );
-};
+import { splitByNftContract } from "../../utils/rewards";
 
 type QuestMenuProps = {
   quest: QuestDocument;

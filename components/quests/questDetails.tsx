@@ -5,12 +5,12 @@ import QuestMenu from "./questMenu";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
-  setShowMenu: (showMenu: boolean) => void;
+  close: () => void;
 };
 
 const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   quest,
-  setShowMenu,
+  close,
 }) => {
   useEffect(() => {
     const documentBody = document.querySelector("body");
@@ -26,10 +26,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   }, []);
 
   return (
-    <ScreenLayout setShowMenu={setShowMenu}>
-      <>
-        <QuestMenu quest={quest} />
-      </>
+    <ScreenLayout close={close}>
+      <QuestMenu quest={quest} />
     </ScreenLayout>
   );
 };

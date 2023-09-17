@@ -19,7 +19,7 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
   quests,
   setShowMenu,
 }) => {
-  const [menu, setMenu] = useState<ReactNode>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const documentBody = document.querySelector("body");
@@ -35,33 +35,29 @@ const QuestCategoryDetails: FunctionComponent<QuestCategoryDetailsProps> = ({
   }, []);
 
   return (
-    <ScreenLayout setShowMenu={setShowMenu}>
-      <>
-        <h1 className={styles.title}>Onboarding quests</h1>
-        <div className={styles.questList}>
-          {quests.map((quest) => (
-            <Quest
-              key={quest.id}
-              title={quest.title_card}
-              onClick={() =>
-                setMenu(
-                  <QuestDetails
-                    quest={quest}
-                    setShowMenu={() => setMenu(null)}
-                  />
-                )
-              }
-              imgSrc={quest.img_card}
-              issuer={{
-                name: quest.issuer,
-                logoFavicon: quest.logo,
-              }}
-              reward={quest.rewards_title}
-            />
-          ))}
-        </div>
-        {menu}
-      </>
+    <ScreenLayout close={() => setShowMenu(false)}>
+      <h1 className={styles.title}>Onboarding quests</h1>
+      <div className={styles.questList}>
+        {quests.map((quest, index) => (
+          <Quest
+            key={quest.id}
+            title={quest.title_card}
+            onClick={() => setSelectedIndex(index)}
+            imgSrc={quest.img_card}
+            issuer={{
+              name: quest.issuer,
+              logoFavicon: quest.logo,
+            }}
+            reward={quest.rewards_title}
+          />
+        ))}
+      </div>
+      {selectedIndex !== null && (
+        <QuestDetails
+          quest={quests[selectedIndex]}
+          close={() => setSelectedIndex(null)}
+        />
+      )}
     </ScreenLayout>
   );
 };

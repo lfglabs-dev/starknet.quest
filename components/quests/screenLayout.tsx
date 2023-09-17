@@ -6,12 +6,12 @@ import Blur from "../shapes/blur";
 
 type ScreenLayoutProps = {
   children: ReactNode;
-  setShowMenu: (showMenu: boolean) => void;
+  close: () => void;
 };
 
 const ScreenLayout: FunctionComponent<ScreenLayoutProps> = ({
   children,
-  setShowMenu,
+  close,
 }) => {
   return (
     <div className={styles.categoryDetails}>
@@ -19,7 +19,7 @@ const ScreenLayout: FunctionComponent<ScreenLayoutProps> = ({
         <Blur />
       </div>
       <div className={styles.backButton}>
-        <BackButton onClick={() => setShowMenu(false)} />
+        <BackButton onClick={() => close()} />
       </div>
       <div className={styles.content}>{children}</div>
       <div className={styles.footer}>
