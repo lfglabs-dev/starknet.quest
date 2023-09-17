@@ -13,7 +13,7 @@ import { QuestsContext } from "../context/QuestsProvider";
 
 const Quests: NextPage = () => {
   const router = useRouter();
-  const { quests, featuredQuest, categories, trendingQuests } =
+  const { featuredQuest, categories, trendingQuests } =
     useContext(QuestsContext);
 
   return (

@@ -111,50 +111,8 @@
   z-index: -1;
 }
 
-.categoryDetails {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background-color: var(--background);
-  z-index: 10;
-  width: 100%;
-  padding-top: calc(12vh + 2em);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.categoryDetails .content {
-  width: 100%;
-  min-height: calc(100% - 13vh - 4em);
-  max-width: calc(100% - 126px);
-  display: block;
-  margin: 0 auto;
-  padding: 25px;
-}
-
-.categoryDetails .footer {
-  width: 100%;
-}
-
 .backButton {
   margin-left: 63px;
-}
-
-.categoryDetails .blur {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-}
-
-.categoryDetails .questList {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: center;
 }
 
 .controls {
