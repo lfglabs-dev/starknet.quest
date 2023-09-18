@@ -8,7 +8,6 @@ import HowToParticipate from "../components/pages/home/howToParticipate";
 import QuestCategories from "../components/pages/home/questCategories";
 import TrendingQuests from "../components/pages/home/trending";
 import Blur from "../components/shapes/blur";
-import HomeControls from "../components/pages/home/homeControls";
 import { QuestsContext } from "../context/QuestsProvider";
 
 const Quests: NextPage = () => {
@@ -19,7 +18,6 @@ const Quests: NextPage = () => {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <HomeControls />
         <div className={styles.blur1}>
           <Blur />
         </div>
