@@ -5,8 +5,8 @@ import React, {
   FunctionComponent,
 } from "react";
 import styles from "../../styles/quests.module.css";
-import Task from "../../components/quests/task";
-import Reward from "../../components/quests/reward";
+import Task from "./task";
+import Reward from "./reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "../../utils/feltService";
@@ -18,20 +18,20 @@ import {
 } from "../../types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
-import TasksSkeleton from "../../components/skeletons/tasksSkeleton";
+import TasksSkeleton from "../skeletons/tasksSkeleton";
 import { generateCodeChallenge } from "../../utils/codeChallenge";
-import Timer from "../../components/quests/timer";
+import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "../../utils/rewards";
 
-type QuestMenuProps = {
+type QuestDetailsProps = {
   quest: QuestDocument;
   taskId?: string;
   res?: string;
   errorMsg?: string;
 };
 
-const QuestMenu: FunctionComponent<QuestMenuProps> = ({
+const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   quest,
   taskId,
   res,
@@ -316,4 +316,4 @@ const QuestMenu: FunctionComponent<QuestMenuProps> = ({
   );
 };
 
-export default QuestMenu;
+export default QuestDetails;

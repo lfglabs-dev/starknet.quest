@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import QuestMenu from "../../components/quests/questMenu";
+import QuestDetails from "../../components/quests/questDetails";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
 import styles from "../../styles/quests.module.css";
@@ -77,7 +77,7 @@ const QuestPage: NextPage = () => {
           />
         )}
       </div>
-      <QuestMenu
+      <QuestDetails
         quest={quest}
         taskId={taskId as string | undefined}
         res={res as string | undefined}
