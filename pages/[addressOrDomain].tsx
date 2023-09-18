@@ -146,7 +146,7 @@ const AddressOrDomain: NextPage = () => {
                       ...data,
                       starknet_id: id.toString(),
                     });
-                    if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                    if (hexToDecimal(address) === hexToDecimal(data.addr)) setIsOwner(true);
                     setInitProfile(true);
                   });
                 })
