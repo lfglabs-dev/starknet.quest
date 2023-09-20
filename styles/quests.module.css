@@ -9,7 +9,7 @@
   background-color: var(--menu-background);
   cursor: pointer;
 
-  align-self: flex-start;
+  align-self: stretch;
   border: solid 1px transparent;
 }
 
