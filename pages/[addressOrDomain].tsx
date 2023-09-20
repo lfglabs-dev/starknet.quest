@@ -7,7 +7,7 @@ import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import { Tooltip } from "@mui/material";
-import { decimalToHex, hexToDecimal } from "../utils/feltService";
+import { hexToDecimal } from "../utils/feltService";
 import { minifyAddress } from "../utils/stringService";
 import { utils } from "starknetid.js";
 import ErrorScreen from "../components/UI/screens/errorScreen";
@@ -146,7 +146,8 @@ const AddressOrDomain: NextPage = () => {
                       ...data,
                       starknet_id: id.toString(),
                     });
-                    if (hexToDecimal(address) === hexToDecimal(data.addr)) setIsOwner(true);
+                    if (hexToDecimal(address) === hexToDecimal(data.addr))
+                      setIsOwner(true);
                     setInitProfile(true);
                   });
                 })
@@ -196,7 +197,7 @@ const AddressOrDomain: NextPage = () => {
 
   const copyToClipboard = () => {
     setCopied(true);
-    navigator.clipboard.writeText(decimalToHex(identity?.addr));
+    navigator.clipboard.writeText(identity?.addr as string);
     setTimeout(() => {
       setCopied(false);
     }, 1500);
@@ -224,7 +225,7 @@ const AddressOrDomain: NextPage = () => {
       {initProfile && identity ? (
         <>
           <Land
-            address={decimalToHex(identity.addr)}
+            address={identity.addr}
             isOwner={isOwner}
             isMobile={isMobile}
             setSinceDate={setSinceDate}
@@ -272,10 +273,7 @@ const AddressOrDomain: NextPage = () => {
                         {typeof addressOrDomain === "string" &&
                         isHexString(addressOrDomain)
                           ? minifyAddressWithChars(addressOrDomain, 8)
-                          : minifyAddressWithChars(
-                              decimalToHex(identity?.addr),
-                              8
-                            )}
+                          : minifyAddressWithChars(identity?.addr, 8)}
                       </div>
                     </div>
                     {sinceDate ? (
