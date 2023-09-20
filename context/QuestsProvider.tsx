@@ -42,7 +42,7 @@ export const QuestsContextProvider = ({
         setCategories(
           Object.keys(data).map((key) => ({
             name: key,
-            img: q.filter((quest) => quest.category === key)[0].img_card,
+            img: q.filter((quest) => quest.category === key)[0]?.img_card,
             questNumber: q.filter((quest) => quest.category === key).length,
             quests: q.filter((quest) => quest.category === key),
           }))
