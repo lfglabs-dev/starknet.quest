@@ -1,16 +1,14 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import Steps from "../../UI/steps/steps";
 import CategoryTitle from "../../UI/titles/categoryTitle";
-import Crosses from "../../shapes/crosses";
 import styles from "../../../styles/components/pages/home/howToParticipate.module.css";
 
-const HowToParticipate = () => {
+const HowToParticipate: FunctionComponent = () => {
   return (
     <section>
       <CategoryTitle
         title="How to Participate ?"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
-        corner="topLeft"
       />
       <div className={styles.stepsContainer}>
         <Steps
@@ -42,7 +40,6 @@ const HowToParticipate = () => {
             },
           ]}
         />
-        <Crosses xDecal={-300} />
       </div>
     </section>
   );

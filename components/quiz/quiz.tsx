@@ -37,12 +37,14 @@ const Quiz: FunctionComponent<QuizProps> = ({
 
   useEffect(() => {
     const documentBody = document.querySelector("body");
-    if (!documentBody) return;
+    const footer = document.querySelector("footer");
     // Mount
-    documentBody.style.overflow = "hidden";
+    if (documentBody) documentBody.style.overflow = "hidden";
+    if (footer) footer.style.display = "none";
     // Unmount
     return () => {
-      documentBody.style.removeProperty("overflow");
+      if (documentBody) documentBody.style.removeProperty("overflow");
+      if (footer) footer.style.removeProperty("display");
     };
   }, []);
 

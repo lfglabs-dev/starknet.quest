@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
 import Footer from "../components/UI/footer";
+import { QuestsContextProvider } from "../context/QuestsProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [
@@ -33,25 +34,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <>
-      <StarknetConfig connectors={connectors} autoConnect>
-        <StarknetIdJsProvider>
-          <ThemeProvider theme={theme}>
-            <Head>
-              <title>Starknet Quest</title>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
-              />
-            </Head>
+    <StarknetConfig connectors={connectors} autoConnect>
+      <StarknetIdJsProvider>
+        <ThemeProvider theme={theme}>
+          <Head>
+            <title>Starknet Quest</title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+          </Head>
+          <QuestsContextProvider>
             <Navbar />
             <Component {...pageProps} />
             <Footer />
-          </ThemeProvider>
-          <Analytics />
-        </StarknetIdJsProvider>
-      </StarknetConfig>
-    </>
+          </QuestsContextProvider>
+        </ThemeProvider>
+        <Analytics />
+      </StarknetIdJsProvider>
+    </StarknetConfig>
   );
 }
 

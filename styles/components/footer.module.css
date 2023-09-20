@@ -4,10 +4,10 @@
   padding: 2rem 0;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid rgba(225, 220, 234, 0.40);
+  border-top: 1px solid rgba(225, 220, 234, 0.4);
   max-width: calc(100% - 126px);
   padding: 48px 0;
-  margin: 0 auto;
+  margin: 2em auto 0 auto;
 
   color: var(--secondary);
   font-family: Sora;
@@ -25,12 +25,14 @@
   width: 100%;
 }
 
-.content, .social {
+.content,
+.social {
   transition: opacity 0.3s;
   opacity: 0.7;
 }
 
-.content:hover, .social:hover {
+.content:hover,
+.social:hover {
   transition: opacity 0.3s;
   opacity: 1;
 }

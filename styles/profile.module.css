@@ -27,13 +27,13 @@
   align-items: center;
   gap: 16px;
   border-radius: 8px;
-  background: var(--background600, #29282B);
+  background: var(--background600, #29282b);
   width: 250px;
 }
 
 .title {
   align-self: stretch;
-  color: var(--secondary, #F4FAFF);
+  color: var(--secondary, #f4faff);
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   font-family: Sora;
   font-size: 16px;
@@ -47,7 +47,7 @@
   height: 0.5px;
   align-self: stretch;
   opacity: 0.3;
-  background: var(--background500, #E1DCEA);
+  background: var(--background500, #e1dcea);
 }
 
 .nameCard {
@@ -58,8 +58,9 @@
 
 .profilePicture {
   border-radius: 36px;
-  border: 1px solid var(--secondary, #F4FAFF);
-  box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px rgba(191, 158, 123, 0.06);
+  border: 1px solid var(--secondary, #f4faff);
+  box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px
+    rgba(191, 158, 123, 0.06);
   width: 72px;
   height: 72px;
   overflow: hidden;
@@ -77,7 +78,7 @@
 
 .address {
   margin-left: 22px;
-  color: var(--secondary, #F4FAFF);
+  color: var(--secondary, #f4faff);
   font-family: Sora;
   font-size: 8px;
   font-style: normal;
@@ -92,12 +93,12 @@
   align-items: center;
   gap: 10px;
   border-radius: 8px;
-  background: #1F1F25;
+  background: var(--menu-background);
   background-blend-mode: overlay;
 }
 
 .memberSince > p {
-  color: var(--secondary, #F4FAFF);
+  color: var(--secondary, #f4faff);
   text-align: center;
   font-family: Sora;
   font-size: 8px;
@@ -117,7 +118,7 @@
 
 .trophy {
   border-radius: 3.429px;
-  background: #E6CD84;
+  background: #e6cd84;
   display: flex;
   width: 24px;
   height: 24px;
