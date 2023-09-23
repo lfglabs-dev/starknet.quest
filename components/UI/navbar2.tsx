@@ -1,11 +1,7 @@
 import Link from "next/link";
-import React, {
-  useState,
-  useEffect,
-  FunctionComponent,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { FaDiscord, FaTwitter } from "react-icons/fa";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
 import {
@@ -18,56 +14,63 @@ import {
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
-import { useDomainFromAddress } from "../../hooks/naming";
-import { constants } from "starknet";
-import ModalWallet from "./modalWallet";
+import { useMediaQuery } from "@mui/material";
 import { CircularProgress } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useRouter } from "next/router";
-import theme from "../../styles/theme";
-import { FaDiscord, FaTwitter } from "react-icons/fa";
+import ModalWallet from "./modalWallet";
+import { constants } from "starknet";
+import { useTheme } from "@mui/material/styles";
+import ProfilFilledIcon from "./iconsComponents/icons/profilFilledIcon";
 
 const Navbar: FunctionComponent = () => {
+  const theme = useTheme();
   const [nav, setNav] = useState<boolean>(false);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
   const { address } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
-  const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect, connectors } = useConnectors();
+  const { available, connect, disconnect, refresh, connectors } =
+    useConnectors();
   const { provider } = useProvider();
-  const domainOrAddressMinified = useDisplayName(address ?? "");
-  const domain = useDomainFromAddress(address ?? "").domain;
-  const addressOrDomain =
-    domain && domain.endsWith(".stark") ? domain : address;
+  const isMobile = useMediaQuery("(max-width:425px)");
+  const domainOrAddress = useDisplayName(address ?? "", isMobile);
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
-  const [navbarBg, setNavbarBg] = useState<boolean>(false);
+  const [txLoading, setTxLoading] = useState<number>(0);
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  const router = useRouter();
 
   useEffect(() => {
-    // to handle autoconnect starknet-react adds connector id in local storage
-    // if there is no value stored, we show the wallet modal
+    async function tryAutoConnect(connectors: Connector[]) {
+      // to handle autoconnect starknet-react adds connector id in local storage
+      // if there is no value stored, we show the wallet modal
+      const lastConnectedConnectorId =
+        localStorage.getItem("lastUsedConnector");
+      if (lastConnectedConnectorId === null) {
+        return;
+      }
+
+      const lastConnectedConnector = connectors.find(
+        (connector) => connector.id === lastConnectedConnectorId
+      );
+      if (lastConnectedConnector === undefined) {
+        return;
+      }
+
+      try {
+        if (!(await lastConnectedConnector.ready())) {
+          // Not authorized anymore.
+          return;
+        }
+
+        await connect(lastConnectedConnector);
+      } catch {
+        // no-op
+      }
+    }
+
     const timeout = setTimeout(() => {
       if (!address) {
-        if (
-          !localStorage.getItem("lastUsedConnector") &&
-          router?.pathname !== "/partnership"
-        ) {
-          if (connectors.length > 0) setHasWallet(true);
-        } else {
-          const lastConnectedConnectorId =
-            localStorage.getItem("lastUsedConnector");
-          if (lastConnectedConnectorId === null) return;
-
-          const lastConnectedConnector = connectors.find(
-            (connector) => connector.id === lastConnectedConnectorId
-          );
-          if (lastConnectedConnector === undefined) return;
-          tryConnect(lastConnectedConnector);
-        }
+        tryAutoConnect(connectors);
       }
     }, 1000);
     return () => clearTimeout(timeout);
@@ -90,22 +93,11 @@ const Navbar: FunctionComponent = () => {
     });
   }, [provider, network, isConnected]);
 
-  const tryConnect = useCallback(
-    async (connector: Connector) => {
-      if (address) return;
-      if (await connector.ready()) {
-        connect(connector);
-
-        return;
-      }
-    },
-    [address, connectors]
-  );
-
   function disconnectByClick(): void {
     disconnect();
     setIsConnected(false);
     setIsWrongNetwork(false);
+    setHasWallet(false);
     setShowWallet(false);
   }
 
@@ -115,6 +107,7 @@ const Navbar: FunctionComponent = () => {
 
   function onTopButtonClick(): void {
     if (!isConnected) {
+      refresh();
       if (available.length > 0) {
         if (available.length === 1) {
           connect(available[0]);
@@ -125,71 +118,55 @@ const Navbar: FunctionComponent = () => {
         setHasWallet(true);
       }
     } else {
+      // disconnectByClick();
       setShowWallet(true);
     }
   }
 
   function topButtonText(): string | undefined {
-    const textToReturn = isConnected ? domainOrAddressMinified : "connect";
+    const textToReturn = isConnected ? domainOrAddress : "connect wallet";
 
     return textToReturn;
   }
 
-  const handleScroll = () => {
-    if (window.scrollY > 10) {
-      setNavbarBg(true);
-    } else {
-      setNavbarBg(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  // Refresh available connectors before showing wallet modal
+  function refreshAndShowWallet(): void {
+    refresh();
+    setHasWallet(true);
+  }
 
   return (
     <>
-      <div className={`fixed w-full z-[1]`}>
-        <div
-          className={`${styles.navbarContainer} ${
-            navbarBg ? styles.navbarScrolled : ""
-          }`}
-        >
+      <div className={"fixed w-full z-[1] bg-background"}>
+        <div className={styles.navbarContainer}>
           <div className="ml-4">
             <Link href="/" className="cursor-pointer">
               <img
                 className="cursor-pointer"
-                src="/visuals/starknetquestLogo.svg"
+                src="/visuals/StarknetIdLogo.svg"
                 alt="Starknet.id Logo"
-                width={70}
-                height={70}
+                width={90}
+                height={90}
               />
             </Link>
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
+              <Link href="/identities">
+                <li className={styles.menuItem}>My Identities</li>
+              </Link>
               <Link href="/">
-                <li className={styles.menuItem}>Quests</li>
+                <li className={styles.menuItem}>Domains</li>
               </Link>
-              <Link href="/achievements">
-                <li className={styles.menuItem}>Achievements</li>
-              </Link>
-              <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My profile</li>
-              </Link>
-              {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
-              {/* <SelectNetwork network={network} /> */}
-              <div className="text-background ml-5 mr-5">
+              {/* <Link href="/jointhetribe">
+                <li className={styles.menuItem}>Join the tribe</li>
+              </Link> */}
+              <div className="text-beige mx-5">
                 <Button
                   onClick={
                     isConnected
                       ? () => setShowWallet(true)
-                      : available.length === 1
-                      ? () => connect(available[0])
-                      : () => setHasWallet(true)
+                      : () => refreshAndShowWallet()
                   }
                 >
                   {isConnected ? (
@@ -206,8 +183,11 @@ const Navbar: FunctionComponent = () => {
                         </div>
                       ) : (
                         <div className="flex justify-center items-center">
-                          <p className="mr-3">{domainOrAddressMinified}</p>
-                          <AccountCircleIcon />
+                          <p className="mr-3">{domainOrAddress}</p>
+                          <ProfilFilledIcon
+                            width="24"
+                            color={theme.palette.background.default}
+                          />
                         </div>
                       )}
                     </>
@@ -244,71 +224,65 @@ const Navbar: FunctionComponent = () => {
             <div className="h-full flex flex-col">
               <div className="flex w-full items-center justify-between">
                 <div>
-                  <Link href="/">
+                  <Link href="/" className="cursor-pointer">
                     <img
-                      src="/visuals/starknetquestLogo.svg"
-                      alt="Starknet Quest Logo"
-                      width={70}
-                      height={70}
+                      className="cursor-pointer"
+                      src="/visuals/StarknetIdLogo.svg"
+                      alt="Starknet.id Logo"
+                      width={90}
+                      height={90}
                     />
                   </Link>
                 </div>
 
                 <div
                   onClick={handleNav}
-                  className="rounded-lg cursor-pointer p-1"
+                  className="rounded-lg cursor-pointer bg-secondary p-1"
                 >
-                  <AiOutlineClose color={theme.palette.secondary.main} />
+                  <AiOutlineClose
+                    color={theme.palette.background.default}
+                    size={isMobile ? 25 : 20}
+                  />
                 </div>
               </div>
               <div className="py-4 my-auto text-center font-extrabold">
-                <ul className="uppercase text-babe-blue">
-                  <Link href="/">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Quests
-                    </li>
-                  </Link>
-                  <Link href="/achievements">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Achievements
-                    </li>
-                  </Link>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      My profile
-                    </li>
-                  </Link>
-                </ul>
+                <div>
+                  <ul className="uppercase">
+                    <Link href="/identities">
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        My Iddentities
+                      </li>
+                    </Link>
+                    <Link href="/">
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        Domains
+                      </li>
+                    </Link>
+                  </ul>
+                </div>
               </div>
             </div>
+
             <div className="flex flex-col items-center my-4 w-full">
               <div className="text-background">
                 <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
               </div>
               <div className="flex">
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
-                  <a href="https://twitter.com/Starknet_id" target="_blank">
+                  <Link href="https://twitter.com/Starknet_id">
                     <FaTwitter size={28} color={theme.palette.secondary.main} />
-                  </a>
+                  </Link>
                 </div>
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
-                  <a
-                    href="https://discord.com/invite/8uS2Mgcsza"
-                    target="_blank"
-                  >
+                  <Link href="https://discord.com/invite/8uS2Mgcsza">
                     <FaDiscord size={28} color={theme.palette.secondary.main} />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -334,7 +308,7 @@ const Navbar: FunctionComponent = () => {
         }
       />
       <ModalWallet
-        domain={domainOrAddressMinified}
+        domain={domainOrAddress}
         open={showWallet}
         closeModal={() => setShowWallet(false)}
         disconnectByClick={disconnectByClick}
