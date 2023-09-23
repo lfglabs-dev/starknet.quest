@@ -299,7 +299,7 @@ const Navbar: FunctionComponent = () => {
               <div className="flex">
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
                   <a
-                    href="https://twitter.com/Starknet_id"
+                    href="https://twitter.com/starknet_quest"
                     target="_blank"
                     rel="noreferrer"
                   >
