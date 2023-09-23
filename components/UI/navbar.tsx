@@ -298,7 +298,11 @@ const Navbar: FunctionComponent = () => {
               </div>
               <div className="flex">
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
-                  <a href="https://twitter.com/Starknet_id" target="_blank">
+                  <a
+                    href="https://twitter.com/Starknet_id"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <FaTwitter size={28} color={theme.palette.secondary.main} />
                   </a>
                 </div>
@@ -306,6 +310,7 @@ const Navbar: FunctionComponent = () => {
                   <a
                     href="https://discord.com/invite/8uS2Mgcsza"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     <FaDiscord size={28} color={theme.palette.secondary.main} />
                   </a>
