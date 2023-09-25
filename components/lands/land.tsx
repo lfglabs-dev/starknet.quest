@@ -5,6 +5,7 @@ import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import Button from "../UI/button";
 import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
+import { AchievementsDocument } from "../../types/backTypes";
 
 type LandProps = {
   address: string;
@@ -73,15 +74,14 @@ export const Land = ({
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
       );
-      const results: UserAchievements[] = await response.json();
-
+      const results: AchievementsDocument[] = await response.json();
       if (results) {
-        results.forEach((result: UserAchievements) => {
+        results.forEach((result: AchievementsDocument) => {
           for (let i = result.achievements.length - 1; i >= 0; i--) {
             if (result.achievements[i].completed) {
               filteredAssets.push(result.achievements[i].id);
-              if (i === 2) count++;
-              break;
+              if (i === result.achievements.length - 1) count++;
+              if (result.category_type === "levels") break;
             }
           }
         });
@@ -152,10 +152,13 @@ export const Land = ({
       );
       filteredAssets.push(highestValue);
     }
-    if (hasDomain) filteredAssets.push(64000); // add starknetid building if user has a .stark domain
 
     await getBuildingsFromAchievements(filteredAssets);
-    await getBuildingsInfo(filteredAssets);
+    // await getBuildingsInfo(filteredAssets);
+    await getBuildingsInfo([
+      64001, 64002, 64003, 64004, 64007, 64008, 64009, 64010, 64011, 64012, 3,
+      6, 7, 8, 9, 10,
+    ]);
 
     setIsReady(true);
     setTotalNfts(nftCounter);

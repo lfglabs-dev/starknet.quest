@@ -44,7 +44,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
   }, [data]);
 
   useEffect(() => {
-    fetch("/land/data/SIDCity_Base_V5.json")
+    fetch("/land/data/SIDCity_Base.json")
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);

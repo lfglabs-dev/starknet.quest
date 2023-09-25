@@ -18,6 +18,8 @@ const Achievements: NextPage = () => {
   >([]);
   const [hasChecked, setHasChecked] = useState<boolean>(false);
 
+  console.log("userAchievements", userAchievements);
+
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
     let shouldFetchWithZeroAddress = true;
@@ -63,25 +65,23 @@ const Achievements: NextPage = () => {
       userAchievements.forEach((achievementCategory, index) => {
         achievementCategory.achievements.forEach((achievement, aIndex) => {
           if (!achievement.completed) {
-            if (achievement.verify_type === "default") {
-              const fetchPromise = fetch(
-                `${
-                  process.env.NEXT_PUBLIC_API_LINK
-                }/achievements/verify_default?addr=${hexToDecimal(
-                  address
-                )}&id=${achievement.id}`
-              )
-                .then((response) => response.json())
-                .then((data: CompletedDocument) => {
-                  if (data?.achieved) {
-                    const newUserAchievements = [...userAchievements];
-                    newUserAchievements[index].achievements[aIndex].completed =
-                      true;
-                    setUserAchievements(newUserAchievements);
-                  }
-                });
-              promises.push(fetchPromise);
-            }
+            // if (achievement.verify_type) {
+            const fetchPromise = fetch(
+              `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
+                achievement.verify_type
+              }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+            )
+              .then((response) => response.json())
+              .then((data: CompletedDocument) => {
+                if (data?.achieved) {
+                  const newUserAchievements = [...userAchievements];
+                  newUserAchievements[index].achievements[aIndex].completed =
+                    true;
+                  setUserAchievements(newUserAchievements);
+                }
+              });
+            promises.push(fetchPromise);
+            // }
           }
         });
       });
