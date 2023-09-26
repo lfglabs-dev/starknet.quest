@@ -57,7 +57,6 @@ const RoadProps: FunctionComponent<RoadItemsProps> = ({
             if (elem === null) {
               return null;
             }
-            console.log("elem", elem);
             return (
               <RoadItem
                 key={`props-${iX}-${iY}`}
