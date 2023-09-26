@@ -114,7 +114,7 @@ const AddressOrDomain: NextPage = () => {
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addr),
+              addr: addr,
               domain: addressOrDomain,
               is_owner_main: false,
             });
