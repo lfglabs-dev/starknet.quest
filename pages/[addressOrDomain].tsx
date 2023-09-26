@@ -92,7 +92,9 @@ const AddressOrDomain: NextPage = () => {
         starknetIdNavigator
           ?.getStarknetId(addressOrDomain)
           .then((id) => {
+            console.log("id", id);
             getIdentityData(id).then((data: Identity) => {
+              console.log("data", data);
               if (data.error) {
                 setNotFound(true);
                 return;
@@ -101,7 +103,8 @@ const AddressOrDomain: NextPage = () => {
                 ...data,
                 starknet_id: id.toString(),
               });
-              if (hexToDecimal(address) === data.addr) setIsOwner(true);
+              if (hexToDecimal(address) === hexToDecimal(data.addr))
+                setIsOwner(true);
               setInitProfile(true);
             });
           })
@@ -157,7 +160,7 @@ const AddressOrDomain: NextPage = () => {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: hexToDecimal(addressOrDomain),
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
@@ -168,7 +171,7 @@ const AddressOrDomain: NextPage = () => {
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addressOrDomain),
+              addr: addressOrDomain,
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
