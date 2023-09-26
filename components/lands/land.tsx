@@ -14,7 +14,6 @@ type LandProps = {
   setSinceDate: (s: string | null) => void;
   setTotalNfts: (nb: number) => void;
   setAchievementCount: (n: number) => void;
-  hasDomain: boolean;
 };
 
 export const Land = ({
@@ -24,7 +23,6 @@ export const Land = ({
   setSinceDate,
   setTotalNfts,
   setAchievementCount,
-  hasDomain,
 }: LandProps) => {
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
@@ -101,7 +99,7 @@ export const Land = ({
         }/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
       );
       const results: BuildingsInfo[] = await response.json();
-      if (results) {
+      if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);
       } else setHasNFTs(false);

@@ -231,7 +231,6 @@ const AddressOrDomain: NextPage = () => {
             setSinceDate={setSinceDate}
             setTotalNfts={setTotalNfts}
             setAchievementCount={setAchievementCount}
-            hasDomain={identity.domain ? true : false}
           />
           <div className={styles.profiles}>
             <ProfileCard
