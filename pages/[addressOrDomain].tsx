@@ -9,7 +9,7 @@ import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
 import { Divider, Tooltip } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
-import { decimalToHex, hexToDecimal } from "../utils/feltService";
+import { hexToDecimal } from "../utils/feltService";
 import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
 import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
@@ -107,7 +107,8 @@ const AddressOrDomain: NextPage = () => {
                 ...data,
                 starknet_id: id.toString(),
               });
-              if (hexToDecimal(address) === data.addr) setIsOwner(true);
+              if (hexToDecimal(address) === hexToDecimal(data.addr))
+                setIsOwner(true);
               setInitProfile(true);
             });
           })
@@ -191,7 +192,7 @@ const AddressOrDomain: NextPage = () => {
       retrieveAssets(
         `https://${
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
-        }.starkscan.co/api/v0/nfts?owner_address=${decimalToHex(identity.addr)}`
+        }.starkscan.co/api/v0/nfts?owner_address=${identity.addr}`
       ).then((data) => {
         setUserNft(data.data);
         setNextUrl(data.next_url as string);
@@ -209,7 +210,7 @@ const AddressOrDomain: NextPage = () => {
 
   const copyToClipboard = () => {
     setCopied(true);
-    navigator.clipboard.writeText(decimalToHex(identity?.addr));
+    navigator.clipboard.writeText(identity?.addr as string);
     setTimeout(() => {
       setCopied(false);
     }, 1500);
@@ -334,7 +335,7 @@ const AddressOrDomain: NextPage = () => {
                 {typeof addressOrDomain === "string" &&
                 isHexString(addressOrDomain)
                   ? minifyAddress(addressOrDomain)
-                  : minifyAddress(decimalToHex(identity?.addr))}
+                  : minifyAddress(identity?.addr)}
               </div>
 
               <div className="cursor-pointer">
