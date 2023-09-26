@@ -154,11 +154,7 @@ export const Land = ({
     }
 
     await getBuildingsFromAchievements(filteredAssets);
-    // await getBuildingsInfo(filteredAssets);
-    await getBuildingsInfo([
-      64001, 64002, 64003, 64004, 64007, 64008, 64009, 64010, 64011, 64012, 3,
-      6, 7, 8, 9, 10,
-    ]);
+    await getBuildingsInfo(filteredAssets);
 
     setIsReady(true);
     setTotalNfts(nftCounter);
