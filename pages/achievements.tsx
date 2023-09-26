@@ -63,7 +63,6 @@ const Achievements: NextPage = () => {
       userAchievements.forEach((achievementCategory, index) => {
         achievementCategory.achievements.forEach((achievement, aIndex) => {
           if (!achievement.completed) {
-            // if (achievement.verify_type) {
             const fetchPromise = fetch(
               `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
                 achievement.verify_type
@@ -79,7 +78,6 @@ const Achievements: NextPage = () => {
                 }
               });
             promises.push(fetchPromise);
-            // }
           }
         });
       });
