@@ -160,7 +160,7 @@ const Navbar: FunctionComponent = () => {
 
   return (
     <>
-      <div className={`fixed w-full z-[1]`}>
+      <div className={`fixed w-full z-[1]`} id="nav">
         {showDomainPopup && (
           <Popup
             title="Mandatory Starknet Domain"
