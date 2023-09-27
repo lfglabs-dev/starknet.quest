@@ -38,13 +38,16 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     const documentBody = document.querySelector("body");
     const footer = document.querySelector("footer");
+    const navbar = document.getElementById("nav");
     // Mount
     if (documentBody) documentBody.style.overflow = "hidden";
     if (footer) footer.style.display = "none";
+    if (navbar) navbar.style.display = "none";
     // Unmount
     return () => {
       if (documentBody) documentBody.style.removeProperty("overflow");
       if (footer) footer.style.removeProperty("display");
+      if (navbar) navbar.style.removeProperty("display");
     };
   }, []);
 
