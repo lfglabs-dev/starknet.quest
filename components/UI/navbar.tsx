@@ -52,6 +52,7 @@ const Navbar: FunctionComponent = () => {
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!address) return;
     setShowDomainPopup(!hasDomain);
   }, [address, hasDomain]);
 
