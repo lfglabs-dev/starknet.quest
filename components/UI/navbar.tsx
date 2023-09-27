@@ -152,7 +152,7 @@ const Navbar: FunctionComponent = () => {
 
   return (
     <>
-      <div className={`fixed w-full z-[1]`}>
+      <div className={`fixed w-full z-[1]`} id="nav">
         <div
           className={`${styles.navbarContainer} ${
             navbarBg ? styles.navbarScrolled : ""
