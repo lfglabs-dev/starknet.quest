@@ -2,11 +2,17 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
-import { useContractWrite, useTransactionManager } from "@starknet-react/core";
+import {
+  useAccount,
+  useContractWrite,
+  useTransactionManager,
+} from "@starknet-react/core";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
+import useHasDomain from "../../hooks/useHasDomain";
+import Popup from "../UI/menus/popup";
 
 type RewardProps = {
   onClick: () => void;
@@ -28,6 +34,9 @@ const Reward: FunctionComponent<RewardProps> = ({
   const { writeAsync: executeMint, data: mintData } = useContractWrite({
     calls: mintCalldata,
   });
+  const { address } = useAccount();
+  const hasDomain = useHasDomain(address);
+  const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,12 +46,23 @@ const Reward: FunctionComponent<RewardProps> = ({
   }, [mintData]);
 
   function getReward() {
+    setShowDomainPopup(true);
     executeMint();
     onClick();
   }
 
   return (
     <div className={styles.reward}>
+      {showDomainPopup && !hasDomain ? (
+        <Popup
+          title="Mandatory Starknet Domain"
+          banner="/visuals/profile.webp"
+          description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
+          buttonName="Get a Starknet Domain"
+          onClick={() => window.open("https://app.starknet.id/")}
+          onClose={() => setShowDomainPopup(false)}
+        />
+      ) : null}
       <div className="flex">
         <p className="mr-1">Reward: </p>
         <img width={25} src={imgSrc} />
