@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-const CloseIcon: FunctionComponent<IconProps> = ({ width = 24 }) => {
+const CloseIcon: FunctionComponent<IconProps> = ({ width }) => {
   return (
     <svg viewBox="0 0 24 24" width={width} height={width}>
       <path

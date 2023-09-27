@@ -74,7 +74,7 @@ const ModalWallet: FunctionComponent<ModalWalletProps> = ({
     >
       <div className={styles.menu}>
         <button className={styles.menu_close} onClick={closeModal}>
-          <CloseIcon />
+          <CloseIcon width="24" />
         </button>
         <div className={styles.menu_title}>
           <div className={styles.menu_title}>
