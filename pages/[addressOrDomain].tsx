@@ -157,7 +157,7 @@ const AddressOrDomain: NextPage = () => {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: hexToDecimal(addressOrDomain),
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
@@ -168,7 +168,7 @@ const AddressOrDomain: NextPage = () => {
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addressOrDomain),
+              addr: addressOrDomain,
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
@@ -219,6 +219,8 @@ const AddressOrDomain: NextPage = () => {
     );
     return response.json();
   };
+
+  console.log("identity", identity);
 
   return (
     <div className={styles.profileBg}>
