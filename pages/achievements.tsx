@@ -10,13 +10,19 @@ import {
 import Achievement from "../components/achievements/achievement";
 import { hexToDecimal } from "../utils/feltService";
 import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
+import { useLocation } from "react-use";
 
 const Achievements: NextPage = () => {
+  const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
   >([]);
   const [hasChecked, setHasChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasChecked(false);
+  }, [location]);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -54,7 +60,7 @@ const Achievements: NextPage = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [address, hasChecked]);
+  }, [address, hasChecked, location]);
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
