@@ -99,7 +99,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     address: string | undefined
   ) => {
     if (address && quest.rewards_endpoint) {
-      fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_LINK}/${
+          quest.rewards_endpoint
+        }?addr=${hexToDecimal(address)}`
+      )
         .then((response) => response.json())
         .then((data) => {
           if (data.rewards) {
