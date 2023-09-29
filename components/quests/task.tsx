@@ -53,7 +53,7 @@ const Task: FunctionComponent<Task> = ({
     setIsLoading(true);
 
     if (verifyEndpointType.startsWith("oauth")) {
-      window.open(`${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`);
+      window.open(verifyEndpoint);
       setIsLoading(false);
     } else {
       try {
