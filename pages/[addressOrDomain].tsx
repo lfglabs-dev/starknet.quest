@@ -220,8 +220,6 @@ const AddressOrDomain: NextPage = () => {
     return response.json();
   };
 
-  console.log("identity", identity);
-
   return (
     <div className={styles.profileBg}>
       {initProfile && identity ? (
