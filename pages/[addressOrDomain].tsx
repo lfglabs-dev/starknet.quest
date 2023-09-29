@@ -12,7 +12,6 @@ import { minifyAddress } from "../utils/stringService";
 import { utils } from "starknetid.js";
 import ErrorScreen from "../components/UI/screens/errorScreen";
 import ProfileCard from "../components/UI/profileCard";
-import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
 import { Land } from "../components/lands/land";
 import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
@@ -22,7 +21,7 @@ import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
-  const { address, connector } = useAccount();
+  const { address } = useAccount();
   const { connectors, connect } = useConnectors();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
@@ -31,12 +30,11 @@ const AddressOrDomain: NextPage = () => {
   const [copied, setCopied] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const dynamicRoute = useRouter().asPath;
-  const isBraavosWallet = connector && connector.id === "braavos";
-  const [braavosScore, setBraavosScore] = useState<number>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [sinceDate, setSinceDate] = useState<string | null>(null);
-  const [totalNFTs, setTotalNfts] = useState<number>(0);
-  const [achievementCount, setAchievementCount] = useState<number>(0);
+  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
+  const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -157,7 +155,7 @@ const AddressOrDomain: NextPage = () => {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: hexToDecimal(addressOrDomain),
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
@@ -168,7 +166,7 @@ const AddressOrDomain: NextPage = () => {
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addressOrDomain),
+              addr: addressOrDomain,
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
@@ -180,20 +178,6 @@ const AddressOrDomain: NextPage = () => {
       setNotFound(true);
     }
   }, [addressOrDomain, address, dynamicRoute]);
-
-  useEffect(() => {
-    // connector is of type Connector<any> in starknet-react
-    // but _wallet which is supposed to be of type IStarknetWindowObject is set as private
-    if (connector && connector.id === "braavos") {
-      (connector as any)._wallet
-        .request({ type: "wallet_getStarknetProScore" })
-        .then((score: BraavosScoreProps) => {
-          setBraavosScore(score.score);
-        });
-    } else {
-      setBraavosScore(0);
-    }
-  }, [connector, addressOrDomain, address]);
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -229,9 +213,9 @@ const AddressOrDomain: NextPage = () => {
             isOwner={isOwner}
             isMobile={isMobile}
             setSinceDate={setSinceDate}
-            setTotalNfts={setTotalNfts}
-            setAchievementCount={setAchievementCount}
             hasDomain={identity.domain ? true : false}
+            setAchievements={setAchievements}
+            setSoloBuildings={setSoloBuildings}
           />
           <div className={styles.profiles}>
             <ProfileCard
@@ -285,60 +269,78 @@ const AddressOrDomain: NextPage = () => {
                 </div>
               }
             />
-            <ProfileCard
-              title="Progress"
-              content={
-                <div className={styles.progress}>
-                  {/* We do not have xp yet */}
-                  {/* <div className="flex flex-col gap-1">
-                <div className={styles.polygonContainer}>
-                  <img src="/icons/polygon.svg" alt="polygon icon" />
-                  <span className={styles.xp}>XP</span>
-                </div>
-                <span>12</span>
-              </div> */}
-                  <Tooltip
-                    title="Number of NFTs owned from starknet quest"
-                    arrow
-                  >
-                    <div className="flex flex-col gap-1">
-                      <span className={styles.trophy}>
-                        <TrophyIcon width="20" color="#696045" />
-                      </span>
-                      <span>{totalNFTs}</span>
-                    </div>
-                  </Tooltip>
-                  <Tooltip title="Number of achievements completed" arrow>
-                    <div className="flex flex-col gap-1">
-                      <img
-                        src="/icons/verifyBadge.svg"
-                        alt="verfy badge icon"
-                        width={25}
-                      />
-                      <span>{achievementCount}</span>
-                    </div>
-                  </Tooltip>
-                  {isOwner && isBraavosWallet ? (
-                    <Tooltip title="Your Braavos Pro score" arrow>
-                      <div className="flex flex-col gap-1">
-                        <img
-                          src="/braavos/braavosLogo.svg"
-                          alt="braavos icon"
-                          width={24}
-                        />
-                        <span>{braavosScore}</span>
-                      </div>
-                    </Tooltip>
-                  ) : null}
-                </div>
-              }
-            />
             {hasVerifiedSocials(identity) ? (
               <ProfileCard
                 title="Social network"
                 content={<SocialMediaActions identity={identity} />}
               />
             ) : null}
+            <ProfileCard
+              title="Progress"
+              content={
+                <>
+                  <div className={styles.tabs}>
+                    <div
+                      className={`${styles.tab} ${
+                        selectedTab === 0 ? styles.selectedTab : ""
+                      }`}
+                      onClick={() => setSelectedTab(0)}
+                    >
+                      NFTs unlocked ({soloBuildings.length})
+                    </div>
+                    <div
+                      className={`${styles.tab} ${
+                        selectedTab === 1 ? styles.selectedTab : ""
+                      }`}
+                      onClick={() => setSelectedTab(1)}
+                    >
+                      Achievements ({achievements.length})
+                    </div>
+                  </div>
+                  {selectedTab === 0 ? (
+                    <div className={styles.gallery}>
+                      {soloBuildings.map((building) => {
+                        return (
+                          <div
+                            key={building.id}
+                            className={styles.nftContainer}
+                          >
+                            <img
+                              src={building.img_url}
+                              className={styles.nftImage}
+                            />
+                            <p className={styles.nftName}>{building.name}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                  {selectedTab === 1 ? (
+                    <div className={styles.gallery}>
+                      {achievements.map((achievement) => {
+                        return (
+                          <div
+                            key={achievement.id}
+                            className={styles.nftContainer}
+                          >
+                            <img
+                              src={achievement.img_url}
+                              className={styles.nftImage}
+                            />
+                            <p className={styles.achievementLvl}>
+                              Level {achievement.level}
+                            </p>
+                            <p className={styles.achievementName}>
+                              {achievement.name}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </>
+              }
+            />
           </div>
         </>
       ) : (

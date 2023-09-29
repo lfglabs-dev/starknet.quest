@@ -167,6 +167,7 @@ type BuildingsInfo = {
   description: string;
   entity: string;
   level: number;
+  img_url: string;
   pos?: THREE.Vector2;
 };
 

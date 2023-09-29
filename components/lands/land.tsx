@@ -11,8 +11,8 @@ type LandProps = {
   isOwner: boolean;
   isMobile: boolean;
   setSinceDate: (s: string | null) => void;
-  setTotalNfts: (nb: number) => void;
-  setAchievementCount: (n: number) => void;
+  setAchievements: (n: BuildingsInfo[]) => void;
+  setSoloBuildings: (n: BuildingsInfo[]) => void;
   hasDomain: boolean;
 };
 
@@ -21,9 +21,9 @@ export const Land = ({
   isOwner,
   isMobile,
   setSinceDate,
-  setTotalNfts,
-  setAchievementCount,
   hasDomain,
+  setAchievements,
+  setSoloBuildings,
 }: LandProps) => {
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
@@ -68,7 +68,6 @@ export const Land = ({
 
   // Fetch achievements from database and add building id from highest achievement level
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
-    let count = 0;
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
@@ -80,13 +79,11 @@ export const Land = ({
           for (let i = result.achievements.length - 1; i >= 0; i--) {
             if (result.achievements[i].completed) {
               filteredAssets.push(result.achievements[i].id);
-              if (i === 2) count++;
               break;
             }
           }
         });
       }
-      setAchievementCount(count);
     } catch (error) {
       console.error("An error occurred while fetching achievements", error);
     }
@@ -104,6 +101,8 @@ export const Land = ({
       if (results) {
         setUserNft(results);
         setHasNFTs(true);
+        setSoloBuildings(results.filter((x) => x.id >= 64000));
+        setAchievements(results.filter((x) => x.id < 64000));
       } else setHasNFTs(false);
     } catch (error) {
       console.error("An error occurred while fetching buildings info", error);
@@ -115,7 +114,6 @@ export const Land = ({
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
     let sinceDate = 0;
-    let nftCounter = 0;
 
     assets.forEach((asset: StarkscanNftProps) => {
       if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
@@ -124,8 +122,6 @@ export const Land = ({
       if (
         asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT
       ) {
-        nftCounter++;
-
         if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
           filteredAssets.push(
             SoloBuildings[asset.name as keyof typeof SoloBuildings]
@@ -158,7 +154,6 @@ export const Land = ({
     await getBuildingsInfo(filteredAssets);
 
     setIsReady(true);
-    setTotalNfts(nftCounter);
     setSinceDate(memberSince(sinceDate));
   };
 
