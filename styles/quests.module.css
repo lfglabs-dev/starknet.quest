@@ -278,4 +278,7 @@
     gap: 1rem;
     align-items: center;
   }
+  .featuredQuestImage {
+    height: auto;
+  }
 }
