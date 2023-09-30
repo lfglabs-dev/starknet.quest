@@ -1,9 +1,5 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
-import useHasRootDomain from "../../hooks/useHasRootDomain";
-import { useAccount } from "@starknet-react/core";
-import Popup from "../UI/menus/popup";
-import { starknetIdAppLink } from "../../utils/links";
 
 type QuestProps = {
   onClick: () => void;
@@ -20,26 +16,8 @@ const Quest: FunctionComponent<QuestProps> = ({
   issuer,
   reward,
 }) => {
-  const { address } = useAccount();
-  const hasRootDomain = useHasRootDomain(address);
-  const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!address) return;
-    setShowDomainPopup(!hasRootDomain);
-  }, [address, hasRootDomain]);
-
   return (
     <>
-      {showDomainPopup && (
-        <Popup
-          title="Mandatory Starknet Domain"
-          banner="/visuals/profile.webp"
-          description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
-          buttonName="Get a Starknet Domain"
-          onClick={() => window.open(starknetIdAppLink)}
-        />
-      )}
       <div className={styles.questCard} onClick={onClick}>
         <img src={imgSrc} className={styles.questImage} />
         <div className={styles.questInfos}>

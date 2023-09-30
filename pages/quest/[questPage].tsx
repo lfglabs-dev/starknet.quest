@@ -9,6 +9,10 @@ import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
 import ErrorScreen from "../../components/UI/screens/errorScreen";
 import NftIssuer from "../../components/quests/nftIssuer";
 import BackButton from "../../components/UI/backButton";
+import useHasRootDomain from "../../hooks/useHasRootDomain";
+import { useAccount } from "@starknet-react/core";
+import { starknetIdAppLink } from "../../utils/links";
+import Popup from "../../components/UI/menus/popup";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
@@ -36,6 +40,14 @@ const QuestPage: NextPage = () => {
     expiry_timestamp: "loading",
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
+  const { address } = useAccount();
+  const hasRootDomain = useHasRootDomain(address);
+  const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!address) return;
+    setShowDomainPopup(!hasRootDomain);
+  }, [address, hasRootDomain]);
 
   // this fetches quest data
   useEffect(() => {
@@ -62,6 +74,15 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <div className={homeStyles.screen}>
+      {showDomainPopup && (
+        <Popup
+          title="Mandatory Starknet Domain"
+          banner="/visuals/profile.webp"
+          description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
+          buttonName="Get a Starknet Domain"
+          onClick={() => window.open(starknetIdAppLink)}
+        />
+      )}
       <div className={homeStyles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
