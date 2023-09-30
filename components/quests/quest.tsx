@@ -1,5 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/quests.module.css";
+import { useContext } from "react";
+import { QuestsContext } from "../../context/QuestsProvider";
+import CheckIcon from "../UI/iconsComponents/icons/checkIcon";
 
 type QuestProps = {
   onClick: () => void;
@@ -7,6 +10,7 @@ type QuestProps = {
   title: string;
   issuer: Issuer;
   reward: string;
+  id: number;
 };
 
 const Quest: FunctionComponent<QuestProps> = ({
@@ -15,7 +19,11 @@ const Quest: FunctionComponent<QuestProps> = ({
   title,
   issuer,
   reward,
+  id,
 }) => {
+  const { completedQuestIds } = useContext(QuestsContext);
+  const isCompleted = completedQuestIds.includes(id);
+
   return (
     <>
       <div className={styles.questCard} onClick={onClick}>
@@ -26,8 +34,17 @@ const Quest: FunctionComponent<QuestProps> = ({
             <p className="text-gray-400">{issuer.name}</p>
           </div>
           <div className="flex mt-2 mb-1 items-center">
-            <img width={20} src={issuer.logoFavicon} />
-            <p className="text-white ml-2">{reward}</p>
+            {isCompleted ? (
+              <>
+                <p className="text-white mr-2">Done</p>
+                <CheckIcon width="24" color="#6AFFAF" />
+              </>
+            ) : (
+              <>
+                <img width={20} src={issuer.logoFavicon} />
+                <p className="text-white ml-2">{reward}</p>
+              </>
+            )}
           </div>
         </div>
       </div>
