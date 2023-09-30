@@ -26,8 +26,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useRouter } from "next/router";
 import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
-import useHasDomain from "../../hooks/useHasDomain";
-import Popup from "./menus/popup";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -48,13 +46,6 @@ const Navbar: FunctionComponent = () => {
   const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
-  const hasDomain = useHasDomain(address);
-  const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!address) return;
-    setShowDomainPopup(!hasDomain);
-  }, [address, hasDomain]);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
@@ -162,16 +153,6 @@ const Navbar: FunctionComponent = () => {
   return (
     <>
       <div className={`fixed w-full z-[1]`} id="nav">
-        {showDomainPopup && (
-          <Popup
-            title="Mandatory Starknet Domain"
-            banner="/visuals/profile.webp"
-            description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
-            buttonName="Get a Starknet Domain"
-            onClick={() => window.open("https://app.starknet.id/")}
-            onClose={() => setShowDomainPopup(false)}
-          />
-        )}
         <div
           className={`${styles.navbarContainer} ${
             navbarBg ? styles.navbarScrolled : ""

@@ -9,7 +9,7 @@ type PopupProps = {
   description: string;
   buttonName: string;
   onClick: () => void;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 const Popup: FunctionComponent<PopupProps> = ({
@@ -33,9 +33,11 @@ const Popup: FunctionComponent<PopupProps> = ({
             <Button onClick={onClick}>{buttonName}</Button>
           </div>
         </div>
-        <button onClick={onClose} className={styles.close}>
-          <CloseIcon width="16" />
-        </button>
+        {onClose && (
+          <button onClick={onClose} className={styles.close}>
+            <CloseIcon width="16" />
+          </button>
+        )}
       </div>
     </div>
   );

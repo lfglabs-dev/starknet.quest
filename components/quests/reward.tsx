@@ -11,8 +11,9 @@ import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
-import useHasDomain from "../../hooks/useHasDomain";
+import useHasRootDomain from "../../hooks/useHasRootDomain";
 import Popup from "../UI/menus/popup";
+import { starknetIdAppLink } from "../../utils/links";
 
 type RewardProps = {
   onClick: () => void;
@@ -35,7 +36,7 @@ const Reward: FunctionComponent<RewardProps> = ({
     calls: mintCalldata,
   });
   const { address } = useAccount();
-  const hasDomain = useHasDomain(address);
+  const hasRootDomain = useHasRootDomain(address);
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
   const router = useRouter();
 
@@ -53,13 +54,13 @@ const Reward: FunctionComponent<RewardProps> = ({
 
   return (
     <div className={styles.reward}>
-      {showDomainPopup && !hasDomain ? (
+      {showDomainPopup && !hasRootDomain ? (
         <Popup
           title="Mandatory Starknet Domain"
           banner="/visuals/profile.webp"
           description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
           buttonName="Get a Starknet Domain"
-          onClick={() => window.open("https://app.starknet.id/")}
+          onClick={() => window.open(starknetIdAppLink)}
           onClose={() => setShowDomainPopup(false)}
         />
       ) : null}
