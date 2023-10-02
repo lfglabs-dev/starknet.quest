@@ -82,7 +82,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     if (answers.length !== quiz.questions.length) return;
     const load = () => {
       setPassed("loading");
-      fetch(verifyEndpoint, {
+      fetch(`${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import Button from "../UI/button";
 import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
+import { AchievementsDocument } from "../../types/backTypes";
 
 type LandProps = {
   address: string;
@@ -13,7 +14,6 @@ type LandProps = {
   setSinceDate: (s: string | null) => void;
   setTotalNfts: (nb: number) => void;
   setAchievementCount: (n: number) => void;
-  hasDomain: boolean;
 };
 
 export const Land = ({
@@ -23,7 +23,6 @@ export const Land = ({
   setSinceDate,
   setTotalNfts,
   setAchievementCount,
-  hasDomain,
 }: LandProps) => {
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
@@ -73,15 +72,14 @@ export const Land = ({
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
       );
-      const results: UserAchievements[] = await response.json();
-
+      const results: AchievementsDocument[] = await response.json();
       if (results) {
-        results.forEach((result: UserAchievements) => {
+        results.forEach((result: AchievementsDocument) => {
           for (let i = result.achievements.length - 1; i >= 0; i--) {
             if (result.achievements[i].completed) {
               filteredAssets.push(result.achievements[i].id);
-              if (i === 2) count++;
-              break;
+              if (i === result.achievements.length - 1) count++;
+              if (result.category_type === "levels") break;
             }
           }
         });
@@ -101,7 +99,7 @@ export const Land = ({
         }/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
       );
       const results: BuildingsInfo[] = await response.json();
-      if (results) {
+      if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);
       } else setHasNFTs(false);
@@ -152,7 +150,6 @@ export const Land = ({
       );
       filteredAssets.push(highestValue);
     }
-    if (hasDomain) filteredAssets.push(64000); // add starknetid building if user has a .stark domain
 
     await getBuildingsFromAchievements(filteredAssets);
     await getBuildingsInfo(filteredAssets);

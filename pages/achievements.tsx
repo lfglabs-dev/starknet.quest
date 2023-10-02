@@ -10,13 +10,20 @@ import {
 import Achievement from "../components/achievements/achievement";
 import { hexToDecimal } from "../utils/feltService";
 import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
+import { useLocation } from "react-use";
 
 const Achievements: NextPage = () => {
+  const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
   >([]);
   const [hasChecked, setHasChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasChecked(false);
+    setUserAchievements([]);
+  }, [location, address]);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -54,7 +61,7 @@ const Achievements: NextPage = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [address, hasChecked]);
+  }, [hasChecked, address]);
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
@@ -63,25 +70,21 @@ const Achievements: NextPage = () => {
       userAchievements.forEach((achievementCategory, index) => {
         achievementCategory.achievements.forEach((achievement, aIndex) => {
           if (!achievement.completed) {
-            if (achievement.verify_type === "default") {
-              const fetchPromise = fetch(
-                `${
-                  process.env.NEXT_PUBLIC_API_LINK
-                }/achievements/verify_default?addr=${hexToDecimal(
-                  address
-                )}&id=${achievement.id}`
-              )
-                .then((response) => response.json())
-                .then((data: CompletedDocument) => {
-                  if (data?.achieved) {
-                    const newUserAchievements = [...userAchievements];
-                    newUserAchievements[index].achievements[aIndex].completed =
-                      true;
-                    setUserAchievements(newUserAchievements);
-                  }
-                });
-              promises.push(fetchPromise);
-            }
+            const fetchPromise = fetch(
+              `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
+                achievement.verify_type
+              }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+            )
+              .then((response) => response.json())
+              .then((data: CompletedDocument) => {
+                if (data?.achieved) {
+                  const newUserAchievements = [...userAchievements];
+                  newUserAchievements[index].achievements[aIndex].completed =
+                    true;
+                  setUserAchievements(newUserAchievements);
+                }
+              });
+            promises.push(fetchPromise);
           }
         });
       });
@@ -90,7 +93,7 @@ const Achievements: NextPage = () => {
         setHasChecked(true);
       });
     }
-  }, [userAchievements.length, address]);
+  }, [userAchievements.length, hasChecked]);
 
   return (
     <div className={styles.screen}>
@@ -101,10 +104,10 @@ const Achievements: NextPage = () => {
             Complete achievements and grow your Starknet on-chain reputation
           </p>
         </div>
-        <div className={styles.cardWrapper}>
-          <div className={styles.cards}>
-            {userAchievements.length > 0 ? (
-              userAchievements.map(
+        {userAchievements.length > 0 ? (
+          <div className={styles.cardWrapper}>
+            <div className={styles.cards}>
+              {userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
                     <Achievement
@@ -114,12 +117,12 @@ const Achievements: NextPage = () => {
                     />
                   );
                 }
-              )
-            ) : (
-              <AchievementSkeleton />
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <AchievementSkeleton />
+        )}
       </div>
     </div>
   );

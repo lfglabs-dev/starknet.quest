@@ -12,13 +12,13 @@ import { useLoader } from "@react-three/fiber";
 import RoadItem from "./roadItem";
 
 type RoadItemsProps = {
-  tilesets: Tileset[];
+  tileset: Tileset;
   cityData: (RoadObjects | null)[][];
   tileData: TileData[];
 };
 
 const RoadProps: FunctionComponent<RoadItemsProps> = ({
-  tilesets,
+  tileset,
   cityData,
   tileData,
 }) => {
@@ -27,17 +27,11 @@ const RoadProps: FunctionComponent<RoadItemsProps> = ({
       TextureLoader,
       "/land/textures/SID_BuildingSheet.png"
     );
-    texture.repeat = new Vector2(1 / 80, 1 / 80);
+    texture.repeat = new Vector2(1 / tileset.__cHei, 1 / tileset.__cWid);
     texture.magFilter = NearestFilter;
     texture.wrapS = texture.wrapT = RepeatWrapping;
 
     return texture;
-  }, []);
-
-  const tileset = useMemo(() => {
-    return tilesets.find(
-      (tileset: Tileset) => tileset.identifier === "SID_BuildingSheet"
-    );
   }, []);
 
   // Reuse same planes for props

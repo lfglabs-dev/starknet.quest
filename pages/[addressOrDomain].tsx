@@ -114,7 +114,7 @@ const AddressOrDomain: NextPage = () => {
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addr),
+              addr: addr,
               domain: addressOrDomain,
               is_owner_main: false,
             });
@@ -157,7 +157,7 @@ const AddressOrDomain: NextPage = () => {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: hexToDecimal(addressOrDomain),
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
@@ -168,7 +168,7 @@ const AddressOrDomain: NextPage = () => {
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addressOrDomain),
+              addr: addressOrDomain,
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
@@ -231,7 +231,6 @@ const AddressOrDomain: NextPage = () => {
             setSinceDate={setSinceDate}
             setTotalNfts={setTotalNfts}
             setAchievementCount={setAchievementCount}
-            hasDomain={identity.domain ? true : false}
           />
           <div className={styles.profiles}>
             <ProfileCard

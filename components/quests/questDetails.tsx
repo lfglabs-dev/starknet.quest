@@ -99,7 +99,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     address: string | undefined
   ) => {
     if (address && quest.rewards_endpoint) {
-      fetch(`${quest.rewards_endpoint}?addr=${hexToDecimal(address)}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_LINK}/${
+          quest.rewards_endpoint
+        }?addr=${hexToDecimal(address)}`
+      )
         .then((response) => response.json())
         .then((data) => {
           if (data.rewards) {
@@ -201,7 +205,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     if (task.verify_endpoint_type === "oauth_discord") {
       const rootUrl = "https://discord.com/api/oauth2/authorize";
       const options = {
-        redirect_uri: `${task.verify_endpoint}`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_API_LINK}/${task.verify_endpoint}`,
         client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
         response_type: "code",
         scope: ["identify", "guilds"].join(" "),
