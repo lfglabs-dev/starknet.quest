@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navbar from "../components/UI/navbar";
@@ -12,10 +12,13 @@ import Footer from "../components/UI/footer";
 import { QuestsContextProvider } from "../context/QuestsProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const connectors = [
-    new InjectedConnector({ options: { id: "argentX" } }),
-    new InjectedConnector({ options: { id: "braavos" } }),
-  ];
+  const connectors = useMemo(
+    () => [
+      new InjectedConnector({ options: { id: "argentX" } }),
+      new InjectedConnector({ options: { id: "braavos" } }),
+    ],
+    []
+  );
 
   const theme = createTheme({
     palette: {
