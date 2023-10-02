@@ -176,6 +176,17 @@ const AddressOrDomain: NextPage = () => {
             setIsOwner(false);
             setInitProfile(true);
           }
+        })
+        .catch(() => {
+          setIdentity({
+            starknet_id: "0",
+            addr: addressOrDomain,
+            domain: minifyAddress(addressOrDomain),
+            is_owner_main: false,
+          });
+          setInitProfile(true);
+          if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+            setIsOwner(true);
         });
     } else {
       setNotFound(true);
