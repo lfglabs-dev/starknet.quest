@@ -20,10 +20,7 @@ const Achievements: NextPage = () => {
   >([]);
   const [hasChecked, setHasChecked] = useState<boolean>(false);
 
-  useEffect(() => {
-    setHasChecked(false);
-    setUserAchievements([]);
-  }, [location, address]);
+  console.log("address", address);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -60,38 +57,51 @@ const Achievements: NextPage = () => {
     // Clear the timer when component unmounts or dependencies change to prevent memory leaks
     return () => {
       clearTimeout(timer);
+      setHasChecked(false);
     };
-  }, [hasChecked, address]);
+  }, [address, location]);
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
     if (userAchievements.length > 0 && !hasChecked && address) {
-      const promises: Promise<void>[] = [];
-      userAchievements.forEach((achievementCategory, index) => {
-        achievementCategory.achievements.forEach((achievement, aIndex) => {
-          if (!achievement.completed) {
-            const fetchPromise = fetch(
-              `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
-                achievement.verify_type
-              }?addr=${hexToDecimal(address)}&id=${achievement.id}`
-            )
-              .then((response) => response.json())
-              .then((data: CompletedDocument) => {
-                if (data?.achieved) {
-                  const newUserAchievements = [...userAchievements];
-                  newUserAchievements[index].achievements[aIndex].completed =
-                    true;
-                  setUserAchievements(newUserAchievements);
+      const checkAchievements = async () => {
+        const promises = userAchievements.map(
+          async (achievementCategory, index) => {
+            const achievementsPromises = achievementCategory.achievements.map(
+              async (achievement, aIndex) => {
+                if (!achievement.completed) {
+                  try {
+                    const response = await fetch(
+                      `${
+                        process.env.NEXT_PUBLIC_API_LINK
+                      }/achievements/verify_${
+                        achievement.verify_type
+                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+                    );
+                    const data: CompletedDocument = await response.json();
+
+                    if (data?.achieved) {
+                      const newUserAchievements = [...userAchievements];
+                      newUserAchievements[index].achievements[
+                        aIndex
+                      ].completed = true;
+                      setUserAchievements(newUserAchievements);
+                    }
+                  } catch (error) {
+                    console.error("Fetch error:", error);
+                  }
                 }
-              });
-            promises.push(fetchPromise);
+              }
+            );
+
+            await Promise.all(achievementsPromises);
           }
-        });
-      });
-      // Wait for all promises to resolve before setting hasChecked to true
-      Promise.all(promises).then(() => {
+        );
+
+        await Promise.all(promises);
         setHasChecked(true);
-      });
+      };
+      checkAchievements();
     }
   }, [userAchievements.length, hasChecked, address]);
 
