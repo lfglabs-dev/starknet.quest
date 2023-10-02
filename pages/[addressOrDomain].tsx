@@ -2,21 +2,22 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
-import { isHexString } from "../utils/stringService";
+import { isHexString, minifyAddressWithChars } from "../utils/stringService";
 import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
-import CopiedIcon from "../components/UI/iconsComponents/icons/copiedIcon";
-import { Divider, Tooltip } from "@mui/material";
-import { ContentCopy } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 import { hexToDecimal } from "../utils/feltService";
-import StarknetIcon from "../components/UI/iconsComponents/icons/starknetIcon";
-import NftCard from "../components/UI/nftCard";
 import { minifyAddress } from "../utils/stringService";
-import Button from "../components/UI/button";
-import PieChart from "../components/UI/pieChart";
 import { utils } from "starknetid.js";
 import ErrorScreen from "../components/UI/screens/errorScreen";
+import ProfileCard from "../components/UI/profileCard";
+import TrophyIcon from "../components/UI/iconsComponents/icons/trophyIcon";
+import { Land } from "../components/lands/land";
+import { hasVerifiedSocials } from "../utils/profile";
+import { useMediaQuery } from "@mui/material";
+import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
+import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -29,20 +30,13 @@ const AddressOrDomain: NextPage = () => {
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const [active, setActive] = useState(0);
   const dynamicRoute = useRouter().asPath;
-  const [userNft, setUserNft] = useState<StarkscanNftProps[]>([]);
-  const [nextUrl, setNextUrl] = useState<string | null>(null);
-  const [unusedAssets, setUnusedAssets] = useState<StarkscanNftProps[]>([]);
   const isBraavosWallet = connector && connector.id === "braavos";
-
-  // Filtered NFTs
-  const NFTContracts = [
-    hexToDecimal(process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT),
-    hexToDecimal(process.env.NEXT_PUBLIC_XPLORER_NFT_CONTRACT),
-    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOSSHIELD_NFT_CONTRACT),
-    hexToDecimal(process.env.NEXT_PUBLIC_BRAAVOS_JOURNEY_NFT_CONTRACT),
-  ];
+  const [braavosScore, setBraavosScore] = useState<number>(0);
+  const isMobile = useMediaQuery("(max-width:768px)");
+  const [sinceDate, setSinceDate] = useState<string | null>(null);
+  const [totalNFTs, setTotalNfts] = useState<number>(0);
+  const [achievementCount, setAchievementCount] = useState<number>(0);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -121,7 +115,7 @@ const AddressOrDomain: NextPage = () => {
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addr),
+              addr: addr,
               domain: addressOrDomain,
               is_owner_main: false,
             });
@@ -153,7 +147,8 @@ const AddressOrDomain: NextPage = () => {
                       ...data,
                       starknet_id: id.toString(),
                     });
-                    if (hexToDecimal(address) === data.addr) setIsOwner(true);
+                    if (hexToDecimal(address) === hexToDecimal(data.addr))
+                      setIsOwner(true);
                     setInitProfile(true);
                   });
                 })
@@ -163,7 +158,7 @@ const AddressOrDomain: NextPage = () => {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: hexToDecimal(addressOrDomain),
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
@@ -174,7 +169,7 @@ const AddressOrDomain: NextPage = () => {
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addressOrDomain),
+              addr: addressOrDomain,
               domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
@@ -188,25 +183,18 @@ const AddressOrDomain: NextPage = () => {
   }, [addressOrDomain, address, dynamicRoute]);
 
   useEffect(() => {
-    if (identity) {
-      retrieveAssets(
-        `https://${
-          process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
-        }.starkscan.co/api/v0/nfts?owner_address=${identity.addr}`
-      ).then((data) => {
-        setUserNft(data.data);
-        setNextUrl(data.next_url as string);
-        setUnusedAssets(data.remainder ?? []);
-      });
+    // connector is of type Connector<any> in starknet-react
+    // but _wallet which is supposed to be of type IStarknetWindowObject is set as private
+    if (connector && connector.id === "braavos") {
+      (connector as any)._wallet
+        .request({ type: "wallet_getStarknetProScore" })
+        .then((score: BraavosScoreProps) => {
+          setBraavosScore(score.score);
+        });
+    } else {
+      setBraavosScore(0);
     }
-  }, [identity, addressOrDomain, address]);
-
-  const getIdentityData = async (id: number) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
-    );
-    return response.json();
-  };
+  }, [connector, addressOrDomain, address]);
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -214,83 +202,6 @@ const AddressOrDomain: NextPage = () => {
     setTimeout(() => {
       setCopied(false);
     }, 1500);
-  };
-
-  const retrieveAssets = async (
-    url: string,
-    accumulatedAssets: StarkscanNftProps[] = []
-  ): Promise<StarkscanApiResult> => {
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": `${process.env.NEXT_PUBLIC_STARKSCAN}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const filteredAssets = filterAssets(data.data);
-        const assets = [...accumulatedAssets, ...filteredAssets];
-
-        if (assets.length < 8 && data.next_url) {
-          return retrieveAssets(data.next_url, assets);
-        } else if (assets.length > 8) {
-          // Split and save results
-          const { res, remainder } = splitAssets(assets);
-          return {
-            data: res,
-            next_url: data.next_url ?? null,
-            remainder,
-          };
-        } else {
-          return {
-            data: assets,
-            next_url: data.next_url,
-          };
-        }
-      });
-  };
-
-  const filterAssets = (assets: StarkscanNftProps[]) => {
-    return assets.filter((obj) =>
-      NFTContracts.includes(hexToDecimal(obj.contract_address))
-    );
-  };
-
-  const splitAssets = (
-    assets: StarkscanNftProps[]
-  ): { res: StarkscanNftProps[]; remainder: StarkscanNftProps[] } => {
-    const modulo = assets.length % 8;
-    const res = assets.slice(0, assets.length - modulo);
-    const remainder = assets.slice(assets.length - modulo);
-    return { res, remainder };
-  };
-
-  const loadMore = () => {
-    if (unusedAssets.length > 0 && unusedAssets.length < 8) {
-      if (nextUrl) {
-        // fetch more assets from API
-        retrieveAssets(nextUrl, unusedAssets).then((data) => {
-          setUserNft((prev) => [
-            ...(prev as StarkscanNftProps[]),
-            ...data.data,
-          ]);
-          setNextUrl(data.next_url as string);
-          setUnusedAssets(data.remainder ?? []);
-        });
-      } else {
-        // show unused assets
-        setUserNft((prev) => [
-          ...(prev as StarkscanNftProps[]),
-          ...unusedAssets,
-        ]);
-        setUnusedAssets([]);
-      }
-    } else {
-      const { res, remainder } = splitAssets(unusedAssets);
-      setUserNft((prev) => [...(prev as StarkscanNftProps[]), ...res]);
-      setUnusedAssets(remainder);
-    }
   };
 
   if (notFound) {
@@ -303,21 +214,40 @@ const AddressOrDomain: NextPage = () => {
     );
   }
 
-  return initProfile && identity ? (
-    <>
-      <div className={styles.screen}>
-        <div className={styles.profileContainer}>
-          <div className={styles.profilePictureContainer}>
-            <div className={styles.profilePicture}>
-              <img
-                width={"350px"}
-                src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
-                alt="starknet.id avatar"
-                style={{ maxWidth: "150%" }}
-              />
-            </div>
-            {/* We do not enable the profile pic change atm */}
-            {/* <Tooltip title="Change profile picture" arrow>
+  const getIdentityData = async (id: number) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
+    );
+    return response.json();
+  };
+
+  return (
+    <div className={styles.profileBg}>
+      {initProfile && identity ? (
+        <>
+          <Land
+            address={identity.addr}
+            isOwner={isOwner}
+            isMobile={isMobile}
+            setSinceDate={setSinceDate}
+            setTotalNfts={setTotalNfts}
+            setAchievementCount={setAchievementCount}
+          />
+          <div className={styles.profiles}>
+            <ProfileCard
+              title={identity?.domain ?? minifyAddress(identity.addr)}
+              isUppercase={true}
+              content={
+                <div className={styles.nameCard}>
+                  <div className={styles.profilePicture}>
+                    <img
+                      width={"350px"}
+                      src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                      alt="starknet.id avatar"
+                      style={{ maxWidth: "150%" }}
+                    />
+                    {/* We do not enable the profile pic change atm */}
+                    {/* <Tooltip title="Change profile picture" arrow>
               <div className={styles.cameraIcon}>
                 <CameraAlt
                   className={styles.cameraAlt}
@@ -325,100 +255,99 @@ const AddressOrDomain: NextPage = () => {
                 />
               </div>
             </Tooltip> */}
-          </div>
-          <Divider variant="middle" orientation="vertical" />
-          <div className="flex flex-col flex-start gap-3">
-            <div className={styles.name}>{identity?.domain}</div>
-            <div className={styles.starknetInfo}>
-              <StarknetIcon width="32px" color="" />
-              <div className={styles.address}>
-                {typeof addressOrDomain === "string" &&
-                isHexString(addressOrDomain)
-                  ? minifyAddress(addressOrDomain)
-                  : minifyAddress(identity?.addr)}
-              </div>
-
-              <div className="cursor-pointer">
-                {!copied ? (
-                  <Tooltip title="Copy" arrow>
-                    <ContentCopy
-                      className={styles.contentCopy}
-                      onClick={() => copyToClipboard()}
-                    />
-                  </Tooltip>
-                ) : (
-                  <CopiedIcon color="#6affaf" width="25" />
-                )}
-              </div>
-            </div>
-            <div className="flex lg:justify-start justify-center lg:items-start items-center">
-              <SocialMediaActions identity={identity} />
-            </div>
-          </div>
-        </div>
-        <div className={styles.contentContainer}>
-          <div className={styles.menu}>
-            <div className={styles.menuTitle}>
-              {/* <p
-                  className={
-                    active === 1 ? `${styles.active}` : `${styles.inactive}`
-                  }
-                  onClick={() => setActive(1)}
-                >
-                  My analytics
-                </p>
-              ) */}
-              <p
-                className={
-                  active === 0 ? `${styles.active}` : `${styles.inactive}`
-                }
-                onClick={() => setActive(0)}
-              >
-                Starknet Achievements
-              </p>
-            </div>
-            {!active ? (
-              <>
-                {isOwner && isBraavosWallet ? (
-                  <div className={styles.pieChart}>
-                    <PieChart />
                   </div>
-                ) : null}
-                <div className={styles.content}>
-                  {userNft && userNft.length ? (
-                    userNft.map((nft, index) => {
-                      return (
-                        <NftCard
-                          key={index}
-                          image={nft.image_url as string}
-                          title={nft.name as string}
-                          url={
-                            ((("https://unframed.co/item/" +
-                              nft.contract_address) as string) +
-                              "/" +
-                              nft.token_id) as string
-                          }
-                        />
-                      );
-                    })
-                  ) : (
-                    <p>No Starknet achievements yet, start some quests !</p>
-                  )}
+                  <div>
+                    <div className={styles.starknetInfo}>
+                      <div className="cursor-pointer absolute">
+                        {!copied ? (
+                          <Tooltip title="Copy" arrow>
+                            <div onClick={() => copyToClipboard()}>
+                              <CopyIcon width={"18"} color="#F4FAFF" />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <VerifiedIcon width={"18"} />
+                        )}
+                      </div>
+                      <div className={styles.address}>
+                        {typeof addressOrDomain === "string" &&
+                        isHexString(addressOrDomain)
+                          ? minifyAddressWithChars(addressOrDomain, 8)
+                          : minifyAddressWithChars(identity?.addr, 8)}
+                      </div>
+                    </div>
+                    {sinceDate ? (
+                      <div className={styles.memberSince}>
+                        <p>{sinceDate}</p>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
-                {nextUrl || unusedAssets.length > 0 ? (
-                  <div className="text-background ml-5 mr-5 flex justify-center items-center flex-col">
-                    <Button onClick={() => loadMore()}>Load More</Button>
-                  </div>
-                ) : null}
-              </>
+              }
+            />
+            <ProfileCard
+              title="Progress"
+              content={
+                <div className={styles.progress}>
+                  {/* We do not have xp yet */}
+                  {/* <div className="flex flex-col gap-1">
+                <div className={styles.polygonContainer}>
+                  <img src="/icons/polygon.svg" alt="polygon icon" />
+                  <span className={styles.xp}>XP</span>
+                </div>
+                <span>12</span>
+              </div> */}
+                  <Tooltip
+                    title="Number of NFTs owned from starknet quest"
+                    arrow
+                  >
+                    <div className="flex flex-col gap-1">
+                      <span className={styles.trophy}>
+                        <TrophyIcon width="20" color="#696045" />
+                      </span>
+                      <span>{totalNFTs}</span>
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="Number of achievements completed" arrow>
+                    <div className="flex flex-col gap-1">
+                      <img
+                        src="/icons/verifyBadge.svg"
+                        alt="verfy badge icon"
+                        width={25}
+                      />
+                      <span>{achievementCount}</span>
+                    </div>
+                  </Tooltip>
+                  {isOwner && isBraavosWallet ? (
+                    <Tooltip title="Your Braavos Pro score" arrow>
+                      <div className="flex flex-col gap-1">
+                        <img
+                          src="/braavos/braavosLogo.svg"
+                          alt="braavos icon"
+                          width={24}
+                        />
+                        <span>{braavosScore}</span>
+                      </div>
+                    </Tooltip>
+                  ) : null}
+                </div>
+              }
+            />
+            {hasVerifiedSocials(identity) ? (
+              <ProfileCard
+                title="Social network"
+                content={<SocialMediaActions identity={identity} />}
+              />
             ) : null}
           </div>
+        </>
+      ) : (
+        <div
+          className={`h-screen flex justify-center items-center ${styles.name}`}
+        >
+          <h2>Loading</h2>
         </div>
-      </div>
-    </>
-  ) : (
-    <div className={`h-screen flex justify-center items-center ${styles.name}`}>
-      <h2>Loading</h2>
+      )}
     </div>
   );
 };

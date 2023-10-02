@@ -72,6 +72,9 @@ type Identity = {
   old_discord?: string;
   old_twitter?: string;
   old_github?: string;
+  discord?: string;
+  twitter?: string;
+  github?: string;
   starknet_id?: string;
   error?: string;
 };
@@ -97,6 +100,7 @@ type StarkscanNftProps = {
   name: string | null;
   nft_id: string | null;
   token_uri: string | null;
+  minted_at_timestamp: number;
 };
 
 type Attribute = {
@@ -133,3 +137,42 @@ type Step = {
 
 type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
+
+type ProfileCard = {
+  title: string;
+  isUppercase?: boolean;
+  content: React.ReactNode;
+};
+
+type UserAchievement = {
+  name: string;
+  shortDescription: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  verifyType: string;
+  id: number;
+};
+
+type UserAchievements = {
+  name: string;
+  description: string;
+  img_url: string;
+  achievements: Achievement[];
+};
+
+type BuildingsInfo = {
+  id: number;
+  name: string;
+  description: string;
+  entity: string;
+  level: number;
+  pos?: THREE.Vector2;
+};
+
+type QuestCategory = {
+  name: string;
+  img: string;
+  questNumber: number;
+  quests: QuestDocument[];
+};

@@ -24,6 +24,8 @@ import ModalWallet from "./modalWallet";
 import { CircularProgress } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useRouter } from "next/router";
+import theme from "../../styles/theme";
+import { FaDiscord, FaTwitter } from "react-icons/fa";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -38,7 +40,6 @@ const Navbar: FunctionComponent = () => {
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
     domain && domain.endsWith(".stark") ? domain : address;
-  const secondary = "#f4faff";
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
@@ -113,14 +114,18 @@ const Navbar: FunctionComponent = () => {
   }
 
   function onTopButtonClick(): void {
-    if (available.length > 0) {
-      if (available.length === 1) {
-        connect(available[0]);
+    if (!isConnected) {
+      if (available.length > 0) {
+        if (available.length === 1) {
+          connect(available[0]);
+        } else {
+          setHasWallet(true);
+        }
       } else {
         setHasWallet(true);
       }
     } else {
-      setHasWallet(true);
+      setShowWallet(true);
     }
   }
 
@@ -147,7 +152,7 @@ const Navbar: FunctionComponent = () => {
 
   return (
     <>
-      <div className={`fixed w-full z-[1]`}>
+      <div className={`fixed w-full z-[1]`} id="nav">
         <div
           className={`${styles.navbarContainer} ${
             navbarBg ? styles.navbarScrolled : ""
@@ -166,14 +171,14 @@ const Navbar: FunctionComponent = () => {
           </div>
           <div>
             <ul className="hidden lg:flex uppercase items-center">
-              <Link href="/partnership">
-                <li className={styles.menuItem}>Partnership</li>
-              </Link>
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
+              <Link href="/achievements">
+                <li className={styles.menuItem}>Achievements</li>
+              </Link>
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My profile</li>
+                <li className={styles.menuItem}>My land</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
@@ -213,7 +218,11 @@ const Navbar: FunctionComponent = () => {
               </div>
             </ul>
             <div onClick={handleNav} className="lg:hidden">
-              <AiOutlineMenu color={secondary} size={25} className="mr-3" />
+              <AiOutlineMenu
+                color={theme.palette.secondary.main}
+                size={25}
+                className="mr-3"
+              />
             </div>
           </div>
         </div>
@@ -228,13 +237,13 @@ const Navbar: FunctionComponent = () => {
           <div
             className={
               nav
-                ? "fixed left-0 top-0 w-[75%] sm:w-[60%] lg:w-[45%] h-screen bg-background p-10 ease-in duration-500 flex justify-between flex-col"
+                ? "fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in duration-500 flex justify-between flex-col"
                 : "fixed left-[-100%] top-0 p-10 ease-in h-screen flex justify-between flex-col"
             }
           >
-            <div>
+            <div className="h-full flex flex-col">
               <div className="flex w-full items-center justify-between">
-                <div className="">
+                <div>
                   <Link href="/">
                     <img
                       src="/visuals/starknetquestLogo.svg"
@@ -247,32 +256,27 @@ const Navbar: FunctionComponent = () => {
 
                 <div
                   onClick={handleNav}
-                  className="rounded-full cursor-pointer"
+                  className="rounded-lg cursor-pointer p-1"
                 >
-                  <AiOutlineClose color={secondary} />
+                  <AiOutlineClose color={theme.palette.secondary.main} />
                 </div>
               </div>
-              <div className="border-b border-secondary my-4">
-                <p className="w-[85%] lg:w-[90%] py-4 text-babe-blue">
-                  Grow your starknet profile
-                </p>
-              </div>
-              <div className="py-4 flex flex-col">
+              <div className="py-4 my-auto text-center font-extrabold">
                 <ul className="uppercase text-babe-blue">
-                  <Link href="/partnership">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Partnership
-                    </li>
-                  </Link>
                   <Link href="/">
                     <li
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
                     >
                       Quests
+                    </li>
+                  </Link>
+                  <Link href="/achievements">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Achievements
                     </li>
                   </Link>
                   <Link
@@ -282,20 +286,34 @@ const Navbar: FunctionComponent = () => {
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
                     >
-                      My profile
+                      My land
                     </li>
                   </Link>
                 </ul>
               </div>
             </div>
-
-            <div>
-              <p className="uppercase tracking-widest white">
-                Grow you starknet profile
-              </p>
-              <div className="flex items-center my-4 w-full sm:w-[80%]">
-                <div className="text-background">
-                  <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
+            <div className="flex flex-col items-center my-4 w-full">
+              <div className="text-background">
+                <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
+              </div>
+              <div className="flex">
+                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                  <a
+                    href="https://twitter.com/starknet_quest"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FaTwitter size={28} color={theme.palette.secondary.main} />
+                  </a>
+                </div>
+                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                  <a
+                    href="https://discord.com/invite/8uS2Mgcsza"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FaDiscord size={28} color={theme.palette.secondary.main} />
+                  </a>
                 </div>
               </div>
             </div>

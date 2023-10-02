@@ -37,12 +37,17 @@ const Quiz: FunctionComponent<QuizProps> = ({
 
   useEffect(() => {
     const documentBody = document.querySelector("body");
-    if (!documentBody) return;
+    const footer = document.querySelector("footer");
+    const navbar = document.getElementById("nav");
     // Mount
-    documentBody.style.overflow = "hidden";
+    if (documentBody) documentBody.style.overflow = "hidden";
+    if (footer) footer.style.display = "none";
+    if (navbar) navbar.style.display = "none";
     // Unmount
     return () => {
-      documentBody.style.removeProperty("overflow");
+      if (documentBody) documentBody.style.removeProperty("overflow");
+      if (footer) footer.style.removeProperty("display");
+      if (navbar) navbar.style.removeProperty("display");
     };
   }, []);
 
@@ -77,7 +82,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     if (answers.length !== quiz.questions.length) return;
     const load = () => {
       setPassed("loading");
-      fetch(verifyEndpoint, {
+      fetch(`${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

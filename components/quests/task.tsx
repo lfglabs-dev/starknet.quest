@@ -4,12 +4,11 @@ import {
   CheckCircle as CheckCircleIcon,
   ErrorRounded as ErrorRoundedIcon,
 } from "@mui/icons-material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Button from "../UI/button";
 import { CircularProgress } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quiz from "../quiz/quiz";
+import ArrowRightIcon from "../UI/iconsComponents/icons/arrowRightIcon";
 
 const Task: FunctionComponent<Task> = ({
   name,
@@ -58,7 +57,9 @@ const Task: FunctionComponent<Task> = ({
       setIsLoading(false);
     } else {
       try {
-        const response = await fetch(verifyEndpoint);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`
+        );
 
         if (!response.ok) {
           throw new Error(await response.text());
@@ -131,12 +132,10 @@ const Task: FunctionComponent<Task> = ({
         className={styles.taskTitle}
         onClick={() => setIsClicked(!isClicked)}
       >
-        <div className="flex">
-          {isClicked ? (
-            <KeyboardArrowDownIcon width={25} color="secondary" />
-          ) : (
-            <KeyboardArrowRightIcon width={25} color="secondary" />
-          )}
+        <div className="flex items-center">
+          <div className={isClicked ? "rotate-90" : undefined}>
+            <ArrowRightIcon width={"16"} color="white" />
+          </div>
           <p className="ml-2 mr-2">{name}</p>
         </div>
         {isVerified ? (

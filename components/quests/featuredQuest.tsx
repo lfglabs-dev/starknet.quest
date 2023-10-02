@@ -26,17 +26,17 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
 
-  return onClick && !isSmallScreen ? (
+  return onClick ? (
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
-        <p className="text-gray-200	mt-2 text-start">Featured</p>
+        <p className="mt-2 text-start">Featured</p>
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
         <p className="text-gray-200	 mt-4 text-start">{desc}</p>
         <div className="flex mt-4 mb-4 items-center">
           <img width={20} src={issuer?.logoFavicon} />
           <p className="text-white ml-2">{reward}</p>
         </div>
-        <div className="w-2/5">
+        <div>
           <Button onClick={onClick}>Begin</Button>
         </div>
       </div>

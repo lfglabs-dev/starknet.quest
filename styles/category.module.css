@@ -1,0 +1,15 @@
+.questList {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+}
+
+.blur {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}

@@ -1,0 +1,47 @@
+.tooltip {
+    display: flex;
+    padding: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    border-radius: 12px;
+    background: var(--background, #101012);
+    max-width: 250px;
+  
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0px 5px 14px 0px rgba(8, 15, 52, 0.04), 0px 1px 1px 0px rgba(23, 15, 73, 0.04), 0px 0px 1px 0px rgba(23, 15, 73, 0.03);
+  }
+  
+  .level {
+    color: var(--secondary, #F4FAFF);
+    font-family: Sora;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(225, 220, 234, 0.2) 0%, rgba(225, 220, 234, 0.2) 100%);
+    background-blend-mode: overlay;
+    padding: 2px 8px;
+  }
+  
+  .name {
+    color: var(--background500, #E1DCEA);
+    font-family: Sora;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  
+  .description {
+    color: var(--background500, #E1DCEA);
+    font-family: Sora;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    opacity: 0.8;
+  }

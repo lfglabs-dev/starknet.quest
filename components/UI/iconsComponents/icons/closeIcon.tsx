@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 
-const CloseIcon: FunctionComponent = () => {
+const CloseIcon: FunctionComponent<IconProps> = ({ width }) => {
   return (
-    <svg viewBox="0 0 24 24">
+    <svg viewBox="0 0 24 24" width={width} height={width}>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

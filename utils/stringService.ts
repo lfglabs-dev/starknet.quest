@@ -9,6 +9,20 @@ export function minifyAddress(address: string | undefined): string {
   return (firstPart + "..." + secondPart).toLowerCase();
 }
 
+export function minifyAddressWithChars(
+  address: string | undefined,
+  chars: number
+): string {
+  if (!address) return "";
+
+  if (address.length <= chars * 2) return address.toLowerCase();
+
+  const firstPart = address.substring(0, chars);
+  const secondPart = address.substring(address.length - chars, address.length);
+
+  return (firstPart + "..." + secondPart).toLowerCase();
+}
+
 export function shortenDomain(
   domain?: string,
   characterToBreak?: number

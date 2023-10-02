@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navbar from "../components/UI/navbar";
@@ -8,6 +8,8 @@ import { InjectedConnector, StarknetConfig } from "@starknet-react/core";
 import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
+import Footer from "../components/UI/footer";
+import { QuestsContextProvider } from "../context/QuestsProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [
@@ -32,24 +34,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <>
-      <StarknetConfig connectors={connectors} autoConnect>
-        <StarknetIdJsProvider>
-          <ThemeProvider theme={theme}>
-            <Head>
-              <title>Starknet Quest</title>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
-              />
-            </Head>
+    <StarknetConfig connectors={connectors} autoConnect>
+      <StarknetIdJsProvider>
+        <ThemeProvider theme={theme}>
+          <Head>
+            <title>Starknet Quest</title>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
+          </Head>
+          <QuestsContextProvider>
             <Navbar />
             <Component {...pageProps} />
-          </ThemeProvider>
-          <Analytics />
-        </StarknetIdJsProvider>
-      </StarknetConfig>
-    </>
+            <Footer />
+          </QuestsContextProvider>
+        </ThemeProvider>
+        <Analytics />
+      </StarknetIdJsProvider>
+    </StarknetConfig>
   );
 }
 

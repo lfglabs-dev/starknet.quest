@@ -11,6 +11,16 @@
 .menuItem {
   text-transform: underline;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.navbarContainer:has(.menuItem:hover) .menuItem {
+  opacity: 0.7;
+}
+
+.menuItem:hover {
+  opacity: 1 !important;
 }
 
 .menuItemSmall {
