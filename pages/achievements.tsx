@@ -104,10 +104,10 @@ const Achievements: NextPage = () => {
             Complete achievements and grow your Starknet on-chain reputation
           </p>
         </div>
-        <div className={styles.cardWrapper}>
-          <div className={styles.cards}>
-            {userAchievements.length > 0 ? (
-              userAchievements.map(
+        {userAchievements.length > 0 ? (
+          <div className={styles.cardWrapper}>
+            <div className={styles.cards}>
+              {userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
                     <Achievement
@@ -117,12 +117,12 @@ const Achievements: NextPage = () => {
                     />
                   );
                 }
-              )
-            ) : (
-              <AchievementSkeleton />
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <AchievementSkeleton />
+        )}
       </div>
     </div>
   );

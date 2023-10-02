@@ -236,6 +236,21 @@ background: linear-gradient(
     opacity: 0.8;
 }
 
+.achievementSkeleton {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.achievementLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0;
