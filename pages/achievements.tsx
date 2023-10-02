@@ -22,7 +22,8 @@ const Achievements: NextPage = () => {
 
   useEffect(() => {
     setHasChecked(false);
-  }, [location]);
+    setUserAchievements([]);
+  }, [location, address]);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -60,7 +61,7 @@ const Achievements: NextPage = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [address, hasChecked, location]);
+  }, [hasChecked, address]);
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
@@ -92,7 +93,7 @@ const Achievements: NextPage = () => {
         setHasChecked(true);
       });
     }
-  }, [userAchievements.length, address]);
+  }, [userAchievements.length, hasChecked]);
 
   return (
     <div className={styles.screen}>
