@@ -9,10 +9,11 @@ const AchievementSkeleton: FunctionComponent = () => {
         <Skeleton
           variant="rounded"
           className={styles.achievementLoading}
+          height={200}
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",
-            margin: "40px auto 0",
+            margin: "40px auto",
           }}
         />
       </div>
@@ -20,6 +21,7 @@ const AchievementSkeleton: FunctionComponent = () => {
         <Skeleton
           variant="rounded"
           className={styles.achievementLoading}
+          height={200}
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",

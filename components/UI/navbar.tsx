@@ -178,7 +178,7 @@ const Navbar: FunctionComponent = () => {
                 <li className={styles.menuItem}>Achievements</li>
               </Link>
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My profile</li>
+                <li className={styles.menuItem}>My land</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
@@ -286,7 +286,7 @@ const Navbar: FunctionComponent = () => {
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
                     >
-                      My profile
+                      My land
                     </li>
                   </Link>
                 </ul>
