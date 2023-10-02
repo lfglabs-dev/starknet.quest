@@ -20,6 +20,8 @@ const Achievements: NextPage = () => {
   >([]);
   const [hasChecked, setHasChecked] = useState<boolean>(false);
 
+  console.log("address", address);
+
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
     let shouldFetchWithZeroAddress = true;
