@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import styles from "../../styles/quests.module.css";
 import { useContext } from "react";
 import { QuestsContext } from "../../context/QuestsProvider";
@@ -22,7 +22,10 @@ const Quest: FunctionComponent<QuestProps> = ({
   id,
 }) => {
   const { completedQuestIds } = useContext(QuestsContext);
-  const isCompleted = completedQuestIds.includes(id);
+  const isCompleted = useMemo(
+    () => completedQuestIds.includes(id),
+    [id, completedQuestIds]
+  );
 
   return (
     <>
