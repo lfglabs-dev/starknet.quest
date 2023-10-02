@@ -308,7 +308,7 @@ const Navbar: FunctionComponent = () => {
                 </div>
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
                   <a
-                    href="https://discord.com/invite/8uS2Mgcsza"
+                    href="https://discord.gg/byEGk6w6T6"
                     target="_blank"
                     rel="noreferrer"
                   >

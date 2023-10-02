@@ -24,7 +24,10 @@ const Footer: FunctionComponent = () => {
             </span>
             Twitter
           </div>
-          <div className={styles.social}>
+          <div
+            className={styles.social}
+            onClick={() => window.open("https://discord.gg/byEGk6w6T6")}
+          >
             <span>
               <DiscordIcon width="17" color="#101012" />
             </span>
