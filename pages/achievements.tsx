@@ -13,7 +13,7 @@ import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
 
 const Achievements: NextPage = () => {
-  const location = useLocation();
+  // const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
@@ -59,7 +59,8 @@ const Achievements: NextPage = () => {
       clearTimeout(timer);
       setHasChecked(false);
     };
-  }, [location, address]);
+  }, [address]);
+  // location,
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
