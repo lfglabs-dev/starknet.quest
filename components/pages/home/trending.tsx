@@ -30,6 +30,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
                   logoFavicon: quest.logo,
                 }}
                 reward={quest.rewards_title}
+                id={quest.id}
               />
             );
           })
