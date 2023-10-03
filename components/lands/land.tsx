@@ -14,9 +14,6 @@ type LandProps = {
   setSinceDate: (s: string | null) => void;
   setAchievements: (n: BuildingsInfo[]) => void;
   setSoloBuildings: (n: BuildingsInfo[]) => void;
-  // hasDomain: boolean;
-  // setTotalNfts: (nb: number) => void;
-  // setAchievementCount: (n: number) => void;
 };
 
 export const Land = ({
@@ -24,12 +21,9 @@ export const Land = ({
   isOwner,
   isMobile,
   setSinceDate,
-  // hasDomain,
   setAchievements,
   setSoloBuildings,
-}: // setTotalNfts,
-// setAchievementCount,
-LandProps) => {
+}: LandProps) => {
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
