@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "../utils/feltService";
@@ -67,7 +67,7 @@ export const QuestsContextProvider = ({
       });
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     if (!address) return;
     fetch(
       `${
@@ -89,7 +89,7 @@ export const QuestsContextProvider = ({
       trendingQuests,
       completedQuestIds,
     };
-  }, [quests, featuredQuest, categories, trendingQuests]);
+  }, [quests, featuredQuest, categories, trendingQuests, completedQuestIds]);
 
   return (
     <QuestsContext.Provider value={contextValues}>
