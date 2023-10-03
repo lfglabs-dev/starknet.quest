@@ -34,7 +34,7 @@ const AddressOrDomain: NextPage = () => {
   const [sinceDate, setSinceDate] = useState<string | null>(null);
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
-  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -293,22 +293,22 @@ const AddressOrDomain: NextPage = () => {
                   <div className={styles.tabs}>
                     <div
                       className={`${styles.tab} ${
-                        selectedTab === 0 ? styles.selectedTab : ""
+                        selectedTab === "nfts" ? styles.selectedTab : ""
                       }`}
-                      onClick={() => setSelectedTab(0)}
+                      onClick={() => setSelectedTab("nfts")}
                     >
                       NFTs unlocked ({soloBuildings.length})
                     </div>
                     <div
                       className={`${styles.tab} ${
-                        selectedTab === 1 ? styles.selectedTab : ""
+                        selectedTab === "achievements" ? styles.selectedTab : ""
                       }`}
-                      onClick={() => setSelectedTab(1)}
+                      onClick={() => setSelectedTab("achievements")}
                     >
                       Achievements ({achievements.length})
                     </div>
                   </div>
-                  {selectedTab === 0 ? (
+                  {selectedTab === "nfts" ? (
                     <div className={styles.gallery}>
                       {soloBuildings.map((building) => {
                         return (
@@ -326,7 +326,7 @@ const AddressOrDomain: NextPage = () => {
                       })}
                     </div>
                   ) : null}
-                  {selectedTab === 1 ? (
+                  {selectedTab === "achievements" ? (
                     <div className={styles.gallery}>
                       {achievements.map((achievement) => {
                         return (

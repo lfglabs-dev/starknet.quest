@@ -11,9 +11,9 @@ type LandProps = {
   address: string;
   isOwner: boolean;
   isMobile: boolean;
-  setSinceDate: (s: string | null) => void;
-  setAchievements: (n: BuildingsInfo[]) => void;
-  setSoloBuildings: (n: BuildingsInfo[]) => void;
+  setSinceDate: (date: string | null) => void;
+  setAchievements: (achievements: BuildingsInfo[]) => void;
+  setSoloBuildings: (buildings: BuildingsInfo[]) => void;
 };
 
 export const Land = ({

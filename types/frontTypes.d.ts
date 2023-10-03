@@ -177,3 +177,5 @@ type QuestCategory = {
   questNumber: number;
   quests: QuestDocument[];
 };
+
+type LandTabs = "achievements" | "nfts";
