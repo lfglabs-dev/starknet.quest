@@ -336,7 +336,7 @@ const AddressOrDomain: NextPage = () => {
                           >
                             <img
                               src={achievement.img_url}
-                              className={styles.nftImage}
+                              className={styles.achievementImage}
                             />
                             <p className={styles.achievementLvl}>
                               Level {achievement.level}

@@ -165,6 +165,14 @@
   border-radius: 8px 8px 0 0;
   height: 100px;
   margin: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.achievementImage {
+  border-radius: 8px 8px 0 0;
+  height: 100px;
+  margin: auto;
 }
 
 .achievementLvl {
