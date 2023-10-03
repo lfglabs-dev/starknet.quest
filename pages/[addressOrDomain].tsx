@@ -99,7 +99,8 @@ const AddressOrDomain: NextPage = () => {
                 ...data,
                 starknet_id: id.toString(),
               });
-              if (hexToDecimal(address) === data.addr) setIsOwner(true);
+              if (hexToDecimal(address) === hexToDecimal(data.addr))
+                setIsOwner(true);
               setInitProfile(true);
             });
           })
@@ -112,7 +113,7 @@ const AddressOrDomain: NextPage = () => {
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
-              addr: hexToDecimal(addr),
+              addr: addr,
               domain: addressOrDomain,
               is_owner_main: false,
             });
@@ -173,6 +174,17 @@ const AddressOrDomain: NextPage = () => {
             setIsOwner(false);
             setInitProfile(true);
           }
+        })
+        .catch(() => {
+          setIdentity({
+            starknet_id: "0",
+            addr: addressOrDomain,
+            domain: minifyAddress(addressOrDomain),
+            is_owner_main: false,
+          });
+          setInitProfile(true);
+          if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+            setIsOwner(true);
         });
     } else {
       setNotFound(true);
@@ -213,9 +225,11 @@ const AddressOrDomain: NextPage = () => {
             isOwner={isOwner}
             isMobile={isMobile}
             setSinceDate={setSinceDate}
-            hasDomain={identity.domain ? true : false}
+            // hasDomain={identity.domain ? true : false}
             setAchievements={setAchievements}
             setSoloBuildings={setSoloBuildings}
+            // setTotalNfts={setTotalNfts}
+            // setAchievementCount={setAchievementCount}
           />
           <div className={styles.profiles}>
             <ProfileCard

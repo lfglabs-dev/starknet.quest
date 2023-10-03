@@ -1,0 +1,134 @@
+.popupContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-index-popup);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  position: relative;
+  width: calc(100% - 2rem);
+  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  border-radius: 5px;
+  background-color: var(--background600);
+  border-radius: 16px;
+}
+
+.titleSide,
+.contentSide {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 30.75px 46.125px;
+}
+
+.titleSide {
+  background-color: var(--menu-background);
+  max-width: 52%;
+  border-radius: 16px 0px 0px 16px;
+}
+
+.contentSide {
+  max-width: 48%;
+}
+
+.title {
+  color: var(--secondary);
+  text-align: center;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 133.333% */
+  margin-top: 24px;
+}
+
+.button {
+  margin-bottom: auto;
+}
+
+.description {
+  margin: auto 0;
+  color: var(--secondary);
+  text-align: center;
+
+  /* Body/default/regular */
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px; /* 200% */
+}
+
+.banner {
+  margin: 24px 0;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  stroke: var(--background500);
+}
+
+.close::before,
+.close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-black);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .popupContainer {
+    align-items: flex-end;
+  }
+  .popup {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12vh;
+    max-height: calc(88vh - 1rem);
+    overflow-y: auto;
+    padding: 48px 24px;
+    background-color: var(--menu-background);
+    border-radius: 16px 16px 0 0;
+  }
+  .titleSide,
+  .contentSide {
+    max-width: 100%;
+    padding: 0 24px;
+    background-color: unset;
+    align-items: center;
+  }
+  .button {
+    margin-top: 2rem;
+  }
+  .banner {
+    width: 400px;
+  }
+}

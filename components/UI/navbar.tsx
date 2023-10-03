@@ -178,7 +178,7 @@ const Navbar: FunctionComponent = () => {
                 <li className={styles.menuItem}>Achievements</li>
               </Link>
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My profile</li>
+                <li className={styles.menuItem}>My land</li>
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
@@ -286,7 +286,7 @@ const Navbar: FunctionComponent = () => {
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}
                     >
-                      My profile
+                      My land
                     </li>
                   </Link>
                 </ul>
@@ -308,7 +308,7 @@ const Navbar: FunctionComponent = () => {
                 </div>
                 <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
                   <a
-                    href="https://discord.com/invite/8uS2Mgcsza"
+                    href="https://discord.gg/byEGk6w6T6"
                     target="_blank"
                     rel="noreferrer"
                   >

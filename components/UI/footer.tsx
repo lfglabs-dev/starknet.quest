@@ -26,7 +26,7 @@ const Footer: FunctionComponent = () => {
           </div>
           <div
             className={styles.social}
-            onClick={() => window.open("http://discord.gg/8uS2Mgcsza")}
+            onClick={() => window.open("https://discord.gg/byEGk6w6T6")}
           >
             <span>
               <DiscordIcon width="17" color="#101012" />

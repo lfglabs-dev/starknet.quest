@@ -69,7 +69,7 @@ export const Map: FunctionComponent<MapProps> = ({
       ) : null}
       {mapReader.roadProps ? (
         <RoadProps
-          tilesets={data?.defs.tilesets}
+          tileset={data.defs.tilesets[2]}
           cityData={mapReader.roadProps}
           tileData={mapReader.tileData[tileTypes.PROPS]}
         />

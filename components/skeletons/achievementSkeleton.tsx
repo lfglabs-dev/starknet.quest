@@ -5,25 +5,30 @@ import styles from "../../styles/achievements.module.css";
 const AchievementSkeleton: FunctionComponent = () => {
   return (
     <>
-      <Skeleton
-        variant="rounded"
-        width={650}
-        height={245}
-        sx={{
-          bgcolor: "grey.900",
-          marginBottom: "40px",
-          borderRadius: "30px",
-        }}
-      />
-      <Skeleton
-        variant="rounded"
-        width={650}
-        height={245}
-        sx={{
-          bgcolor: "grey.900",
-          borderRadius: "30px",
-        }}
-      />
+      <div className={styles.achievementSkeleton}>
+        <Skeleton
+          variant="rounded"
+          className={styles.achievementLoading}
+          height={200}
+          sx={{
+            bgcolor: "grey.900",
+            borderRadius: "30px",
+            margin: "40px auto",
+          }}
+        />
+      </div>
+      <div className={styles.achievementSkeleton}>
+        <Skeleton
+          variant="rounded"
+          className={styles.achievementLoading}
+          height={200}
+          sx={{
+            bgcolor: "grey.900",
+            borderRadius: "30px",
+            margin: "10px auto 0",
+          }}
+        />
+      </div>
     </>
   );
 };

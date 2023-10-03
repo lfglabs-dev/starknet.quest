@@ -10,8 +10,10 @@ import {
 import Achievement from "../components/achievements/achievement";
 import { hexToDecimal } from "../utils/feltService";
 import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
+import { useLocation } from "react-use";
 
 const Achievements: NextPage = () => {
+  const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
@@ -53,44 +55,53 @@ const Achievements: NextPage = () => {
     // Clear the timer when component unmounts or dependencies change to prevent memory leaks
     return () => {
       clearTimeout(timer);
+      setHasChecked(false);
     };
-  }, [address, hasChecked]);
+  }, [address, location]);
 
   // Map through user achievements and check if any are completed
   useEffect(() => {
     if (userAchievements.length > 0 && !hasChecked && address) {
-      const promises: Promise<void>[] = [];
-      userAchievements.forEach((achievementCategory, index) => {
-        achievementCategory.achievements.forEach((achievement, aIndex) => {
-          if (!achievement.completed) {
-            if (achievement.verify_type === "default") {
-              const fetchPromise = fetch(
-                `${
-                  process.env.NEXT_PUBLIC_API_LINK
-                }/achievements/verify_default?addr=${hexToDecimal(
-                  address
-                )}&id=${achievement.id}`
-              )
-                .then((response) => response.json())
-                .then((data: CompletedDocument) => {
-                  if (data?.achieved) {
-                    const newUserAchievements = [...userAchievements];
-                    newUserAchievements[index].achievements[aIndex].completed =
-                      true;
-                    setUserAchievements(newUserAchievements);
+      const checkAchievements = async () => {
+        const promises = userAchievements.map(
+          async (achievementCategory, index) => {
+            const achievementsPromises = achievementCategory.achievements.map(
+              async (achievement, aIndex) => {
+                if (!achievement.completed) {
+                  try {
+                    const response = await fetch(
+                      `${
+                        process.env.NEXT_PUBLIC_API_LINK
+                      }/achievements/verify_${
+                        achievement.verify_type
+                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+                    );
+                    const data: CompletedDocument = await response.json();
+
+                    if (data?.achieved) {
+                      const newUserAchievements = [...userAchievements];
+                      newUserAchievements[index].achievements[
+                        aIndex
+                      ].completed = true;
+                      setUserAchievements(newUserAchievements);
+                    }
+                  } catch (error) {
+                    console.error("Fetch error:", error);
                   }
-                });
-              promises.push(fetchPromise);
-            }
+                }
+              }
+            );
+
+            await Promise.all(achievementsPromises);
           }
-        });
-      });
-      // Wait for all promises to resolve before setting hasChecked to true
-      Promise.all(promises).then(() => {
+        );
+
+        await Promise.all(promises);
         setHasChecked(true);
-      });
+      };
+      checkAchievements();
     }
-  }, [userAchievements.length, address]);
+  }, [userAchievements.length, hasChecked, address]);
 
   return (
     <div className={styles.screen}>
@@ -101,10 +112,10 @@ const Achievements: NextPage = () => {
             Complete achievements and grow your Starknet on-chain reputation
           </p>
         </div>
-        <div className={styles.cardWrapper}>
-          <div className={styles.cards}>
-            {userAchievements.length > 0 ? (
-              userAchievements.map(
+        {userAchievements.length > 0 ? (
+          <div className={styles.cardWrapper}>
+            <div className={styles.cards}>
+              {userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
                     <Achievement
@@ -114,12 +125,12 @@ const Achievements: NextPage = () => {
                     />
                   );
                 }
-              )
-            ) : (
-              <AchievementSkeleton />
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <AchievementSkeleton />
+        )}
       </div>
     </div>
   );

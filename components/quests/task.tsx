@@ -57,7 +57,9 @@ const Task: FunctionComponent<Task> = ({
       setIsLoading(false);
     } else {
       try {
-        const response = await fetch(verifyEndpoint);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`
+        );
 
         if (!response.ok) {
           throw new Error(await response.text());
