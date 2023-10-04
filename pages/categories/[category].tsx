@@ -38,6 +38,7 @@ const CategoriesPage: NextPage = () => {
                 logoFavicon: quest.logo,
               }}
               reward={quest.rewards_title}
+              id={quest.id}
             />
           ))}
       </div>

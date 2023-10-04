@@ -1,11 +1,14 @@
 import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
+import { useAccount } from "@starknet-react/core";
+import { hexToDecimal } from "../utils/feltService";
 
 interface QuestsConfig {
   quests: QuestDocument[];
   featuredQuest?: QuestDocument;
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
+  completedQuestIds: number[];
 }
 
 type GetQuestsRes =
@@ -19,6 +22,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   featuredQuest: undefined,
   categories: [],
   trendingQuests: [],
+  completedQuestIds: [],
 });
 
 export const QuestsContextProvider = ({
@@ -32,6 +36,8 @@ export const QuestsContextProvider = ({
   >();
   const [categories, setCategories] = useState<QuestCategory[]>([]);
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
+  const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
+  const { address } = useAccount();
 
   useMemo(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
@@ -61,14 +67,29 @@ export const QuestsContextProvider = ({
       });
   }, []);
 
+  useMemo(() => {
+    if (!address) return;
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_LINK
+      }/get_completed_quests?addr=${hexToDecimal(address)}`
+    )
+      .then((response) => response.json())
+      .then((data: number[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        setCompletedQuestIds(data as number[]);
+      });
+  }, [address]);
+
   const contextValues = useMemo(() => {
     return {
       quests,
       featuredQuest,
       categories,
-      trendingQuests: trendingQuests,
+      trendingQuests,
+      completedQuestIds,
     };
-  }, [quests, featuredQuest, categories, trendingQuests]);
+  }, [quests, featuredQuest, categories, trendingQuests, completedQuestIds]);
 
   return (
     <QuestsContext.Provider value={contextValues}>
