@@ -3,9 +3,10 @@ import { Scene } from "./scene";
 import { memberSince } from "../../utils/profile";
 import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
-import Button from "../UI/button";
+import btnStyles from "../../styles/components/button.module.css";
 import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
 import { AchievementsDocument } from "../../types/backTypes";
+import Link from "next/link";
 
 type LandProps = {
   address: string;
@@ -172,9 +173,11 @@ export const Land = ({
             </h2>
             {isOwner ? (
               <div className="text-background ml-5 mr-5">
-                <Button onClick={() => window.open("https://starknet.quest")}>
-                  Start Achievements
-                </Button>
+                <Link href="/">
+                  <button className={btnStyles["nq-button"]}>
+                    Start Achievements
+                  </button>
+                </Link>
               </div>
             ) : null}
           </div>
