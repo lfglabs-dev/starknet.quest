@@ -46,8 +46,7 @@ const QuestPage: NextPage = () => {
 
   useEffect(() => {
     if (!address) return;
-    // setShowDomainPopup(!hasRootDomain);
-    setShowDomainPopup(false);
+    setShowDomainPopup(!hasRootDomain);
   }, [address, hasRootDomain]);
 
   // this fetches quest data
