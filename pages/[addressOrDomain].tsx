@@ -72,6 +72,8 @@ const AddressOrDomain: NextPage = () => {
 
   useEffect(() => {
     setInitProfile(false);
+    setAchievements([]);
+    setSoloBuildings([]);
   }, [address, addressOrDomain]);
 
   useEffect(() => {
