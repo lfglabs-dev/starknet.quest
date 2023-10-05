@@ -28,7 +28,8 @@
   gap: 16px;
   border-radius: 8px;
   background: var(--background600, #29282b);
-  width: 250px;
+  width: 310px;
+  max-height: calc(100vh - 12vh - 250px);
 }
 
 .title {
@@ -53,7 +54,8 @@
 .nameCard {
   display: flex;
   flex-direction: row;
-  gap: 25px;
+  gap: 30px;
+  align-items: center;
 }
 
 .profilePicture {
@@ -80,7 +82,7 @@
   margin-left: 22px;
   color: var(--secondary, #f4faff);
   font-family: Sora;
-  font-size: 8px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 16px;
@@ -101,56 +103,94 @@
   color: var(--secondary, #f4faff);
   text-align: center;
   font-family: Sora;
-  font-size: 8px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 600;
   line-height: 16px;
 }
 
-.progress {
+.tabs {
   display: flex;
-  flex-direction: row;
-  text-align: center;
-  align-items: center;
-  width: 100%;
-  justify-content: space-evenly;
-}
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 10px;
+  background: rgba(16, 16, 18, 0.30);
+  height: 32px;
+  cursor: pointer;
 
-.trophy {
-  border-radius: 3.429px;
-  background: #e6cd84;
-  display: flex;
-  width: 24px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-}
-
-.polygonContainer {
-  width: 28px;
-  height: 28px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.polygonContainer img {
-  width: 100%;
-  transform: scale(2.9);
-}
-
-.xp {
-  color: var(--background, #101012);
-  text-align: center;
+  color: #E1DCEA;
   font-family: Sora;
-  font-size: 10.286px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 600;
-  line-height: 13.714px;
-  position: absolute;
-  top: 6px;
-  right: 6px;
+  line-height: 16px;
+}
+
+.tab {
+  display: flex;
+  height: 32px;
+  padding: 8px;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectedTab {
+  background: #FFF;
+  color: #101012;
+  border-radius: 10px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  gap: 10px;
+  overflow-y: scroll;
+}
+
+.nftContainer {
+  width: calc(50% - 5px);
+  border-radius: 8px;
+  background: #1F1F25;
+}
+
+.nftName {
+  color: #F4FAFF;
+  font-size: 9px;
+  text-align: center;
+  padding: 10px;
+}
+
+.nftImage {
+  border-radius: 8px 8px 0 0;
+  height: 100px;
+  margin: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.achievementImage {
+  border-radius: 8px 8px 0 0;
+  height: 100px;
+  margin: auto;
+}
+
+.achievementLvl {
+  color: #F4FAFF;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px; /* 133.333% */
+}
+
+.achievementName {
+  color: #F4FAFF;
+  font-size: 9px;
+  text-align: center;
+  opacity: 0.7;
+  padding: 2px 0 10px;
 }
 
 .cameraIcon {
@@ -199,5 +239,6 @@
   .profileCard {
     width: calc(100% - 32px);
     margin-left: 38px;
+    max-height: none;
   }
 }
