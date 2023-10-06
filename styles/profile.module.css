@@ -14,7 +14,7 @@
 .profiles {
   position: absolute;
   right: 25px;
-  top: 100px;
+  top: 80px;
   gap: 16px;
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
   border-radius: 8px;
   background: var(--background600, #29282b);
   width: 310px;
-  max-height: calc(100vh - 12vh - 250px);
+  max-height: calc(100vh - 12vh - 350px);
 }
 
 .title {
