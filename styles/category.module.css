@@ -1,3 +1,22 @@
+.screen {
+  z-index: 0;
+  position: relative;
+  padding-top: 12vh;
+  background-color: var(--background);
+  width: 100%;
+  min-height: calc(100vh - 117px - 2em);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.backButton {
+  position: absolute;
+  margin-left: 63px;
+  z-index: 10;
+  top: 12vh;
+}
+
 .questList {
   display: flex;
   gap: 1rem;
