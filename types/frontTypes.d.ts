@@ -25,6 +25,8 @@ type Task = {
   verifyError?: string;
   quizName?: string;
   issuer?: Issuer;
+  setShowDomainPopup: (show: boolean) => void;
+  hasRootDomain: boolean;
 };
 
 type TaskProps = Task & { id: number };

@@ -29,6 +29,8 @@ type QuestDetailsProps = {
   taskId?: string;
   res?: string;
   errorMsg?: string;
+  setShowDomainPopup: (show: boolean) => void;
+  hasRootDomain: boolean;
 };
 
 const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -36,6 +38,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   taskId,
   res,
   errorMsg,
+  setShowDomainPopup,
+  hasRootDomain,
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
@@ -300,6 +304,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                     name: quest.issuer,
                     logoFavicon: quest.logo,
                   }}
+                  hasRootDomain={hasRootDomain}
+                  setShowDomainPopup={setShowDomainPopup}
                 />
               );
             })}
