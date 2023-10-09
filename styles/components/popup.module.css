@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--z-index-popup);
+  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;

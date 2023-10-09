@@ -1,6 +1,6 @@
 .screen404,
 .screen {
-  z-index: 0;
+  z-index: 1;
   position: relative;
   padding-top: 12vh;
   background-color: var(--background);
