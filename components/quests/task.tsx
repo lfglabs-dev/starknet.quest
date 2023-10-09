@@ -25,6 +25,8 @@ const Task: FunctionComponent<Task> = ({
   setShowQuiz,
   quizName,
   issuer,
+  setShowDomainPopup,
+  hasRootDomain,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -157,6 +159,7 @@ const Task: FunctionComponent<Task> = ({
         ) : (
           <div
             onClick={(e) => {
+              if (!hasRootDomain) return setShowDomainPopup(true);
               if (verifyEndpointType === "quiz") return openTask();
               if (verifyRedirect && address) window.open(verifyRedirect);
               verify(e);

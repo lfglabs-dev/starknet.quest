@@ -10,6 +10,7 @@ import ErrorScreen from "../../components/UI/screens/errorScreen";
 import NftIssuer from "../../components/quests/nftIssuer";
 import BackButton from "../../components/UI/backButton";
 import useHasRootDomain from "../../hooks/useHasRootDomain";
+import useHasRootOrBraavosDomain from "../../hooks/useHasRootOrBraavosDomain";
 import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
 import Popup from "../../components/UI/menus/popup";
@@ -41,13 +42,16 @@ const QuestPage: NextPage = () => {
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
-  const hasRootDomain = useHasRootDomain(address);
+  const hasRootDomain =
+    questId && parseInt(questId as string) >= 100
+      ? useHasRootOrBraavosDomain(address)
+      : useHasRootDomain(address);
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!address) return;
-    setShowDomainPopup(!hasRootDomain);
-  }, [address, hasRootDomain]);
+  // useEffect(() => {
+  //   if (!address) return;
+  //   setShowDomainPopup(!hasRootDomain);
+  // }, [address, hasRootDomain]);
 
   // this fetches quest data
   useEffect(() => {
@@ -81,6 +85,7 @@ const QuestPage: NextPage = () => {
           description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
           buttonName="Get a Starknet Domain"
           onClick={() => window.open(starknetIdAppLink)}
+          onClose={() => setShowDomainPopup(false)}
         />
       )}
       <div className={homeStyles.backButton}>
@@ -103,6 +108,8 @@ const QuestPage: NextPage = () => {
         taskId={taskId as string | undefined}
         res={res as string | undefined}
         errorMsg={errorMsg as string | undefined}
+        setShowDomainPopup={setShowDomainPopup}
+        hasRootDomain={hasRootDomain}
       />
     </div>
   );
