@@ -28,6 +28,7 @@ const Popup: FunctionComponent<PopupProps> = ({
           <img className={styles.banner} src={banner} alt="banner" />
         </div>
         <div className={styles.contentSide}>
+          <button className={styles.close} onClick={onClose}></button>
           <p className={styles.description}>{description}</p>
           <div className={styles.button}>
             <Button onClick={onClick}>{buttonName}</Button>

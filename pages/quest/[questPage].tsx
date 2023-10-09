@@ -85,6 +85,7 @@ const QuestPage: NextPage = () => {
           description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
           buttonName="Get a Starknet Domain"
           onClick={() => window.open(starknetIdAppLink)}
+          onClose={() => setShowDomainPopup(false)}
         />
       )}
       <div className={homeStyles.backButton}>
