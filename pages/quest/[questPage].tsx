@@ -48,10 +48,10 @@ const QuestPage: NextPage = () => {
       : useHasRootDomain(address);
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!address) return;
-    setShowDomainPopup(!hasRootDomain);
-  }, [address, hasRootDomain]);
+  // useEffect(() => {
+  //   if (!address) return;
+  //   setShowDomainPopup(!hasRootDomain);
+  // }, [address, hasRootDomain]);
 
   // this fetches quest data
   useEffect(() => {
@@ -107,6 +107,8 @@ const QuestPage: NextPage = () => {
         taskId={taskId as string | undefined}
         res={res as string | undefined}
         errorMsg={errorMsg as string | undefined}
+        setShowDomainPopup={setShowDomainPopup}
+        hasRootDomain={hasRootDomain}
       />
     </div>
   );
