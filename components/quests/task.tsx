@@ -159,9 +159,10 @@ const Task: FunctionComponent<Task> = ({
         ) : (
           <div
             onClick={(e) => {
+              if (!address) return setError("Please connect your wallet first");
               if (!hasRootDomain) return setShowDomainPopup(true);
               if (verifyEndpointType === "quiz") return openTask();
-              if (verifyRedirect && address) window.open(verifyRedirect);
+              if (verifyRedirect) window.open(verifyRedirect);
               verify(e);
             }}
             className={styles.verifyButton}
