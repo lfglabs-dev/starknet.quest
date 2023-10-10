@@ -34,7 +34,8 @@ const Navbar: FunctionComponent = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLoading, setTxLoading] = useState<number>(0);
-  const { available, connect, disconnect, connectors } = useConnectors();
+  const { available, connect, disconnect, connectors, refresh } =
+    useConnectors();
   const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -135,6 +136,12 @@ const Navbar: FunctionComponent = () => {
     return textToReturn;
   }
 
+  // Refresh available connectors before showing wallet modal
+  function refreshAndShowWallet(): void {
+    refresh();
+    setHasWallet(true);
+  }
+
   const handleScroll = () => {
     if (window.scrollY > 10) {
       setNavbarBg(true);
@@ -187,9 +194,7 @@ const Navbar: FunctionComponent = () => {
                   onClick={
                     isConnected
                       ? () => setShowWallet(true)
-                      : available.length === 1
-                      ? () => connect(available[0])
-                      : () => setHasWallet(true)
+                      : () => refreshAndShowWallet()
                   }
                 >
                   {isConnected ? (

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
 import WalletIcons from "./iconsComponents/icons/walletIcons";
+import getDiscoveryWallets from "get-starknet-core";
 
 type WalletsProps = {
   closeWallet: () => void;
@@ -15,14 +16,65 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   closeWallet,
   hasWallet,
 }) => {
-  const { connect, connectors, refresh } = useConnectors();
+  const { connect, connectors } = useConnectors();
   const { account } = useAccount();
+  const [argent, setArgent] = useState<string>("");
+  const [braavos, setBraavos] = useState<string>("");
+  const combinations = [
+    [0, 1, 2],
+    [0, 2, 1],
+    [1, 0, 2],
+    [1, 2, 0],
+    [2, 0, 1],
+    [2, 1, 0],
+  ];
+  const rand = useMemo(() => Math.floor(Math.random() * 6), []);
 
   useEffect(() => {
     if (account) {
       closeWallet();
     }
   }, [account, closeWallet]);
+
+  useEffect(() => {
+    // get wallets download links from get-starknet-core
+    // if browser is not recognized, it will default to their download pages
+    getDiscoveryWallets.getDiscoveryWallets().then((wallets) => {
+      const browser = getBrowser();
+
+      wallets.map((wallet) => {
+        if (wallet.id === "argentX") {
+          setArgent(
+            browser
+              ? wallet.downloads[browser as keyof typeof wallet.downloads]
+              : "https://www.argent.xyz/argent-x/"
+          );
+        } else if (wallet.id === "braavos") {
+          setBraavos(
+            browser
+              ? wallet.downloads[browser as keyof typeof wallet.downloads]
+              : "https://braavos.app/download-braavos-wallet/"
+          );
+        }
+      });
+    });
+  }, []);
+
+  function connectWallet(connector: Connector): void {
+    connect(connector);
+    closeWallet();
+  }
+
+  function getBrowser(): string | undefined {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes("Chrome")) {
+      return "chrome";
+    } else if (userAgent.includes("Firefox")) {
+      return "firefox";
+    } else {
+      return undefined;
+    }
+  }
 
   return (
     <Modal
@@ -49,7 +101,43 @@ const Wallets: FunctionComponent<WalletsProps> = ({
           </svg>
         </button>
         <p className={styles.menu_title}>You need a Starknet wallet</p>
-        {connectors.map((connector) => {
+        {combinations[rand].map((index) => {
+          const connector = connectors[index];
+          if (connector.available()) {
+            return (
+              <div className="mt-5 flex justify-center" key={connector.id}>
+                <Button onClick={() => connectWallet(connector)}>
+                  <div className="flex justify-center items-center">
+                    <WalletIcons id={connector.id} />
+                    {connector.id === "braavos" || connector.id === "argentX"
+                      ? `Connect ${connector.name}`
+                      : "Login with Email"}
+                  </div>
+                </Button>
+              </div>
+            );
+          } else {
+            if (connector.id === "braavos" || connector.id === "argentX") {
+              return (
+                <div className="mt-5 flex justify-center" key={connector.id}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${connector.id === "braavos" ? braavos : argent}`
+                      )
+                    }
+                  >
+                    <div className="flex justify-center items-center">
+                      <WalletIcons id={connector.id} />
+                      Install {connector.id}
+                    </div>
+                  </Button>
+                </div>
+              );
+            }
+          }
+        })}
+        {/* {connectors.map((connector) => {
           if (connector.available()) {
             return (
               <div className="mt-5 flex justify-center" key={connector.id}>
@@ -62,7 +150,7 @@ const Wallets: FunctionComponent<WalletsProps> = ({
               </div>
             );
           }
-        })}
+        })} */}
       </div>
     </Modal>
   );
