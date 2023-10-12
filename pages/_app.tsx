@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <StarknetConfig connectors={connectors} autoConnect>
+    <StarknetConfig connectors={connectors as any} autoConnect>
       <StarknetIdJsProvider>
         <ThemeProvider theme={theme}>
           <Head>
