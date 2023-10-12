@@ -10,12 +10,19 @@ import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { createTheme } from "@mui/material/styles";
 import Footer from "../components/UI/footer";
 import { QuestsContextProvider } from "../context/QuestsProvider";
+import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = useMemo(
     () => [
-      new InjectedConnector({ options: { id: "argentX" } }),
       new InjectedConnector({ options: { id: "braavos" } }),
+      new InjectedConnector({ options: { id: "argentX" } }),
+      new WebWalletConnector({
+        url:
+          process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+            ? "https://web.hydrogen.argent47.net"
+            : "https://web.argent.xyz/",
+      }),
     ],
     []
   );
@@ -37,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <StarknetConfig connectors={connectors} autoConnect>
+    <StarknetConfig connectors={connectors as any} autoConnect>
       <StarknetIdJsProvider>
         <ThemeProvider theme={theme}>
           <Head>
