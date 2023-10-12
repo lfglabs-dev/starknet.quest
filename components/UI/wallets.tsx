@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
 import WalletIcons from "./iconsComponents/icons/walletIcons";
+import getDiscoveryWallets from "get-starknet-core";
+import useGetDiscoveryWallets from "../../hooks/useGetDiscoveryWallets";
 
 type WalletsProps = {
   closeWallet: () => void;
@@ -15,14 +17,22 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   closeWallet,
   hasWallet,
 }) => {
-  const { connect, connectors, refresh } = useConnectors();
+  const { connect, connectors } = useConnectors();
   const { account } = useAccount();
+  const downloadLinks = useGetDiscoveryWallets(
+    getDiscoveryWallets.getDiscoveryWallets()
+  );
 
   useEffect(() => {
     if (account) {
       closeWallet();
     }
   }, [account, closeWallet]);
+
+  function connectWallet(connector: Connector): void {
+    connect(connector);
+    closeWallet();
+  }
 
   return (
     <Modal
@@ -53,14 +63,39 @@ const Wallets: FunctionComponent<WalletsProps> = ({
           if (connector.available()) {
             return (
               <div className="mt-5 flex justify-center" key={connector.id}>
-                <Button onClick={() => connect(connector)}>
+                <Button onClick={() => connectWallet(connector)}>
                   <div className="flex justify-center items-center">
                     <WalletIcons id={connector.id} />
-                    {`Connect ${connector.name}`}
+                    {connector.id === "braavos" || connector.id === "argentX"
+                      ? `Connect ${connector.name}`
+                      : "Login with Email"}
                   </div>
                 </Button>
               </div>
             );
+          } else {
+            if (connector.id === "braavos" || connector.id === "argentX") {
+              return (
+                <div className="mt-5 flex justify-center" key={connector.id}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${
+                          downloadLinks[
+                            connector.id as keyof typeof downloadLinks
+                          ]
+                        }`
+                      )
+                    }
+                  >
+                    <div className="flex justify-center items-center">
+                      <WalletIcons id={connector.id} />
+                      Install {connector.id}
+                    </div>
+                  </Button>
+                </div>
+              );
+            }
           }
         })}
       </div>

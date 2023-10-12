@@ -11,6 +11,7 @@
     "prettier": "prettier --write '**/*.{ts,tsx,css}'"
   },
   "dependencies": {
+    "@argent/starknet-react-webwallet-connector": "^6.5.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
