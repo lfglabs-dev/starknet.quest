@@ -49,9 +49,8 @@ const Task: FunctionComponent<Task> = ({
   };
 
   // A verify function that setIsVerified(true) and stop propagation
-  const verify = async (e?: React.MouseEvent) => {
+  const verify = async () => {
     checkCanDoTask();
-    if (e) e.stopPropagation();
     setIsLoading(true);
 
     if (verifyEndpointType.startsWith("oauth")) {
@@ -159,11 +158,12 @@ const Task: FunctionComponent<Task> = ({
         ) : (
           <div
             onClick={(e) => {
+              e.stopPropagation();
               if (!address) return setError("Please connect your wallet first");
               if (!hasRootDomain) return setShowDomainPopup(true);
               if (verifyEndpointType === "quiz") return openTask();
               if (verifyRedirect) window.open(verifyRedirect);
-              verify(e);
+              verify();
             }}
             className={styles.verifyButton}
           >
