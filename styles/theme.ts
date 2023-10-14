@@ -12,6 +12,9 @@ const theme = createTheme({
       main: "#f4faff",
       dark: "#f4faff",
     },
+    background: {
+      default: "#101012",
+    },
   },
 });
 
