@@ -88,7 +88,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
     <>
       <div
         className={styles.buttonContainer}
-        aria-connected={!!address}
+        aria-label={address ? "connected" : "not connected"}
         aria-selected={showWallet}
       >
         <Button

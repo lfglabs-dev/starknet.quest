@@ -88,16 +88,16 @@
   height: 32px;
 }
 
-.buttonContainer[aria-connected="true"] > button {
+.buttonContainer[aria-label="connected"] > button {
   background: var(--background600);
   color: white;
 }
 
-.buttonContainer[aria-connected="true"] .buttonSeparator {
+.buttonContainer[aria-label="connected"] .buttonSeparator {
   background: #aab1b6;
 }
 
-.buttonContainer[aria-connected="true"] > svg {
+.buttonContainer[aria-label="connected"] > svg {
   background: #aab1b6;
 }
 
