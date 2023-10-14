@@ -16,6 +16,18 @@
   width: calc(100% - 2rem);
   max-width: 800px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  background-color: var(--background600);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bannerPopup {
+  position: relative;
+  width: calc(100% - 2rem);
+  max-width: 800px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   border-radius: 5px;
   background-color: var(--background600);
@@ -131,4 +143,36 @@
   .banner {
     width: 400px;
   }
+}
+
+.popupContent {
+  display: flex;
+  padding: 48px 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  align-self: stretch;
+  border-radius: 16px;
+  background: #1f1f25;
+  width: 100%;
+}
+
+.popupContent:has(+ .bottomContent) {
+  border-radius: 16px 16px 0px 0px;
+}
+
+.bottomContent {
+  display: flex;
+  padding: 48px 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+}
+
+.lilButton button {
+  height: 2.5rem;
+  text-transform: capitalize;
 }

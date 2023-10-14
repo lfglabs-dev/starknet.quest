@@ -17,6 +17,9 @@ import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
 import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
 import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
+import ShareIcon from "../components/UI/iconsComponents/icons/shareIcon";
+import theme from "../styles/theme";
+import SharePopup from "../components/UI/menus/sharePopup";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -35,6 +38,7 @@ const AddressOrDomain: NextPage = () => {
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
   const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
+  const [showSharePopup, setShowSharePopup] = useState(false);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -235,16 +239,17 @@ const AddressOrDomain: NextPage = () => {
               title={identity?.domain ?? minifyAddress(identity.addr)}
               isUppercase={true}
               content={
-                <div className={styles.nameCard}>
-                  <div className={styles.profilePicture}>
-                    <img
-                      width={"350px"}
-                      src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
-                      alt="starknet.id avatar"
-                      style={{ maxWidth: "150%" }}
-                    />
-                    {/* We do not enable the profile pic change atm */}
-                    {/* <Tooltip title="Change profile picture" arrow>
+                <>
+                  <div className={styles.nameCard}>
+                    <div className={styles.profilePicture}>
+                      <img
+                        width={"350px"}
+                        src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                        alt="starknet.id avatar"
+                        style={{ maxWidth: "150%" }}
+                      />
+                      {/* We do not enable the profile pic change atm */}
+                      {/* <Tooltip title="Change profile picture" arrow>
               <div className={styles.cameraIcon}>
                 <CameraAlt
                   className={styles.cameraAlt}
@@ -252,42 +257,55 @@ const AddressOrDomain: NextPage = () => {
                 />
               </div>
             </Tooltip> */}
-                  </div>
-                  <div>
-                    <div className={styles.starknetInfo}>
-                      <div className="cursor-pointer absolute">
-                        {!copied ? (
-                          <Tooltip title="Copy" arrow>
-                            <div onClick={() => copyToClipboard()}>
-                              <CopyIcon width={"18"} color="#F4FAFF" />
-                            </div>
-                          </Tooltip>
-                        ) : (
-                          <VerifiedIcon width={"18"} />
-                        )}
-                      </div>
-                      <div className={styles.address}>
-                        {typeof addressOrDomain === "string" &&
-                        isHexString(addressOrDomain)
-                          ? minifyAddressWithChars(addressOrDomain, 8)
-                          : minifyAddressWithChars(identity?.addr, 8)}
-                      </div>
                     </div>
-                    {sinceDate ? (
-                      <div className={styles.memberSince}>
-                        <p>{sinceDate}</p>
+                    <div>
+                      <div className={styles.starknetInfo}>
+                        <div className="cursor-pointer absolute">
+                          {!copied ? (
+                            <Tooltip title="Copy" arrow>
+                              <div onClick={() => copyToClipboard()}>
+                                <CopyIcon width={"18"} color="#F4FAFF" />
+                              </div>
+                            </Tooltip>
+                          ) : (
+                            <VerifiedIcon width={"18"} />
+                          )}
+                        </div>
+                        <div className={styles.address}>
+                          {typeof addressOrDomain === "string" &&
+                          isHexString(addressOrDomain)
+                            ? minifyAddressWithChars(addressOrDomain, 8)
+                            : minifyAddressWithChars(identity?.addr, 8)}
+                        </div>
                       </div>
-                    ) : null}
+                      {sinceDate ? (
+                        <div className={styles.memberSince}>
+                          <p>{sinceDate}</p>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
+                  {hasVerifiedSocials(identity) ? (
+                    <>
+                      <div className={styles.divider} />
+                      <div className="flex items-center w-full my-1">
+                        <SocialMediaActions identity={identity} />
+                        <button
+                          onClick={() => setShowSharePopup(true)}
+                          className={styles.shareButton}
+                        >
+                          <ShareIcon
+                            color={theme.palette.secondary.dark}
+                            width="16px"
+                          />
+                          <p className="ml-2">Share</p>
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                </>
               }
             />
-            {hasVerifiedSocials(identity) ? (
-              <ProfileCard
-                title="Social network"
-                content={<SocialMediaActions identity={identity} />}
-              />
-            ) : null}
             <ProfileCard
               title="Progress"
               content={
@@ -363,6 +381,12 @@ const AddressOrDomain: NextPage = () => {
           <h2>Loading</h2>
         </div>
       )}
+      {showSharePopup ? (
+        <SharePopup
+          close={() => setShowSharePopup(false)}
+          toCopy={window.location.href}
+        />
+      ) : null}
     </div>
   );
 };
