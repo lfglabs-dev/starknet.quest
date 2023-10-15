@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useState,
   FunctionComponent,
+  useContext,
 } from "react";
 import styles from "../../styles/quests.module.css";
 import Task from "./task";
@@ -23,6 +24,7 @@ import { generateCodeChallenge } from "../../utils/codeChallenge";
 import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "../../utils/rewards";
+import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -45,6 +47,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const { provider } = useProvider();
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [eligibleRewards, setEligibleRewards] = useState<
     Record<string, EligibleReward[]>
   >({});
@@ -54,7 +57,44 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
+
   const questId = quest.id.toString();
+  const [participants, setParticipants] = useState({
+    count: 0,
+    firstParticipants: [] as string[],
+  });
+
+  // This fetches the number of participants in the quest and up to 3 of their starknet ids
+  useEffect(() => {
+    if (questId && starknetIdNavigator) {
+      fetch(
+        `http://127.0.0.1:8080/get_quest_participants?quest_id=${questId}`,
+        {
+          method: "GET",
+        }
+      )
+        .then((response) => response.json())
+        .then(async (data) => {
+          setParticipants(data);
+          const addrs = data.firstParticipants;
+          const identities = addrs.map(async (addr: string) => {
+            const domain = await starknetIdNavigator
+              ?.getStarkName(addr)
+              .catch((err) => {});
+            return domain
+              ? await starknetIdNavigator
+                  ?.getStarknetId(domain)
+                  .catch((err) => {})
+              : 0;
+          });
+          const identitiesResolved = await Promise.all(identities);
+          setParticipants({
+            count: data.count,
+            firstParticipants: identitiesResolved,
+          });
+        });
+    }
+  }, [questId, starknetIdNavigator]);
 
   // this fetches all tasks of this quest from db
   useEffect(() => {
@@ -272,6 +312,22 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           <TasksSkeleton />
         ) : (
           <>
+            <div className={styles.questStats}>
+              <p>{tasks.length} steps</p>
+              <div className="ml-auto flex">
+                <div className={styles.participantAvatars}>
+                  {participants.firstParticipants.map((participant, index) => (
+                    <img
+                      src={`https://www.starknet.id/api/identicons/${participant}`}
+                      alt="user icons"
+                      width="24"
+                      key={index}
+                    />
+                  ))}
+                </div>
+                <p>{participants.count || 0} participants</p>
+              </div>
+            </div>
             {tasks.map((task) => {
               return (
                 <Task
