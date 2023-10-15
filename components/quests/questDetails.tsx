@@ -80,11 +80,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           const identities = addrs.map(async (addr: string) => {
             const domain = await starknetIdNavigator
               ?.getStarkName(addr)
-              .catch((err) => {});
+              .catch(console.error);
             return domain
               ? await starknetIdNavigator
                   ?.getStarknetId(domain)
-                  .catch((err) => {})
+                  .catch(console.error)
               : 0;
           });
           const identitiesResolved = await Promise.all(identities);
