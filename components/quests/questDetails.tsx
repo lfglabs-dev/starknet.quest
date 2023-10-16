@@ -318,7 +318,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 <div className={styles.participantAvatars}>
                   {participants.firstParticipants.map((participant, index) => (
                     <img
-                      src={`https://www.starknet.id/api/identicons/${participant}`}
+                      src={`${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${participant}`}
                       alt="user icons"
                       width="24"
                       key={index}
