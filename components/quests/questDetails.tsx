@@ -68,7 +68,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   useEffect(() => {
     if (questId && starknetIdNavigator) {
       fetch(
-        `http://127.0.0.1:8080/get_quest_participants?quest_id=${questId}`,
+        `${process.env.NEXT_PUBLIC_API_LINK}/get_quest_participants?quest_id=${questId}`,
         {
           method: "GET",
         }
