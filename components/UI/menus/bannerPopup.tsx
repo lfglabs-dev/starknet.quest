@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "../../../styles/components/popup.module.css";
 import Button from "../button";
 import CloseIcon from "../iconsComponents/icons/closeIcon";
+import { Modal } from "@mui/material";
 
 type BannerPopupProps = {
   title: string;
@@ -21,7 +22,13 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
   onClose,
 }) => {
   return (
-    <div className={styles.popupContainer}>
+    <Modal
+      disableAutoFocus
+      onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      open={true}
+    >
       <div className={styles.bannerPopup}>
         <div className={styles.titleSide}>
           <h1 className={styles.title}>{title}</h1>
@@ -40,7 +47,7 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
           </button>
         )}
       </div>
-    </div>
+    </Modal>
   );
 };
 
