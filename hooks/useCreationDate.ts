@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { memberSince } from "../utils/profile";
 
-export default function useExpiryDate(identity: Identity | undefined) {
+export default function useCreationDate(identity: Identity | undefined) {
   const [sinceDate, setSinceDate] = useState<string | null>(null);
 
   useEffect(() => {

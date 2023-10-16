@@ -17,7 +17,7 @@ import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
 import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
 import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
-import useExpiryDate from "../hooks/useExpiryDate";
+import useCreationDate from "../hooks/useCreationDate";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const AddressOrDomain: NextPage = () => {
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
   const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
-  const sinceDate = useExpiryDate(identity);
+  const sinceDate = useCreationDate(identity);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
