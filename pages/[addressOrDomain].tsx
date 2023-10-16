@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
-import { isHexString, minifyAddressWithChars } from "../utils/stringService";
+import { isHexString, minifyAddressFromStrings } from "../utils/stringService";
 import { Connector, useAccount, useConnectors } from "@starknet-react/core";
 import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
@@ -273,9 +273,10 @@ const AddressOrDomain: NextPage = () => {
                         </div>
                         <div className={styles.address}>
                           {typeof addressOrDomain === "string" &&
-                          isHexString(addressOrDomain)
-                            ? minifyAddressWithChars(addressOrDomain, 8)
-                            : minifyAddressWithChars(identity?.addr, 8)}
+                            minifyAddressFromStrings(
+                              [addressOrDomain, identity?.addr || ""],
+                              8
+                            )}
                         </div>
                       </div>
                       {sinceDate ? (
