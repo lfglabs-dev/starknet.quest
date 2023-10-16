@@ -32,7 +32,7 @@ const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
     <>
       {starknetId ? (
         <img
-          src={`https://goerli.starknet.id/api/identicons/${starknetId}`}
+          src={`${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${starknetId}`}
           width={width}
           height={width}
           className="rounded-full"

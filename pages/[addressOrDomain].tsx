@@ -239,7 +239,7 @@ const AddressOrDomain: NextPage = () => {
                   <div className={styles.profilePicture}>
                     <img
                       width={"350px"}
-                      src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                      src={`${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${identity?.starknet_id}`}
                       alt="starknet.id avatar"
                       style={{ maxWidth: "150%" }}
                     />
