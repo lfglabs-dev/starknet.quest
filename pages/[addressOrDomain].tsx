@@ -17,6 +17,7 @@ import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
 import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
 import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
+import useCreationDate from "../hooks/useCreationDate";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -31,10 +32,10 @@ const AddressOrDomain: NextPage = () => {
   const [isOwner, setIsOwner] = useState(false);
   const dynamicRoute = useRouter().asPath;
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [sinceDate, setSinceDate] = useState<string | null>(null);
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
   const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
+  const sinceDate = useCreationDate(identity);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -226,7 +227,6 @@ const AddressOrDomain: NextPage = () => {
             address={identity.addr}
             isOwner={isOwner}
             isMobile={isMobile}
-            setSinceDate={setSinceDate}
             setAchievements={setAchievements}
             setSoloBuildings={setSoloBuildings}
           />
