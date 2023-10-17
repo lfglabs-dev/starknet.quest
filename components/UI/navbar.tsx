@@ -187,6 +187,9 @@ const Navbar: FunctionComponent = () => {
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My land</li>
               </Link>
+              <Link href="/leaderboard">
+                <li className={styles.menuItem}>Leaderboard</li>
+              </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
               <div className="text-background ml-5 mr-5">

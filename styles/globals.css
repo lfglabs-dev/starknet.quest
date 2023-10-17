@@ -93,3 +93,12 @@ a {
     font-size: 0.8rem;
   }
 }
+
+
+.gradient{
+  background: linear-gradient(180deg, #29282B 0%, #101012 100%);
+}
+
+.sora{
+  font-family: "Sora";
+}

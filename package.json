@@ -25,6 +25,7 @@
     "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "chart.js": "^4.3.0",
+    "classnames": "^2.3.2",
     "get-starknet-core": "^3.1.0",
     "lottie-react": "^2.4.0",
     "maath": "^0.7.0",
