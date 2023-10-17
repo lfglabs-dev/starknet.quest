@@ -1,5 +1,5 @@
-import classNames from "classnames";
 import React from "react";
+import classNames from "classnames";
 
 type ChipProps = {
   selected: string;
@@ -16,7 +16,7 @@ export default function ChipList(props: ChipProps) {
           onClick={() => handleChangeSelection(tag)}
           key={index}
           className={classNames(
-            "px-3 py-2 text-center cursor-pointer rounded-sm",
+            "px-1 md:px-3 py-2 text-center cursor-pointer rounded",
             {
               "bg-white rounded-3xl": tag === props.selected,
             }
