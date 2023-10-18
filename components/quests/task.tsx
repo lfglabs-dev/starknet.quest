@@ -179,7 +179,7 @@ const Task: FunctionComponent<Task> = ({
         <p className="mb-3">{description}</p>
         <div className="flex w-full justify-center items-center">
           <div className="w-2/3">
-            <Button onClick={() => openTask()}>{cta}</Button>
+            <Button onClick={() => window.open(href)}>{cta}</Button>
           </div>
         </div>
       </div>

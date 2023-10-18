@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Scene } from "./scene";
-import { memberSince } from "../../utils/profile";
 import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import btnStyles from "../../styles/components/button.module.css";
@@ -12,7 +11,6 @@ type LandProps = {
   address: string;
   isOwner: boolean;
   isMobile: boolean;
-  setSinceDate: (date: string | null) => void;
   setAchievements: (achievements: BuildingsInfo[]) => void;
   setSoloBuildings: (buildings: BuildingsInfo[]) => void;
 };
@@ -21,7 +19,6 @@ export const Land = ({
   address,
   isOwner,
   isMobile,
-  setSinceDate,
   setAchievements,
   setSoloBuildings,
 }: LandProps) => {
@@ -112,12 +109,8 @@ export const Land = ({
   const filterAssets = async (assets: StarkscanNftProps[]) => {
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
-    let sinceDate = 0;
 
     assets.forEach((asset: StarkscanNftProps) => {
-      if (asset.minted_at_timestamp < sinceDate || sinceDate === 0)
-        sinceDate = asset.minted_at_timestamp;
-
       if (
         asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT
       ) {
@@ -152,7 +145,6 @@ export const Land = ({
     await getBuildingsInfo(filteredAssets);
 
     setIsReady(true);
-    setSinceDate(memberSince(sinceDate));
   };
 
   return (
