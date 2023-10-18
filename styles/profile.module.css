@@ -18,6 +18,7 @@
   gap: 16px;
   display: flex;
   flex-direction: column;
+  bottom: 16px;
 }
 
 .profileCard {
@@ -29,7 +30,6 @@
   border-radius: 8px;
   background: var(--background600, #29282b);
   width: 310px;
-  max-height: calc(100vh - 12vh - 350px);
 }
 
 .title {
