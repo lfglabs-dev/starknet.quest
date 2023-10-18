@@ -15,6 +15,7 @@ import { Wallet } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
+import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -29,13 +30,20 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   refreshAndShowWallet,
   disconnectByClick,
 }) => {
-  const { address } = useAccount();
+  const { address, connector } = useAccount();
   const { hashes } = useTransactionManager();
   const transactions = useTransactions({ hashes, watch: true });
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
   const [changeWallet, setChangeWallet] = useState<boolean>(false);
+  const [hovering, setHovering] = useState<boolean>(false);
+  const [unfocus, setUnfocus] = useState<boolean>(false);
+
+  const network =
+    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
+
   const buttonName = useMemo(
     () =>
       address
@@ -81,8 +89,26 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
 
   const handleWalletChange = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    setHovering(false);
+    setUnfocus(true);
     setChangeWallet(true);
   };
+
+  const handleOpenWebWallet = (e: React.MouseEvent<HTMLButtonElement>) => {
+    window.open(
+      network === "mainnet"
+        ? "https://web.argent.xyz"
+        : "https://web.hydrogen.argent47.net",
+      "_blank",
+      "noopener noreferrer"
+    );
+  };
+
+  useEffect(() => {
+    if (!unfocus) return;
+    if (hovering) setUnfocus(false);
+    else setShowWallet(false);
+  }, [unfocus, hovering]);
 
   return (
     <>
@@ -90,6 +116,9 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
         className={styles.buttonContainer}
         aria-label={address ? "connected" : "not connected"}
         aria-selected={showWallet}
+        onBlur={() => setUnfocus(true)}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
       >
         <Button
           onClick={
@@ -99,7 +128,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
           }
         >
           <>
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               <p className={styles.buttonText}>{buttonName}</p>
               <div className={styles.buttonSeparator} />
               <div className={styles.buttonIcon}>
@@ -123,6 +152,12 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                   )}
                   <p>Copy Address</p>
                 </button>
+                {isWebWallet && (
+                  <button onClick={handleOpenWebWallet}>
+                    <ArgentIcon width="24" />
+                    <p>Web wallet Dashboard</p>
+                  </button>
+                )}
                 <button onClick={handleWalletChange}>
                   <Wallet width="24" />
                   <p>Change Wallet</p>
