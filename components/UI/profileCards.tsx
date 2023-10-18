@@ -81,24 +81,19 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
               ) : null}
             </div>
           </div>
-          {true ? (
-            <>
-              <div className={styles.divider} />
-              <div className="flex items-center w-full my-1">
-                <SocialMediaActions identity={identity} />
-                <button
-                  onClick={() => setShowSharePopup(true)}
-                  className={styles.shareButton}
-                >
-                  <ShareIcon
-                    color={theme.palette.secondary.dark}
-                    width="16px"
-                  />
-                  <p>Share</p>
-                </button>
-              </div>
-            </>
-          ) : null}
+          <>
+            <div className={styles.divider} />
+            <div className="flex items-center w-full my-1">
+              <SocialMediaActions identity={identity} />
+              <button
+                onClick={() => setShowSharePopup(true)}
+                className={styles.shareButton}
+              >
+                <ShareIcon color={theme.palette.secondary.dark} width="16px" />
+                <p>Share</p>
+              </button>
+            </div>
+          </>
         </>
       </div>
       <div className={`${styles.profileCard} overflow-auto`}>
