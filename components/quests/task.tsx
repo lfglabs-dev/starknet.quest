@@ -117,6 +117,7 @@ const Task: FunctionComponent<Task> = ({
           issuer={issuer}
           verifyEndpoint={verifyEndpoint}
           setIsVerified={setIsVerified}
+          refreshRewards={refreshRewards}
         />
       );
     window.open(href);

@@ -14,6 +14,7 @@ type QuizProps = {
   quizId: string;
   issuer: Issuer;
   verifyEndpoint: string;
+  refreshRewards: () => void;
 };
 
 const Quiz: FunctionComponent<QuizProps> = ({
@@ -22,6 +23,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   quizId,
   issuer,
   verifyEndpoint,
+  refreshRewards,
 }) => {
   const { address } = useAccount();
   const [step, setStep] = useState<number>(-1);
@@ -53,6 +55,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
 
   useEffect(() => {
     setIsVerified(passed === true);
+    refreshRewards();
   }, [passed]);
 
   useEffect(() => {
