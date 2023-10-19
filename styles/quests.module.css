@@ -129,6 +129,12 @@
   flex-grow: 0;
 }
 
+.questStats {
+  max-width: 90%;
+  width: 728px;
+  display: flex;
+}
+
 .taskTitle {
   display: flex;
   flex-direction: row;
@@ -259,6 +265,22 @@
   background-clip: text;
   color: transparent;
   align-items: flex-start;
+}
+
+.participantAvatars {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+  margin-right: calc(1rem + 10px);
+  height: 24px;
+  min-width: 72px;
+}
+
+.participantAvatars img {
+  margin-right: -10px;
+  border-radius: 100px;
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 1024px) {

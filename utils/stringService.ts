@@ -89,3 +89,16 @@ export function numberToString(element: number | undefined): string {
 export function convertNumberToFixedLengthString(number: string): string {
   return number.padStart(12, "0");
 }
+
+export function minifyAddressFromStrings(
+  strings: string[],
+  chars: number
+): string {
+  for (let index = 0; index < strings.length; index++) {
+    const string = strings[index];
+    if (string && isHexString(string)) {
+      return minifyAddressWithChars(string, chars);
+    }
+  }
+  return "";
+}

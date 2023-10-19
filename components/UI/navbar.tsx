@@ -12,7 +12,6 @@ import {
   useConnectors,
   useAccount,
   useProvider,
-  useTransactionManager,
   Connector,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
@@ -20,12 +19,10 @@ import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
 import { constants } from "starknet";
-import ModalWallet from "./modalWallet";
-import { CircularProgress } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useRouter } from "next/router";
 import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
+import WalletButton from "../navbar/walletButton";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -33,7 +30,6 @@ const Navbar: FunctionComponent = () => {
   const { address } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
-  const [txLoading, setTxLoading] = useState<number>(0);
   const { available, connect, disconnect, connectors, refresh } =
     useConnectors();
   const { provider } = useProvider();
@@ -44,7 +40,6 @@ const Navbar: FunctionComponent = () => {
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
-  const { hashes } = useTransactionManager();
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
@@ -189,38 +184,12 @@ const Navbar: FunctionComponent = () => {
               </Link>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
-              <div className="text-background ml-5 mr-5">
-                <Button
-                  onClick={
-                    isConnected
-                      ? () => setShowWallet(true)
-                      : () => refreshAndShowWallet()
-                  }
-                >
-                  {isConnected ? (
-                    <>
-                      {txLoading > 0 ? (
-                        <div className="flex justify-center items-center">
-                          <p className="mr-3">{txLoading} on hold</p>
-                          <CircularProgress
-                            sx={{
-                              color: "white",
-                            }}
-                            size={25}
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex justify-center items-center">
-                          <p className="mr-3">{domainOrAddressMinified}</p>
-                          <AccountCircleIcon />
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    "connect"
-                  )}
-                </Button>
-              </div>
+              <WalletButton
+                setShowWallet={setShowWallet}
+                showWallet={showWallet}
+                refreshAndShowWallet={refreshAndShowWallet}
+                disconnectByClick={disconnectByClick}
+              />
             </ul>
             <div onClick={handleNav} className="lg:hidden">
               <AiOutlineMenu
@@ -342,14 +311,6 @@ const Navbar: FunctionComponent = () => {
             </div>
           </div>
         }
-      />
-      <ModalWallet
-        domain={domainOrAddressMinified}
-        open={showWallet}
-        closeModal={() => setShowWallet(false)}
-        disconnectByClick={disconnectByClick}
-        hashes={hashes}
-        setTxLoading={setTxLoading}
       />
       <Wallets
         closeWallet={() => setHasWallet(false)}

@@ -142,8 +142,11 @@ type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 
 type ProfileCard = {
   title: string;
-  isUppercase?: boolean;
-  content: React.ReactNode;
+  identity: Identity;
+  addressOrDomain: string | string[] | undefined;
+  sinceDate: string | null;
+  achievements: BuildingsInfo[];
+  soloBuildings: BuildingsInfo[];
 };
 
 type UserAchievement = {
