@@ -13,7 +13,7 @@ import useHasRootDomain from "../../hooks/useHasRootDomain";
 import useHasRootOrBraavosDomain from "../../hooks/useHasRootOrBraavosDomain";
 import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
-import Popup from "../../components/UI/menus/popup";
+import BannerPopup from "../../components/UI/menus/bannerPopup";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
@@ -79,7 +79,7 @@ const QuestPage: NextPage = () => {
   ) : (
     <div className={homeStyles.screen}>
       {showDomainPopup && (
-        <Popup
+        <BannerPopup
           title="Mandatory Starknet Domain"
           banner="/visuals/profile.webp"
           description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
