@@ -2,21 +2,17 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
-import { isHexString, minifyAddressWithChars } from "../utils/stringService";
+import { isHexString } from "../utils/stringService";
 import { Connector, useAccount, useConnectors } from "@starknet-react/core";
-import SocialMediaActions from "../components/UI/actions/socialmediaActions";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
-import { Tooltip } from "@mui/material";
 import { hexToDecimal } from "../utils/feltService";
 import { minifyAddress } from "../utils/stringService";
 import { utils } from "starknetid.js";
 import ErrorScreen from "../components/UI/screens/errorScreen";
-import ProfileCard from "../components/UI/profileCard";
 import { Land } from "../components/lands/land";
-import { hasVerifiedSocials } from "../utils/profile";
 import { useMediaQuery } from "@mui/material";
-import VerifiedIcon from "../components/UI/iconsComponents/icons/verifiedIcon";
-import CopyIcon from "../components/UI/iconsComponents/icons/copyIcon";
+import ProfileCards from "../components/UI/profileCards";
+import useCreationDate from "../hooks/useCreationDate";
 
 const AddressOrDomain: NextPage = () => {
   const router = useRouter();
@@ -27,14 +23,12 @@ const AddressOrDomain: NextPage = () => {
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const dynamicRoute = useRouter().asPath;
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [sinceDate, setSinceDate] = useState<string | null>(null);
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
-  const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
+  const sinceDate = useCreationDate(identity);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
@@ -193,14 +187,6 @@ const AddressOrDomain: NextPage = () => {
     }
   }, [addressOrDomain, address, dynamicRoute]);
 
-  const copyToClipboard = () => {
-    setCopied(true);
-    navigator.clipboard.writeText(identity?.addr as string);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
-
   if (notFound) {
     return (
       <ErrorScreen
@@ -226,133 +212,17 @@ const AddressOrDomain: NextPage = () => {
             address={identity.addr}
             isOwner={isOwner}
             isMobile={isMobile}
-            setSinceDate={setSinceDate}
             setAchievements={setAchievements}
             setSoloBuildings={setSoloBuildings}
           />
           <div className={styles.profiles}>
-            <ProfileCard
-              title={identity?.domain ?? minifyAddress(identity.addr)}
-              isUppercase={true}
-              content={
-                <div className={styles.nameCard}>
-                  <div className={styles.profilePicture}>
-                    <img
-                      width={"350px"}
-                      src={`${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${identity?.starknet_id}`}
-                      alt="starknet.id avatar"
-                      style={{ maxWidth: "150%" }}
-                    />
-                    {/* We do not enable the profile pic change atm */}
-                    {/* <Tooltip title="Change profile picture" arrow>
-              <div className={styles.cameraIcon}>
-                <CameraAlt
-                  className={styles.cameraAlt}
-                  onClick={() => console.log("changing pfp")}
-                />
-              </div>
-            </Tooltip> */}
-                  </div>
-                  <div>
-                    <div className={styles.starknetInfo}>
-                      <div className="cursor-pointer absolute">
-                        {!copied ? (
-                          <Tooltip title="Copy" arrow>
-                            <div onClick={() => copyToClipboard()}>
-                              <CopyIcon width={"18"} color="#F4FAFF" />
-                            </div>
-                          </Tooltip>
-                        ) : (
-                          <VerifiedIcon width={"18"} />
-                        )}
-                      </div>
-                      <div className={styles.address}>
-                        {typeof addressOrDomain === "string" &&
-                        isHexString(addressOrDomain)
-                          ? minifyAddressWithChars(addressOrDomain, 8)
-                          : minifyAddressWithChars(identity?.addr, 8)}
-                      </div>
-                    </div>
-                    {sinceDate ? (
-                      <div className={styles.memberSince}>
-                        <p>{sinceDate}</p>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              }
-            />
-            {hasVerifiedSocials(identity) ? (
-              <ProfileCard
-                title="Social network"
-                content={<SocialMediaActions identity={identity} />}
-              />
-            ) : null}
-            <ProfileCard
-              title="Progress"
-              content={
-                <>
-                  <div className={styles.tabs}>
-                    <div
-                      className={`${styles.tab} ${
-                        selectedTab === "nfts" ? styles.selectedTab : ""
-                      }`}
-                      onClick={() => setSelectedTab("nfts")}
-                    >
-                      NFTs unlocked ({soloBuildings.length})
-                    </div>
-                    <div
-                      className={`${styles.tab} ${
-                        selectedTab === "achievements" ? styles.selectedTab : ""
-                      }`}
-                      onClick={() => setSelectedTab("achievements")}
-                    >
-                      Achievements ({achievements.length})
-                    </div>
-                  </div>
-                  {selectedTab === "nfts" ? (
-                    <div className={styles.gallery}>
-                      {soloBuildings.map((building) => {
-                        return (
-                          <div
-                            key={building.id}
-                            className={styles.nftContainer}
-                          >
-                            <img
-                              src={building.img_url}
-                              className={styles.nftImage}
-                            />
-                            <p className={styles.nftName}>{building.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                  {selectedTab === "achievements" ? (
-                    <div className={styles.gallery}>
-                      {achievements.map((achievement) => {
-                        return (
-                          <div
-                            key={achievement.id}
-                            className={styles.nftContainer}
-                          >
-                            <img
-                              src={achievement.img_url}
-                              className={styles.achievementImage}
-                            />
-                            <p className={styles.achievementLvl}>
-                              Level {achievement.level}
-                            </p>
-                            <p className={styles.achievementName}>
-                              {achievement.name}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </>
-              }
+            <ProfileCards
+              title={"Profile"}
+              identity={identity}
+              addressOrDomain={addressOrDomain}
+              sinceDate={sinceDate}
+              achievements={achievements}
+              soloBuildings={soloBuildings}
             />
           </div>
         </>

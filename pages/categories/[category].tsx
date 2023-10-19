@@ -6,6 +6,7 @@ import styles from "../../styles/category.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import Quest from "../../components/quests/quest";
 import BackButton from "../../components/UI/backButton";
+import Blur from "../../components/shapes/blur";
 
 const CategoriesPage: NextPage = () => {
   const router = useRouter();
@@ -20,8 +21,11 @@ const CategoriesPage: NextPage = () => {
   }, [categories, categoryName]);
 
   return (
-    <div className={homeStyles.screen}>
-      <div className={homeStyles.backButton}>
+    <div className={styles.screen}>
+      <div className={homeStyles.blur1}>
+        <Blur />
+      </div>
+      <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
       <h1 className={homeStyles.title}>Onboarding quests</h1>
