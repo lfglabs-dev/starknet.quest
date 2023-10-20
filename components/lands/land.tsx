@@ -153,7 +153,18 @@ export const Land = ({
     // add gigabrain building
     if (hasGigabrainNFT && hasAANFT) filteredAssets.push(GigabrainBuilding);
 
+    // get buildings from achievements
     await getBuildingsFromAchievements(filteredAssets);
+
+    // ensure there are not 2 avnu buildings
+    if (
+      filteredAssets.includes(64002) &&
+      (filteredAssets.includes(17) ||
+        filteredAssets.includes(18) ||
+        filteredAssets.includes(19))
+    )
+      filteredAssets.splice(filteredAssets.indexOf(64002), 1);
+
     await getBuildingsInfo(filteredAssets);
 
     setIsReady(true);
