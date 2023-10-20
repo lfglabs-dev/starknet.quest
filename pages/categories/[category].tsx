@@ -29,7 +29,9 @@ const CategoriesPage: NextPage = () => {
         <BackButton onClick={() => router.back()} />
       </div>
       <h1 className={homeStyles.title}>
-        {categoryName?.charAt(0)?.toUpperCase() + categoryName?.slice(1)} quests
+        {(categoryName as string)?.charAt(0)?.toUpperCase() +
+          categoryName?.slice(1)}{" "}
+        quests
       </h1>
       <div className={styles.questList}>
         {category &&
