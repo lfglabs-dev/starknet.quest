@@ -28,7 +28,11 @@ const CategoriesPage: NextPage = () => {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <h1 className={homeStyles.title}>Onboarding quests</h1>
+      <h1 className={homeStyles.title}>
+        {(categoryName as string)?.charAt(0)?.toUpperCase() +
+          categoryName?.slice(1)}{" "}
+        quests
+      </h1>
       <div className={styles.questList}>
         {category &&
           category.quests.map((quest, index) => (
