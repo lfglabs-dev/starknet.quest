@@ -121,9 +121,10 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
           {selectedTab === "nfts" ? (
             <div className={styles.gallery}>
               {soloBuildings.map((building) => {
+                if (!building.image_url) return null;
                 return (
-                  <div key={building.id} className={styles.nftContainer}>
-                    <img src={building.img_url} className={styles.nftImage} />
+                  <div key={building.nft_id} className={styles.nftContainer}>
+                    <img src={building.image_url} className={styles.nftImage} />
                     <p className={styles.nftName}>{building.name}</p>
                   </div>
                 );
