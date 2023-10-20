@@ -3,7 +3,12 @@ import { Scene } from "./scene";
 import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import btnStyles from "../../styles/components/button.module.css";
-import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
+import {
+  GigabrainBuilding,
+  GigrabrainNfts,
+  SoloBuildings,
+  StarkFighterBuildings,
+} from "../../constants/nft";
 import { AchievementsDocument } from "../../types/backTypes";
 import Link from "next/link";
 
@@ -109,6 +114,8 @@ export const Land = ({
   const filterAssets = async (assets: StarkscanNftProps[]) => {
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
+    let hasGigabrainNFT = false;
+    let hasAANFT = false;
 
     assets.forEach((asset: StarkscanNftProps) => {
       if (
@@ -131,6 +138,8 @@ export const Land = ({
             ]
           );
         }
+        if (asset.name === GigrabrainNfts[0]) hasGigabrainNFT = true;
+        if (asset.name === GigrabrainNfts[1]) hasAANFT = true;
       }
     });
     // get starkfighter highest level
@@ -140,6 +149,9 @@ export const Land = ({
       );
       filteredAssets.push(highestValue);
     }
+
+    // add gigabrain building
+    if (hasGigabrainNFT && hasAANFT) filteredAssets.push(GigabrainBuilding);
 
     await getBuildingsFromAchievements(filteredAssets);
     await getBuildingsInfo(filteredAssets);
