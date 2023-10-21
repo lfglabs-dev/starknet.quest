@@ -146,7 +146,7 @@ type ProfileCard = {
   addressOrDomain: string | string[] | undefined;
   sinceDate: string | null;
   achievements: BuildingsInfo[];
-  soloBuildings: BuildingsInfo[];
+  soloBuildings: StarkscanNftProps[];
 };
 
 type UserAchievement = {

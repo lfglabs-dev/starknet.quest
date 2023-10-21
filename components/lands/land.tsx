@@ -17,7 +17,7 @@ type LandProps = {
   isOwner: boolean;
   isMobile: boolean;
   setAchievements: (achievements: BuildingsInfo[]) => void;
-  setSoloBuildings: (buildings: BuildingsInfo[]) => void;
+  setSoloBuildings: (buildings: StarkscanNftProps[]) => void;
 };
 
 export const Land = ({
@@ -102,7 +102,6 @@ export const Land = ({
       if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);
-        setSoloBuildings(results.filter((x) => x.id >= 64000));
         setAchievements(results.filter((x) => x.id < 64000));
       } else setHasNFTs(false);
     } catch (error) {
@@ -114,6 +113,7 @@ export const Land = ({
   const filterAssets = async (assets: StarkscanNftProps[]) => {
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
+    const nfts: StarkscanNftProps[] = [];
     let hasGigabrainNFT = false;
     let hasAANFT = false;
 
@@ -121,6 +121,8 @@ export const Land = ({
       if (
         asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT
       ) {
+        if (!nfts.includes(asset) && asset.image_url && asset.name)
+          nfts.push(asset);
         if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
           filteredAssets.push(
             SoloBuildings[asset.name as keyof typeof SoloBuildings]
@@ -167,6 +169,7 @@ export const Land = ({
 
     await getBuildingsInfo(filteredAssets);
 
+    setSoloBuildings(nfts);
     setIsReady(true);
   };
 
