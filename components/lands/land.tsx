@@ -3,7 +3,12 @@ import { Scene } from "./scene";
 import styles from "../../styles/profile.module.css";
 import landStyles from "../../styles/components/land.module.css";
 import btnStyles from "../../styles/components/button.module.css";
-import { SoloBuildings, StarkFighterBuildings } from "../../constants/nft";
+import {
+  GigabrainBuilding,
+  GigrabrainNfts,
+  SoloBuildings,
+  StarkFighterBuildings,
+} from "../../constants/nft";
 import { AchievementsDocument } from "../../types/backTypes";
 import Link from "next/link";
 
@@ -12,7 +17,7 @@ type LandProps = {
   isOwner: boolean;
   isMobile: boolean;
   setAchievements: (achievements: BuildingsInfo[]) => void;
-  setSoloBuildings: (buildings: BuildingsInfo[]) => void;
+  setSoloBuildings: (buildings: StarkscanNftProps[]) => void;
 };
 
 export const Land = ({
@@ -97,7 +102,6 @@ export const Land = ({
       if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);
-        setSoloBuildings(results.filter((x) => x.id >= 64000));
         setAchievements(results.filter((x) => x.id < 64000));
       } else setHasNFTs(false);
     } catch (error) {
@@ -109,11 +113,16 @@ export const Land = ({
   const filterAssets = async (assets: StarkscanNftProps[]) => {
     const filteredAssets: number[] = [];
     const starkFighter: number[] = [];
+    const nfts: StarkscanNftProps[] = [];
+    let hasGigabrainNFT = false;
+    let hasAANFT = false;
 
     assets.forEach((asset: StarkscanNftProps) => {
       if (
         asset.contract_address === process.env.NEXT_PUBLIC_QUEST_NFT_CONTRACT
       ) {
+        if (!nfts.includes(asset) && asset.image_url && asset.name)
+          nfts.push(asset);
         if (asset.name && Object.values(SoloBuildings).includes(asset.name)) {
           filteredAssets.push(
             SoloBuildings[asset.name as keyof typeof SoloBuildings]
@@ -131,6 +140,8 @@ export const Land = ({
             ]
           );
         }
+        if (asset.name === GigrabrainNfts[0]) hasGigabrainNFT = true;
+        if (asset.name === GigrabrainNfts[1]) hasAANFT = true;
       }
     });
     // get starkfighter highest level
@@ -141,9 +152,24 @@ export const Land = ({
       filteredAssets.push(highestValue);
     }
 
+    // add gigabrain building
+    if (hasGigabrainNFT && hasAANFT) filteredAssets.push(GigabrainBuilding);
+
+    // get buildings from achievements
     await getBuildingsFromAchievements(filteredAssets);
+
+    // ensure there are not 2 avnu buildings
+    if (
+      filteredAssets.includes(64002) &&
+      (filteredAssets.includes(17) ||
+        filteredAssets.includes(18) ||
+        filteredAssets.includes(19))
+    )
+      filteredAssets.splice(filteredAssets.indexOf(64002), 1);
+
     await getBuildingsInfo(filteredAssets);
 
+    setSoloBuildings(nfts);
     setIsReady(true);
   };
 

@@ -27,7 +27,7 @@ const AddressOrDomain: NextPage = () => {
   const dynamicRoute = useRouter().asPath;
   const isMobile = useMediaQuery("(max-width:768px)");
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
-  const [soloBuildings, setSoloBuildings] = useState<BuildingsInfo[]>([]);
+  const [soloBuildings, setSoloBuildings] = useState<StarkscanNftProps[]>([]);
   const sinceDate = useCreationDate(identity);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
