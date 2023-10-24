@@ -9,10 +9,12 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
 import {
-  useConnectors,
+  useConnect,
   useAccount,
   useProvider,
   Connector,
+  useDisconnect,
+  useNetwork,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -30,9 +32,10 @@ const Navbar: FunctionComponent = () => {
   const { address } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
-  const { available, connect, disconnect, connectors, refresh } =
-    useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const { provider } = useProvider();
+  const { chain } = useNetwork();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -43,31 +46,31 @@ const Navbar: FunctionComponent = () => {
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => {
-    // to handle autoconnect starknet-react adds connector id in local storage
-    // if there is no value stored, we show the wallet modal
-    const timeout = setTimeout(() => {
-      if (!address) {
-        if (
-          !localStorage.getItem("lastUsedConnector") &&
-          router?.pathname !== "/partnership"
-        ) {
-          if (connectors.length > 0) setHasWallet(true);
-        } else {
-          const lastConnectedConnectorId =
-            localStorage.getItem("lastUsedConnector");
-          if (lastConnectedConnectorId === null) return;
+  // useEffect(() => {
+  //   // to handle autoconnect starknet-react adds connector id in local storage
+  //   // if there is no value stored, we show the wallet modal
+  //   const timeout = setTimeout(() => {
+  //     if (!address) {
+  //       if (
+  //         !localStorage.getItem("lastUsedConnector") &&
+  //         router?.pathname !== "/partnership"
+  //       ) {
+  //         if (connectors.length > 0) setHasWallet(true);
+  //       } else {
+  //         const lastConnectedConnectorId =
+  //           localStorage.getItem("lastUsedConnector");
+  //         if (lastConnectedConnectorId === null) return;
 
-          const lastConnectedConnector = connectors.find(
-            (connector) => connector.id === lastConnectedConnectorId
-          );
-          if (lastConnectedConnector === undefined) return;
-          tryConnect(lastConnectedConnector);
-        }
-      }
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, []);
+  //         const lastConnectedConnector = connectors.find(
+  //           (connector) => connector.id === lastConnectedConnectorId
+  //         );
+  //         if (lastConnectedConnector === undefined) return;
+  //         tryConnect(lastConnectedConnector);
+  //       }
+  //     }
+  //   }, 1000);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
@@ -76,7 +79,10 @@ const Navbar: FunctionComponent = () => {
   useEffect(() => {
     if (!isConnected) return;
 
+    console.log("chain", chain);
+
     provider.getChainId().then((chainId) => {
+      console.log("chainId", chainId);
       const isWrongNetwork =
         (chainId === constants.StarknetChainId.SN_GOERLI &&
           network === "mainnet") ||
@@ -90,7 +96,7 @@ const Navbar: FunctionComponent = () => {
     async (connector: Connector) => {
       if (address) return;
       if (await connector.ready()) {
-        connect(connector);
+        connect({ connector });
 
         return;
       }
@@ -111,12 +117,12 @@ const Navbar: FunctionComponent = () => {
 
   function onTopButtonClick(): void {
     if (!isConnected) {
-      if (available.length > 0) {
-        if (available.length === 1) {
-          connect(available[0]);
-        } else {
-          setHasWallet(true);
-        }
+      if (connectors.length > 0) {
+        // if (connectors.length === 1) {
+        //   connect({connectors[0].connectors});
+        // } else {
+        setHasWallet(true);
+        // }
       } else {
         setHasWallet(true);
       }
@@ -133,7 +139,8 @@ const Navbar: FunctionComponent = () => {
 
   // Refresh available connectors before showing wallet modal
   function refreshAndShowWallet(): void {
-    refresh();
+    //todo: no way to refresh ?
+    // refresh();
     setHasWallet(true);
   }
 

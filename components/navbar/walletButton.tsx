@@ -3,8 +3,9 @@ import Button from "../UI/button";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 import {
   useAccount,
-  useTransactionManager,
-  useTransactions,
+  useWaitForTransaction,
+  // useTransactionManager,
+  // useTransactions,
 } from "@starknet-react/core";
 import styles from "../../styles/components/navbar.module.css";
 import ProfilIcon from "../UI/iconsComponents/icons/profilIcon";
@@ -16,6 +17,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
 import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
+import { useTransactionManager } from "../../hooks/useTransactionManager";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -31,15 +33,15 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const { address, connector } = useAccount();
+  // const { hashes } = useTransactionManager();
+  // const transactions = useTransactions({ hashes, watch: true });
   const { hashes } = useTransactionManager();
-  const transactions = useTransactions({ hashes, watch: true });
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
   const [changeWallet, setChangeWallet] = useState<boolean>(false);
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
-
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
@@ -54,24 +56,23 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
     [address, domainOrAddressMinified]
   );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      for (const tx of transactions) {
-        tx.refetch();
-      }
-    }, 3_000);
-    return () => clearInterval(interval);
-  }, [transactions?.length]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     for (const tx of transactions) {
+  //       tx.refetch();
+  //     }
+  //   }, 3_000);
+  //   return () => clearInterval(interval);
+  // }, [transactions?.length]);
 
-  useEffect(() => {
-    if (transactions) {
-      // Give the number of tx that are loading (I use any because there is a problem on Starknet React types)
-      setTxLoading(
-        transactions.filter((tx) => (tx?.data as any)?.status === "RECEIVED")
-          .length
-      );
-    }
-  }, [transactions]);
+  // useEffect(() => {
+  //   if (hashes) {
+  //     // Give the number of tx that are loading (I use any because there is a problem on Starknet React types)
+  //     setTxLoading(
+  //       hashes.filter((tx) => (tx?.data as any)?.status === "RECEIVED").length
+  //     );
+  //   }
+  // }, [hash]);
 
   const copyAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

@@ -1,12 +1,18 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
-import { useContractWrite, useTransactionManager } from "@starknet-react/core";
+import { useContractWrite } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
+import { useTransactionManager } from "../../hooks/useTransactionManager";
 
 type RewardProps = {
   onClick: () => void;
@@ -30,16 +36,23 @@ const Reward: FunctionComponent<RewardProps> = ({
   });
   const router = useRouter();
 
-  useEffect(() => {
-    if (!mintData?.transaction_hash) return;
-    addTransaction({ hash: mintData?.transaction_hash });
-    setModalTxOpen(true);
-  }, [mintData]);
+  // useEffect(() => {
+  //   if (!mintData?.transaction_hash) return;
+  //   // addTransaction({ hash: mintData?.transaction_hash });
+  //   setModalTxOpen(true);
+  // }, [mintData]);
 
-  function getReward() {
-    executeMint();
+  // function getReward() {
+  //   executeMint({});
+  //   onClick();
+  // }
+
+  const submitTx = useCallback(async () => {
+    const tx = await executeMint({});
     onClick();
-  }
+    addTransaction(tx.transaction_hash);
+    setModalTxOpen(true);
+  }, [executeMint]);
 
   return (
     <div className={styles.reward}>
@@ -49,7 +62,8 @@ const Reward: FunctionComponent<RewardProps> = ({
         <p className="ml-1">{reward}</p>
       </div>
       <div className="max-w-lg">
-        <Button onClick={getReward} disabled={disabled}>
+        {/* getReward */}
+        <Button onClick={submitTx} disabled={disabled}>
           Get Reward
         </Button>
       </div>

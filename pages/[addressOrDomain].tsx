@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import styles from "../styles/profile.module.css";
 import { useRouter } from "next/router";
 import { isHexString } from "../utils/stringService";
-import { Connector, useAccount, useConnectors } from "@starknet-react/core";
+import { Connector, useAccount, useConnect } from "@starknet-react/core";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import { hexToDecimal } from "../utils/feltService";
 import { minifyAddress } from "../utils/stringService";
@@ -18,7 +18,7 @@ const AddressOrDomain: NextPage = () => {
   const router = useRouter();
   const { addressOrDomain } = router.query;
   const { address } = useAccount();
-  const { connectors, connect } = useConnectors();
+  const { connectors, connect } = useConnect();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
@@ -32,37 +32,37 @@ const AddressOrDomain: NextPage = () => {
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
-  useLayoutEffect(() => {
-    async function tryAutoConnect(connectors: Connector[]) {
-      const lastConnectedConnectorId =
-        localStorage.getItem("lastUsedConnector");
-      if (lastConnectedConnectorId === null) {
-        return;
-      }
+  // useLayoutEffect(() => {
+  //   async function tryAutoConnect(connectors: Connector[]) {
+  //     const lastConnectedConnectorId =
+  //       localStorage.getItem("lastUsedConnector");
+  //     if (lastConnectedConnectorId === null) {
+  //       return;
+  //     }
 
-      const lastConnectedConnector = connectors.find(
-        (connector) => connector.id === lastConnectedConnectorId
-      );
-      if (lastConnectedConnector === undefined) {
-        return;
-      }
+  //     const lastConnectedConnector = connectors.find(
+  //       (connector) => connector.id === lastConnectedConnectorId
+  //     );
+  //     if (lastConnectedConnector === undefined) {
+  //       return;
+  //     }
 
-      try {
-        if (!(await lastConnectedConnector.ready())) {
-          // Not authorized anymore.
-          return;
-        }
+  //     try {
+  //       if (!(await lastConnectedConnector.ready())) {
+  //         // Not authorized anymore.
+  //         return;
+  //       }
 
-        await connect(lastConnectedConnector);
-      } catch {
-        // no-op
-      }
-    }
+  //       await connect(lastConnectedConnector);
+  //     } catch {
+  //       // no-op
+  //     }
+  //   }
 
-    if (!address) {
-      tryAutoConnect(connectors);
-    }
-  }, []);
+  //   if (!address) {
+  //     tryAutoConnect(connectors);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setInitProfile(false);

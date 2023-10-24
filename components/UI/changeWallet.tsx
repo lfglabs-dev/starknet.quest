@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/wallets.module.css";
-import { Connector, useConnectors } from "@starknet-react/core";
+import { Connector, useConnect } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent } from "react";
 import { Modal } from "@mui/material";
@@ -17,13 +17,14 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
   closeWallet,
   hasWallet,
 }) => {
-  const { connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
   const downloadLinks = useGetDiscoveryWallets(
     getDiscoveryWallets.getDiscoveryWallets()
   );
 
   function connectWallet(connector: Connector): void {
-    connect(connector);
+    console.log("connecting", connector);
+    connect({ connector });
     closeWallet();
   }
 
@@ -59,7 +60,9 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
                 <Button onClick={() => connectWallet(connector)}>
                   <div className="flex justify-center items-center">
                     <WalletIcons id={connector.id} />
-                    {connector.id === "braavos" || connector.id === "argentX"
+                    {connector.id === "braavos" ||
+                    connector.id === "argentX" ||
+                    connector.id === "okxwallet"
                       ? `Connect ${connector.name}`
                       : "Login with Email"}
                   </div>
