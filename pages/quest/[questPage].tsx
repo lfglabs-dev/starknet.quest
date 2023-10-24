@@ -10,7 +10,6 @@ import ErrorScreen from "../../components/UI/screens/errorScreen";
 import NftIssuer from "../../components/quests/nftIssuer";
 import BackButton from "../../components/UI/backButton";
 import useHasRootDomain from "../../hooks/useHasRootDomain";
-import useHasRootOrBraavosDomain from "../../hooks/useHasRootOrBraavosDomain";
 import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
 import BannerPopup from "../../components/UI/menus/bannerPopup";
@@ -39,19 +38,12 @@ const QuestPage: NextPage = () => {
     hidden: false,
     disabled: false,
     expiry_timestamp: "loading",
+    mandatory_domain: null,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
-  const hasRootDomain =
-    questId && parseInt(questId as string) >= 100
-      ? useHasRootOrBraavosDomain(address)
-      : useHasRootDomain(address);
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (!address) return;
-  //   setShowDomainPopup(!hasRootDomain);
-  // }, [address, hasRootDomain]);
+  const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
 
   // this fetches quest data
   useEffect(() => {
