@@ -41,6 +41,7 @@ const Quests: NextPage = () => {
   });
 
   const submitTx = useCallback(async () => {
+    console.log("address", address);
     if (!address) return;
     const tx = await writeAsync({});
     addTransaction({

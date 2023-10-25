@@ -36,6 +36,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const router = useRouter();
 
   const submitTx = useCallback(async () => {
+    console.log("address", address);
     if (!address) return;
     const tx = await executeMint({});
     onClick();
