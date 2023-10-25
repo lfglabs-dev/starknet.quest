@@ -35,7 +35,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const router = useRouter();
 
   const submitTx = useCallback(async () => {
-    console.log("address", address);
+    console.log("address before minting", address);
     if (!address) return;
     const tx = await executeMint({});
     onClick();
@@ -47,7 +47,7 @@ const Reward: FunctionComponent<RewardProps> = ({
       title: "NFT received",
     });
     setModalTxOpen(true);
-  }, [executeMint]);
+  }, [executeMint, address]);
 
   return (
     <div className={styles.reward}>
