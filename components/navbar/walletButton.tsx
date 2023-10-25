@@ -13,7 +13,6 @@ import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
 import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
 import { useTransactionManager } from "../../hooks/useTransactionManager";
-import { hexToDecimal } from "../../utils/feltService";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;

@@ -57,7 +57,6 @@ export function useTransactionManager() {
     : [];
 
   const addTransaction = (notification: SQNotification) => {
-    console.log("address adding", address);
     setNotifications((prev) => [
       { ...notification, address: hexToDecimal(address) },
       ...prev,

@@ -197,6 +197,6 @@ type SQNotification = {
     | "REJECTED"
     | "REVERTED";
   timestamp: number;
-  questName: string;
-  title: string;
+  name: string;
+  type: NotificationType;
 };

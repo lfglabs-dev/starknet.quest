@@ -18,6 +18,7 @@ import {
 } from "@starknet-react/core";
 import erc20_abi from "../abi/erc20_abi.json";
 import { useTransactionManager } from "../hooks/useTransactionManager";
+import { NotificationType } from "../constants/notifications";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -47,8 +48,8 @@ const Quests: NextPage = () => {
       hash: tx.transaction_hash,
       status: "pending",
       timestamp: Date.now(),
-      questName: "Test Quest",
-      title: "NFT received",
+      name: "Test tx",
+      type: NotificationType.MINT_NFT,
     });
   }, [writeAsync, address]);
 
@@ -61,7 +62,7 @@ const Quests: NextPage = () => {
           <Blur />
         </div>
         {/* For testing purposes */}
-        <div onClick={submitTx}>Test tx</div>
+        <div onClick={submitTx}>Send test tx</div>
         <FeaturedQuest
           key={featuredQuest?.id}
           title={featuredQuest?.title_card}

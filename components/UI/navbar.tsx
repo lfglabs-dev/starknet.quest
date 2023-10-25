@@ -121,15 +121,7 @@ const Navbar: FunctionComponent = () => {
 
   function onTopButtonClick(): void {
     if (!isConnected) {
-      if (connectors.length > 0) {
-        // if (connectors.length === 1) {
-        //   connect({connectors[0].connectors});
-        // } else {
-        setHasWallet(true);
-        // }
-      } else {
-        setHasWallet(true);
-      }
+      setHasWallet(true);
     } else {
       setShowWallet(true);
     }
@@ -143,7 +135,7 @@ const Navbar: FunctionComponent = () => {
 
   // Refresh available connectors before showing wallet modal
   function refreshAndShowWallet(): void {
-    // refresh(); - seems it doesn't exist anymore
+    // refresh();
     setHasWallet(true);
   }
 

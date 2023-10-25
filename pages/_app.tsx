@@ -24,11 +24,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? goerli : mainnet,
   ];
   const providers = [
-    process.env.NEXT_PUBLIC_IS_TESTNET === "true"
-      ? publicProvider()
-      : alchemyProvider({
-          apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
-        }),
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
+    }),
   ];
   const connectors = useMemo(
     () => [

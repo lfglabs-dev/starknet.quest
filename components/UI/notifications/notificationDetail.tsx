@@ -6,6 +6,10 @@ import theme from "../../../styles/theme";
 import LoaderIcon from "../iconsComponents/icons/loaderIcon";
 import CloseCircleIcon from "../iconsComponents/icons/closeCircleIcon";
 import { timeElapsed } from "../../../utils/timeService";
+import {
+  NotificationType,
+  notificationMessages,
+} from "../../../constants/notifications";
 
 type NotificationDetailProps = {
   notification: SQNotification;
@@ -32,13 +36,19 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
     }starkscan.co/tx/${notification.hash}`;
   }, [notification.hash]);
 
+  const notificationTitle = useMemo(() => {
+    return notificationMessages[notification.type as NotificationType][
+      notification.status
+    ];
+  }, [notification.type, notification.status]);
+
   return (
     <div className={styles.notif_detail}>
       <div className={styles.notif_title}>
         {statusIcon}
-        <div>{notification.title}</div>
+        <div>{notificationTitle}</div>
       </div>
-      <div className={styles.quest_name}>{notification.questName}</div>
+      <div className={styles.quest_name}>{notification.name}</div>
       <div className={styles.notif_info}>
         <div className={styles.notif_time}>
           {timeElapsed(notification.timestamp)}
