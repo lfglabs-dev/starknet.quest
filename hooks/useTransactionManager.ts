@@ -51,7 +51,9 @@ export function useTransactionManager() {
   };
 
   const filteredNotifications = address
-    ? notifications.filter((notification) => notification.address === address)
+    ? notifications.filter(
+        (notification) => notification.address === hexToDecimal(address)
+      )
     : [];
 
   const addTransaction = (notification: SQNotification) => {
