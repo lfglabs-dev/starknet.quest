@@ -18,7 +18,6 @@ import {
 } from "@starknet-react/core";
 import erc20_abi from "../abi/erc20_abi.json";
 import { useTransactionManager } from "../hooks/useTransactionManager";
-import { hexToDecimal } from "../utils/feltService";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -28,7 +27,7 @@ const Quests: NextPage = () => {
   // ------- FOR TESTING PURPOSES ONLY -------
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { addTransaction } = useTransactionManager(hexToDecimal(address));
+  const { addTransaction } = useTransactionManager();
   const amount = uint256.bnToUint256(BigInt(1));
   const { contract } = useContract({
     abi: erc20_abi,
@@ -45,7 +44,6 @@ const Quests: NextPage = () => {
     if (!address) return;
     const tx = await writeAsync({});
     addTransaction({
-      address: hexToDecimal(address),
       hash: tx.transaction_hash,
       status: "pending",
       timestamp: Date.now(),

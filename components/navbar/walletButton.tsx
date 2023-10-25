@@ -29,7 +29,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const { address, connector } = useAccount();
-  const { notifications } = useTransactionManager(hexToDecimal(address));
+  const { notifications } = useTransactionManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);

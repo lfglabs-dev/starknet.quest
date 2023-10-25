@@ -1,17 +1,18 @@
-import { useProvider } from "@starknet-react/core";
+import { useAccount, useProvider } from "@starknet-react/core";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect } from "react";
+import { hexToDecimal } from "../utils/feltService";
 
 const transactionsAtom = atomWithStorage<SQNotification[]>(
   "userNotifications",
   []
 );
-
 const readStatusAtom = atomWithStorage<boolean>("unreadNotifications", false);
 
-export function useTransactionManager(address: string | undefined) {
+export function useTransactionManager() {
   const { provider } = useProvider();
+  const { address } = useAccount();
   const [notifications, setNotifications] = useAtom(transactionsAtom);
   const [unreadNotifications, setUnread] = useAtom(readStatusAtom);
 
@@ -53,7 +54,11 @@ export function useTransactionManager(address: string | undefined) {
     : [];
 
   const addTransaction = (notification: SQNotification) => {
-    setNotifications((prev) => [notification, ...prev]);
+    console.log("address adding", address);
+    setNotifications((prev) => [
+      { ...notification, address: hexToDecimal(address) },
+      ...prev,
+    ]);
     setUnread(true);
   };
 

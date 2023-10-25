@@ -8,7 +8,6 @@ import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
 import { useTransactionManager } from "../../hooks/useTransactionManager";
-import { hexToDecimal } from "../../utils/feltService";
 
 type RewardProps = {
   onClick: () => void;
@@ -29,7 +28,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
-  const { addTransaction } = useTransactionManager(hexToDecimal(address));
+  const { addTransaction } = useTransactionManager();
   const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
@@ -41,7 +40,6 @@ const Reward: FunctionComponent<RewardProps> = ({
     const tx = await executeMint({});
     onClick();
     addTransaction({
-      address: hexToDecimal(address),
       hash: tx.transaction_hash,
       status: "pending",
       timestamp: Date.now(),

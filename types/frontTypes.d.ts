@@ -187,7 +187,7 @@ type LandTabs = "achievements" | "nfts";
 
 type SQNotification = {
   hash: string;
-  address: string; // decimal address
+  address?: string; // decimal address
   status: "pending" | "success" | "error";
   txStatus?:
     | "NOT_RECEIVED"
