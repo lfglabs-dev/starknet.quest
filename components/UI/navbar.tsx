@@ -49,36 +49,36 @@ const Navbar: FunctionComponent = () => {
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  // const router = useRouter();
+  const router = useRouter();
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const { notifications, unreadNotifications, updateReadStatus } =
     useTransactionManager(hexToDecimal(address));
 
-  // useEffect(() => {
-  //   // to handle autoconnect starknet-react adds connector id in local storage
-  //   // if there is no value stored, we show the wallet modal
-  //   const timeout = setTimeout(() => {
-  //     if (!address) {
-  //       if (
-  //         !localStorage.getItem("lastUsedConnector") &&
-  //         router?.pathname !== "/partnership"
-  //       ) {
-  //         if (connectors.length > 0) setHasWallet(true);
-  //       } else {
-  //         const lastConnectedConnectorId =
-  //           localStorage.getItem("lastUsedConnector");
-  //         if (lastConnectedConnectorId === null) return;
+  useEffect(() => {
+    // to handle autoconnect starknet-react adds connector id in local storage
+    // if there is no value stored, we show the wallet modal
+    const timeout = setTimeout(() => {
+      if (!address) {
+        if (
+          !localStorage.getItem("lastUsedConnector") &&
+          router?.pathname !== "/partnership"
+        ) {
+          if (connectors.length > 0) setHasWallet(true);
+        } else {
+          const lastConnectedConnectorId =
+            localStorage.getItem("lastUsedConnector");
+          if (lastConnectedConnectorId === null) return;
 
-  //         const lastConnectedConnector = connectors.find(
-  //           (connector) => connector.id === lastConnectedConnectorId
-  //         );
-  //         if (lastConnectedConnector === undefined) return;
-  //         tryConnect(lastConnectedConnector);
-  //       }
-  //     }
-  //   }, 1000);
-  //   return () => clearTimeout(timeout);
-  // }, []);
+          const lastConnectedConnector = connectors.find(
+            (connector) => connector.id === lastConnectedConnectorId
+          );
+          if (lastConnectedConnector === undefined) return;
+          tryConnect(lastConnectedConnector);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
@@ -96,17 +96,17 @@ const Navbar: FunctionComponent = () => {
     });
   }, [provider, network, isConnected]);
 
-  // const tryConnect = useCallback(
-  //   async (connector: Connector) => {
-  //     if (address) return;
-  //     if (await connector.ready()) {
-  //       connect({ connector });
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (address) return;
+      if (await connector.ready()) {
+        connect({ connector });
 
-  //       return;
-  //     }
-  //   },
-  //   [address, connectors]
-  // );
+        return;
+      }
+    },
+    [address, connectors]
+  );
 
   function disconnectByClick(): void {
     disconnect();
