@@ -48,7 +48,7 @@ const ModalNotifications: FunctionComponent<ModalNotificationsProps> = ({
               );
             })
           ) : (
-            <p>You don't have any notifications yet. Start some quests!</p>
+            <p>You don&apos;t have any notifications yet. Start some quests!</p>
           )}
         </div>
       </div>
