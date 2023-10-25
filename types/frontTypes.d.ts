@@ -1,4 +1,4 @@
-type IconProps = { width: string; color?: string };
+type IconProps = { width: string; color?: string; secondColor?: string };
 
 type Issuer = {
   name: string;
@@ -184,3 +184,19 @@ type QuestCategory = {
 };
 
 type LandTabs = "achievements" | "nfts";
+
+type SQNotification = {
+  hash: string;
+  address: string; // decimal address
+  status: "pending" | "success" | "error";
+  txStatus?:
+    | "NOT_RECEIVED"
+    | "RECEIVED"
+    | "ACCEPTED_ON_L2"
+    | "ACCEPTED_ON_L1"
+    | "REJECTED"
+    | "REVERTED";
+  timestamp: number;
+  questName: string;
+  title: string;
+};

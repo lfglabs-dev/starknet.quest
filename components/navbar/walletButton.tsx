@@ -1,12 +1,7 @@
 import React, { FunctionComponent, useMemo, useState, useEffect } from "react";
 import Button from "../UI/button";
 import { useDisplayName } from "../../hooks/displayName.tsx";
-import {
-  useAccount,
-  useWaitForTransaction,
-  // useTransactionManager,
-  // useTransactions,
-} from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import styles from "../../styles/components/navbar.module.css";
 import ProfilIcon from "../UI/iconsComponents/icons/profilIcon";
 import theme from "../../styles/theme";
@@ -18,6 +13,7 @@ import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
 import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
 import { useTransactionManager } from "../../hooks/useTransactionManager";
+import { hexToDecimal } from "../../utils/feltService";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -33,9 +29,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const { address, connector } = useAccount();
-  // const { hashes } = useTransactionManager();
-  // const transactions = useTransactions({ hashes, watch: true });
-  const { hashes } = useTransactionManager();
+  const { notifications } = useTransactionManager(hexToDecimal(address));
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
@@ -53,26 +47,19 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
           ? `${txLoading} on hold`
           : domainOrAddressMinified
         : "connect",
-    [address, domainOrAddressMinified]
+    [address, domainOrAddressMinified, txLoading]
   );
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     for (const tx of transactions) {
-  //       tx.refetch();
-  //     }
-  //   }, 3_000);
-  //   return () => clearInterval(interval);
-  // }, [transactions?.length]);
-
-  // useEffect(() => {
-  //   if (hashes) {
-  //     // Give the number of tx that are loading (I use any because there is a problem on Starknet React types)
-  //     setTxLoading(
-  //       hashes.filter((tx) => (tx?.data as any)?.status === "RECEIVED").length
-  //     );
-  //   }
-  // }, [hash]);
+  useEffect(() => {
+    if (notifications) {
+      // Give the number of tx that are loading
+      setTxLoading(
+        notifications.filter(
+          (notif: SQNotification) => notif.status === "pending"
+        ).length
+      );
+    }
+  }, [notifications]);
 
   const copyAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

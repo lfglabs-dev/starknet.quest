@@ -25,6 +25,11 @@ import { useRouter } from "next/router";
 import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import WalletButton from "../navbar/walletButton";
+import NotificationIcon from "./iconsComponents/icons/notificationIcon";
+import ModalNotifications from "./modalNotifications";
+import { useTransactionManager } from "../../hooks/useTransactionManager";
+import { hexToDecimal } from "../../utils/feltService";
+import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -44,7 +49,10 @@ const Navbar: FunctionComponent = () => {
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  const router = useRouter();
+  // const router = useRouter();
+  const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const { notifications, unreadNotifications, updateReadStatus } =
+    useTransactionManager(hexToDecimal(address));
 
   // useEffect(() => {
   //   // to handle autoconnect starknet-react adds connector id in local storage
@@ -78,11 +86,7 @@ const Navbar: FunctionComponent = () => {
 
   useEffect(() => {
     if (!isConnected) return;
-
-    console.log("chain", chain);
-
     provider.getChainId().then((chainId) => {
-      console.log("chainId", chainId);
       const isWrongNetwork =
         (chainId === constants.StarknetChainId.SN_GOERLI &&
           network === "mainnet") ||
@@ -92,17 +96,17 @@ const Navbar: FunctionComponent = () => {
     });
   }, [provider, network, isConnected]);
 
-  const tryConnect = useCallback(
-    async (connector: Connector) => {
-      if (address) return;
-      if (await connector.ready()) {
-        connect({ connector });
+  // const tryConnect = useCallback(
+  //   async (connector: Connector) => {
+  //     if (address) return;
+  //     if (await connector.ready()) {
+  //       connect({ connector });
 
-        return;
-      }
-    },
-    [address, connectors]
-  );
+  //       return;
+  //     }
+  //   },
+  //   [address, connectors]
+  // );
 
   function disconnectByClick(): void {
     disconnect();
@@ -139,8 +143,7 @@ const Navbar: FunctionComponent = () => {
 
   // Refresh available connectors before showing wallet modal
   function refreshAndShowWallet(): void {
-    //todo: no way to refresh ?
-    // refresh();
+    // refresh(); - seems it doesn't exist anymore
     setHasWallet(true);
   }
 
@@ -158,6 +161,11 @@ const Navbar: FunctionComponent = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  function openNotificationModal(): void {
+    setShowNotifications(true);
+    updateReadStatus();
+  }
 
   return (
     <>
@@ -189,6 +197,20 @@ const Navbar: FunctionComponent = () => {
               <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
                 <li className={styles.menuItem}>My land</li>
               </Link>
+              <li className={styles.menuItem} onClick={openNotificationModal}>
+                {unreadNotifications ? (
+                  <NotificationUnreadIcon
+                    width="24"
+                    color={theme.palette.secondary.dark}
+                    secondColor="#D32F2F"
+                  ></NotificationUnreadIcon>
+                ) : (
+                  <NotificationIcon
+                    width="24"
+                    color={theme.palette.secondary.dark}
+                  />
+                )}
+              </li>
               {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
               {/* <SelectNetwork network={network} /> */}
               <WalletButton
@@ -323,6 +345,13 @@ const Navbar: FunctionComponent = () => {
         closeWallet={() => setHasWallet(false)}
         hasWallet={Boolean(hasWallet && !isWrongNetwork)}
       />
+      {showNotifications ? (
+        <ModalNotifications
+          open={showNotifications}
+          closeModal={() => setShowNotifications(false)}
+          notifications={notifications}
+        />
+      ) : null}
     </>
   );
 };

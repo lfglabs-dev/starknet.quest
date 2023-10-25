@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import FeaturedQuest from "../components/quests/featuredQuest";
@@ -9,11 +9,51 @@ import QuestCategories from "../components/pages/home/questCategories";
 import TrendingQuests from "../components/pages/home/trending";
 import Blur from "../components/shapes/blur";
 import { QuestsContext } from "../context/QuestsProvider";
+import { uint256 } from "starknet";
+import {
+  useAccount,
+  useContract,
+  useContractWrite,
+  useNetwork,
+} from "@starknet-react/core";
+import erc20_abi from "../abi/erc20_abi.json";
+import { useTransactionManager } from "../hooks/useTransactionManager";
+import { hexToDecimal } from "../utils/feltService";
 
 const Quests: NextPage = () => {
   const router = useRouter();
   const { featuredQuest, categories, trendingQuests } =
     useContext(QuestsContext);
+
+  // ------- FOR TESTING PURPOSES ONLY -------
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { addTransaction } = useTransactionManager(hexToDecimal(address));
+  const amount = uint256.bnToUint256(BigInt(1));
+  const { contract } = useContract({
+    abi: erc20_abi,
+    address: chain.nativeCurrency.address,
+  });
+  const { writeAsync, isLoading } = useContractWrite({
+    calls: address
+      ? [contract?.populateTransaction["transfer"]!(address, amount)]
+      : [],
+  });
+
+  const submitTx = useCallback(async () => {
+    if (!address) return;
+    const tx = await writeAsync({});
+    addTransaction({
+      address: hexToDecimal(address),
+      hash: tx.transaction_hash,
+      status: "pending",
+      timestamp: Date.now(),
+      questName: "Test Quest",
+      title: "NFT received",
+    });
+  }, [writeAsync]);
+
+  // ------- END FOR TESTING PURPOSES ONLY -------
 
   return (
     <div className={styles.screen}>
@@ -21,6 +61,8 @@ const Quests: NextPage = () => {
         <div className={styles.blur1}>
           <Blur />
         </div>
+        {/* For testing purposes */}
+        <div onClick={submitTx}>Test tx</div>
         <FeaturedQuest
           key={featuredQuest?.id}
           title={featuredQuest?.title_card}

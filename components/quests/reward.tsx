@@ -1,18 +1,14 @@
-import React, {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useCallback, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
-import { useContractWrite } from "@starknet-react/core";
+import { useAccount, useContractWrite } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
 import { useTransactionManager } from "../../hooks/useTransactionManager";
+import { hexToDecimal } from "../../utils/feltService";
 
 type RewardProps = {
   onClick: () => void;
@@ -20,6 +16,7 @@ type RewardProps = {
   imgSrc: string;
   disabled: boolean;
   mintCalldata: Call[] | undefined;
+  questName: string;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -28,29 +25,28 @@ const Reward: FunctionComponent<RewardProps> = ({
   imgSrc,
   disabled,
   mintCalldata,
+  questName,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
-  const { addTransaction } = useTransactionManager();
-  const { writeAsync: executeMint, data: mintData } = useContractWrite({
+  const { address } = useAccount();
+  const { addTransaction } = useTransactionManager(hexToDecimal(address));
+  const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!mintData?.transaction_hash) return;
-  //   // addTransaction({ hash: mintData?.transaction_hash });
-  //   setModalTxOpen(true);
-  // }, [mintData]);
-
-  // function getReward() {
-  //   executeMint({});
-  //   onClick();
-  // }
-
   const submitTx = useCallback(async () => {
+    if (!address) return;
     const tx = await executeMint({});
     onClick();
-    addTransaction(tx.transaction_hash);
+    addTransaction({
+      address: hexToDecimal(address),
+      hash: tx.transaction_hash,
+      status: "pending",
+      timestamp: Date.now(),
+      questName,
+      title: "NFT received",
+    });
     setModalTxOpen(true);
   }, [executeMint]);
 
