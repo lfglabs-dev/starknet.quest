@@ -18,6 +18,7 @@ export function useTransactionManager() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      console.log("notifications", notifications);
       notifications.forEach(checkTransactionStatus);
     }, 5000);
 

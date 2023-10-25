@@ -40,7 +40,7 @@ const Quests: NextPage = () => {
   });
 
   const submitTx = useCallback(async () => {
-    console.log("address", address);
+    console.log("address before", address);
     if (!address) return;
     const tx = await writeAsync({});
     addTransaction({
@@ -50,7 +50,7 @@ const Quests: NextPage = () => {
       questName: "Test Quest",
       title: "NFT received",
     });
-  }, [writeAsync]);
+  }, [writeAsync, address]);
 
   // ------- END FOR TESTING PURPOSES ONLY -------
 
