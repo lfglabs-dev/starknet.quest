@@ -302,12 +302,12 @@
   }
 }
 
-.questCard[aria-unselectable="true"] {
+.questCard[aria-disabled="true"] {
   cursor: not-allowed;
 }
 
-.questCard[aria-unselectable="true"] .questImage,
-.questCard[aria-unselectable="true"] .questTitle,
-.questCard[aria-unselectable="true"] .issuer {
+.questCard[aria-disabled="true"] .questImage,
+.questCard[aria-disabled="true"] .questTitle,
+.questCard[aria-disabled="true"] .issuer {
   opacity: 0.4;
 }

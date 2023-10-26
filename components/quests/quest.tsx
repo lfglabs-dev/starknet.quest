@@ -35,7 +35,7 @@ const Quest: FunctionComponent<QuestProps> = ({
       <div
         className={styles.questCard}
         onClick={() => !expired && onClick()}
-        aria-unselectable={expired}
+        aria-disabled={expired}
       >
         <img src={imgSrc} className={styles.questImage} />
         <div className={styles.questInfos}>
