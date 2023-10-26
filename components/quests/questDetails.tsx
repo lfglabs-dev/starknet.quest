@@ -111,7 +111,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           )
             .then((response) => response.json())
             .then((data: UserTask[] | QueryError) => {
-              if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+              if ((data as UserTask[]).length)
+                setTasks(orderTasks(data as UserTask[]));
             });
         }
       }, 1000);
@@ -127,7 +128,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         )
           .then((response) => response.json())
           .then((data: UserTask[] | QueryError) => {
-            if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+            if ((data as UserTask[]).length)
+              setTasks(orderTasks(data as UserTask[]));
           });
       }
 
@@ -383,3 +385,19 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 };
 
 export default QuestDetails;
+
+const orderTasks = (tasks: UserTask[]): UserTask[] => {
+  // Quizzes first
+  // Offchain social medias actions last
+  // Everything else in between
+  const quizzes = tasks.filter((task) => task.verify_endpoint_type === "quiz");
+  const others = tasks.filter(
+    (task) => task.verify_endpoint_type === "default"
+  );
+  const socials = tasks.filter(
+    (task) =>
+      task.verify_endpoint_type !== "quiz" &&
+      task.verify_endpoint_type !== "default"
+  );
+  return quizzes.concat(others).concat(socials);
+};
