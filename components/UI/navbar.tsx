@@ -11,7 +11,6 @@ import Button from "./button";
 import {
   useConnect,
   useAccount,
-  useProvider,
   Connector,
   useDisconnect,
 } from "@starknet-react/core";
@@ -25,19 +24,18 @@ import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import WalletButton from "../navbar/walletButton";
 import NotificationIcon from "./iconsComponents/icons/notificationIcon";
-import ModalNotifications from "./modalNotifications";
+import ModalNotifications from "./notifications/modalNotifications";
 import { useNotificationManager } from "../../hooks/useNotificationManager";
 import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
-  const { address } = useAccount();
+  const { address, account } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
-  const { provider } = useProvider();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -82,8 +80,8 @@ const Navbar: FunctionComponent = () => {
   }, [address]);
 
   useEffect(() => {
-    if (!isConnected) return;
-    provider.getChainId().then((chainId) => {
+    if (!isConnected || !account) return;
+    account.getChainId().then((chainId) => {
       const isWrongNetwork =
         (chainId === constants.StarknetChainId.SN_GOERLI &&
           network === "mainnet") ||
@@ -91,7 +89,7 @@ const Navbar: FunctionComponent = () => {
           network === "testnet");
       setIsWrongNetwork(isWrongNetwork);
     });
-  }, [provider, network, isConnected]);
+  }, [account, network, isConnected]);
 
   const tryConnect = useCallback(
     async (connector: Connector) => {
@@ -128,12 +126,6 @@ const Navbar: FunctionComponent = () => {
     const textToReturn = isConnected ? domainOrAddressMinified : "connect";
 
     return textToReturn;
-  }
-
-  // Refresh available connectors before showing wallet modal
-  function refreshAndShowWallet(): void {
-    // refresh();
-    setHasWallet(true);
   }
 
   const handleScroll = () => {
@@ -206,7 +198,7 @@ const Navbar: FunctionComponent = () => {
               <WalletButton
                 setShowWallet={setShowWallet}
                 showWallet={showWallet}
-                refreshAndShowWallet={refreshAndShowWallet}
+                refreshAndShowWallet={() => setHasWallet(true)}
                 disconnectByClick={disconnectByClick}
               />
             </ul>

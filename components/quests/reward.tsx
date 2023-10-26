@@ -8,7 +8,10 @@ import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
 import { useNotificationManager } from "../../hooks/useNotificationManager";
-import { NotificationType } from "../../constants/notifications";
+import {
+  NotificationType,
+  TransactionType,
+} from "../../constants/notifications";
 
 type RewardProps = {
   onClick: () => void;
@@ -40,11 +43,14 @@ const Reward: FunctionComponent<RewardProps> = ({
     const tx = await executeMint({});
     onClick();
     addTransaction({
-      hash: tx.transaction_hash,
-      status: "pending",
       timestamp: Date.now(),
-      name: questName,
-      type: NotificationType.MINT_NFT,
+      subtext: questName,
+      type: NotificationType.TRANSACTION,
+      data: {
+        type: TransactionType.MINT_NFT,
+        hash: tx.transaction_hash,
+        status: "pending",
+      },
     });
     setModalTxOpen(true);
   }, [executeMint, address]);

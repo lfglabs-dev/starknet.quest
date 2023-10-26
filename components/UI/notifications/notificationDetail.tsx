@@ -3,17 +3,18 @@ import styles from "../../../styles/components/notifications.module.css";
 import { FunctionComponent } from "react";
 import DoneIcon from "../iconsComponents/icons/doneIcon";
 import theme from "../../../styles/theme";
-import LoaderIcon from "../iconsComponents/icons/loaderIcon";
 import CloseCircleIcon from "../iconsComponents/icons/closeCircleIcon";
 import { timeElapsed } from "../../../utils/timeService";
 import {
   NotificationType,
-  notificationMessages,
+  TransactionType,
+  notificationLinkText,
+  notificationTitle,
 } from "../../../constants/notifications";
 import { CircularProgress } from "@mui/material";
 
 type NotificationDetailProps = {
-  notification: SQNotification;
+  notification: SQNotification<NotificationData>;
   isLastItem: boolean;
 };
 
@@ -22,43 +23,49 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
   isLastItem,
 }) => {
   const statusIcon = useMemo(() => {
-    if (notification.status === "pending") {
-      return <CircularProgress color="secondary" size={24} />;
-    } else if (notification.status === "error") {
-      return <CloseCircleIcon width="24" color="" />;
-    } else {
-      return <DoneIcon width="24" color={theme.palette.primary.main} />;
+    if (notification.type === NotificationType.TRANSACTION) {
+      if (notification.data.status === "pending") {
+        return <CircularProgress color="secondary" size={24} />;
+      } else if (notification.data.status === "error") {
+        return <CloseCircleIcon width="24" color="" />;
+      } else {
+        return <DoneIcon width="24" color={theme.palette.primary.main} />;
+      }
     }
-  }, [notification.status]);
+  }, [notification, notification.data?.status]);
 
-  const starkscanUrl = useMemo(() => {
-    return `https://${
-      process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet." : ""
-    }starkscan.co/tx/${notification.hash}`;
-  }, [notification.hash]);
+  const externalUrl = useMemo(() => {
+    if (notification.type === NotificationType.TRANSACTION) {
+      return `https://${
+        process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet." : ""
+      }starkscan.co/tx/${notification.data.hash}`;
+    }
+  }, [notification]);
 
-  const notificationTitle = useMemo(() => {
-    return notificationMessages[notification.type as NotificationType][
-      notification.status
-    ];
-  }, [notification.type, notification.status]);
+  const title = useMemo(() => {
+    if (notification.type === NotificationType.TRANSACTION) {
+      return notificationTitle[notification.data.type as TransactionType][
+        notification.data.status
+      ];
+    }
+  }, [notification, notification.data?.status]);
 
   return (
     <div className={styles.notif_detail}>
       <div className={styles.notif_title}>
         {statusIcon}
-        <div>{notificationTitle}</div>
+        <div>{title}</div>
       </div>
-      <div className={styles.quest_name}>{notification.name}</div>
+      <div className={styles.quest_name}>{notification.subtext}</div>
       <div className={styles.notif_info}>
         <div className={styles.notif_time}>
           {timeElapsed(notification.timestamp)}
         </div>
         <div
           className={styles.notif_link}
-          onClick={() => window.open(starkscanUrl)}
+          onClick={() => window.open(externalUrl)}
         >
-          See transaction
+          {notificationLinkText[notification.type as NotificationType]}
         </div>
       </div>
       {!isLastItem ? <div className={styles.notif_line}></div> : null}

@@ -3,8 +3,9 @@ import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect } from "react";
 import { hexToDecimal } from "../utils/feltService";
+import { NotificationType } from "../constants/notifications";
 
-const notificationsAtom = atomWithStorage<SQNotification[]>(
+const notificationsAtom = atomWithStorage<SQNotification<NotificationData>[]>(
   "userNotifications_SQ",
   []
 );
@@ -28,27 +29,30 @@ export function useNotificationManager() {
   }, [notifications]);
 
   const checkTransactionStatus = async (
-    transaction: SQNotification,
+    notification: SQNotification<NotificationData>,
     index: number
   ) => {
-    if (transaction.status === "pending") {
+    if (notification.type !== NotificationType.TRANSACTION) return;
+    if (notification.address !== hexToDecimal(address)) return;
+    if (notification.data.status === "pending") {
+      const transaction = notification.data;
       const data = await provider.getTransactionReceipt(transaction.hash);
       const updatedTransactions = [...notifications];
 
       if (data?.status === "REJECTED" || data?.status === "REVERTED") {
-        updatedTransactions[index].status = "error";
-        updatedTransactions[index].txStatus = "REJECTED";
+        updatedTransactions[index].data.status = "error";
+        updatedTransactions[index].data.txStatus = "REJECTED";
+        setNotifications(updatedTransactions);
         setUnread(true);
       } else if (
         data?.finality_status !== "NOT_RECEIVED" &&
         data?.finality_status !== "RECEIVED"
       ) {
-        updatedTransactions[index].txStatus = data.finality_status;
-        updatedTransactions[index].status = "success";
+        updatedTransactions[index].data.txStatus = data.finality_status;
+        updatedTransactions[index].data.status = "success";
+        setNotifications(updatedTransactions);
         setUnread(true);
       }
-
-      setNotifications(updatedTransactions);
     }
   };
 
@@ -58,7 +62,7 @@ export function useNotificationManager() {
       )
     : [];
 
-  const addTransaction = (notification: SQNotification) => {
+  const addTransaction = (notification: SQNotification<NotificationData>) => {
     setNotifications((prev) => [
       { ...notification, address: hexToDecimal(address) },
       ...prev,

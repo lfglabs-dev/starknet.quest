@@ -18,7 +18,7 @@ import {
 } from "@starknet-react/core";
 import erc20_abi from "../abi/erc20_abi.json";
 import { useNotificationManager } from "../hooks/useNotificationManager";
-import { NotificationType } from "../constants/notifications";
+import { NotificationType, TransactionType } from "../constants/notifications";
 
 const Quests: NextPage = () => {
   const router = useRouter();
@@ -41,15 +41,17 @@ const Quests: NextPage = () => {
   });
 
   const submitTx = useCallback(async () => {
-    console.log("address before", address);
     if (!address) return;
     const tx = await writeAsync({});
     addTransaction({
-      hash: tx.transaction_hash,
-      status: "pending",
       timestamp: Date.now(),
-      name: "Test tx",
-      type: NotificationType.MINT_NFT,
+      subtext: "Test tx",
+      type: NotificationType.TRANSACTION,
+      data: {
+        type: TransactionType.MINT_NFT,
+        hash: tx.transaction_hash,
+        status: "pending",
+      },
     });
   }, [writeAsync, address]);
 

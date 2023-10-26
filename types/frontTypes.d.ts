@@ -185,31 +185,35 @@ type QuestCategory = {
 
 type LandTabs = "achievements" | "nfts";
 
-type SQNotification = {
-  hash: string;
-  address?: string; // decimal address
-  status: "pending" | "success" | "error";
-  txStatus?:
-    | "NOT_RECEIVED"
-    | "RECEIVED"
-    | "ACCEPTED_ON_L2"
-    | "ACCEPTED_ON_L1"
-    | "REJECTED"
-    | "REVERTED";
-  timestamp: number;
-  name: string;
-  type: NotificationType;
-};
+// Here we can add more types of notifications
+type NotificationData = TransactionData;
 
-type SQNotificationTest = {
+// type SQNotification = {
+//   hash: string;
+//   address?: string; // decimal address
+//   status: "pending" | "success" | "error";
+//   txStatus?:
+//     | "NOT_RECEIVED"
+//     | "RECEIVED"
+//     | "ACCEPTED_ON_L2"
+//     | "ACCEPTED_ON_L1"
+//     | "REJECTED"
+//     | "REVERTED";
+//   timestamp: number;
+//   name: string;
+//   type: NotificationType;
+// };
+
+type SQNotification<T> = {
   address?: string; // decimal address
-  type: NotificationType;
   timestamp: number;
   subtext: string;
-  transactionData?: TransactionData;
+  type: NotificationType;
+  data: T;
 };
 
 type TransactionData = {
+  type: TransactionType;
   hash: string;
   status: "pending" | "success" | "error";
   txStatus?:

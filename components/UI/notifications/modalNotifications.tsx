@@ -1,13 +1,13 @@
 import React from "react";
-import styles from "../../styles/components/notifications.module.css";
+import styles from "../../../styles/components/notifications.module.css";
 import { FunctionComponent } from "react";
 import { Modal } from "@mui/material";
-import NotificationDetail from "./notifications/notificationDetail";
+import NotificationDetail from "./notificationDetail";
 
 type ModalNotificationsProps = {
   closeModal: () => void;
   open: boolean;
-  notifications: SQNotification[];
+  notifications: SQNotification<NotificationData>[];
 };
 
 const ModalNotifications: FunctionComponent<ModalNotificationsProps> = ({
@@ -41,7 +41,7 @@ const ModalNotifications: FunctionComponent<ModalNotificationsProps> = ({
             notifications.map((notification, index) => {
               return (
                 <NotificationDetail
-                  key={notification.hash}
+                  key={index}
                   notification={notification}
                   isLastItem={index === notifications.length - 1}
                 />

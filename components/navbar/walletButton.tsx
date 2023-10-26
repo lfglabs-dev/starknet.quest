@@ -55,7 +55,8 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
       // Give the number of tx that are loading
       setTxLoading(
         notifications.filter(
-          (notif: SQNotification) => notif.status === "pending"
+          (notif: SQNotification<TransactionData>) =>
+            notif.data.status === "pending"
         ).length
       );
     }
