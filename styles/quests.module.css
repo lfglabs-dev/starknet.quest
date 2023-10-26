@@ -13,10 +13,6 @@
   border: solid 1px transparent;
 }
 
-.questCard:hover {
-  border: solid 1px var(--secondary500);
-}
-
 .questImage {
   border-radius: 8px;
   border-width: 0px;
@@ -35,6 +31,7 @@
   color: var(--secondary);
   font-family: "Sora-Bold";
   margin: 0px;
+  text-align: left;
 }
 
 /* Quest page  */
@@ -54,7 +51,6 @@
   border-radius: 30px;
 }
 
-.issuer,
 .level {
   /* Auto layout */
 
@@ -78,12 +74,6 @@
 
   flex: none;
   flex-grow: 0;
-}
-
-.issuer {
-  width: fit-content;
-  gap: 10px;
-  margin-bottom: 1rem;
 }
 
 .descriptionContainer {
@@ -283,6 +273,13 @@
   height: 24px;
 }
 
+.issuer {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  align-items: center;
+}
+
 @media (max-width: 1024px) {
   .verifyButton {
     width: 100px;
@@ -303,4 +300,14 @@
   .featuredQuestImage {
     height: auto;
   }
+}
+
+.questCard[aria-unselectable="true"] {
+  cursor: not-allowed;
+}
+
+.questCard[aria-unselectable="true"] .questImage,
+.questCard[aria-unselectable="true"] .questTitle,
+.questCard[aria-unselectable="true"] .issuer {
+  opacity: 0.4;
 }
