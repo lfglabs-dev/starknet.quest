@@ -9,7 +9,6 @@ import {
   alchemyProvider,
   argent,
   braavos,
-  publicProvider,
 } from "@starknet-react/core";
 import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
