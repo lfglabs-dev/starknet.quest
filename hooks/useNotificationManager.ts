@@ -23,7 +23,6 @@ export function useNotificationManager() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       notifications.forEach(checkTransactionStatus);
-      console.log("notifications", notifications);
     }, 5000);
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
