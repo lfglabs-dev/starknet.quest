@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
-import { useTransactionManager } from "../../hooks/useTransactionManager";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
 import { NotificationType } from "../../constants/notifications";
 
 type RewardProps = {
@@ -29,7 +29,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
-  const { addTransaction } = useTransactionManager();
+  const { addTransaction } = useNotificationManager();
   const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });

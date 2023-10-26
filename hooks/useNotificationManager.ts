@@ -4,21 +4,23 @@ import { atomWithStorage } from "jotai/utils";
 import { useEffect } from "react";
 import { hexToDecimal } from "../utils/feltService";
 
-const transactionsAtom = atomWithStorage<SQNotification[]>(
-  "userNotifications",
+const notificationsAtom = atomWithStorage<SQNotification[]>(
+  "userNotifications_SQ",
   []
 );
-const readStatusAtom = atomWithStorage<boolean>("unreadNotifications", false);
+const readStatusAtom = atomWithStorage<boolean>(
+  "unreadNotifications_SQ",
+  false
+);
 
-export function useTransactionManager() {
+export function useNotificationManager() {
   const { provider } = useProvider();
   const { address } = useAccount();
-  const [notifications, setNotifications] = useAtom(transactionsAtom);
+  const [notifications, setNotifications] = useAtom(notificationsAtom);
   const [unreadNotifications, setUnread] = useAtom(readStatusAtom);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("notifications", notifications);
       notifications.forEach(checkTransactionStatus);
     }, 5000);
 

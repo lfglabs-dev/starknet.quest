@@ -10,6 +10,7 @@ import {
   NotificationType,
   notificationMessages,
 } from "../../../constants/notifications";
+import { CircularProgress } from "@mui/material";
 
 type NotificationDetailProps = {
   notification: SQNotification;
@@ -22,7 +23,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
 }) => {
   const statusIcon = useMemo(() => {
     if (notification.status === "pending") {
-      return <LoaderIcon width="24" color={theme.palette.secondary.dark} />;
+      return <CircularProgress color="secondary" size={24} />;
     } else if (notification.status === "error") {
       return <CloseCircleIcon width="24" color="" />;
     } else {

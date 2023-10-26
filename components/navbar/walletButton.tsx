@@ -12,7 +12,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
 import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
-import { useTransactionManager } from "../../hooks/useTransactionManager";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
+import { CircularProgress } from "@mui/material";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -28,7 +29,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const { address, connector } = useAccount();
-  const { notifications } = useTransactionManager();
+  const { notifications } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
@@ -116,8 +117,13 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
         >
           <>
             <div className="flex items-center justify-between">
-              <p className={styles.buttonText}>{buttonName}</p>
-              <div className={styles.buttonSeparator} />
+              <div className={styles.buttonTextSection}>
+                <p className={styles.buttonText}>{buttonName}</p>
+                {txLoading ? (
+                  <CircularProgress color="secondary" size={24} />
+                ) : null}
+                <div className={styles.buttonSeparator} />
+              </div>
               <div className={styles.buttonIcon}>
                 {address ? (
                   <Avatar address={address} />

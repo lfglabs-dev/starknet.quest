@@ -17,7 +17,7 @@ import {
   useNetwork,
 } from "@starknet-react/core";
 import erc20_abi from "../abi/erc20_abi.json";
-import { useTransactionManager } from "../hooks/useTransactionManager";
+import { useNotificationManager } from "../hooks/useNotificationManager";
 import { NotificationType } from "../constants/notifications";
 
 const Quests: NextPage = () => {
@@ -28,7 +28,7 @@ const Quests: NextPage = () => {
   // ------- FOR TESTING PURPOSES ONLY -------
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { addTransaction } = useTransactionManager();
+  const { addTransaction } = useNotificationManager();
   const amount = uint256.bnToUint256(BigInt(1));
   const { contract } = useContract({
     abi: erc20_abi,

@@ -14,7 +14,6 @@ import {
   useProvider,
   Connector,
   useDisconnect,
-  useNetwork,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -27,8 +26,7 @@ import { FaDiscord, FaTwitter } from "react-icons/fa";
 import WalletButton from "../navbar/walletButton";
 import NotificationIcon from "./iconsComponents/icons/notificationIcon";
 import ModalNotifications from "./modalNotifications";
-import { useTransactionManager } from "../../hooks/useTransactionManager";
-import { hexToDecimal } from "../../utils/feltService";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
 import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 
 const Navbar: FunctionComponent = () => {
@@ -40,7 +38,6 @@ const Navbar: FunctionComponent = () => {
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { provider } = useProvider();
-  const { chain } = useNetwork();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -52,33 +49,33 @@ const Navbar: FunctionComponent = () => {
   const router = useRouter();
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const { notifications, unreadNotifications, updateReadStatus } =
-    useTransactionManager();
+    useNotificationManager();
 
-  // useEffect(() => {
-  //   // to handle autoconnect starknet-react adds connector id in local storage
-  //   // if there is no value stored, we show the wallet modal
-  //   const timeout = setTimeout(() => {
-  //     if (!address) {
-  //       if (
-  //         !localStorage.getItem("lastUsedConnector") &&
-  //         router?.pathname !== "/partnership"
-  //       ) {
-  //         if (connectors.length > 0) setHasWallet(true);
-  //       } else {
-  //         const lastConnectedConnectorId =
-  //           localStorage.getItem("lastUsedConnector");
-  //         if (lastConnectedConnectorId === null) return;
+  useEffect(() => {
+    // to handle autoconnect starknet-react adds connector id in local storage
+    // if there is no value stored, we show the wallet modal
+    const timeout = setTimeout(() => {
+      if (!address) {
+        if (
+          !localStorage.getItem("lastUsedConnector") &&
+          router?.pathname !== "/partnership"
+        ) {
+          if (connectors.length > 0) setHasWallet(true);
+        } else {
+          const lastConnectedConnectorId =
+            localStorage.getItem("lastUsedConnector");
+          if (lastConnectedConnectorId === null) return;
 
-  //         const lastConnectedConnector = connectors.find(
-  //           (connector) => connector.id === lastConnectedConnectorId
-  //         );
-  //         if (lastConnectedConnector === undefined) return;
-  //         tryConnect(lastConnectedConnector);
-  //       }
-  //     }
-  //   }, 1000);
-  //   return () => clearTimeout(timeout);
-  // }, []);
+          const lastConnectedConnector = connectors.find(
+            (connector) => connector.id === lastConnectedConnectorId
+          );
+          if (lastConnectedConnector === undefined) return;
+          tryConnect(lastConnectedConnector);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
@@ -96,17 +93,17 @@ const Navbar: FunctionComponent = () => {
     });
   }, [provider, network, isConnected]);
 
-  // const tryConnect = useCallback(
-  //   async (connector: Connector) => {
-  //     if (address) return;
-  //     if (await connector.ready()) {
-  //       connect({ connector });
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (address) return;
+      if (await connector.ready()) {
+        connect({ connector });
 
-  //       return;
-  //     }
-  //   },
-  //   [address, connectors]
-  // );
+        return;
+      }
+    },
+    [address, connectors]
+  );
 
   function disconnectByClick(): void {
     disconnect();
@@ -155,6 +152,7 @@ const Navbar: FunctionComponent = () => {
   }, []);
 
   function openNotificationModal(): void {
+    if (!address) return;
     setShowNotifications(true);
     updateReadStatus();
   }
@@ -190,7 +188,7 @@ const Navbar: FunctionComponent = () => {
                 <li className={styles.menuItem}>My land</li>
               </Link>
               <li className={styles.menuItem} onClick={openNotificationModal}>
-                {unreadNotifications ? (
+                {unreadNotifications && address ? (
                   <NotificationUnreadIcon
                     width="24"
                     color={theme.palette.secondary.dark}
