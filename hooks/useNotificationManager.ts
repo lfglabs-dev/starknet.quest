@@ -35,7 +35,7 @@ export function useNotificationManager() {
       const data = await provider.getTransactionReceipt(transaction.hash);
       const updatedTransactions = [...notifications];
 
-      if (data?.status === "REJECTED") {
+      if (data?.status === "REJECTED" || data?.status === "REVERTED") {
         updatedTransactions[index].status = "error";
         updatedTransactions[index].txStatus = "REJECTED";
         setUnread(true);

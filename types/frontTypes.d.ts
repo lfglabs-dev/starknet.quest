@@ -200,3 +200,23 @@ type SQNotification = {
   name: string;
   type: NotificationType;
 };
+
+type SQNotificationTest = {
+  address?: string; // decimal address
+  type: NotificationType;
+  timestamp: number;
+  subtext: string;
+  transactionData?: TransactionData;
+};
+
+type TransactionData = {
+  hash: string;
+  status: "pending" | "success" | "error";
+  txStatus?:
+    | "NOT_RECEIVED"
+    | "RECEIVED"
+    | "ACCEPTED_ON_L2"
+    | "ACCEPTED_ON_L1"
+    | "REJECTED"
+    | "REVERTED";
+};
