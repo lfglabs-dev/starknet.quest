@@ -68,7 +68,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
           {notificationLinkText[notification.type as NotificationType]}
         </div>
       </div>
-      {!isLastItem ? <div className={styles.notif_line}></div> : null}
+      {!isLastItem ? <div className={styles.notif_line} /> : null}
     </div>
   );
 };

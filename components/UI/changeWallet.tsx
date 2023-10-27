@@ -23,7 +23,6 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
   );
 
   function connectWallet(connector: Connector): void {
-    console.log("connecting", connector);
     connect({ connector });
     closeWallet();
   }
