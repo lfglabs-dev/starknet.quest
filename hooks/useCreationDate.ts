@@ -12,7 +12,6 @@ export default function useCreationDate(identity: Identity | undefined) {
     )
       .then((res) => res.json())
       .then((data: DeployedTime | QueryError) => {
-        console.log(data);
         if (data as DeployedTime) {
           const sinceData = memberSince((data as DeployedTime).timestamp);
           setSinceDate(sinceData);
