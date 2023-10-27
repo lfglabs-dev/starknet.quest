@@ -251,8 +251,16 @@
   width: 100%;
 }
 
+.featuredQuestImageContainer {
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  position: relative;
+}
+
 .featuredQuestImage {
   height: 100%;
+  width: 100%;
   border-radius: 8px;
 }
 

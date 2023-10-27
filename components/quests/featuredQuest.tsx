@@ -40,8 +40,10 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
           <Button onClick={onClick}>Begin</Button>
         </div>
       </div>
-      <img src={imgSrc} className={styles.featuredQuestImage} />
-      {expiry ? <Timer expiry={Number(expiry)} /> : null}
+      <div className={styles.featuredQuestImageContainer}>
+        <img src={imgSrc} className={styles.featuredQuestImage} />
+        {expiry ? <Timer expiry={Number(expiry)} /> : null}
+      </div>
     </div>
   ) : !onClick && !isSmallScreen ? (
     <FeaturedQuestSkeleton />
