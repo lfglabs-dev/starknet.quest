@@ -1,0 +1,41 @@
+.card {
+  border-radius: 8px;
+  padding: 24px;
+  width: 290px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--menu-background);
+  cursor: pointer;
+  align-self: stretch;
+  border: solid 1px transparent;
+}
+
+.card:hover {
+  border: solid 1px var(--secondary500);
+}
+
+.cardImage {
+  border-radius: 8px;
+  border-width: 0px;
+  width: 250px;
+  height: 210px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.cardInfos {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  color: var(--secondary);
+  font-family: "Sora-Bold";
+  margin: 0px;
+  text-align: left;
+}
