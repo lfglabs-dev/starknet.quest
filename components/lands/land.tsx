@@ -67,7 +67,7 @@ export const Land = ({
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
+        `${"https://api.starknet.quest"}/achievements/fetch?addr=${address}`
       );
       const results: AchievementsDocument[] = await response.json();
       if (results) {
@@ -89,9 +89,9 @@ export const Land = ({
   const getBuildingsInfo = async (filteredAssets: number[]) => {
     try {
       const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_LINK
-        }/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
+        `${"https://api.starknet.quest"}/achievements/fetch_buildings?ids=${filteredAssets.join(
+          ","
+        )}`
       );
       const results: BuildingsInfo[] = await response.json();
       if (results && results.length > 0) {

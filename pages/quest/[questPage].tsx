@@ -55,7 +55,7 @@ const QuestPage: NextPage = () => {
 
   // this fetches quest data
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`)
+    fetch(`${"https://api.starknet.quest"}/get_quest?id=${questId}`)
       .then((response) => response.json())
       .then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {

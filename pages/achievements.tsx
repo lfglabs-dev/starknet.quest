@@ -28,7 +28,7 @@ const Achievements: NextPage = () => {
     const timer = setTimeout(() => {
       // If address isn't loaded after 1 second, make the API call with the zero address
       if (shouldFetchWithZeroAddress) {
-        fetch(`${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=0`)
+        fetch(`${"https://api.starknet.quest"}/achievements/fetch?addr=0`)
           .then((response) => response.json())
           .then((data: AchievementsDocument[] | QueryError) => {
             if (data as AchievementsDocument[])
@@ -42,9 +42,9 @@ const Achievements: NextPage = () => {
       shouldFetchWithZeroAddress = false;
       clearTimeout(timer);
       fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_LINK
-        }/achievements/fetch?addr=${hexToDecimal(address)}`
+        `${"https://api.starknet.quest"}/achievements/fetch?addr=${hexToDecimal(
+          address
+        )}`
       )
         .then((response) => response.json())
         .then((data: AchievementsDocument[] | QueryError) => {
@@ -70,9 +70,7 @@ const Achievements: NextPage = () => {
                 if (!achievement.completed) {
                   try {
                     const response = await fetch(
-                      `${
-                        process.env.NEXT_PUBLIC_API_LINK
-                      }/achievements/verify_${
+                      `${"https://api.starknet.quest"}/achievements/verify_${
                         achievement.verify_type
                       }?addr=${hexToDecimal(address)}&id=${achievement.id}`
                     );

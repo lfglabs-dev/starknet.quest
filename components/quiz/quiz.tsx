@@ -58,7 +58,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     if (restart) return setRestart(false);
     setLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`)
+    fetch(`${"https://api.starknet.quest"}/get_quiz?id=${quizId}&addr=0`)
       .then((res) => res.json())
       .then((data) => {
         const quizObj: Quiz = {
@@ -82,7 +82,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
     if (answers.length !== quiz.questions.length) return;
     const load = () => {
       setPassed("loading");
-      fetch(`${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`, {
+      fetch(`${"https://api.starknet.quest"}/${verifyEndpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

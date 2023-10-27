@@ -67,7 +67,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
           fetch(
-            `${process.env.NEXT_PUBLIC_API_LINK}/get_tasks?quest_id=${questId}&addr=0`
+            `${"https://api.starknet.quest"}/get_tasks?quest_id=${questId}&addr=0`
           )
             .then((response) => response.json())
             .then((data: UserTask[] | QueryError) => {
@@ -81,9 +81,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         shouldFetchWithZeroAddress = false;
         clearTimeout(timer);
         fetch(
-          `${
-            process.env.NEXT_PUBLIC_API_LINK
-          }/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`
+          `${"https://api.starknet.quest"}/get_tasks?quest_id=${questId}&addr=${hexToDecimal(
+            address
+          )}`
         )
           .then((response) => response.json())
           .then((data: UserTask[] | QueryError) => {
@@ -104,7 +104,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   ) => {
     if (address && quest.rewards_endpoint) {
       fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/${
+        `${"https://api.starknet.quest"}/${
           quest.rewards_endpoint
         }?addr=${hexToDecimal(address)}`
       )
@@ -209,7 +209,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     if (task.verify_endpoint_type === "oauth_discord") {
       const rootUrl = "https://discord.com/api/oauth2/authorize";
       const options = {
-        redirect_uri: `${process.env.NEXT_PUBLIC_API_LINK}/${task.verify_endpoint}`,
+        redirect_uri: `${"https://api.starknet.quest"}/${task.verify_endpoint}`,
         client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
         response_type: "code",
         scope: ["identify", "guilds"].join(" "),

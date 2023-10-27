@@ -59,7 +59,7 @@ const Task: FunctionComponent<Task> = ({
     } else {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`
+          `${"https://api.starknet.quest"}/${verifyEndpoint}`
         );
 
         if (!response.ok) {

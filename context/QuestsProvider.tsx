@@ -40,7 +40,7 @@ export const QuestsContextProvider = ({
   const { address } = useAccount();
 
   useMemo(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
+    fetch(`${"https://api.starknet.quest"}/get_quests`)
       .then((response) => response.json())
       .then((data: GetQuestsRes) => {
         if ((data as QueryError).error) return;
@@ -59,7 +59,7 @@ export const QuestsContextProvider = ({
   }, []);
 
   useMemo(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`)
+    fetch(`${"https://api.starknet.quest"}/get_trending_quests`)
       .then((response) => response.json())
       .then((data: QuestDocument[] | QueryError) => {
         if ((data as QueryError).error) return;
@@ -70,9 +70,9 @@ export const QuestsContextProvider = ({
   useMemo(() => {
     if (!address) return;
     fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_LINK
-      }/get_completed_quests?addr=${hexToDecimal(address)}`
+      `${"https://api.starknet.quest"}/get_completed_quests?addr=${hexToDecimal(
+        address
+      )}`
     )
       .then((response) => response.json())
       .then((data: number[] | QueryError) => {
