@@ -77,7 +77,7 @@ const QuestPage: NextPage = () => {
           <BannerPopup
             title="Subdomains are not allowed"
             banner="/visuals/profile.webp"
-            description="To access Starknet Quest you need a Root Starknet domain (not a subdomain)..."
+            description="To access Starknet Quest you need a Root Starknet domain (not a subdomain like .braavos.stark or .xplorer.stark)."
             buttonName="Get a Starknet Domain"
             onClick={() => window.open(starknetIdAppLink)}
             onClose={() => setShowDomainPopup(false)}
