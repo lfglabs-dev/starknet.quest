@@ -170,13 +170,14 @@ const Partnership: NextPage = () => {
             </div>
             <h1 className={styles.title}>Meet our team</h1>
             <div className={styles.teamContainer}>
-              {team.map((member) => (
+              {team.map((member, index) => (
                 <Card
                   title={member.username}
                   imgSrc={`/starknetid/team/${member.username}.webp`}
                   onClick={() =>
                     window.open(`https://twitter.com/${member.twitter}`)
                   }
+                  key={index}
                 >
                   <div className="flex">
                     <div className={styles.twitterIcon}>
