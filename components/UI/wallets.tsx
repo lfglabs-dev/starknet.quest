@@ -30,7 +30,6 @@ const Wallets: FunctionComponent<WalletsProps> = ({
   }, [account, closeWallet]);
 
   function connectWallet(connector: Connector): void {
-    console.log("connecting", connector);
     connect({ connector });
     closeWallet();
   }
