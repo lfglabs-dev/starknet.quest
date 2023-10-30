@@ -11,6 +11,8 @@ import Achievement from "../components/achievements/achievement";
 import { hexToDecimal } from "../utils/feltService";
 import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
+import RefreshIcon from "../components/UI/iconsComponents/icons/refreshIcon";
+import theme from "../styles/theme";
 
 const Achievements: NextPage = () => {
   const location = useLocation();
@@ -18,7 +20,6 @@ const Achievements: NextPage = () => {
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
   >([]);
-  const [hasChecked, setHasChecked] = useState<boolean>(false);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -55,59 +56,64 @@ const Achievements: NextPage = () => {
     // Clear the timer when component unmounts or dependencies change to prevent memory leaks
     return () => {
       clearTimeout(timer);
-      setHasChecked(false);
     };
   }, [address, location]);
 
-  // Map through user achievements and check if any are completed
-  useEffect(() => {
-    if (userAchievements.length > 0 && !hasChecked && address) {
-      const checkAchievements = async () => {
-        const promises = userAchievements.map(
-          async (achievementCategory, index) => {
-            const achievementsPromises = achievementCategory.achievements.map(
-              async (achievement, aIndex) => {
-                if (!achievement.completed) {
-                  try {
-                    const response = await fetch(
-                      `${
-                        process.env.NEXT_PUBLIC_API_LINK
-                      }/achievements/verify_${
-                        achievement.verify_type
-                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
-                    );
-                    const data: CompletedDocument = await response.json();
+  const validateAchievements = () => {
+    const checkAchievements = async () => {
+      const promises = userAchievements.map(
+        async (achievementCategory, index) => {
+          const achievementsPromises = achievementCategory.achievements.map(
+            async (achievement, aIndex) => {
+              if (!achievement.completed) {
+                try {
+                  const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
+                      achievement.verify_type
+                    }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+                  );
+                  const data: CompletedDocument = await response.json();
 
-                    if (data?.achieved) {
-                      const newUserAchievements = [...userAchievements];
-                      newUserAchievements[index].achievements[
-                        aIndex
-                      ].completed = true;
-                      setUserAchievements(newUserAchievements);
-                    }
-                  } catch (error) {
-                    console.error("Fetch error:", error);
+                  if (data?.achieved) {
+                    const newUserAchievements = [...userAchievements];
+                    newUserAchievements[index].achievements[aIndex].completed =
+                      true;
+                    setUserAchievements(newUserAchievements);
                   }
+                } catch (error) {
+                  console.error("Fetch error:", error);
                 }
               }
-            );
+            }
+          );
 
-            await Promise.all(achievementsPromises);
-          }
-        );
+          await Promise.all(achievementsPromises);
+        }
+      );
 
-        await Promise.all(promises);
-        setHasChecked(true);
-      };
-      checkAchievements();
-    }
-  }, [userAchievements.length, hasChecked, address]);
+      await Promise.all(promises);
+    };
+    if (userAchievements.length === 0 || !address) return;
+    checkAchievements();
+  };
 
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Achievements</h1>
+          <div className={styles.titleContent}>
+            <h1 className={styles.title}>Achievements</h1>
+            <div
+              className={styles.refreshButton}
+              onClick={() => validateAchievements()}
+            >
+              <RefreshIcon
+                width="20"
+                color={theme.palette.background.default}
+              />
+              <div>Refresh data</div>
+            </div>
+          </div>
           <p className={styles.subtitle}>
             Complete achievements and grow your Starknet on-chain reputation
           </p>
