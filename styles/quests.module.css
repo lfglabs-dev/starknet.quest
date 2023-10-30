@@ -234,6 +234,7 @@
   background-clip: text;
   color: transparent;
   align-items: flex-start;
+  text-align: left;
 }
 
 .participantAvatars {
