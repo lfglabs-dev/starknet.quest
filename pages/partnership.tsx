@@ -10,6 +10,10 @@ import Stats from "../components/UI/stats/stats";
 import Box from "../components/UI/box";
 import Dots from "../components/shapes/dots";
 import OnScrollIntoView from "../components/animations/onScrollIntoView";
+import Blur from "../components/shapes/blur";
+import Card from "../components/UI/card";
+import team from "../public/starknetid/team.json";
+import TwitterIcon from "../components/UI/iconsComponents/icons/twitterIcon";
 
 const Partnership: NextPage = () => {
   useEffect(() => {
@@ -158,6 +162,34 @@ const Partnership: NextPage = () => {
             </Box>
             <div className={styles.lastCrosses}>
               <Crosses leftSide={false} number={2} xDecal={-50} />
+            </div>
+          </section>
+          <section className={`${styles.section} mt-10`}>
+            <div className={styles.blur1}>
+              <Blur />
+            </div>
+            <h1 className={styles.title}>Meet our team</h1>
+            <div className={styles.teamContainer}>
+              {team.map((member, index) => (
+                <Card
+                  title={member.username}
+                  imgSrc={`/starknetid/team/${member.username}.webp`}
+                  onClick={() =>
+                    window.open(`https://twitter.com/${member.twitter}`)
+                  }
+                  key={index}
+                >
+                  <div className="flex">
+                    <div className={styles.twitterIcon}>
+                      <TwitterIcon width="20" color="black" />
+                    </div>
+                    <p className="ml-2">{member.role}</p>
+                  </div>
+                </Card>
+              ))}
+              <div className={styles.blur2}>
+                <Blur green />
+              </div>
             </div>
           </section>
         </main>
