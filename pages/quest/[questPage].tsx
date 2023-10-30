@@ -13,6 +13,7 @@ import useHasRootDomain from "../../hooks/useHasRootDomain";
 import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
 import BannerPopup from "../../components/UI/menus/bannerPopup";
+import { useDomainFromAddress } from "../../hooks/naming";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
@@ -44,6 +45,7 @@ const QuestPage: NextPage = () => {
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
   const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
+  const { domain } = useDomainFromAddress(address);
 
   // this fetches quest data
   useEffect(() => {
@@ -70,16 +72,26 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <div className={homeStyles.screen}>
-      {showDomainPopup && (
-        <BannerPopup
-          title="Mandatory Starknet Domain"
-          banner="/visuals/profile.webp"
-          description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
-          buttonName="Get a Starknet Domain"
-          onClick={() => window.open(starknetIdAppLink)}
-          onClose={() => setShowDomainPopup(false)}
-        />
-      )}
+      {showDomainPopup &&
+        (domain ? (
+          <BannerPopup
+            title="Subdomains are not allowed"
+            banner="/visuals/profile.webp"
+            description="To access Starknet Quest you need a Root Starknet domain (not a subdomain like .braavos.stark or .xplorer.stark)."
+            buttonName="Get a Starknet Domain"
+            onClick={() => window.open(starknetIdAppLink)}
+            onClose={() => setShowDomainPopup(false)}
+          />
+        ) : (
+          <BannerPopup
+            title="Mandatory Starknet Domain"
+            banner="/visuals/profile.webp"
+            description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
+            buttonName="Get a Starknet Domain"
+            onClick={() => window.open(starknetIdAppLink)}
+            onClose={() => setShowDomainPopup(false)}
+          />
+        ))}
       <div className={homeStyles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>

@@ -22,7 +22,11 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
       }
       placement="bottom-end"
     >
-      <div className={styles.levelContainer}>
+      <div
+        className={`${styles.levelContainer} ${
+          achievement.completed && styles.completed
+        }`}
+      >
         <div className={styles.levelInfo}>
           <p className={styles.levelDesc}>{achievement.short_desc}</p>
           <h3 className={styles.levelTitle}>{achievement.name}</h3>
