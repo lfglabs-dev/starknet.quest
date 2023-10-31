@@ -47,7 +47,7 @@ const CategoriesPage: NextPage = () => {
               }}
               reward={quest.rewards_title}
               id={quest.id}
-              expired={quest.disabled && !quest.hidden}
+              expired={quest.expired}
             />
           ))}
       </div>
