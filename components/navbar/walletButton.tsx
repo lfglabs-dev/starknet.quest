@@ -1,11 +1,7 @@
 import React, { FunctionComponent, useMemo, useState, useEffect } from "react";
 import Button from "../UI/button";
 import { useDisplayName } from "../../hooks/displayName.tsx";
-import {
-  useAccount,
-  useTransactionManager,
-  useTransactions,
-} from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import styles from "../../styles/components/navbar.module.css";
 import ProfilIcon from "../UI/iconsComponents/icons/profilIcon";
 import theme from "../../styles/theme";
@@ -16,6 +12,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
 import ChangeWallet from "../UI/changeWallet";
 import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
+import { CircularProgress } from "@mui/material";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -31,15 +29,13 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const { address, connector } = useAccount();
-  const { hashes } = useTransactionManager();
-  const transactions = useTransactions({ hashes, watch: true });
+  const { notifications } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
   const [changeWallet, setChangeWallet] = useState<boolean>(false);
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
-
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
@@ -51,27 +47,20 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
           ? `${txLoading} on hold`
           : domainOrAddressMinified
         : "connect",
-    [address, domainOrAddressMinified]
+    [address, domainOrAddressMinified, txLoading]
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      for (const tx of transactions) {
-        tx.refetch();
-      }
-    }, 3_000);
-    return () => clearInterval(interval);
-  }, [transactions?.length]);
-
-  useEffect(() => {
-    if (transactions) {
-      // Give the number of tx that are loading (I use any because there is a problem on Starknet React types)
+    if (notifications) {
+      // Give the number of tx that are loading
       setTxLoading(
-        transactions.filter((tx) => (tx?.data as any)?.status === "RECEIVED")
-          .length
+        notifications.filter(
+          (notif: SQNotification<TransactionData>) =>
+            notif.data.status === "pending"
+        ).length
       );
     }
-  }, [transactions]);
+  }, [notifications]);
 
   const copyAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -129,8 +118,13 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
         >
           <>
             <div className="flex items-center justify-between">
-              <p className={styles.buttonText}>{buttonName}</p>
-              <div className={styles.buttonSeparator} />
+              <div className={styles.buttonTextSection}>
+                <p className={styles.buttonText}>{buttonName}</p>
+                {txLoading ? (
+                  <CircularProgress color="secondary" size={24} />
+                ) : null}
+                <div className={styles.buttonSeparator} />
+              </div>
               <div className={styles.buttonIcon}>
                 {address ? (
                   <Avatar address={address} />
