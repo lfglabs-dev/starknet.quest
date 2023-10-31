@@ -208,3 +208,8 @@ type TransactionData = {
     | "REJECTED"
     | "REVERTED";
 };
+
+type QuestPageProps = {
+  quest?: QuestDocument;
+  errorPageDisplay: boolean;
+};
