@@ -34,7 +34,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const { address } = useAccount();
   const { addTransaction } = useNotificationManager();
   const { writeAsync: executeMint } = useContractWrite({
-    calls: mintCalldata ?? [],
+    calls: mintCalldata,
   });
   const router = useRouter();
 
