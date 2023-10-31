@@ -176,23 +176,32 @@ const Navbar: FunctionComponent = () => {
               <Link href="/achievements">
                 <li className={styles.menuItem}>Achievements</li>
               </Link>
-              <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My land</li>
-              </Link>
-              <li className={styles.menuItem} onClick={openNotificationModal}>
-                {unreadNotifications && address ? (
-                  <NotificationUnreadIcon
-                    width="24"
-                    color={theme.palette.secondary.dark}
-                    secondColor="#D32F2F"
-                  ></NotificationUnreadIcon>
-                ) : (
-                  <NotificationIcon
-                    width="24"
-                    color={theme.palette.secondary.dark}
-                  />
-                )}
-              </li>
+              {address ? (
+                <>
+                  <Link
+                    href={`/${address ? addressOrDomain : "not-connected"}`}
+                  >
+                    <li className={styles.menuItem}>My land</li>
+                  </Link>
+                  <li
+                    className={styles.menuItem}
+                    onClick={openNotificationModal}
+                  >
+                    {unreadNotifications && address ? (
+                      <NotificationUnreadIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                        secondColor="#D32F2F"
+                      ></NotificationUnreadIcon>
+                    ) : (
+                      <NotificationIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                      />
+                    )}
+                  </li>
+                </>
+              ) : null}
               <WalletButton
                 setShowWallet={setShowWallet}
                 showWallet={showWallet}
@@ -262,16 +271,18 @@ const Navbar: FunctionComponent = () => {
                       Achievements
                     </li>
                   </Link>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
+                  {address ? (
+                    <Link
+                      href={`/${address ? addressOrDomain : "not-connected"}`}
                     >
-                      My land
-                    </li>
-                  </Link>
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        My land
+                      </li>
+                    </Link>
+                  ) : null}
                 </ul>
               </div>
             </div>
