@@ -34,7 +34,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const { address } = useAccount();
   const { addTransaction } = useNotificationManager();
   const { writeAsync: executeMint } = useContractWrite({
-    calls: mintCalldata,
+    calls: mintCalldata ?? [],
   });
   const router = useRouter();
 
@@ -48,7 +48,7 @@ const Reward: FunctionComponent<RewardProps> = ({
       type: NotificationType.TRANSACTION,
       data: {
         type: TransactionType.MINT_NFT,
-        hash: tx?.transaction_hash,
+        hash: tx.transaction_hash,
         status: "pending",
       },
     });
