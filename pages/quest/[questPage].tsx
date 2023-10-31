@@ -16,12 +16,20 @@ import BannerPopup from "../../components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "../../hooks/naming";
 import Head from "next/head";
 
+type QuestPageProps = {
+  quest?: QuestDocument;
+  errorPageDisplay: boolean;
+};
+
 const QuestPage: NextPage<QuestPageProps> = ({ quest, errorPageDisplay }) => {
   const router = useRouter();
   const { task_id: taskId, res, error_msg: errorMsg } = router.query;
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-  const hasRootDomain = useHasRootDomain(quest?.mandatory_domain, address);
+  const hasRootDomain = useHasRootDomain(
+    quest ? quest.mandatory_domain : null,
+    address
+  );
   const { domain } = useDomainFromAddress(address);
 
   return errorPageDisplay || !quest ? (
