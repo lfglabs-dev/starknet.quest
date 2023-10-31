@@ -184,7 +184,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           response !== null &&
           !Array.isArray(response)
         ) {
-          const status = response["status"];
+          const status = (response as any)["status"];
 
           if (Array.isArray(status)) {
             const result = status.map((x: any) => {
@@ -373,6 +373,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               }}
               disabled={!rewardsEnabled}
               mintCalldata={mintCalldata}
+              questName={quest.name}
             />
           </>
         )}

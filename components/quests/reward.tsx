@@ -1,12 +1,17 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useCallback, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
-import { useContractWrite, useTransactionManager } from "@starknet-react/core";
+import { useAccount, useContractWrite } from "@starknet-react/core";
 import { useRouter } from "next/router";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
+import {
+  NotificationType,
+  TransactionType,
+} from "../../constants/notifications";
 
 type RewardProps = {
   onClick: () => void;
@@ -14,6 +19,7 @@ type RewardProps = {
   imgSrc: string;
   disabled: boolean;
   mintCalldata: Call[] | undefined;
+  questName: string;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -22,24 +28,32 @@ const Reward: FunctionComponent<RewardProps> = ({
   imgSrc,
   disabled,
   mintCalldata,
+  questName,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
-  const { addTransaction } = useTransactionManager();
-  const { writeAsync: executeMint, data: mintData } = useContractWrite({
+  const { address } = useAccount();
+  const { addTransaction } = useNotificationManager();
+  const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
   const router = useRouter();
 
-  useEffect(() => {
-    if (!mintData?.transaction_hash) return;
-    addTransaction({ hash: mintData?.transaction_hash });
-    setModalTxOpen(true);
-  }, [mintData]);
-
-  function getReward() {
-    executeMint();
+  const submitTx = useCallback(async () => {
+    if (!address) return;
+    const tx = await executeMint({});
     onClick();
-  }
+    addTransaction({
+      timestamp: Date.now(),
+      subtext: questName,
+      type: NotificationType.TRANSACTION,
+      data: {
+        type: TransactionType.MINT_NFT,
+        hash: tx.transaction_hash,
+        status: "pending",
+      },
+    });
+    setModalTxOpen(true);
+  }, [executeMint, address]);
 
   return (
     <div className={styles.reward}>
@@ -49,7 +63,8 @@ const Reward: FunctionComponent<RewardProps> = ({
         <p className="ml-1">{reward}</p>
       </div>
       <div className="max-w-lg">
-        <Button onClick={getReward} disabled={disabled}>
+        {/* getReward */}
+        <Button onClick={submitTx} disabled={disabled}>
           Get Reward
         </Button>
       </div>

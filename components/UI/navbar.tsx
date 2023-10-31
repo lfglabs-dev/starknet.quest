@@ -9,10 +9,10 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
 import Button from "./button";
 import {
-  useConnectors,
+  useConnect,
   useAccount,
-  useProvider,
   Connector,
+  useDisconnect,
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
@@ -23,16 +23,19 @@ import { useRouter } from "next/router";
 import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import WalletButton from "../navbar/walletButton";
+import NotificationIcon from "./iconsComponents/icons/notificationIcon";
+import ModalNotifications from "./notifications/modalNotifications";
+import { useNotificationManager } from "../../hooks/useNotificationManager";
+import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
-  const { address } = useAccount();
+  const { address, account } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
-  const { available, connect, disconnect, connectors, refresh } =
-    useConnectors();
-  const { provider } = useProvider();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
@@ -42,6 +45,9 @@ const Navbar: FunctionComponent = () => {
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const router = useRouter();
+  const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const { notifications, unreadNotifications, updateReadStatus } =
+    useNotificationManager();
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
@@ -74,9 +80,8 @@ const Navbar: FunctionComponent = () => {
   }, [address]);
 
   useEffect(() => {
-    if (!isConnected) return;
-
-    provider.getChainId().then((chainId) => {
+    if (!isConnected || !account) return;
+    account.getChainId().then((chainId) => {
       const isWrongNetwork =
         (chainId === constants.StarknetChainId.SN_GOERLI &&
           network === "mainnet") ||
@@ -84,13 +89,13 @@ const Navbar: FunctionComponent = () => {
           network === "testnet");
       setIsWrongNetwork(isWrongNetwork);
     });
-  }, [provider, network, isConnected]);
+  }, [account, network, isConnected]);
 
   const tryConnect = useCallback(
     async (connector: Connector) => {
       if (address) return;
       if (await connector.ready()) {
-        connect(connector);
+        connect({ connector });
 
         return;
       }
@@ -111,15 +116,7 @@ const Navbar: FunctionComponent = () => {
 
   function onTopButtonClick(): void {
     if (!isConnected) {
-      if (available.length > 0) {
-        if (available.length === 1) {
-          connect(available[0]);
-        } else {
-          setHasWallet(true);
-        }
-      } else {
-        setHasWallet(true);
-      }
+      setHasWallet(true);
     } else {
       setShowWallet(true);
     }
@@ -129,12 +126,6 @@ const Navbar: FunctionComponent = () => {
     const textToReturn = isConnected ? domainOrAddressMinified : "connect";
 
     return textToReturn;
-  }
-
-  // Refresh available connectors before showing wallet modal
-  function refreshAndShowWallet(): void {
-    refresh();
-    setHasWallet(true);
   }
 
   const handleScroll = () => {
@@ -151,6 +142,12 @@ const Navbar: FunctionComponent = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  function openNotificationModal(): void {
+    if (!address) return;
+    setShowNotifications(true);
+    updateReadStatus();
+  }
 
   return (
     <>
@@ -179,15 +176,36 @@ const Navbar: FunctionComponent = () => {
               <Link href="/achievements">
                 <li className={styles.menuItem}>Achievements</li>
               </Link>
-              <Link href={`/${address ? addressOrDomain : "not-connected"}`}>
-                <li className={styles.menuItem}>My land</li>
-              </Link>
-              {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
-              {/* <SelectNetwork network={network} /> */}
+              {address ? (
+                <>
+                  <Link
+                    href={`/${address ? addressOrDomain : "not-connected"}`}
+                  >
+                    <li className={styles.menuItem}>My land</li>
+                  </Link>
+                  <li
+                    className={styles.menuItem}
+                    onClick={openNotificationModal}
+                  >
+                    {unreadNotifications && address ? (
+                      <NotificationUnreadIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                        secondColor="#D32F2F"
+                      ></NotificationUnreadIcon>
+                    ) : (
+                      <NotificationIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                      />
+                    )}
+                  </li>
+                </>
+              ) : null}
               <WalletButton
                 setShowWallet={setShowWallet}
                 showWallet={showWallet}
-                refreshAndShowWallet={refreshAndShowWallet}
+                refreshAndShowWallet={() => setHasWallet(true)}
                 disconnectByClick={disconnectByClick}
               />
             </ul>
@@ -253,16 +271,18 @@ const Navbar: FunctionComponent = () => {
                       Achievements
                     </li>
                   </Link>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
+                  {address ? (
+                    <Link
+                      href={`/${address ? addressOrDomain : "not-connected"}`}
                     >
-                      My land
-                    </li>
-                  </Link>
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        My land
+                      </li>
+                    </Link>
+                  ) : null}
                 </ul>
               </div>
             </div>
@@ -316,6 +336,13 @@ const Navbar: FunctionComponent = () => {
         closeWallet={() => setHasWallet(false)}
         hasWallet={Boolean(hasWallet && !isWrongNetwork)}
       />
+      {showNotifications ? (
+        <ModalNotifications
+          open={showNotifications}
+          closeModal={() => setShowNotifications(false)}
+          notifications={notifications}
+        />
+      ) : null}
     </>
   );
 };

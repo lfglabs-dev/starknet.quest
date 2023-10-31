@@ -1,4 +1,4 @@
-type IconProps = { width: string; color?: string };
+type IconProps = { width: string; color?: string; secondColor?: string };
 
 type Issuer = {
   name: string;
@@ -184,3 +184,27 @@ type QuestCategory = {
 };
 
 type LandTabs = "achievements" | "nfts";
+
+// Here we can add more types of notifications
+type NotificationData = TransactionData;
+
+type SQNotification<T> = {
+  address?: string; // decimal address
+  timestamp: number;
+  subtext: string;
+  type: NotificationType;
+  data: T;
+};
+
+type TransactionData = {
+  type: TransactionType;
+  hash: string;
+  status: "pending" | "success" | "error";
+  txStatus?:
+    | "NOT_RECEIVED"
+    | "RECEIVED"
+    | "ACCEPTED_ON_L2"
+    | "ACCEPTED_ON_L1"
+    | "REJECTED"
+    | "REVERTED";
+};
