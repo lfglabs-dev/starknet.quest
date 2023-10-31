@@ -193,8 +193,6 @@ const Navbar: FunctionComponent = () => {
                   />
                 )}
               </li>
-              {/* Note: I'm not sure that our testnet will be public so we don't show any link  */}
-              {/* <SelectNetwork network={network} /> */}
               <WalletButton
                 setShowWallet={setShowWallet}
                 showWallet={showWallet}
