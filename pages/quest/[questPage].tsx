@@ -80,12 +80,18 @@ const QuestPage: NextPage = () => {
             <meta
               property="og:title"
               content="Join the Starknet Pro Score with mySwap CL Now!"
+              key="title"
             />
             <meta
               property="og:description"
               content="Complete simple missions and claim your commemorative NFT!"
+              key="description"
             />
-            <meta property="og:image" content="/braavos/myswap.webp" />
+            <meta
+              property="og:image"
+              content="/braavos/myswap.webp"
+              key="image"
+            />
             <meta
               name="twitter:title"
               content="Join the Starknet Pro Score with mySwap CL Now!"
