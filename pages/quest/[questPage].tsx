@@ -21,6 +21,7 @@ type QuestPageProps = {
   errorPageDisplay: boolean;
 };
 
+/* eslint-disable react/prop-types */
 const QuestPage: NextPage<QuestPageProps> = ({ quest, errorPageDisplay }) => {
   const router = useRouter();
   const { task_id: taskId, res, error_msg: errorMsg } = router.query;
