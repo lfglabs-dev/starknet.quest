@@ -40,7 +40,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 
   const submitTx = useCallback(async () => {
     if (!address) return;
-    const tx = await executeMint({});
+    const tx = await executeMint();
     onClick();
     addTransaction({
       timestamp: Date.now(),
