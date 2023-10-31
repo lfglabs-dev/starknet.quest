@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import QuestDetails from "../../components/quests/questDetails";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
@@ -16,7 +16,12 @@ import BannerPopup from "../../components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "../../hooks/naming";
 import Head from "next/head";
 
-const QuestPage: NextPage = () => {
+type QuestPageProps = {
+  customTags: boolean;
+};
+
+/* eslint-disable react/prop-types */
+const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -74,7 +79,7 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <>
-      {questId === "101" ? (
+      {customTags ? (
         <>
           <Head>
             <meta
@@ -152,5 +157,18 @@ const QuestPage: NextPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { questPage: questId } = context.query;
+  let customTags = false;
+  if (questId === "101") {
+    customTags = true;
+  }
+  return {
+    props: {
+      customTags,
+    },
+  };
+}
 
 export default QuestPage;
