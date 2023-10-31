@@ -40,7 +40,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 
   const submitTx = useCallback(async () => {
     if (!address) return;
-    const tx = await executeMint({});
+    const tx = await executeMint();
     onClick();
     addTransaction({
       timestamp: Date.now(),
@@ -48,7 +48,7 @@ const Reward: FunctionComponent<RewardProps> = ({
       type: NotificationType.TRANSACTION,
       data: {
         type: TransactionType.MINT_NFT,
-        hash: tx.transaction_hash,
+        hash: tx?.transaction_hash,
         status: "pending",
       },
     });
