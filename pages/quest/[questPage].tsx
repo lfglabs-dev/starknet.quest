@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from "next";
 import QuestDetails from "../../components/quests/questDetails";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
 import styles from "../../styles/quests.module.css";
 import { useRouter } from "next/router";
@@ -17,23 +17,61 @@ import { useDomainFromAddress } from "../../hooks/naming";
 import Head from "next/head";
 
 type QuestPageProps = {
-  quest?: QuestDocument;
-  errorPageDisplay: boolean;
+  customTags: boolean;
+  questTags?: QuestDocument;
 };
 
 /* eslint-disable react/prop-types */
-const QuestPage: NextPage<QuestPageProps> = ({ quest, errorPageDisplay }) => {
+const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
   const router = useRouter();
-  const { task_id: taskId, res, error_msg: errorMsg } = router.query;
+  const {
+    questPage: questId,
+    task_id: taskId,
+    res,
+    error_msg: errorMsg,
+  } = router.query;
+  const [quest, setQuest] = useState<QuestDocument>({
+    id: 0,
+    name: "loading",
+    desc: "loading",
+    issuer: "loading",
+    category: "loading",
+    rewards_endpoint: "",
+    logo: "",
+    rewards_img: "",
+    rewards_title: "loading",
+    rewards_nfts: [],
+    img_card: "",
+    title_card: "",
+    hidden: false,
+    disabled: false,
+    expiry_timestamp: "loading",
+    mandatory_domain: null,
+  });
+  const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-  const hasRootDomain = useHasRootDomain(
-    quest ? quest.mandatory_domain : null,
-    address
-  );
+  const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
   const { domain } = useDomainFromAddress(address);
 
-  return errorPageDisplay || !quest ? (
+  // this fetches quest data
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`)
+      .then((response) => response.json())
+      .then((data: QuestDocument | QueryError) => {
+        if ((data as QuestDocument).name) {
+          setQuest(data as QuestDocument);
+        }
+      })
+      .catch((err) => {
+        if (questId) {
+          console.log(err);
+          setErrorPageDisplay(true);
+        }
+      });
+  }, [questId]);
+
+  return errorPageDisplay ? (
     <ErrorScreen
       errorMessage="This quest doesn't exist !"
       buttonText="Go back to quests"
@@ -41,14 +79,16 @@ const QuestPage: NextPage<QuestPageProps> = ({ quest, errorPageDisplay }) => {
     />
   ) : (
     <>
-      <Head>
-        <title>{quest.name}</title>
-        <meta name="description" content={quest.desc} />
-        <meta property="og:title" content={quest.name} />
-        <meta property="og:description" content={quest.desc} />
-        <meta property="og:image" content={quest.img_card} />
-        <meta property="twitter:card" content="summary_large_image" />
-      </Head>
+      {customTags && questTags ? (
+        <Head>
+          <meta property="og:title" content={questTags.name} />
+          <meta property="og:description" content={questTags.desc} />
+          <meta property="og:image" content={questTags.img_card} />
+          <meta name="twitter:title" content={questTags.name} />
+          <meta name="twitter:description" content={questTags.desc} />
+          <meta name="twitter:image" content={questTags.img_card} />
+        </Head>
+      ) : null}
       <div className={homeStyles.screen}>
         {showDomainPopup &&
           (domain ? (
@@ -99,34 +139,43 @@ const QuestPage: NextPage<QuestPageProps> = ({ quest, errorPageDisplay }) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  try {
-    const { questPage: questId } = context.query;
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-    );
-    const data: QuestDocument | QueryError = await response.json();
+  const userAgent = context.req.headers["user-agent"] || "";
+  const isFromDiscord = userAgent.toLowerCase().includes("discord");
 
-    if ((data as QuestDocument).name) {
+  if (isFromDiscord) {
+    try {
+      const { questPage: questId } = context.query;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
+      );
+      const data: QuestDocument | QueryError = await response.json();
+
+      if ((data as QuestDocument).name) {
+        return {
+          props: {
+            questTags: data as QuestDocument,
+            customTags: true,
+          },
+        };
+      } else {
+        return {
+          props: {
+            customTags: false,
+          },
+        };
+      }
+    } catch (error) {
+      console.log(error);
       return {
         props: {
-          quest: data as QuestDocument,
-          errorPageDisplay: false,
-        },
-      };
-    } else {
-      return {
-        props: {
-          quest: null,
-          errorPageDisplay: true,
+          customTags: false,
         },
       };
     }
-  } catch (error) {
-    console.log(error);
+  } else {
     return {
       props: {
-        quest: null,
-        errorPageDisplay: true,
+        customTags: false,
       },
     };
   }
