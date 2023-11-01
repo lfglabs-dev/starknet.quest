@@ -30,6 +30,7 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
     res,
     error_msg: errorMsg,
   } = router.query;
+  console.log("questPage", questId);
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
@@ -114,7 +115,7 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
           <BackButton onClick={() => router.back()} />
         </div>
         <div className={styles.imageContainer}>
-          {!quest.issuer ? (
+          {quest.issuer === "loading" ? (
             <RewardSkeleton />
           ) : (
             <NftIssuer
