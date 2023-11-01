@@ -95,3 +95,7 @@ type AchievementDocument = {
 type CompletedDocument = {
   achieved: boolean;
 };
+
+type DeployedTime = {
+  timestamp: number;
+};

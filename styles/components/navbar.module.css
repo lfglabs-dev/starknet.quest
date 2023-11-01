@@ -59,12 +59,20 @@
   color: var(--background);
 }
 
+.buttonTextSection {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 124px;
+}
+
 .buttonText {
   margin-right: 32px;
   text-transform: capitalize;
   font-weight: bold;
   font-family: Sora-ExtraBold;
-  min-width: 124px;
   /* Body/middle/bold */
   font-size: 18px;
   font-weight: 700;

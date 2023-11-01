@@ -1,39 +1,3 @@
-/* Component quest on the /quests page  */
-.questCard {
-  width: 290px;
-  border-radius: 8px;
-  padding: 24px;
-
-  display: flex;
-  flex-direction: column;
-  background-color: var(--menu-background);
-  cursor: pointer;
-
-  align-self: stretch;
-  border: solid 1px transparent;
-}
-
-.questImage {
-  border-radius: 8px;
-  border-width: 0px;
-}
-
-.questInfos {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-top: 1rem;
-}
-
-.questTitle {
-  font-size: 1.3rem;
-  color: var(--secondary);
-  font-family: "Sora-Bold";
-  margin: 0px;
-  text-align: left;
-}
-
 /* Quest page  */
 .imageContainer {
   display: flex;
@@ -241,8 +205,16 @@
   width: 100%;
 }
 
+.featuredQuestImageContainer {
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  position: relative;
+}
+
 .featuredQuestImage {
   height: 100%;
+  width: 100%;
   border-radius: 8px;
 }
 
@@ -255,6 +227,7 @@
   background-clip: text;
   color: transparent;
   align-items: flex-start;
+  text-align: left;
 }
 
 .participantAvatars {
@@ -300,14 +273,4 @@
   .featuredQuestImage {
     height: auto;
   }
-}
-
-.questCard[aria-disabled="true"] {
-  cursor: not-allowed;
-}
-
-.questCard[aria-disabled="true"] .questImage,
-.questCard[aria-disabled="true"] .questTitle,
-.questCard[aria-disabled="true"] .issuer {
-  opacity: 0.4;
 }

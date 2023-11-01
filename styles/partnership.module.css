@@ -96,6 +96,17 @@
   z-index: 6;
 }
 
+.title {
+  color: var(--secondary);
+
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 48px; /* 133.333% */
+}
+
 .blueBlur {
   position: absolute;
   border-radius: 488px;
@@ -182,4 +193,36 @@
   .lastCrosses {
     display: none;
   }
+}
+
+.teamContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 128px 2rem;
+  position: relative;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.twitterIcon {
+  display: flex;
+  border-radius: 2px;
+  width: 24px;
+  height: 24px;
+  background: var(--secondary);
+  align-items: center;
+  justify-content: center;
+}
+
+.blur1 {
+  position: absolute;
+  z-index: -1;
+}
+
+.blur2 {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  transform: translateX(50%) translateY(50%);
 }
