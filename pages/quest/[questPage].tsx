@@ -30,7 +30,6 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
     res,
     error_msg: errorMsg,
   } = router.query;
-  console.log("questPage", questId);
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
@@ -142,6 +141,8 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userAgent = context.req.headers["user-agent"] || "";
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
+
+  console.log("userAgent", userAgent);
 
   if (isFromDiscord) {
     try {
