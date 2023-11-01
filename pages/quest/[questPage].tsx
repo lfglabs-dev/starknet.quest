@@ -139,46 +139,53 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userAgent = context.req.headers["user-agent"] || "";
   console.log("userAgent", userAgent);
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
+  const isFromTelegram = userAgent.toLowerCase().includes("telegram");
+  const isFromSlack = userAgent.toLowerCase().includes("slack");
+  const isFromTwitter = userAgent.toLowerCase().includes("twitter");
 
   console.log("api", process.env.NEXT_PUBLIC_API_LINK);
+  console.log("isFromDiscord", isFromDiscord);
+  console.log("isFromTelegram", isFromTelegram);
+  console.log("isFromSlack", isFromSlack);
+  console.log("isFromTwitter", isFromTwitter);
 
-  if (isFromDiscord) {
-    try {
-      const { questPage: questId } = context.query;
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-      );
-      const data: QuestDocument | QueryError = await response.json();
+  if (!isFromDiscord && !isFromTelegram && !isFromSlack && !isFromTwitter) {
+    return getDefaultProps();
+  }
 
-      if ((data as QuestDocument).name) {
-        return {
-          props: {
-            questTags: data as QuestDocument,
-            customTags: true,
-          },
-        };
-      } else {
-        return {
-          props: {
-            customTags: false,
-          },
-        };
-      }
-    } catch (error) {
-      console.log(error);
+  try {
+    const { questPage: questId } = context.query;
+    const data = await fetchQuestData(questId as string);
+
+    if (data?.name) {
       return {
         props: {
-          customTags: false,
+          questTags: data,
+          customTags: true,
         },
       };
     }
-  } else {
-    return {
-      props: {
-        customTags: false,
-      },
-    };
+    return getDefaultProps();
+  } catch (error) {
+    console.log(error);
+    return getDefaultProps();
   }
+}
+
+async function fetchQuestData(questId: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
+  );
+  const data: QuestDocument | QueryError = await response.json();
+  return data as QuestDocument;
+}
+
+function getDefaultProps() {
+  return {
+    props: {
+      customTags: false,
+    },
+  };
 }
 
 export default QuestPage;
