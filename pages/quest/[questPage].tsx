@@ -154,6 +154,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
   const isFromTwitter = userAgent.toLowerCase().includes("twitter");
 
+  console.log("isFromDiscord", isFromDiscord);
+  console.log("isFromTwitter", isFromTwitter);
+
   if (isFromDiscord || isFromTwitter) {
     return {
       props: {
