@@ -22,10 +22,7 @@ type QuestPageProps = {
 };
 
 /* eslint-disable react/prop-types */
-const QuestPage: NextPage<QuestPageProps> = ({
-  customTags = false,
-  questTags,
-}) => {
+const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -158,14 +155,26 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           },
         };
       } else {
-        return;
+        return {
+          props: {
+            customTags: false,
+          },
+        };
       }
     } catch (error) {
       console.log(error);
-      return;
+      return {
+        props: {
+          customTags: false,
+        },
+      };
     }
   } else {
-    return;
+    return {
+      props: {
+        customTags: false,
+      },
+    };
   }
 }
 
