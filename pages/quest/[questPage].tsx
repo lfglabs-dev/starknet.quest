@@ -137,6 +137,7 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userAgent = context.req.headers["user-agent"] || "";
+  console.log("userAgent", userAgent);
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
 
   if (isFromDiscord) {
