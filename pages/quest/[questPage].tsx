@@ -22,7 +22,10 @@ type QuestPageProps = {
 };
 
 /* eslint-disable react/prop-types */
-const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
+const QuestPage: NextPage<QuestPageProps> = ({
+  customTags = false,
+  questTags,
+}) => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -79,7 +82,7 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
     />
   ) : (
     <>
-      {customTags && questTags ? (
+      {/* {customTags && questTags ? (
         <Head>
           <meta property="og:title" content={questTags.name} />
           <meta property="og:description" content={questTags.desc} />
@@ -87,6 +90,14 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
           <meta name="twitter:title" content={questTags.name} />
           <meta name="twitter:description" content={questTags.desc} />
           <meta name="twitter:image" content={questTags.img_card} />
+        </Head>
+      ) : null} */}
+      {customTags ? (
+        <Head>
+          <meta property="og:title" content="TEST title" />
+          <meta property="og:description" content="test description" />
+          <meta name="twitter:title" content="TEST title" />
+          <meta name="twitter:description" content="test description" />
         </Head>
       ) : null}
       <div className={homeStyles.screen}>
@@ -141,31 +152,35 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userAgent = context.req.headers["user-agent"] || "";
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
+  const isFromTwitter = userAgent.toLowerCase().includes("twitter");
 
-  console.log("userAgent", userAgent);
-
-  if (isFromDiscord) {
+  if (isFromDiscord || isFromTwitter) {
     try {
       const { questPage: questId } = context.query;
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-      );
-      const data: QuestDocument | QueryError = await response.json();
+      return {
+        props: {
+          customTags: true,
+        },
+      };
+      // const response = await fetch(
+      //   `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
+      // );
+      // const data: QuestDocument | QueryError = await response.json();
 
-      if ((data as QuestDocument).name) {
-        return {
-          props: {
-            questTags: data as QuestDocument,
-            customTags: true,
-          },
-        };
-      } else {
-        return {
-          props: {
-            customTags: false,
-          },
-        };
-      }
+      // if ((data as QuestDocument).name) {
+      //   return {
+      //     props: {
+      //       questTags: data as QuestDocument,
+      //       customTags: true,
+      //     },
+      //   };
+      // } else {
+      //   return {
+      //     props: {
+      //       customTags: false,
+      //     },
+      //   };
+      // }
     } catch (error) {
       console.log(error);
       return {
