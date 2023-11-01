@@ -155,40 +155,40 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const isFromTwitter = userAgent.toLowerCase().includes("twitter");
 
   if (isFromDiscord || isFromTwitter) {
-    try {
-      const { questPage: questId } = context.query;
-      return {
-        props: {
-          customTags: true,
-        },
-      };
-      // const response = await fetch(
-      //   `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-      // );
-      // const data: QuestDocument | QueryError = await response.json();
+    return {
+      props: {
+        customTags: true,
+      },
+    };
+    // try {
+    //   const { questPage: questId } = context.query;
+    // const response = await fetch(
+    //   `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
+    // );
+    // const data: QuestDocument | QueryError = await response.json();
 
-      // if ((data as QuestDocument).name) {
-      //   return {
-      //     props: {
-      //       questTags: data as QuestDocument,
-      //       customTags: true,
-      //     },
-      //   };
-      // } else {
-      //   return {
-      //     props: {
-      //       customTags: false,
-      //     },
-      //   };
-      // }
-    } catch (error) {
-      console.log(error);
-      return {
-        props: {
-          customTags: false,
-        },
-      };
-    }
+    // if ((data as QuestDocument).name) {
+    //   return {
+    //     props: {
+    //       questTags: data as QuestDocument,
+    //       customTags: true,
+    //     },
+    //   };
+    // } else {
+    //   return {
+    //     props: {
+    //       customTags: false,
+    //     },
+    //   };
+    // }
+    // } catch (error) {
+    //   console.log(error);
+    //   return {
+    //     props: {
+    //       customTags: false,
+    //     },
+    //   };
+    // }
   } else {
     return {
       props: {
