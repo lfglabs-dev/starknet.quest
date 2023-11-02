@@ -1,4 +1,4 @@
-import { Metadata, NextPage, ResolvingMetadata } from "next";
+import { NextPage } from "next";
 import QuestDetails from "../../components/quests/questDetails";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
@@ -14,49 +14,9 @@ import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
 import BannerPopup from "../../components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "../../hooks/naming";
-import Head from "next/head";
+import Helmet from "react-helmet";
 
-type QuestPageProps = {
-  customTags: boolean;
-  questTags?: QuestDocument;
-};
-
-type Props = {
-  params: { questPage: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
-  const id = params.questPage;
-
-  console.log("questId", id);
-
-  // fetch data
-  const data = await fetchQuestData(id as string);
-  const previousImages = (await parent).openGraph?.images || [];
-
-  return {
-    title: data.name,
-    openGraph: {
-      images: [data.img_card, ...previousImages],
-      description: data.desc,
-      title: data.name,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: data.name,
-      description: data.desc,
-      images: [data.img_card],
-    },
-  };
-}
-
-/* eslint-disable react/prop-types */
-const QuestPage: NextPage<Props> = ({ params, searchParams }) => {
+const QuestPage: NextPage = () => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -113,16 +73,14 @@ const QuestPage: NextPage<Props> = ({ params, searchParams }) => {
     />
   ) : (
     <>
-      {/* {customTags && questTags ? (
-        <Head>
-          <meta property="og:title" content={questTags.name} />
-          <meta property="og:description" content={questTags.desc} />
-          <meta property="og:image" content={questTags.img_card} />
-          <meta property="twitter:title" content={questTags.name} />
-          <meta property="twitter:description" content={questTags.desc} />
-          <meta property="og:image" content={questTags.img_card} />
-        </Head>
-      ) : null} */}
+      <Helmet>
+        <meta property="og:title" content={quest.name} />
+        <meta property="og:description" content={quest.desc} />
+        <meta property="og:image" content={quest.img_card} />
+        <meta property="twitter:title" content={quest.name} />
+        <meta property="twitter:description" content={quest.desc} />
+        <meta property="og:image" content={quest.img_card} />
+      </Helmet>
       <div className={homeStyles.screen}>
         {showDomainPopup &&
           (domain ? (
@@ -171,56 +129,5 @@ const QuestPage: NextPage<Props> = ({ params, searchParams }) => {
     </>
   );
 };
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const userAgent = context.req.headers["user-agent"] || "";
-//   const isFromDiscord = userAgent.toLowerCase().includes("discord");
-//   const isFromTelegram = userAgent.toLowerCase().includes("telegram");
-//   const isFromSlack = userAgent.toLowerCase().includes("slack");
-//   const isFromTwitter = userAgent.toLowerCase().includes("twitter");
-
-//   console.log("isFromDiscord", isFromDiscord);
-//   console.log("isFromTelegram", isFromTelegram);
-//   console.log("isFromSlack", isFromSlack);
-//   console.log("isFromTwitter", isFromTwitter);
-
-//   if (!isFromDiscord && !isFromTelegram && !isFromSlack && !isFromTwitter) {
-//     return getDefaultProps();
-//   }
-
-//   try {
-//     const { questPage: questId } = context.query;
-//     const data = await fetchQuestData(questId as string);
-
-//     if (data?.name) {
-//       return {
-//         props: {
-//           questTags: data,
-//           customTags: true,
-//         },
-//       };
-//     }
-//     return getDefaultProps();
-//   } catch (error) {
-//     console.log(error);
-//     return getDefaultProps();
-//   }
-// }
-
-async function fetchQuestData(questId: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-  );
-  const data: QuestDocument | QueryError = await response.json();
-  return data as QuestDocument;
-}
-
-// function getDefaultProps() {
-//   return {
-//     props: {
-//       customTags: false,
-//     },
-//   };
-// }
 
 export default QuestPage;
