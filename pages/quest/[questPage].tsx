@@ -84,6 +84,9 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
           <meta property="og:title" content={questTags.name} />
           <meta property="og:description" content={questTags.desc} />
           <meta property="og:image" content={questTags.img_card} />
+          <meta property="twitter:title" content={questTags.name} />
+          <meta property="twitter:description" content={questTags.desc} />
+          <meta property="twitter:image" content={questTags.img_card} />
         </Head>
       ) : null}
       <div className={homeStyles.screen}>
@@ -137,13 +140,11 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const userAgent = context.req.headers["user-agent"] || "";
-  console.log("userAgent", userAgent);
   const isFromDiscord = userAgent.toLowerCase().includes("discord");
   const isFromTelegram = userAgent.toLowerCase().includes("telegram");
   const isFromSlack = userAgent.toLowerCase().includes("slack");
   const isFromTwitter = userAgent.toLowerCase().includes("twitter");
 
-  console.log("api", process.env.NEXT_PUBLIC_API_LINK);
   console.log("isFromDiscord", isFromDiscord);
   console.log("isFromTelegram", isFromTelegram);
   console.log("isFromSlack", isFromSlack);
