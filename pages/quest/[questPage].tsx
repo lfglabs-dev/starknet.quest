@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import QuestDetails from "../../components/quests/questDetails";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
@@ -16,7 +16,13 @@ import BannerPopup from "../../components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "../../hooks/naming";
 import Head from "next/head";
 
-const QuestPage: NextPage = () => {
+type QuestPageProps = {
+  customTags: boolean;
+  questTags?: QuestDocument;
+};
+
+/* eslint-disable react/prop-types */
+const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -73,14 +79,16 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <>
-      <Head>
-        <meta property="og:title" content="TEST NAME" />
-        <meta property="og:description" content="TEST DECCRIPTION" />
-        <meta property="og:image" content="/avnu/astronaut.webp" />
-        <meta property="twitter:title" content="TEST NAME" />
-        <meta property="twitter:description" content="TEST DECCRIPTION" />
-        <meta property="og:image" content="/avnu/astronaut.webp" />
-      </Head>
+      {customTags ? (
+        <Head>
+          <meta property="og:title" content="TEST NAME" />
+          <meta property="og:description" content="TEST DESCRIPTION" />
+          <meta property="og:image" content="/avnu/astronaut.webp" />
+          <meta property="twitter:title" content="TEST NAME" />
+          <meta property="twitter:description" content="TEST DESCRIPTION" />
+          <meta property="og:image" content="/avnu/astronaut.webp" />
+        </Head>
+      ) : null}
       <div className={homeStyles.screen}>
         {showDomainPopup &&
           (domain ? (
@@ -129,5 +137,13 @@ const QuestPage: NextPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {
+      customTags: false,
+    },
+  };
+}
 
 export default QuestPage;
