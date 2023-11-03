@@ -141,7 +141,7 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags, questTags }) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
-      customTags: false,
+      customTags: true,
     },
   };
 }
