@@ -14,7 +14,7 @@ import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
 import BannerPopup from "../../components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "../../hooks/naming";
-import Helmet from "react-helmet";
+import Head from "next/head";
 
 const QuestPage: NextPage = () => {
   const router = useRouter();
@@ -73,14 +73,14 @@ const QuestPage: NextPage = () => {
     />
   ) : (
     <>
-      <Helmet>
-        <meta property="og:title" content={quest.name} />
-        <meta property="og:description" content={quest.desc} />
-        <meta property="og:image" content={quest.img_card} />
-        <meta property="twitter:title" content={quest.name} />
-        <meta property="twitter:description" content={quest.desc} />
-        <meta property="og:image" content={quest.img_card} />
-      </Helmet>
+      <Head>
+        <meta property="og:title" content="TEST NAME" />
+        <meta property="og:description" content="TEST DECCRIPTION" />
+        <meta property="og:image" content="/avnu/astronaut.webp" />
+        <meta property="twitter:title" content="TEST NAME" />
+        <meta property="twitter:description" content="TEST DECCRIPTION" />
+        <meta property="og:image" content="/avnu/astronaut.webp" />
+      </Head>
       <div className={homeStyles.screen}>
         {showDomainPopup &&
           (domain ? (
