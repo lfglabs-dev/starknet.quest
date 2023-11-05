@@ -1,154 +1,158 @@
 .timerFixed {
-    position: absolute;
-    right: 24px;
-    bottom: 24px;
-    display: flex;
-    padding: 8px 12px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 8px;
-    background: linear-gradient(90deg, var(--background), #070708);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 298px;
-    height: 84px;
-    z-index: 0;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  padding: 8px 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--background), #070708);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 298px;
+  height: 84px;
+  z-index: 0;
+}
+
+.timerBackground {
+  position: absolute;
+  bottom: 25px;
+  left: calc(50% + 1px);
+  transform: translateX(-50%);
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
+  width: 298px;
+  height: 84px;
+  mask: linear-gradient(3deg, transparent 80%, black);
 }
 
 .timer {
-    position: relative;
-    display: flex;
-    padding: 8px 12px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 8px;
-    background: linear-gradient(90deg, var(--background), #070708);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 298px;
-    height: 84px;
-    margin: 48px auto;
+  position: relative;
+  display: flex;
+  padding: 8px 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--background), #070708);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 298px;
+  height: 84px;
+  margin: 48px auto;
 }
 
 .timer::after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    left: 0;
-    bottom: 0;
-    background: linear-gradient(5deg, var(--background) 70%, transparent);
-    border-radius: 8px;
-    z-index: -1;
-  }
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(5deg, var(--background) 70%, transparent);
+  border-radius: 8px;
+  z-index: -1;
+}
 
 .timer::before {
-    content: "";
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    left: 1px;
-    bottom: 1px;
-    background: linear-gradient(
-      90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%
-    );
-    border-radius: 8px;
-    z-index: -1;
-  } 
-
-  .timerBackground {
-    position: absolute;
-    right: 23px;
-    bottom: 25px;
-    border-radius: 8px;
-    background: linear-gradient(
-      90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%
-    );
-    width: 270px;
-    height: 84px;
-    mask: linear-gradient(3deg, transparent 80%, black);
-  }
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
+  border-radius: 8px;
+  z-index: -1;
+}
 
 .title {
-    text-align: center;
-    font-family: Sora;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 20px;
-    background: var(--primary-gradient, linear-gradient(90deg, #6AFFAF 0%, #5CE3FE 100%));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-family: Sora;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  background: var(
+    --primary-gradient,
+    linear-gradient(90deg, #6affaf 0%, #5ce3fe 100%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .categories {
-    display: flex;
-    flex-direction: row;
-    color: var(--secondary);
-    text-align: center;
-    font-family: Sora;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    width: 296px;
-    padding: 0 12px;
+  display: flex;
+  flex-direction: row;
+  color: var(--secondary);
+  text-align: center;
+  font-family: Sora;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  width: 296px;
+  padding: 0 12px;
 }
 
 .categories > div {
-    margin-right: 36px;
-    width: 68px;
-    text-align: left;
+  margin-right: 36px;
+  width: 68px;
+  text-align: left;
 }
 
 .dates {
-    display: flex;
-    flex-direction: row;
-    color: var(--secondary);
-    text-align: right;
-    font-family: Sora;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 20px;
-    letter-spacing: 0.16px;
+  display: flex;
+  flex-direction: row;
+  color: var(--secondary);
+  text-align: right;
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.16px;
 }
 
 .dates > div {
-    width: 65px;
-    text-align: left;
+  width: 65px;
+  text-align: left;
 }
 
 .space {
-    padding: 0 13px;
+  padding: 0 13px;
 }
 
 .day {
-    padding: 0 15px 0 12px;
+  padding: 0 15px 0 12px;
 }
 
 .hour {
-    padding: 0 15px 0 12px;
+  padding: 0 15px 0 12px;
 }
 
 .minute {
-    padding: 0 15px 0 27px;
-    
+  padding: 0 15px 0 27px;
 }
 
 .second {
-    text-align: right !important;
+  text-align: right !important;
 }

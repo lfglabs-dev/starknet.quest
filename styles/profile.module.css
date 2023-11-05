@@ -18,6 +18,8 @@
   gap: 16px;
   display: flex;
   flex-direction: column;
+  bottom: 16px;
+  padding-top: 48px;
 }
 
 .profileCard {
@@ -29,7 +31,6 @@
   border-radius: 8px;
   background: var(--background600, #29282b);
   width: 310px;
-  max-height: calc(100vh - 12vh - 350px);
 }
 
 .title {
@@ -114,11 +115,11 @@
   align-items: flex-start;
   gap: 8px;
   border-radius: 10px;
-  background: rgba(16, 16, 18, 0.30);
+  background: rgba(16, 16, 18, 0.3);
   height: 32px;
   cursor: pointer;
 
-  color: #E1DCEA;
+  color: #e1dcea;
   font-family: Sora;
   font-size: 12px;
   font-style: normal;
@@ -135,7 +136,7 @@
 }
 
 .selectedTab {
-  background: #FFF;
+  background: #fff;
   color: #101012;
   border-radius: 10px;
 }
@@ -152,11 +153,11 @@
 .nftContainer {
   width: calc(50% - 5px);
   border-radius: 8px;
-  background: #1F1F25;
+  background: #1f1f25;
 }
 
 .nftName {
-  color: #F4FAFF;
+  color: #f4faff;
   font-size: 9px;
   text-align: center;
   padding: 10px;
@@ -177,7 +178,7 @@
 }
 
 .achievementLvl {
-  color: #F4FAFF;
+  color: #f4faff;
   text-align: center;
   font-size: 12px;
   font-style: normal;
@@ -186,7 +187,7 @@
 }
 
 .achievementName {
-  color: #F4FAFF;
+  color: #f4faff;
   font-size: 9px;
   text-align: center;
   opacity: 0.7;
@@ -223,6 +224,19 @@
 .profileBg {
   background-image: url("/land/textures/SID_Background_SpaceLoop.gif");
   background-repeat: repeat;
+}
+
+.shareButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background);
+  padding: 4px 16px;
+  gap: 8px;
+  border-radius: 10px;
+  background: var(--background-700, #101012);
+  /* Button shadow */
+  box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 }
 
 @media (max-width: 768px) {

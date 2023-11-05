@@ -8,6 +8,7 @@ import {
   minifyDomain,
   generateString,
   numberToString,
+  minifyAddressFromStrings,
   // getDomainKind,
   shortenDomain,
   minifyAddressWithChars,
@@ -123,7 +124,9 @@ describe("Should test isStarkDomain", () => {
         ) &&
         utils.isStarkDomain(randomString + "." + randomString2 + "..stark") &&
         utils.isStarkDomain(randomString + "." + randomString2 + "..stark") &&
-        utils.isStarkDomain("." + randomString + ".." + randomString2 + ".stark") &&
+        utils.isStarkDomain(
+          "." + randomString + ".." + randomString2 + ".stark"
+        ) &&
         utils.isStarkDomain("." + randomString + "." + randomString2 + ".stark")
     ).toBeFalsy();
   });
@@ -260,23 +263,40 @@ describe("Should test shortenDomain function", () => {
   });
 });
 
-describe('minifyAddressWithChars function', () => {
-  it('should return empty string if address is undefined', () => {
-    expect(minifyAddressWithChars(undefined, 4)).toBe('');
+describe("minifyAddressWithChars function", () => {
+  it("should return empty string if address is undefined", () => {
+    expect(minifyAddressWithChars(undefined, 4)).toBe("");
   });
 
-  it('should return minified address with specified number of characters at the start and end', () => {
-    const address = '1234567890abcdef';
-    expect(minifyAddressWithChars(address, 4)).toBe('1234...cdef');
+  it("should return minified address with specified number of characters at the start and end", () => {
+    const address = "1234567890abcdef";
+    expect(minifyAddressWithChars(address, 4)).toBe("1234...cdef");
   });
 
-  it('should return the original address if number of characters is equal to half the length of the address', () => {
-    const address = '12345678';
-    expect(minifyAddressWithChars(address, 4)).toBe('12345678');
+  it("should return the original address if number of characters is equal to half the length of the address", () => {
+    const address = "12345678";
+    expect(minifyAddressWithChars(address, 4)).toBe("12345678");
   });
 
-  it('should return minified address in lowercase', () => {
-    const address = 'ABCDEFGH';
-    expect(minifyAddressWithChars(address, 3)).toBe('abc...fgh');
+  it("should return minified address in lowercase", () => {
+    const address = "ABCDEFGH";
+    expect(minifyAddressWithChars(address, 3)).toBe("abc...fgh");
+  });
+});
+
+describe("minifyAddressFromStrings", () => {
+  it("Should returns an empty string if the string array is empty", () => {
+    const result = minifyAddressFromStrings([], 4);
+    expect(result).toEqual("");
+  });
+
+  it("Should returns the minified version of the first string corresponding to a valid address in the array", () => {
+    const result = minifyAddressFromStrings(["0x1234567890abcdef", "test"], 4);
+    expect(result).toEqual("0x12...cdef");
+  });
+
+  it("Should returns the minified version of the first string corresponding to a valid address in the array", () => {
+    const result = minifyAddressFromStrings(["test2", "0x1234567890abcdef"], 4);
+    expect(result).toEqual("0x12...cdef");
   });
 });

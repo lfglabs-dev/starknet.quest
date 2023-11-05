@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import QuestDetails from "../../components/quests/questDetails";
 import React, { useEffect, useState } from "react";
 import homeStyles from "../../styles/Home.module.css";
@@ -10,12 +10,18 @@ import ErrorScreen from "../../components/UI/screens/errorScreen";
 import NftIssuer from "../../components/quests/nftIssuer";
 import BackButton from "../../components/UI/backButton";
 import useHasRootDomain from "../../hooks/useHasRootDomain";
-import useHasRootOrBraavosDomain from "../../hooks/useHasRootOrBraavosDomain";
 import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "../../utils/links";
-import Popup from "../../components/UI/menus/popup";
+import BannerPopup from "../../components/UI/menus/bannerPopup";
+import { useDomainFromAddress } from "../../hooks/naming";
+import Head from "next/head";
 
-const QuestPage: NextPage = () => {
+type QuestPageProps = {
+  customTags: boolean;
+};
+
+/* eslint-disable react/prop-types */
+const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
   const router = useRouter();
   const {
     questPage: questId,
@@ -23,6 +29,7 @@ const QuestPage: NextPage = () => {
     res,
     error_msg: errorMsg,
   } = router.query;
+  console.log("questPage", questId);
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
@@ -39,19 +46,13 @@ const QuestPage: NextPage = () => {
     hidden: false,
     disabled: false,
     expiry_timestamp: "loading",
+    mandatory_domain: null,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
-  const hasRootDomain =
-    questId && parseInt(questId as string) >= 100
-      ? useHasRootOrBraavosDomain(address)
-      : useHasRootDomain(address);
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (!address) return;
-  //   setShowDomainPopup(!hasRootDomain);
-  // }, [address, hasRootDomain]);
+  const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
+  const { domain } = useDomainFromAddress(address);
 
   // this fetches quest data
   useEffect(() => {
@@ -77,42 +78,97 @@ const QuestPage: NextPage = () => {
       onClick={() => router.push("/")}
     />
   ) : (
-    <div className={homeStyles.screen}>
-      {showDomainPopup && (
-        <Popup
-          title="Mandatory Starknet Domain"
-          banner="/visuals/profile.webp"
-          description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
-          buttonName="Get a Starknet Domain"
-          onClick={() => window.open(starknetIdAppLink)}
-          onClose={() => setShowDomainPopup(false)}
+    <>
+      {customTags ? (
+        <>
+          <Head>
+            <meta
+              property="og:title"
+              content="Join the Starknet Pro Score with mySwap CL Now!"
+              key="og-title"
+            />
+            <meta
+              property="og:description"
+              content="Complete simple missions and claim your commemorative NFT!"
+              key="og-desc"
+            />
+            <meta
+              property="og:image"
+              content="/braavos/myswap.webp"
+              key="og-image"
+            />
+            <meta
+              name="twitter:title"
+              content="Join the Starknet Pro Score with mySwap CL Now!"
+            />
+            <meta
+              name="twitter:description"
+              content="Complete simple missions and claim your commemorative NFT!"
+            />
+            <meta name="twitter:image" content="/braavos/myswap.webp" />
+          </Head>
+        </>
+      ) : null}
+      <div className={homeStyles.screen}>
+        {showDomainPopup &&
+          (domain ? (
+            <BannerPopup
+              title="Subdomains are not allowed"
+              banner="/visuals/profile.webp"
+              description="To access Starknet Quest you need a Root Starknet domain (not a subdomain like .braavos.stark or .xplorer.stark)."
+              buttonName="Get a Starknet Domain"
+              onClick={() => window.open(starknetIdAppLink)}
+              onClose={() => setShowDomainPopup(false)}
+            />
+          ) : (
+            <BannerPopup
+              title="Mandatory Starknet Domain"
+              banner="/visuals/profile.webp"
+              description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
+              buttonName="Get a Starknet Domain"
+              onClick={() => window.open(starknetIdAppLink)}
+              onClose={() => setShowDomainPopup(false)}
+            />
+          ))}
+        <div className={homeStyles.backButton}>
+          <BackButton onClick={() => router.back()} />
+        </div>
+        <div className={styles.imageContainer}>
+          {quest.issuer === "loading" ? (
+            <RewardSkeleton />
+          ) : (
+            <NftIssuer
+              issuer={{
+                name: quest.issuer,
+                logoFavicon: quest.logo,
+              }}
+            />
+          )}
+        </div>
+        <QuestDetails
+          quest={quest}
+          taskId={taskId as string | undefined}
+          res={res as string | undefined}
+          errorMsg={errorMsg as string | undefined}
+          setShowDomainPopup={setShowDomainPopup}
+          hasRootDomain={hasRootDomain}
         />
-      )}
-      <div className={homeStyles.backButton}>
-        <BackButton onClick={() => router.back()} />
       </div>
-      <div className={styles.imageContainer}>
-        {quest.issuer === "loading" ? (
-          <RewardSkeleton />
-        ) : (
-          <NftIssuer
-            issuer={{
-              name: quest.issuer,
-              logoFavicon: quest.logo,
-            }}
-          />
-        )}
-      </div>
-      <QuestDetails
-        quest={quest}
-        taskId={taskId as string | undefined}
-        res={res as string | undefined}
-        errorMsg={errorMsg as string | undefined}
-        setShowDomainPopup={setShowDomainPopup}
-        hasRootDomain={hasRootDomain}
-      />
-    </div>
+    </>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { questPage: questId } = context.query;
+  let customTags = false;
+  if (questId === "101") {
+    customTags = true;
+  }
+  return {
+    props: {
+      customTags,
+    },
+  };
+}
 
 export default QuestPage;
