@@ -203,6 +203,7 @@ export default function Leaderboard() {
             handleChangeSelection={handleChangeSelection}
             tags={["Last 7 Days", "Last 30 days", "All time"]}
           />
+          <p>hey</p>
         </div>
         <div className="flex w-full flex-wrap items-center">
           <p>He is</p>
