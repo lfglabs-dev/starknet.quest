@@ -10,7 +10,7 @@ type ChipProps = {
 export default function ChipList(props: ChipProps) {
   const { tags, handleChangeSelection } = props;
   return (
-    <div className="grid grid-cols-3 gap-2 bg-background rounded-[10px]">
+    <div className="grid grid-cols-3 gap-2 bg-background rounded-3xl">
       {tags.map((tag, index) => (
         <div
           onClick={() => handleChangeSelection(tag)}
