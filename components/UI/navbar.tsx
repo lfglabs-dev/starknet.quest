@@ -1,176 +1,350 @@
-import React, { FunctionComponent, useMemo, useState, useEffect } from "react";
-import Button from "../UI/button";
-import { useDisplayName } from "../../hooks/displayName.tsx";
-import { useAccount } from "@starknet-react/core";
+import Link from "next/link";
+import React, {
+  useState,
+  useEffect,
+  FunctionComponent,
+  useCallback,
+} from "react";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import styles from "../../styles/components/navbar.module.css";
-import ProfilIcon from "../UI/iconsComponents/icons/profilIcon";
+import Button from "./button";
+import {
+  useConnect,
+  useAccount,
+  Connector,
+  useDisconnect,
+} from "@starknet-react/core";
+import Wallets from "./wallets";
+import ModalMessage from "./modalMessage";
+import { useDisplayName } from "../../hooks/displayName.tsx";
+import { useDomainFromAddress } from "../../hooks/naming";
+import { constants } from "starknet";
+import { useRouter } from "next/router";
 import theme from "../../styles/theme";
-import Avatar from "../UI/avatar";
-import CopyIcon from "../UI/iconsComponents/icons/copyIcon";
-import { Wallet } from "@mui/icons-material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
-import ChangeWallet from "../UI/changeWallet";
-import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
+import { FaDiscord, FaTwitter } from "react-icons/fa";
+import WalletButton from "../navbar/walletButton";
+import NotificationIcon from "./iconsComponents/icons/notificationIcon";
+import ModalNotifications from "./notifications/modalNotifications";
 import { useNotificationManager } from "../../hooks/useNotificationManager";
-import { CircularProgress } from "@mui/material";
+import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 
-type WalletButtonProps = {
-  setShowWallet: (showWallet: boolean) => void;
-  showWallet: boolean;
-  refreshAndShowWallet: () => void;
-  disconnectByClick: () => void;
-};
-
-const WalletButton: FunctionComponent<WalletButtonProps> = ({
-  setShowWallet,
-  showWallet,
-  refreshAndShowWallet,
-  disconnectByClick,
-}) => {
-  const { address, connector } = useAccount();
-  const { notifications } = useNotificationManager();
+const Navbar: FunctionComponent = () => {
+  const [nav, setNav] = useState<boolean>(false);
+  const [hasWallet, setHasWallet] = useState<boolean>(false);
+  const { address, account } = useAccount();
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isWrongNetwork, setIsWrongNetwork] = useState(false);
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const domainOrAddressMinified = useDisplayName(address ?? "");
-  const [txLoading, setTxLoading] = useState<number>(0);
-  const [copied, setCopied] = useState<boolean>(false);
-  const [changeWallet, setChangeWallet] = useState<boolean>(false);
-  const [hovering, setHovering] = useState<boolean>(false);
-  const [unfocus, setUnfocus] = useState<boolean>(false);
+  const domain = useDomainFromAddress(address ?? "").domain;
+  const addressOrDomain =
+    domain && domain.endsWith(".stark") ? domain : address;
   const network =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
-  const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
+  const [navbarBg, setNavbarBg] = useState<boolean>(false);
+  const [showWallet, setShowWallet] = useState<boolean>(false);
+  const router = useRouter();
+  const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  const { notifications, unreadNotifications, updateReadStatus } =
+    useNotificationManager();
 
-  const buttonName = useMemo(
-    () =>
-      address
-        ? txLoading
-          ? `${txLoading} on hold`
-          : domainOrAddressMinified
-        : "connect",
-    [address, domainOrAddressMinified, txLoading]
+  useEffect(() => {
+    // to handle autoconnect starknet-react adds connector id in local storage
+    // if there is no value stored, we show the wallet modal
+    const timeout = setTimeout(() => {
+      if (!address) {
+        if (
+          !localStorage.getItem("lastUsedConnector") &&
+          router?.pathname !== "/partnership"
+        ) {
+          if (connectors.length > 0) setHasWallet(true);
+        } else {
+          const lastConnectedConnectorId =
+            localStorage.getItem("lastUsedConnector");
+          if (lastConnectedConnectorId === null) return;
+
+          const lastConnectedConnector = connectors.find(
+            (connector) => connector.id === lastConnectedConnectorId
+          );
+          if (lastConnectedConnector === undefined) return;
+          tryConnect(lastConnectedConnector);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    address ? setIsConnected(true) : setIsConnected(false);
+  }, [address]);
+
+  useEffect(() => {
+    if (!isConnected || !account) return;
+    account.getChainId().then((chainId) => {
+      const isWrongNetwork =
+        (chainId === constants.StarknetChainId.SN_GOERLI &&
+          network === "mainnet") ||
+        (chainId === constants.StarknetChainId.SN_MAIN &&
+          network === "testnet");
+      setIsWrongNetwork(isWrongNetwork);
+    });
+  }, [account, network, isConnected]);
+
+  const tryConnect = useCallback(
+    async (connector: Connector) => {
+      if (address) return;
+      if (await connector.ready()) {
+        connect({ connector });
+
+        return;
+      }
+    },
+    [address, connectors]
   );
 
-  useEffect(() => {
-    if (notifications) {
-      // Give the number of tx that are loading
-      setTxLoading(
-        notifications.filter(
-          (notif: SQNotification<TransactionData>) =>
-            notif.data.status === "pending"
-        ).length
-      );
+  function disconnectByClick(): void {
+    disconnect();
+    setIsConnected(false);
+    setIsWrongNetwork(false);
+    setShowWallet(false);
+  }
+
+  function handleNav(): void {
+    setNav(!nav);
+  }
+
+  function onTopButtonClick(): void {
+    if (!isConnected) {
+      setHasWallet(true);
+    } else {
+      setShowWallet(true);
     }
-  }, [notifications]);
+  }
 
-  const copyAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setCopied(true);
-    navigator.clipboard.writeText(address ?? "");
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
+  function topButtonText(): string | undefined {
+    const textToReturn = isConnected ? domainOrAddressMinified : "connect";
 
-  const handleDisconnect = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    disconnectByClick();
-  };
+    return textToReturn;
+  }
 
-  const handleWalletChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setHovering(false);
-    setUnfocus(true);
-    setChangeWallet(true);
-  };
-
-  const handleOpenWebWallet = (e: React.MouseEvent<HTMLButtonElement>) => {
-    window.open(
-      network === "mainnet"
-        ? "https://web.argent.xyz"
-        : "https://web.hydrogen.argent47.net",
-      "_blank",
-      "noopener noreferrer"
-    );
+  const handleScroll = () => {
+    if (window.scrollY > 10) {
+      setNavbarBg(true);
+    } else {
+      setNavbarBg(false);
+    }
   };
 
   useEffect(() => {
-    if (!unfocus) return;
-    if (hovering) setUnfocus(false);
-    else setShowWallet(false);
-  }, [unfocus, hovering]);
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  function openNotificationModal(): void {
+    if (!address) return;
+    setShowNotifications(true);
+    updateReadStatus();
+  }
 
   return (
     <>
-      <div
-        className={styles.buttonContainer}
-        aria-label={address ? "connected" : "not connected"}
-        aria-selected={showWallet}
-        onBlur={() => setUnfocus(true)}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-      >
-        <Button
-          onClick={
-            address
-              ? () => setShowWallet(!showWallet)
-              : () => refreshAndShowWallet()
+      <div className={`fixed w-full z-20`} id="nav">
+        <div
+          className={`${styles.navbarContainer} ${
+            navbarBg ? styles.navbarScrolled : ""
+          }`}
+        >
+          <div className="ml-4">
+            <Link href="/" className="cursor-pointer">
+              <img
+                className="cursor-pointer"
+                src="/visuals/starknetquestLogo.svg"
+                alt="Starknet.id Logo"
+                width={70}
+                height={70}
+              />
+            </Link>
+          </div>
+          <div>
+            <ul className="hidden lg:flex uppercase items-center">
+              <Link href="/">
+                <li className={styles.menuItem}>Quests</li>
+              </Link>
+              <Link href="/achievements">
+                <li className={styles.menuItem}>Achievements</li>
+              </Link>
+              {address ? (
+                <>
+                  <Link
+                    href={`/${address ? addressOrDomain : "not-connected"}`}
+                  >
+                    <li className={styles.menuItem}>My land</li>
+                  </Link>
+                  <li
+                    className={styles.menuItem}
+                    onClick={openNotificationModal}
+                  >
+                    {unreadNotifications && address ? (
+                      <NotificationUnreadIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                        secondColor="#D32F2F"
+                      ></NotificationUnreadIcon>
+                    ) : (
+                      <NotificationIcon
+                        width="24"
+                        color={theme.palette.secondary.dark}
+                      />
+                    )}
+                  </li>
+                </>
+              ) : null}
+              <WalletButton
+                setShowWallet={setShowWallet}
+                showWallet={showWallet}
+                refreshAndShowWallet={() => setHasWallet(true)}
+                disconnectByClick={disconnectByClick}
+              />
+            </ul>
+            <div onClick={handleNav} className="lg:hidden">
+              <AiOutlineMenu
+                color={theme.palette.secondary.main}
+                size={25}
+                className="mr-3"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={
+            nav
+              ? "lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10"
+              : ""
           }
         >
-          <>
-            <div className="flex items-center justify-between">
-              <div className={styles.buttonTextSection}>
-                <p className={styles.buttonText}>{buttonName}</p>
-                {txLoading ? (
-                  <CircularProgress color="secondary" size={24} />
-                ) : null}
-                <div className={styles.buttonSeparator} />
+          <div
+            className={
+              nav
+                ? "fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in duration-500 flex justify-between flex-col"
+                : "fixed left-[-100%] top-0 p-10 ease-in h-screen flex justify-between flex-col"
+            }
+          >
+            <div className="h-full flex flex-col">
+              <div className="flex w-full items-center justify-between">
+                <div>
+                  <Link href="/">
+                    <img
+                      src="/visuals/starknetquestLogo.svg"
+                      alt="Starknet Quest Logo"
+                      width={70}
+                      height={70}
+                    />
+                  </Link>
+                </div>
+
+                <div
+                  onClick={handleNav}
+                  className="rounded-lg cursor-pointer p-1"
+                >
+                  <AiOutlineClose color={theme.palette.secondary.main} />
+                </div>
               </div>
-              <div className={styles.buttonIcon}>
-                {address ? (
-                  <Avatar address={address} />
-                ) : (
-                  <ProfilIcon
-                    width="32"
-                    color={theme.palette.background.default}
-                  />
-                )}
+              <div className="py-4 my-auto text-center font-extrabold">
+                <ul className="uppercase text-babe-blue">
+                  <Link href="/">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Quests
+                    </li>
+                  </Link>
+                  <Link href="/achievements">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Achievements
+                    </li>
+                  </Link>
+                  {address ? (
+                    <Link
+                      href={`/${address ? addressOrDomain : "not-connected"}`}
+                    >
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        My land
+                      </li>
+                    </Link>
+                  ) : null}
+                </ul>
               </div>
             </div>
-            {showWallet ? (
-              <div className={styles.walletMenu}>
-                <button onClick={copyAddress}>
-                  {copied ? (
-                    <VerifiedIcon width="24" />
-                  ) : (
-                    <CopyIcon width="24" />
-                  )}
-                  <p>Copy Address</p>
-                </button>
-                {isWebWallet && (
-                  <button onClick={handleOpenWebWallet}>
-                    <ArgentIcon width="24" />
-                    <p>Web wallet Dashboard</p>
-                  </button>
-                )}
-                <button onClick={handleWalletChange}>
-                  <Wallet width="24" />
-                  <p>Change Wallet</p>
-                </button>
-                <button onClick={handleDisconnect}>
-                  <LogoutIcon width="24" />
-                  <p>Disconnect</p>
-                </button>
+            <div className="flex flex-col items-center my-4 w-full">
+              <div className="text-background">
+                <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
               </div>
-            ) : null}
-          </>
-        </Button>
+              <div className="flex">
+                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                  <a
+                    href="https://twitter.com/starknet_quest"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FaTwitter size={28} color={theme.palette.secondary.main} />
+                  </a>
+                </div>
+                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                  <a
+                    href="https://discord.gg/byEGk6w6T6"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FaDiscord size={28} color={theme.palette.secondary.main} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <ChangeWallet
-        closeWallet={() => setChangeWallet(false)}
-        hasWallet={changeWallet}
+      <ModalMessage
+        open={isWrongNetwork}
+        title={"Wrong network"}
+        closeModal={() => setIsWrongNetwork(false)}
+        message={
+          <div className="mt-3 flex flex-col items-center justify-center text-center">
+            <p>
+              This app only supports Starknet {network}, you have to change your
+              network to be able use it.
+            </p>
+            <div className="mt-3">
+              <Button onClick={() => disconnectByClick()}>
+                {`Disconnect`}
+              </Button>
+            </div>
+          </div>
+        }
       />
+      <Wallets
+        closeWallet={() => setHasWallet(false)}
+        hasWallet={Boolean(hasWallet && !isWrongNetwork)}
+      />
+      {showNotifications ? (
+        <ModalNotifications
+          open={showNotifications}
+          closeModal={() => setShowNotifications(false)}
+          notifications={notifications}
+        />
+      ) : null}
     </>
   );
 };
 
-export default WalletButton;
+export default Navbar;

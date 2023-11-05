@@ -1,0 +1,53 @@
+.leaderboard_heading {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.18px;
+}
+
+.chip_list {
+  display: grid;
+  grid-template-columns: 3;
+  gap: 8px;
+  border-radius: 24px;
+}
+
+
+.leaderboardSkeleton {
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.leaderboardLoading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+}
+
+
+.percentile_text_normal {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #A6A5A7;
+}
+
+
+.percentile_text_green {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: #6AFFAF;
+}
+
+.percentile_text_container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  width: 100%;
+}

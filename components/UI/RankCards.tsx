@@ -29,7 +29,7 @@ export default function RankCards(props: RankCardsProps) {
       <div className="absolute top-0 -translate-y-4">
         <Image src={iconMap[position]} priority />
       </div>
-      <div>{useDisplayName(name)}</div>
+      <div>{minifyAddress(name)}</div>
       <Divider />
       <div className="flex justify-around gap-4">
         <div className="flex flex-col gap-2 items-center">
