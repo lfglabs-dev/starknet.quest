@@ -20,7 +20,7 @@
 
 .questList {
   display: flex;
-  gap: 1rem;
+  gap: 48px;
   margin-top: 2rem;
   flex-wrap: wrap;
   display: flex;
@@ -32,4 +32,10 @@
   left: 0;
   top: 0;
   z-index: -1;
+}
+
+.questListContainer {
+  display: block;
+  margin: 0 auto;
+  width: calc(290px * 3 + 48px * 2);
 }
