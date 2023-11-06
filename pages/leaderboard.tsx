@@ -85,6 +85,7 @@ const Rankings = (props: {
 
   // this will run whenever the rankings are fetched and the data is updated
   useEffect(() => {
+    if (!data) return;
     if (!(Object.keys(data).length > 0)) return;
     const res: FormattedRankingProps = data?.ranking;
     const makeCall = async () => {
@@ -278,8 +279,7 @@ export default function Leaderboard() {
       },
     });
 
-  const address =
-    "804388756904569972460955916013815525033312120440152538849502850576260523679";
+  const address = userAddress;
 
   const handleChangeSelection = (title: string) => {
     setDuration(title);
@@ -384,11 +384,11 @@ export default function Leaderboard() {
   useEffect(() => {
     // check if the user has position on the leaderboard
     if (
-      !leaderboardToppers[
+      !leaderboardToppers?.[
         timeFrameMap[
           duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ].position
+      ]?.position
     ) {
       setUserPercentile(-1);
       return;
@@ -400,12 +400,12 @@ export default function Leaderboard() {
         timeFrameMap[
           duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ].position ?? 0,
+      ]?.position ?? 0,
       leaderboardToppers[
         timeFrameMap[
           duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ].length ?? 0
+      ]?.length ?? 0
     );
     setUserPercentile(res);
   }, [leaderboardToppers]);
@@ -473,11 +473,18 @@ export default function Leaderboard() {
               </div>
             ) : null}
             <Divider />
-            <Rankings
-              data={ranking}
-              paginationLoading={paginationLoading}
-              setPaginationLoading={setPaginationLoading}
-            />
+            {ranking ? (
+              <Rankings
+                data={ranking}
+                paginationLoading={paginationLoading}
+                setPaginationLoading={setPaginationLoading}
+              />
+            ) : (
+              <div className="flex justify-center items-center">
+                No results found!
+              </div>
+            )}
+
             <ControlsDashboard
               ranking={ranking}
               handlePagination={handlePagination}
