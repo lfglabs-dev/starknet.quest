@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import Divider from "../components/UI/Divider";
 import RankCards from "../components/UI/RankCards";
@@ -24,6 +24,7 @@ import Searchbar from "../components/leaderboard/searchbar";
 import RankingSkeleton from "../components/skeletons/rankingSkeleton";
 import { minifyAddress } from "../utils/stringService";
 
+// declare types
 type RankingData = {
   first_elt_position: number;
   ranking: { address: string; xp: number; achievements: number }[];
@@ -33,21 +34,20 @@ type LeaderboardToppersData = {
   weekly: {
     best_users: { address: string; xp: number; achievements: number }[];
     length: number;
-    position: number;
+    position?: number;
   };
   monthly: {
     best_users: { address: string; xp: number; achievements: number }[];
     length: number;
-    position: number;
+    position?: number;
   };
   all_time: {
     best_users: { address: string; xp: number; achievements: number }[];
     length: number;
-    position: number;
+    position?: number;
   };
 };
 
-// Define additional props for AnotherComponent
 type FormattedRankingProps = {
   address: string;
   xp: number;
@@ -55,12 +55,14 @@ type FormattedRankingProps = {
   completedQuests?: number;
 }[];
 
+// used to map the time frame to the api call
 const timeFrameMap = {
   "Last 7 Days": "weekly",
   "Last 30 Days": "monthly",
   "All time": "all_time",
 };
 
+// show leaderboard ranking table
 const Rankings = (props: {
   data: {
     first_elt_position: number;
@@ -69,18 +71,24 @@ const Rankings = (props: {
   loading: boolean;
   setPaginationLoading: (_: boolean) => void;
 }) => {
+  // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
+
+  // make single digit numbers to double digit
   const addNumberPadding = (num: number) => {
     return num > 9 ? num : `0${num}`;
   };
+
   const { loading, data, setPaginationLoading } = props;
 
+  // this will run whenever the rankings are fetched and the data is updated
   useEffect(() => {
     if (!(Object.keys(data).length > 0)) return;
     const res: FormattedRankingProps = data?.ranking;
     const makeCall = async () => {
       await Promise.all(
         await res?.map(async (item) => {
+          // fetch completed quests and add to the display data
           const response = await getCompletedQuestsOfUser(item?.address);
           item.completedQuests = response.length;
         })
@@ -131,6 +139,7 @@ const Rankings = (props: {
   );
 };
 
+// this will contain the pagination arrows and page size limit controls
 const ControlDashboard = (props: {
   ranking: RankingData;
   handlePagination: (_: string) => void;
@@ -191,7 +200,7 @@ const ControlDashboard = (props: {
             className="cursor-pointer"
             onClick={() => {
               if (ranking.first_elt_position == 1) return;
-              handlePagination("less");
+              handlePagination("prev");
             }}
           >
             <Image
@@ -228,41 +237,38 @@ export default function Leaderboard() {
   const { address: userAddress } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
-  const [selected, setSelected] = useState("Last 7 Days");
-  const [ranking, setRanking] = useState({
+  const [duration, setDuration] = useState<string>("Last 7 Days");
+  const [userPercentile, setUserPercentile] = useState<number>(100);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchAddress, setSearchAddress] = useState<string>("");
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
   });
-  const [userPercentile, setUserPercentile] = useState(100);
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
       weekly: {
         best_users: [],
         length: 0,
-        position: 0,
       },
       monthly: {
         best_users: [],
         length: 0,
-        position: 0,
       },
       all_time: {
         best_users: [],
         length: 0,
-        position: 0,
       },
     });
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchAddress, setSearchAddress] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [paginationLoading, setPaginationLoading] = useState(false);
 
   const address = userAddress;
 
   const handleChangeSelection = (title: string) => {
-    setSelected(title);
+    setDuration(title);
   };
 
   // const getStatus = async (name: string) => {
@@ -274,6 +280,7 @@ export default function Leaderboard() {
 
   // };
 
+  // on user typing
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     // const valid = isStarkDomain(query);
@@ -289,12 +296,14 @@ export default function Leaderboard() {
     // if (valid !== true) return;
   };
 
+  // on user Press enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       setSearchAddress(searchQuery);
     }
   };
 
+  // fetch initial data on page load
   useEffect(() => {
     const makeCall = async () => {
       setLoading(true);
@@ -308,7 +317,7 @@ export default function Leaderboard() {
 
       const rankingData = await fetchLeaderboardRankings(requestBody);
       const topperData = await fetchLeaderboardToppers({
-        addr: requestBody.addr,
+        addr: address ? address : "",
       });
 
       setRanking(rankingData);
@@ -320,7 +329,7 @@ export default function Leaderboard() {
   }, []);
 
   const getTimeRange = () => {
-    switch (selected) {
+    switch (duration) {
       case "Last 7 Days":
         return {
           start_timestamp: new Date().setDate(new Date().getDate() - 7),
@@ -337,6 +346,7 @@ export default function Leaderboard() {
           end_timestamp: new Date().getTime(),
         };
       default:
+        // be default return weekly data
         return {
           start_timestamp: new Date().setDate(new Date().getDate() - 7),
           end_timestamp: new Date().getTime(),
@@ -344,6 +354,10 @@ export default function Leaderboard() {
     }
   };
 
+  /*
+    fetch data whenever page size , page number changes, 
+    duration  changes, search address changes
+  */
   useEffect(() => {
     if (!address) return;
     const requestBody = {
@@ -360,28 +374,44 @@ export default function Leaderboard() {
     };
 
     fetchRankings();
-  }, [rowsPerPage, currentPage, selected, searchAddress]);
+  }, [rowsPerPage, currentPage, duration, searchAddress]);
 
+  // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
     if (type === "next") {
       setCurrentPage((prev) => prev + 1);
     } else {
+      // type==='prev' is this case
       setCurrentPage((prev) => prev - 1);
     }
   };
 
+  // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
+    // check if the user has position on the leaderboard
+    if (
+      !leaderboardToppers[
+        timeFrameMap[
+          duration as keyof typeof timeFrameMap
+        ] as keyof typeof leaderboardToppers
+      ].position
+    ) {
+      setUserPercentile(-1);
+      return;
+    }
+
+    // calculate user percentile
     const res = calculatePercentile(
       leaderboardToppers[
         timeFrameMap[
-          selected as keyof typeof timeFrameMap
+          duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ]?.position,
+      ].position ?? 0,
       leaderboardToppers[
         timeFrameMap[
-          selected as keyof typeof timeFrameMap
+          duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ]?.length
+      ].length ?? 0
     );
     setUserPercentile(res);
   }, [leaderboardToppers]);
@@ -420,7 +450,7 @@ export default function Leaderboard() {
                 style={{ flex: 1 }}
               >
                 <ChipList
-                  selected={selected}
+                  selected={duration}
                   handleChangeSelection={handleChangeSelection}
                   tags={["Last 7 Days", "Last 30 Days", "All time"]}
                 />
@@ -433,7 +463,9 @@ export default function Leaderboard() {
                 />
               </div>
             </div>
-            {userPercentile ? (
+
+            {/* this will be displayed if user is present otherwise will not be displayed */}
+            {userPercentile >= 0 ? (
               <div className={styles.percentile_text_container}>
                 <p className={styles.percentile_text_normal}>
                   {address === userAddress ? "You are" : "He is"}
@@ -458,14 +490,14 @@ export default function Leaderboard() {
               leaderboardToppers={leaderboardToppers}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
-              selected={selected}
+              selected={duration}
             />
             <Divider />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {leaderboardToppers
                 ? leaderboardToppers[
                     timeFrameMap[
-                      selected as keyof typeof timeFrameMap
+                      duration as keyof typeof timeFrameMap
                     ] as keyof typeof leaderboardToppers
                   ]?.best_users?.map((item, index) => (
                     <RankCards
