@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import Divider from "../components/UI/Divider";
 import RankCards from "../components/UI/RankCards";
@@ -15,18 +15,51 @@ import XpBadge from "../public/icons/xpBadge.svg";
 import { calculatePercentile } from "../utils/numberService";
 import Avatar from "../components/UI/avatar";
 import styles from "../styles/leaderboard.module.css";
-import { useAccount, useProvider } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import LeaderboardSkeleton from "../components/skeletons/leaderboardSkeleton";
 import FeaturedQuest from "../components/UI/featured_banner/featuredQuest";
 import { QuestsContext } from "../context/QuestsProvider";
 import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
 import RankingSkeleton from "../components/skeletons/rankingSkeleton";
-import { useDisplayName } from "../hooks/displayName.tsx";
-import { decimalToHex } from "../utils/feltService";
-import { starknetId } from "starknet";
-import { useDomainFromAddress } from "../hooks/naming";
 import { minifyAddress } from "../utils/stringService";
+
+type RankingData = {
+  first_elt_position: number;
+  ranking: { address: string; xp: number; achievements: number }[];
+};
+
+type LeaderboardToppersData = {
+  weekly: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position: number;
+  };
+  monthly: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position: number;
+  };
+  all_time: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position: number;
+  };
+};
+
+// Define additional props for AnotherComponent
+type FormattedRankingProps = {
+  address: string;
+  xp: number;
+  achievements: number;
+  completedQuests?: number;
+}[];
+
+const timeFrameMap = {
+  "Last 7 Days": "weekly",
+  "Last 30 Days": "monthly",
+  "All time": "all_time",
+};
 
 const Rankings = (props: {
   data: {
@@ -36,7 +69,7 @@ const Rankings = (props: {
   loading: boolean;
   setPaginationLoading: (_: boolean) => void;
 }) => {
-  const [displayData, setDisplayData] = useState(props.data.ranking);
+  const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
   const addNumberPadding = (num: number) => {
     return num > 9 ? num : `0${num}`;
   };
@@ -44,7 +77,7 @@ const Rankings = (props: {
 
   useEffect(() => {
     if (!(Object.keys(data).length > 0)) return;
-    const res = data?.ranking;
+    const res: FormattedRankingProps = data?.ranking;
     const makeCall = async () => {
       await Promise.all(
         await res?.map(async (item) => {
@@ -52,20 +85,20 @@ const Rankings = (props: {
           item.completedQuests = response.length;
         })
       );
-      setDisplayData(data.ranking);
+      setDisplayData(res);
       setPaginationLoading(false);
     };
     makeCall();
-  }, [props]);
+  }, [data]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-1">
       {loading ? (
         <RankingSkeleton />
       ) : (
         displayData?.map((item, index) => (
           <div
-            key={index}
+            key={item.address}
             className="grid grid-cols-2 py-2 items-center justify-center"
           >
             <div
@@ -82,7 +115,7 @@ const Rankings = (props: {
                 <p className="text-white">{minifyAddress(item.address)}</p>
               </div>
             </div>
-            <div className="flex flex-col w-full gap-2" style={{ flex: 0.9 }}>
+            <div className="flex flex-col w-full gap-1" style={{ flex: 0.9 }}>
               <div className="flex w-full gap-4 items-center justify-end">
                 <Image src={XpBadge} priority width={35} height={35} />
                 <p className="text-white text-center">{item.xp}</p>
@@ -98,14 +131,22 @@ const Rankings = (props: {
   );
 };
 
-const ControlDashboard = ({
-  ranking,
-  handlePagination,
-  rowsPerPage,
-  setRowsPerPage,
-  leaderboardToppers,
-  selected,
+const ControlDashboard = (props: {
+  ranking: RankingData;
+  handlePagination: (_: string) => void;
+  rowsPerPage: number;
+  setRowsPerPage: (_: number) => void;
+  leaderboardToppers: LeaderboardToppersData;
+  selected: string;
 }) => {
+  const {
+    ranking,
+    handlePagination,
+    rowsPerPage,
+    setRowsPerPage,
+    leaderboardToppers,
+    selected,
+  } = props;
   const [showMenu, setShowMenu] = useState(false);
   return (
     <div className="w-full flex flex-row justify-between items-center">
@@ -164,7 +205,11 @@ const ControlDashboard = ({
             onClick={() => {
               if (
                 ranking.first_elt_position + ranking.ranking.length >=
-                leaderboardToppers[selected]?.length
+                leaderboardToppers[
+                  timeFrameMap[
+                    selected as keyof typeof timeFrameMap
+                  ] as keyof typeof leaderboardToppers
+                ]?.length
               )
                 return;
               handlePagination("next");
@@ -184,20 +229,37 @@ export default function Leaderboard() {
   const { featuredQuest } = useContext(QuestsContext);
 
   const [selected, setSelected] = useState("Last 7 Days");
-  const [ranking, setRanking] = useState({});
+  const [ranking, setRanking] = useState({
+    first_elt_position: 0,
+    ranking: [],
+  });
   const [userPercentile, setUserPercentile] = useState(100);
-  const [leaderboardToppers, setLeaderboardToppers] = useState({});
+  const [leaderboardToppers, setLeaderboardToppers] =
+    useState<LeaderboardToppersData>({
+      weekly: {
+        best_users: [],
+        length: 0,
+        position: 0,
+      },
+      monthly: {
+        best_users: [],
+        length: 0,
+        position: 0,
+      },
+      all_time: {
+        best_users: [],
+        length: 0,
+        position: 0,
+      },
+    });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchAddress, setSearchAddress] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const controllerRef = useRef<AbortController | null>(null);
   const [paginationLoading, setPaginationLoading] = useState(false);
-  const { provider } = useProvider();
 
-  const address =
-    "1427513549698795557542165358506320134139612258664820982508681301862731579008";
+  const address = userAddress;
 
   const handleChangeSelection = (title: string) => {
     setSelected(title);
@@ -250,11 +312,7 @@ export default function Leaderboard() {
       });
 
       setRanking(rankingData);
-      setLeaderboardToppers({
-        "Last 7 Days": topperData.weekly,
-        "Last 30 Days": topperData.monthly,
-        "All time": topperData.all_time,
-      });
+      setLeaderboardToppers(topperData);
       setLoading(false);
     };
 
@@ -314,19 +372,29 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const res = calculatePercentile(
-      leaderboardToppers[selected as keyof typeof leaderboardToppers]?.position,
-      leaderboardToppers[selected as keyof typeof leaderboardToppers]?.length
+      leaderboardToppers[
+        timeFrameMap[
+          selected as keyof typeof timeFrameMap
+        ] as keyof typeof leaderboardToppers
+      ]?.position,
+      leaderboardToppers[
+        timeFrameMap[
+          selected as keyof typeof timeFrameMap
+        ] as keyof typeof leaderboardToppers
+      ]?.length
     );
     setUserPercentile(res);
   }, [leaderboardToppers]);
 
   return (
-    <div className="p-6 md:py-32 flex flex-col w-full justify-center items-center">
+    <div className="p-6 md:py-32 flex flex-col w-full justify-center items-center ">
       {loading ? (
-        <LeaderboardSkeleton />
+        <div className="flex w-full mt-[12vh] md:mt-0 max-w-[1250px]">
+          <LeaderboardSkeleton />
+        </div>
       ) : (
         <>
-          <div className="max-w-[1250px] flex w-full justify-center">
+          <div className="max-w-[1250px] flex w-full justify-center mt-[12vh] md:mt-0">
             <FeaturedQuest
               heading="Are you ready for this quest?"
               key={featuredQuest?.id}
@@ -396,7 +464,9 @@ export default function Leaderboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {leaderboardToppers
                 ? leaderboardToppers[
-                    selected as keyof typeof leaderboardToppers
+                    timeFrameMap[
+                      selected as keyof typeof timeFrameMap
+                    ] as keyof typeof leaderboardToppers
                   ]?.best_users?.map((item, index) => (
                     <RankCards
                       position={index + 1}
