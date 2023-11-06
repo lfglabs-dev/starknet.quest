@@ -23,6 +23,8 @@ import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
 import RankingSkeleton from "../components/skeletons/rankingSkeleton";
 import { minifyAddress } from "../utils/stringService";
+import { getDomainFromAddress } from "../utils/domainService";
+import { decimalToHex } from "../utils/feltService";
 
 // declare types
 type RankingData = {
@@ -68,7 +70,7 @@ const Rankings = (props: {
     first_elt_position: number;
     ranking: { address: string; xp: number; achievements: number }[];
   };
-  loading: boolean;
+  paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
 }) => {
   // used to format the data to be displayed
@@ -79,7 +81,7 @@ const Rankings = (props: {
     return num > 9 ? num : `0${num}`;
   };
 
-  const { loading, data, setPaginationLoading } = props;
+  const { data, setPaginationLoading, paginationLoading } = props;
 
   // this will run whenever the rankings are fetched and the data is updated
   useEffect(() => {
@@ -89,8 +91,19 @@ const Rankings = (props: {
       await Promise.all(
         await res?.map(async (item) => {
           // fetch completed quests and add to the display data
-          const response = await getCompletedQuestsOfUser(item?.address);
-          item.completedQuests = response.length;
+          const completedQuestsResponse = await getCompletedQuestsOfUser(
+            item?.address
+          );
+          item.completedQuests = completedQuestsResponse?.length;
+
+          // get the domain name from the address
+          const hexAddress = decimalToHex(item.address);
+          const domainName = await getDomainFromAddress(hexAddress);
+          if (domainName.length > 0) {
+            item.address = domainName;
+          } else {
+            item.address = minifyAddress(hexAddress);
+          }
         })
       );
       setDisplayData(res);
@@ -101,7 +114,7 @@ const Rankings = (props: {
 
   return (
     <div className="flex flex-col gap-1">
-      {loading ? (
+      {paginationLoading ? (
         <RankingSkeleton />
       ) : (
         displayData?.map((item, index) => (
@@ -120,7 +133,7 @@ const Rankings = (props: {
               </div>
               <div className="flex flex-1 gap-2 md:gap-6 items-center">
                 <Avatar address={item.address} width="32" />
-                <p className="text-white">{minifyAddress(item.address)}</p>
+                <p className="text-white">{item.address}</p>
               </div>
             </div>
             <div className="flex flex-col w-full gap-1" style={{ flex: 0.9 }}>
@@ -462,7 +475,7 @@ export default function Leaderboard() {
             <Divider />
             <Rankings
               data={ranking}
-              loading={paginationLoading}
+              paginationLoading={paginationLoading}
               setPaginationLoading={setPaginationLoading}
             />
             <ControlsDashboard
