@@ -63,31 +63,65 @@ const Achievements: NextPage = () => {
     const checkAchievements = async () => {
       const promises = userAchievements.map(
         async (achievementCategory, index) => {
-          const achievementsPromises = achievementCategory.achievements.map(
-            async (achievement, aIndex) => {
-              if (!achievement.completed) {
-                try {
-                  const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
-                      achievement.verify_type
-                    }?addr=${hexToDecimal(address)}&id=${achievement.id}`
-                  );
-                  const data: CompletedDocument = await response.json();
+          console.log("achievementCategory", achievementCategory);
+          // If the achievement has a function to batch verifications we use it
+          if (achievementCategory.category_override_verified_type) {
+            const needsVerify = achievementCategory.achievements.filter(
+              (achievement) => !achievement.completed
+            );
+            if (needsVerify.length > 0) {
+              try {
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_LINK}/achievements/${
+                    achievementCategory.category_override_verified_type
+                  }?addr=${hexToDecimal(address)}&category_id=${
+                    achievementCategory.category_id
+                  }`
+                );
+                const data: CompletedDocument = await response.json();
 
-                  if (data?.achieved) {
-                    const newUserAchievements = [...userAchievements];
-                    newUserAchievements[index].achievements[aIndex].completed =
-                      true;
-                    setUserAchievements(newUserAchievements);
-                  }
-                } catch (error) {
-                  console.error("Fetch error:", error);
-                }
+                console.log("data", data);
+
+                // if (data?.achieved) {
+                //   const newUserAchievements = [...userAchievements];
+                //   newUserAchievements[index].achievements[aIndex].completed =
+                //     true;
+                //   setUserAchievements(newUserAchievements);
+                // }
+              } catch (error) {
+                console.error("Fetch error:", error);
               }
             }
-          );
+          } else {
+            // otherwise we check each achievement individually
+            const achievementsPromises = achievementCategory.achievements.map(
+              async (achievement, aIndex) => {
+                if (!achievement.completed) {
+                  try {
+                    const response = await fetch(
+                      `${
+                        process.env.NEXT_PUBLIC_API_LINK
+                      }/achievements/verify_${
+                        achievement.verify_type
+                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+                    );
+                    const data: CompletedDocument = await response.json();
 
-          await Promise.all(achievementsPromises);
+                    if (data?.achieved) {
+                      const newUserAchievements = [...userAchievements];
+                      newUserAchievements[index].achievements[
+                        aIndex
+                      ].completed = true;
+                      setUserAchievements(newUserAchievements);
+                    }
+                  } catch (error) {
+                    console.error("Fetch error:", error);
+                  }
+                }
+              }
+            );
+            await Promise.all(achievementsPromises);
+          }
         }
       );
 

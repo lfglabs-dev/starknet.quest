@@ -73,10 +73,12 @@ export interface TwitterRequestProps {
 export type CustomTwitterNextApiRequest = NextApiRequest & TwitterRequestProps;
 
 type AchievementsDocument = {
+  category_id: number;
   category_name: string;
   category_desc: string;
   category_img_url: string;
   category_type: string;
+  category_override_verified_type: string | null;
   achievements: AchievementDocument[];
 };
 
