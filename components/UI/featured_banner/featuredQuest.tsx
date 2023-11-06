@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/quests.module.css";
-import Button from "../UI/button";
+import styles from "../../../styles/quests.module.css";
+import Button from "../..//UI/button";
 import { useMediaQuery } from "@mui/material";
-import FeaturedQuestSkeleton from "../skeletons/featuredQuestSkeleton";
-import Timer from "./timer";
+import FeaturedQuestSkeleton from "../../skeletons/featuredQuestSkeleton";
+import Timer from "../../quests/timer";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -13,6 +13,7 @@ type FeaturedQuestProps = {
   reward?: string;
   desc?: string;
   expiry: string | null | undefined;
+  heading: string;
 };
 
 const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
@@ -23,13 +24,14 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   reward,
   desc,
   expiry,
+  heading,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
 
   return onClick ? (
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
-        <p className="mt-2 text-start">Featured</p>
+        <p className="mt-2 text-start">{heading}</p>
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
         <p className="text-gray-200	 mt-4 text-start">{desc}</p>
         <div className="flex mt-4 mb-4 items-center">

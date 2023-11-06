@@ -176,6 +176,9 @@ const Navbar: FunctionComponent = () => {
               <Link href="/achievements">
                 <li className={styles.menuItem}>Achievements</li>
               </Link>
+              <Link href="/leaderboard">
+                <li className={styles.menuItem}>Leaderboard</li>
+              </Link>
               {address ? (
                 <>
                   <Link
@@ -283,6 +286,14 @@ const Navbar: FunctionComponent = () => {
                       </li>
                     </Link>
                   ) : null}
+                  <Link href="/leaderboard">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Leaderboard
+                    </li>
+                  </Link>
                 </ul>
               </div>
             </div>

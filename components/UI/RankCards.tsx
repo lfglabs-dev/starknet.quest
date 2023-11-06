@@ -6,6 +6,7 @@ import { minifyAddress } from "../../utils/stringService";
 import AchievementGold from "../../public/icons/achievementGold.svg";
 import AchievementBronze from "../../public/icons/achievementBronze.svg";
 import Trophy from "../../public/icons/trophy.svg";
+import XpBadge from "../../public/icons/xpBadge.svg";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 
 type RankCardsProps = {
@@ -31,13 +32,13 @@ export default function RankCards(props: RankCardsProps) {
       </div>
       <div>{minifyAddress(name)}</div>
       <Divider />
-      <div className="flex justify-around gap-4">
+      <div className="flex justify-around gap-6">
         <div className="flex flex-col gap-2 items-center">
-          <Image src={Trophy} priority />
+          <Image src={XpBadge} priority width={30} height={30} />
           <p>{experience}</p>
         </div>
         <div className="flex flex-col gap-2 items-center">
-          <Image src={Trophy} priority />
+          <Image src={Trophy} priority width={30} height={30} />
           <p>{trophy}</p>
         </div>
       </div>

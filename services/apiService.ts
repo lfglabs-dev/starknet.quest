@@ -1,3 +1,5 @@
+import { hexToDecimal } from "../utils/feltService";
+
 type LeaderboardTopperParams = {
   addr: string;
 };
@@ -9,6 +11,8 @@ type LeaderboardRankingParams = {
   start_timestamp: number;
   end_timestamp: number;
 };
+
+const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 
 export const fetchLeaderboardToppers = async (
   params: LeaderboardTopperParams
@@ -26,6 +30,13 @@ export const fetchLeaderboardRankings = async (
   const { addr, page_size, shift, start_timestamp, end_timestamp } = params;
   const response = await fetch(
     `http://0.0.0.0:8080/leaderboard/get_ranking?addr=${addr}&page_size=${page_size}&shift=${shift}&start_timestamp=${start_timestamp}&end_timestamp=${end_timestamp}`
+  );
+  return await response.json();
+};
+
+export const getCompletedQuestsOfUser = async (address: string) => {
+  const response = await fetch(
+    `http://0.0.0.0:8080/get_completed_quests?addr=${address}`
   );
   return await response.json();
 };
