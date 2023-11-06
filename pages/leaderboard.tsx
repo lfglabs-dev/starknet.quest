@@ -140,13 +140,13 @@ const Rankings = (props: {
 };
 
 // this will contain the pagination arrows and page size limit controls
-const ControlDashboard = (props: {
+const ControlsDashboard = (props: {
   ranking: RankingData;
   handlePagination: (_: string) => void;
   rowsPerPage: number;
   setRowsPerPage: (_: number) => void;
   leaderboardToppers: LeaderboardToppersData;
-  selected: string;
+  duration: string;
 }) => {
   const {
     ranking,
@@ -154,7 +154,7 @@ const ControlDashboard = (props: {
     rowsPerPage,
     setRowsPerPage,
     leaderboardToppers,
-    selected,
+    duration,
   } = props;
   const [showMenu, setShowMenu] = useState(false);
   return (
@@ -216,7 +216,7 @@ const ControlDashboard = (props: {
                 ranking.first_elt_position + ranking.ranking.length >=
                 leaderboardToppers[
                   timeFrameMap[
-                    selected as keyof typeof timeFrameMap
+                    duration as keyof typeof timeFrameMap
                   ] as keyof typeof leaderboardToppers
                 ]?.length
               )
@@ -265,35 +265,16 @@ export default function Leaderboard() {
       },
     });
 
-  const address = userAddress;
+  const address =
+    "804388756904569972460955916013815525033312120440152538849502850576260523679";
 
   const handleChangeSelection = (title: string) => {
     setDuration(title);
   };
 
-  // const getStatus = async (name: string) => {
-  //   const currentTimeStamp = new Date().getTime() / 1000;
-  //   const encoded = name
-  //     ? encodeDomain(name).map((elem) => elem.toString())
-  //     : [];
-  //   return new Promise((resolve, reject) => {
-
-  // };
-
   // on user typing
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    // const valid = isStarkDomain(query);
-    // getStatus(query)
-    //   .then((result) => {
-    //     console.log({ result });
-    //   })
-    //   .catch((error) => {
-    //     if (error.name !== "AbortError") {
-    //       console.error("An unexpected error occurred:", error);
-    //     }
-    //   });
-    // if (valid !== true) return;
   };
 
   // on user Press enter
@@ -484,13 +465,13 @@ export default function Leaderboard() {
               loading={paginationLoading}
               setPaginationLoading={setPaginationLoading}
             />
-            <ControlDashboard
+            <ControlsDashboard
               ranking={ranking}
               handlePagination={handlePagination}
               leaderboardToppers={leaderboardToppers}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
-              selected={duration}
+              duration={duration}
             />
             <Divider />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
