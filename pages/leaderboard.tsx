@@ -474,25 +474,27 @@ export default function Leaderboard() {
             ) : null}
             <Divider />
             {ranking ? (
-              <Rankings
-                data={ranking}
-                paginationLoading={paginationLoading}
-                setPaginationLoading={setPaginationLoading}
-              />
+              <>
+                <Rankings
+                  data={ranking}
+                  paginationLoading={paginationLoading}
+                  setPaginationLoading={setPaginationLoading}
+                />
+                <ControlsDashboard
+                  ranking={ranking}
+                  handlePagination={handlePagination}
+                  leaderboardToppers={leaderboardToppers}
+                  rowsPerPage={rowsPerPage}
+                  setRowsPerPage={setRowsPerPage}
+                  duration={duration}
+                />
+              </>
             ) : (
               <div className="flex justify-center items-center">
                 No results found!
               </div>
             )}
 
-            <ControlsDashboard
-              ranking={ranking}
-              handlePagination={handlePagination}
-              leaderboardToppers={leaderboardToppers}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              duration={duration}
-            />
             <Divider />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {leaderboardToppers
