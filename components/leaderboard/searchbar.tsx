@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SearchIcon from "../../public/icons/searchIcon.svg";
 import Image from "next/image";
 import styles from "../../styles/leaderboard.module.css";
 import CrossIcon from "../../public/icons/cross.svg";
+import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
+import { hexToDecimal } from "../../utils/feltService";
 
 export default function Searchbar(props: {
   handleChange: (_: string) => void;
@@ -16,6 +18,8 @@ export default function Searchbar(props: {
   const [showSuggestions, setShowSuggestions] = useState(
     suggestions?.length > 0
   );
+
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -38,9 +42,16 @@ export default function Searchbar(props: {
     };
   }, []);
 
-  useEffect(() => {
-    console.log({ suggestions, showSuggestions });
-  }, [suggestions, showSuggestions]);
+  const handleOptionClick = async (option: string) => {
+    const addr = await starknetIdNavigator
+      ?.getAddressFromStarkName(option)
+      .catch((err) => {
+        return "";
+      });
+    if (!addr) return;
+    handleSuggestionClick(hexToDecimal(addr));
+  };
+
   return (
     <div className="relative gap-2 z-50">
       <div className={styles.search_bar_container}>
@@ -71,11 +82,7 @@ export default function Searchbar(props: {
             <div
               className="flex cursor-pointer"
               key={index}
-              onClick={() =>
-                handleSuggestionClick(
-                  "804388756904569972460955916013815525033312120440152538849502850576260523679"
-                )
-              }
+              onClick={() => handleOptionClick(suggestion)}
             >
               <p>{suggestion}</p>
             </div>

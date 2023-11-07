@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import Divider from "../components/UI/Divider";
 import RankCards from "../components/UI/RankCards";
@@ -22,10 +22,15 @@ import { QuestsContext } from "../context/QuestsProvider";
 import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
 import RankingSkeleton from "../components/skeletons/rankingSkeleton";
-import { minifyAddress } from "../utils/stringService";
+import { getDomainWithoutStark, minifyAddress } from "../utils/stringService";
 import { getDomainFromAddress } from "../utils/domainService";
-import { decimalToHex } from "../utils/feltService";
+import { decimalToHex, hexToDecimal } from "../utils/feltService";
 import { useDebounce } from "../hooks/useDebounce";
+import { Abi, Contract, Provider, starknetId } from "starknet";
+import naming_abi from "../abi/naming_abi.json";
+import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
+import { utils } from "starknetid.js";
+import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 
 // declare types
 type RankingData = {
@@ -57,18 +62,6 @@ type FormattedRankingProps = {
   achievements: number;
   completedQuests?: number;
 }[];
-
-const sampleDomains = ["ayush.stark", "ayushtom.stark"];
-
-// Simulated API function
-function verifyDomain(domain: string, delay = 1000) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const res = sampleDomains.includes(domain);
-      resolve(res);
-    }, delay);
-  });
-}
 
 // used to map the time frame to the api call
 const timeFrameMap = {
@@ -282,7 +275,9 @@ export default function Leaderboard() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [showNoResultsFound, setShowNoResultsFound] = useState(true);
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
@@ -303,7 +298,30 @@ export default function Leaderboard() {
       },
     });
 
-  const address = userAddress;
+  const contract = useMemo(() => {
+    return new Contract(
+      naming_abi as Abi,
+      process.env.NEXT_PUBLIC_NAMING_CONTRACT as string,
+      starknetIdNavigator?.provider as Provider
+    );
+  }, [starknetIdNavigator?.provider]);
+
+  // contract call to check if typed domain is taken
+  async function verifyDomain(domain: string): Promise<{ message: boolean }> {
+    if (!domain) return { message: false };
+    const currentTimeStamp = new Date().getTime() / 1000;
+    const encoded = utils.encodeDomain(domain).map((elem) => elem.toString());
+    const res = await contract?.call("domain_to_expiry", [encoded]);
+    if (Number(res?.["expiry" as keyof typeof res]) < currentTimeStamp) {
+      return {
+        message: false,
+      };
+    } else {
+      return {
+        message: true,
+      };
+    }
+  }
 
   // on user selecting duration
   const handleChangeSelection = (title: string) => {
@@ -317,11 +335,20 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const checkIfValidAddress = async (address: string) => {
-      const res = await verifyDomain(address);
-      const suggestions = [];
-      if (res) {
-        suggestions.push(address);
-        setSearchResults(suggestions);
+      try {
+        let domain = address;
+        if (isStarkDomain(address)) {
+          domain = getDomainWithoutStark(address);
+        }
+        const res: { message: boolean } = await verifyDomain(domain);
+        if (res.message) {
+          setSearchResults([domain.concat(".stark")]);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (err) {
+        console.log(err);
+        setSearchResults([]);
       }
     };
 
@@ -342,17 +369,23 @@ export default function Leaderboard() {
   useEffect(() => {
     const makeCall = async () => {
       setLoading(true);
+      const address =
+        currentSearchedAddress.length > 0
+          ? hexToDecimal(currentSearchedAddress)
+          : userAddress
+          ? hexToDecimal(userAddress)
+          : "";
       const requestBody = {
-        addr: address ? address : "",
-        page_size: 10,
-        shift: 0,
+        addr: address,
+        page_size: rowsPerPage,
+        shift: currentPage,
         start_timestamp: new Date().setDate(new Date().getDate() - 7),
         end_timestamp: new Date().getTime(),
       };
 
       const rankingData = await fetchLeaderboardRankings(requestBody);
       const topperData = await fetchLeaderboardToppers({
-        addr: address ? address : "",
+        addr: address,
       });
 
       setRanking(rankingData);
@@ -361,7 +394,7 @@ export default function Leaderboard() {
     };
 
     makeCall();
-  }, []);
+  }, [currentSearchedAddress]);
 
   const getTimeRange = () => {
     switch (duration) {
@@ -394,10 +427,13 @@ export default function Leaderboard() {
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!address) return;
     const requestBody = {
       addr:
-        currentSearchedAddress.length > 0 ? currentSearchedAddress : address,
+        currentSearchedAddress.length > 0
+          ? hexToDecimal(currentSearchedAddress)
+          : userAddress
+          ? hexToDecimal(userAddress)
+          : "",
       page_size: rowsPerPage,
       shift: currentPage,
       ...getTimeRange(),
@@ -410,7 +446,7 @@ export default function Leaderboard() {
     };
 
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration, currentSearchedAddress]);
+  }, [rowsPerPage, currentPage, duration]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
@@ -509,7 +545,7 @@ export default function Leaderboard() {
             {userPercentile >= 0 ? (
               <div className={styles.percentile_text_container}>
                 <p className={styles.percentile_text_normal}>
-                  {address === userAddress ? "You are" : "He is"}
+                  {currentSearchedAddress.length > 0 ? "He is" : "You are "}
                 </p>
                 <span className={styles.percentile_text_green}>
                   &nbsp;better than {userPercentile}%&nbsp;
@@ -522,13 +558,13 @@ export default function Leaderboard() {
             <Divider />
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {ranking ? (
+            {ranking || showNoResultsFound ? (
               <>
                 <Rankings
                   data={ranking}
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
-                  userAddress={address}
+                  userAddress={userAddress ?? ""}
                   searchedAddress={currentSearchedAddress}
                 />
                 <ControlsDashboard
