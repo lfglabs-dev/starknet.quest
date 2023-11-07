@@ -122,13 +122,13 @@ const Rankings = (props: {
           item.completedQuests = completedQuestsResponse?.length;
 
           // get the domain name from the address
-          // const hexAddress = decimalToHex(item.address);
-          // const domainName = await getDomainFromAddress(hexAddress);
-          // if (domainName.length > 0) {
-          //   item.address = domainName;
-          // } else {
-          //   item.address = minifyAddress(hexAddress);
-          // }
+          const hexAddress = decimalToHex(item.address);
+          const domainName = await getDomainFromAddress(hexAddress);
+          if (domainName.length > 0) {
+            item.address = domainName;
+          } else {
+            item.address = minifyAddress(hexAddress);
+          }
         })
       );
       setDisplayData(res);

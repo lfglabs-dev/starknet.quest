@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Divider from "./Divider";
 import AchievementSilver from "../../public/icons/achievementSilver.svg";
 import Image from "next/image";
@@ -7,8 +7,9 @@ import AchievementGold from "../../public/icons/achievementGold.svg";
 import AchievementBronze from "../../public/icons/achievementBronze.svg";
 import Trophy from "../../public/icons/trophy.svg";
 import XpBadge from "../../public/icons/xpBadge.svg";
-import { useDisplayName } from "../../hooks/displayName.tsx";
 import Avatar from "./avatar";
+import { decimalToHex } from "../../utils/feltService";
+import { getDomainFromAddress } from "../../utils/domainService";
 
 type RankCardsProps = {
   name: string;
@@ -25,6 +26,21 @@ const iconMap = {
 
 export default function RankCards(props: RankCardsProps) {
   const { name, experience, trophy, position } = props;
+  const [displayName, setDisplayName] = useState<string>("");
+
+  useEffect(() => {
+    const getDisplayName = async () => {
+      const hexAddress = decimalToHex(name);
+      const domainName = await getDomainFromAddress(hexAddress);
+      if (domainName.length > 0) {
+        setDisplayName(domainName);
+      } else {
+        setDisplayName(minifyAddress(hexAddress));
+      }
+    };
+
+    getDisplayName();
+  }, [name]);
 
   return (
     <div className="flex flex-col w-full relative gradient rounded-lg py-6 px-4 gap-4 items-center">
@@ -34,7 +50,7 @@ export default function RankCards(props: RankCardsProps) {
 
       <div className="flex gap-2 justify-center items-center">
         <Avatar address={name} width="32" />
-        <div>{minifyAddress(name)}</div>
+        <div>{displayName}</div>
       </div>
       <Divider />
       <div className="flex justify-around gap-6">
