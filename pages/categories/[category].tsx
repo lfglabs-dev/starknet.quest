@@ -33,22 +33,24 @@ const CategoriesPage: NextPage = () => {
           categoryName?.slice(1)}{" "}
         quests
       </h1>
-      <div className={styles.questList}>
-        {category &&
-          category.quests.map((quest, index) => (
-            <Quest
-              key={index}
-              title={quest.title_card}
-              onClick={() => router.push(`/quest/${quest.id}`)}
-              imgSrc={quest.img_card}
-              issuer={{
-                name: quest.issuer,
-                logoFavicon: quest.logo,
-              }}
-              reward={quest.rewards_title}
-              id={quest.id}
-            />
-          ))}
+      <div className={styles.questListContainer}>
+        <div className={styles.questList}>
+          {category &&
+            category.quests.map((quest, index) => (
+              <Quest
+                key={index}
+                title={quest.title_card}
+                onClick={() => router.push(`/quest/${quest.id}`)}
+                imgSrc={quest.img_card}
+                issuer={{
+                  name: quest.issuer,
+                  logoFavicon: quest.logo,
+                }}
+                reward={quest.rewards_title}
+                id={quest.id}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );
