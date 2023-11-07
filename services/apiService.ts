@@ -43,7 +43,7 @@ export const fetchLeaderboardRankings = async (
 export const getCompletedQuestsOfUser = async (address: string) => {
   try {
     const response = await fetch(
-      `http://0.0.0.0:8080/get_completed_quests?addr=${address}`
+      `${baseurl}/get_completed_quests?addr=${address}`
     );
     return await response.json();
   } catch (err) {

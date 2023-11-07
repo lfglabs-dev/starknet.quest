@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import ChipList from "../components/UI/ChipList";
-import Divider from "../components/UI/Divider";
-import RankCards from "../components/UI/RankCards";
+import RankCards from "../components/leaderboard/RankCards";
 import ChevronRight from "../public/icons/ChevronRightIcon.svg";
 import ChevronLeft from "../public/icons/ChevronLeftIcon.svg";
 import BottomArrow from "../public/icons/dropdownArrow.svg";
@@ -26,11 +25,12 @@ import { getDomainWithoutStark, minifyAddress } from "../utils/stringService";
 import { getDomainFromAddress } from "../utils/domainService";
 import { decimalToHex, hexToDecimal } from "../utils/feltService";
 import { useDebounce } from "../hooks/useDebounce";
-import { Abi, Contract, Provider, starknetId } from "starknet";
+import { Abi, Contract, Provider } from "starknet";
 import naming_abi from "../abi/naming_abi.json";
 import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
 import { utils } from "starknetid.js";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
+import Divider from "@mui/material/Divider";
 
 // declare types
 type RankingData = {
@@ -555,10 +555,17 @@ export default function Leaderboard() {
                 </p>
               </div>
             ) : null}
-            <Divider />
+            <Divider
+              orientation="horizontal"
+              variant="fullWidth"
+              sx={{
+                backgroundColor: "#F4FAFF",
+                opacity: 0.3,
+              }}
+            />
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {ranking || showNoResultsFound ? (
+            {ranking ? (
               <>
                 <Rankings
                   data={ranking}
@@ -575,7 +582,14 @@ export default function Leaderboard() {
                   setRowsPerPage={setRowsPerPage}
                   duration={duration}
                 />
-                <Divider />
+                <Divider
+                  orientation="horizontal"
+                  variant="fullWidth"
+                  sx={{
+                    backgroundColor: "#F4FAFF",
+                    opacity: 0.3,
+                  }}
+                />
               </>
             ) : (
               <div className="flex justify-center items-center">

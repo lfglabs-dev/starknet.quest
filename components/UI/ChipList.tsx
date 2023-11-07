@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 type ChipProps = {
   selected: string;
@@ -6,8 +6,11 @@ type ChipProps = {
   tags: string[];
 };
 
-export default function ChipList(props: ChipProps) {
-  const { tags, handleChangeSelection } = props;
+const ChipList: FunctionComponent<ChipProps> = ({
+  selected,
+  handleChangeSelection,
+  tags,
+}) => {
   return (
     <div className="grid grid-cols-3 gap-2 bg-background rounded-3xl max-w-[320px]">
       {tags.map((tag, index) => (
@@ -16,12 +19,12 @@ export default function ChipList(props: ChipProps) {
           key={index}
           className={"px-1 md:px-3 py-2 text-center cursor-pointer rounded"}
           style={{
-            backgroundColor: tag === props.selected ? "white" : "inherit",
+            backgroundColor: tag === selected ? "white" : "inherit",
           }}
         >
           <p
             style={{
-              color: tag !== props.selected ? "white" : "black",
+              color: tag !== selected ? "white" : "black",
               fontSize: 12,
               fontWeight: 600,
             }}
@@ -32,4 +35,6 @@ export default function ChipList(props: ChipProps) {
       ))}
     </div>
   );
-}
+};
+
+export default ChipList;
