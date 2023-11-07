@@ -101,22 +101,18 @@ const Achievements: NextPage = () => {
     <div className={styles.screen}>
       <div className={styles.container}>
         <div className={styles.headerContent}>
-          <div className={styles.titleContent}>
-            <h1 className={styles.title}>Achievements</h1>
-            <div
-              className={styles.refreshButton}
-              onClick={() => validateAchievements()}
-            >
-              <RefreshIcon
-                width="20"
-                color={theme.palette.background.default}
-              />
-              <div>Refresh data</div>
-            </div>
-          </div>
+          <h1 className={styles.title}>Achievements</h1>
+
           <p className={styles.subtitle}>
             Complete achievements and grow your Starknet on-chain reputation
           </p>
+          <div
+            className={styles.refreshButton}
+            onClick={() => validateAchievements()}
+          >
+            <RefreshIcon width="20" color={theme.palette.background.default} />
+            <div>Refresh data</div>
+          </div>
         </div>
         {userAchievements.length > 0 ? (
           <div className={styles.cardWrapper}>
