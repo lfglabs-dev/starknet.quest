@@ -29,7 +29,6 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
     res,
     error_msg: errorMsg,
   } = router.query;
-  console.log("questPage", questId);
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
