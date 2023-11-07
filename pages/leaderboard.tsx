@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChipList from "../components/UI/ChipList";
-import Divider from "../components/UI/Divider";
-import RankCards from "../components/UI/RankCards";
+import RankCards from "../components/leaderboard/RankCards";
 import ChevronRight from "../public/icons/ChevronRightIcon.svg";
 import ChevronLeft from "../public/icons/ChevronLeftIcon.svg";
 import BottomArrow from "../public/icons/dropdownArrow.svg";
@@ -25,6 +24,7 @@ import RankingSkeleton from "../components/skeletons/rankingSkeleton";
 import { minifyAddress } from "../utils/stringService";
 import { getDomainFromAddress } from "../utils/domainService";
 import { decimalToHex } from "../utils/feltService";
+import Divider from "@mui/material/Divider";
 
 // declare types
 type RankingData = {
@@ -472,7 +472,16 @@ export default function Leaderboard() {
                 </p>
               </div>
             ) : null}
-            <Divider />
+            <Divider
+              orientation="horizontal"
+              variant="fullWidth"
+              sx={{
+                backgroundColor: "#F4FAFF",
+                opacity: 0.3,
+              }}
+            />
+
+            {/* this will be if searched user is not present in leaderboard or server returns 500 */}
             {ranking ? (
               <>
                 <Rankings
@@ -487,6 +496,14 @@ export default function Leaderboard() {
                   rowsPerPage={rowsPerPage}
                   setRowsPerPage={setRowsPerPage}
                   duration={duration}
+                />
+                <Divider
+                  orientation="horizontal"
+                  variant="fullWidth"
+                  sx={{
+                    backgroundColor: "#F4FAFF",
+                    opacity: 0.3,
+                  }}
                 />
               </>
             ) : (
