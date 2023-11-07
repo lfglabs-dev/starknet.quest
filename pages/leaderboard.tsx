@@ -25,6 +25,7 @@ import RankingSkeleton from "../components/skeletons/rankingSkeleton";
 import { minifyAddress } from "../utils/stringService";
 import { getDomainFromAddress } from "../utils/domainService";
 import { decimalToHex } from "../utils/feltService";
+import { useDebounce } from "../hooks/useDebounce";
 
 // declare types
 type RankingData = {
@@ -57,12 +58,27 @@ type FormattedRankingProps = {
   completedQuests?: number;
 }[];
 
+const sampleDomains = ["ayush.stark", "ayushtom.stark"];
+
+// Simulated API function
+function verifyDomain(domain: string, delay = 1000) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const res = sampleDomains.includes(domain);
+      resolve(res);
+    }, delay);
+  });
+}
+
 // used to map the time frame to the api call
 const timeFrameMap = {
   "Last 7 Days": "weekly",
   "Last 30 Days": "monthly",
   "All time": "all_time",
 };
+
+// page size limit
+const PAGE_SIZE = [10, 15, 20];
 
 // show leaderboard ranking table
 const Rankings = (props: {
@@ -72,6 +88,8 @@ const Rankings = (props: {
   };
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
+  userAddress: string;
+  searchedAddress: string;
 }) => {
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
@@ -81,7 +99,13 @@ const Rankings = (props: {
     return num > 9 ? num : `0${num}`;
   };
 
-  const { data, setPaginationLoading, paginationLoading } = props;
+  const {
+    data,
+    setPaginationLoading,
+    paginationLoading,
+    userAddress,
+    searchedAddress,
+  } = props;
 
   // this will run whenever the rankings are fetched and the data is updated
   useEffect(() => {
@@ -98,13 +122,13 @@ const Rankings = (props: {
           item.completedQuests = completedQuestsResponse?.length;
 
           // get the domain name from the address
-          const hexAddress = decimalToHex(item.address);
-          const domainName = await getDomainFromAddress(hexAddress);
-          if (domainName.length > 0) {
-            item.address = domainName;
-          } else {
-            item.address = minifyAddress(hexAddress);
-          }
+          // const hexAddress = decimalToHex(item.address);
+          // const domainName = await getDomainFromAddress(hexAddress);
+          // if (domainName.length > 0) {
+          //   item.address = domainName;
+          // } else {
+          //   item.address = minifyAddress(hexAddress);
+          // }
         })
       );
       setDisplayData(res);
@@ -121,7 +145,13 @@ const Rankings = (props: {
         displayData?.map((item, index) => (
           <div
             key={item.address}
-            className="grid grid-cols-2 py-2 items-center justify-center"
+            className="grid grid-cols-2 px-4 py-2 items-center justify-center rounded-lg"
+            style={{
+              backgroundColor:
+                item.address === userAddress || item.address === searchedAddress
+                  ? "#101012"
+                  : "transparent",
+            }}
           >
             <div
               className="flex gap-2 md:gap-6 justify-between"
@@ -186,24 +216,15 @@ const ControlsDashboard = (props: {
           </div>
           {showMenu ? (
             <div className={styles.walletMenu}>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(10)}
-              >
-                <p>10</p>
-              </button>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(15)}
-              >
-                <p>15</p>
-              </button>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(20)}
-              >
-                <p>20</p>
-              </button>
+              {PAGE_SIZE.map((item, index) => (
+                <button
+                  className={styles.menu_button}
+                  key={index}
+                  onClick={() => setRowsPerPage(item)}
+                >
+                  <p>{item}</p>
+                </button>
+              ))}
             </div>
           ) : null}
         </div>
@@ -254,10 +275,13 @@ export default function Leaderboard() {
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const [userPercentile, setUserPercentile] = useState<number>(100);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchAddress, setSearchAddress] = useState<string>("");
+  const searchAddress = useDebounce<string>(searchQuery, 200);
+  const [currentSearchedAddress, setCurrentSearchedAddress] =
+    useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
@@ -281,19 +305,36 @@ export default function Leaderboard() {
 
   const address = userAddress;
 
+  // on user selecting duration
   const handleChangeSelection = (title: string) => {
     setDuration(title);
   };
 
   // on user typing
-  const handleSearch = (query: string) => {
+  const handleChange = (query: string) => {
     setSearchQuery(query);
   };
+
+  useEffect(() => {
+    const checkIfValidAddress = async (address: string) => {
+      const res = await verifyDomain(address);
+      const suggestions = [];
+      if (res) {
+        suggestions.push(address);
+        setSearchResults(suggestions);
+      }
+    };
+
+    if (searchAddress.length > 0) {
+      checkIfValidAddress(searchAddress);
+    }
+  }, [searchAddress]);
 
   // on user Press enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      setSearchAddress(searchQuery);
+      setSearchQuery(searchQuery);
+      setCurrentSearchedAddress(searchQuery);
     }
   };
 
@@ -355,7 +396,8 @@ export default function Leaderboard() {
   useEffect(() => {
     if (!address) return;
     const requestBody = {
-      addr: searchAddress.length > 0 ? searchAddress : address,
+      addr:
+        currentSearchedAddress.length > 0 ? currentSearchedAddress : address,
       page_size: rowsPerPage,
       shift: currentPage,
       ...getTimeRange(),
@@ -368,7 +410,7 @@ export default function Leaderboard() {
     };
 
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration, searchAddress]);
+  }, [rowsPerPage, currentPage, duration, currentSearchedAddress]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
@@ -434,7 +476,7 @@ export default function Leaderboard() {
               expiry={featuredQuest?.expiry_timestamp}
             />
           </div>
-          <div className="flex flex-col rounded-lg bg-gray-300 w-full gap-6 px-4 md:px-8 py-7 max-w-[1250px]">
+          <div className="flex flex-col rounded-lg bg-gray-300 w-full gap-6 px-2 md:px-4 py-7 max-w-[1250px]">
             <div className="flex flex-col md:flex-row w-full justify-between items-center gap-6">
               <div style={{ flex: 0.4 }}>
                 <p className={styles.leaderboard_heading}>Leaderboard</p>
@@ -452,8 +494,13 @@ export default function Leaderboard() {
               <div style={{ flex: 0.4 }}>
                 <Searchbar
                   value={searchQuery}
-                  handleSearch={handleSearch}
+                  handleChange={handleChange}
                   onKeyDown={handleKeyDown}
+                  suggestions={searchResults}
+                  handleSuggestionClick={(address) => {
+                    setCurrentSearchedAddress(address);
+                    setSearchResults([]);
+                  }}
                 />
               </div>
             </div>
@@ -473,12 +520,16 @@ export default function Leaderboard() {
               </div>
             ) : null}
             <Divider />
+
+            {/* this will be if searched user is not present in leaderboard or server returns 500 */}
             {ranking ? (
               <>
                 <Rankings
                   data={ranking}
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
+                  userAddress={address}
+                  searchedAddress={currentSearchedAddress}
                 />
                 <ControlsDashboard
                   ranking={ranking}
@@ -488,6 +539,7 @@ export default function Leaderboard() {
                   setRowsPerPage={setRowsPerPage}
                   duration={duration}
                 />
+                <Divider />
               </>
             ) : (
               <div className="flex justify-center items-center">
@@ -495,7 +547,6 @@ export default function Leaderboard() {
               </div>
             )}
 
-            <Divider />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {leaderboardToppers
                 ? leaderboardToppers[

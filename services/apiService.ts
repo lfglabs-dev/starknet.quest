@@ -10,7 +10,7 @@ type LeaderboardRankingParams = {
   end_timestamp: number;
 };
 
-const baseurl = process.env.NEXT_PUBLIC_API_LINK;
+const baseurl = "http://0.0.0.0:8080";
 
 export const fetchLeaderboardToppers = async (
   params: LeaderboardTopperParams
