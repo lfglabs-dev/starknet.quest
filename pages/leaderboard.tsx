@@ -200,7 +200,6 @@ const ControlsDashboard = (props: {
 
       <div className={styles.controls_right_container}>
         <div
-          className="cursor-pointer"
           onClick={() => {
             if (ranking.first_elt_position == 1) return;
             handlePagination("prev");
@@ -209,11 +208,14 @@ const ControlsDashboard = (props: {
           <Image
             src={ChevronLeft}
             priority
-            style={{ fill: "red", stroke: "red" }}
+            style={{
+              cursor:
+                ranking?.first_elt_position == 1 ? "not-allowed" : "pointer",
+              opacity: ranking?.first_elt_position == 1 ? 0.5 : 1,
+            }}
           />
         </div>
         <div
-          className="cursor-pointer"
           onClick={() => {
             if (
               ranking.first_elt_position + ranking.ranking.length >=
@@ -227,7 +229,30 @@ const ControlsDashboard = (props: {
             handlePagination("next");
           }}
         >
-          <Image src={ChevronRight} priority />
+          <Image
+            src={ChevronRight}
+            priority
+            style={{
+              cursor:
+                ranking?.first_elt_position + ranking?.ranking.length >=
+                leaderboardToppers?.[
+                  timeFrameMap[
+                    duration as keyof typeof timeFrameMap
+                  ] as keyof typeof leaderboardToppers
+                ]?.length
+                  ? "not-allowed"
+                  : "pointer",
+              opacity:
+                ranking?.first_elt_position + ranking?.ranking.length >=
+                leaderboardToppers?.[
+                  timeFrameMap[
+                    duration as keyof typeof timeFrameMap
+                  ] as keyof typeof leaderboardToppers
+                ]?.length
+                  ? 0.5
+                  : 1,
+            }}
+          />
         </div>
       </div>
     </div>
@@ -499,6 +524,14 @@ export default function Leaderboard() {
                 />
               </>
             ) : null}
+            <ControlsDashboard
+              ranking={ranking}
+              handlePagination={handlePagination}
+              leaderboardToppers={leaderboardToppers}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              duration={duration}
+            />
 
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
