@@ -524,14 +524,6 @@ export default function Leaderboard() {
                 />
               </>
             ) : null}
-            <ControlsDashboard
-              ranking={ranking}
-              handlePagination={handlePagination}
-              leaderboardToppers={leaderboardToppers}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              duration={duration}
-            />
 
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
