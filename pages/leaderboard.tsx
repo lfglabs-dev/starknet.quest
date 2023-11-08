@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChipList from "../components/UI/ChipList";
-import RankCards from "../components/leaderboard/RankCards";
+import RankCard from "../components/leaderboard/RankCard";
 import ChevronRight from "../public/icons/ChevronRightIcon.svg";
 import ChevronLeft from "../public/icons/ChevronLeftIcon.svg";
 import BottomArrow from "../public/icons/dropdownArrow.svg";
@@ -25,6 +25,7 @@ import { minifyAddress } from "../utils/stringService";
 import { getDomainFromAddress } from "../utils/domainService";
 import { decimalToHex } from "../utils/feltService";
 import Divider from "@mui/material/Divider";
+import Blur from "../components/shapes/blur";
 
 // declare types
 type RankingData = {
@@ -50,11 +51,14 @@ type LeaderboardToppersData = {
   };
 };
 
+const PAGE_SIZE = [10, 15, 20];
+
 type FormattedRankingProps = {
   address: string;
   xp: number;
   achievements: number;
   completedQuests?: number;
+  displayName?: string;
 }[];
 
 // used to map the time frame to the api call
@@ -101,9 +105,9 @@ const Rankings = (props: {
           const hexAddress = decimalToHex(item.address);
           const domainName = await getDomainFromAddress(hexAddress);
           if (domainName.length > 0) {
-            item.address = domainName;
+            item.displayName = domainName;
           } else {
-            item.address = minifyAddress(hexAddress);
+            item.displayName = minifyAddress(hexAddress);
           }
         })
       );
@@ -114,31 +118,25 @@ const Rankings = (props: {
   }, [data]);
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className={styles.ranking_container}>
       {paginationLoading ? (
         <RankingSkeleton />
       ) : (
         displayData?.map((item, index) => (
-          <div
-            key={item.address}
-            className="grid grid-cols-2 py-2 items-center justify-center"
-          >
-            <div
-              className="flex gap-2 md:gap-6 justify-between"
-              style={{ flex: 0.1 }}
-            >
-              <div className="flex flex-1 max-w-[22px] items-center">
+          <div key={item.address} className={styles.ranking_table_row}>
+            <div className={styles.ranking_table_row_name_rank}>
+              <div className={styles.ranking_position_layout}>
                 <p className="text-white text-center">
                   {addNumberPadding(data.first_elt_position + index)}
                 </p>
               </div>
-              <div className="flex flex-1 gap-2 md:gap-6 items-center">
+              <div className={styles.ranking_profile_layout}>
                 <Avatar address={item.address} width="32" />
-                <p className="text-white">{item.address}</p>
+                <p className="text-white">{item.displayName}</p>
               </div>
             </div>
-            <div className="flex flex-col w-full gap-1" style={{ flex: 0.9 }}>
-              <div className="flex w-full gap-4 items-center justify-end">
+            <div className={styles.ranking_table_row_xp_quest}>
+              <div className={styles.ranking_points_layout}>
                 <Image src={XpBadge} priority width={35} height={35} />
                 <p className="text-white text-center">{item.xp}</p>
               </div>
@@ -172,74 +170,64 @@ const ControlsDashboard = (props: {
   } = props;
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <div className="w-full flex flex-row justify-between items-center">
-      <div className="flex items-center gap-2">
+    <div className={styles.controls_layout_container}>
+      <div className={styles.controls_left_container}>
         <p className={styles.rows_text}>Rows per page</p>
         <div
-          className="relative flex justify-center items-center cursor-pointer"
+          className={styles.controls_page_limit_dropdown_container}
           aria-selected={showMenu}
           onClick={() => setShowMenu((prev) => !prev)}
         >
-          <div className="flex gap-1 items-center">
+          <div className={styles.controls_option_display}>
             <p>{rowsPerPage}</p>
             <Image src={BottomArrow} priority />
           </div>
           {showMenu ? (
-            <div className={styles.walletMenu}>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(10)}
-              >
-                <p>10</p>
-              </button>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(15)}
-              >
-                <p>15</p>
-              </button>
-              <button
-                className={styles.menu_button}
-                onClick={() => setRowsPerPage(20)}
-              >
-                <p>20</p>
-              </button>
+            <div className={styles.pages_menu}>
+              {PAGE_SIZE.map((item, index) => (
+                <button
+                  className={styles.menu_button}
+                  key={index}
+                  onClick={() => setRowsPerPage(item)}
+                >
+                  <p>{item}</p>
+                </button>
+              ))}
             </div>
           ) : null}
         </div>
       </div>
-      <div className="flex">
-        <div className="flex flex-row gap-4">
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              if (ranking.first_elt_position == 1) return;
-              handlePagination("prev");
-            }}
-          >
-            <Image
-              src={ChevronLeft}
-              priority
-              style={{ fill: "red", stroke: "red" }}
-            />
-          </div>
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              if (
-                ranking.first_elt_position + ranking.ranking.length >=
-                leaderboardToppers[
-                  timeFrameMap[
-                    duration as keyof typeof timeFrameMap
-                  ] as keyof typeof leaderboardToppers
-                ]?.length
-              )
-                return;
-              handlePagination("next");
-            }}
-          >
-            <Image src={ChevronRight} priority />
-          </div>
+
+      <div className={styles.controls_right_container}>
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            if (ranking.first_elt_position == 1) return;
+            handlePagination("prev");
+          }}
+        >
+          <Image
+            src={ChevronLeft}
+            priority
+            style={{ fill: "red", stroke: "red" }}
+          />
+        </div>
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            if (
+              ranking.first_elt_position + ranking.ranking.length >=
+              leaderboardToppers[
+                timeFrameMap[
+                  duration as keyof typeof timeFrameMap
+                ] as keyof typeof leaderboardToppers
+              ]?.length
+            )
+              return;
+            handlePagination("next");
+          }}
+        >
+          <Image src={ChevronRight} priority />
         </div>
       </div>
     </div>
@@ -411,14 +399,21 @@ export default function Leaderboard() {
   }, [leaderboardToppers]);
 
   return (
-    <div className="p-6 md:py-32 flex flex-col w-full justify-center items-center ">
+    <div className={styles.leaderboard_container}>
       {loading ? (
-        <div className="flex w-full mt-[12vh] md:mt-0 max-w-[1250px]">
+        <div className={styles.leaderboard_skeleton}>
           <LeaderboardSkeleton />
         </div>
       ) : (
         <>
-          <div className="max-w-[1250px] flex w-full justify-center mt-[12vh] md:mt-0">
+          <div className={styles.leaderboard_quest_banner}>
+            <div className={styles.blur1}>
+              <Blur green />
+            </div>
+            <div className={styles.blur2}>
+              <Blur green />
+            </div>
+
             <FeaturedQuest
               heading="Are you ready for this quest?"
               key={featuredQuest?.id}
@@ -434,15 +429,12 @@ export default function Leaderboard() {
               expiry={featuredQuest?.expiry_timestamp}
             />
           </div>
-          <div className="flex flex-col rounded-lg bg-gray-300 w-full gap-6 px-4 md:px-8 py-7 max-w-[1250px]">
-            <div className="flex flex-col md:flex-row w-full justify-between items-center gap-6">
+          <div className={styles.leaderboard_layout}>
+            <div className={styles.leaderboard_topbar}>
               <div style={{ flex: 0.4 }}>
                 <p className={styles.leaderboard_heading}>Leaderboard</p>
               </div>
-              <div
-                className="flex w-full items-center justify-center"
-                style={{ flex: 1 }}
-              >
+              <div className={styles.leaderboard_chiplist} style={{ flex: 1 }}>
                 <ChipList
                   selected={duration}
                   handleChangeSelection={handleChangeSelection}
@@ -506,21 +498,16 @@ export default function Leaderboard() {
                   }}
                 />
               </>
-            ) : (
-              <div className="flex justify-center items-center">
-                No results found!
-              </div>
-            )}
+            ) : null}
 
-            <Divider />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
                 ? leaderboardToppers[
                     timeFrameMap[
                       duration as keyof typeof timeFrameMap
                     ] as keyof typeof leaderboardToppers
                   ]?.best_users?.map((item, index) => (
-                    <RankCards
+                    <RankCard
                       position={index + 1}
                       key={index}
                       name={item.address}

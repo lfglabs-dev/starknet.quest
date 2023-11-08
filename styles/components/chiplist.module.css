@@ -1,0 +1,23 @@
+.chiplist_container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    background-color: #101012;
+    gap: 0.5rem;
+    max-width: 320px;
+    border-radius: 1.5rem;
+}
+
+.each_chip {
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+
+
+@media (min-width: 768px) {
+    .each_chip {
+        padding: 0.5rem 0.25rem;
+    }
+}

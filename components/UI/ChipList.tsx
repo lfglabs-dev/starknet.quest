@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import styles from "../../styles/components/chiplist.module.css";
 
 type ChipProps = {
   selected: string;
@@ -12,12 +13,12 @@ const ChipList: FunctionComponent<ChipProps> = ({
   tags,
 }) => {
   return (
-    <div className="grid grid-cols-3 gap-2 bg-background rounded-3xl max-w-[320px]">
+    <div className={styles.chiplist_container}>
       {tags.map((tag, index) => (
         <div
           onClick={() => handleChangeSelection(tag)}
           key={index}
-          className={"px-1 md:px-3 py-2 text-center cursor-pointer rounded"}
+          className={styles.each_chip}
           style={{
             backgroundColor: tag === selected ? "white" : "inherit",
           }}
