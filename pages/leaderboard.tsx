@@ -252,10 +252,7 @@ export default function Leaderboard() {
             <Divider
               orientation="horizontal"
               variant="fullWidth"
-              sx={{
-                backgroundColor: "#F4FAFF",
-                opacity: 0.3,
-              }}
+              className={styles.divider}
             />
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
@@ -277,10 +274,7 @@ export default function Leaderboard() {
                 <Divider
                   orientation="horizontal"
                   variant="fullWidth"
-                  sx={{
-                    backgroundColor: "#F4FAFF",
-                    opacity: 0.3,
-                  }}
+                  className={styles.divider}
                 />
               </>
             ) : null}
