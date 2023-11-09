@@ -1,16 +1,14 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import AchievementSilver from "../../public/icons/achievementSilver.svg";
 import styles from "../../styles/leaderboard.module.css";
 import Image from "next/image";
 import { minifyAddress } from "../../utils/stringService";
-import AchievementGold from "../../public/icons/achievementGold.svg";
-import AchievementBronze from "../../public/icons/achievementBronze.svg";
 import Trophy from "../../public/icons/trophy.svg";
 import XpBadge from "../../public/icons/xpBadge.svg";
 import Avatar from "../UI/avatar";
 import { decimalToHex } from "../../utils/feltService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import Divider from "@mui/material/Divider";
+import AchievementIcon from "../UI/iconsComponents/icons/achievementIcon";
 
 type RankCardProps = {
   name: string;
@@ -20,9 +18,9 @@ type RankCardProps = {
 };
 
 const iconMap = {
-  1: AchievementGold,
-  2: AchievementSilver,
-  3: AchievementBronze,
+  1: "#E6CD84",
+  2: "#D8D8D8",
+  3: "#E2943B",
 };
 
 const RankCard: FunctionComponent<RankCardProps> = ({
@@ -50,12 +48,15 @@ const RankCard: FunctionComponent<RankCardProps> = ({
   return (
     <div className={styles.rank_card_container}>
       <div className={styles.rank_card_badge}>
-        <Image src={iconMap[position as keyof typeof iconMap]} priority />
+        <AchievementIcon
+          width="32"
+          color={iconMap[position as keyof typeof iconMap]}
+        />
       </div>
 
       <div className={styles.rank_card_naming}>
         <Avatar address={name} width="32" />
-        <div>{minifyAddress(name)}</div>
+        <div>{displayName}</div>
       </div>
 
       <Divider

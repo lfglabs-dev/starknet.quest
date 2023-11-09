@@ -1,18 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import RankCard from "../components/leaderboard/RankCard";
-import ChevronRight from "../public/icons/ChevronRightIcon.svg";
-import ChevronLeft from "../public/icons/ChevronLeftIcon.svg";
-import BottomArrow from "../public/icons/dropdownArrow.svg";
-import Image from "next/image";
 import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
-  getCompletedQuestsOfUser,
 } from "../services/apiService";
-import XpBadge from "../public/icons/xpBadge.svg";
 import { calculatePercentile } from "../utils/numberService";
-import Avatar from "../components/UI/avatar";
 import styles from "../styles/leaderboard.module.css";
 import { useAccount } from "@starknet-react/core";
 import LeaderboardSkeleton from "../components/skeletons/leaderboardSkeleton";
@@ -20,244 +13,11 @@ import FeaturedQuest from "../components/UI/featured_banner/featuredQuest";
 import { QuestsContext } from "../context/QuestsProvider";
 import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
-import RankingSkeleton from "../components/skeletons/rankingSkeleton";
-import { minifyAddress } from "../utils/stringService";
-import { getDomainFromAddress } from "../utils/domainService";
-import { decimalToHex } from "../utils/feltService";
 import Divider from "@mui/material/Divider";
 import Blur from "../components/shapes/blur";
-
-// declare types
-type RankingData = {
-  first_elt_position: number;
-  ranking: { address: string; xp: number; achievements: number }[];
-};
-
-type LeaderboardToppersData = {
-  weekly: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    length: number;
-    position?: number;
-  };
-  monthly: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    length: number;
-    position?: number;
-  };
-  all_time: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    length: number;
-    position?: number;
-  };
-};
-
-const PAGE_SIZE = [10, 15, 20];
-
-type FormattedRankingProps = {
-  address: string;
-  xp: number;
-  achievements: number;
-  completedQuests?: number;
-  displayName?: string;
-}[];
-
-// used to map the time frame to the api call
-const timeFrameMap = {
-  "Last 7 Days": "weekly",
-  "Last 30 Days": "monthly",
-  "All time": "all_time",
-};
-
-// show leaderboard ranking table
-const Rankings = (props: {
-  data: {
-    first_elt_position: number;
-    ranking: { address: string; xp: number; achievements: number }[];
-  };
-  paginationLoading: boolean;
-  setPaginationLoading: (_: boolean) => void;
-}) => {
-  // used to format the data to be displayed
-  const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-
-  // make single digit numbers to double digit
-  const addNumberPadding = (num: number) => {
-    return num > 9 ? num : `0${num}`;
-  };
-
-  const { data, setPaginationLoading, paginationLoading } = props;
-
-  // this will run whenever the rankings are fetched and the data is updated
-  useEffect(() => {
-    if (!data) return;
-    if (!(Object.keys(data).length > 0)) return;
-    const res: FormattedRankingProps = data?.ranking;
-    const makeCall = async () => {
-      await Promise.all(
-        await res?.map(async (item) => {
-          // fetch completed quests and add to the display data
-          const completedQuestsResponse = await getCompletedQuestsOfUser(
-            item?.address
-          );
-          item.completedQuests = completedQuestsResponse?.length;
-
-          // get the domain name from the address
-          const hexAddress = decimalToHex(item.address);
-          const domainName = await getDomainFromAddress(hexAddress);
-          if (domainName.length > 0) {
-            item.displayName = domainName;
-          } else {
-            item.displayName = minifyAddress(hexAddress);
-          }
-        })
-      );
-      setDisplayData(res);
-      setPaginationLoading(false);
-    };
-    makeCall();
-  }, [data]);
-
-  return (
-    <div className={styles.ranking_container}>
-      {paginationLoading ? (
-        <RankingSkeleton />
-      ) : (
-        displayData?.map((item, index) => (
-          <div key={item.address} className={styles.ranking_table_row}>
-            <div className={styles.ranking_table_row_name_rank}>
-              <div className={styles.ranking_position_layout}>
-                <p className="text-white text-center">
-                  {addNumberPadding(data.first_elt_position + index)}
-                </p>
-              </div>
-              <div className={styles.ranking_profile_layout}>
-                <Avatar address={item.address} width="32" />
-                <p className="text-white">{item.displayName}</p>
-              </div>
-            </div>
-            <div className={styles.ranking_table_row_xp_quest}>
-              <div className={styles.ranking_points_layout}>
-                <Image src={XpBadge} priority width={35} height={35} />
-                <p className="text-white text-center">{item.xp}</p>
-              </div>
-              <p className={styles.quests_text}>
-                {item.completedQuests} Quests
-              </p>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-  );
-};
-
-// this will contain the pagination arrows and page size limit controls
-const ControlsDashboard = (props: {
-  ranking: RankingData;
-  handlePagination: (_: string) => void;
-  rowsPerPage: number;
-  setRowsPerPage: (_: number) => void;
-  leaderboardToppers: LeaderboardToppersData;
-  duration: string;
-}) => {
-  const {
-    ranking,
-    handlePagination,
-    rowsPerPage,
-    setRowsPerPage,
-    leaderboardToppers,
-    duration,
-  } = props;
-  const [showMenu, setShowMenu] = useState(false);
-  return (
-    <div className={styles.controls_layout_container}>
-      <div className={styles.controls_left_container}>
-        <p className={styles.rows_text}>Rows per page</p>
-        <div
-          className={styles.controls_page_limit_dropdown_container}
-          aria-selected={showMenu}
-          onClick={() => setShowMenu((prev) => !prev)}
-        >
-          <div className={styles.controls_option_display}>
-            <p>{rowsPerPage}</p>
-            <Image src={BottomArrow} priority />
-          </div>
-          {showMenu ? (
-            <div className={styles.pages_menu}>
-              {PAGE_SIZE.map((item, index) => (
-                <button
-                  className={styles.menu_button}
-                  key={index}
-                  onClick={() => setRowsPerPage(item)}
-                >
-                  <p>{item}</p>
-                </button>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      <div className={styles.controls_right_container}>
-        <div
-          onClick={() => {
-            if (ranking.first_elt_position == 1) return;
-            handlePagination("prev");
-          }}
-        >
-          <Image
-            src={ChevronLeft}
-            priority
-            style={{
-              cursor:
-                ranking?.first_elt_position == 1 ? "not-allowed" : "pointer",
-              opacity: ranking?.first_elt_position == 1 ? 0.5 : 1,
-            }}
-          />
-        </div>
-        <div
-          onClick={() => {
-            if (
-              ranking.first_elt_position + ranking.ranking.length >=
-              leaderboardToppers[
-                timeFrameMap[
-                  duration as keyof typeof timeFrameMap
-                ] as keyof typeof leaderboardToppers
-              ]?.length
-            )
-              return;
-            handlePagination("next");
-          }}
-        >
-          <Image
-            src={ChevronRight}
-            priority
-            style={{
-              cursor:
-                ranking?.first_elt_position + ranking?.ranking.length >=
-                leaderboardToppers?.[
-                  timeFrameMap[
-                    duration as keyof typeof timeFrameMap
-                  ] as keyof typeof leaderboardToppers
-                ]?.length
-                  ? "not-allowed"
-                  : "pointer",
-              opacity:
-                ranking?.first_elt_position + ranking?.ranking.length >=
-                leaderboardToppers?.[
-                  timeFrameMap[
-                    duration as keyof typeof timeFrameMap
-                  ] as keyof typeof leaderboardToppers
-                ]?.length
-                  ? 0.5
-                  : 1,
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+import RankingsTable from "../components/leaderboard/RankingsTable";
+import { timeFrameMap } from "../utils/constants";
+import ControlsDashboard from "../components/leaderboard/ControlsDashboard";
 
 export default function Leaderboard() {
   const router = useRouter();
@@ -501,7 +261,7 @@ export default function Leaderboard() {
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
             {ranking ? (
               <>
-                <Rankings
+                <RankingsTable
                   data={ranking}
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
