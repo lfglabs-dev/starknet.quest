@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_LINK;
+const API_URL = process.env.NEXT_PUBLIC_STARKNET_ID;
 
 export const getDomainFromAddress = async (
   address: string
