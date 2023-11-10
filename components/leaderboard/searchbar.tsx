@@ -1,4 +1,9 @@
-import React, { useContext, useEffect, useState,FunctionComponent } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  FunctionComponent,
+} from "react";
 import SearchIcon from "../../public/icons/searchIcon.svg";
 import Image from "next/image";
 import styles from "../../styles/leaderboard.module.css";
@@ -7,7 +12,7 @@ import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
 import { hexToDecimal } from "../../utils/feltService";
 
 type SearchbarProps = {
- handleChange: (_: string) => void;
+  handleChange: (_: string) => void;
   value: string;
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   suggestions: string[];
@@ -15,10 +20,13 @@ type SearchbarProps = {
 };
 
 const Searchbar: FunctionComponent<SearchbarProps> = ({
-  handleChange, value, onKeyDown, suggestions, handleSuggestionClick
+  handleChange,
+  value,
+  onKeyDown,
+  suggestions,
+  handleSuggestionClick,
 }) => {
-    
-    const [showSuggestions, setShowSuggestions] = useState(
+  const [showSuggestions, setShowSuggestions] = useState(
     suggestions?.length > 0
   );
 
@@ -54,7 +62,6 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
     if (!addr) return;
     handleSuggestionClick(hexToDecimal(addr));
   };
-
 
   return (
     <div className="relative gap-2 z-50">

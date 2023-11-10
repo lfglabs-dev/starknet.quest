@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import RankCard from "../components/leaderboard/RankCard";
-import ChevronRight from "../public/icons/ChevronRightIcon.svg";
-import ChevronLeft from "../public/icons/ChevronLeftIcon.svg";
-import BottomArrow from "../public/icons/dropdownArrow.svg";
-import Image from "next/image";
 import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
@@ -17,9 +13,7 @@ import FeaturedQuest from "../components/UI/featured_banner/featuredQuest";
 import { QuestsContext } from "../context/QuestsProvider";
 import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
-import { getDomainWithoutStark, minifyAddress } from "../utils/stringService";
-import { getDomainFromAddress } from "../utils/domainService";
-import { decimalToHex, hexToDecimal } from "../utils/feltService";
+import { getDomainWithoutStark } from "../utils/stringService";
 import { useDebounce } from "../hooks/useDebounce";
 import { Abi, Contract, Provider } from "starknet";
 import naming_abi from "../abi/naming_abi.json";
@@ -44,8 +38,6 @@ export default function Leaderboard() {
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
-  const [isCustomResult, setCustomResult] = useState<boolean>(false);
-
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,6 +50,10 @@ export default function Leaderboard() {
     ranking: [],
   });
 
+  // to check if current view is the default view or a user requested view(to prevent multiple api calls)
+  const [isCustomResult, setCustomResult] = useState<boolean>(false);
+
+  // set user address on wallet connect and disconnect
   useEffect(() => {
     if (address === "") return;
     if (address) setUserAddress(address);
@@ -78,7 +74,7 @@ export default function Leaderboard() {
 
     const fetchLeaderboardToppersResult = async () => {
       const topperData = await fetchLeaderboardToppers({
-        addr: status === "connected" ? hexToDecimal(address) : "",
+        addr: requestBody.addr,
       });
       setLeaderboardToppers(topperData);
     };
@@ -134,6 +130,11 @@ export default function Leaderboard() {
       };
     }
   }
+
+  // to reset the page shift when duration is changes or new address is searched
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [duration, currentSearchedAddress]);
 
   // on user selecting duration
   const handleChangeSelection = (title: string) => {
@@ -215,7 +216,7 @@ export default function Leaderboard() {
     const requestBody = {
       addr:
         currentSearchedAddress.length > 0
-          ? hexToDecimal(currentSearchedAddress)
+          ? currentSearchedAddress
           : userAddress
           ? hexToDecimal(userAddress)
           : "",
@@ -230,8 +231,22 @@ export default function Leaderboard() {
       setRanking(rankingData);
     };
 
+    const fetchLeaderboard = async () => {
+      const topperData = await fetchLeaderboardToppers({
+        addr: requestBody.addr,
+      });
+      setLeaderboardToppers(topperData);
+    };
+
+    if (searchAddress.length > 0) fetchLeaderboard();
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration, searchAddress, isCustomResult]);
+  }, [
+    rowsPerPage,
+    currentPage,
+    duration,
+    currentSearchedAddress,
+    isCustomResult,
+  ]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
@@ -272,7 +287,7 @@ export default function Leaderboard() {
       ]?.length ?? 0
     );
     setUserPercentile(res);
-  }, [leaderboardToppers]);
+  }, [leaderboardToppers, currentSearchedAddress]);
 
   return (
     <div className={styles.leaderboard_container}>
@@ -326,6 +341,7 @@ export default function Leaderboard() {
                   handleSuggestionClick={(address) => {
                     setCurrentSearchedAddress(address);
                     setSearchResults([]);
+                    setCustomResult(true);
                   }}
                 />
               </div>
@@ -356,11 +372,13 @@ export default function Leaderboard() {
               <>
                 <RankingsTable
                   data={ranking}
-                  selectedAddress={hexToDecimal(userAddress)}
+                  selectedAddress={
+                    currentSearchedAddress.length > 0
+                      ? currentSearchedAddress
+                      : hexToDecimal(userAddress)
+                  }
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
-                  userAddress={userAddress ?? ""}
-                  searchedAddress={currentSearchedAddress}
                 />
                 <ControlsDashboard
                   ranking={ranking}
