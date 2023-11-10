@@ -31,10 +31,11 @@ import Blur from "../components/shapes/blur";
 import RankingsTable from "../components/leaderboard/RankingsTable";
 import { timeFrameMap } from "../utils/constants";
 import ControlsDashboard from "../components/leaderboard/ControlsDashboard";
+import { hexToDecimal } from "../utils/feltService";
 
 export default function Leaderboard() {
   const router = useRouter();
-  const { address: userAddress } = useAccount();
+  const { status, address } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
@@ -43,16 +44,56 @@ export default function Leaderboard() {
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
+  const [isCustomResult, setCustomResult] = useState<boolean>(false);
+
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [userAddress, setUserAddress] = useState<string>("");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
   });
+
+  useEffect(() => {
+    if (address === "") return;
+    if (address) setUserAddress(address);
+    if (status === "disconnected") setUserAddress("");
+  }, [address, status]);
+
+  useEffect(() => {
+    const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
+          : "",
+      page_size: 10,
+      shift: 0,
+      start_timestamp: new Date().setDate(new Date().getDate() - 7),
+      end_timestamp: new Date().getTime(),
+    };
+
+    const fetchLeaderboardToppersResult = async () => {
+      const topperData = await fetchLeaderboardToppers({
+        addr: status === "connected" ? hexToDecimal(address) : "",
+      });
+      setLeaderboardToppers(topperData);
+    };
+
+    const fetchRankingResults = async () => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking(response);
+    };
+
+    setLoading(true);
+    fetchLeaderboardToppersResult();
+    fetchRankingResults();
+    setLoading(false);
+  }, [userAddress, status]);
+
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
       weekly: {
@@ -97,6 +138,7 @@ export default function Leaderboard() {
   // on user selecting duration
   const handleChangeSelection = (title: string) => {
     setDuration(title);
+    setCustomResult(true);
   };
 
   // on user typing
@@ -137,37 +179,6 @@ export default function Leaderboard() {
     }
   };
 
-  // fetch initial data on page load
-  useEffect(() => {
-    const makeCall = async () => {
-      setLoading(true);
-      const address =
-        currentSearchedAddress.length > 0
-          ? hexToDecimal(currentSearchedAddress)
-          : userAddress
-          ? hexToDecimal(userAddress)
-          : "";
-      const requestBody = {
-        addr: address,
-        page_size: rowsPerPage,
-        shift: currentPage,
-        start_timestamp: new Date().setDate(new Date().getDate() - 7),
-        end_timestamp: new Date().getTime(),
-      };
-
-      const rankingData = await fetchLeaderboardRankings(requestBody);
-      const topperData = await fetchLeaderboardToppers({
-        addr: address,
-      });
-
-      setRanking(rankingData);
-      setLeaderboardToppers(topperData);
-      setLoading(false);
-    };
-
-    makeCall();
-  }, [currentSearchedAddress]);
-
   // function to calculate time range based on duration
   const getTimeRange = () => {
     switch (duration) {
@@ -200,6 +211,7 @@ export default function Leaderboard() {
     duration  changes, search address changes
   */
   useEffect(() => {
+    if (!isCustomResult) return;
     const requestBody = {
       addr:
         currentSearchedAddress.length > 0
@@ -219,10 +231,11 @@ export default function Leaderboard() {
     };
 
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration]);
+  }, [rowsPerPage, currentPage, duration, searchAddress, isCustomResult]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
+    setCustomResult(true);
     if (type === "next") {
       setCurrentPage((prev) => prev + 1);
     } else {
@@ -343,6 +356,7 @@ export default function Leaderboard() {
               <>
                 <RankingsTable
                   data={ranking}
+                  selectedAddress={hexToDecimal(userAddress)}
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
                   userAddress={userAddress ?? ""}

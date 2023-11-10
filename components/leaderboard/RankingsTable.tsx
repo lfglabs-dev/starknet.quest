@@ -1,6 +1,6 @@
 import React from "react";
 import RankingSkeleton from "../skeletons/rankingSkeleton";
-import { minifyAddress } from "../../utils/stringService";
+import { minifyAddress, minifyDomain } from "../../utils/stringService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import { decimalToHex } from "../../utils/feltService";
 import Avatar from "../UI/avatar";
@@ -9,13 +9,18 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { getCompletedQuestsOfUser } from "../../services/apiService";
 import styles from "../../styles/leaderboard.module.css";
 import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
+import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
   data,
   paginationLoading,
   setPaginationLoading,
+  selectedAddress,
 }) => {
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
 
@@ -60,7 +65,14 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
         <RankingSkeleton />
       ) : (
         displayData?.map((item, index) => (
-          <div key={item.address} className={styles.ranking_table_row}>
+          <div
+            key={item.address}
+            className={styles.ranking_table_row}
+            style={{
+              backgroundColor:
+                selectedAddress === item.address ? "black" : "inherit",
+            }}
+          >
             <div className={styles.ranking_table_row_name_rank}>
               <div className={styles.ranking_position_layout}>
                 <p className="text-white text-center">
@@ -69,7 +81,19 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
               </div>
               <div className={styles.ranking_profile_layout}>
                 <Avatar address={item.address} width="32" />
-                <p className="text-white">{item.displayName}</p>
+                <p
+                  style={{
+                    color:
+                      selectedAddress === item.address ? "#6AFFAF" : "#ffffff",
+                  }}
+                >
+                  {isMobile &&
+                  item &&
+                  item.displayName &&
+                  isStarkDomain(item.displayName)
+                    ? minifyDomain(item.displayName)
+                    : item.displayName}
+                </p>
               </div>
             </div>
             <div className={styles.ranking_table_row_xp_quest}>

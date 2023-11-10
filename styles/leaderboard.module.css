@@ -113,7 +113,7 @@
   align-items: baseline;
   width: 100%;
   align-items: baseline;
-  justify-content: start;
+  justify-content: center;
 }
 
 .rows_text {
@@ -227,7 +227,7 @@
 .ranking_table_row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 1rem 0.5rem;
+  padding: 0.5rem 0.8rem;
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
@@ -353,7 +353,7 @@
 }
 @media (min-width: 768px) {
   .percentile_text_container {
-    justify-content: center;
+    justify-content: start;
   }
 
   .ranking_table_row_name_rank {
