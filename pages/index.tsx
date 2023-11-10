@@ -21,7 +21,7 @@ const Quests: NextPage = () => {
         <div className={styles.blur1}>
           <Blur />
         </div>
-        <div className="w-full max-w-[950px] flex justify-center">
+        <div className={styles.featured_quest_banner_container}>
           <FeaturedQuest
             heading="Featured"
             key={featuredQuest?.id}

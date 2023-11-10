@@ -306,8 +306,12 @@
 .controls_right_container {
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 2rem;
+}
 
+.divider {
+  background-color: #F4FAFF;
+  opacity: 0.3;
 }
 
 .rank_card_container {
@@ -346,9 +350,7 @@
   flex-direction: column;
   gap: 0.5rem;
   align-items: center;
-
 }
-
 @media (min-width: 768px) {
   .percentile_text_container {
     justify-content: center;

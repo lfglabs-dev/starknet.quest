@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState,FunctionComponent } from "react";
 import SearchIcon from "../../public/icons/searchIcon.svg";
 import Image from "next/image";
 import styles from "../../styles/leaderboard.module.css";
@@ -6,16 +6,19 @@ import CrossIcon from "../../public/icons/cross.svg";
 import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
 import { hexToDecimal } from "../../utils/feltService";
 
-export default function Searchbar(props: {
-  handleChange: (_: string) => void;
+type SearchbarProps = {
+ handleChange: (_: string) => void;
   value: string;
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   suggestions: string[];
   handleSuggestionClick: (_: string) => void;
-}) {
-  const { handleChange, value, onKeyDown, suggestions, handleSuggestionClick } =
-    props;
-  const [showSuggestions, setShowSuggestions] = useState(
+};
+
+const Searchbar: FunctionComponent<SearchbarProps> = ({
+  handleChange, value, onKeyDown, suggestions, handleSuggestionClick
+}) => {
+    
+    const [showSuggestions, setShowSuggestions] = useState(
     suggestions?.length > 0
   );
 
@@ -51,6 +54,7 @@ export default function Searchbar(props: {
     if (!addr) return;
     handleSuggestionClick(hexToDecimal(addr));
   };
+
 
   return (
     <div className="relative gap-2 z-50">
@@ -91,4 +95,6 @@ export default function Searchbar(props: {
       ) : null}
     </div>
   );
-}
+};
+
+export default Searchbar;
