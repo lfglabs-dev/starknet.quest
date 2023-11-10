@@ -46,10 +46,13 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const fetchResults = async () => {
+      setLoading(true);
       const requestBody = {
         addr:
           status === "connected"
-            ? hexToDecimal(address?.length > 0 ? address : userAddress)
+            ? hexToDecimal(
+                address && address?.length > 0 ? address : userAddress
+              )
             : "",
         page_size: 10,
         shift: 0,
