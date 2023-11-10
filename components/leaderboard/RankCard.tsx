@@ -62,11 +62,7 @@ const RankCard: FunctionComponent<RankCardProps> = ({
       <Divider
         orientation="horizontal"
         variant="fullWidth"
-        sx={{
-          width: "100%",
-          backgroundColor: "#F4FAFF",
-          opacity: 0.3,
-        }}
+        className={styles.divider}
       />
 
       <div className={styles.rank_card_numbers}>

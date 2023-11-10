@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.1",
+    "@next/env": "^14.0.1",
     "@nimiq/style": "^0.8.5",
     "@react-three/drei": "^9.80.3",
     "@react-three/fiber": "^8.13.6",

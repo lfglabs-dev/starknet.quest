@@ -95,6 +95,7 @@ export default function Leaderboard() {
     makeCall();
   }, []);
 
+  // function to calculate time range based on duration
   const getTimeRange = () => {
     switch (duration) {
       case "Last 7 Days":
