@@ -1,6 +1,6 @@
 import React from "react";
 import RankingSkeleton from "../skeletons/rankingSkeleton";
-import { minifyAddress } from "../../utils/stringService";
+import { minifyAddress, minifyDomain } from "../../utils/stringService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import { decimalToHex } from "../../utils/feltService";
 import Avatar from "../UI/avatar";
@@ -9,6 +9,8 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { getCompletedQuestsOfUser } from "../../services/apiService";
 import styles from "../../styles/leaderboard.module.css";
 import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
+import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
@@ -17,6 +19,8 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
   setPaginationLoading,
   selectedAddress,
 }) => {
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
 
@@ -83,7 +87,12 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                       selectedAddress === item.address ? "#6AFFAF" : "#ffffff",
                   }}
                 >
-                  {item.displayName}
+                  {isMobile &&
+                  item &&
+                  item.displayName &&
+                  isStarkDomain(item.displayName)
+                    ? minifyDomain(item.displayName)
+                    : item.displayName}
                 </p>
               </div>
             </div>

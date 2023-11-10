@@ -29,6 +29,7 @@ export default function Leaderboard() {
   const [userPercentile, setUserPercentile] = useState<number>(100);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchAddress, setSearchAddress] = useState<string>("");
+  const [isCustomResult, setCustomResult] = useState<boolean>(false);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,7 +43,8 @@ export default function Leaderboard() {
   useEffect(() => {
     if (address === "") return;
     if (address) setUserAddress(address);
-  }, [address]);
+    if (status === "disconnected") setUserAddress("");
+  }, [address, status]);
 
   useEffect(() => {
     const requestBody = {
@@ -70,7 +72,7 @@ export default function Leaderboard() {
 
     setLoading(true);
     fetchLeaderboardToppersResult();
-    if (userAddress) fetchRankingResults();
+    fetchRankingResults();
     setLoading(false);
   }, [userAddress, status]);
 
@@ -92,6 +94,7 @@ export default function Leaderboard() {
 
   const handleChangeSelection = (title: string) => {
     setDuration(title);
+    setCustomResult(true);
   };
 
   // on user typing
@@ -138,6 +141,7 @@ export default function Leaderboard() {
     duration  changes, search address changes
   */
   useEffect(() => {
+    if (!isCustomResult) return;
     const requestBody = {
       addr:
         searchAddress.length > 0
@@ -155,10 +159,11 @@ export default function Leaderboard() {
     };
 
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration, searchAddress]);
+  }, [rowsPerPage, currentPage, duration, searchAddress, isCustomResult]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
+    setCustomResult(true);
     if (type === "next") {
       setCurrentPage((prev) => prev + 1);
     } else {
