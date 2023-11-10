@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import RankCard from "../components/leaderboard/RankCard";
 import {
@@ -18,10 +18,11 @@ import Blur from "../components/shapes/blur";
 import RankingsTable from "../components/leaderboard/RankingsTable";
 import { timeFrameMap } from "../utils/constants";
 import ControlsDashboard from "../components/leaderboard/ControlsDashboard";
+import { hexToDecimal } from "../utils/feltService";
 
 export default function Leaderboard() {
   const router = useRouter();
-  const { address: userAddress } = useAccount();
+  const { status, address } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
@@ -32,10 +33,43 @@ export default function Leaderboard() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [userAddress, setUserAddress] = useState<string>("");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
   });
+
+  useEffect(() => {
+    if (address === "") return;
+    if (address) setUserAddress(address);
+  }, [address]);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      const requestBody = {
+        addr:
+          status === "connected"
+            ? hexToDecimal(address?.length > 0 ? address : userAddress)
+            : "",
+        page_size: 10,
+        shift: 0,
+        start_timestamp: new Date().setDate(new Date().getDate() - 7),
+        end_timestamp: new Date().getTime(),
+      };
+
+      const rankingData = await fetchLeaderboardRankings(requestBody);
+      const topperData = await fetchLeaderboardToppers({
+        addr: status === "connected" ? hexToDecimal(address) : "",
+      });
+      setRanking(rankingData);
+      setLeaderboardToppers(topperData);
+
+      setLoading(false);
+    };
+
+    if (userAddress) fetchResults();
+  }, [userAddress, status]);
+
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
       weekly: {
@@ -52,8 +86,6 @@ export default function Leaderboard() {
       },
     });
 
-  const address = userAddress;
-
   const handleChangeSelection = (title: string) => {
     setDuration(title);
   };
@@ -69,31 +101,6 @@ export default function Leaderboard() {
       setSearchAddress(searchQuery);
     }
   };
-
-  // fetch initial data on page load
-  useEffect(() => {
-    const makeCall = async () => {
-      setLoading(true);
-      const requestBody = {
-        addr: address ? address : "",
-        page_size: 10,
-        shift: 0,
-        start_timestamp: new Date().setDate(new Date().getDate() - 7),
-        end_timestamp: new Date().getTime(),
-      };
-
-      const rankingData = await fetchLeaderboardRankings(requestBody);
-      const topperData = await fetchLeaderboardToppers({
-        addr: address ? address : "",
-      });
-
-      setRanking(rankingData);
-      setLeaderboardToppers(topperData);
-      setLoading(false);
-    };
-
-    makeCall();
-  }, []);
 
   // function to calculate time range based on duration
   const getTimeRange = () => {
@@ -127,9 +134,11 @@ export default function Leaderboard() {
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!address) return;
     const requestBody = {
-      addr: searchAddress.length > 0 ? searchAddress : address,
+      addr:
+        searchAddress.length > 0
+          ? hexToDecimal(searchAddress)
+          : hexToDecimal(address),
       page_size: rowsPerPage,
       shift: currentPage,
       ...getTimeRange(),
@@ -227,13 +236,7 @@ export default function Leaderboard() {
                   tags={["Last 7 Days", "Last 30 Days", "All time"]}
                 />
               </div>
-              <div style={{ flex: 0.4 }}>
-                <Searchbar
-                  value={searchQuery}
-                  handleSearch={handleSearch}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
+              <div style={{ flex: 0.4 }}></div>
             </div>
 
             {/* this will be displayed if user is present otherwise will not be displayed */}
@@ -261,6 +264,7 @@ export default function Leaderboard() {
               <>
                 <RankingsTable
                   data={ranking}
+                  selectedAddress={hexToDecimal(userAddress)}
                   paginationLoading={paginationLoading}
                   setPaginationLoading={setPaginationLoading}
                 />

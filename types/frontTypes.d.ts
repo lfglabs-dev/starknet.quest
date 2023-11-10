@@ -224,6 +224,7 @@ type RankingProps = {
   };
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
+  selectedAddress: string;
 };
 
 type ControlsDashboardProps = {
