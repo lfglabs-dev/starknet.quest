@@ -18,6 +18,16 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
   const [showMenu, setShowMenu] = useState(false);
 
   const checkIfLastPage = useMemo(() => {
+    /*
+    check if the current page is the last page
+
+    first_elt_position is the index of the first element in the current page
+    and ranking.length is the number of elements in the current page
+
+    so if the sum of these two is greater than the number of players in the
+    leaderboard toppers api response, then we are on the last page
+    */
+
     if (
       ranking?.first_elt_position + ranking?.ranking?.length >=
       leaderboardToppers?.[
@@ -31,6 +41,12 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
   }, [leaderboardToppers, ranking, duration]);
 
   const checkIfFirstPage = useMemo(() => {
+    /*
+    check if the current page is the first page
+
+    first_elt_position is the index of the first element in the current page
+    so if this is less than or equal to 1, then we are on the first page
+    */
     if (ranking?.first_elt_position <= 1) return true;
     return false;
   }, [ranking]);
