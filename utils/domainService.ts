@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_STARKNET_ID;
+const API_URL = "https://goerli.api.starknet.id";
 
 export const getDomainFromAddress = async (
   address: string

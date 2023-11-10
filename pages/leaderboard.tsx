@@ -45,32 +45,33 @@ export default function Leaderboard() {
   }, [address]);
 
   useEffect(() => {
-    const fetchResults = async () => {
-      setLoading(true);
-      const requestBody = {
-        addr:
-          status === "connected"
-            ? hexToDecimal(
-                address && address?.length > 0 ? address : userAddress
-              )
-            : "",
-        page_size: 10,
-        shift: 0,
-        start_timestamp: new Date().setDate(new Date().getDate() - 7),
-        end_timestamp: new Date().getTime(),
-      };
+    const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
+          : "",
+      page_size: 10,
+      shift: 0,
+      start_timestamp: new Date().setDate(new Date().getDate() - 7),
+      end_timestamp: new Date().getTime(),
+    };
 
-      const rankingData = await fetchLeaderboardRankings(requestBody);
+    const fetchLeaderboardToppersResult = async () => {
       const topperData = await fetchLeaderboardToppers({
         addr: status === "connected" ? hexToDecimal(address) : "",
       });
-      setRanking(rankingData);
       setLeaderboardToppers(topperData);
-
-      setLoading(false);
     };
 
-    if (userAddress) fetchResults();
+    const fetchRankingResults = async () => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking(response);
+    };
+
+    setLoading(true);
+    fetchLeaderboardToppersResult();
+    if (userAddress) fetchRankingResults();
+    setLoading(false);
   }, [userAddress, status]);
 
   const [leaderboardToppers, setLeaderboardToppers] =
