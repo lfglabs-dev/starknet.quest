@@ -336,7 +336,7 @@ export default function Leaderboard() {
                 />
               </div>
               <div style={{ flex: 0.4 }}>
-                <Searchbar
+              <Searchbar
                   value={searchQuery}
                   handleChange={handleChange}
                   onKeyDown={handleKeyDown}

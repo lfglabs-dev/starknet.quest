@@ -60,6 +60,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
         return "";
       });
     if (!addr) return;
+    handleChange(option);
     handleSuggestionClick(hexToDecimal(addr));
   };
 
