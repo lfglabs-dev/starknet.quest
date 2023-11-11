@@ -336,7 +336,7 @@ export default function Leaderboard() {
                 />
               </div>
               <div style={{ flex: 0.4 }}>
-              <Searchbar
+                <Searchbar
                   value={searchQuery}
                   handleChange={handleChange}
                   onKeyDown={handleKeyDown}
@@ -371,36 +371,38 @@ export default function Leaderboard() {
             />
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {showNoresults ? (
-              <div className="flex items-center justify-center">
-                <p>No Results Found!</p>
-              </div>
-            ) : ranking ? (
-              <>
-                <RankingsTable
-                  data={ranking}
-                  selectedAddress={
-                    currentSearchedAddress.length > 0
-                      ? currentSearchedAddress
-                      : hexToDecimal(userAddress)
-                  }
-                  paginationLoading={paginationLoading}
-                  setPaginationLoading={setPaginationLoading}
-                />
-                <ControlsDashboard
-                  ranking={ranking}
-                  handlePagination={handlePagination}
-                  leaderboardToppers={leaderboardToppers}
-                  rowsPerPage={rowsPerPage}
-                  setRowsPerPage={setRowsPerPage}
-                  duration={duration}
-                />
-                <Divider
-                  orientation="horizontal"
-                  variant="fullWidth"
-                  className={styles.divider}
-                />
-              </>
+            {ranking ? (
+              showNoresults ? (
+                <div className="flex items-center justify-center">
+                  <p>No Results Found!</p>
+                </div>
+              ) : (
+                <>
+                  <RankingsTable
+                    data={ranking}
+                    selectedAddress={
+                      currentSearchedAddress.length > 0
+                        ? currentSearchedAddress
+                        : hexToDecimal(userAddress)
+                    }
+                    paginationLoading={paginationLoading}
+                    setPaginationLoading={setPaginationLoading}
+                  />
+                  <ControlsDashboard
+                    ranking={ranking}
+                    handlePagination={handlePagination}
+                    leaderboardToppers={leaderboardToppers}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
+                    duration={duration}
+                  />
+                  <Divider
+                    orientation="horizontal"
+                    variant="fullWidth"
+                    className={styles.divider}
+                  />
+                </>
+              )
             ) : null}
 
             <div className={styles.leaderboard_topper_layout}>
