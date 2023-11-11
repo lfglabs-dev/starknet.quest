@@ -44,6 +44,7 @@ export default function Leaderboard() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
@@ -270,6 +271,7 @@ export default function Leaderboard() {
       ]?.position
     ) {
       setUserPercentile(-1);
+      setShowNoresults(true);
       return;
     }
 
@@ -287,6 +289,7 @@ export default function Leaderboard() {
       ]?.length ?? 0
     );
     setUserPercentile(res);
+    setShowNoresults(false);
   }, [leaderboardToppers, currentSearchedAddress]);
 
   return (
@@ -368,7 +371,11 @@ export default function Leaderboard() {
             />
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {ranking ? (
+            {showNoresults ? (
+              <div className="flex items-center justify-center">
+                <p>No Results Found!</p>
+              </div>
+            ) : ranking ? (
               <>
                 <RankingsTable
                   data={ranking}
