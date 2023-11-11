@@ -271,7 +271,7 @@ export default function Leaderboard() {
       ]?.position
     ) {
       setUserPercentile(-1);
-      setShowNoresults(true);
+      if (currentSearchedAddress.length > 0) setShowNoresults(true);
       return;
     }
 
