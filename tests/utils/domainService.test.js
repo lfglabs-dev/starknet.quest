@@ -1,6 +1,6 @@
 import { getDomainFromAddress } from '../../utils/domainService';
 
-const API_URL = "https://goerli.api.starknet.id";
+const API_URL = process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK;
 
 describe("getDomainFromAddress function", () => {
 it("should return a valid domain for a valid address", async () => {
