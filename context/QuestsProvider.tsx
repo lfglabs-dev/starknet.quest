@@ -54,7 +54,10 @@ export const QuestsContextProvider = ({
           }))
         );
         setQuests(q);
-        setFeaturedQuest(q.length >= 1 ? q[q.length - 1] : undefined);
+        const notExpired = q.filter((quest) => !quest.expired);
+        setFeaturedQuest(
+          notExpired.length >= 1 ? notExpired[notExpired.length - 1] : undefined
+        );
       });
   }, []);
 
