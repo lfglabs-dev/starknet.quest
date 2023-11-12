@@ -31,6 +31,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
                 }}
                 reward={quest.rewards_title}
                 id={quest.id}
+                expired={quest.expired}
               />
             );
           })

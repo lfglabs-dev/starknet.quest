@@ -15,7 +15,6 @@
   border-radius: 30px;
 }
 
-.issuer,
 .level {
   /* Auto layout */
 
@@ -39,12 +38,6 @@
 
   flex: none;
   flex-grow: 0;
-}
-
-.issuer {
-  width: fit-content;
-  gap: 10px;
-  margin-bottom: 1rem;
 }
 
 .descriptionContainer {
@@ -251,6 +244,13 @@
   border-radius: 100px;
   width: 24px;
   height: 24px;
+}
+
+.issuer {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  align-items: center;
 }
 
 @media (max-width: 1024px) {

@@ -6,6 +6,7 @@ type CardProps = {
   imgSrc: string;
   title: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
 const Card: FunctionComponent<CardProps> = ({
@@ -13,9 +14,10 @@ const Card: FunctionComponent<CardProps> = ({
   title,
   imgSrc,
   onClick,
+  disabled,
 }) => {
   return (
-    <div className={styles.card} onClick={onClick}>
+    <div className={styles.card} onClick={onClick} aria-disabled={disabled}>
       <div
         style={{ backgroundImage: `url('${imgSrc}')` }}
         className={styles.cardImage}
