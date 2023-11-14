@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import ChipList from "../components/UI/ChipList";
 import RankCard from "../components/leaderboard/RankCard";
 import {
@@ -13,29 +13,89 @@ import FeaturedQuest from "../components/UI/featured_banner/featuredQuest";
 import { QuestsContext } from "../context/QuestsProvider";
 import { useRouter } from "next/router";
 import Searchbar from "../components/leaderboard/searchbar";
+import { getDomainWithoutStark } from "../utils/stringService";
+import { useDebounce } from "../hooks/useDebounce";
+import { Abi, Contract, Provider } from "starknet";
+import naming_abi from "../abi/naming_abi.json";
+import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
+import { utils } from "starknetid.js";
+import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "../components/shapes/blur";
 import RankingsTable from "../components/leaderboard/RankingsTable";
-import { timeFrameMap } from "../utils/constants";
+import { rankOrder, rankOrderMobile, timeFrameMap } from "../utils/constants";
 import ControlsDashboard from "../components/leaderboard/ControlsDashboard";
+import { hexToDecimal } from "../utils/feltService";
+import Avatar from "../components/UI/avatar";
+import { useMediaQuery } from "@mui/material";
+import Image from "next/image";
+import TigerImage from "../public/visuals/animals/tiger.webp";
 
 export default function Leaderboard() {
   const router = useRouter();
-  const { address: userAddress } = useAccount();
+  const { status, address } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const [userPercentile, setUserPercentile] = useState<number>(100);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchAddress, setSearchAddress] = useState<string>("");
+  const searchAddress = useDebounce<string>(searchQuery, 200);
+  const [currentSearchedAddress, setCurrentSearchedAddress] =
+    useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [showNoresults, setShowNoresults] = useState(false);
+  const [userAddress, setUserAddress] = useState<string>("");
+  const isMobile = useMediaQuery("(max-width:768px)");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
   });
+
+  // to check if current view is the default view or a user requested view(to prevent multiple api calls)
+  const [isCustomResult, setCustomResult] = useState<boolean>(false);
+
+  // set user address on wallet connect and disconnect
+  useEffect(() => {
+    if (address === "") return;
+    if (address) setUserAddress(address);
+    if (status === "disconnected") setUserAddress("");
+  }, [address, status]);
+
+  useEffect(() => {
+    const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
+          : "",
+      page_size: 10,
+      shift: 0,
+      start_timestamp: new Date().setDate(new Date().getDate() - 7),
+      end_timestamp: new Date().getTime(),
+    };
+
+    const fetchLeaderboardToppersResult = async () => {
+      const topperData = await fetchLeaderboardToppers({
+        addr: requestBody.addr,
+      });
+      setLeaderboardToppers(topperData);
+    };
+
+    const fetchRankingResults = async () => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking(response);
+    };
+
+    setLoading(true);
+    fetchLeaderboardToppersResult();
+    fetchRankingResults();
+    setLoading(false);
+  }, [userAddress, status]);
+
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
       weekly: {
@@ -52,48 +112,82 @@ export default function Leaderboard() {
       },
     });
 
-  const address = userAddress;
+  const contract = useMemo(() => {
+    return new Contract(
+      naming_abi as Abi,
+      process.env.NEXT_PUBLIC_NAMING_CONTRACT as string,
+      starknetIdNavigator?.provider as Provider
+    );
+  }, [starknetIdNavigator?.provider]);
 
+  // contract call to check if typed domain is taken
+  async function verifyDomain(domain: string): Promise<{ message: boolean }> {
+    if (!domain) return { message: false };
+    const currentTimeStamp = new Date().getTime() / 1000;
+    const encoded = utils.encodeDomain(domain).map((elem) => elem.toString());
+    const res = await contract?.call("domain_to_expiry", [encoded]);
+    if (Number(res?.["expiry" as keyof typeof res]) < currentTimeStamp) {
+      return {
+        message: false,
+      };
+    } else {
+      return {
+        message: true,
+      };
+    }
+  }
+
+  // to reset the page shift when duration is changes or new address is searched
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [duration, currentSearchedAddress]);
+
+  // on user selecting duration
   const handleChangeSelection = (title: string) => {
     setDuration(title);
+    setCustomResult(true);
   };
 
   // on user typing
-  const handleSearch = (query: string) => {
+  const handleChange = (query: string) => {
     setSearchQuery(query);
   };
+
+  // this will be called when the search address is debounced and updated and suggestions will be loaded
+  useEffect(() => {
+    const checkIfValidAddress = async (address: string) => {
+      try {
+        let domain = address;
+        if (isStarkDomain(address)) {
+          domain = getDomainWithoutStark(address);
+        }
+        const res: { message: boolean } = await verifyDomain(domain);
+        if (res.message) {
+          setSearchResults([domain.concat(".stark")]);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (err) {
+        setSearchResults([]);
+      }
+    };
+
+    if (searchAddress.length > 0) {
+      checkIfValidAddress(searchAddress);
+    }
+  }, [searchAddress]);
+
+  useEffect(() => {
+    console.log({ currentSearchedAddress });
+  }, [currentSearchedAddress]);
 
   // on user Press enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      setSearchAddress(searchQuery);
+      setSearchQuery(searchQuery);
+      setCurrentSearchedAddress(searchQuery);
     }
   };
-
-  // fetch initial data on page load
-  useEffect(() => {
-    const makeCall = async () => {
-      setLoading(true);
-      const requestBody = {
-        addr: address ? address : "",
-        page_size: 10,
-        shift: 0,
-        start_timestamp: new Date().setDate(new Date().getDate() - 7),
-        end_timestamp: new Date().getTime(),
-      };
-
-      const rankingData = await fetchLeaderboardRankings(requestBody);
-      const topperData = await fetchLeaderboardToppers({
-        addr: address ? address : "",
-      });
-
-      setRanking(rankingData);
-      setLeaderboardToppers(topperData);
-      setLoading(false);
-    };
-
-    makeCall();
-  }, []);
 
   // function to calculate time range based on duration
   const getTimeRange = () => {
@@ -127,9 +221,14 @@ export default function Leaderboard() {
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!address) return;
+    if (!isCustomResult) return;
     const requestBody = {
-      addr: searchAddress.length > 0 ? searchAddress : address,
+      addr:
+        currentSearchedAddress.length > 0
+          ? currentSearchedAddress
+          : userAddress
+          ? hexToDecimal(userAddress)
+          : "",
       page_size: rowsPerPage,
       shift: currentPage,
       ...getTimeRange(),
@@ -141,11 +240,26 @@ export default function Leaderboard() {
       setRanking(rankingData);
     };
 
+    const fetchLeaderboard = async () => {
+      const topperData = await fetchLeaderboardToppers({
+        addr: requestBody.addr,
+      });
+      setLeaderboardToppers(topperData);
+    };
+
+    if (searchAddress.length > 0) fetchLeaderboard();
     fetchRankings();
-  }, [rowsPerPage, currentPage, duration, searchAddress]);
+  }, [
+    rowsPerPage,
+    currentPage,
+    duration,
+    currentSearchedAddress,
+    isCustomResult,
+  ]);
 
   // handle pagination with forward and backward direction as params
   const handlePagination = (type: string) => {
+    setCustomResult(true);
     if (type === "next") {
       setCurrentPage((prev) => prev + 1);
     } else {
@@ -165,6 +279,11 @@ export default function Leaderboard() {
       ]?.position
     ) {
       setUserPercentile(-1);
+      if (currentSearchedAddress.length > 0 && isCustomResult)
+        setShowNoresults(true);
+      else {
+        setShowNoresults(false);
+      }
       return;
     }
 
@@ -182,7 +301,8 @@ export default function Leaderboard() {
       ]?.length ?? 0
     );
     setUserPercentile(res);
-  }, [leaderboardToppers]);
+    setShowNoresults(false);
+  }, [leaderboardToppers, currentSearchedAddress]);
 
   return (
     <div className={styles.leaderboard_container}>
@@ -230,24 +350,41 @@ export default function Leaderboard() {
               <div style={{ flex: 0.4 }}>
                 <Searchbar
                   value={searchQuery}
-                  handleSearch={handleSearch}
+                  handleChange={handleChange}
                   onKeyDown={handleKeyDown}
+                  suggestions={searchResults}
+                  handleSuggestionClick={(address) => {
+                    setCurrentSearchedAddress(address);
+                    setSearchResults([]);
+                    setCustomResult(true);
+                  }}
                 />
               </div>
             </div>
 
             {/* this will be displayed if user is present otherwise will not be displayed */}
             {userPercentile >= 0 ? (
-              <div className={styles.percentile_text_container}>
-                <p className={styles.percentile_text_normal}>
-                  {address === userAddress ? "You are" : "He is"}
-                </p>
-                <span className={styles.percentile_text_green}>
-                  &nbsp;better than {userPercentile}%&nbsp;
-                </span>
-                <p className={styles.percentile_text_normal}>
-                  of the other players
-                </p>
+              <div className={styles.percentile_container}>
+                {currentSearchedAddress.length > 0 || userAddress ? (
+                  <Avatar
+                    address={
+                      currentSearchedAddress.length > 0
+                        ? currentSearchedAddress
+                        : userAddress
+                    }
+                  />
+                ) : null}
+                <div className={styles.percentile_text_container}>
+                  <p className={styles.percentile_text_normal}>
+                    {currentSearchedAddress.length > 0 ? "He is" : "You are "}
+                  </p>
+                  <span className={styles.percentile_text_green}>
+                    &nbsp;better than {userPercentile}%&nbsp;
+                  </span>
+                  <p className={styles.percentile_text_normal}>
+                    of the other players
+                  </p>
+                </div>
               </div>
             ) : null}
             <Divider
@@ -258,43 +395,92 @@ export default function Leaderboard() {
 
             {/* this will be if searched user is not present in leaderboard or server returns 500 */}
             {ranking ? (
-              <>
-                <RankingsTable
-                  data={ranking}
-                  paginationLoading={paginationLoading}
-                  setPaginationLoading={setPaginationLoading}
-                />
-                <ControlsDashboard
-                  ranking={ranking}
-                  handlePagination={handlePagination}
-                  leaderboardToppers={leaderboardToppers}
-                  rowsPerPage={rowsPerPage}
-                  setRowsPerPage={setRowsPerPage}
-                  duration={duration}
-                />
-                <Divider
-                  orientation="horizontal"
-                  variant="fullWidth"
-                  className={styles.divider}
-                />
-              </>
+              showNoresults ? (
+                <div className={styles.no_result_container}>
+                  <img
+                    src="/visuals/animals/tiger.webp"
+                    height={256}
+                    width={254}
+                    alt="error image"
+                  />
+                  <p className="pb-[1.5rem]">
+                    No Results Found! Try a new search
+                  </p>
+                  <Divider
+                    orientation="horizontal"
+                    variant="fullWidth"
+                    className={styles.divider}
+                  />
+                </div>
+              ) : (
+                <>
+                  <RankingsTable
+                    data={ranking}
+                    selectedAddress={
+                      currentSearchedAddress.length > 0
+                        ? currentSearchedAddress
+                        : hexToDecimal(userAddress)
+                    }
+                    paginationLoading={paginationLoading}
+                    setPaginationLoading={setPaginationLoading}
+                  />
+                  <ControlsDashboard
+                    ranking={ranking}
+                    handlePagination={handlePagination}
+                    leaderboardToppers={leaderboardToppers}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
+                    duration={duration}
+                    setCustomResult={setCustomResult}
+                  />
+                  <Divider
+                    orientation="horizontal"
+                    variant="fullWidth"
+                    className={styles.divider}
+                  />
+                </>
+              )
             ) : null}
 
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
-                ? leaderboardToppers[
-                    timeFrameMap[
-                      duration as keyof typeof timeFrameMap
-                    ] as keyof typeof leaderboardToppers
-                  ]?.best_users?.map((item, index) => (
-                    <RankCard
-                      position={index + 1}
-                      key={index}
-                      name={item.address}
-                      experience={item.xp}
-                      trophy={item.achievements}
-                    />
-                  ))
+                ? isMobile
+                  ? rankOrderMobile.map((position, index) => {
+                      const item =
+                        leaderboardToppers?.[
+                          timeFrameMap[
+                            duration as keyof typeof timeFrameMap
+                          ] as keyof typeof leaderboardToppers
+                        ]?.best_users?.[position - 1];
+                      if (!item) return null;
+                      return (
+                        <RankCard
+                          key={index}
+                          name={item?.address}
+                          experience={item?.xp}
+                          trophy={item?.achievements}
+                          position={position}
+                        />
+                      );
+                    })
+                  : rankOrder.map((position, index) => {
+                      const item =
+                        leaderboardToppers?.[
+                          timeFrameMap[
+                            duration as keyof typeof timeFrameMap
+                          ] as keyof typeof leaderboardToppers
+                        ]?.best_users?.[position - 1];
+                      if (!item) return null;
+                      return (
+                        <RankCard
+                          key={index}
+                          name={item?.address}
+                          experience={item?.xp}
+                          trophy={item?.achievements}
+                          position={position}
+                        />
+                      );
+                    })
                 : null}
             </div>
           </div>

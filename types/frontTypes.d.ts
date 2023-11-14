@@ -224,6 +224,7 @@ type RankingProps = {
   };
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
+  selectedAddress: string;
 };
 
 type ControlsDashboardProps = {
@@ -233,6 +234,7 @@ type ControlsDashboardProps = {
   setRowsPerPage: (_: number) => void;
   leaderboardToppers: LeaderboardToppersData;
   duration: string;
+  setCustomResult: (_: boolean) => void;
 };
 
 type RankingData = {

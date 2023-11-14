@@ -20,7 +20,7 @@ const ChipList: FunctionComponent<ChipProps> = ({
           key={index}
           className={styles.each_chip}
           style={{
-            backgroundColor: tag === selected ? "white" : "inherit",
+            backgroundColor: tag === selected ? "white" : "transparent",
           }}
         >
           <p
@@ -28,6 +28,7 @@ const ChipList: FunctionComponent<ChipProps> = ({
               color: tag !== selected ? "white" : "black",
               fontSize: 12,
               fontWeight: 600,
+              opacity: tag !== selected ? 0.8 : 1,
             }}
           >
             {tag}

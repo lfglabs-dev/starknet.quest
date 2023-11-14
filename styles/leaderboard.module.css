@@ -19,7 +19,7 @@
   display: flex;
   width: 100%;
   margin-top: 12vh;
-  max-width: 1250px;
+  max-width: 950px;
 }
 
 .leaderboard_topper_layout {
@@ -27,18 +27,19 @@
   gap: 1.5rem;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   z-index: 1;
+  padding: 1rem 0rem 0rem;
 }
 
 .leaderboard_layout {
-  max-width: 1250px;
+  max-width: 950px;
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
   background-color: #1F1F25;
   width: 100%;
   gap: 1.5rem;
-  padding: 1.75rem 0.5rem;
   z-index: 1;
+  padding: 1.5rem 0.5rem;
 }
 
 
@@ -64,7 +65,8 @@
   width: 100%;
   justify-content: center;
   margin-top: 12vh;
-  max-width: 1250px;
+  max-width: 950px;
+  margin-bottom: 24px;
 }
 
 .chip_list {
@@ -90,6 +92,11 @@
   height: 80%;
 }
 
+.percentile {
+  display: flex;
+  gap: 1rem;
+}
+
 
 .percentile_text_normal {
   font-size: 16px;
@@ -113,7 +120,7 @@
   align-items: baseline;
   width: 100%;
   align-items: baseline;
-  justify-content: start;
+  justify-content: center;
 }
 
 .rows_text {
@@ -149,7 +156,7 @@
 .quests_text {
   color: var(--background-400, #E1DCEA);
   text-align: right;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
   line-height: 16px;
 }
@@ -161,9 +168,6 @@
   width: 100%;
 }
 
-.search_bar:focus {
-  outline: red;
-}
 
 .search_bar_container {
   border: 1px solid transparent;
@@ -227,10 +231,11 @@
 .ranking_table_row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 1rem 0.5rem;
+  padding: 0.5rem 0.8rem;
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 .ranking_table_row_name_rank {
@@ -310,8 +315,9 @@
 }
 
 .divider {
-  background-color: #F4FAFF;
+  background-color: #818080;
   opacity: 0.3;
+  width: 100%;
 }
 
 .rank_card_container {
@@ -334,7 +340,7 @@
 
 .rank_card_naming {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   justify-content: center;
   align-items: center;
 }
@@ -352,11 +358,23 @@
   align-items: center;
 }
 
+.percentile_container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
 
+.no_result_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0rem;
+}
 
 @media (min-width: 768px) {
   .percentile_text_container {
-    justify-content: center;
+    justify-content: start;
   }
 
   .ranking_table_row_name_rank {
@@ -385,7 +403,7 @@
   }
 
   .leaderboard_layout {
-    padding: 1.75rem 1rem;
+    padding: 24px;
   }
 
   .leaderboard_topbar {
@@ -398,5 +416,9 @@
 
   .blur2 {
     display: block;
+  }
+
+  .leaderboard_layout {
+    padding: 1.5rem;
   }
 }

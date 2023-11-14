@@ -9,11 +9,10 @@ const RankingSkeleton: FunctionComponent = () => {
         <Skeleton
           variant="rounded"
           className={styles.leaderboardLoading}
-          height={"100vh"}
+          height={"120vh"}
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",
-            margin: "40px auto",
           }}
         />
       </div>

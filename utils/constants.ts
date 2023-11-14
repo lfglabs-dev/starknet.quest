@@ -9,3 +9,6 @@ export const timeFrameMap = {
   "Last 30 Days": "monthly",
   "All time": "all_time",
 };
+
+export const rankOrder = [2, 1, 3];
+export const rankOrderMobile = [1, 2, 3];

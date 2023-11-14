@@ -1,6 +1,6 @@
 import React from "react";
 import RankingSkeleton from "../skeletons/rankingSkeleton";
-import { minifyAddress } from "../../utils/stringService";
+import { minifyAddress, minifyDomain } from "../../utils/stringService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import { decimalToHex } from "../../utils/feltService";
 import Avatar from "../UI/avatar";
@@ -9,13 +9,20 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { getCompletedQuestsOfUser } from "../../services/apiService";
 import styles from "../../styles/leaderboard.module.css";
 import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
+import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
+import Link from "next/link";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
   data,
   paginationLoading,
   setPaginationLoading,
+  selectedAddress,
 }) => {
+  const isMobile = useMediaQuery("(max-width:768px)");
+  const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
+
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
 
@@ -60,28 +67,55 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
         <RankingSkeleton />
       ) : (
         displayData?.map((item, index) => (
-          <div key={item.address} className={styles.ranking_table_row}>
-            <div className={styles.ranking_table_row_name_rank}>
-              <div className={styles.ranking_position_layout}>
-                <p className="text-white text-center">
-                  {addNumberPadding(data.first_elt_position + index)}
+          <Link key={item.address} href={`/${decimalToHex(item.address)}`}>
+            <div
+              className={styles.ranking_table_row}
+              style={{
+                backgroundColor:
+                  selectedAddress === item.address
+                    ? "black"
+                    : hoveredIndex === index
+                    ? "#1C1C1C"
+                    : "transparent",
+              }}
+              onMouseOver={() => setHoveredIndex(index)}
+            >
+              <div className={styles.ranking_table_row_name_rank}>
+                <div className={styles.ranking_position_layout}>
+                  <p className="text-white text-center">
+                    {addNumberPadding(data.first_elt_position + index)}
+                  </p>
+                </div>
+                <div className={styles.ranking_profile_layout}>
+                  <Avatar address={item.address} width="32" />
+                  <p
+                    style={{
+                      color:
+                        selectedAddress === item.address
+                          ? "#6AFFAF"
+                          : "#ffffff",
+                    }}
+                  >
+                    {isMobile &&
+                    item &&
+                    item.displayName &&
+                    isStarkDomain(item.displayName)
+                      ? minifyDomain(item.displayName)
+                      : item.displayName}
+                  </p>
+                </div>
+              </div>
+              <div className={styles.ranking_table_row_xp_quest}>
+                <div className={styles.ranking_points_layout}>
+                  <Image src={XpBadge} priority width={35} height={35} />
+                  <p className="text-white text-center">{item.xp}</p>
+                </div>
+                <p className={styles.quests_text}>
+                  {item.completedQuests} Quests
                 </p>
               </div>
-              <div className={styles.ranking_profile_layout}>
-                <Avatar address={item.address} width="32" />
-                <p className="text-white">{item.displayName}</p>
-              </div>
             </div>
-            <div className={styles.ranking_table_row_xp_quest}>
-              <div className={styles.ranking_points_layout}>
-                <Image src={XpBadge} priority width={35} height={35} />
-                <p className="text-white text-center">{item.xp}</p>
-              </div>
-              <p className={styles.quests_text}>
-                {item.completedQuests} Quests
-              </p>
-            </div>
-          </div>
+          </Link>
         ))
       )}
     </div>
