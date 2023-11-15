@@ -47,6 +47,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
     disabled: false,
     expiry_timestamp: "loading",
     mandatory_domain: null,
+    expired: false,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();

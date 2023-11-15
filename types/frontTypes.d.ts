@@ -208,3 +208,54 @@ type TransactionData = {
     | "REJECTED"
     | "REVERTED";
 };
+
+type FormattedRankingProps = {
+  address: string;
+  xp: number;
+  achievements: number;
+  completedQuests?: number;
+  displayName?: string;
+}[];
+
+type RankingProps = {
+  data: {
+    first_elt_position: number;
+    ranking: { address: string; xp: number; achievements: number }[];
+  };
+  paginationLoading: boolean;
+  setPaginationLoading: (_: boolean) => void;
+  selectedAddress: string;
+};
+
+type ControlsDashboardProps = {
+  ranking: RankingData;
+  handlePagination: (_: string) => void;
+  rowsPerPage: number;
+  setRowsPerPage: (_: number) => void;
+  leaderboardToppers: LeaderboardToppersData;
+  duration: string;
+  setCustomResult: (_: boolean) => void;
+};
+
+type RankingData = {
+  first_elt_position: number;
+  ranking: { address: string; xp: number; achievements: number }[];
+};
+
+type LeaderboardToppersData = {
+  weekly: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position?: number;
+  };
+  monthly: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position?: number;
+  };
+  all_time: {
+    best_users: { address: string; xp: number; achievements: number }[];
+    length: number;
+    position?: number;
+  };
+};
