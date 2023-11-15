@@ -1,16 +1,17 @@
+"use client";
+
 import React, { useContext } from "react";
-import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import FeaturedQuest from "../components/quests/featuredQuest";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import HowToParticipate from "../components/pages/home/howToParticipate";
 import QuestCategories from "../components/pages/home/questCategories";
 import TrendingQuests from "../components/pages/home/trending";
 import Blur from "../components/shapes/blur";
 import { QuestsContext } from "../context/QuestsProvider";
 
-const Quests: NextPage = () => {
+export default function Page() {
   const router = useRouter();
   const { featuredQuest, categories, trendingQuests } =
     useContext(QuestsContext);
@@ -43,6 +44,6 @@ const Quests: NextPage = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Quests;
+// export default Quests;

@@ -1,13 +1,20 @@
+"use client";
+
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/components/footer.module.css";
 import Link from "next/link";
 import TwitterIcon from "./iconsComponents/icons/twitterIcon";
 import DiscordIcon from "./iconsComponents/icons/discordIcon";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import { isHexString } from "../../utils/stringService";
 
 const Footer: FunctionComponent = () => {
-  const route = useRouter().route;
-  if (route.includes("addressOrDomain")) return null;
+  const route = usePathname();
+  if (
+    route?.includes(".stark") ||
+    isHexString(route?.slice(1, route.length) as string)
+  )
+    return null;
   return (
     <div className="footer">
       <footer className={styles.footer}>

@@ -1,16 +1,23 @@
-import { NextPage } from "next";
-import React, { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { QuestsContext } from "../../context/QuestsProvider";
-import styles from "../../styles/category.module.css";
-import homeStyles from "../../styles/Home.module.css";
-import Quest from "../../components/quests/quest";
-import BackButton from "../../components/UI/backButton";
-import Blur from "../../components/shapes/blur";
+"use client";
 
-const CategoriesPage: NextPage = () => {
+import React, { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { QuestsContext } from "../../../context/QuestsProvider";
+import styles from "../../../styles/category.module.css";
+import homeStyles from "../../../styles/Home.module.css";
+import Quest from "../../../components/quests/quest";
+import BackButton from "../../../components/UI/backButton";
+import Blur from "../../../components/shapes/blur";
+
+type CategoriesPageProps = {
+  params: {
+    category: string;
+  };
+};
+
+export default function Page({ params }: CategoriesPageProps) {
   const router = useRouter();
-  const { category: categoryName } = router.query;
+  const categoryName = decodeURIComponent(params.category);
   const { categories } = useContext(QuestsContext);
 
   const [category, setCategory] = useState<QuestCategory | undefined>();
@@ -52,6 +59,4 @@ const CategoriesPage: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default CategoriesPage;
+}

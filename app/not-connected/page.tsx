@@ -1,9 +1,11 @@
+"use client";
+
 import { NextPage } from "next";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Wallets from "../components/UI/wallets";
-import ErrorScreen from "../components/UI/screens/errorScreen";
+import { useRouter } from "next/navigation";
+import Wallets from "../../components/UI/wallets";
+import ErrorScreen from "../../components/UI/screens/errorScreen";
 
 const NotConnected: NextPage = () => {
   const { address } = useAccount();
