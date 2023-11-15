@@ -137,12 +137,14 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
           {quest.issuer === "loading" ? (
             <RewardSkeleton />
           ) : (
-            <NftIssuer
-              issuer={{
-                name: quest.issuer,
-                logoFavicon: quest.logo,
-              }}
-            />
+            <div className="mb-4">
+              <NftIssuer
+                issuer={{
+                  name: quest.issuer,
+                  logoFavicon: quest.logo,
+                }}
+              />
+            </div>
           )}
         </div>
         <QuestDetails
