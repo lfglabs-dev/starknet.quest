@@ -63,7 +63,7 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
         >
           <div className={styles.controls_option_display}>
             <p>{rowsPerPage}</p>
-            <Image src={BottomArrow} priority />
+            <Image src={BottomArrow} priority alt="Arrow icon" />
           </div>
           {showMenu ? (
             <div className={styles.pages_menu}>

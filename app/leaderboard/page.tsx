@@ -1,37 +1,41 @@
+"use client";
+
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import ChipList from "../components/UI/ChipList";
-import RankCard from "../components/leaderboard/RankCard";
+import ChipList from "../../components/UI/ChipList";
+import RankCard from "../../components/leaderboard/RankCard";
 import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
-} from "../services/apiService";
-import { calculatePercentile } from "../utils/numberService";
-import styles from "../styles/leaderboard.module.css";
+} from "../../services/apiService";
+import { calculatePercentile } from "../../utils/numberService";
+import styles from "../../styles/leaderboard.module.css";
 import { useAccount } from "@starknet-react/core";
-import LeaderboardSkeleton from "../components/skeletons/leaderboardSkeleton";
-import FeaturedQuest from "../components/UI/featured_banner/featuredQuest";
-import { QuestsContext } from "../context/QuestsProvider";
-import { useRouter } from "next/router";
-import Searchbar from "../components/leaderboard/searchbar";
-import { getDomainWithoutStark } from "../utils/stringService";
-import { useDebounce } from "../hooks/useDebounce";
+import LeaderboardSkeleton from "../../components/skeletons/leaderboardSkeleton";
+import FeaturedQuest from "../../components/UI/featured_banner/featuredQuest";
+import { QuestsContext } from "../../context/QuestsProvider";
+import { useRouter } from "next/navigation";
+import Searchbar from "../../components/leaderboard/searchbar";
+import { getDomainWithoutStark } from "../../utils/stringService";
+import { useDebounce } from "../../hooks/useDebounce";
 import { Abi, Contract, Provider } from "starknet";
-import naming_abi from "../abi/naming_abi.json";
-import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
+import naming_abi from "../../abi/naming_abi.json";
+import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
 import { utils } from "starknetid.js";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
-import Blur from "../components/shapes/blur";
-import RankingsTable from "../components/leaderboard/RankingsTable";
-import { rankOrder, rankOrderMobile, timeFrameMap } from "../utils/constants";
-import ControlsDashboard from "../components/leaderboard/ControlsDashboard";
-import { hexToDecimal } from "../utils/feltService";
-import Avatar from "../components/UI/avatar";
+import Blur from "../../components/shapes/blur";
+import RankingsTable from "../../components/leaderboard/RankingsTable";
+import {
+  rankOrder,
+  rankOrderMobile,
+  timeFrameMap,
+} from "../../utils/constants";
+import ControlsDashboard from "../../components/leaderboard/ControlsDashboard";
+import { hexToDecimal } from "../../utils/feltService";
+import Avatar from "../../components/UI/avatar";
 import { useMediaQuery } from "@mui/material";
-import Image from "next/image";
-import TigerImage from "../public/visuals/animals/tiger.webp";
 
-export default function Leaderboard() {
+export default function Page() {
   const router = useRouter();
   const { status, address } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);

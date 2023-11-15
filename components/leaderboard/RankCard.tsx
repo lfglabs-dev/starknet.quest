@@ -69,11 +69,17 @@ const RankCard: FunctionComponent<RankCardProps> = ({
 
       <div className={styles.rank_card_numbers}>
         <div className={styles.rank_card_number_layout}>
-          <Image src={XpBadge} priority width={30} height={30} />
+          <Image src={XpBadge} priority width={30} height={30} alt="xp badge" />
           <p>{experience}</p>
         </div>
         <div className={styles.rank_card_number_layout}>
-          <Image src={Trophy} priority width={30} height={30} />
+          <Image
+            src={Trophy}
+            priority
+            width={30}
+            height={30}
+            alt="trophy icon"
+          />
           <p>{trophy}</p>
         </div>
       </div>

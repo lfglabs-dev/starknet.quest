@@ -1,29 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
-import type { NextPage } from "next";
-import styles from "../styles/profile.module.css";
-import { useRouter } from "next/router";
-import { isHexString } from "../utils/stringService";
-import { useAccount } from "@starknet-react/core";
-import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
-import { hexToDecimal } from "../utils/feltService";
-import { minifyAddress } from "../utils/stringService";
-import { utils } from "starknetid.js";
-import ErrorScreen from "../components/UI/screens/errorScreen";
-import { Land } from "../components/lands/land";
-import { useMediaQuery } from "@mui/material";
-import ProfileCards from "../components/UI/profileCards";
-import useCreationDate from "../hooks/useCreationDate";
+"use client";
 
-const AddressOrDomain: NextPage = () => {
+import React, { useContext, useEffect, useState } from "react";
+import styles from "../../styles/profile.module.css";
+import { useRouter, usePathname } from "next/navigation";
+import { isHexString } from "../../utils/stringService";
+import { useAccount } from "@starknet-react/core";
+import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
+import { hexToDecimal } from "../../utils/feltService";
+import { minifyAddress } from "../../utils/stringService";
+import { utils } from "starknetid.js";
+import ErrorScreen from "../../components/UI/screens/errorScreen";
+import { Land } from "../../components/lands/land";
+import { useMediaQuery } from "@mui/material";
+import ProfileCards from "../../components/UI/profileCards";
+import useCreationDate from "../../hooks/useCreationDate";
+
+type AddressOrDomainProps = {
+  params: {
+    addressOrDomain: string;
+  };
+};
+
+export default function Page({ params }: AddressOrDomainProps) {
   const router = useRouter();
-  const { addressOrDomain } = router.query;
+  const addressOrDomain = params.addressOrDomain;
   const { address } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const dynamicRoute = useRouter().asPath;
+  const dynamicRoute = usePathname();
   const isMobile = useMediaQuery("(max-width:768px)");
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [soloBuildings, setSoloBuildings] = useState<StarkscanNftProps[]>([]);
@@ -202,6 +209,4 @@ const AddressOrDomain: NextPage = () => {
       )}
     </div>
   );
-};
-
-export default AddressOrDomain;
+}

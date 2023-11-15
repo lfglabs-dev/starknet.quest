@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React, {
   useState,
@@ -19,7 +21,7 @@ import ModalMessage from "./modalMessage";
 import { useDisplayName } from "../../hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
 import { constants } from "starknet";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import theme from "../../styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import WalletButton from "../navbar/walletButton";
@@ -44,7 +46,7 @@ const Navbar: FunctionComponent = () => {
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
-  const router = useRouter();
+  const route = usePathname();
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const { notifications, unreadNotifications, updateReadStatus } =
     useNotificationManager();
@@ -56,7 +58,7 @@ const Navbar: FunctionComponent = () => {
       if (!address) {
         if (
           !localStorage.getItem("lastUsedConnector") &&
-          router?.pathname !== "/partnership"
+          route !== "/partnership"
         ) {
           if (connectors.length > 0) setHasWallet(true);
         } else {

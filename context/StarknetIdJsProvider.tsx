@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ReactNode, createContext, useMemo } from "react";
 import { Provider, constants } from "starknet";

@@ -1,34 +1,35 @@
-import { GetServerSidePropsContext, NextPage } from "next";
-import QuestDetails from "../../components/quests/questDetails";
-import React, { useEffect, useState } from "react";
-import homeStyles from "../../styles/Home.module.css";
-import styles from "../../styles/quests.module.css";
-import { useRouter } from "next/router";
-import { QueryError, QuestDocument } from "../../types/backTypes";
-import RewardSkeleton from "../../components/skeletons/rewardSkeleton";
-import ErrorScreen from "../../components/UI/screens/errorScreen";
-import NftIssuer from "../../components/quests/nftIssuer";
-import BackButton from "../../components/UI/backButton";
-import useHasRootDomain from "../../hooks/useHasRootDomain";
+"use client";
+
+import QuestDetails from "../../../components/quests/questDetails";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import homeStyles from "../../../styles/Home.module.css";
+import styles from "../../../styles/quests.module.css";
+import { useRouter } from "next/navigation";
+import { QueryError, QuestDocument } from "../../../types/backTypes";
+import RewardSkeleton from "../../../components/skeletons/rewardSkeleton";
+import ErrorScreen from "../../../components/UI/screens/errorScreen";
+import NftIssuer from "../../../components/quests/nftIssuer";
+import BackButton from "../../../components/UI/backButton";
+import useHasRootDomain from "../../../hooks/useHasRootDomain";
 import { useAccount } from "@starknet-react/core";
-import { starknetIdAppLink } from "../../utils/links";
-import BannerPopup from "../../components/UI/menus/bannerPopup";
-import { useDomainFromAddress } from "../../hooks/naming";
-import Head from "next/head";
+import { starknetIdAppLink } from "../../../utils/links";
+import BannerPopup from "../../../components/UI/menus/bannerPopup";
+import { useDomainFromAddress } from "../../../hooks/naming";
 
 type QuestPageProps = {
-  customTags: boolean;
+  questId: string;
+  taskId?: string;
+  res?: string;
+  errorMsg?: string;
 };
 
-/* eslint-disable react/prop-types */
-const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
+const Quest: FunctionComponent<QuestPageProps> = ({
+  questId,
+  taskId,
+  res,
+  errorMsg,
+}) => {
   const router = useRouter();
-  const {
-    questPage: questId,
-    task_id: taskId,
-    res,
-    error_msg: errorMsg,
-  } = router.query;
   const [quest, setQuest] = useState<QuestDocument>({
     id: 0,
     name: "loading",
@@ -79,36 +80,6 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
     />
   ) : (
     <>
-      {customTags ? (
-        <>
-          <Head>
-            <meta
-              property="og:title"
-              content="Join the Starknet Pro Score with mySwap CL Now!"
-              key="og-title"
-            />
-            <meta
-              property="og:description"
-              content="Complete simple missions and claim your commemorative NFT!"
-              key="og-desc"
-            />
-            <meta
-              property="og:image"
-              content="/braavos/myswap.webp"
-              key="og-image"
-            />
-            <meta
-              name="twitter:title"
-              content="Join the Starknet Pro Score with mySwap CL Now!"
-            />
-            <meta
-              name="twitter:description"
-              content="Complete simple missions and claim your commemorative NFT!"
-            />
-            <meta name="twitter:image" content="/braavos/myswap.webp" />
-          </Head>
-        </>
-      ) : null}
       <div className={homeStyles.screen}>
         {showDomainPopup &&
           (domain ? (
@@ -160,17 +131,4 @@ const QuestPage: NextPage<QuestPageProps> = ({ customTags }) => {
   );
 };
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { questPage: questId } = context.query;
-  let customTags = false;
-  if (questId === "101") {
-    customTags = true;
-  }
-  return {
-    props: {
-      customTags,
-    },
-  };
-}
-
-export default QuestPage;
+export default Quest;
