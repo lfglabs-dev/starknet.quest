@@ -67,7 +67,13 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
   return (
     <div className="relative gap-2 z-50">
       <div className={styles.search_bar_container}>
-        <Image src={SearchIcon} priority width={16} height={16} />
+        <Image
+          src={SearchIcon}
+          priority
+          width={16}
+          height={16}
+          alt="search icon"
+        />
         <input
           value={value}
           onChange={(e) => handleChange(e.target.value)}
@@ -84,7 +90,13 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
               handleSuggestionClick("");
             }}
           >
-            <Image src={CrossIcon} priority width={20} height={20} />
+            <Image
+              src={CrossIcon}
+              priority
+              width={20}
+              height={20}
+              alt="cross icon"
+            />
           </div>
         ) : null}
       </div>

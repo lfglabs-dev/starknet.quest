@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import React from "react";
 import { QueryError, QuestDocument } from "../../../types/backTypes";
 import Quest from "./quest";
 

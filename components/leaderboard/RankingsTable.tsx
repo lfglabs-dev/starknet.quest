@@ -107,7 +107,13 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
               </div>
               <div className={styles.ranking_table_row_xp_quest}>
                 <div className={styles.ranking_points_layout}>
-                  <Image src={XpBadge} priority width={35} height={35} />
+                  <Image
+                    src={XpBadge}
+                    priority
+                    width={35}
+                    height={35}
+                    alt="xp badge"
+                  />
                   <p className="text-white text-center">{item.xp}</p>
                 </div>
                 <p className={styles.quests_text}>
