@@ -134,16 +134,27 @@
   gap: 8px;
 }
 
+.featured_quest_banner_container {
+  width: 100%;
+  max-width: 950px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
+}
+
 @media (max-width: 768px) {
   .title {
     font-size: 2rem;
   }
+
   .cardTitle {
     font-size: 1.5rem;
   }
+
   .controls {
     display: flex;
   }
+
   .questCategory {
     width: calc(100% - 2rem);
     flex-direction: column;
@@ -151,6 +162,7 @@
     position: relative;
     margin-top: 1px;
   }
+
   .questCategory::before {
     content: "";
     position: absolute;
@@ -158,18 +170,17 @@
     right: -2px;
     left: -1px;
     bottom: -1px;
-    background: linear-gradient(
-      90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%
-    );
+    background: linear-gradient(90deg,
+        #437aba 0%,
+        #59c2e8 45%,
+        #00ff77 60%,
+        #59c2e8 70%,
+        #437aba50 100%);
     border-radius: 8px;
     z-index: -1;
     mask: linear-gradient(4deg, transparent 92%, black);
   }
+
   .categoryInfos {
     width: 100%;
     height: auto;
@@ -178,17 +189,21 @@
     flex-direction: column;
     text-align: left;
   }
+
   .questCategory img {
     width: 100%;
     height: auto;
     margin-top: 1rem;
   }
+
   .categoryInfos h2 {
     margin-bottom: 0.8rem;
   }
+
   .categoryDetails .content {
     max-width: calc(100% - 24px);
   }
+
   .backButton {
     margin-left: 24px;
   }

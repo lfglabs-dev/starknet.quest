@@ -1,0 +1,424 @@
+.leaderboard_heading {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.18px;
+}
+
+.leaderboard_container {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.leaderboard_skeleton {
+  display: flex;
+  width: 100%;
+  margin-top: 12vh;
+  max-width: 950px;
+}
+
+.leaderboard_topper_layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  z-index: 1;
+  padding: 1rem 0rem 0rem;
+}
+
+.leaderboard_layout {
+  max-width: 950px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  background-color: #1F1F25;
+  width: 100%;
+  gap: 1.5rem;
+  z-index: 1;
+  padding: 1.5rem 0.5rem;
+}
+
+
+.leaderboard_topbar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.leaderboard_chiplist {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.leaderboard_quest_banner {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 12vh;
+  max-width: 950px;
+  margin-bottom: 24px;
+}
+
+.chip_list {
+  display: grid;
+  grid-template-columns: 3;
+  gap: 8px;
+  border-radius: 24px;
+}
+
+
+.leaderboardSkeleton {
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.leaderboardLoading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+}
+
+.percentile {
+  display: flex;
+  gap: 1rem;
+}
+
+
+.percentile_text_normal {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #A6A5A7;
+}
+
+
+.percentile_text_green {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: #6AFFAF;
+}
+
+.percentile_text_container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  width: 100%;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.rows_text {
+  color: #A6A5A7;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.pages_menu {
+  position: absolute;
+  left: -1px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  transform: translateY(100%);
+  background-color: var(--background600);
+  border: 1px solid var(--secondary500);
+  z-index: 100;
+}
+
+.menu_button {
+  padding: 6px;
+  color: #A6A5A7;
+}
+
+.menu_button:hover {
+  color: white;
+}
+
+.quests_text {
+  color: var(--background-400, #E1DCEA);
+  text-align: right;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.search_bar {
+  background-color: transparent;
+  outline: none;
+  margin-left: 0.5rem;
+  width: 100%;
+}
+
+
+.search_bar_container {
+  border: 1px solid transparent;
+  padding: 10px;
+  transition: border-color 0.3s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #101012;
+  width: 100%;
+  border-radius: 0.5rem;
+  z-index: 100;
+}
+
+.search_bar_container:focus-within {
+  border-color: white;
+  /* Change the border color when an input is focused */
+}
+
+.search_bar_suggestions {
+  position: absolute;
+  height: auto;
+  bottom: 0.4rem;
+  transform: translateY(100%);
+  width: 100%;
+  background-color: #101012;
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid white;
+}
+
+.blur1 {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.blur2 {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+
+.ranking_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ranking_table_row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.5rem 0.8rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.ranking_table_row_name_rank {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  flex: 0.1;
+}
+
+
+.ranking_table_row_xp_quest {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  flex: 0.9;
+}
+
+.ranking_points_layout {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ranking_position_layout {
+  display: flex;
+  flex: 1;
+  max-width: 22px;
+  align-items: center;
+}
+
+
+.ranking_profile_layout {
+  display: flex;
+  flex: 1;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+
+.controls_layout_container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls_left_container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.controls_page_limit_dropdown_container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.controls_option_display {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+
+}
+
+.controls_right_container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.divider {
+  background-color: #818080;
+  opacity: 0.3;
+  width: 100%;
+}
+
+.rank_card_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  border-radius: 0.5rem;
+  padding: 1.5rem 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #29282B 0%, #101012 100%);
+}
+
+.rank_card_badge {
+  position: absolute;
+  top: 0px;
+  transform: translateY(-1rem);
+}
+
+.rank_card_naming {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.rank_card_numbers {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+}
+
+.rank_card_number_layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.percentile_container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.no_result_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0rem;
+}
+
+@media (min-width: 768px) {
+  .percentile_text_container {
+    justify-content: start;
+  }
+
+  .ranking_table_row_name_rank {
+    gap: 1.5rem;
+  }
+
+  .ranking_profile_layout {
+    gap: 1.5rem;
+  }
+
+  .leaderboard_container {
+    padding: 8rem 1.5rem;
+  }
+
+  .leaderboard_skeleton {
+    margin-top: 0px;
+  }
+
+  .leaderboard_quest_banner {
+    margin-top: 0px;
+    z-index: 1;
+  }
+
+  .leaderboard_topper_layout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .leaderboard_layout {
+    padding: 24px;
+  }
+
+  .leaderboard_topbar {
+    flex-direction: row;
+  }
+
+  .blur1 {
+    display: block;
+  }
+
+  .blur2 {
+    display: block;
+  }
+
+  .leaderboard_layout {
+    padding: 1.5rem;
+  }
+}

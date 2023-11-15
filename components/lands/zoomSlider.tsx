@@ -1,5 +1,6 @@
 import { Slider } from "@mui/material";
 import React, { FunctionComponent, useMemo, useState } from "react";
+import styles from "../../styles/components/land.module.css";
 
 type ZoomSliderProps = {
   updateZoomIndex: (newValue: number) => void;
@@ -16,12 +17,8 @@ const ZoomSlider: FunctionComponent<ZoomSliderProps> = ({
     return {
       color: "#E1DCEA",
       height: 2,
-      width: "80%",
-      maxWidth: "850px",
       margin: "auto",
       position: "absolute",
-      left: "50%",
-      transform: "translate(-50%, 0)",
       bottom: "40px",
     };
   }, []);
@@ -43,6 +40,7 @@ const ZoomSlider: FunctionComponent<ZoomSliderProps> = ({
       onChange={handleChange}
       aria-labelledby="non-linear-slider"
       sx={zoomStyles}
+      className={styles.zoomSlider}
     />
   );
 };

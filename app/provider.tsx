@@ -1,32 +1,26 @@
+"use client";
+
 import React, { useMemo } from "react";
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import Navbar from "../components/UI/navbar";
-import Head from "next/head";
-import { ThemeProvider } from "@mui/material";
+import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
+import { goerli, mainnet } from "@starknet-react/chains";
 import {
   StarknetConfig,
   alchemyProvider,
   argent,
   braavos,
 } from "@starknet-react/core";
-import { Analytics } from "@vercel/analytics/react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
-import { createTheme } from "@mui/material/styles";
-import Footer from "../components/UI/footer";
+import { ThemeProvider, createTheme } from "@mui/material";
 import { QuestsContextProvider } from "../context/QuestsProvider";
-import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
-import { goerli, mainnet } from "@starknet-react/chains";
 
-function MyApp({ Component, pageProps }: AppProps) {
+export function Providers({ children }: { children: React.ReactNode }) {
   const chains = [
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? goerli : mainnet,
   ];
-  const providers = [
-    alchemyProvider({
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
-    }),
-  ];
+  const providers = alchemyProvider({
+    apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
+  });
+
   const connectors = useMemo(
     () => [
       braavos(),
@@ -60,29 +54,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <StarknetConfig
       chains={chains}
-      providers={providers}
+      provider={providers}
       connectors={connectors as any}
       autoConnect
     >
       <StarknetIdJsProvider>
         <ThemeProvider theme={theme}>
-          <Head>
-            <title>Starknet Quest</title>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-          </Head>
-          <QuestsContextProvider>
-            <Navbar />
-            <Component {...pageProps} />
-            <Footer />
-          </QuestsContextProvider>
+          <QuestsContextProvider>{children}</QuestsContextProvider>
         </ThemeProvider>
-        <Analytics />
       </StarknetIdJsProvider>
     </StarknetConfig>
   );
 }
-
-export default MyApp;
