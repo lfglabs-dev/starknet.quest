@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useMemo } from "react";
 import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
 import { goerli, mainnet } from "@starknet-react/chains";
 import {
@@ -8,7 +9,6 @@ import {
   argent,
   braavos,
 } from "@starknet-react/core";
-import { useMemo } from "react";
 import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { QuestsContextProvider } from "../context/QuestsProvider";

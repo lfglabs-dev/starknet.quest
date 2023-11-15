@@ -34,8 +34,6 @@ import ControlsDashboard from "../../components/leaderboard/ControlsDashboard";
 import { hexToDecimal } from "../../utils/feltService";
 import Avatar from "../../components/UI/avatar";
 import { useMediaQuery } from "@mui/material";
-import Image from "next/image";
-import TigerImage from "../../public/visuals/animals/tiger.webp";
 
 export default function Leaderboard() {
   const router = useRouter();

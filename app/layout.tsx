@@ -1,4 +1,4 @@
-import { Metadata, Viewport } from "next";
+import React, { Metadata, Viewport } from "next";
 import { Providers } from "./provider";
 import "../styles/globals.css";
 import Navbar from "../components/UI/navbar";
