@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import type { NextPage } from "next";
 import styles from "../../styles/partnership.module.css";
 import CategoryTitle from "../../components/UI/titles/categoryTitle";
 import Steps from "../../components/UI/steps/steps";
@@ -17,7 +16,7 @@ import Card from "../../components/UI/card";
 import team from "../../public/starknetid/team.json";
 import TwitterIcon from "../../components/UI/iconsComponents/icons/twitterIcon";
 
-const Partnership: NextPage = () => {
+export default function Page() {
   useEffect(() => {
     const body = document.body;
     const parent = body.parentNode as HTMLElement;
@@ -198,6 +197,4 @@ const Partnership: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default Partnership;
+}

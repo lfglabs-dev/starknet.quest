@@ -35,7 +35,7 @@ import { hexToDecimal } from "../../utils/feltService";
 import Avatar from "../../components/UI/avatar";
 import { useMediaQuery } from "@mui/material";
 
-export default function Leaderboard() {
+export default function Page() {
   const router = useRouter();
   const { status, address } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);

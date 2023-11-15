@@ -1,8 +1,7 @@
 import React from "react";
-import type { NextPage } from "next";
 import styles from "../../styles/Home.module.css";
 
-const NotFound: NextPage = () => {
+export default function Page() {
   return (
     <div className={styles.screen404}>
       <div className="flex items-center justify-center h-full">
@@ -13,6 +12,4 @@ const NotFound: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default NotFound;
+}

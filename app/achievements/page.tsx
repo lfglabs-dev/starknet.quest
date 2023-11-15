@@ -1,6 +1,5 @@
 "use client";
 
-import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/achievements.module.css";
 import { useAccount } from "@starknet-react/core";
@@ -16,7 +15,7 @@ import { useLocation } from "react-use";
 import RefreshIcon from "../../components/UI/iconsComponents/icons/refreshIcon";
 import theme from "../../styles/theme";
 
-const Achievements: NextPage = () => {
+export default function Page() {
   const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
@@ -142,6 +141,4 @@ const Achievements: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default Achievements;
+}
