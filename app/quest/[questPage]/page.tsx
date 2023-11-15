@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
-import { QueryError, QuestDocument } from "../../../types/backTypes";
 import Quest from "./quest";
+import { fetchQuestData } from "../../../services/questService";
 
 type Props = {
   params: { questPage: string };
@@ -14,7 +14,6 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const questId = params.questPage;
   const data = await fetchQuestData(questId);
-  const previousImages = (await parent).openGraph?.images || [];
 
   if (data?.name) {
     return {
@@ -50,14 +49,6 @@ export async function generateMetadata(
       },
     };
   }
-}
-
-async function fetchQuestData(questId: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
-  );
-  const data: QuestDocument | QueryError = await response.json();
-  return data as QuestDocument;
 }
 
 type QuestPageProps = {
