@@ -17,6 +17,7 @@ module.exports = {
         100: "#f7fafc",
         // ...
         200: "#d1d5db",
+        300: "#1F1F25",
         900: "#1a202c",
       },
       // ... Other colors you want to add
