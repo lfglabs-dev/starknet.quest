@@ -23,13 +23,13 @@ export async function generateMetadata(
       openGraph: {
         title: data.name,
         description: data.desc,
-        images: [data.img_card, ...previousImages],
+        images: [data.img_card],
       },
       twitter: {
         card: "summary_large_image",
         title: data.name,
         description: data.desc,
-        images: [data.img_card, ...previousImages],
+        images: [data.img_card],
       },
     };
   } else {
