@@ -64,7 +64,6 @@ export default function Page() {
     const checkAchievements = async () => {
       const promises = userAchievements.map(
         async (achievementCategory, index) => {
-          console.log("achievementCategory", achievementCategory);
           // If the achievement has a function to batch verifications we use it
           if (achievementCategory.category_override_verified_type) {
             const needsVerify = achievementCategory.achievements.filter(
@@ -84,8 +83,12 @@ export default function Page() {
                 if (data?.achieved && data.achieved.length > 0) {
                   const newUserAchievements = [...userAchievements];
                   data.achieved.map((task) => {
-                    newUserAchievements[index].achievements[task].completed =
-                      true;
+                    const taskIndex = newUserAchievements[
+                      index
+                    ].achievements.findIndex((a) => a.id === task);
+                    newUserAchievements[index].achievements[
+                      taskIndex
+                    ].completed = true;
                   });
                   setUserAchievements(newUserAchievements);
                 }
