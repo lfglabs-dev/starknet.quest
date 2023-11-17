@@ -1,20 +1,21 @@
-import { NextPage } from "next";
+"use client";
+
 import React, { useEffect, useState } from "react";
-import styles from "../styles/achievements.module.css";
+import styles from "../../styles/achievements.module.css";
 import { useAccount } from "@starknet-react/core";
 import {
   AchievementsDocument,
   CompletedDocument,
   QueryError,
-} from "../types/backTypes";
-import Achievement from "../components/achievements/achievement";
-import { hexToDecimal } from "../utils/feltService";
-import AchievementSkeleton from "../components/skeletons/achievementSkeleton";
+} from "../../types/backTypes";
+import Achievement from "../../components/achievements/achievement";
+import { hexToDecimal } from "../../utils/feltService";
+import AchievementSkeleton from "../../components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
-import RefreshIcon from "../components/UI/iconsComponents/icons/refreshIcon";
-import theme from "../styles/theme";
+import RefreshIcon from "../../components/UI/iconsComponents/icons/refreshIcon";
+import theme from "../../styles/theme";
 
-const Achievements: NextPage = () => {
+export default function Page() {
   const location = useLocation();
   const { address } = useAccount();
   const [userAchievements, setUserAchievements] = useState<
@@ -174,6 +175,4 @@ const Achievements: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default Achievements;
+}

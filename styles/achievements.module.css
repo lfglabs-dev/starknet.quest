@@ -15,8 +15,10 @@
 }
 
 .headerContent {
-  max-width: min(1500px, calc(100% - 32px));
+  max-width: min(1500px, 100%);
   margin-top: 7vh;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .title {
@@ -276,10 +278,10 @@
   gap: 8px;
   padding: 4px 16px;
   cursor: pointer;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 10px;
   background: var(--secondary);
-  box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.10);
+  box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 
   color: var(--background);
   font-size: 14px;

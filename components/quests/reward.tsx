@@ -3,7 +3,7 @@ import styles from "../../styles/quests.module.css";
 import Button from "../UI/button";
 import ModalMessage from "../UI/modalMessage";
 import { useAccount, useContractWrite } from "@starknet-react/core";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import verifiedLottie from "../../public/visuals/verifiedLottie.json";
 import { Call } from "starknet";

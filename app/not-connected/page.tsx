@@ -1,11 +1,12 @@
-import { NextPage } from "next";
+"use client";
+
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Wallets from "../components/UI/wallets";
-import ErrorScreen from "../components/UI/screens/errorScreen";
+import { useRouter } from "next/navigation";
+import Wallets from "../../components/UI/wallets";
+import ErrorScreen from "../../components/UI/screens/errorScreen";
 
-const NotConnected: NextPage = () => {
+export default function Page() {
   const { address } = useAccount();
   const { push } = useRouter();
   const [hasWallet, setHasWallet] = useState<boolean>(true);
@@ -24,6 +25,4 @@ const NotConnected: NextPage = () => {
       <Wallets closeWallet={() => setHasWallet(false)} hasWallet={hasWallet} />
     </>
   );
-};
-
-export default NotConnected;
+}

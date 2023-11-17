@@ -7,10 +7,12 @@
     font-family: "Sora";
     src: url(../public/fonts/sora/Sora-Regular.ttf);
   }
+
   @font-face {
     font-family: "Sora-Bold";
     src: url(../public/fonts/sora/Sora-Bold.ttf);
   }
+
   @font-face {
     font-family: "Sora-ExtraBold";
     src: url(../public/fonts/sora/Sora-ExtraBold.ttf);
@@ -93,3 +95,22 @@ a {
     font-size: 0.8rem;
   }
 }
+
+.sora {
+  font-family: "Sora";
+}
+/* 
+.ranking_table_row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.5rem 0.8rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.ranking_table_row:hover {
+  background-color: red;
+} */

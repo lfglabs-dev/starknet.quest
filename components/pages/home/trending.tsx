@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "../../../styles/Home.module.css";
 import Quest from "../../quests/quest";
 import QuestsSkeleton from "../../skeletons/questsSkeleton";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
 
 type TrendingQuestsProps = {
@@ -31,6 +31,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
                 }}
                 reward={quest.rewards_title}
                 id={quest.id}
+                expired={quest.expired}
               />
             );
           })

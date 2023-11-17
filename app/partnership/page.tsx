@@ -1,21 +1,22 @@
-import React, { useEffect } from "react";
-import type { NextPage } from "next";
-import styles from "../styles/partnership.module.css";
-import CategoryTitle from "../components/UI/titles/categoryTitle";
-import Steps from "../components/UI/steps/steps";
-import Crosses from "../components/shapes/crosses";
-import MainTitle from "../components/UI/titles/mainTitle";
-import Cross from "../components/shapes/cross";
-import Stats from "../components/UI/stats/stats";
-import Box from "../components/UI/box";
-import Dots from "../components/shapes/dots";
-import OnScrollIntoView from "../components/animations/onScrollIntoView";
-import Blur from "../components/shapes/blur";
-import Card from "../components/UI/card";
-import team from "../public/starknetid/team.json";
-import TwitterIcon from "../components/UI/iconsComponents/icons/twitterIcon";
+"use client";
 
-const Partnership: NextPage = () => {
+import React, { useEffect } from "react";
+import styles from "../../styles/partnership.module.css";
+import CategoryTitle from "../../components/UI/titles/categoryTitle";
+import Steps from "../../components/UI/steps/steps";
+import Crosses from "../../components/shapes/crosses";
+import MainTitle from "../../components/UI/titles/mainTitle";
+import Cross from "../../components/shapes/cross";
+import Stats from "../../components/UI/stats/stats";
+import Box from "../../components/UI/box";
+import Dots from "../../components/shapes/dots";
+import OnScrollIntoView from "../../components/animations/onScrollIntoView";
+import Blur from "../../components/shapes/blur";
+import Card from "../../components/UI/card";
+import team from "../../public/starknetid/team.json";
+import TwitterIcon from "../../components/UI/iconsComponents/icons/twitterIcon";
+
+export default function Page() {
   useEffect(() => {
     const body = document.body;
     const parent = body.parentNode as HTMLElement;
@@ -196,6 +197,4 @@ const Partnership: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default Partnership;
+}

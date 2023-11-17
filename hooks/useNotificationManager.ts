@@ -45,10 +45,13 @@ export function useNotificationManager() {
         setNotifications(updatedTransactions);
         setUnread(true);
       } else if (
-        data?.finality_status !== "NOT_RECEIVED" &&
-        data?.finality_status !== "RECEIVED"
+        data?.status === "ACCEPTED_ON_L2" ||
+        data?.status === "ACCEPTED_ON_L1" ||
+        data?.finality_status === "ACCEPTED_ON_L2" ||
+        data?.finality_status === "ACCEPTED_ON_L1"
       ) {
-        updatedTransactions[index].data.txStatus = data.finality_status;
+        updatedTransactions[index].data.txStatus =
+          data?.status ?? data?.finality_status;
         updatedTransactions[index].data.status = "success";
         setNotifications(updatedTransactions);
         setUnread(true);

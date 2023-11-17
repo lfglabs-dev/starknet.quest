@@ -17,6 +17,7 @@ type QuestDocument = {
   disabled: boolean;
   expiry_timestamp: string | null;
   mandatory_domain: string | null;
+  expired: boolean;
 };
 
 type NFTItem = {

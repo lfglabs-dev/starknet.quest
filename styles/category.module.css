@@ -1,7 +1,7 @@
 .screen {
   z-index: 0;
   position: relative;
-  padding-top: 12vh;
+  padding-top: calc(12vh + 2rem);
   background-color: var(--background);
   width: 100%;
   min-height: calc(100vh - 117px - 112px + 2em);
@@ -20,7 +20,7 @@
 
 .questList {
   display: flex;
-  gap: 1rem;
+  gap: 48px;
   margin-top: 2rem;
   flex-wrap: wrap;
   display: flex;
@@ -32,4 +32,10 @@
   left: 0;
   top: 0;
   z-index: -1;
+}
+
+.questListContainer {
+  display: block;
+  margin: 0 auto;
+  max-width: calc(290px * 3 + 48px * 2);
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
@@ -54,7 +56,10 @@ export const QuestsContextProvider = ({
           }))
         );
         setQuests(q);
-        setFeaturedQuest(q.length >= 1 ? q[q.length - 1] : undefined);
+        const notExpired = q.filter((quest) => !quest.expired);
+        setFeaturedQuest(
+          notExpired.length >= 1 ? notExpired[notExpired.length - 1] : undefined
+        );
       });
   }, []);
 
