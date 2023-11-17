@@ -95,7 +95,7 @@ type AchievementDocument = {
 };
 
 type CompletedDocument = {
-  achieved: boolean;
+  achieved: number[];
 };
 
 type DeployedTime = {

@@ -79,16 +79,16 @@ export default function Page() {
                     achievementCategory.category_id
                   }`
                 );
+
                 const data: CompletedDocument = await response.json();
-
-                console.log("data", data);
-
-                // if (data?.achieved) {
-                //   const newUserAchievements = [...userAchievements];
-                //   newUserAchievements[index].achievements[aIndex].completed =
-                //     true;
-                //   setUserAchievements(newUserAchievements);
-                // }
+                if (data?.achieved && data.achieved.length > 0) {
+                  const newUserAchievements = [...userAchievements];
+                  data.achieved.map((task) => {
+                    newUserAchievements[index].achievements[task].completed =
+                      true;
+                  });
+                  setUserAchievements(newUserAchievements);
+                }
               } catch (error) {
                 console.error("Fetch error:", error);
               }
