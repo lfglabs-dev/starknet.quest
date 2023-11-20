@@ -289,7 +289,7 @@
   line-height: 24px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 928px) {
   .container {
     padding: 0;
     text-align: center;
