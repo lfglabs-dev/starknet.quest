@@ -3,14 +3,14 @@
   font-size: 0.875rem /* 14px */;
   line-height: 1.25rem /* 20px */;
   text-transform: uppercase;
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
   font-weight: 600;
   color: var(--secondary);
 }
 
 .menuItem {
   text-transform: underline;
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -28,7 +28,7 @@
   padding-bottom: 1rem /* 16px */;
   font-size: 0.875rem /* 14px */;
   line-height: 1.25rem /* 20px */;
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
 }
 
 .navbarContainer {

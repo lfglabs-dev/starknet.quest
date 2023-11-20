@@ -64,7 +64,7 @@
   /* Small Shadow */
   box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
   border: solid 1px transparent;
-  cursor: pointer;
+  cursor: url(../public/icons/pointer-cursor.svg), pointer;
 }
 
 .questCategory:hover {

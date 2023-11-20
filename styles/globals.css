@@ -40,6 +40,7 @@ body {
   font-family: "Sora";
   background-color: var(--background);
   color: var(--secondary);
+  cursor: url(../public/icons/cursor.svg), auto;
 }
 
 a {
@@ -99,18 +100,11 @@ a {
 .sora {
   font-family: "Sora";
 }
-/* 
-.ranking_table_row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding: 0.5rem 0.8rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  background-color: transparent;
+
+.modified-cursor-pointer {
+  cursor: url(../public/icons/pointer-cursor.svg), auto;
 }
 
-.ranking_table_row:hover {
-  background-color: red;
-} */
+a {
+  cursor: url(../public/icons/pointer-cursor.svg), auto;
+}

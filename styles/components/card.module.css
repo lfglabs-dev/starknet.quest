@@ -5,7 +5,8 @@
   display: flex;
   flex-direction: column;
   background-color: var(--menu-background);
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  ;
   align-self: stretch;
   border: solid 1px transparent;
 }

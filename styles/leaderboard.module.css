@@ -235,7 +235,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  ;
 }
 
 .ranking_table_row_name_rank {
@@ -298,7 +299,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  ;
 }
 
 .controls_option_display {
