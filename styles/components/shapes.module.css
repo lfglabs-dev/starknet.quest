@@ -59,13 +59,14 @@
 }
 
 .blur {
-  width: 376px;
-  height: 220px;
-  flex-shrink: 0;
-  border-radius: 376px;
-  z-index: -1;
+  width: 488px;
+  height: 285px;
+  border-radius: 488px;
+  opacity: 0.1;
+  background: var(--tertiary);
+  filter: blur(100px);
 }
 
-.blur img {
-  width: 100%;
+.greenBlur {
+  background: var(--primary);
 }
