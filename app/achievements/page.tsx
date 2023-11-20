@@ -121,22 +121,23 @@ export default function Page() {
                 Complete achievements and grow your Starknet on-chain reputation
               </p>
             </div>
-            {userAchievements.map(
-              (achievementCategory: AchievementsDocument, index: number) => {
-                return (
-                  <Achievement
-                    achievements={achievementCategory}
-                    key={achievementCategory.category_name}
-                    index={index}
-                  />
-                );
-              }
-            )}
-            {userAchievements.length === 0 ? (
+            {userAchievements.length > 0 ? (
+              userAchievements.map(
+                (achievementCategory: AchievementsDocument, index: number) => {
+                  return (
+                    <Achievement
+                      achievements={achievementCategory}
+                      key={achievementCategory.category_name}
+                      index={index}
+                    />
+                  );
+                }
+              )
+            ) : (
               <div className={styles.skeleton}>
                 <AchievementSkeleton />
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
