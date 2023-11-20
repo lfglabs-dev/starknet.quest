@@ -284,10 +284,6 @@
     align-items: center;
   }
 
-  .featuredQuestImageContainer {
-    width: 100%;
-    aspect-ratio: unset;
-  }
   .featuredQuestImage {
     height: auto;
     max-width: 400px;
