@@ -11,7 +11,7 @@
 .each_chip {
     padding: 0.5rem 0.25rem;
     text-align: center;
-    cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+    cursor: url(../../public/icons/pointer-cursor.png), pointer;
     ;
     border-radius: 10px;
 }

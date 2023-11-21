@@ -1,7 +1,7 @@
 .backButton {
   display: flex;
   align-items: center;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
 }
 

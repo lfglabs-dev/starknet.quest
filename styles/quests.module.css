@@ -73,7 +73,7 @@
   /* Background/600 */
   background: #29282b;
   border-radius: 8px;
-  cursor: url(../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
   padding: 5px 24px;
 
   /* Inside auto layout */

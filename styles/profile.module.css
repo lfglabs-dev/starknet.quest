@@ -116,7 +116,7 @@
   border-radius: 10px;
   background: rgba(16, 16, 18, 0.3);
   height: 32px;
-  cursor: url(../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
   ;
 
   color: #e1dcea;
@@ -212,7 +212,7 @@
   position: absolute;
   right: 0;
   bottom: 0px;
-  cursor: url(../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
   ;
 }
 

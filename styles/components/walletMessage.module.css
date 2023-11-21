@@ -27,7 +27,7 @@
   right: 12px;
   width: 22px;
   stroke: white;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
   transition: 0.3s;
   background-color: transparent;
@@ -69,7 +69,7 @@
 
 .tx_hash {
   text-decoration: underline;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
 }
 

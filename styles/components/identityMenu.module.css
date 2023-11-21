@@ -37,7 +37,7 @@
   order: 0;
   align-self: stretch;
   flex-grow: 0;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
 }
 
@@ -83,7 +83,7 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-size: 18px;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
 }
 

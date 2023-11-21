@@ -277,7 +277,7 @@
 
 .checkbox {
   height: 54px;
-  cursor: url(../../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../../public/icons/pointer-cursor.png), pointer;
   display: flex;
   padding: 24px 48px;
   justify-content: center;
@@ -299,7 +299,7 @@
   border-radius: 10px;
   background-color: var(--background600);
   font-weight: bold;
-  cursor: url(../../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../../public/icons/pointer-cursor.png), pointer;
   ;
 }
 

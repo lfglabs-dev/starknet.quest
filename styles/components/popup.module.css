@@ -91,7 +91,7 @@
   right: 10px;
   width: 30px;
   height: 30px;
-  cursor: url(../../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   ;
   stroke: var(--background500);
 }

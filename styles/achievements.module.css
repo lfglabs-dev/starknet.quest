@@ -173,7 +173,7 @@
   background: var(--background600);
   height: 85px;
   gap: 16px;
-  cursor: url(../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
   flex-grow: 1;
   min-width: 0;
   justify-content: space-between;
@@ -272,7 +272,7 @@
   align-items: center;
   gap: 8px;
   padding: 4px 16px;
-  cursor: url(../public/icons/pointer-cursor.svg), pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
   background-color: #ffffff;
   border-radius: 10px;
   background: var(--secondary);
