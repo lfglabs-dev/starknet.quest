@@ -59,17 +59,14 @@
 }
 
 .blur {
-  width: 376px;
-  height: 220px;
-  flex-shrink: 0;
-  border-radius: 376px;
-  opacity: 0.16;
-  background: var(--primary-green, #5ce3fe);
+  width: 488px;
+  height: 285px;
+  border-radius: 488px;
+  opacity: 0.1;
+  background: var(--tertiary);
   filter: blur(100px);
-  z-index: -1;
 }
 
-.blur.green {
-  background: var(--primary-green, #6affaf);
-  opacity: 0.1;
+.greenBlur {
+  background: var(--primary);
 }
