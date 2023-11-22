@@ -64,31 +64,68 @@ export default function Page() {
     const checkAchievements = async () => {
       const promises = userAchievements.map(
         async (achievementCategory, index) => {
-          const achievementsPromises = achievementCategory.achievements.map(
-            async (achievement, aIndex) => {
-              if (!achievement.completed) {
-                try {
-                  const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_LINK}/achievements/verify_${
-                      achievement.verify_type
-                    }?addr=${hexToDecimal(address)}&id=${achievement.id}`
-                  );
-                  const data: CompletedDocument = await response.json();
+          // If the achievement has a function to batch verifications we use it
+          if (achievementCategory.category_override_verified_type) {
+            const needsVerify = achievementCategory.achievements.filter(
+              (achievement) => !achievement.completed
+            );
+            if (needsVerify.length > 0) {
+              try {
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_API_LINK}/achievements/${
+                    achievementCategory.category_override_verified_type
+                  }?addr=${hexToDecimal(address)}&category_id=${
+                    achievementCategory.category_id
+                  }`
+                );
 
-                  if (data?.achieved) {
-                    const newUserAchievements = [...userAchievements];
-                    newUserAchievements[index].achievements[aIndex].completed =
-                      true;
-                    setUserAchievements(newUserAchievements);
-                  }
-                } catch (error) {
-                  console.error("Fetch error:", error);
+                const data: CompletedDocument = await response.json();
+                if (data?.achieved && data.achieved.length > 0) {
+                  const newUserAchievements = [...userAchievements];
+                  data.achieved.map((task) => {
+                    const taskIndex = newUserAchievements[
+                      index
+                    ].achievements.findIndex((a) => a.id === task);
+                    newUserAchievements[index].achievements[
+                      taskIndex
+                    ].completed = true;
+                  });
+                  setUserAchievements(newUserAchievements);
                 }
+              } catch (error) {
+                console.error("Fetch error:", error);
               }
             }
-          );
+          } else {
+            // otherwise we check each achievement individually
+            const achievementsPromises = achievementCategory.achievements.map(
+              async (achievement, aIndex) => {
+                if (!achievement.completed) {
+                  try {
+                    const response = await fetch(
+                      `${
+                        process.env.NEXT_PUBLIC_API_LINK
+                      }/achievements/verify_${
+                        achievement.verify_type
+                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
+                    );
+                    const data: CompletedDocument = await response.json();
 
-          await Promise.all(achievementsPromises);
+                    if (data?.achieved) {
+                      const newUserAchievements = [...userAchievements];
+                      newUserAchievements[index].achievements[
+                        aIndex
+                      ].completed = true;
+                      setUserAchievements(newUserAchievements);
+                    }
+                  } catch (error) {
+                    console.error("Fetch error:", error);
+                  }
+                }
+              }
+            );
+            await Promise.all(achievementsPromises);
+          }
         }
       );
 
@@ -101,28 +138,28 @@ export default function Page() {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <div className={styles.headerContent}>
-          <div className={styles.titleContent}>
-            <h1 className={styles.title}>Achievements</h1>
-            <div
-              className={styles.refreshButton}
-              onClick={() => validateAchievements()}
-            >
-              <RefreshIcon
-                width="20"
-                color={theme.palette.background.default}
-              />
-              <div>Refresh data</div>
+        <div className={styles.cardWrapper}>
+          <div className={styles.cards}>
+            <div className={styles.headerContent}>
+              <div className={styles.titleContent}>
+                <h1 className={styles.title}>Achievements</h1>
+                <div
+                  className={styles.refreshButton}
+                  onClick={() => validateAchievements()}
+                >
+                  <RefreshIcon
+                    width="20"
+                    color={theme.palette.background.default}
+                  />
+                  <div>Refresh data</div>
+                </div>
+              </div>
+              <p className={styles.subtitle}>
+                Complete achievements and grow your Starknet on-chain reputation
+              </p>
             </div>
-          </div>
-          <p className={styles.subtitle}>
-            Complete achievements and grow your Starknet on-chain reputation
-          </p>
-        </div>
-        {userAchievements.length > 0 ? (
-          <div className={styles.cardWrapper}>
-            <div className={styles.cards}>
-              {userAchievements.map(
+            {userAchievements.length > 0 ? (
+              userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
                     <Achievement
@@ -132,12 +169,14 @@ export default function Page() {
                     />
                   );
                 }
-              )}
-            </div>
+              )
+            ) : (
+              <div className={styles.skeleton}>
+                <AchievementSkeleton />
+              </div>
+            )}
           </div>
-        ) : (
-          <AchievementSkeleton />
-        )}
+        </div>
       </div>
     </div>
   );

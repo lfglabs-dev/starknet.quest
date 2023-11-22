@@ -6,7 +6,6 @@
 }
 
 .leaderboard_container {
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -35,13 +34,12 @@
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
-  background-color: #1F1F25;
+  background-color: #1f1f25;
   width: 100%;
   gap: 1.5rem;
   z-index: 1;
   padding: 1.5rem 0.5rem;
 }
-
 
 .leaderboard_topbar {
   display: flex;
@@ -59,7 +57,6 @@
   justify-content: center;
 }
 
-
 .leaderboard_quest_banner {
   display: flex;
   width: 100%;
@@ -75,7 +72,6 @@
   gap: 8px;
   border-radius: 24px;
 }
-
 
 .leaderboardSkeleton {
   height: 90vh;
@@ -97,21 +93,19 @@
   gap: 1rem;
 }
 
-
 .percentile_text_normal {
   font-size: 16px;
   font-weight: 400;
   line-height: 32px;
-  color: #A6A5A7;
+  color: #a6a5a7;
 }
-
 
 .percentile_text_green {
   font-size: 20px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.2px;
-  color: #6AFFAF;
+  color: #6affaf;
 }
 
 .percentile_text_container {
@@ -124,7 +118,7 @@
 }
 
 .rows_text {
-  color: #A6A5A7;
+  color: #a6a5a7;
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
@@ -146,7 +140,7 @@
 
 .menu_button {
   padding: 6px;
-  color: #A6A5A7;
+  color: #a6a5a7;
 }
 
 .menu_button:hover {
@@ -154,7 +148,7 @@
 }
 
 .quests_text {
-  color: var(--background-400, #E1DCEA);
+  color: var(--background-400, #e1dcea);
   text-align: right;
   font-size: 10px;
   font-weight: 400;
@@ -167,7 +161,6 @@
   margin-left: 0.5rem;
   width: 100%;
 }
-
 
 .search_bar_container {
   border: 1px solid transparent;
@@ -221,7 +214,6 @@
   z-index: -1;
 }
 
-
 .ranking_container {
   display: flex;
   flex-direction: column;
@@ -244,7 +236,6 @@
   justify-content: space-between;
   flex: 0.1;
 }
-
 
 .ranking_table_row_xp_quest {
   display: flex;
@@ -269,14 +260,12 @@
   align-items: center;
 }
 
-
 .ranking_profile_layout {
   display: flex;
   flex: 1;
   gap: 0.5rem;
   align-items: center;
 }
-
 
 .controls_layout_container {
   width: 100%;
@@ -305,7 +294,6 @@
   display: flex;
   gap: 0.25rem;
   align-items: center;
-
 }
 
 .controls_right_container {
@@ -329,7 +317,7 @@
   padding: 1.5rem 1rem;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(180deg, #29282B 0%, #101012 100%);
+  background: linear-gradient(180deg, #29282b 0%, #101012 100%);
 }
 
 .rank_card_badge {
@@ -386,7 +374,7 @@
   }
 
   .leaderboard_container {
-    padding: 8rem 1.5rem;
+    padding: 12vh 1.5rem;
   }
 
   .leaderboard_skeleton {

@@ -6,7 +6,13 @@ type BlurProps = {
 };
 
 const Blur: FunctionComponent<BlurProps> = ({ green = false }) => {
-  return <div className={`${styles.blur} ${green && styles.green}`} />;
+  return (
+    <img
+      src={`/utils/${green ? "green" : "blue"}Blur.svg`}
+      alt="Background blur"
+      className={`${styles.blur} ${green ? styles.greenBlur : null}`}
+    />
+  );
 };
 
 export default Blur;
