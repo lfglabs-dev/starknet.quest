@@ -38,7 +38,6 @@
   align-self: stretch;
   flex-grow: 0;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 .clickableActionAutoWidth {
@@ -84,7 +83,6 @@
   margin-bottom: 1rem;
   font-size: 18px;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 .clickableIconPrimary,

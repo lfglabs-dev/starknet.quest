@@ -31,7 +31,6 @@
   stroke: rgb(101, 101, 101);
 
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
   transition: 0.3s;
   background-color: transparent;
   border: none;
@@ -122,7 +121,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 @media (max-width: 820px) {

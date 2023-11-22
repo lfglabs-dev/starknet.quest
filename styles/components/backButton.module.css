@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 .backButton svg {

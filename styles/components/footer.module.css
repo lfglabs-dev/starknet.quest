@@ -48,7 +48,6 @@
   flex-direction: row;
   gap: 9px;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 .social span {

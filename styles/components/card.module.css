@@ -6,7 +6,6 @@
   flex-direction: column;
   background-color: var(--menu-background);
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  ;
   align-self: stretch;
   border: solid 1px transparent;
 }

@@ -300,7 +300,6 @@
   background-color: var(--background600);
   font-weight: bold;
   cursor: url(../../../public/icons/pointer-cursor.png), pointer;
-  ;
 }
 
 .checkboxLabel:after {
