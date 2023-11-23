@@ -64,7 +64,7 @@
   /* Small Shadow */
   box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
   border: solid 1px transparent;
-  cursor: pointer;
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
 }
 
 .questCategory:hover {
@@ -74,6 +74,7 @@
 .questCategory img {
   width: 218px;
   height: 218px;
+  max-width: 400px;
   border-radius: 8px;
 }
 
@@ -170,12 +171,14 @@
     right: -2px;
     left: -1px;
     bottom: -1px;
-    background: linear-gradient(90deg,
-        #437aba 0%,
-        #59c2e8 45%,
-        #00ff77 60%,
-        #59c2e8 70%,
-        #437aba50 100%);
+    background: linear-gradient(
+      90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%
+    );
     border-radius: 8px;
     z-index: -1;
     mask: linear-gradient(4deg, transparent 92%, black);

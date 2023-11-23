@@ -55,7 +55,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
             </div>
             <div>
               <div className={styles.starknetInfo}>
-                <div className="cursor-pointer absolute">
+                <div className="modified-cursor-pointer absolute">
                   {!copied ? (
                     <Tooltip title="Copy" arrow>
                       <div onClick={() => copyToClipboard()}>

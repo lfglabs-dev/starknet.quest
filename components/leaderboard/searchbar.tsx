@@ -84,7 +84,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
         />
         {value.length > 0 ? (
           <div
-            className="flex cursor-pointer"
+            className="flex modified-cursor-pointer"
             onClick={() => {
               handleChange("");
               handleSuggestionClick("");
@@ -104,7 +104,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
         <div className={styles.search_bar_suggestions}>
           {suggestions.map((suggestion, index) => (
             <div
-              className="flex cursor-pointer"
+              className="flex modified-cursor-pointer"
               key={index}
               onClick={() => handleOptionClick(suggestion)}
             >

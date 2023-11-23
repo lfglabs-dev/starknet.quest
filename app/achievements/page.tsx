@@ -138,28 +138,28 @@ export default function Page() {
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
-        <div className={styles.headerContent}>
-          <div className={styles.titleContent}>
-            <h1 className={styles.title}>Achievements</h1>
-            <div
-              className={styles.refreshButton}
-              onClick={() => validateAchievements()}
-            >
-              <RefreshIcon
-                width="20"
-                color={theme.palette.background.default}
-              />
-              <div>Refresh data</div>
+        <div className={styles.cardWrapper}>
+          <div className={styles.cards}>
+            <div className={styles.headerContent}>
+              <div className={styles.titleContent}>
+                <h1 className={styles.title}>Achievements</h1>
+                <div
+                  className={styles.refreshButton}
+                  onClick={() => validateAchievements()}
+                >
+                  <RefreshIcon
+                    width="20"
+                    color={theme.palette.background.default}
+                  />
+                  <div>Refresh data</div>
+                </div>
+              </div>
+              <p className={styles.subtitle}>
+                Complete achievements and grow your Starknet on-chain reputation
+              </p>
             </div>
-          </div>
-          <p className={styles.subtitle}>
-            Complete achievements and grow your Starknet on-chain reputation
-          </p>
-        </div>
-        {userAchievements.length > 0 ? (
-          <div className={styles.cardWrapper}>
-            <div className={styles.cards}>
-              {userAchievements.map(
+            {userAchievements.length > 0 ? (
+              userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
                     <Achievement
@@ -169,12 +169,14 @@ export default function Page() {
                     />
                   );
                 }
-              )}
-            </div>
+              )
+            ) : (
+              <div className={styles.skeleton}>
+                <AchievementSkeleton />
+              </div>
+            )}
           </div>
-        ) : (
-          <AchievementSkeleton />
-        )}
+        </div>
       </div>
     </div>
   );

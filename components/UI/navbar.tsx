@@ -160,9 +160,9 @@ const Navbar: FunctionComponent = () => {
           }`}
         >
           <div className="ml-4">
-            <Link href="/" className="cursor-pointer">
+            <Link href="/" className="modified-cursor-pointer">
               <img
-                className="cursor-pointer"
+                className="modified-cursor-pointer"
                 src="/visuals/starknetquestLogo.svg"
                 alt="Starknet.id Logo"
                 width={70}
@@ -253,7 +253,7 @@ const Navbar: FunctionComponent = () => {
 
                 <div
                   onClick={handleNav}
-                  className="rounded-lg cursor-pointer p-1"
+                  className="rounded-lg modified-cursor-pointer p-1"
                 >
                   <AiOutlineClose color={theme.palette.secondary.main} />
                 </div>
@@ -304,7 +304,7 @@ const Navbar: FunctionComponent = () => {
                 <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
               </div>
               <div className="flex">
-                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
                   <a
                     href="https://twitter.com/starknet_quest"
                     target="_blank"
@@ -313,7 +313,7 @@ const Navbar: FunctionComponent = () => {
                     <FaTwitter size={28} color={theme.palette.secondary.main} />
                   </a>
                 </div>
-                <div className="rounded-full shadow-gray-400 p-3 cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
                   <a
                     href="https://discord.gg/byEGk6w6T6"
                     target="_blank"

@@ -1,10 +1,10 @@
 .clickableIcon {
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   border-radius: 25%;
 }
 
 .clickablePlus {
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
   border-radius: 25%;
   margin: 1rem;
 }
@@ -38,7 +38,7 @@
 
 .clickableIconGithub {
   background-color: var(--secondary);
-  cursor: pointer;
+  cursor: url(../../public/icons/pointer-cursor.png), pointer;
 }
 
 .clickableIconDiscord {
