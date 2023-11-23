@@ -286,5 +286,7 @@
 
   .featuredQuestImage {
     height: auto;
+    max-width: 400px;
+    margin-top: 24px;
   }
 }
