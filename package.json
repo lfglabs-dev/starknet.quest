@@ -43,7 +43,7 @@
     "react-loader-spinner": "^5.2.0",
     "react-use": "^17.4.0",
     "starknet": "^5.19.5",
-    "starknetid.js": "^1.5.2",
+    "starknetid.js": "1.5.4",
     "three": "^0.155.0",
     "twitter-api-sdk": "^1.2.1"
   },
