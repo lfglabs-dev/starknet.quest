@@ -52,7 +52,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = ({
         endAdornment: (
           <InputAdornment
             onClick={() => search(typedValue)}
-            className="cursor-pointer"
+            className="modified-cursor-pointer"
             position="end"
           >
             <SearchIcon />
