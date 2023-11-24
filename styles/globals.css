@@ -105,6 +105,7 @@ a {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }
 
-a {
+a,
+button {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }

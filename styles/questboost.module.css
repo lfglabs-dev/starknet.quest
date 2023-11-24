@@ -1,0 +1,77 @@
+.title {
+    font-family: "Sora-Bold";
+    font-size: 2.5rem;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.container {
+    padding: 12vh 1.5rem;
+}
+
+.boost_card_container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #1F1F25;
+}
+
+.boost_card_content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.card_container {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.instructions_container {
+    padding: 4rem 8rem;
+}
+
+.claim_button_container {
+    margin-top: 2rem;
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+    background: #29282B;
+    box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
+}
+
+.claim_button_text_content {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.claim_button_text_highlight {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.claim_button_cta {
+    color: #101012;
+    padding: 1em 3em;
+    border-radius: 10px;
+    background: var(--primary-gradient, linear-gradient(90deg, #6AFFAF -0.12%, #5CE3FE 99.88%));
+
+    /* Button shadow */
+    box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.10);
+}
