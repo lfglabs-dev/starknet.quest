@@ -13,7 +13,43 @@ const AchievementSkeleton: FunctionComponent = () => {
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",
-            margin: "40px auto",
+            margin: "10px auto 0",
+          }}
+        />
+      </div>
+      <div className={styles.achievementSkeleton}>
+        <Skeleton
+          variant="rounded"
+          className={styles.achievementLoading}
+          height={200}
+          sx={{
+            bgcolor: "grey.900",
+            borderRadius: "30px",
+            margin: "10px auto 0",
+          }}
+        />
+      </div>
+      <div className={styles.achievementSkeleton}>
+        <Skeleton
+          variant="rounded"
+          className={styles.achievementLoading}
+          height={200}
+          sx={{
+            bgcolor: "grey.900",
+            borderRadius: "30px",
+            margin: "10px auto 0",
+          }}
+        />
+      </div>
+      <div className={styles.achievementSkeleton}>
+        <Skeleton
+          variant="rounded"
+          className={styles.achievementLoading}
+          height={200}
+          sx={{
+            bgcolor: "grey.900",
+            borderRadius: "30px",
+            margin: "10px auto 0",
           }}
         />
       </div>
