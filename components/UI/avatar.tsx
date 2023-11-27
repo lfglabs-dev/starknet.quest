@@ -16,6 +16,7 @@ type AvatarProps = {
 const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [starknetId, setStarknetId] = useState<string>("");
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   useEffect(() => {
     if (!address) return;
@@ -24,15 +25,28 @@ const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
       if (!domain) return;
       const starknetId = await starknetIdNavigator?.getStarknetId(domain);
       if (!starknetId) return;
-      setStarknetId(starknetId.toString());
+      setStarknetId(starknetId);
     })();
   }, [address]);
+
+  useEffect(() => {
+    if (!address || !starknetIdNavigator) return;
+    (async () => {
+      const data = await starknetIdNavigator?.getProfileData(address);
+      if (!data) return;
+      if (data.profilePicture) setAvatar(data.profilePicture);
+      else setAvatar(null);
+    })();
+  }, [address, starknetId, starknetIdNavigator]);
 
   return (
     <>
       {starknetId ? (
         <img
-          src={`${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${starknetId}`}
+          src={
+            avatar ??
+            `${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${starknetId}`
+          }
           width={width}
           height={width}
           className="rounded-full"
