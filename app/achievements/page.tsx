@@ -21,6 +21,7 @@ export default function Page() {
   const [userAchievements, setUserAchievements] = useState<
     AchievementsDocument[]
   >([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -128,8 +129,9 @@ export default function Page() {
           }
         }
       );
-
+      setLoading(true);
       await Promise.all(promises);
+      setLoading(false);
     };
     if (userAchievements.length === 0 || !address) return;
     checkAchievements();
@@ -158,7 +160,7 @@ export default function Page() {
                 Complete achievements and grow your Starknet on-chain reputation
               </p>
             </div>
-            {userAchievements.length > 0 ? (
+            {!loading && userAchievements.length > 0 ? (
               userAchievements.map(
                 (achievementCategory: AchievementsDocument, index: number) => {
                   return (
