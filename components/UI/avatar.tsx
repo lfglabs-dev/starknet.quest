@@ -1,12 +1,7 @@
-import React, {
-  FunctionComponent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
+import React, { FunctionComponent } from "react";
 import ProfilIcon from "./iconsComponents/icons/profilIcon";
 import theme from "../../styles/theme";
+import { useStarkProfile } from "@starknet-react/core";
 
 type AvatarProps = {
   address: string;
@@ -14,39 +9,13 @@ type AvatarProps = {
 };
 
 const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
-  const [starknetId, setStarknetId] = useState<string>("");
-  const [avatar, setAvatar] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!address) return;
-    (async () => {
-      const domain = await starknetIdNavigator?.getStarkName(address);
-      if (!domain) return;
-      const starknetId = await starknetIdNavigator?.getStarknetId(domain);
-      if (!starknetId) return;
-      setStarknetId(starknetId);
-    })();
-  }, [address]);
-
-  useEffect(() => {
-    if (!address || !starknetIdNavigator) return;
-    (async () => {
-      const data = await starknetIdNavigator?.getProfileData(address);
-      if (!data) return;
-      if (data.profilePicture) setAvatar(data.profilePicture);
-      else setAvatar(null);
-    })();
-  }, [address, starknetId, starknetIdNavigator]);
+  const { data: profileData } = useStarkProfile({ address });
 
   return (
     <>
-      {starknetId ? (
+      {profileData?.profilePicture ? (
         <img
-          src={
-            avatar ??
-            `${process.env.NEXT_PUBLIC_STARKNET_ID_LINK}/api/identicons/${starknetId}`
-          }
+          src={profileData?.profilePicture}
           width={width}
           height={width}
           className="rounded-full"
