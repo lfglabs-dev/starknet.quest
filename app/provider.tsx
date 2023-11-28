@@ -17,7 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const chains = [
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? goerli : mainnet,
   ];
-  const providers = alchemyProvider({
+  const provider = alchemyProvider({
     apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
   });
 
@@ -54,7 +54,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StarknetConfig
       chains={chains}
-      provider={providers}
+      provider={provider}
       connectors={connectors as any}
       autoConnect
     >

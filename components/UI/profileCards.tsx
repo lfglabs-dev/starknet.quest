@@ -8,6 +8,7 @@ import SocialMediaActions from "./actions/socialmediaActions";
 import ShareIcon from "./iconsComponents/icons/shareIcon";
 import SharePopup from "./menus/sharePopup";
 import theme from "../../styles/theme";
+import { useStarkProfile } from "@starknet-react/core";
 
 const ProfileCards: FunctionComponent<ProfileCard> = ({
   title,
@@ -20,6 +21,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
   const [copied, setCopied] = useState(false);
+  const { data: profileData } = useStarkProfile({ address: identity?.addr });
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -39,7 +41,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
             <div className={styles.profilePicture}>
               <img
                 width={"350px"}
-                src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                src={profileData?.profilePicture}
                 alt="starknet.id avatar"
                 style={{ maxWidth: "150%" }}
               />
