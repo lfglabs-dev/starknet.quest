@@ -12,6 +12,9 @@ import {
   NotificationType,
   TransactionType,
 } from "../../constants/notifications";
+import { QuestDocument } from "../../types/backTypes";
+import RewardModal from "./rewardModal";
+import rewardStyles from "../../styles/components/quests/modal.module.css";
 
 type RewardProps = {
   onClick: () => void;
@@ -20,6 +23,8 @@ type RewardProps = {
   disabled: boolean;
   mintCalldata: Call[] | undefined;
   questName: string;
+  hasNftReward?: boolean;
+  quest: QuestDocument;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -29,6 +34,8 @@ const Reward: FunctionComponent<RewardProps> = ({
   disabled,
   mintCalldata,
   questName,
+  hasNftReward,
+  quest,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
@@ -36,9 +43,14 @@ const Reward: FunctionComponent<RewardProps> = ({
   const { writeAsync: executeMint } = useContractWrite({
     calls: mintCalldata,
   });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const router = useRouter();
 
   const submitTx = useCallback(async () => {
+    if (!hasNftReward) {
+      setShowSuccessModal(true);
+      return;
+    }
     if (!address) return;
     const tx = await executeMint();
     onClick();
@@ -84,6 +96,39 @@ const Reward: FunctionComponent<RewardProps> = ({
               <Button onClick={() => router.push("/")}>
                 Complete another quest !
               </Button>
+            </div>
+          </div>
+        }
+      />
+
+      <RewardModal
+        open={showSuccessModal}
+        closeModal={() => setShowSuccessModal(false)}
+        message={
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="bg-[#1F1F25] w-full flex p-8 justify-center items-center flex-col gap-8 rounded-tr-3xl rounded-tl-3xl">
+              <p className={rewardStyles.menu_title}>Unlock Your Gift!</p>
+              <img
+                src="/icons/gift.svg"
+                width={183}
+                height={177}
+                alt="trophy icon"
+              />
+            </div>
+            <div className="flex flex-col justify-center p-4 w-auto">
+              <div className="flex flex-col justify-center gap-2 px-8 pt-6">
+                <div className="flex flex-row justify-center items-center gap-2 pb-4">
+                  <img width={40} src={quest.logo} />
+                  <p className="text-2xl font-bold">{quest.issuer}</p>
+                </div>
+                <p>Congratulations on completing the quest! 🎉 </p>
+                <p>{quest.rewards_description}</p>
+              </div>
+              <div className="p-6 w-max self-center">
+                <Button onClick={() => setShowSuccessModal(false)}>
+                  Claim Rewards
+                </Button>
+              </div>
             </div>
           </div>
         }
