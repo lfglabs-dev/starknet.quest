@@ -56,7 +56,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
   const handleOptionClick = async (option: string) => {
     const addr = await starknetIdNavigator
       ?.getAddressFromStarkName(option)
-      .catch((err) => {
+      .catch(() => {
         return "";
       });
     if (!addr) return;

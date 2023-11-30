@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
 import { goerli, mainnet } from "@starknet-react/chains";
 import {
+  Connector,
   StarknetConfig,
   alchemyProvider,
   argent,
@@ -55,7 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <StarknetConfig
       chains={chains}
       provider={provider}
-      connectors={connectors as any}
+      connectors={connectors as Connector[]}
       autoConnect
     >
       <StarknetIdJsProvider>

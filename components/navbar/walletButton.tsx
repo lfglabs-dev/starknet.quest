@@ -83,7 +83,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
     setChangeWallet(true);
   };
 
-  const handleOpenWebWallet = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpenWebWallet = () => {
     window.open(
       network === "mainnet"
         ? "https://web.argent.xyz"
