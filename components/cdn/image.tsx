@@ -6,7 +6,7 @@ export const CDNImg: React.FC<ImgHTMLAttributes<HTMLImageElement>> = ({
   src,
   ...props
 }) => {
-  return <img src={cdnize(src as string)} {...props} />;
+  return <img src={src ? cdnize(src) : src} {...props} />;
 };
 
 type ImageSrc = string | StaticImageData;
@@ -19,7 +19,7 @@ export const CDNImage: React.FC<CDNImageProps> = ({ src, ...props }) => {
   let imagePath: string;
 
   if (typeof src === "string") {
-    imagePath = cdnize(src);
+    imagePath = src ? cdnize(src) : src;
   } else {
     // if src is not an URL, we can't use the CDN
     imagePath = src.src;
