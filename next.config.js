@@ -16,6 +16,8 @@ module.exports = {
       "starknetid.netlify.app",
       "gateway.pinata.cloud",
       "api.briq.construction",
+      "cdn.starknet.quest",
+      "goerli.cdn.starknet.quest",
     ],
   },
 };
