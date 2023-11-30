@@ -6,7 +6,7 @@ export const CDNImg: React.FC<ImgHTMLAttributes<HTMLImageElement>> = ({
   ...props
 }) => {
   const fullPath =
-    process.env.NODE_ENV === "development" && src && src.startsWith("/")
+    process.env.NODE_ENV === "production" && src && src.startsWith("/")
       ? `${process.env.NEXT_PUBLIC_CDN_URL}${src}`
       : src;
 
@@ -24,7 +24,7 @@ export const CDNImage: React.FC<CDNImageProps> = ({ src, ...props }) => {
 
   if (typeof src === "string") {
     imagePath =
-      process.env.NODE_ENV === "development" && src.startsWith("/")
+      process.env.NODE_ENV === "production" && src.startsWith("/")
         ? `${process.env.NEXT_PUBLIC_CDN_URL}${src}`
         : src;
   } else {
