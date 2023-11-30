@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
 
 module.exports = {
   reactStrictMode: true,
+  assetPrefix: isProd
+    ? process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+      ? "https://goerli.cdn.starknet.quest"
+      : "https://cdn.starknet.quest"
+    : undefined,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;
