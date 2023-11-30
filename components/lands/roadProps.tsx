@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import {
   TextureLoader,
   RepeatWrapping,
