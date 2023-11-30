@@ -15,6 +15,7 @@ import Blur from "../../components/shapes/blur";
 import Card from "../../components/UI/card";
 import team from "../../public/starknetid/team.json";
 import TwitterIcon from "../../components/UI/iconsComponents/icons/twitterIcon";
+import { CDNImg } from "../../components/cdn/image";
 
 export default function Page() {
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function Page() {
             <Cross />
           </div>
           <div className={`${styles.divider} ${styles.dividerGradient}`} />
-          <img src="/utils/headerDivider.svg" className={styles.divider} />
+          <CDNImg src="/utils/headerDivider.svg" className={styles.divider} />
         </header>
         <main className={styles.main}>
           <section className={styles.section}>
@@ -154,11 +155,11 @@ export default function Page() {
                 title="They worked with us"
               />
               <div className={styles.partnersContainer}>
-                <img src="/partners/braavosLogo.svg" />
-                <img src="/partners/zklendLogo.svg" />
-                <img src="/partners/sithswapLogo.svg" />
-                <img src="/partners/jediswapLogo.svg" />
-                <img src="/partners/avnuLogo.svg" />
+                <CDNImg src="/partners/braavosLogo.svg" />
+                <CDNImg src="/partners/zklendLogo.svg" />
+                <CDNImg src="/partners/sithswapLogo.svg" />
+                <CDNImg src="/partners/jediswapLogo.svg" />
+                <CDNImg src="/partners/avnuLogo.svg" />
               </div>
             </Box>
             <div className={styles.lastCrosses}>

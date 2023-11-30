@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import styles from "../../styles/Home.module.css";
 import Link from "next/link";
+import { CDNImg } from "../cdn/image";
 
 type QuestCategoryProps = {
   category: QuestCategory;
@@ -18,7 +19,7 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
           {category.questNumber} quest{category.questNumber > 1 ? "s" : null}
         </p>
       </div>
-      <img src={category.img} />
+      <CDNImg src={category.img} />
     </Link>
   );
 };
