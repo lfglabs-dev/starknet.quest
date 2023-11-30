@@ -1,7 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../../styles/Home.module.css";
 import QuestCategory from "../../quests/questCategory";
 import QuestsSkeleton from "../../skeletons/questsSkeleton";
+import { getBoosts } from "../../../services/apiService";
+import Link from "next/link";
 
 type QuestCategoriesProps = {
   categories: QuestCategory[];
@@ -10,11 +12,46 @@ type QuestCategoriesProps = {
 const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   categories,
 }) => {
+  const [boosts, setBoosts] = useState();
+
+  const fetchBoosts = async () => {
+    try {
+      const res = await getBoosts();
+      const formatData = {
+        name: "boosts",
+        questNumber: 0,
+        quests: res,
+        img: "/images/boosts.png",
+      };
+      setBoosts(formatData);
+      console.log({ formatData });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoosts();
+  }, []);
+
   return (
     <>
       <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
+
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
+          {boosts ? (
+            <Link href={`/quest-boost`} className={styles.questCategory}>
+              <div className={styles.categoryInfos}>
+                <h2 className="text-gray-200">Boosts Quest</h2>
+                <p className="text-gray-200">
+                  {boosts?.quests?.length} quest
+                  {boosts.quests?.length > 1 ? "s" : null}
+                </p>
+              </div>
+              <img src={boosts.img} />
+            </Link>
+          ) : null}
           {categories ? (
             categories.map((category) => {
               return <QuestCategory key={category.name} category={category} />;

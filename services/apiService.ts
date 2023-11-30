@@ -50,3 +50,12 @@ export const getCompletedQuestsOfUser = async (address: string) => {
     console.log(err);
   }
 };
+
+export const getBoosts = async () => {
+  try {
+    const response = await fetch(`${baseurl}/boost/get_boosts`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

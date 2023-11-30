@@ -1,19 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import styles from "../../styles/questboost.module.css";
 import BoostCard from "../../components/quest-boost/boostCard";
 import CategoryTitle from "../../components/UI/titles/categoryTitle";
 import Componentstyles from "../../styles/components/pages/home/howToParticipate.module.css";
 import Steps from "../../components/UI/steps/steps";
+import { getBoosts } from "../../services/apiService";
 
 export default function Page() {
+  const [boosts, setBoosts] = useState([]);
+
+  const fetchBoosts = async () => {
+    try {
+      const res = await getBoosts();
+      setBoosts(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoosts();
+  }, []);
+
+  useEffect(() => {
+    console.log({ boosts });
+  }, [boosts]);
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Boosts Quest</h1>
       <div className={styles.card_container}>
-        <BoostCard />
-        <BoostCard />
+        {boosts?.map((boost) => {
+          return <BoostCard key={boost.id} boost={boost} />;
+        })}
       </div>
 
       <section className={styles.instructions_container}>
