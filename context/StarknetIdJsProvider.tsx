@@ -14,17 +14,20 @@ export const StarknetIdJsContext = createContext<StarknetIdJsConfig>({
 });
 
 export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
+  const isTestnet = useMemo(() => {
+    return process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? true : false;
+  }, []);
+
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
       new Provider({
-        sequencer: {
-          network:
-            process.env.NEXT_PUBLIC_IS_TESTNET === "true"
-              ? constants.NetworkName.SN_GOERLI
-              : constants.NetworkName.SN_MAIN,
+        rpc: {
+          nodeUrl: `https://starknet-${
+            isTestnet ? "goerli" : "mainnet"
+          }.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         },
       }),
-      process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+      isTestnet
         ? constants.StarknetChainId.SN_GOERLI
         : constants.StarknetChainId.SN_MAIN
     );

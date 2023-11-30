@@ -43,14 +43,14 @@
 
 .cardWrapper {
   display: flex;
-  margin: 0 auto;
+  justify-content: center;
 }
 
 .cards {
-  min-width: min(1500px, calc(100% - 32px));
   text-align: left;
   margin-top: 42px;
   width: 100%;
+  max-width: 1330px;
 }
 
 .card {
@@ -310,7 +310,7 @@
     align-items: center;
     gap: 20px;
   }
-  
+
   .subtitle {
     margin-left: 40px;
     margin-right: 40px;
@@ -318,9 +318,6 @@
   }
 }
 
-.skeleton {
-  min-width: min(1500px, calc(100vw - 4rem));
-}
 
 .container:has(.skeleton) {
   padding: 0 30px;

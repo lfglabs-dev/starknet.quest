@@ -8,6 +8,8 @@ import SocialMediaActions from "./actions/socialmediaActions";
 import ShareIcon from "./iconsComponents/icons/shareIcon";
 import SharePopup from "./menus/sharePopup";
 import theme from "../../styles/theme";
+import { useStarkProfile } from "@starknet-react/core";
+import { CDNImg } from "../cdn/image";
 
 const ProfileCards: FunctionComponent<ProfileCard> = ({
   title,
@@ -20,6 +22,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [selectedTab, setSelectedTab] = useState<LandTabs>("nfts");
   const [copied, setCopied] = useState(false);
+  const { data: profileData } = useStarkProfile({ address: identity?.addr });
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -39,7 +42,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
             <div className={styles.profilePicture}>
               <img
                 width={"350px"}
-                src={`https://www.starknet.id/api/identicons/${identity?.starknet_id}`}
+                src={profileData?.profilePicture}
                 alt="starknet.id avatar"
                 style={{ maxWidth: "150%" }}
               />
@@ -124,7 +127,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
                 if (!building.image_url) return null;
                 return (
                   <div key={building.nft_id} className={styles.nftContainer}>
-                    <img src={building.image_url} className={styles.nftImage} />
+                    <CDNImg src={building.image_url} className={styles.nftImage} />
                     <p className={styles.nftName}>{building.name}</p>
                   </div>
                 );

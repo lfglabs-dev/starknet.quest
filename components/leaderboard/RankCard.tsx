@@ -1,14 +1,12 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/leaderboard.module.css";
-import Image from "next/image";
 import { minifyAddress } from "../../utils/stringService";
-import Trophy from "../../public/icons/trophy.svg";
-import XpBadge from "../../public/icons/xpBadge.svg";
 import Avatar from "../UI/avatar";
 import { decimalToHex } from "../../utils/feltService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import Divider from "@mui/material/Divider";
 import AchievementIcon from "../UI/iconsComponents/icons/achievementIcon";
+import { CDNImage } from "../cdn/image";
 
 type RankCardProps = {
   name: string;
@@ -69,12 +67,12 @@ const RankCard: FunctionComponent<RankCardProps> = ({
 
       <div className={styles.rank_card_numbers}>
         <div className={styles.rank_card_number_layout}>
-          <Image src={XpBadge} priority width={30} height={30} alt="xp badge" />
+          <CDNImage src={"/icons/xpBadge.svg"} priority width={30} height={30} alt="xp badge" />
           <p>{experience}</p>
         </div>
         <div className={styles.rank_card_number_layout}>
-          <Image
-            src={Trophy}
+          <CDNImage
+            src={"/icons/trophy.svg"}
             priority
             width={30}
             height={30}

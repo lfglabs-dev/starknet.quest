@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { BuildingTileProps } from "../../types/land";
 import BuildingItem from "./buildingItem";

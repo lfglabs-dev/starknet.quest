@@ -5,6 +5,7 @@ import {
   AchievementsDocument,
 } from "../../types/backTypes";
 import Level from "./level";
+import cdnize from "../../utils/cdnize";
 
 type AchievementProps = {
   achievements: AchievementsDocument;
@@ -17,7 +18,7 @@ const Achievement: FunctionComponent<AchievementProps> = ({
 }) => {
   const backgroundStyle = useMemo(() => {
     return {
-      backgroundImage: `url('/${achievements.category_img_url}')`,
+      backgroundImage: `url('/${cdnize(achievements.category_img_url)}')`,
       backgroundPosition: `${index % 2 === 0 ? "right center" : "left center"}`,
       backgroundSize: "30%",
     };

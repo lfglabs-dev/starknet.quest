@@ -12,6 +12,7 @@ import {
   NotificationType,
   TransactionType,
 } from "../../constants/notifications";
+import { CDNImg } from "../cdn/image";
 
 type RewardProps = {
   onClick: () => void;
@@ -59,7 +60,7 @@ const Reward: FunctionComponent<RewardProps> = ({
     <div className={styles.reward}>
       <div className="flex">
         <p className="mr-1">Reward: </p>
-        <img width={25} src={imgSrc} />
+        <CDNImg width={25} src={imgSrc} />
         <p className="ml-1">{reward}</p>
       </div>
       <div className="max-w-lg">

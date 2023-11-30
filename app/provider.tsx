@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
 import { goerli, mainnet } from "@starknet-react/chains";
 import {
+  Connector,
   StarknetConfig,
   alchemyProvider,
   argent,
@@ -17,7 +18,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const chains = [
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? goerli : mainnet,
   ];
-  const providers = alchemyProvider({
+  const provider = alchemyProvider({
     apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
   });
 
@@ -54,8 +55,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StarknetConfig
       chains={chains}
-      provider={providers}
-      connectors={connectors as any}
+      provider={provider}
+      connectors={connectors as Connector[]}
       autoConnect
     >
       <StarknetIdJsProvider>
