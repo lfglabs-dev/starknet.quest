@@ -5,6 +5,7 @@ import QuestionRouter from "./questionRouter";
 import styles from "../../styles/components/quests/quiz.module.css";
 import CheckMarkIcon from "../UI/iconsComponents/icons/checkMarkIcon";
 import NftIssuer from "../quests/nftIssuer";
+import { CDNImg } from "../cdn/image";
 
 type StepProps = {
   setStep: (s: number) => void;
@@ -68,7 +69,7 @@ const Step: FunctionComponent<StepProps> = ({
   const layoutElements =
     question && question.layout === "illustrated_left" ? (
       <div className={styles.leftIllustration}>
-        <img src={question.image_for_layout as string} alt="illustration" />
+        <CDNImg src={question.image_for_layout as string} alt="illustration" />
       </div>
     ) : null;
 

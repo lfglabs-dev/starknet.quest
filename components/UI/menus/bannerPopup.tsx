@@ -3,6 +3,7 @@ import styles from "../../../styles/components/popup.module.css";
 import Button from "../button";
 import CloseIcon from "../iconsComponents/icons/closeIcon";
 import { Modal } from "@mui/material";
+import { CDNImg } from "../../cdn/image";
 
 type BannerPopupProps = {
   title: string;
@@ -32,7 +33,7 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
       <div className={styles.bannerPopup}>
         <div className={styles.titleSide}>
           <h1 className={styles.title}>{title}</h1>
-          <img className={styles.banner} src={banner} alt="banner" />
+          <CDNImg className={styles.banner} src={banner} alt="banner" />
         </div>
         <div className={styles.contentSide}>
           <button className={styles.close} onClick={onClose}></button>
