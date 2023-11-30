@@ -101,3 +101,10 @@ type CompletedDocument = {
 type DeployedTime = {
   timestamp: number;
 };
+
+type QuestCategoryDocument = {
+  name: string;
+  title: string;
+  desc: string;
+  img_url: string;
+};

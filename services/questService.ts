@@ -1,4 +1,8 @@
-import { QueryError, QuestDocument } from "../types/backTypes";
+import {
+  QueryError,
+  QuestCategoryDocument,
+  QuestDocument,
+} from "../types/backTypes";
 
 export async function fetchQuestData(questId: string) {
   const response = await fetch(
@@ -6,4 +10,12 @@ export async function fetchQuestData(questId: string) {
   );
   const data: QuestDocument | QueryError = await response.json();
   return data as QuestDocument;
+}
+
+export async function fetchQuestCategoryData(name: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_LINK}/get_quest_category?name=${name}`
+  );
+  const data: QuestCategoryDocument | QueryError = await response.json();
+  return data as QuestCategoryDocument;
 }
