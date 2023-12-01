@@ -1,13 +1,15 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import styles from "../../styles/questboost.module.css";
 import Cardstyles from "../../styles/components/card.module.css";
 import Link from "next/link";
 
-type BoostCardProps = {};
+type BoostCardProps = {
+  boost: object;
+};
 
-const BoostCard: FunctionComponent<BoostCardProps> = ({ amount }) => {
+const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
   return (
-    <Link href="/quest-boost/1">
+    <Link href={`/quest-boost/${boost?.id}`}>
       <div className={styles.boost_card_container}>
         <img
           className={Cardstyles.cardImage}
@@ -15,9 +17,9 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ amount }) => {
           alt="boost"
         />
         <div className={styles.boost_card_content}>
-          <p>{}</p>
-          <p>1 quest</p>
-          <p>{amount} USDC</p>
+          <p>{boost?.name}</p>
+          <p>{boost?.quests.length} quest</p>
+          <p>{boost?.amount} USDC</p>
         </div>
       </div>
     </Link>

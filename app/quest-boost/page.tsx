@@ -7,6 +7,7 @@ import CategoryTitle from "../../components/UI/titles/categoryTitle";
 import Componentstyles from "../../styles/components/pages/home/howToParticipate.module.css";
 import Steps from "../../components/UI/steps/steps";
 import { getBoosts } from "../../services/apiService";
+import Quest from "../../components/quests/quest";
 
 export default function Page() {
   const [boosts, setBoosts] = useState([]);
@@ -33,7 +34,21 @@ export default function Page() {
       <h1 className={styles.title}>Boosts Quest</h1>
       <div className={styles.card_container}>
         {boosts?.map((boost) => {
-          return <BoostCard key={boost.id} boost={boost} />;
+          return (
+            <Quest
+              key={boost.id}
+              title={boost.title_card}
+              onClick={() => router.push(`/quest/${boost.id}`)}
+              imgSrc={boost.img_card}
+              issuer={{
+                name: boost.issuer,
+                logoFavicon: boost.logo,
+              }}
+              reward={boost.rewards_title}
+              id={boost.id}
+              expired={boost.expiry < Date.now() / 1000}
+            />
+          );
         })}
       </div>
 

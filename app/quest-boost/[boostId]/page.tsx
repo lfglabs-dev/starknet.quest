@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
 import BoostCard from "../../../components/quest-boost/boostCard";
 import { Abi, Contract, shortString } from "starknet";
 import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
+import { getQuestsInBoost } from "../../../services/apiService";
 
 type BoostQuestPageProps = {
   params: {
@@ -15,6 +16,16 @@ type BoostQuestPageProps = {
 export default function Page({ params }: BoostQuestPageProps) {
   const { boostId } = params;
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
+  const [quests, setQuests] = useState([] as Quest[]);
+
+  const fetchData = async () => {
+    const res = await getQuestsInBoost(boostId);
+    setQuests(res);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // const contract = useMemo(() => {
   //   return new Contract(
@@ -50,7 +61,15 @@ export default function Page({ params }: BoostQuestPageProps) {
     <div className={styles.container}>
       <h1 className={styles.title}>Name of boost</h1>
       <div className={styles.card_container}>
-        <BoostCard />
+        {quests?.map((quest) => {
+          return (
+            <BoostCard
+              key={quest.id}
+              boost={quest}
+              // onClick={() => handleClick(quest.id)}
+            />
+          );
+        })}
       </div>
       <div className={styles.claim_button_container}>
         <div className={styles.claim_button_text_content}>

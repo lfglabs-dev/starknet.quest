@@ -21,6 +21,12 @@
     align-items: center;
     gap: 1.5rem;
     background-color: #1F1F25;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.boost_card_container:hover {
+    border-color: var(--secondary500);
 }
 
 .boost_card_content {
@@ -37,6 +43,7 @@
     flex-direction: row;
     gap: 1rem;
     justify-content: center;
+    min-height: 400px;
 }
 
 .instructions_container {
