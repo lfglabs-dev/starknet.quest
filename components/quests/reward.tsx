@@ -17,7 +17,6 @@ import RewardModal from "./rewardModal";
 import rewardStyles from "../../styles/components/quests/modal.module.css";
 import { CDNImg } from "../cdn/image";
 
-
 type RewardProps = {
   onClick: () => void;
   reward: string;
@@ -127,7 +126,12 @@ const Reward: FunctionComponent<RewardProps> = ({
                 <p>{quest.rewards_description}</p>
               </div>
               <div className="p-6 w-max self-center">
-                <Button onClick={() => setShowSuccessModal(false)}>
+                <Button
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    window.open("https://www.focustree.app/");
+                  }}
+                >
                   Claim Rewards
                 </Button>
               </div>
