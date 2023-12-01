@@ -210,7 +210,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const checkUserRewards = async () => {
     if (!address) return;
     const res = await getCompletedQuestsOfUser(address);
-    if (res.includes(questId)) {
+    if (res.includes(parseInt(questId))) {
       setRewardsEnabled(true);
     }
   };
