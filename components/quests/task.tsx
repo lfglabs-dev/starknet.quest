@@ -29,11 +29,14 @@ const Task: FunctionComponent<Task> = ({
   issuer,
   setShowDomainPopup,
   hasRootDomain,
+  customError,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>(
+    customError.length > 0 ? customError : ""
+  );
   const { address } = useAccount();
 
   useEffect(() => {
@@ -49,22 +52,6 @@ const Task: FunctionComponent<Task> = ({
     }
     return true;
   };
-
-  useEffect(() => {
-    console.log("hey");
-  }, []);
-
-  useEffect(() => {
-    // get `error_msg` from url
-    if (typeof window !== "undefined") {
-      // Your client-side code that uses window goes here
-      const urlParams = new URLSearchParams(window.location.search);
-      const error_msg = urlParams.get("error_msg");
-      if (error_msg) {
-        setError(error_msg);
-      }
-    }
-  }, []);
 
   // A verify function that setIsVerified(true) and stop propagation
   const verify = async () => {
