@@ -25,6 +25,7 @@ import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "../../utils/rewards";
 import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
+import { getCompletedQuestsOfUser } from "../../services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -206,6 +207,19 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     })();
   }, [questId, eligibleRewards]);
 
+  const checkUserRewards = async () => {
+    if (!address) return;
+    const res = await getCompletedQuestsOfUser(address);
+    if (res.includes(questId)) {
+      setRewardsEnabled(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!address) return;
+    if (!hasNftReward) checkUserRewards();
+  }, [address]);
+
   // this builds multicall for minting rewards
   useEffect(() => {
     const calldata: Call[] = [];
@@ -229,7 +243,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ],
       });
     });
-
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
@@ -375,7 +388,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               onClick={() => {
                 setRewardsEnabled(false);
               }}
-              disabled={hasNftReward ? !rewardsEnabled : false}
+              disabled={!rewardsEnabled}
               mintCalldata={mintCalldata}
               questName={quest.name}
             />
