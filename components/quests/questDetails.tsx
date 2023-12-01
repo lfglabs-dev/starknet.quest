@@ -210,13 +210,14 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const checkUserRewards = async () => {
     if (!address) return;
     const res = await getCompletedQuestsOfUser(address);
-    if (res.includes(questId) && !hasNftReward) {
+    if (res.includes(questId)) {
       setRewardsEnabled(true);
     }
   };
 
   useEffect(() => {
-    checkUserRewards();
+    if (!address) return;
+    if (!hasNftReward) checkUserRewards();
   }, [address]);
 
   // this builds multicall for minting rewards
@@ -242,7 +243,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ],
       });
     });
-    console.log({ to_claim });
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
