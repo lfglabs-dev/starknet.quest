@@ -33,6 +33,7 @@ type QuestDetailsProps = {
   errorMsg?: string;
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
+  hasNftReward?: boolean;
 };
 
 const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -42,6 +43,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   errorMsg,
   setShowDomainPopup,
   hasRootDomain,
+  hasNftReward,
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
@@ -165,6 +167,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // this filters the claimable rewards to find only the unclaimed ones (on chain)
   useEffect(() => {
     (async () => {
+      if (hasNftReward === false) return;
       let unclaimed: EligibleReward[] = [];
       for (const contractAddr in eligibleRewards) {
         const perContractRewards = eligibleRewards[contractAddr];
@@ -206,7 +209,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // this builds multicall for minting rewards
   useEffect(() => {
     const calldata: Call[] = [];
-
     // if the sequencer query failed, let's consider the eligible as unclaimed
     const to_claim =
       unclaimedRewards === undefined
@@ -366,12 +368,14 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               );
             })}
             <Reward
+              quest={quest}
+              hasNftReward={hasNftReward}
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
               onClick={() => {
                 setRewardsEnabled(false);
               }}
-              disabled={!rewardsEnabled}
+              disabled={hasNftReward ? !rewardsEnabled : false}
               mintCalldata={mintCalldata}
               questName={quest.name}
             />
