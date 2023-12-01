@@ -295,6 +295,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   };
 
   useEffect(() => {
+    console.log("hey");
+  }, []);
+
+  useEffect(() => {
+    console.log("window.location", window.location);
     // get `error_msg` from url
     if (typeof window !== "undefined") {
       // Your client-side code that uses window goes here
