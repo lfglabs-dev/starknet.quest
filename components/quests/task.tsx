@@ -51,6 +51,10 @@ const Task: FunctionComponent<Task> = ({
   };
 
   useEffect(() => {
+    console.log("hey");
+  }, []);
+
+  useEffect(() => {
     // get `error_msg` from url
     if (typeof window !== "undefined") {
       // Your client-side code that uses window goes here
