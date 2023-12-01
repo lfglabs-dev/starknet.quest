@@ -1,3 +1,5 @@
+"use client";
+
 import React, {
   ReactNode,
   useEffect,
@@ -253,6 +255,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     if (!taskId || res === "true") return;
     if (taskId && res === "false") {
       setTaskError({
+        taskId: parseInt(taskId.toString()),
+        res: false,
+        error: errorMsg?.toString(),
+      });
+      console.log({
         taskId: parseInt(taskId.toString()),
         res: false,
         error: errorMsg?.toString(),
