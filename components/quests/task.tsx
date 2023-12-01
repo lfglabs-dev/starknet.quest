@@ -52,11 +52,13 @@ const Task: FunctionComponent<Task> = ({
 
   useEffect(() => {
     // get `error_msg` from url
-    const urlParams = new URLSearchParams(window.location.search);
-    const error_msg = urlParams.get("error_msg");
-    console.log({ error_msg });
-    if (error_msg) {
-      setError(error_msg);
+    if (typeof window !== "undefined") {
+      // Your client-side code that uses window goes here
+      const urlParams = new URLSearchParams(window.location.search);
+      const error_msg = urlParams.get("error_msg");
+      if (error_msg) {
+        setError(error_msg);
+      }
     }
   }, []);
 
