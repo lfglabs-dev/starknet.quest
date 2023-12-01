@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import {
