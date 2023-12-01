@@ -304,7 +304,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         setCustomError(error_msg);
       }
     }
-  }, []);
+  }, [window.location]);
 
   return (
     <>
