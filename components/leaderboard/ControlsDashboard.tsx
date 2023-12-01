@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useMemo, useState } from "react";
-import BottomArrow from "../../public/icons/dropdownArrow.svg";
-import Image from "next/image";
 import { PAGE_SIZE, timeFrameMap } from "../../utils/constants";
 import styles from "../../styles/leaderboard.module.css";
 import ChevronLeftIcon from "../UI/iconsComponents/icons/chevronLeftIcon";
 import ChevronRightIcon from "../UI/iconsComponents/icons/ChevronRightIcon";
+import { CDNImage } from "../cdn/image";
 
 // this will contain the pagination arrows and page size limit controls
 const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
@@ -63,7 +62,11 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
         >
           <div className={styles.controls_option_display}>
             <p>{rowsPerPage}</p>
-            <Image src={BottomArrow} priority alt="Arrow icon" />
+            <CDNImage
+              src={"/icons/dropdownArrow.svg"}
+              priority
+              alt="Arrow icon"
+            />
           </div>
           {showMenu ? (
             <div className={styles.pages_menu}>

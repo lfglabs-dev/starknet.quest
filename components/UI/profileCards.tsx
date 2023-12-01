@@ -9,6 +9,7 @@ import ShareIcon from "./iconsComponents/icons/shareIcon";
 import SharePopup from "./menus/sharePopup";
 import theme from "../../styles/theme";
 import { useStarkProfile } from "@starknet-react/core";
+import { CDNImg } from "../cdn/image";
 
 const ProfileCards: FunctionComponent<ProfileCard> = ({
   title,
@@ -126,7 +127,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
                 if (!building.image_url) return null;
                 return (
                   <div key={building.nft_id} className={styles.nftContainer}>
-                    <img src={building.image_url} className={styles.nftImage} />
+                    <CDNImg src={building.image_url} className={styles.nftImage} />
                     <p className={styles.nftName}>{building.name}</p>
                   </div>
                 );

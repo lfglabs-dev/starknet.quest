@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "../../styles/achievements.module.css";
 import { AchievementDocument } from "../../types/backTypes";
 import { CustomTooltip } from "../UI/tooltip";
+import { CDNImg } from "../cdn/image";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;
@@ -36,7 +37,7 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
             !achievement.completed ? styles.disabled : ""
           }`}
         >
-          <img src={achievement.img_url} alt="achievement level image" />
+          <CDNImg src={achievement.img_url} alt="achievement level image" />
         </div>
       </div>
     </CustomTooltip>

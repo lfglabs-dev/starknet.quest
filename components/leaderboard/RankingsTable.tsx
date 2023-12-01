@@ -4,14 +4,13 @@ import { minifyAddress, minifyDomain } from "../../utils/stringService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import { decimalToHex } from "../../utils/feltService";
 import Avatar from "../UI/avatar";
-import XpBadge from "../../public/icons/xpBadge.svg";
 import { FunctionComponent, useEffect, useState } from "react";
 import { getCompletedQuestsOfUser } from "../../services/apiService";
 import styles from "../../styles/leaderboard.module.css";
-import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Link from "next/link";
+import { CDNImage } from "../cdn/image";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
@@ -107,8 +106,8 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
               </div>
               <div className={styles.ranking_table_row_xp_quest}>
                 <div className={styles.ranking_points_layout}>
-                  <Image
-                    src={XpBadge}
+                  <CDNImage
+                    src={"/icons/xpBadge.svg"}
                     priority
                     width={35}
                     height={35}

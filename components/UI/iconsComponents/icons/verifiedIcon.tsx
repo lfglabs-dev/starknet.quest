@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-const verifiedIcon: FunctionComponent<IconProps> = ({ width, color }) => {
+const verifiedIcon: FunctionComponent<IconProps> = ({ width }) => {
   return (
     <svg
       width={width}

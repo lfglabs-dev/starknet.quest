@@ -5,6 +5,7 @@ import CheckIcon from "../UI/iconsComponents/icons/checkIcon";
 import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
 import Card from "../UI/card";
 import styles from "../../styles/quests.module.css";
+import { CDNImg } from "../cdn/image";
 
 type QuestProps = {
   onClick: () => void;
@@ -58,7 +59,7 @@ const Quest: FunctionComponent<QuestProps> = ({
           </>
         ) : (
           <>
-            <img width={20} src={issuer.logoFavicon} />
+            <CDNImg width={20} src={issuer.logoFavicon} />
             <p className="text-white ml-2">{reward}</p>
           </>
         )}
