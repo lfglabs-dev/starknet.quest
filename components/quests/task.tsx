@@ -52,6 +52,7 @@ const Task: FunctionComponent<Task> = ({
     // get `error_msg` from url
     const urlParams = new URLSearchParams(window.location.search);
     const error_msg = urlParams.get("error_msg");
+    console.log({ error_msg });
     if (error_msg) {
       setError(error_msg);
     }
