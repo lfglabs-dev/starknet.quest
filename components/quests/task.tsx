@@ -48,6 +48,15 @@ const Task: FunctionComponent<Task> = ({
     return true;
   };
 
+  useEffect(() => {
+    // get `error_msg` from url
+    const urlParams = new URLSearchParams(window.location.search);
+    const error_msg = urlParams.get("error_msg");
+    if (error_msg) {
+      setError(error_msg);
+    }
+  }, []);
+
   // A verify function that setIsVerified(true) and stop propagation
   const verify = async () => {
     checkCanDoTask();
