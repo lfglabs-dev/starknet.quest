@@ -12,18 +12,12 @@ type QuestCategoriesProps = {
 const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   categories,
 }) => {
-  const [boosts, setBoosts] = useState();
+  const [boosts, setBoosts] = useState([] as Boost[]);
 
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      const formatData = {
-        name: "boosts",
-        questNumber: 0,
-        quests: res,
-        img: "/images/boosts.png",
-      };
-      setBoosts(formatData);
+      setBoosts(res);
     } catch (err) {
       console.log(err);
     }
@@ -44,11 +38,11 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
               <div className={styles.categoryInfos}>
                 <h2 className="text-gray-200">Boosts Quest</h2>
                 <p className="text-gray-200">
-                  {boosts?.quests?.length} quest
-                  {boosts.quests?.length > 1 ? "s" : null}
+                  {boosts.length} quest
+                  {boosts.length > 1 ? "s" : null}
                 </p>
               </div>
-              <img src={boosts.img} />
+              <img src="/avnu/astronaut.webp" />
             </Link>
           ) : null}
           {categories ? (
