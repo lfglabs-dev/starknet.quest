@@ -4,7 +4,7 @@ import Cardstyles from "../../styles/components/card.module.css";
 import Link from "next/link";
 
 type BoostCardProps = {
-  boost: object;
+  boost: Boost;
 };
 
 const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {

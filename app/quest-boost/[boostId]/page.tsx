@@ -4,10 +4,15 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
 import { Abi, Contract, shortString } from "starknet";
 import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
-import { getBoostById, getQuestsInBoost } from "../../../services/apiService";
+import {
+  getBoostById,
+  getQuestParticipants,
+  getQuestsInBoost,
+} from "../../../services/apiService";
 import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
+import Timer from "../../../components/quests/timer";
 
 type BoostQuestPageProps = {
   params: {
@@ -21,16 +26,31 @@ export default function Page({ params }: BoostQuestPageProps) {
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [quests, setQuests] = useState([] as QuestDocument[]);
   const [boost, setBoost] = useState({} as Boost);
+  const [participants, setParticipants] = useState<number>();
 
-  const fetchData = async () => {
+  const getTotalParticipants = async (questIds: number[]) => {
+    console.log(questIds);
+    let total = 0;
+    await Promise.all(
+      questIds?.map(async (questID) => {
+        const res = await getQuestParticipants(questID);
+        total += res?.count;
+      })
+    );
+    return total;
+  };
+
+  const fetchPageData = async () => {
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
+    const totalParticipants = await getTotalParticipants(boostInfo.quests);
     setQuests(questsList);
     setBoost(boostInfo);
+    setParticipants(totalParticipants);
   };
 
   useEffect(() => {
-    fetchData();
+    fetchPageData();
   }, []);
 
   // const contract = useMemo(() => {
@@ -65,7 +85,13 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>{boost?.name}</h1>
+      <div className="flex flex-col">
+        <h1 className={styles.title}>{boost?.name}</h1>
+        {boost.expiry ? (
+          <Timer fixed={false} expiry={Number(boost.expiry)} />
+        ) : null}
+      </div>
+
       <div className={styles.card_container}>
         {quests?.map((quest, index) => {
           if (quest?.hidden || quest?.disabled) return null;
@@ -89,9 +115,13 @@ export default function Page({ params }: BoostQuestPageProps) {
       <div className={styles.claim_button_container}>
         <div className={styles.claim_button_text_content}>
           <p>Reward:</p>
-          <p className={styles.claim_button_text_highlight}>100 USDC</p>
+          <p className={styles.claim_button_text_highlight}>
+            {boost.amount} USDC
+          </p>
           <p>among</p>
-          <p className={styles.claim_button_text_highlight}>10 players</p>
+          <p className={styles.claim_button_text_highlight}>
+            {participants} players
+          </p>
         </div>
         <button className={styles.claim_button_cta}>
           Claim boost reward 🎉

@@ -77,3 +77,14 @@ export const getBoostById = async (id: string) => {
     console.log(err);
   }
 };
+
+export const getQuestParticipants = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/get_quest_participants?quest_id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
