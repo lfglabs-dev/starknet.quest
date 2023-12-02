@@ -2,10 +2,11 @@
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import BoostCard from "../../../components/quest-boost/boostCard";
 import { Abi, Contract, shortString } from "starknet";
 import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
-import { getQuestsInBoost } from "../../../services/apiService";
+import { getBoostById, getQuestsInBoost } from "../../../services/apiService";
+import Quest from "../../../components/quests/quest";
+import { useRouter } from "next/navigation";
 
 type BoostQuestPageProps = {
   params: {
@@ -14,13 +15,17 @@ type BoostQuestPageProps = {
 };
 
 export default function Page({ params }: BoostQuestPageProps) {
+  const router = useRouter();
   const { boostId } = params;
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [quests, setQuests] = useState([] as Quest[]);
+  const [boost, setBoost] = useState({});
 
   const fetchData = async () => {
-    const res = await getQuestsInBoost(boostId);
-    setQuests(res);
+    const questsList = await getQuestsInBoost(boostId);
+    const boostInfo = await getBoostById(boostId);
+    setQuests(questsList);
+    setBoost(boostInfo);
   };
 
   useEffect(() => {
@@ -59,14 +64,25 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Name of boost</h1>
+      <h1 className={styles.title}>{boost?.name}</h1>
       <div className={styles.card_container}>
-        {quests?.map((quest) => {
+        {quests?.map((quest, index) => {
+          if (quest?.hidden || quest?.disabled || quest?.expiry > Date.now())
+            return null;
+
           return (
-            <BoostCard
-              key={quest.id}
-              boost={quest}
-              // onClick={() => handleClick(quest.id)}
+            <Quest
+              key={index}
+              title={quest.title_card}
+              onClick={() => router.push(`/quest/${quest.id}`)}
+              imgSrc={quest.img_card}
+              issuer={{
+                name: quest.issuer,
+                logoFavicon: quest.logo,
+              }}
+              reward={quest.rewards_title}
+              id={quest.id}
+              expired={quest.expired}
             />
           );
         })}

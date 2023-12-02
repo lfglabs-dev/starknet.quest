@@ -24,7 +24,6 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
         img: "/images/boosts.png",
       };
       setBoosts(formatData);
-      console.log({ formatData });
     } catch (err) {
       console.log(err);
     }

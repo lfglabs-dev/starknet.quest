@@ -68,3 +68,12 @@ export const getQuestsInBoost = async (id: string) => {
     console.log(err);
   }
 };
+
+export const getBoostById = async (id: string) => {
+  try {
+    const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
