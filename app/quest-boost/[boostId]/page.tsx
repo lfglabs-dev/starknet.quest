@@ -13,6 +13,9 @@ import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
 import Timer from "../../../components/quests/timer";
+import { useAccount } from "@starknet-react/core";
+import { hexToDecimal } from "../../../utils/feltService";
+import Button from "../../../components/UI/button";
 
 type BoostQuestPageProps = {
   params: {
@@ -22,6 +25,7 @@ type BoostQuestPageProps = {
 
 export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
+  const { address } = useAccount();
   const { boostId } = params;
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [quests, setQuests] = useState([] as QuestDocument[]);
@@ -123,9 +127,16 @@ export default function Page({ params }: BoostQuestPageProps) {
             {participants} players
           </p>
         </div>
-        <button className={styles.claim_button_cta}>
-          Claim boost reward 🎉
-        </button>
+        <div>
+          <Button
+            disabled={boost.winner !== hexToDecimal(address)}
+            onClick={() => console.log("hey")}
+          >
+            {boost.expiry < Date.now() || boost.winner === null
+              ? "Claim boost reward  🎉"
+              : "You’re not selected 🙁"}
+          </Button>
+        </div>
       </div>
     </div>
   );
