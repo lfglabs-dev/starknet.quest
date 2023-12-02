@@ -58,6 +58,18 @@ type Quest = {
   tasks: Task[];
 };
 
+type Boost = {
+  amount: number;
+  token: string;
+  expiry: number;
+  quests: number[];
+  claimed: boolean;
+  winner: string | null;
+  img_url: string;
+  id: number;
+  name: string;
+};
+
 type Reward = {
   onClick: () => void;
   reward: string;

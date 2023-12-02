@@ -7,6 +7,7 @@ import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
 import { getBoostById, getQuestsInBoost } from "../../../services/apiService";
 import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
+import { QuestDocument } from "../../../types/backTypes";
 
 type BoostQuestPageProps = {
   params: {
@@ -18,8 +19,8 @@ export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
   const { boostId } = params;
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
-  const [quests, setQuests] = useState([] as Quest[]);
-  const [boost, setBoost] = useState({});
+  const [quests, setQuests] = useState([] as QuestDocument[]);
+  const [boost, setBoost] = useState({} as Boost);
 
   const fetchData = async () => {
     const questsList = await getQuestsInBoost(boostId);
@@ -67,9 +68,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       <h1 className={styles.title}>{boost?.name}</h1>
       <div className={styles.card_container}>
         {quests?.map((quest, index) => {
-          if (quest?.hidden || quest?.disabled || quest?.expiry > Date.now())
-            return null;
-
+          if (quest?.hidden || quest?.disabled) return null;
           return (
             <Quest
               key={index}
