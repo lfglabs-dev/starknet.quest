@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../../styles/quests.module.css";
 import {
@@ -27,11 +29,14 @@ const Task: FunctionComponent<Task> = ({
   issuer,
   setShowDomainPopup,
   hasRootDomain,
+  customError,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>(
+    customError.length > 0 ? customError : ""
+  );
   const { address } = useAccount();
 
   useEffect(() => {

@@ -181,10 +181,6 @@ export default function Page() {
     }
   }, [searchAddress]);
 
-  useEffect(() => {
-    console.log({ currentSearchedAddress });
-  }, [currentSearchedAddress]);
-
   // on user Press enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {

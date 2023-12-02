@@ -27,6 +27,7 @@ type Task = {
   issuer?: Issuer;
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
+  customError: string;
 };
 
 type TaskProps = Task & { id: number };
