@@ -48,11 +48,13 @@ const Quest: FunctionComponent<QuestPageProps> = ({
     expiry_timestamp: "loading",
     mandatory_domain: null,
     expired: false,
+    rewards_description: null,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
   const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
+  const [hasNftReward, setHasNftReward] = useState<boolean>(false);
   const { domain } = useDomainFromAddress(address);
 
   // this fetches quest data
@@ -61,6 +63,12 @@ const Quest: FunctionComponent<QuestPageProps> = ({
       .then((response) => response.json())
       .then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
+          if (
+            (data as QuestDocument).rewards_nfts &&
+            (data as QuestDocument).rewards_nfts.length > 0
+          ) {
+            setHasNftReward(true);
+          }
           setQuest(data as QuestDocument);
         }
       })
@@ -125,6 +133,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
           errorMsg={errorMsg as string | undefined}
           setShowDomainPopup={setShowDomainPopup}
           hasRootDomain={hasRootDomain}
+          hasNftReward={hasNftReward}
         />
       </div>
     </>

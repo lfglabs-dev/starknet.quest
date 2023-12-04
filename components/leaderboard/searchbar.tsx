@@ -4,10 +4,8 @@ import React, {
   useState,
   FunctionComponent,
 } from "react";
-import SearchIcon from "../../public/icons/searchIcon.svg";
 import Image from "next/image";
 import styles from "../../styles/leaderboard.module.css";
-import CrossIcon from "../../public/icons/cross.svg";
 import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
 import { hexToDecimal } from "../../utils/feltService";
 
@@ -56,7 +54,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
   const handleOptionClick = async (option: string) => {
     const addr = await starknetIdNavigator
       ?.getAddressFromStarkName(option)
-      .catch((err) => {
+      .catch(() => {
         return "";
       });
     if (!addr) return;
@@ -68,7 +66,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
     <div className="relative gap-2 z-50">
       <div className={styles.search_bar_container}>
         <Image
-          src={SearchIcon}
+          src={"/icons/searchIcon.svg"}
           priority
           width={16}
           height={16}
@@ -91,7 +89,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
             }}
           >
             <Image
-              src={CrossIcon}
+              src={"/icons/cross.svg"}
               priority
               width={20}
               height={20}

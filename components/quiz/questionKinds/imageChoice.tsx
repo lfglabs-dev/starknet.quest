@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import styles from "../../../styles/components/quests/quiz.module.css";
+import { CDNImg } from "../../cdn/image";
 
 type ImageChoiceProps = {
   setSelected: (s: boolean) => void;
@@ -42,7 +43,7 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
               checked={selectedOptions.includes(index)}
             />
             <label className={styles.checkboxLabel} htmlFor={option}>
-              <img src={option} className={styles.checkboxImage} />
+              <CDNImg src={option} className={styles.checkboxImage} />
             </label>
           </div>
         ))}

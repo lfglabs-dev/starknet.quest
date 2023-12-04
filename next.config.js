@@ -1,35 +1,9 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.VERCEL_ENV === "production";
 
 module.exports = {
-  rewrites() {
-    return {
-      beforeFiles: [
-        // if the host is `app.acme.com`,
-        // this rewrite will be applied
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "indexer.starknet.id",
-            },
-          ],
-          destination: "/api/indexer/:path*",
-        },
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "goerli.indexer.starknet.id",
-            },
-          ],
-          destination: "/api/indexer/:path*",
-        },
-      ],
-    };
-  },
   reactStrictMode: true,
+  assetPrefix: isProd ? process.env.NEXT_PUBLIC_CDN_URL : undefined,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;
@@ -44,6 +18,8 @@ module.exports = {
       "starknetid.netlify.app",
       "gateway.pinata.cloud",
       "api.briq.construction",
+      "cdn.starknet.quest",
+      "goerli.cdn.starknet.quest",
     ],
   },
 };

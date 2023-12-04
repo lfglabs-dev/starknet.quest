@@ -4,6 +4,7 @@ import Button from "../..//UI/button";
 import { useMediaQuery } from "@mui/material";
 import FeaturedQuestSkeleton from "../../skeletons/featuredQuestSkeleton";
 import Timer from "../../quests/timer";
+import { CDNImg } from "../../cdn/image";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -35,7 +36,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
         <p className="text-gray-200	 mt-4 text-start">{desc}</p>
         <div className="flex mt-4 mb-4 items-center">
-          <img width={20} src={issuer?.logoFavicon} />
+          <CDNImg width={20} src={issuer?.logoFavicon} />
           <p className="text-white ml-2">{reward}</p>
         </div>
         <div>
@@ -43,7 +44,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         </div>
       </div>
       <div className={styles.featuredQuestImageContainer}>
-        <img src={imgSrc} className={styles.featuredQuestImage} />
+        <CDNImg src={imgSrc} className={styles.featuredQuestImage} />
         {expiry ? <Timer expiry={Number(expiry)} /> : null}
       </div>
     </div>

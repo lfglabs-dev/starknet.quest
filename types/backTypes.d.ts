@@ -18,6 +18,7 @@ type QuestDocument = {
   expiry_timestamp: string | null;
   mandatory_domain: string | null;
   expired: boolean;
+  rewards_description: string | null;
 };
 
 type NFTItem = {
