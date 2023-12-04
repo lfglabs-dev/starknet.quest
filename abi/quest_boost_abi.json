@@ -1,0 +1,161 @@
+[
+  {
+    "name": "QuestBoost",
+    "type": "impl",
+    "interface_name": "quest_boost_contract::interface::IQuestBoost"
+  },
+  {
+    "name": "core::integer::u256",
+    "type": "struct",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "name": "core::array::Span::<core::felt252>",
+    "type": "struct",
+    "members": [
+      {
+        "name": "snapshot",
+        "type": "@core::array::Array::<core::felt252>"
+      }
+    ]
+  },
+  {
+    "name": "quest_boost_contract::interface::IQuestBoost",
+    "type": "interface",
+    "items": [
+      {
+        "name": "set_admin",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "new_admin",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "name": "claim",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "amount",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "signature",
+            "type": "core::array::Span::<core::felt252>"
+          },
+          {
+            "name": "boost_id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "name": "fill",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "amount",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "view"
+      },
+      {
+        "name": "withdraw_all",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "view"
+      },
+      {
+        "name": "upgrade",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "new_class_hash",
+            "type": "core::starknet::class_hash::ClassHash"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      }
+    ]
+  },
+  {
+    "name": "constructor",
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "public_key",
+        "type": "core::felt252"
+      }
+    ]
+  },
+  {
+    "kind": "struct",
+    "name": "quest_boost_contract::main::QuestBoost::on_claim",
+    "type": "event",
+    "members": [
+      {
+        "kind": "data",
+        "name": "timestamp",
+        "type": "core::integer::u64"
+      },
+      {
+        "kind": "data",
+        "name": "amount",
+        "type": "core::integer::u256"
+      },
+      {
+        "kind": "key",
+        "name": "address",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "kind": "enum",
+    "name": "quest_boost_contract::main::QuestBoost::Event",
+    "type": "event",
+    "variants": [
+      {
+        "kind": "nested",
+        "name": "on_claim",
+        "type": "quest_boost_contract::main::QuestBoost::on_claim"
+      }
+    ]
+  }
+]

@@ -16,6 +16,7 @@ import Timer from "../../../components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "../../../utils/feltService";
 import Button from "../../../components/UI/button";
+import quest_boost_abi from "../../../abi/quest_boost_abi.json";
 
 type BoostQuestPageProps = {
   params: {
@@ -33,12 +34,11 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [participants, setParticipants] = useState<number>();
 
   const getTotalParticipants = async (questIds: number[]) => {
-    console.log(questIds);
     let total = 0;
     await Promise.all(
       questIds?.map(async (questID) => {
         const res = await getQuestParticipants(questID);
-        total += res?.count;
+        if (res?.count) total += res?.count;
       })
     );
     return total;
@@ -57,31 +57,30 @@ export default function Page({ params }: BoostQuestPageProps) {
     fetchPageData();
   }, []);
 
-  // const contract = useMemo(() => {
-  //   return new Contract(
-  //     naming_abi as Abi,
-  //     process.env.NEXT_PUBLIC_NAMING_CONTRACT as string,
-  //     starknetIdNavigator?.provider
-  //   );
-  // }, [starknetIdNavigator?.provider]);
+  const contract = useMemo(() => {
+    return new Contract(
+      quest_boost_abi as Abi,
+      process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT as string,
+      starknetIdNavigator?.provider
+    );
+  }, [starknetIdNavigator?.provider]);
 
-  // const callContract = async (
-  //   contract: Contract,
-  //   token: string,
-  //   amount: string,
-  //   signature: string[]
-  // ): Promise<void> => {
-  //   try {
-  //     const res = await contract.call("claim", [
-  //       amount,
-  //       token,
-  //       signature,
-  //       boostId,
-  //     ]);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const callContract = async (
+    boost: Boost,
+    signature: string[]
+  ): Promise<void> => {
+    try {
+      const res = await contract.call("claim", [
+        boost.amount,
+        boost.token,
+        signature,
+        boost.id,
+      ]);
+      console.log({ res });
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
   // const handleClaimClick = async () => {
   //   const contractAddress = "";
@@ -130,7 +129,7 @@ export default function Page({ params }: BoostQuestPageProps) {
         <div>
           <Button
             disabled={boost.winner !== hexToDecimal(address)}
-            onClick={() => console.log("hey")}
+            onClick={() => callContract(boost, "ayya")}
           >
             {boost.expiry < Date.now() || boost.winner === null
               ? "Claim boost reward  🎉"
