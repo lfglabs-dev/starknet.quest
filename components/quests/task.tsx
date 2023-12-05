@@ -30,6 +30,7 @@ const Task: FunctionComponent<Task> = ({
   setShowDomainPopup,
   hasRootDomain,
   customError,
+  checkUserRewards,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -75,6 +76,7 @@ const Task: FunctionComponent<Task> = ({
           await new Promise((resolve) =>
             setTimeout(() => {
               setIsVerified(true);
+              checkUserRewards();
               refreshRewards();
               setIsLoading(false);
               resolve(null);
@@ -82,6 +84,7 @@ const Task: FunctionComponent<Task> = ({
           );
         } else {
           setIsVerified(true);
+          checkUserRewards();
           refreshRewards();
           setIsLoading(false);
         }
@@ -110,6 +113,7 @@ const Task: FunctionComponent<Task> = ({
   useEffect(() => {
     if (!wasVerified) return;
     setIsVerified(wasVerified);
+    checkUserRewards();
   }, [wasVerified]);
 
   const openTask = () => {

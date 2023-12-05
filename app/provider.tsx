@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
+import { WebWalletConnector } from "starknetkit/webwallet";
 import { goerli, mainnet } from "@starknet-react/chains";
 import {
   Connector,
