@@ -222,7 +222,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   useEffect(() => {
     if (!address) return;
     if (!hasNftReward) checkUserRewards();
-  }, [address]);
+  }, [address, tasks]);
 
   // this builds multicall for minting rewards
   useEffect(() => {
@@ -398,6 +398,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   }}
                   hasRootDomain={hasRootDomain}
                   setShowDomainPopup={setShowDomainPopup}
+                  checkUserRewards={checkUserRewards}
                 />
               );
             })}
