@@ -1,3 +1,5 @@
+"use client";
+
 import React, {
   ReactNode,
   useEffect,
@@ -25,6 +27,7 @@ import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "../../utils/rewards";
 import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
+import { getCompletedQuestsOfUser } from "../../services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -33,6 +36,7 @@ type QuestDetailsProps = {
   errorMsg?: string;
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
+  hasNftReward?: boolean;
 };
 
 const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -42,6 +46,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   errorMsg,
   setShowDomainPopup,
   hasRootDomain,
+  hasNftReward,
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
@@ -57,6 +62,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [mintCalldata, setMintCalldata] = useState<Call[]>();
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
+  const [customError, setCustomError] = useState<string>("");
+  const url = window.location;
 
   const questId = quest.id.toString();
   const [participants, setParticipants] = useState({
@@ -165,6 +172,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // this filters the claimable rewards to find only the unclaimed ones (on chain)
   useEffect(() => {
     (async () => {
+      if (hasNftReward === false) return;
       let unclaimed: EligibleReward[] = [];
       for (const contractAddr in eligibleRewards) {
         const perContractRewards = eligibleRewards[contractAddr];
@@ -203,10 +211,22 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     })();
   }, [questId, eligibleRewards]);
 
+  const checkUserRewards = async () => {
+    if (!address) return;
+    const res = await getCompletedQuestsOfUser(address);
+    if (res.includes(parseInt(questId))) {
+      setRewardsEnabled(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!address) return;
+    if (!hasNftReward) checkUserRewards();
+  }, [address, tasks]);
+
   // this builds multicall for minting rewards
   useEffect(() => {
     const calldata: Call[] = [];
-
     // if the sequencer query failed, let's consider the eligible as unclaimed
     const to_claim =
       unclaimedRewards === undefined
@@ -227,7 +247,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ],
       });
     });
-
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
     } else setRewardsEnabled(false);
@@ -275,6 +294,18 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       return `${rootUrl}?${qs}`;
     }
   };
+
+  useEffect(() => {
+    // get `error_msg` from url
+    if (typeof window !== "undefined") {
+      // Your client-side code that uses window goes here
+      const urlParams = new URLSearchParams(url.search);
+      const error_msg = urlParams.get("error_msg");
+      if (error_msg) {
+        setCustomError(error_msg);
+      }
+    }
+  }, [url]);
 
   return (
     <>
@@ -333,6 +364,11 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 <Task
                   key={task.id}
                   name={task.name}
+                  customError={
+                    task.name.includes("Discord" || "discord")
+                      ? customError
+                      : ""
+                  }
                   description={task.desc}
                   href={task.href}
                   cta={task.cta}
@@ -362,10 +398,13 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   }}
                   hasRootDomain={hasRootDomain}
                   setShowDomainPopup={setShowDomainPopup}
+                  checkUserRewards={checkUserRewards}
                 />
               );
             })}
             <Reward
+              quest={quest}
+              hasNftReward={hasNftReward}
               reward={quest.rewards_title}
               imgSrc={quest.rewards_img}
               onClick={() => {
