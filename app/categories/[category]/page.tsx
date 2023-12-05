@@ -8,6 +8,7 @@ import homeStyles from "../../../styles/Home.module.css";
 import Quest from "../../../components/quests/quest";
 import BackButton from "../../../components/UI/backButton";
 import Blur from "../../../components/shapes/blur";
+import { getOrderedQuests } from "../../../utils/quest";
 
 type CategoriesPageProps = {
   params: {
@@ -43,7 +44,7 @@ export default function Page({ params }: CategoriesPageProps) {
       <div className={styles.questListContainer}>
         <div className={styles.questList}>
           {category &&
-            category.quests.map((quest, index) => (
+            getOrderedQuests(category.quests).map((quest, index) => (
               <Quest
                 key={index}
                 title={quest.title_card}
