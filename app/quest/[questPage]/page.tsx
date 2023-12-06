@@ -56,7 +56,11 @@ export default function Page({ params }: QuestPageProps) {
     res,
     error_msg: errorMsg,
   } = params;
-  return (
-    <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
-  );
+  if (typeof window !== "undefined") {
+    return (
+      <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
+    );
+  } else {
+    return null;
+  }
 }
