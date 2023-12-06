@@ -14,7 +14,9 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
       className={styles.questCategory}
     >
       <div className={styles.categoryInfos}>
-        <h2 className="text-gray-200">{category.name} Quest</h2>
+        <h2 className="text-gray-200">
+          {category.name} Quest{category.questNumber > 1 ? "s" : null}
+        </h2>
         <p className="text-gray-200">
           {category.questNumber} quest{category.questNumber > 1 ? "s" : null}
         </p>
