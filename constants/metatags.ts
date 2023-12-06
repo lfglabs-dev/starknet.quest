@@ -13,6 +13,6 @@ export const defaultMetatags = {
     title: "Starknet Quest - Accomplish quests to get unique NFTs.",
     description:
       "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
+    images: ["/visuals/starknetquest.webp"],
   },
-  images: ["/visuals/starknetquest.webp"],
 };
