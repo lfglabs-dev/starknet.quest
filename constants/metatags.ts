@@ -1,4 +1,6 @@
-export const defaultMetatags = {
+import { Metadata } from "next";
+
+export const defaultMetatags: Metadata = {
   title: "Starknet Quest",
   description:
     "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
