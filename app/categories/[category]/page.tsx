@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Category from "./category";
 import { fetchQuestCategoryData } from "../../../services/questService";
+import { defaultMetatags } from "../../../constants/metatags";
 
 type Props = {
   params: { category: string };
@@ -12,41 +13,28 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const categoryName = params.category;
-  const data = await fetchQuestCategoryData(categoryName);
 
-  if (data?.name) {
-    return {
-      title: data.name,
-      description: data.desc,
-      openGraph: {
+  try {
+    const data = await fetchQuestCategoryData(categoryName);
+    if (data?.name)
+      return {
         title: data.name,
         description: data.desc,
-        images: [data.img_url],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: data.name,
-        description: data.desc,
-        images: [data.img_url],
-      },
-    };
-  } else {
-    return {
-      title: "Starknet Quest",
-      description:
-        "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      openGraph: {
-        title: "Starknet Quest - Accomplish quests to get unique NFTs.",
-        description:
-          "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: "Starknet Quest - Accomplish quests to get unique NFTs.",
-        description:
-          "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      },
-    };
+        openGraph: {
+          title: data.name,
+          description: data.desc,
+          images: [data.img_url],
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: data.name,
+          description: data.desc,
+          images: [data.img_url],
+        },
+      };
+    else return defaultMetatags;
+  } catch (error) {
+    return defaultMetatags;
   }
 }
 

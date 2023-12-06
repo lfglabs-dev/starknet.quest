@@ -63,7 +63,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
-  const url = window.location;
 
   const questId = quest.id.toString();
   const [participants, setParticipants] = useState({
@@ -298,6 +297,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   useEffect(() => {
     // get `error_msg` from url
     if (typeof window !== "undefined") {
+      const url = window.location;
       // Your client-side code that uses window goes here
       const urlParams = new URLSearchParams(url.search);
       const error_msg = urlParams.get("error_msg");
@@ -305,7 +305,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         setCustomError(error_msg);
       }
     }
-  }, [url]);
+  }, []);
 
   return (
     <>
