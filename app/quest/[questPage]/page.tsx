@@ -26,13 +26,13 @@ export async function generateMetadata(
         openGraph: {
           title: data.name,
           description: data.desc,
-          images: [data.img_card],
+          images: [process.env.NEXT_PUBLIC_APP_LINK + data.img_card],
         },
         twitter: {
           card: "summary_large_image",
           title: data.name,
           description: data.desc,
-          images: [data.img_card],
+          images: [process.env.NEXT_PUBLIC_APP_LINK + data.img_card],
         },
       };
     } else return defaultMetatags;
@@ -57,7 +57,8 @@ export default function Page({ params }: QuestPageProps) {
     res,
     error_msg: errorMsg,
   } = params;
-  return (
-    <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
-  );
+  // return (
+  //   <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
+  // );
+  return <></>;
 }
