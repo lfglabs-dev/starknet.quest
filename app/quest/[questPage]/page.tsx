@@ -2,7 +2,6 @@ import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Quest from "./quest";
 import { fetchQuestData } from "../../../services/questService";
-import { defaultMetatags } from "../../../constants/metatags";
 
 type Props = {
   params: { questPage: string };
