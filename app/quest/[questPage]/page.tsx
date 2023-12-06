@@ -9,36 +9,36 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const questId = params.questPage;
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const questId = params.questPage;
 
-  try {
-    const data = await fetchQuestData(questId);
+//   try {
+//     const data = await fetchQuestData(questId);
 
-    if (data?.name) {
-      return {
-        title: data.name,
-        description: data.desc,
-        openGraph: {
-          title: data.name,
-          description: data.desc,
-          images: [data.img_card],
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: data.name,
-          description: data.desc,
-          images: [data.img_card],
-        },
-      };
-    } else return defaultMetatags;
-  } catch (error) {
-    return defaultMetatags;
-  }
-}
+//     if (data?.name) {
+//       return {
+//         title: data.name,
+//         description: data.desc,
+//         openGraph: {
+//           title: data.name,
+//           description: data.desc,
+//           images: [data.img_card],
+//         },
+//         twitter: {
+//           card: "summary_large_image",
+//           title: data.name,
+//           description: data.desc,
+//           images: [data.img_card],
+//         },
+//       };
+//     } else return defaultMetatags;
+//   } catch (error) {
+//     return defaultMetatags;
+//   }
+// }
 
 type QuestPageProps = {
   params: {
