@@ -4,6 +4,7 @@ import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "../utils/feltService";
+import { fetchQuestCategoryData } from "../services/questService";
 
 interface QuestsConfig {
   quests: QuestDocument[];
@@ -42,25 +43,49 @@ export const QuestsContextProvider = ({
   const { address } = useAccount();
 
   useMemo(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quests`)
-      .then((response) => response.json())
-      .then((data: GetQuestsRes) => {
-        if ((data as QueryError).error) return;
-        const q = Object.values(data).flat();
-        setCategories(
-          Object.keys(data).map((key) => ({
+    (async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_LINK}/get_quests`
+      );
+      const data: GetQuestsRes = await response.json();
+      if ((data as QueryError).error) return;
+
+      const q = Object.values(data).flat();
+
+      const categoriesWithImages = await Promise.all(
+        Object.keys(data).map(async (key) => {
+          const img = await (async () => {
+            try {
+              // If a category img is defined in quest_categories use it
+              const questData = await fetchQuestCategoryData(key);
+              return questData.img_url;
+            } catch (error) {
+              // else use img from first quest in the category
+              return q.filter((quest) => quest.category === key)[0].img_card;
+            }
+          })();
+          const questNumber = q.filter(
+            (quest) => quest.category === key
+          ).length;
+          const quests = q.filter((quest) => quest.category === key);
+
+          return {
             name: key,
-            img: q.filter((quest) => quest.category === key)[0].img_card,
-            questNumber: q.filter((quest) => quest.category === key).length,
-            quests: q.filter((quest) => quest.category === key),
-          }))
-        );
-        setQuests(q);
-        const notExpired = q.filter((quest) => !quest.expired);
-        setFeaturedQuest(
-          notExpired.length >= 1 ? notExpired[notExpired.length - 1] : undefined
-        );
-      });
+            img,
+            questNumber,
+            quests,
+          };
+        })
+      );
+
+      setCategories(categoriesWithImages);
+      setQuests(q);
+
+      const notExpired = q.filter((quest) => !quest.expired);
+      setFeaturedQuest(
+        notExpired.length >= 1 ? notExpired[notExpired.length - 1] : undefined
+      );
+    })();
   }, []);
 
   useMemo(() => {

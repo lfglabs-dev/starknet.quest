@@ -12,9 +12,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const categoryName = params.category;
-  const data = await fetchQuestCategoryData(categoryName);
 
-  if (data?.name) {
+  try {
+    const data = await fetchQuestCategoryData(categoryName);
     return {
       title: data.name,
       description: data.desc,
@@ -30,7 +30,7 @@ export async function generateMetadata(
         images: [data.img_url],
       },
     };
-  } else {
+  } catch (error) {
     return {
       title: "Starknet Quest",
       description:
