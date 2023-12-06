@@ -15,52 +15,29 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const questId = params.questPage;
 
-  const data = await fetchQuestData(questId);
-  if (data) {
-    return {
-      title: data.name,
-      description: data.desc,
-      // metadataBase: new URL(process.env.NEXT_PUBLIC_APP_LINK as string),
-      openGraph: {
+  try {
+    const data = await fetchQuestData(questId);
+
+    if (data?.name) {
+      return {
         title: data.name,
         description: data.desc,
-        images: [data.img_card],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: data.name,
-        description: data.desc,
-        images: [data.img_card],
-      },
-    };
-  } else {
+        openGraph: {
+          title: data.name,
+          description: data.desc,
+          images: [data.img_card],
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: data.name,
+          description: data.desc,
+          images: [data.img_card],
+        },
+      };
+    } else return defaultMetatags;
+  } catch (error) {
     return defaultMetatags;
   }
-
-  // try {
-  //   const data = await fetchQuestData(questId);
-
-  //   if (data?.name) {
-  //     return {
-  //       title: data.name,
-  //       description: data.desc,
-  //       // metadataBase: new URL(process.env.NEXT_PUBLIC_APP_LINK as string),
-  //       openGraph: {
-  //         title: data.name,
-  //         description: data.desc,
-  //         images: [data.img_card],
-  //       },
-  //       twitter: {
-  //         card: "summary_large_image",
-  //         title: data.name,
-  //         description: data.desc,
-  //         images: [data.img_card],
-  //       },
-  //     };
-  //   } else return defaultMetatags;
-  // } catch (error) {
-  //   return defaultMetatags;
-  // }
 }
 
 type QuestPageProps = {
@@ -79,8 +56,7 @@ export default function Page({ params }: QuestPageProps) {
     res,
     error_msg: errorMsg,
   } = params;
-  // return (
-  //   <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
-  // );
-  return <></>;
+  return (
+    <Quest questId={questId} taskId={taskId} res={res} errorMsg={errorMsg} />
+  );
 }

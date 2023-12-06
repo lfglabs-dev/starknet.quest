@@ -9,11 +9,7 @@ export async function fetchQuestData(questId: string) {
     `${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`
   );
   const data: QuestDocument | QueryError = await response.json();
-  if (data && typeof data === "object" && "name" in data) {
-    return data as QuestDocument;
-  }
-
-  return undefined;
+  return data as QuestDocument;
 }
 
 export async function fetchQuestCategoryData(name: string) {
