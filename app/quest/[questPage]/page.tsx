@@ -1,50 +1,42 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Quest from "./quest";
 import { fetchQuestData } from "../../../services/questService";
+import { defaultMetatags } from "../../../constants/metatags";
 
 type Props = {
   params: { questPage: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const questId = params.questPage;
-  const data = await fetchQuestData(questId);
 
-  if (data?.name) {
-    return {
-      title: data.name,
-      description: data.desc,
-      openGraph: {
+  try {
+    const data = await fetchQuestData(questId);
+
+    if (data?.name) {
+      return {
         title: data.name,
         description: data.desc,
-        images: [data.img_card],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: data.name,
-        description: data.desc,
-        images: [data.img_card],
-      },
-    };
-  } else {
-    return {
-      title: "Starknet Quest",
-      description:
-        "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      openGraph: {
-        title: "Starknet Quest - Accomplish quests to get unique NFTs.",
-        description:
-          "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: "Starknet Quest - Accomplish quests to get unique NFTs.",
-        description:
-          "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
-      },
-    };
+        openGraph: {
+          title: data.name,
+          description: data.desc,
+          images: [data.img_card],
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: data.name,
+          description: data.desc,
+          images: [data.img_card],
+        },
+      };
+    } else return defaultMetatags;
+  } catch (error) {
+    return defaultMetatags;
   }
 }
 

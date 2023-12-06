@@ -1,4 +1,5 @@
-import React, { Metadata, Viewport } from "next";
+import React from "next";
+import type { Metadata, Viewport } from "next";
 import { Providers } from "./provider";
 import "../styles/globals.css";
 import Navbar from "../components/UI/navbar";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "Starknet Quest",
   description:
     "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_LINK as string),
   openGraph: {
     title: "Starknet Quest - Accomplish quests to get unique NFTs.",
     description:
