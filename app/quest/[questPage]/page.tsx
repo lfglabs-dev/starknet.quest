@@ -26,13 +26,13 @@ export async function generateMetadata(
         openGraph: {
           title: data.name,
           description: data.desc,
-          images: [process.env.NEXT_PUBLIC_APP_LINK + data.img_card],
+          images: [data.img_card],
         },
         twitter: {
           card: "summary_large_image",
           title: data.name,
           description: data.desc,
-          images: [process.env.NEXT_PUBLIC_APP_LINK + data.img_card],
+          images: [data.img_card],
         },
       };
     } else return defaultMetatags;

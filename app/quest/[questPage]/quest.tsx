@@ -96,7 +96,8 @@ const Quest: FunctionComponent<QuestPageProps> = ({
               banner="/visuals/profile.webp"
               description="To access Starknet Quest you need a Root Starknet domain (not a subdomain like .braavos.stark or .xplorer.stark)."
               buttonName="Get a Starknet Domain"
-              onClick={() => window.open(starknetIdAppLink)}
+              // onClick={() => window.open(starknetIdAppLink)}
+              onClick={() => console.log("test")}
               onClose={() => setShowDomainPopup(false)}
             />
           ) : (
@@ -105,7 +106,8 @@ const Quest: FunctionComponent<QuestPageProps> = ({
               banner="/visuals/profile.webp"
               description="To access Starknet Quest, you must own a Starknet domain. It's your passport to the Starknet ecosystem. Get yours now."
               buttonName="Get a Starknet Domain"
-              onClick={() => window.open(starknetIdAppLink)}
+              // onClick={() => window.open(starknetIdAppLink)}
+              onClick={() => console.log("test")}
               onClose={() => setShowDomainPopup(false)}
             />
           ))}
