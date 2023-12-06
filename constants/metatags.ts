@@ -6,6 +6,7 @@ export const defaultMetatags = {
     title: "Starknet Quest - Accomplish quests to get unique NFTs.",
     description:
       "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
+    images: ["/visuals/starknetquest.webp"],
   },
   twitter: {
     card: "summary_large_image",
@@ -13,4 +14,5 @@ export const defaultMetatags = {
     description:
       "Starknet Quest help protocols attract and retain users by creating gamified quest experiences on Starknet.",
   },
+  images: ["/visuals/starknetquest.webp"],
 };
