@@ -22,6 +22,7 @@ export async function generateMetadata(
       return {
         title: data.name,
         description: data.desc,
+        metadataBase: new URL(process.env.NEXT_PUBLIC_APP_LINK as string),
         openGraph: {
           title: data.name,
           description: data.desc,
