@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Quest from "./quest";
 import { fetchQuestData } from "../../../services/questService";
@@ -9,7 +9,11 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props,
+  // even if not used we need to keep parent for the meta tags image to work
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const questId = params.questPage;
 
   try {
