@@ -11,7 +11,6 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  // even if not used we need to keep parent for the meta tags image to work
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const questId = params.questPage;
