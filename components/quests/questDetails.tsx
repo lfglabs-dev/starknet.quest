@@ -63,7 +63,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
-  // const url = window.location;
 
   const questId = quest.id.toString();
   const [participants, setParticipants] = useState({
