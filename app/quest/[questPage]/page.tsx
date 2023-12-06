@@ -6,6 +6,7 @@ import { defaultMetatags } from "../../../constants/metatags";
 
 type Props = {
   params: { questPage: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
