@@ -62,16 +62,20 @@
           },
           {
             "name": "boost_id",
-            "type": "core::felt252"
+            "type": "core::integer::u128"
           }
         ],
         "outputs": [],
         "state_mutability": "external"
       },
       {
-        "name": "fill",
+        "name": "create_boost",
         "type": "function",
         "inputs": [
+          {
+            "name": "boost_id",
+            "type": "core::integer::u128"
+          },
           {
             "name": "amount",
             "type": "core::integer::u256"
@@ -82,7 +86,7 @@
           }
         ],
         "outputs": [],
-        "state_mutability": "view"
+        "state_mutability": "external"
       },
       {
         "name": "withdraw_all",
@@ -94,7 +98,7 @@
           }
         ],
         "outputs": [],
-        "state_mutability": "view"
+        "state_mutability": "external"
       },
       {
         "name": "upgrade",
@@ -147,6 +151,28 @@
     ]
   },
   {
+    "kind": "struct",
+    "name": "quest_boost_contract::main::QuestBoost::on_fill",
+    "type": "event",
+    "members": [
+      {
+        "kind": "data",
+        "name": "token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "kind": "data",
+        "name": "amount",
+        "type": "core::integer::u256"
+      },
+      {
+        "kind": "key",
+        "name": "boost_id",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
     "kind": "enum",
     "name": "quest_boost_contract::main::QuestBoost::Event",
     "type": "event",
@@ -155,6 +181,11 @@
         "kind": "nested",
         "name": "on_claim",
         "type": "quest_boost_contract::main::QuestBoost::on_claim"
+      },
+      {
+        "kind": "nested",
+        "name": "on_fill",
+        "type": "quest_boost_contract::main::QuestBoost::on_fill"
       }
     ]
   }

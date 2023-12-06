@@ -88,3 +88,14 @@ export const getQuestParticipants = async (id: number) => {
     console.log(err);
   }
 };
+
+export const getQuestBoostClaimParams = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/boost/get_claim_params?boost_id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

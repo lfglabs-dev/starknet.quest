@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Abi, Contract, shortString } from "starknet";
-import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
+import { Call, CallData, CallDetails, shortString } from "starknet";
 import {
   getBoostById,
+  getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
 } from "../../../services/apiService";
@@ -13,10 +13,9 @@ import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
 import Timer from "../../../components/quests/timer";
-import { useAccount } from "@starknet-react/core";
-import { hexToDecimal } from "../../../utils/feltService";
+import { useAccount, useContractWrite } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
-import quest_boost_abi from "../../../abi/quest_boost_abi.json";
+import boostContractCalls from "../../../utils/calldata/boost_contract_claim";
 
 type BoostQuestPageProps = {
   params: {
@@ -28,10 +27,11 @@ export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
   const { address } = useAccount();
   const { boostId } = params;
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [quests, setQuests] = useState([] as QuestDocument[]);
   const [boost, setBoost] = useState({} as Boost);
   const [participants, setParticipants] = useState<number>();
+  const [calls, setCalls] = useState<CallDetails>({} as CallDetails);
+  const [sign, setSign] = useState<string[]>([]); // [r, s]
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -57,34 +57,55 @@ export default function Page({ params }: BoostQuestPageProps) {
     fetchPageData();
   }, []);
 
-  const contract = useMemo(() => {
-    return new Contract(
-      quest_boost_abi as Abi,
-      process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT as string,
-      starknetIdNavigator?.provider
-    );
-  }, [starknetIdNavigator?.provider]);
-
-  const callContract = async (
-    boost: Boost,
-    signature: string[]
-  ): Promise<void> => {
+  const fetchBoostClaimParams = async () => {
     try {
-      const res = await contract.call("claim", [
-        boost.amount,
-        boost.token,
-        signature,
-        boost.id,
-      ]);
-      console.log({ res });
+      if (!boost?.id || !address) return;
+      const res = await getQuestBoostClaimParams(boost.id);
+      const formattedSign = [res?.r, res?.s];
+      return formattedSign;
     } catch (err) {
-      console.log({ err });
+      console.log(err);
     }
   };
 
-  // const handleClaimClick = async () => {
-  //   const contractAddress = "";
-  // };
+  const { account } = useAccount();
+
+  const handleClaimClick = async () => {
+    const signature = await fetchBoostClaimParams();
+    if (!signature) return;
+    setSign(signature);
+    const data = boostContractCalls.boostContractClaimData(
+      "729907108131179178523642421315218565005582159509924713194519001006014577955",
+      boost.id,
+      boost.amount,
+      boost.token,
+      signature
+    );
+    setCalls(data);
+    const a: any = window?.starknet.account ?? account;
+
+    const r = shortString
+      .splitLongString(signature[0])
+      .map((x) => shortString.encodeShortString(x));
+    const s = shortString
+      .splitLongString(signature[1])
+      .map((x) => shortString.encodeShortString(x));
+    const final = [...r, ...s];
+
+    a.execute({
+      contractAddress:
+        "2829610427144750824096768686098500331431538330898595342164254873766442064088",
+      entrypoint: "claim",
+      calldata: CallData.compile({
+        amount: boost.amount,
+        token: boost.token,
+        signature: final,
+        boost_id: boost.id,
+      }),
+    }).then((result: any) => {
+      console.log(result);
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -128,12 +149,13 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            disabled={boost.winner !== hexToDecimal(address)}
-            onClick={() => callContract(boost, "ayya")}
+            // disabled={boost.winner !== hexToDecimal(address)}
+            onClick={handleClaimClick}
           >
-            {boost.expiry < Date.now() || boost.winner === null
+            {/* {boost.expiry < Date.now() || boost.winner === null
               ? "Claim boost reward  🎉"
-              : "You’re not selected 🙁"}
+              : "You’re not selected 🙁"} */}
+            yay
           </Button>
         </div>
       </div>
