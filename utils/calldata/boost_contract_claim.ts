@@ -1,4 +1,5 @@
-import { CallDetails, shortString } from "starknet";
+import { CallDetails, cairo, shortString } from "starknet";
+import { decimalToHex } from "../feltService";
 
 function boostContractClaimData(
   contractAddress: string | undefined,
@@ -8,17 +9,16 @@ function boostContractClaimData(
   signatures: string[]
 ): CallDetails {
   if (!contractAddress) return {} as CallDetails;
-  const r = shortString
-    .splitLongString(signatures[0])
-    .map((x) => shortString.encodeShortString(x));
-  const s = shortString
-    .splitLongString(signatures[1])
-    .map((x) => shortString.encodeShortString(x));
-  const final = [...r, ...s];
   return {
     contractAddress,
     entrypoint: "claim",
-    calldata: [amount, token, final, boostId],
+    calldata: [
+      cairo.uint256(amount).low,
+      cairo.uint256(amount).high,
+      token,
+      boostId,
+      [decimalToHex(signatures[0]), decimalToHex(signatures[1])],
+    ],
   };
 }
 

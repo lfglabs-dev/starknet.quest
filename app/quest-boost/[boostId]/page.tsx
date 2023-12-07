@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Call, CallDetails, cairo } from "starknet";
+import { Call, CallDetails } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
+  updateQuestBoostClaimStatus,
 } from "../../../services/apiService";
 import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
@@ -16,6 +17,14 @@ import Timer from "../../../components/quests/timer";
 import { useAccount, useContractWrite } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
 import boostContractCalls from "../../../utils/calldata/boost_contract_claim";
+import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
+import { useNotificationManager } from "../../../hooks/useNotificationManager";
+import {
+  NotificationType,
+  TransactionType,
+} from "../../../constants/notifications";
+import { hexToDecimal } from "../../../utils/feltService";
+import { CDNImage } from "../../../components/cdn/image";
 
 type BoostQuestPageProps = {
   params: {
@@ -32,6 +41,8 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [participants, setParticipants] = useState<number>();
   const [calls, setCalls] = useState<CallDetails>({} as CallDetails);
   const [sign, setSign] = useState<string[]>([]); // [r, s]
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
+  const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -71,7 +82,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   useEffect(() => {
     if (!boost?.id || !(sign.length > 0)) return;
     const data = boostContractCalls.boostContractClaimData(
-      "729907108131179178523642421315218565005582159509924713194519001006014577955",
+      "1343893201514102212109781013771650193042157708799337461784895813565321227065",
       boost.id,
       boost.amount,
       boost.token,
@@ -81,25 +92,35 @@ export default function Page({ params }: BoostQuestPageProps) {
   }, [boost, sign]);
 
   //Contract
-  const { writeAsync: execute } = useContractWrite({ calls: [calls as Call] });
+  const {
+    data,
+    error,
+    writeAsync: execute,
+  } = useContractWrite({ calls: [calls as Call] });
+
+  useEffect(() => {
+    const postTransactionCalls = async (transaction_hash) => {
+      await updateQuestBoostClaimStatus(1, true);
+      addTransaction({
+        timestamp: Date.now(),
+        subtext: "Quest Boost Rewards",
+        type: NotificationType.TRANSACTION,
+        data: {
+          type: TransactionType.CLAIM_REWARDS,
+          hash: transaction_hash,
+          status: "pending",
+        },
+      });
+    };
+    if (data) {
+      postTransactionCalls(data?.transaction_hash);
+    }
+  }, [data, error]);
 
   const handleClaimClick = async () => {
     const signature = await fetchBoostClaimParams();
     if (!signature) return;
     setSign(signature);
-    // a.execute({
-    //   contractAddress:
-    //     "2829610427144750824096768686098500331431538330898595342164254873766442064088",
-    //   entrypoint: "claim",
-    //   calldata: CallData.compile({
-    //     amount: boost.amount,
-    //     token: boost.token,
-    //     signature: final,
-    //     boost_id: boost.id,
-    //   }),
-    // }).then((result: any) => {
-    //   console.log(result);
-    // });
   };
 
   useEffect(() => {
@@ -139,9 +160,18 @@ export default function Page({ params }: BoostQuestPageProps) {
       <div className={styles.claim_button_container}>
         <div className={styles.claim_button_text_content}>
           <p>Reward:</p>
-          <p className={styles.claim_button_text_highlight}>
-            {boost.amount} USDC
-          </p>
+          <div className="flex flex-row gap-2">
+            <p className={styles.claim_button_text_highlight}>
+              {boost.amount} USDC
+            </p>
+            <CDNImage
+              src={"/icons/usdc.svg"}
+              priority
+              width={32}
+              height={32}
+              alt="usdc icon"
+            />
+          </div>
           <p>among</p>
           <p className={styles.claim_button_text_highlight}>
             {participants} players
@@ -149,13 +179,12 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            // disabled={boost.winner !== hexToDecimal(address)}
+            disabled={boost.winner !== hexToDecimal(address)}
             onClick={handleClaimClick}
           >
-            {/* {boost.expiry < Date.now() || boost.winner === null
+            {boost.expiry < Date.now() || boost.winner === null
               ? "Claim boost reward  🎉"
-              : "You’re not selected 🙁"} */}
-            Claim
+              : "You’re not selected 🙁"}
           </Button>
         </div>
       </div>

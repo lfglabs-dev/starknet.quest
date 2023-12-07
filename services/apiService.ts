@@ -99,3 +99,17 @@ export const getQuestBoostClaimParams = async (id: number) => {
     console.log(err);
   }
 };
+
+export const updateQuestBoostClaimStatus = async (
+  id: number,
+  value: boolean
+) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/boost/update_claim_status?boost_id=${id}&status=${value}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

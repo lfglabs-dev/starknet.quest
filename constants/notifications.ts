@@ -4,6 +4,7 @@ export enum NotificationType {
 
 export enum TransactionType {
   MINT_NFT = "MINT_NFT",
+  CLAIM_REWARDS = "CLAIM_REWARDS",
 }
 
 export const notificationTitle: Record<
@@ -13,6 +14,11 @@ export const notificationTitle: Record<
   [TransactionType.MINT_NFT]: {
     pending: "Transaction pending...",
     success: "NFT received",
+    error: "Transaction failed",
+  },
+  [TransactionType.CLAIM_REWARDS]: {
+    pending: "Transaction pending...",
+    success: "Boost Received",
     error: "Transaction failed",
   },
 };
