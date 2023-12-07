@@ -155,7 +155,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             {/* {boost.expiry < Date.now() || boost.winner === null
               ? "Claim boost reward  🎉"
               : "You’re not selected 🙁"} */}
-            yay
+            Claim
           </Button>
         </div>
       </div>
