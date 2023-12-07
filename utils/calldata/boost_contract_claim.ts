@@ -1,4 +1,4 @@
-import { Call, CallDetails, shortString } from "starknet";
+import { CallDetails, shortString } from "starknet";
 
 function boostContractClaimData(
   contractAddress: string | undefined,
@@ -15,11 +15,15 @@ function boostContractClaimData(
     .splitLongString(signatures[1])
     .map((x) => shortString.encodeShortString(x));
   const final = [...r, ...s];
-
+  console.log({
+    contractAddress,
+    entrypoint: "claim",
+    calldata: [amount, token, final, boostId],
+  });
   return {
     contractAddress,
     entrypoint: "claim",
-    calldata: [amount, token, "0x2", final, boostId],
+    calldata: [amount, token, final, boostId],
   };
 }
 

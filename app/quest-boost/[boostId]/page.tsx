@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Call, CallData, CallDetails, shortString } from "starknet";
+import { Call, CallDetails } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -70,42 +70,44 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const { account } = useAccount();
 
-  const handleClaimClick = async () => {
-    const signature = await fetchBoostClaimParams();
-    if (!signature) return;
-    setSign(signature);
+  useEffect(() => {
+    if (!boost?.id || !(sign.length > 0)) return;
     const data = boostContractCalls.boostContractClaimData(
       "729907108131179178523642421315218565005582159509924713194519001006014577955",
       boost.id,
       boost.amount,
       boost.token,
-      signature
+      sign
     );
     setCalls(data);
-    const a: any = window?.starknet.account ?? account;
+  }, [boost, sign]);
 
-    const r = shortString
-      .splitLongString(signature[0])
-      .map((x) => shortString.encodeShortString(x));
-    const s = shortString
-      .splitLongString(signature[1])
-      .map((x) => shortString.encodeShortString(x));
-    const final = [...r, ...s];
+  //Contract
+  const { writeAsync: execute } = useContractWrite({ calls: [calls as Call] });
 
-    a.execute({
-      contractAddress:
-        "2829610427144750824096768686098500331431538330898595342164254873766442064088",
-      entrypoint: "claim",
-      calldata: CallData.compile({
-        amount: boost.amount,
-        token: boost.token,
-        signature: final,
-        boost_id: boost.id,
-      }),
-    }).then((result: any) => {
-      console.log(result);
-    });
+  const handleClaimClick = async () => {
+    const signature = await fetchBoostClaimParams();
+    if (!signature) return;
+    setSign(signature);
+    // a.execute({
+    //   contractAddress:
+    //     "2829610427144750824096768686098500331431538330898595342164254873766442064088",
+    //   entrypoint: "claim",
+    //   calldata: CallData.compile({
+    //     amount: boost.amount,
+    //     token: boost.token,
+    //     signature: final,
+    //     boost_id: boost.id,
+    //   }),
+    // }).then((result: any) => {
+    //   console.log(result);
+    // });
   };
+
+  useEffect(() => {
+    if (!sign) return;
+    execute();
+  }, [sign]);
 
   return (
     <div className={styles.container}>
