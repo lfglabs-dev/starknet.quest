@@ -99,7 +99,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   } = useContractWrite({ calls: [calls as Call] });
 
   useEffect(() => {
-    const postTransactionCalls = async (transaction_hash) => {
+    const postTransactionCalls = async (transaction_hash: string) => {
       await updateQuestBoostClaimStatus(1, true);
       addTransaction({
         timestamp: Date.now(),
