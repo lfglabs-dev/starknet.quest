@@ -22,10 +22,9 @@ export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
     return new StarknetIdNavigator(
       new Provider({
         rpc: {
-          // nodeUrl: `https://starknet-${
-          //   isTestnet ? "goerli" : "mainnet"
-          // }.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
-          nodeUrl: "https://rpc.starknet-testnet.lava.build",
+          nodeUrl: `https://starknet-${
+            isTestnet ? "goerli" : "mainnet"
+          }.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         },
       }),
       isTestnet
