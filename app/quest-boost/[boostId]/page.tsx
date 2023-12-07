@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Call, CallDetails } from "starknet";
+import { Call, CallDetails, cairo } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -68,8 +68,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
   };
 
-  const { account } = useAccount();
-
   useEffect(() => {
     if (!boost?.id || !(sign.length > 0)) return;
     const data = boostContractCalls.boostContractClaimData(
@@ -105,9 +103,9 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   useEffect(() => {
-    if (!sign) return;
+    if (!sign || Object.keys(calls).length === 0) return;
     execute();
-  }, [sign]);
+  }, [sign, calls]);
 
   return (
     <div className={styles.container}>
