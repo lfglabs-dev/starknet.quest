@@ -101,3 +101,11 @@
     /* Button shadow */
     box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.10);
 }
+
+
+@media screen and (max-width: 740px) {
+    .claim_button_container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
