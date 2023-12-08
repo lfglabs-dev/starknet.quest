@@ -90,13 +90,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     setCall(data);
   }, [boost, sign]);
 
-  // //Contract
-  // const {
-  //   data,
-  //   error,
-  //   writeAsync: execute,
-  // } = useContractWrite({ calls: [call as Call] });
-
   const handleClaimClick = async () => {
     const signature = await fetchBoostClaimParams();
     if (!signature) return;
@@ -122,7 +115,7 @@ export default function Page({ params }: BoostQuestPageProps) {
         signature: sign,
       });
 
-      const accountCall = await account.execute(
+      const { transaction_hash } = await account.execute(
         {
           contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
           entrypoint: "claim",
@@ -132,18 +125,18 @@ export default function Page({ params }: BoostQuestPageProps) {
         { maxFee: 900_000_000_000_000 }
       );
 
-      // addTransaction({
-      //   timestamp: Date.now(),
-      //   subtext: boost?.name ?? "Quest Boost Rewards",
-      //   type: NotificationType.TRANSACTION,
-      //   data: {
-      //     type: TransactionType.CLAIM_REWARDS,
-      //     hash: transaction_hash,
-      //     status: "pending",
-      //   },
-      // });
-
-      console.log({ accountCall });
+      if (transaction_hash) {
+        addTransaction({
+          timestamp: Date.now(),
+          subtext: boost?.name ?? "Quest Boost Rewards",
+          type: NotificationType.TRANSACTION,
+          data: {
+            type: TransactionType.CLAIM_REWARDS,
+            hash: transaction_hash,
+            status: "pending",
+          },
+        });
+      }
     };
 
     callContract();
