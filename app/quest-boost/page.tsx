@@ -43,12 +43,12 @@ export default function Page() {
             subTitleBefore={true}
             steps={[
               {
-                title: "Boost Your Chances",
+                title: "Complete Boosted Quests & Earn tokens",
                 subtitle: "01",
                 description:
-                  "When a quest is boosted, every completion automatically gives you a chance in our lottery. The more boosted quests you complete, the higher your chances of winning!",
+                  "When a quest is boosted, every completion automatically gives you a chance in our lottery to earn tokens. The more boosted quests you complete, the higher your chances of winning are!",
                 icon: "/icons/starknet.svg",
-                banner: "/visuals/partners/getYourStarkDomain.webp",
+                banner: "/visuals/boost/rocket.webp",
               },
               {
                 title: "Claim Your Piece of the Pie",
@@ -56,15 +56,15 @@ export default function Page() {
                 description:
                   "Once the quest is finished, check the quest's special page to see if you've won the lottery. If you have, claim your reward with just one click!",
                 icon: "/icons/crown.svg",
-                banner: "/visuals/partners/collectNFTsInStarknetQuest.webp",
+                banner: "/visuals/boost/coins.webp",
               },
               {
-                title: "Double Your Chances",
+                title: "Increase Your Chances",
                 subtitle: "03",
                 description:
-                  "Once the quest is finished, check the quest's special page to see if you've won the lottery. If you have, claim your reward with just one click!",
+                  "You're not limited to just one boost. If you complete several boosted quests, you multiply your chances in the lottery. Be adventurous and maximize your gains!",
                 icon: "/icons/verified.svg",
-                banner: "/visuals/partners/buildYourStarknetLand.webp",
+                banner: "/visuals/boost/leaf.webp",
               },
             ]}
           />

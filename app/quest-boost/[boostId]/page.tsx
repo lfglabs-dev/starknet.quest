@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
 import { Call, CallDetails } from "starknet";
 import {
@@ -17,7 +17,6 @@ import Timer from "../../../components/quests/timer";
 import { useAccount, useContractWrite } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
 import boostContractCalls from "../../../utils/calldata/boost_contract_claim";
-import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
 import { useNotificationManager } from "../../../hooks/useNotificationManager";
 import {
   NotificationType,
@@ -41,7 +40,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [participants, setParticipants] = useState<number>();
   const [calls, setCalls] = useState<CallDetails>({} as CallDetails);
   const [sign, setSign] = useState<string[]>([]); // [r, s]
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {

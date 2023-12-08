@@ -2,13 +2,12 @@ import { CallDetails, cairo, shortString } from "starknet";
 import { decimalToHex } from "../feltService";
 
 function boostContractClaimData(
-  contractAddress: string | undefined,
+  contractAddress: string,
   boostId: number,
   amount: number,
   token: string,
   signatures: string[]
 ): CallDetails {
-  if (!contractAddress) return {} as CallDetails;
   return {
     contractAddress,
     entrypoint: "claim",
