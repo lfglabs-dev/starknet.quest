@@ -1,8 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Call, CallDetails } from "starknet";
+import {
+  Abi,
+  Call,
+  CallData,
+  CallDetails,
+  Contract,
+  Provider,
+  uint256,
+} from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -24,6 +32,8 @@ import {
 } from "../../../constants/notifications";
 import { hexToDecimal } from "../../../utils/feltService";
 import { CDNImage } from "../../../components/cdn/image";
+import boost_contract_abi from "../../../abi/quest_boost_abi.json";
+import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
 
 type BoostQuestPageProps = {
   params: {
@@ -33,7 +43,7 @@ type BoostQuestPageProps = {
 
 export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
-  const { address } = useAccount();
+  const { address, account } = useAccount();
   const { boostId } = params;
   const [quests, setQuests] = useState<QuestDocument[]>([]);
   const [boost, setBoost] = useState<Boost>();
@@ -41,6 +51,15 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [call, setCall] = useState<CallDetails>();
   const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
+  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
+
+  const contract = useMemo(() => {
+    return new Contract(
+      boost_contract_abi as Abi,
+      process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT as string,
+      starknetIdNavigator?.provider as Provider
+    );
+  }, [starknetIdNavigator?.provider]);
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -125,12 +144,41 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   useEffect(() => {
     if (
+      !account ||
+      !boost ||
       sign[0].length === 0 ||
       sign[1].length === 0 ||
       (call && Object.keys(call).length === 0)
     )
       return;
-    execute();
+    // const data = boostContractCalls.boostContractClaimData(
+    //   hexToDecimal(process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT),
+    //   boost.id,
+    //   boost.amount,
+    //   boost.token,
+    //   sign
+    // );
+    const amount = uint256.bnToUint256(boost.amount);
+    const transferCallData = CallData.compile({
+      amount: amount,
+      token: boost.token,
+      boost_id: boost.id,
+      signature: sign,
+    });
+
+    const yay = account.execute(
+      {
+        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
+        entrypoint: "claim",
+        calldata: transferCallData,
+      },
+      undefined,
+      { maxFee: 900_000_000_000_000 }
+    );
+
+    console.log(yay);
+
+    // execute();
   }, [sign, call]);
 
   return (
