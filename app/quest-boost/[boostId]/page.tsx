@@ -1,22 +1,13 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import {
-  Abi,
-  Call,
-  CallData,
-  CallDetails,
-  Contract,
-  Provider,
-  uint256,
-} from "starknet";
+import { Call, CallData, CallDetails, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
-  updateQuestBoostClaimStatus,
 } from "../../../services/apiService";
 import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
@@ -32,8 +23,6 @@ import {
 } from "../../../constants/notifications";
 import { hexToDecimal } from "../../../utils/feltService";
 import { CDNImage } from "../../../components/cdn/image";
-import boost_contract_abi from "../../../abi/quest_boost_abi.json";
-import { StarknetIdJsContext } from "../../../context/StarknetIdJsProvider";
 
 type BoostQuestPageProps = {
   params: {
@@ -51,15 +40,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [call, setCall] = useState<CallDetails>();
   const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
-
-  const contract = useMemo(() => {
-    return new Contract(
-      boost_contract_abi as Abi,
-      process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT as string,
-      starknetIdNavigator?.provider as Provider
-    );
-  }, [starknetIdNavigator?.provider]);
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -110,31 +90,12 @@ export default function Page({ params }: BoostQuestPageProps) {
     setCall(data);
   }, [boost, sign]);
 
-  //Contract
-  const {
-    data,
-    error,
-    writeAsync: execute,
-  } = useContractWrite({ calls: [call as Call] });
-
-  useEffect(() => {
-    const postTransactionCalls = async (transaction_hash: string) => {
-      await updateQuestBoostClaimStatus(1, true);
-      addTransaction({
-        timestamp: Date.now(),
-        subtext: boost?.name ?? "Quest Boost Rewards",
-        type: NotificationType.TRANSACTION,
-        data: {
-          type: TransactionType.CLAIM_REWARDS,
-          hash: transaction_hash,
-          status: "pending",
-        },
-      });
-    };
-    if (data) {
-      postTransactionCalls(data?.transaction_hash);
-    }
-  }, [data, error]);
+  // //Contract
+  // const {
+  //   data,
+  //   error,
+  //   writeAsync: execute,
+  // } = useContractWrite({ calls: [call as Call] });
 
   const handleClaimClick = async () => {
     const signature = await fetchBoostClaimParams();
@@ -151,34 +112,41 @@ export default function Page({ params }: BoostQuestPageProps) {
       (call && Object.keys(call).length === 0)
     )
       return;
-    // const data = boostContractCalls.boostContractClaimData(
-    //   hexToDecimal(process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT),
-    //   boost.id,
-    //   boost.amount,
-    //   boost.token,
-    //   sign
-    // );
-    const amount = uint256.bnToUint256(boost.amount);
-    const transferCallData = CallData.compile({
-      amount: amount,
-      token: boost.token,
-      boost_id: boost.id,
-      signature: sign,
-    });
 
-    const yay = account.execute(
-      {
-        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
-        entrypoint: "claim",
-        calldata: transferCallData,
-      },
-      undefined,
-      { maxFee: 900_000_000_000_000 }
-    );
+    const callContract = async () => {
+      const amount = uint256.bnToUint256(boost.amount);
+      const claimCallData = CallData.compile({
+        amount: amount,
+        token: boost.token,
+        boost_id: boost.id,
+        signature: sign,
+      });
 
-    console.log(yay);
+      const accountCall = await account.execute(
+        {
+          contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
+          entrypoint: "claim",
+          calldata: claimCallData,
+        },
+        undefined,
+        { maxFee: 900_000_000_000_000 }
+      );
 
-    // execute();
+      // addTransaction({
+      //   timestamp: Date.now(),
+      //   subtext: boost?.name ?? "Quest Boost Rewards",
+      //   type: NotificationType.TRANSACTION,
+      //   data: {
+      //     type: TransactionType.CLAIM_REWARDS,
+      //     hash: transaction_hash,
+      //     status: "pending",
+      //   },
+      // });
+
+      console.log({ accountCall });
+    };
+
+    callContract();
   }, [sign, call]);
 
   return (
