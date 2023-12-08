@@ -82,7 +82,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   useEffect(() => {
     if (!boost?.id || !(sign.length > 0)) return;
     const data = boostContractCalls.boostContractClaimData(
-      "987003487301472589432949334478892780719648154211201395724682185435684126372",
+      hexToDecimal(process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT),
       boost.id,
       boost.amount,
       boost.token,
