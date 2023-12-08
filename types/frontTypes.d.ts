@@ -161,7 +161,7 @@ type ProfileCard = {
   soloBuildings: StarkscanNftProps[];
 };
 
-type Signature = Array<string>(2);
+type Signature = [string, string];
 
 type UserAchievement = {
   name: string;
