@@ -33,18 +33,6 @@
     "type": "interface",
     "items": [
       {
-        "name": "set_admin",
-        "type": "function",
-        "inputs": [
-          {
-            "name": "new_admin",
-            "type": "core::starknet::contract_address::ContractAddress"
-          }
-        ],
-        "outputs": [],
-        "state_mutability": "external"
-      },
-      {
         "name": "claim",
         "type": "function",
         "inputs": [
@@ -57,12 +45,12 @@
             "type": "core::starknet::contract_address::ContractAddress"
           },
           {
-            "name": "signature",
-            "type": "core::array::Span::<core::felt252>"
-          },
-          {
             "name": "boost_id",
             "type": "core::integer::u128"
+          },
+          {
+            "name": "signature",
+            "type": "core::array::Span::<core::felt252>"
           }
         ],
         "outputs": [],
@@ -111,6 +99,63 @@
         ],
         "outputs": [],
         "state_mutability": "external"
+      },
+      {
+        "name": "get_balance",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "name": "OwnableImpl",
+    "type": "impl",
+    "interface_name": "openzeppelin::access::ownable::interface::IOwnable"
+  },
+  {
+    "name": "openzeppelin::access::ownable::interface::IOwnable",
+    "type": "interface",
+    "items": [
+      {
+        "name": "owner",
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+          {
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "name": "transfer_ownership",
+        "type": "function",
+        "inputs": [
+          {
+            "name": "new_owner",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "name": "renounce_ownership",
+        "type": "function",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "external"
       }
     ]
   },
@@ -152,7 +197,7 @@
   },
   {
     "kind": "struct",
-    "name": "quest_boost_contract::main::QuestBoost::on_fill",
+    "name": "quest_boost_contract::main::QuestBoost::on_boost_created",
     "type": "event",
     "members": [
       {
@@ -173,19 +218,82 @@
     ]
   },
   {
+    "kind": "struct",
+    "name": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+    "type": "event",
+    "members": [
+      {
+        "kind": "data",
+        "name": "previous_owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "kind": "data",
+        "name": "new_owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "kind": "enum",
+    "name": "openzeppelin::access::ownable::ownable::OwnableComponent::Event",
+    "type": "event",
+    "variants": [
+      {
+        "kind": "nested",
+        "name": "OwnershipTransferred",
+        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferred"
+      }
+    ]
+  },
+  {
+    "kind": "struct",
+    "name": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Upgraded",
+    "type": "event",
+    "members": [
+      {
+        "kind": "data",
+        "name": "class_hash",
+        "type": "core::starknet::class_hash::ClassHash"
+      }
+    ]
+  },
+  {
+    "kind": "enum",
+    "name": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Event",
+    "type": "event",
+    "variants": [
+      {
+        "kind": "nested",
+        "name": "Upgraded",
+        "type": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Upgraded"
+      }
+    ]
+  },
+  {
     "kind": "enum",
     "name": "quest_boost_contract::main::QuestBoost::Event",
     "type": "event",
     "variants": [
       {
         "kind": "nested",
-        "name": "on_claim",
+        "name": "OnClaim",
         "type": "quest_boost_contract::main::QuestBoost::on_claim"
       },
       {
         "kind": "nested",
-        "name": "on_fill",
-        "type": "quest_boost_contract::main::QuestBoost::on_fill"
+        "name": "OnBoostCreated",
+        "type": "quest_boost_contract::main::QuestBoost::on_boost_created"
+      },
+      {
+        "kind": "flat",
+        "name": "OwnableEvent",
+        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::Event"
+      },
+      {
+        "kind": "flat",
+        "name": "UpgradeableEvent",
+        "type": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Event"
       }
     ]
   }
