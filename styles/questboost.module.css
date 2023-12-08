@@ -69,10 +69,11 @@
 }
 
 .claim_button_container {
-    margin-top: 2rem;
+    margin: 2rem auto;
     display: flex;
     padding: 1.5rem;
     width: 100%;
+    max-width: 1000px;
     justify-content: space-between;
     align-items: center;
     border-radius: 0.5rem;

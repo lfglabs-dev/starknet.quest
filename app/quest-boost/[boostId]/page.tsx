@@ -182,9 +182,9 @@ export default function Page({ params }: BoostQuestPageProps) {
             disabled={boost.winner !== hexToDecimal(address)}
             onClick={handleClaimClick}
           >
-            {boost.expiry < Date.now() || boost.winner === null
-              ? "Claim boost reward  🎉"
-              : "You’re not selected 🙁"}
+            {boost.winner === null
+              ? "You’re not selected 🙁"
+              : "Claim boost reward 🎉"}
           </Button>
         </div>
       </div>
