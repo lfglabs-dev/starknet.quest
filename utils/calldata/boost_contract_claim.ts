@@ -1,4 +1,4 @@
-import { CallDetails, cairo, shortString } from "starknet";
+import { Call, cairo } from "starknet";
 import { decimalToHex } from "../feltService";
 
 function boostContractClaimData(
@@ -7,7 +7,7 @@ function boostContractClaimData(
   amount: number,
   token: string,
   signatures: string[]
-): CallDetails {
+): Call {
   return {
     contractAddress,
     entrypoint: "claim",

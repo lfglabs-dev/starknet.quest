@@ -12,7 +12,7 @@ type QuestCategoriesProps = {
 const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   categories,
 }) => {
-  const [boosts, setBoosts] = useState([] as Boost[]);
+  const [boosts, setBoosts] = useState<Boost[]>([]);
 
   const fetchBoosts = async () => {
     try {

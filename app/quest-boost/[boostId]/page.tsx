@@ -35,11 +35,11 @@ export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
   const { address } = useAccount();
   const { boostId } = params;
-  const [quests, setQuests] = useState([] as QuestDocument[]);
-  const [boost, setBoost] = useState({} as Boost);
+  const [quests, setQuests] = useState<QuestDocument[]>([]);
+  const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
-  const [calls, setCalls] = useState<CallDetails>({} as CallDetails);
-  const [sign, setSign] = useState<string[]>([]); // [r, s]
+  const [call, setCall] = useState<CallDetails>();
+  const [sign, setSign] = useState<Signature>([]);
   const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
@@ -86,7 +86,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       boost.token,
       sign
     );
-    setCalls(data);
+    setCall(data);
   }, [boost, sign]);
 
   //Contract
@@ -94,14 +94,14 @@ export default function Page({ params }: BoostQuestPageProps) {
     data,
     error,
     writeAsync: execute,
-  } = useContractWrite({ calls: [calls as Call] });
+  } = useContractWrite({ calls: [call as Call] });
 
   useEffect(() => {
     const postTransactionCalls = async (transaction_hash: string) => {
       await updateQuestBoostClaimStatus(1, true);
       addTransaction({
         timestamp: Date.now(),
-        subtext: "Quest Boost Rewards",
+        subtext: boost?.name ?? "Quest Boost Rewards",
         type: NotificationType.TRANSACTION,
         data: {
           type: TransactionType.CLAIM_REWARDS,
@@ -122,16 +122,16 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   useEffect(() => {
-    if (!sign || Object.keys(calls).length === 0) return;
+    if (!sign || (call && Object.keys(call).length === 0)) return;
     execute();
-  }, [sign, calls]);
+  }, [sign, call]);
 
   return (
     <div className={styles.container}>
       <div className="flex flex-col">
         <h1 className={styles.title}>{boost?.name}</h1>
-        {boost.expiry ? (
-          <Timer fixed={false} expiry={Number(boost.expiry)} />
+        {boost?.expiry ? (
+          <Timer fixed={false} expiry={Number(boost?.expiry)} />
         ) : null}
       </div>
 
@@ -160,7 +160,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           <p>Reward:</p>
           <div className="flex flex-row gap-2">
             <p className={styles.claim_button_text_highlight}>
-              {boost.amount} USDC
+              {boost?.amount} USDC
             </p>
             <CDNImage
               src={"/icons/usdc.svg"}
@@ -177,14 +177,16 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            disabled={boost.winner !== hexToDecimal(address)}
+            disabled={boost?.winner !== hexToDecimal(address)}
             onClick={handleClaimClick}
           >
-            {boost.winner === hexToDecimal(address)
+            {boost?.winner === hexToDecimal(address)
               ? "Claim boost reward 🎉 "
-              : boost.expiry > Date.now()
-              ? "Claim boost reward 🎉 "
-              : "You’re not selected 🙁"}
+              : boost?.expiry
+              ? boost?.expiry > Date.now()
+                ? "Claim boost reward 🎉 "
+                : "You’re not selected 🙁"
+              : "Claim boost reward 🎉 "}
           </Button>
         </div>
       </div>

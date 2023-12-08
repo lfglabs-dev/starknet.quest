@@ -9,7 +9,7 @@ import Steps from "../../components/UI/steps/steps";
 import { getBoosts } from "../../services/apiService";
 
 export default function Page() {
-  const [boosts, setBoosts] = useState([] as Boost[]);
+  const [boosts, setBoosts] = useState<Boost[]>([]);
 
   const fetchBoosts = async () => {
     try {

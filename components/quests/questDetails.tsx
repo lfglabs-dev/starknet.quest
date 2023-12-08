@@ -9,7 +9,7 @@ import styles from "../../styles/quests.module.css";
 import Task from "./task";
 import Reward from "./reward";
 import quests_nft_abi from "../../abi/quests_nft_abi.json";
-import { useAccount, useContract, useProvider } from "@starknet-react/core";
+import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "../../utils/feltService";
 import {
   NFTItem,
