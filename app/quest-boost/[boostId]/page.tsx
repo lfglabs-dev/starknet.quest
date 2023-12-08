@@ -124,7 +124,12 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   useEffect(() => {
-    if (!sign || (call && Object.keys(call).length === 0)) return;
+    if (
+      sign[0].length === 0 ||
+      sign[1].length === 0 ||
+      (call && Object.keys(call).length === 0)
+    )
+      return;
     execute();
   }, [sign, call]);
 
