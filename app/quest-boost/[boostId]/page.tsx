@@ -39,7 +39,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
   const [call, setCall] = useState<CallDetails>();
-  const [sign, setSign] = useState<Signature>([]);
+  const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
@@ -66,14 +66,16 @@ export default function Page({ params }: BoostQuestPageProps) {
     fetchPageData();
   }, []);
 
-  const fetchBoostClaimParams = async () => {
+  const fetchBoostClaimParams = async (): Promise<Signature> => {
+    let formattedSign: Signature = ["", ""];
     try {
-      if (!boost?.id || !address) return;
+      if (!boost?.id || !address) return formattedSign;
       const res = await getQuestBoostClaimParams(boost.id);
-      const formattedSign = [res?.r, res?.s];
+      formattedSign = [res?.r, res?.s];
       return formattedSign;
     } catch (err) {
       console.log(err);
+      return formattedSign;
     }
   };
 
