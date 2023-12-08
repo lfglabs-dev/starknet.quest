@@ -33,18 +33,17 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
               alt="usdc icon"
             />
           </div>
-        </div>
-        {boost.expiry > Date.now() ? null : (
-          <div
-            className={`flex mt-2 mb-1 items-center 
-         opacity-40`}
-          >
-            <div className={styles.issuer}>
-              <p className="text-white mr-2">Expired</p>
-              <UnavailableIcon width="24" color="#D32F2F" />
-            </div>
+          <div className="flex w-full">
+            {boost.expiry < Date.now() ? null : (
+              <div className="flex items-center opacity-40">
+                <div className={styles.issuer}>
+                  <p className="text-white mr-2">Expired</p>
+                  <UnavailableIcon width="24" color="#D32F2F" />
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </Link>
   );
