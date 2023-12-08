@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Call, CallData, CallDetails, uint256 } from "starknet";
+import { Abi, CallData, CallDetails, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -13,7 +13,7 @@ import Quest from "../../../components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
 import Timer from "../../../components/quests/timer";
-import { useAccount, useContractWrite } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
 import boostContractCalls from "../../../utils/calldata/boost_contract_claim";
 import { useNotificationManager } from "../../../hooks/useNotificationManager";
@@ -23,6 +23,7 @@ import {
 } from "../../../constants/notifications";
 import { hexToDecimal } from "../../../utils/feltService";
 import { CDNImage } from "../../../components/cdn/image";
+import BOOST_CONTRACT_ABI from "../../../abi/quest_boost_abi.json";
 
 type BoostQuestPageProps = {
   params: {
@@ -121,7 +122,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           entrypoint: "claim",
           calldata: claimCallData,
         },
-        undefined,
+        BOOST_CONTRACT_ABI as Abi,
         { maxFee: 900_000_000_000_000 }
       );
 
