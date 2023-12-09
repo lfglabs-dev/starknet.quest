@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Abi, CallData, CallDetails, uint256 } from "starknet";
+import { Abi, CallData, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -15,7 +15,6 @@ import { QuestDocument } from "../../../types/backTypes";
 import Timer from "../../../components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
-import boostContractCalls from "../../../utils/calldata/boost_contract_claim";
 import { useNotificationManager } from "../../../hooks/useNotificationManager";
 import {
   NotificationType,
@@ -38,7 +37,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [quests, setQuests] = useState<QuestDocument[]>([]);
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
-  const [call, setCall] = useState<CallDetails>();
   const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
 
@@ -79,18 +77,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
   };
 
-  useEffect(() => {
-    if (!boost?.id || !(sign.length > 0)) return;
-    const data = boostContractCalls.boostContractClaimData(
-      hexToDecimal(process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT),
-      boost.id,
-      boost.amount,
-      boost.token,
-      sign
-    );
-    setCall(data);
-  }, [boost, sign]);
-
   const handleClaimClick = async () => {
     const signature = await fetchBoostClaimParams();
     if (!signature) return;
@@ -98,13 +84,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   useEffect(() => {
-    if (
-      !account ||
-      !boost ||
-      sign[0].length === 0 ||
-      sign[1].length === 0 ||
-      (call && Object.keys(call).length === 0)
-    )
+    if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
       return;
 
     const callContract = async () => {
@@ -141,7 +121,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     };
 
     callContract();
-  }, [sign, call]);
+  }, [sign]);
 
   return (
     <div className={styles.container}>
