@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { Abi, CallData, uint256 } from "starknet";
+import { CallData, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
@@ -22,7 +22,6 @@ import {
 } from "../../../constants/notifications";
 import { hexToDecimal } from "../../../utils/feltService";
 import { CDNImage } from "../../../components/cdn/image";
-import BOOST_CONTRACT_ABI from "../../../abi/quest_boost_abi.json";
 
 type BoostQuestPageProps = {
   params: {
@@ -102,8 +101,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           entrypoint: "claim",
           calldata: claimCallData,
         },
-        undefined,
-        { maxFee: 900_000_000_000_000 }
+        undefined
       );
 
       if (transaction_hash) {
@@ -177,13 +175,15 @@ export default function Page({ params }: BoostQuestPageProps) {
             disabled={boost?.winner !== hexToDecimal(address)}
             onClick={handleClaimClick}
           >
-            {boost?.winner === hexToDecimal(address)
-              ? "Claim boost reward 🎉 "
-              : boost?.expiry
-              ? boost?.expiry > Date.now()
-                ? "Claim boost reward 🎉 "
-                : "You’re not selected 🙁"
-              : "Claim boost reward 🎉 "}
+            {(() => {
+              if (boost?.winner === hexToDecimal(address)) {
+                return "Claim boost reward 🎉 ";
+              } else if (boost && boost?.expiry > Date.now()) {
+                return "Boost has not ended ⌛";
+              } else {
+                return "You’re not selected 🙁";
+              }
+            })()}
           </Button>
         </div>
       </div>
