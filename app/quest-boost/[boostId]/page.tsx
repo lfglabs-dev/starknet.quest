@@ -172,11 +172,13 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            disabled={boost?.winner !== hexToDecimal(address)}
+            disabled={boost?.claimed || boost?.winner !== hexToDecimal(address)}
             onClick={handleClaimClick}
           >
             {(() => {
-              if (boost?.winner === hexToDecimal(address)) {
+              if (boost?.claimed) {
+                return "Claimed ✅";
+              } else if (boost?.winner === hexToDecimal(address)) {
                 return "Claim boost reward 🎉 ";
               } else if (boost && boost?.expiry > Date.now()) {
                 return "Boost has not ended ⌛";
