@@ -102,7 +102,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           entrypoint: "claim",
           calldata: claimCallData,
         },
-        BOOST_CONTRACT_ABI as Abi,
+        undefined,
         { maxFee: 900_000_000_000_000 }
       );
 
