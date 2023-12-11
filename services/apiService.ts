@@ -50,3 +50,66 @@ export const getCompletedQuestsOfUser = async (address: string) => {
     console.log(err);
   }
 };
+
+export const getBoosts = async () => {
+  try {
+    const response = await fetch(`${baseurl}/boost/get_boosts`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getQuestsInBoost = async (id: string) => {
+  try {
+    const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getBoostById = async (id: string) => {
+  try {
+    const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getQuestParticipants = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/get_quest_participants?quest_id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getQuestBoostClaimParams = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/boost/get_claim_params?boost_id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateQuestBoostClaimStatus = async (
+  id: number,
+  value: boolean
+) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/boost/update_claim_status?boost_id=${id}&status=${value}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
