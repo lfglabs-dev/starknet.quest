@@ -95,14 +95,11 @@ export default function Page({ params }: BoostQuestPageProps) {
         signature: sign,
       });
 
-      const { transaction_hash } = await account.execute(
-        {
-          contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
-          entrypoint: "claim",
-          calldata: claimCallData,
-        },
-        undefined
-      );
+      const { transaction_hash } = await account.execute({
+        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
+        entrypoint: "claim",
+        calldata: claimCallData,
+      });
 
       if (transaction_hash) {
         addTransaction({
