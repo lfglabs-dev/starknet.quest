@@ -122,7 +122,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     <div className={styles.container}>
       <div className="flex flex-col">
         <h1 className={styles.title}>{boost?.name}</h1>
-        {boost?.expiry && boost.expiry < Date.now() ? (
+        {boost?.expiry && boost.expiry > Date.now() ? (
           <Timer fixed={false} expiry={Number(boost?.expiry)} />
         ) : null}
       </div>
