@@ -36,6 +36,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
   const [sign, setSign] = useState<Signature>(["", ""]);
+  const [disableClaimButton, setDisableClaimButton] = useState<boolean>(false);
   const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
@@ -101,6 +102,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       });
 
       if (transaction_hash) {
+        setDisableClaimButton(true);
         addTransaction({
           timestamp: Date.now(),
           subtext: boost?.name ?? "Quest Boost Rewards",
@@ -168,7 +170,9 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            disabled={boost?.claimed || boost?.winner !== address}
+            disabled={
+              boost?.claimed || boost?.winner !== address || disableClaimButton
+            }
             onClick={handleClaimClick}
           >
             {(() => {
