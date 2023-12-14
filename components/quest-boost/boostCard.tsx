@@ -35,7 +35,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
             />
           </div>
           <div className="flex w-full">
-            {boost.expiry < Date.now() ? null : (
+            {boost.expiry > Date.now() ? null : (
               <div className="flex items-center">
                 <div className={styles.issuer}>
                   <UnavailableIcon width="24" color="#D32F2F" />
