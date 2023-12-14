@@ -29,6 +29,7 @@ import NotificationIcon from "./iconsComponents/icons/notificationIcon";
 import ModalNotifications from "./notifications/modalNotifications";
 import { useNotificationManager } from "../../hooks/useNotificationManager";
 import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
+import { getPendingBoostClaims } from "../../services/apiService";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -50,6 +51,38 @@ const Navbar: FunctionComponent = () => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const { notifications, unreadNotifications, updateReadStatus } =
     useNotificationManager();
+  const [informationNotifications, setInformationNotifications] = useState<
+    SQInfoData[]
+  >([
+    {
+      title: "",
+      subtext: "",
+      link: "",
+      linkText: "",
+    },
+  ]);
+
+  const fetchAndUpdateNotifications = async () => {
+    if (!address) return;
+    const res = await getPendingBoostClaims(address);
+    if (!(res?.length > 0)) return;
+    const finalNotificationsList: SQInfoData[] = [];
+    res.forEach((boost: Boost) => {
+      const data = {
+        title: "Congratulations! 🎉",
+        subtext: `You have just won ${boost.amount} USDC thanks to the "${boost.name}” boost`,
+        link: "/quest-boost/" + boost.id,
+        linkText: "Claim your reward",
+      };
+      finalNotificationsList.push(data);
+    });
+    setInformationNotifications(finalNotificationsList);
+  };
+
+  useEffect(() => {
+    if (!address) return;
+    fetchAndUpdateNotifications();
+  }, [address]);
 
   useEffect(() => {
     // to handle autoconnect starknet-react adds connector id in local storage
@@ -192,7 +225,9 @@ const Navbar: FunctionComponent = () => {
                     className={styles.menuItem}
                     onClick={openNotificationModal}
                   >
-                    {unreadNotifications && address ? (
+                    {(unreadNotifications ||
+                      informationNotifications[0]?.title?.length > 0) &&
+                    address ? (
                       <NotificationUnreadIcon
                         width="24"
                         color={theme.palette.secondary.dark}
@@ -354,6 +389,7 @@ const Navbar: FunctionComponent = () => {
           open={showNotifications}
           closeModal={() => setShowNotifications(false)}
           notifications={notifications}
+          informationNotifications={informationNotifications}
         />
       ) : null}
     </>

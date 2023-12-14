@@ -3,7 +3,8 @@ import styles from "../../styles/questboost.module.css";
 import Cardstyles from "../../styles/components/card.module.css";
 import Link from "next/link";
 import { CDNImage } from "../cdn/image";
-import CheckIcon from "../UI/iconsComponents/icons/checkIcon";
+
+import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
 
 type BoostCardProps = {
   boost: Boost;
@@ -34,11 +35,11 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
             />
           </div>
           <div className="flex w-full">
-            {boost.expiry > Date.now() ? null : (
+            {boost.expiry < Date.now() ? null : (
               <div className="flex items-center">
                 <div className={styles.issuer}>
+                  <UnavailableIcon width="24" color="#D32F2F" />
                   <p className="text-white mr-2">Boost Ended</p>
-                  <CheckIcon width="24" color="#6AFFAF" />
                 </div>
               </div>
             )}

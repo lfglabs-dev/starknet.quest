@@ -212,6 +212,13 @@ type SQNotification<T> = {
   data: T;
 };
 
+type SQInfoData = {
+  title: string;
+  subtext: string;
+  link?: string;
+  linkText?: string;
+};
+
 type TransactionData = {
   type: TransactionType;
   hash: string;
