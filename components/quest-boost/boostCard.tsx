@@ -2,8 +2,8 @@ import React, { FunctionComponent } from "react";
 import styles from "../../styles/questboost.module.css";
 import Cardstyles from "../../styles/components/card.module.css";
 import Link from "next/link";
-import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
 import { CDNImage } from "../cdn/image";
+import CheckIcon from "../UI/iconsComponents/icons/checkIcon";
 
 type BoostCardProps = {
   boost: Boost;
@@ -15,7 +15,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
       <div className={styles.boost_card_container}>
         <img
           className={Cardstyles.cardImage}
-          src="/ekubo/concentration.webp"
+          src={boost?.img_url}
           alt="boost"
         />
         <div className={styles.boost_card_content}>
@@ -34,11 +34,11 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
             />
           </div>
           <div className="flex w-full">
-            {boost.expiry > Date.now() ? null : (
-              <div className="flex items-center opacity-40">
+            {boost.expiry < Date.now() ? null : (
+              <div className="flex items-center">
                 <div className={styles.issuer}>
-                  <p className="text-white mr-2">Expired</p>
-                  <UnavailableIcon width="24" color="#D32F2F" />
+                  <p className="text-white mr-2">Ended</p>
+                  <CheckIcon width="24" color="#6AFFAF" />
                 </div>
               </div>
             )}

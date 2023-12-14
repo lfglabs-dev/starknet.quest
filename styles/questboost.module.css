@@ -51,9 +51,9 @@
     display: flex;
     /* Auto layout */
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    padding: 8px 24px;
+    padding: 8px;
     gap: 10px;
     height: 36px;
     /* Background/600 */
