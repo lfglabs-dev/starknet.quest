@@ -47,6 +47,14 @@
     min-height: 400px;
 }
 
+.card_title {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-family: "Sora-Bold";
+    margin: 0px;
+    text-align: left;
+}
+
 .issuer {
     display: flex;
     /* Auto layout */

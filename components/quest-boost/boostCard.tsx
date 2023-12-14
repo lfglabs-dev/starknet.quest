@@ -20,7 +20,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
           alt="boost"
         />
         <div className={styles.boost_card_content}>
-          <p>{boost?.name}</p>
+          <p className={styles.card_title}>{boost?.name}</p>
           <p>
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
