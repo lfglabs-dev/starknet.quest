@@ -21,7 +21,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
         <div className={styles.boost_card_content}>
           <p>{boost?.name}</p>
           <p>
-            {boost?.quests.length} quest{boost.quests.length > 0 ? "s" : ""}
+            {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
           <div className="flex flex-row gap-2">
             <p>{boost?.amount} USDC</p>
