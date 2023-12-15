@@ -1,4 +1,4 @@
-import { getOrderedQuests } from "../../utils/quest";
+import { getOrderedQuests } from "@utils/quest";
 
 describe("orderQuests function", () => {
   it("should place ongoing quests first and expired ones last", () => {

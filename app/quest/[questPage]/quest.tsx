@@ -1,20 +1,20 @@
 "use client";
 
-import QuestDetails from "../../../components/quests/questDetails";
+import QuestDetails from "@components/quests/questDetails";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import homeStyles from "../../../styles/Home.module.css";
-import styles from "../../../styles/quests.module.css";
+import homeStyles from "@styles/Home.module.css";
+import styles from "@styles/quests.module.css";
 import { useRouter } from "next/navigation";
 import { QueryError, QuestDocument } from "../../../types/backTypes";
-import RewardSkeleton from "../../../components/skeletons/rewardSkeleton";
-import ErrorScreen from "../../../components/UI/screens/errorScreen";
-import NftIssuer from "../../../components/quests/nftIssuer";
-import BackButton from "../../../components/UI/backButton";
-import useHasRootDomain from "../../../hooks/useHasRootDomain";
+import RewardSkeleton from "@components/skeletons/rewardSkeleton";
+import ErrorScreen from "@components/UI/screens/errorScreen";
+import NftIssuer from "@components/quests/nftIssuer";
+import BackButton from "@components/UI/backButton";
+import useHasRootDomain from "@hooks/useHasRootDomain";
 import { useAccount } from "@starknet-react/core";
-import { starknetIdAppLink } from "../../../utils/links";
-import BannerPopup from "../../../components/UI/menus/bannerPopup";
-import { useDomainFromAddress } from "../../../hooks/naming";
+import { starknetIdAppLink } from "@utils/links";
+import BannerPopup from "@components/UI/menus/bannerPopup";
+import { useDomainFromAddress } from "@hooks/naming";
 
 type QuestPageProps = {
   questId: string;

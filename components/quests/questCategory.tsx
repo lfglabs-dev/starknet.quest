@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 import Link from "next/link";
-import { CDNImg } from "../cdn/image";
+import { CDNImg } from "@components/cdn/image";
 
 type QuestCategoryProps = {
   category: QuestCategory;

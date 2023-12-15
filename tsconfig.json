@@ -6,6 +6,49 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "",
+    "paths": {
+      "@abi/*": [
+        "./abi/*"
+      ],
+      "@app/*": [
+        "./app/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@constants/*": [
+        "./constants/*"
+      ],
+      "@context/*": [
+        "./context/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@services/*": [
+        "./services/*"
+      ],
+      "@tests/*": [
+        "./tests/*"
+      ],
+      "@types/*": [
+        "./types/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@styles/*": [
+        "./styles/*"
+      ],
+
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,

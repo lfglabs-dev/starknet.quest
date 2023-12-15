@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import styles from "../../styles/leaderboard.module.css";
-import { minifyAddress } from "../../utils/stringService";
-import Avatar from "../UI/avatar";
-import { decimalToHex } from "../../utils/feltService";
+import styles from "@styles/leaderboard.module.css";
+import { minifyAddress } from "@utils/stringService";
+import Avatar from "@components/UI/avatar";
+import { decimalToHex } from "@utils/feltService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import Divider from "@mui/material/Divider";
-import AchievementIcon from "../UI/iconsComponents/icons/achievementIcon";
-import { CDNImage } from "../cdn/image";
+import AchievementIcon from "@components/UI/iconsComponents/icons/achievementIcon";
+import { CDNImage } from "@components/cdn/image";
 
 type RankCardProps = {
   name: string;

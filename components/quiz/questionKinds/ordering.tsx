@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
-import styles from "../../../styles/components/quests/quiz.module.css";
+import styles from "@styles/components/quests/quiz.module.css";
 
 type OrderingProps = {
   setSelected: (s: boolean) => void;

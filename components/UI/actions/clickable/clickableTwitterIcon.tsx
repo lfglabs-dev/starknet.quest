@@ -1,9 +1,9 @@
 import { Tooltip } from "@mui/material";
 import React, { FunctionComponent } from "react";
-import TwitterIcon from "../../../UI/iconsComponents/icons/twitterIcon";
-import VerifiedIcon from "../../../UI/iconsComponents/icons/verifiedIcon";
-import styles from "../../../../styles/components/icons.module.css";
-import theme from "../../../../styles/theme";
+import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
+import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
+import styles from "@styles/components/icons.module.css";
+import theme from "@styles/theme";
 
 type ClickableTwitterIconProps = {
   width: string;

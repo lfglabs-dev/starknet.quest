@@ -1,4 +1,4 @@
-import { timeElapsed } from "../../utils/timeService";
+import { timeElapsed } from "@utils/timeService";
 
 describe("timeElapsed function", () => {
     const seconds = 1000;

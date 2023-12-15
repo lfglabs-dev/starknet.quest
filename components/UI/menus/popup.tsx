@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import styles from "../../../styles/components/popup.module.css";
-import CloseIcon from "../iconsComponents/icons/closeIcon";
+import styles from "@styles/components/popup.module.css";
+import CloseIcon from "@components/UI/iconsComponents/icons/closeIcon";
 import { Modal } from "@mui/material";
 
 type PopupProps = {

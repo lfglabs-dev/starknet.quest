@@ -5,17 +5,17 @@ import ModalMessage from "../UI/modalMessage";
 import { useAccount, useContractWrite } from "@starknet-react/core";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
-import verifiedLottie from "../../public/visuals/verifiedLottie.json";
+import verifiedLottie from "@public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
-import { useNotificationManager } from "../../hooks/useNotificationManager";
+import { useNotificationManager } from "@hooks/useNotificationManager";
 import {
   NotificationType,
   TransactionType,
-} from "../../constants/notifications";
-import { QuestDocument } from "../../types/backTypes";
+} from "@constants/notifications";
+import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
-import rewardStyles from "../../styles/components/quests/modal.module.css";
-import { CDNImg } from "../cdn/image";
+import rewardStyles from "@styles/components/quests/modal.module.css";
+import { CDNImg } from "@components/cdn/image";
 
 type RewardProps = {
   onClick: () => void;

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/components/stats.module.css";
+import styles from "@styles/components/stats.module.css";
 import Box from "../box";
 
 type StatElementProps = {

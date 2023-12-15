@@ -1,8 +1,8 @@
-import VerticalBar from "../../shapes/verticalBar";
-import OnScrollIntoView from "../../animations/onScrollIntoView";
-import styles from "../../../styles/components/steps.module.css";
+import VerticalBar from "@components/shapes/verticalBar";
+import OnScrollIntoView from "@components/animations/onScrollIntoView";
+import styles from "@styles/components/steps.module.css";
 import React, { FunctionComponent } from "react";
-import { CDNImg } from "../../cdn/image";
+import { CDNImg } from "@components/cdn/image";
 
 type StepElementProps = {
   index: number;

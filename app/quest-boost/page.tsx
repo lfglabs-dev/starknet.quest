@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/questboost.module.css";
-import BoostCard from "../../components/quest-boost/boostCard";
-import CategoryTitle from "../../components/UI/titles/categoryTitle";
-import Componentstyles from "../../styles/components/pages/home/howToParticipate.module.css";
-import Steps from "../../components/UI/steps/steps";
-import { getBoosts } from "../../services/apiService";
+import styles from "@styles/questboost.module.css";
+import BoostCard from "@components/quest-boost/boostCard";
+import CategoryTitle from "@components/UI/titles/categoryTitle";
+import Componentstyles from "@styles/components/pages/home/howToParticipate.module.css";
+import Steps from "@components/UI/steps/steps";
+import { getBoosts } from "@services/apiService";
 
 export default function Page() {
   const [boosts, setBoosts] = useState<Boost[]>([]);

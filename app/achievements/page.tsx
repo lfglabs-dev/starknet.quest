@@ -1,19 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/achievements.module.css";
+import styles from "@styles/achievements.module.css";
 import { useAccount } from "@starknet-react/core";
 import {
   AchievementsDocument,
   CompletedDocument,
   QueryError,
 } from "../../types/backTypes";
-import Achievement from "../../components/achievements/achievement";
-import { hexToDecimal } from "../../utils/feltService";
-import AchievementSkeleton from "../../components/skeletons/achievementSkeleton";
+import Achievement from "@components/achievements/achievement";
+import { hexToDecimal } from "@utils/feltService";
+import AchievementSkeleton from "@components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
-import RefreshIcon from "../../components/UI/iconsComponents/icons/refreshIcon";
-import theme from "../../styles/theme";
+import RefreshIcon from "@components/UI/iconsComponents/icons/refreshIcon";
+import theme from "@styles/theme";
 
 export default function Page() {
   const location = useLocation();

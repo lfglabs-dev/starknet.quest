@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/tooltip.module.css";
-import { Coord } from "../../types/land";
+import styles from "@styles/components/tooltip.module.css";
+import { Coord } from "types/land";
 
 type BuildingTooltipProps = {
   building: BuildingsInfo | null;

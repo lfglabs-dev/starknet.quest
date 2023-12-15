@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useInView } from "react-intersection-observer";
-import styles from "../../styles/components/animations.module.css";
+import styles from "@styles/components/animations.module.css";
 
 type OnScrollIntoViewProps = {
   animation?: string;

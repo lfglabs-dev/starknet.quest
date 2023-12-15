@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { memberSince } from "../utils/profile";
-import { DeployedTime, QueryError } from "../types/backTypes";
+import { memberSince } from "@utils/profile";
+import { DeployedTime, QueryError } from "types/backTypes";
 
 export default function useCreationDate(identity: Identity | undefined) {
   const [sinceDate, setSinceDate] = useState<string | null>(null);

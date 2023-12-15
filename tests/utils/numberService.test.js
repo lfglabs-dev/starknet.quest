@@ -1,4 +1,4 @@
-import { calculatePercentile } from "../../utils/numberService";
+import { calculatePercentile } from "@utils/numberService";
 
 describe("calculatePercentile function", () => {
   it("should return the correct percentile for valid input", () => {
