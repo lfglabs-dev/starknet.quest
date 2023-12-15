@@ -114,3 +114,107 @@
         gap: 1rem;
     }
 }
+
+.claim_screen_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100vh;
+    background: url("/utils/dotBackground.svg") no-repeat center var(--background);
+}
+
+
+@keyframes rotateCard {
+    0% {
+        transform: rotate(0deg) scale(0.3);
+    }
+
+    100% {
+        transform: rotate(1080deg) scale(1);
+    }
+}
+
+.claim_amount_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #1F1F25;
+    border: 1px solid transparent;
+    animation: rotateCard 3s;
+    aspect-ratio: 1/1;
+    gap: 1rem;
+}
+
+.claim_amount {
+    font-family: Sora;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+@keyframes opacityAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        height: 0px;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        height: 42px;
+    }
+}
+
+@keyframes moveImg {
+    0% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+
+.claim_button_animation {
+    opacity: 0;
+    animation: opacityAnimation 2s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+}
+
+.claim_button_text {
+    opacity: 0;
+    height: 0px;
+    animation: fadeInText 1s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+}
+
+.token_logo {
+    animation: moveImg 1s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+    transform-origin: center;
+}

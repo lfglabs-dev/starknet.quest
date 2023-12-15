@@ -2,10 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/questboost.module.css";
-import { CallData, uint256 } from "starknet";
 import {
   getBoostById,
-  getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
 } from "../../../services/apiService";
@@ -15,12 +13,8 @@ import { QuestDocument } from "../../../types/backTypes";
 import Timer from "../../../components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "../../../components/UI/button";
-import { useNotificationManager } from "../../../hooks/useNotificationManager";
-import {
-  NotificationType,
-  TransactionType,
-} from "../../../constants/notifications";
 import { CDNImage } from "../../../components/cdn/image";
+import { hexToDecimal } from "../../../utils/feltService";
 
 type BoostQuestPageProps = {
   params: {
@@ -30,13 +24,11 @@ type BoostQuestPageProps = {
 
 export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
-  const { address, account } = useAccount();
+  const { address } = useAccount();
   const { boostId } = params;
   const [quests, setQuests] = useState<QuestDocument[]>([]);
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
-  const [sign, setSign] = useState<Signature>(["", ""]);
-  const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -53,6 +45,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
+
     setQuests(questsList);
     setBoost(boostInfo);
     setParticipants(totalParticipants);
@@ -61,61 +54,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   useEffect(() => {
     fetchPageData();
   }, []);
-
-  const fetchBoostClaimParams = async (): Promise<Signature> => {
-    let formattedSign: Signature = ["", ""];
-    try {
-      if (!boost?.id || !address) return formattedSign;
-      const res = await getQuestBoostClaimParams(boost.id);
-      formattedSign = [res?.r, res?.s];
-      return formattedSign;
-    } catch (err) {
-      console.log(err);
-      return formattedSign;
-    }
-  };
-
-  const handleClaimClick = async () => {
-    const signature = await fetchBoostClaimParams();
-    if (!signature) return;
-    setSign(signature);
-  };
-
-  useEffect(() => {
-    if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
-      return;
-
-    const callContract = async () => {
-      const amount = uint256.bnToUint256(boost.amount);
-      const claimCallData = CallData.compile({
-        amount: amount,
-        token: boost.token,
-        boost_id: boost.id,
-        signature: sign,
-      });
-
-      const { transaction_hash } = await account.execute({
-        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
-        entrypoint: "claim",
-        calldata: claimCallData,
-      });
-
-      if (transaction_hash) {
-        addTransaction({
-          timestamp: Date.now(),
-          subtext: boost?.name ?? "Quest Boost Rewards",
-          type: NotificationType.TRANSACTION,
-          data: {
-            type: TransactionType.CLAIM_REWARDS,
-            hash: transaction_hash,
-            status: "pending",
-          },
-        });
-      }
-    };
-
-    callContract();
-  }, [sign]);
 
   return (
     <div className={styles.container}>
@@ -166,24 +104,31 @@ export default function Page({ params }: BoostQuestPageProps) {
             {participants} players
           </p>
         </div>
-        <div>
-          <Button
-            disabled={boost?.claimed || boost?.winner !== address}
-            onClick={handleClaimClick}
-          >
-            {(() => {
-              if (boost?.claimed) {
-                return "Claimed ✅";
-              } else if (boost?.winner === address) {
-                return "Claim boost reward 🎉 ";
-              } else if (boost && boost?.expiry > Date.now()) {
-                return "Boost has not ended ⌛";
-              } else {
-                return "You’re not selected 🙁";
+        {address ? (
+          <div>
+            <Button
+              disabled={
+                boost?.claimed ||
+                hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
               }
-            })()}
-          </Button>
-        </div>
+              onClick={() => router.push(`/quest-boost/claim/${boost?.id}`)}
+            >
+              {(() => {
+                if (boost?.claimed) {
+                  return "Claimed ✅";
+                } else if (
+                  hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)
+                ) {
+                  return "Claim boost reward 🎉 ";
+                } else if (boost && boost?.expiry > Date.now()) {
+                  return "Boost has not ended ⌛";
+                } else {
+                  return "You’re not selected 🙁";
+                }
+              })()}
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
