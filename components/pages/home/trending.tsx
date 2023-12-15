@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/Home.module.css";
-import Quest from "../../quests/quest";
-import QuestsSkeleton from "../../skeletons/questsSkeleton";
+import styles from "@styles/Home.module.css";
+import Quest from "@components/quests/quest";
+import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { useRouter } from "next/navigation";
-import { QuestDocument } from "../../../types/backTypes";
+import { QuestDocument } from "types/backTypes";
 
 type TrendingQuestsProps = {
   trendingQuests: QuestDocument[];

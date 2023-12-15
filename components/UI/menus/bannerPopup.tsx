@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/components/popup.module.css";
+import styles from "@styles/components/popup.module.css";
 import Button from "../button";
 import CloseIcon from "../iconsComponents/icons/closeIcon";
 import { Modal } from "@mui/material";
-import { CDNImg } from "../../cdn/image";
+import { CDNImg } from "@components/cdn/image";
 
 type BannerPopupProps = {
   title: string;

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/card.module.css";
-import cdnize from "../../utils/cdnize";
+import styles from "@styles/components/card.module.css";
+import cdnize from "@utils/cdnize";
 type CardProps = {
   children: React.ReactNode;
   imgSrc: string;

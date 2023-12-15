@@ -1,26 +1,26 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../../styles/questboost.module.css";
+import styles from "@styles/questboost.module.css";
 import { CallData, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
-} from "../../../services/apiService";
-import Quest from "../../../components/quests/quest";
+} from "@services/apiService";
+import Quest from "@components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
-import Timer from "../../../components/quests/timer";
+import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
-import Button from "../../../components/UI/button";
-import { useNotificationManager } from "../../../hooks/useNotificationManager";
+import Button from "@components/UI/button";
+import { useNotificationManager } from "@hooks/useNotificationManager";
 import {
   NotificationType,
   TransactionType,
-} from "../../../constants/notifications";
-import { CDNImage } from "../../../components/cdn/image";
+} from "@constants/notifications";
+import { CDNImage } from "@components/cdn/image";
 
 type BoostQuestPageProps = {
   params: {

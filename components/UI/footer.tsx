@@ -1,12 +1,12 @@
 "use client";
 
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/footer.module.css";
+import styles from "@styles/components/footer.module.css";
 import Link from "next/link";
-import TwitterIcon from "./iconsComponents/icons/twitterIcon";
-import DiscordIcon from "./iconsComponents/icons/discordIcon";
+import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
+import DiscordIcon from "@components/UI/iconsComponents/icons/discordIcon";
 import { usePathname } from "next/navigation";
-import { isHexString } from "../../utils/stringService";
+import { isHexString } from "@utils/stringService";
 
 const Footer: FunctionComponent = () => {
   const route = usePathname();

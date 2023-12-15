@@ -7,13 +7,13 @@ import React, {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { QuestsContext } from "../../../context/QuestsProvider";
-import styles from "../../../styles/category.module.css";
-import homeStyles from "../../../styles/Home.module.css";
-import Quest from "../../../components/quests/quest";
-import BackButton from "../../../components/UI/backButton";
-import Blur from "../../../components/shapes/blur";
-import { getOrderedQuests } from "../../../utils/quest";
+import { QuestsContext } from "@context/QuestsProvider";
+import styles from "@styles/category.module.css";
+import homeStyles from "@styles/Home.module.css";
+import Quest from "@components/quests/quest";
+import BackButton from "@components/UI/backButton";
+import Blur from "@components/shapes/blur";
+import { getOrderedQuests } from "@utils/quest";
 
 type CategoryPageProps = {
   categoryName: string;

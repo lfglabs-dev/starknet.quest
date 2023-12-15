@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/chiplist.module.css";
+import styles from "@styles/components/chiplist.module.css";
 
 type ChipProps = {
   selected: string;

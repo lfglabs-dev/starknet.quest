@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import ProfilIcon from "./iconsComponents/icons/profilIcon";
-import theme from "../../styles/theme";
+import ProfilIcon from "@components/UI/iconsComponents/icons/profilIcon";
+import theme from "@styles/theme";
 import { useStarkProfile } from "@starknet-react/core";
 
 type AvatarProps = {

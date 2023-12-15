@@ -9,7 +9,7 @@ import {
 import GroundItem from "./groundItem";
 import { GroundTileProps } from "../../types/land";
 import { useLoader } from "@react-three/fiber";
-import { Tileset } from "../../types/ldtk";
+import { Tileset } from "types/ldtk";
 
 type GroundProps = {
   tileset: Tileset;

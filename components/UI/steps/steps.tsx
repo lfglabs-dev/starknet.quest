@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/components/steps.module.css";
+import styles from "@styles/components/steps.module.css";
 import StepElement from "./stepElement";
 
 type StepsProps = {

@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useMemo, useState, useEffect } from "react";
-import Button from "../UI/button";
-import { useDisplayName } from "../../hooks/displayName.tsx";
+import Button from "@components/UI/button";
+import { useDisplayName } from "@hooks/displayName.tsx";
 import { useAccount } from "@starknet-react/core";
-import styles from "../../styles/components/navbar.module.css";
-import ProfilIcon from "../UI/iconsComponents/icons/profilIcon";
-import theme from "../../styles/theme";
-import Avatar from "../UI/avatar";
-import CopyIcon from "../UI/iconsComponents/icons/copyIcon";
+import styles from "@styles/components/navbar.module.css";
+import ProfilIcon from "@components/UI/iconsComponents/icons/profilIcon";
+import theme from "@styles/theme";
+import Avatar from "@components/UI/avatar";
+import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { Wallet } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import VerifiedIcon from "../UI/iconsComponents/icons/verifiedIcon";
-import ChangeWallet from "../UI/changeWallet";
-import ArgentIcon from "../UI/iconsComponents/icons/argentIcon";
-import { useNotificationManager } from "../../hooks/useNotificationManager";
+import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
+import ChangeWallet from "@components/UI/changeWallet";
+import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
+import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
 
 type WalletButtonProps = {

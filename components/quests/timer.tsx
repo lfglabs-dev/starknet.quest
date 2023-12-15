@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import styles from "../../styles/components/timer.module.css";
+import styles from "@styles/components/timer.module.css";
 
 type TimerProps = {
   expiry: number;

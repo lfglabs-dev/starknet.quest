@@ -1,4 +1,4 @@
-import styles from "../../styles/components/quests/quizLoading.module.css";
+import styles from "@styles/components/quests/quizLoading.module.css";
 import React from "react";
 
 const QuizLoading = () => {

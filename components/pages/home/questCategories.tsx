@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
-import styles from "../../../styles/Home.module.css";
-import QuestCategory from "../../quests/questCategory";
-import QuestsSkeleton from "../../skeletons/questsSkeleton";
-import { getBoosts } from "../../../services/apiService";
+import styles from "@styles/Home.module.css";
+import QuestCategory from "@components/quests/questCategory";
+import QuestsSkeleton from "@components/skeletons/questsSkeleton";
+import { getBoosts } from "@services/apiService";
 import Link from "next/link";
 
 type QuestCategoriesProps = {

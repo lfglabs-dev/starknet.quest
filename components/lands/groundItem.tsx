@@ -1,7 +1,7 @@
-import { GroundTileProps, Coord } from "../../types/land";
+import { GroundTileProps, Coord } from "types/land";
 import React, { ReactElement, memo, useMemo } from "react";
 import { MeshPhongMaterial, PlaneGeometry, Texture } from "three";
-import { Tileset } from "../../types/ldtk";
+import { Tileset } from "types/ldtk";
 
 type GroundItemsProps = {
   tileset: Tileset;

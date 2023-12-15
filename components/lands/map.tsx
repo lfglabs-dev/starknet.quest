@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
-import { LdtkReader } from "../../utils/parser";
+import { LdtkReader } from "@utils/parser";
 import Ground from "./ground";
 import RoadProps from "./roadProps";
 import Buildings from "./buildings";
-import { tileTypes } from "../../constants/tiles";
+import { tileTypes } from "@constants/tiles";
 import { useFrame, useThree } from "@react-three/fiber";
-import { iLDtk } from "../../types/ldtk";
+import { iLDtk } from "types/ldtk";
 
 type MapProps = {
   mapReader: LdtkReader;

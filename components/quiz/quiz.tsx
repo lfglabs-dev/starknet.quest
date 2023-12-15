@@ -5,12 +5,12 @@ import React, {
   useState,
 } from "react";
 import StartScreen from "./startScreen";
-import styles from "../../styles/components/quests/quiz.module.css";
+import styles from "@styles/components/quests/quiz.module.css";
 import Step from "./step";
 import EndScreen from "./endScreen";
-import QuizLoading from "../../components/quiz/quizLoading";
+import QuizLoading from "@components/quiz/quizLoading";
 import { useAccount } from "@starknet-react/core";
-import { hexToDecimal } from "../../utils/feltService";
+import { hexToDecimal } from "@utils/feltService";
 
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
