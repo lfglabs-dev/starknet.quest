@@ -21,6 +21,7 @@ import {
   TransactionType,
 } from "../../../constants/notifications";
 import { CDNImage } from "../../../components/cdn/image";
+import { hexToDecimal } from "../../../utils/feltService";
 
 type BoostQuestPageProps = {
   params: {
@@ -168,13 +169,18 @@ export default function Page({ params }: BoostQuestPageProps) {
         </div>
         <div>
           <Button
-            disabled={boost?.claimed || boost?.winner !== address}
+            disabled={
+              boost?.claimed ||
+              hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
+            }
             onClick={handleClaimClick}
           >
             {(() => {
               if (boost?.claimed) {
                 return "Claimed ✅";
-              } else if (boost?.winner === address) {
+              } else if (
+                hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)
+              ) {
                 return "Claim boost reward 🎉 ";
               } else if (boost && boost?.expiry > Date.now()) {
                 return "Boost has not ended ⌛";
