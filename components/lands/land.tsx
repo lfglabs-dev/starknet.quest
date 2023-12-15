@@ -12,6 +12,9 @@ import {
 import { AchievementsDocument } from "../../types/backTypes";
 import Link from "next/link";
 
+import LoadingScreen from "../UI/screens/loadingScreen";
+
+
 type LandProps = {
   address: string;
   isOwner: boolean;
@@ -195,8 +198,8 @@ export const Land = ({
             ) : null}
           </div>
         )
-      ) : (
-        <h2 className={`${styles.name} ${styles.loading}`}>Loading</h2>
+      ) : (     
+         <LoadingScreen />
       )}
     </div>
   );

@@ -14,6 +14,7 @@ import { Land } from "../../components/lands/land";
 import { useMediaQuery } from "@mui/material";
 import ProfileCards from "../../components/UI/profileCards";
 import useCreationDate from "../../hooks/useCreationDate";
+import LoadingScreen from "../../components/UI/screens/loadingScreen";
 
 type AddressOrDomainProps = {
   params: {
@@ -200,13 +201,9 @@ export default function Page({ params }: AddressOrDomainProps) {
             />
           </div>
         </>
-      ) : (
-        <div
-          className={`h-screen flex justify-center items-center ${styles.name}`}
-        >
-          <h2>Loading</h2>
-        </div>
-      )}
+      ) : (     
+          <LoadingScreen />     
+    )}
     </div>
   );
 }

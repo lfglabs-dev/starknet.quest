@@ -1,34 +1,43 @@
-import React, { FunctionComponent, useState } from "react";
-import { MutatingDots } from "react-loader-spinner";
+import Lottie from "lottie-react";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import loadingLottie from '../../../public/visuals/loadingLottie.json';
+import styles from "../../../styles/components/loadingScreen.module.css";
+import Blur from "../../shapes/blur";
 
 const LoadingScreen: FunctionComponent = () => {
   const [loadingMessageNumber, setLoadingMessageNumber] = useState<number>(0);
   const loadingMessages: string[] = [
-    "Patience is a virtue, especially when it comes to Starknet Alpha",
-    "Patience is also a virtue when it comes to Starknet testnet",
-    "Ok it's slow but at least it does not stop like Solana",
+    "StarkNet Quest leverages the power of Layer 2 scaling solutions to enhance Ethereum's efficiency and scalability",
+    "Patience is also a virtue when it comes to Starknet ",
     "Just a few moments left sir",
     "Alright now it shouldn't be long",
   ];
 
-  setTimeout(() => {
-    if (loadingMessageNumber != loadingMessages.length - 1)
-      setLoadingMessageNumber(loadingMessageNumber + 1);
-  }, 15000);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (loadingMessageNumber !== loadingMessages.length - 1) {
+        setLoadingMessageNumber(loadingMessageNumber + 1);
+      } else {
+        setLoadingMessageNumber(0);
+      }
+    }, 5000);
 
+    return () => clearTimeout(timeoutId); 
+
+  }, [loadingMessageNumber]);
+  
+  
   return (
-    <div className="max-w-3xl">
-      <h1 className="sm:text-5xl text-5xl mr-3 ml-3">
+    <div className={styles.loading}>
+      <div className="justify-center flex flex-col gap-4">
+        <Lottie animationData={loadingLottie} className={styles.loadingLottie}  />
+        <h2 className={styles.loadingText} >Loading...</h2>
+      </div>
+      <h1 className={styles.tips}  >
         {loadingMessages[loadingMessageNumber]}
-      </h1>
-      <div className="m-5 flex justify-center">
-        <MutatingDots
-          height="100"
-          width="100"
-          color="#19AA6E"
-          secondaryColor="#BF9E7B"
-          ariaLabel="loading"
-        />
+      </h1> 
+      <div className={styles.blur}> 
+        <Blur green />
       </div>
     </div>
   );
