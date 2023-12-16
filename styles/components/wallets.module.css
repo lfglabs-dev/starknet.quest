@@ -78,6 +78,7 @@
     letter-spacing: 0.18px;
   }
   .menu button {
+    margin-top: 4px;
     text-transform: capitalize;
     font-family: Sora;
     font-size: 18px;
