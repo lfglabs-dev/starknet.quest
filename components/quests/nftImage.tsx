@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/quests.module.css";
-import { CDNImg } from "../cdn/image";
+import styles from "@styles/quests.module.css";
+import { CDNImg } from "@components/cdn/image";
 
 type NftImageProps = {
   nfts: Nft[];

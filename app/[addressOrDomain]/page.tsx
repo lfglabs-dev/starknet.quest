@@ -1,20 +1,21 @@
 "use client";
 
 import React, { useContext, useEffect, useState } from "react";
-import styles from "../../styles/profile.module.css";
+import styles from "@styles/profile.module.css";
 import { useRouter, usePathname } from "next/navigation";
-import { isHexString } from "../../utils/stringService";
+import { isHexString } from "@utils/stringService";
 import { useAccount } from "@starknet-react/core";
-import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
-import { hexToDecimal } from "../../utils/feltService";
-import { minifyAddress } from "../../utils/stringService";
+import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
+import { hexToDecimal } from "@utils/feltService";
+import { minifyAddress } from "@utils/stringService";
 import { utils } from "starknetid.js";
-import ErrorScreen from "../../components/UI/screens/errorScreen";
-import { Land } from "../../components/lands/land";
+import ErrorScreen from "@components/UI/screens/errorScreen";
+import { Land } from "@components/lands/land";
 import { useMediaQuery } from "@mui/material";
 import ProfileCards from "../../components/UI/profileCards";
 import useCreationDate from "../../hooks/useCreationDate";
 import LoadingScreen from "../../components/UI/screens/loadingScreen";
+
 
 type AddressOrDomainProps = {
   params: {

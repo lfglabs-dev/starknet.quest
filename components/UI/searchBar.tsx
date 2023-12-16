@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { FunctionComponent, KeyboardEvent, useState } from "react";
-import { useIsValid } from "../../hooks/naming";
+import { useIsValid } from "@hooks/naming";
 
 type SearchBarProps = {
   onChangeTypedValue?: (typedValue: string) => void;

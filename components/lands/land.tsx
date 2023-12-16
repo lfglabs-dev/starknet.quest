@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Scene } from "./scene";
-import styles from "../../styles/profile.module.css";
-import landStyles from "../../styles/components/land.module.css";
-import btnStyles from "../../styles/components/button.module.css";
+import styles from "@styles/profile.module.css";
+import landStyles from "@styles/components/land.module.css";
+import btnStyles from "@styles/components/button.module.css";
 import {
   GigabrainBuilding,
   GigrabrainNfts,
   SoloBuildings,
   StarkFighterBuildings,
-} from "../../constants/nft";
-import { AchievementsDocument } from "../../types/backTypes";
+} from "@constants/nft";
+import { AchievementsDocument } from "types/backTypes";
 import Link from "next/link";
 
 import LoadingScreen from "../UI/screens/loadingScreen";

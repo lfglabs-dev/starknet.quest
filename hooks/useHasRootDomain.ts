@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { useContext, useEffect, useState } from "react";
-import { StarknetIdJsContext } from "../context/StarknetIdJsProvider";
+import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { utils } from "starknetid.js";
 
 export default function useHasRootDomain(

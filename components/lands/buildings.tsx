@@ -2,7 +2,7 @@ import React, { FunctionComponent, useMemo } from "react";
 import { TextureLoader, RepeatWrapping, NearestFilter, Vector2 } from "three";
 import { BuildingTileProps } from "../../types/land";
 import BuildingItem from "./buildingItem";
-import { Tileset } from "../../types/ldtk";
+import { Tileset } from "types/ldtk";
 import { useLoader } from "@react-three/fiber";
 
 type BuildingsProps = {

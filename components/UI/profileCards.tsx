@@ -1,15 +1,15 @@
 import React, { FunctionComponent, useState } from "react";
-import styles from "../../styles/profile.module.css";
+import styles from "@styles/profile.module.css";
 import { Tooltip } from "@mui/material";
-import CopyIcon from "./iconsComponents/icons/copyIcon";
-import VerifiedIcon from "./iconsComponents/icons/verifiedIcon";
+import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
+import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
 import { minifyAddressFromStrings } from "../../utils/stringService";
-import SocialMediaActions from "./actions/socialmediaActions";
-import ShareIcon from "./iconsComponents/icons/shareIcon";
-import SharePopup from "./menus/sharePopup";
-import theme from "../../styles/theme";
+import SocialMediaActions from "@components/UI/actions/socialmediaActions";
+import ShareIcon from "@components/UI/iconsComponents/icons/shareIcon";
+import SharePopup from "@components/UI/menus/sharePopup";
+import theme from "@styles/theme";
 import { useStarkProfile } from "@starknet-react/core";
-import { CDNImg } from "../cdn/image";
+import { CDNImg } from "@components/cdn/image";
 
 const ProfileCards: FunctionComponent<ProfileCard> = ({
   title,

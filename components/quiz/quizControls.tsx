@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/quests/quiz.module.css";
-import BackButton from "../UI/backButton";
+import styles from "@styles/components/quests/quiz.module.css";
+import BackButton from "@components/UI/backButton";
 
 type QuizControlsProps = {
   setStep: (s: number) => void;
