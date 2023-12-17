@@ -30,6 +30,7 @@ import ModalNotifications from "./notifications/modalNotifications";
 import { useNotificationManager } from "../../hooks/useNotificationManager";
 import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
 import { getPendingBoostClaims } from "../../services/apiService";
+import { hexToDecimal } from "../../utils/feltService";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -64,7 +65,7 @@ const Navbar: FunctionComponent = () => {
 
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
-    const res = await getPendingBoostClaims(address);
+    const res = await getPendingBoostClaims(hexToDecimal(address));
     if (!(res?.length > 0)) return;
     const finalNotificationsList: SQInfoData[] = [];
     res.forEach((boost: Boost) => {
