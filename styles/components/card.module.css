@@ -47,3 +47,12 @@
 .card[aria-disabled="true"] .cardTitle {
   opacity: 0.4;
 }
+
+@media screen and (max-width: 740px) {
+  .cardTitle {
+    font-size: 16px;
+  }
+  .cardInfos p {
+    font-size: 12px;
+  }
+}

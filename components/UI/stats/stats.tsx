@@ -13,7 +13,7 @@ type StatsProps = {
 const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>{title}</h2>
+      {title && <h2 className={styles.title}>{title}</h2>}
       <div className={styles.elementsContainer}>
         {stats.map((elt, index) => (
           <StatElement

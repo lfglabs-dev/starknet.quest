@@ -25,6 +25,11 @@
   line-height: 58px;
 }
 
+.buttonContainer {
+  width: 16rem;
+  margin-top: 1.25rem;
+}
+
 .mainTitle strong {
   /* text gradient */
   background: linear-gradient(45deg, var(--primary), var(--tertiary));
@@ -44,6 +49,29 @@
   font-weight: 400;
   line-height: 32px;
   margin-top: 32px;
+}
+
+.categoryTitle {
+  color: var(--secondary);
+
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px;
+  margin-top: 8px;
+}
+
+.categorySubtitle {
+  color: var(--secondary);
+  /* Body/middle/regular */
+  font-family: Sora;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 950px) {
@@ -71,14 +99,37 @@
     line-height: max(8vw, 25px);
     margin-top: 24px;
     text-align: center;
+    color: var(--secondary);
+    text-align: center;
+
+    /* Title/H3 */
+    font-family: Sora;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 48px; /* 160% */
+  }
+  .mainTitle strong {
+    /* Title/H3 */
+    font-family: Sora-Bold;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 48px;
+    font-weight: bold;
   }
 
   .mainSubtitle {
-    width: 100%;
-    font-size: max(3vw, 16px);
-    margin-top: 16px;
-    line-height: max(4vw, 19px);
+    color: var(--secondary);
     text-align: center;
+
+    /* Body/default/regular */
+    font-family: Sora;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px; /* 200% */
+    margin-top: 2rem;
   }
 
   .corner {
@@ -96,29 +147,20 @@
   .squares {
     display: none;
   }
-}
 
-.categoryTitle {
-  color: var(--secondary);
-
-  /* Title/H2 */
-  font-family: Sora;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 38px;
-  margin-top: 8px;
-}
-
-.categorySubtitle {
-  color: var(--secondary);
-  /* Body/middle/regular */
-  font-family: Sora;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  opacity: 0.8;
+  .buttonContainer {
+    display: none;
+  }
+  .categorySubtitle {
+    font-size: 16px;
+  }
+  .categoryTitle {
+    font-size: 24px;
+  }
+  .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 .corner {
