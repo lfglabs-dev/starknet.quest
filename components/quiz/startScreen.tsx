@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import QuizControls from "./quizControls";
 import ScreenLayout from "./screenLayout";
-import styles from "../../styles/components/quests/quiz.module.css";
-import Button from "../UI/button";
+import styles from "@styles/components/quests/quiz.module.css";
+import Button from "@components/UI/button";
 
 type StartScreenProps = {
   setStep: (s: number) => void;

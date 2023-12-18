@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import styles from "../../styles/components/navbar.module.css";
+import styles from "@styles/components/navbar.module.css";
 import Button from "./button";
 import {
   useConnect,
@@ -18,18 +18,18 @@ import {
 } from "@starknet-react/core";
 import Wallets from "./wallets";
 import ModalMessage from "./modalMessage";
-import { useDisplayName } from "../../hooks/displayName.tsx";
+import { useDisplayName } from "@hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
 import { constants } from "starknet";
 import { usePathname } from "next/navigation";
-import theme from "../../styles/theme";
+import theme from "@styles/theme";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
-import WalletButton from "../navbar/walletButton";
-import NotificationIcon from "./iconsComponents/icons/notificationIcon";
-import ModalNotifications from "./notifications/modalNotifications";
-import { useNotificationManager } from "../../hooks/useNotificationManager";
-import NotificationUnreadIcon from "./iconsComponents/icons/notificationIconUnread";
-import { getPendingBoostClaims } from "../../services/apiService";
+import WalletButton from "@components/navbar/walletButton";
+import NotificationIcon from "@components/UI/iconsComponents/icons/notificationIcon";
+import ModalNotifications from "@components/UI/notifications/modalNotifications";
+import { useNotificationManager } from "@hooks/useNotificationManager";
+import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notificationIconUnread";
+        import { getPendingBoostClaims } from "../../services/apiService";
 import { hexToDecimal } from "../../utils/feltService";
 
 const Navbar: FunctionComponent = () => {

@@ -1,6 +1,6 @@
 import { Slider } from "@mui/material";
 import React, { FunctionComponent, useMemo, useState } from "react";
-import styles from "../../styles/components/land.module.css";
+import styles from "@styles/components/land.module.css";
 
 type ZoomSliderProps = {
   updateZoomIndex: (newValue: number) => void;

@@ -1,16 +1,16 @@
 "use client";
 
 import React, { FunctionComponent, useEffect, useState } from "react";
-import styles from "../../styles/quests.module.css";
+import styles from "@styles/quests.module.css";
 import {
   CheckCircle as CheckCircleIcon,
   ErrorRounded as ErrorRoundedIcon,
 } from "@mui/icons-material";
-import Button from "../UI/button";
+import Button from "@components/UI/button";
 import { CircularProgress } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
-import Quiz from "../quiz/quiz";
-import ArrowRightIcon from "../UI/iconsComponents/icons/arrowRightIcon";
+import Quiz from "@components/quiz/quiz";
+import ArrowRightIcon from "@components/UI/iconsComponents/icons/arrowRightIcon";
 
 const Task: FunctionComponent<Task> = ({
   name,

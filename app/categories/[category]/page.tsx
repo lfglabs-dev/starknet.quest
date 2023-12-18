@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Category from "./category";
-import { fetchQuestCategoryData } from "../../../services/questService";
-import { defaultMetatags } from "../../../constants/metatags";
+import { fetchQuestCategoryData } from "@services/questService";
+import { defaultMetatags } from "@constants/metatags";
 
 type Props = {
   params: { category: string };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WalletProvider } from "get-starknet-core";
-import { getBrowser } from "../utils/browserService";
+import { getBrowser } from "@utils/browserService";
 
 export default function useGetDiscoveryWallets(
   getDiscoveryWallets: Promise<WalletProvider[]>

@@ -2,10 +2,10 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import QuizControls from "./quizControls";
 import ProgressBar from "./progressBar";
 import QuestionRouter from "./questionRouter";
-import styles from "../../styles/components/quests/quiz.module.css";
-import CheckMarkIcon from "../UI/iconsComponents/icons/checkMarkIcon";
-import NftIssuer from "../quests/nftIssuer";
-import { CDNImg } from "../cdn/image";
+import styles from "@styles/components/quests/quiz.module.css";
+import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
+import NftIssuer from "@components/quests/nftIssuer";
+import { CDNImg } from "@components/cdn/image";
 
 type StepProps = {
   setStep: (s: number) => void;

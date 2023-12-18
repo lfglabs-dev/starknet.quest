@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 import Popup from "./popup";
-import TwitterIcon from "../iconsComponents/icons/twitterIcon";
-import DiscordIcon from "../iconsComponents/icons/discordIcon";
-import iconsStyles from "../../../styles/components/icons.module.css";
+import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
+import DiscordIcon from "@components/UI/iconsComponents/icons/discordIcon";
+import iconsStyles from "@styles/components/icons.module.css";
 import Button from "../button";
-import styles from "../../../styles/components/popup.module.css";
+import styles from "@styles/components/popup.module.css";
 
 type SharePopupProps = {
   close: () => void;

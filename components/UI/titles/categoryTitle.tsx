@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/components/titles.module.css";
-import Corner from "../../shapes/corner";
-import Squares from "../../shapes/squares";
+import styles from "@styles/components/titles.module.css";
+import Corner from "@components/shapes/corner";
+import Squares from "@components/shapes/squares";
 
 type CategoryTitleProps = {
   title: string;

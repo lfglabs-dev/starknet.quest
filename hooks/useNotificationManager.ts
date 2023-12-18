@@ -2,8 +2,8 @@ import { useAccount, useProvider } from "@starknet-react/core";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { useEffect } from "react";
-import { hexToDecimal } from "../utils/feltService";
-import { NotificationType } from "../constants/notifications";
+import { hexToDecimal } from "@utils/feltService";
+import { NotificationType } from "@constants/notifications";
 
 const notificationsAtom = atomWithStorage<SQNotification<NotificationData>[]>(
   "userNotifications_SQ",

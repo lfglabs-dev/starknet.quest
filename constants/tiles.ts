@@ -1,4 +1,4 @@
-import { Offset } from "../types/land";
+import { Offset } from "types/land";
 
 export enum BLOCK {
   MIN_WIDTH = 7,

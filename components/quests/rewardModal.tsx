@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/quests/modal.module.css";
+import styles from "@styles/components/quests/modal.module.css";
 import { FunctionComponent, ReactNode } from "react";
 import { Modal } from "@mui/material";
 

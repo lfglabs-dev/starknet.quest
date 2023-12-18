@@ -1,4 +1,4 @@
-import { minifyAddress, minifyDomain } from "../utils/stringService";
+import { minifyAddress, minifyDomain } from "@utils/stringService";
 import { useDomainFromAddress } from "./naming";
 // import { Provider } from "starknet";
 // import { useStarkName } from "@starknet-react/core";

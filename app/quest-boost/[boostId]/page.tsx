@@ -1,27 +1,28 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../../styles/questboost.module.css";
+import styles from "@styles/questboost.module.css";
 import { CallData, uint256 } from "starknet";
 import {
   getBoostById,
   getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
-} from "../../../services/apiService";
-import Quest from "../../../components/quests/quest";
+} from "@services/apiService";
+import Quest from "@components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
-import Timer from "../../../components/quests/timer";
+import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
-import Button from "../../../components/UI/button";
-import { useNotificationManager } from "../../../hooks/useNotificationManager";
+import Button from "@components/UI/button";
+import { useNotificationManager } from "@hooks/useNotificationManager";
 import {
   NotificationType,
   TransactionType,
-} from "../../../constants/notifications";
-import { CDNImage } from "../../../components/cdn/image";
+} from "@constants/notifications";
+import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "../../../utils/feltService";
+
 
 type BoostQuestPageProps = {
   params: {
@@ -37,6 +38,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
   const [sign, setSign] = useState<Signature>(["", ""]);
+  const [disableClaimButton, setDisableClaimButton] = useState<boolean>(false);
   const { addTransaction } = useNotificationManager();
 
   const getTotalParticipants = async (questIds: number[]) => {
@@ -102,6 +104,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       });
 
       if (transaction_hash) {
+        setDisableClaimButton(true);
         addTransaction({
           timestamp: Date.now(),
           subtext: boost?.name ?? "Quest Boost Rewards",

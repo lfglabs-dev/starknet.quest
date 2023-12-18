@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
 import styles from "../../../styles/components/notifications.module.css";
 import { FunctionComponent } from "react";
-import DoneIcon from "../iconsComponents/icons/doneIcon";
-import theme from "../../../styles/theme";
-import CloseCircleIcon from "../iconsComponents/icons/closeCircleIcon";
-import { timeElapsed } from "../../../utils/timeService";
+import DoneIcon from "@components/UI/iconsComponents/icons/doneIcon";
+import theme from "@styles/theme";
+import CloseCircleIcon from "@components/UI/iconsComponents/icons/closeCircleIcon";
+import { timeElapsed } from "@utils/timeService";
 import {
   NotificationType,
   TransactionType,
   notificationLinkText,
   notificationTitle,
-} from "../../../constants/notifications";
+} from "@constants/notifications";
 import { CircularProgress } from "@mui/material";
 
 type NotificationDetailProps = {

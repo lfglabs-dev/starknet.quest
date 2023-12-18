@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
-import styles from "../../../styles/components/quests/quiz.module.css";
-import { CDNImg } from "../../cdn/image";
+import styles from "@styles/components/quests/quiz.module.css";
+import { CDNImg } from "@components/cdn/image";
 
 type ImageChoiceProps = {
   setSelected: (s: boolean) => void;

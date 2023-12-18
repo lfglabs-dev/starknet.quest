@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import Steps from "../../UI/steps/steps";
-import CategoryTitle from "../../UI/titles/categoryTitle";
-import styles from "../../../styles/components/pages/home/howToParticipate.module.css";
+import Steps from "@components/UI/steps/steps";
+import CategoryTitle from "@components/UI/titles/categoryTitle";
+import styles from "@styles/components/pages/home/howToParticipate.module.css";
 
 const HowToParticipate: FunctionComponent = () => {
   return (

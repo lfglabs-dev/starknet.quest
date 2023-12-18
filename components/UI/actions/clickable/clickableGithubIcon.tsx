@@ -1,10 +1,10 @@
 import { Tooltip } from "@mui/material";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import GithubIcon from "../../../UI/iconsComponents/icons/githubIcon";
-import styles from "../../../../styles/components/icons.module.css";
-import { minifyDomain } from "../../../../utils/stringService";
-import VerifiedIcon from "../../../UI/iconsComponents/icons/verifiedIcon";
-import theme from "../../../../styles/theme";
+import GithubIcon from "@components/UI/iconsComponents/icons/githubIcon";
+import styles from "@styles/components/icons.module.css";
+import { minifyDomain } from "@utils/stringService";
+import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
+import theme from "@styles/theme";
 
 type ClickableGithubIconProps = {
   width: string;
