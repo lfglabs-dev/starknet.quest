@@ -1,12 +1,12 @@
 import React from "react";
-import styles from "../../styles/components/wallets.module.css";
+import styles from "@styles/components/wallets.module.css";
 import { Connector, useAccount, useConnect } from "@starknet-react/core";
 import Button from "./button";
 import { FunctionComponent, useEffect } from "react";
 import { Modal } from "@mui/material";
-import WalletIcons from "./iconsComponents/icons/walletIcons";
+import WalletIcons from "@components/UI/iconsComponents/icons/walletIcons";
 import getDiscoveryWallets from "get-starknet-core";
-import useGetDiscoveryWallets from "../../hooks/useGetDiscoveryWallets";
+import useGetDiscoveryWallets from "@hooks/useGetDiscoveryWallets";
 
 type WalletsProps = {
   closeWallet: () => void;

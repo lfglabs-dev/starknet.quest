@@ -3,8 +3,8 @@
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Wallets from "../../components/UI/wallets";
-import ErrorScreen from "../../components/UI/screens/errorScreen";
+import Wallets from "@components/UI/wallets";
+import ErrorScreen from "@components/UI/screens/errorScreen";
 
 export default function Page() {
   const { address } = useAccount();

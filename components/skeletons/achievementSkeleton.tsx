@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Skeleton } from "@mui/material";
-import styles from "../../styles/achievements.module.css";
+import styles from "@styles/achievements.module.css";
 
 const AchievementSkeleton: FunctionComponent = () => {
   return (

@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/quests.module.css";
-import Button from "../..//UI/button";
+import styles from "@styles/quests.module.css";
+import Button from "@components/UI/button";
 import { useMediaQuery } from "@mui/material";
-import FeaturedQuestSkeleton from "../../skeletons/featuredQuestSkeleton";
-import Timer from "../../quests/timer";
-import { CDNImg } from "../../cdn/image";
+import FeaturedQuestSkeleton from "@components/skeletons/featuredQuestSkeleton";
+import Timer from "@components/quests/timer";
+import { CDNImg } from "@components/cdn/image";
 
 type FeaturedQuestProps = {
   onClick?: () => void;

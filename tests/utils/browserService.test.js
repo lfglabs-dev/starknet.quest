@@ -1,6 +1,6 @@
 import {
   getBrowser,
-} from "../../utils/browserService";
+} from "@utils/browserService";
 
 describe("Should test getBrowser function", () => {
   it("Should return Chrome", () => {

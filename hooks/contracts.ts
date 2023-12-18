@@ -1,5 +1,5 @@
 import { Abi } from "starknet";
-import quests_nft_abi from "../abi/quests_nft_abi.json";
+import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useContract } from "@starknet-react/core";
 
 export function useQuestsNFTContract() {

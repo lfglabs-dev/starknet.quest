@@ -4,6 +4,7 @@
   width: fit-content;
   display: block;
   margin: 0 auto;
+  text-align: center;
 }
 
 .mainTitleContainer {
@@ -51,11 +52,13 @@
     font-size: 40px;
     margin-top: 24px;
   }
+
   .mainSubtitle {
     width: 100%;
     font-size: 16px;
     margin-top: 16px;
   }
+
   .corner {
     display: none;
   }
@@ -69,6 +72,7 @@
     margin-top: 24px;
     text-align: center;
   }
+
   .mainSubtitle {
     width: 100%;
     font-size: max(3vw, 16px);
@@ -76,9 +80,11 @@
     line-height: max(4vw, 19px);
     text-align: center;
   }
+
   .corner {
     display: none;
   }
+
   .mainTitleContainer {
     position: relative;
     padding: 0;
@@ -86,6 +92,7 @@
     display: block;
     margin: 0 auto;
   }
+
   .squares {
     display: none;
   }

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Skeleton } from "@mui/material";
-import styles from "../../styles/leaderboard.module.css";
+import styles from "@styles/leaderboard.module.css";
 
 const LeaderboardSkeleton: FunctionComponent = () => {
   return (

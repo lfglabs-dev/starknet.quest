@@ -1,4 +1,4 @@
-import { getDomainFromAddress } from '../../utils/domainService';
+import { getDomainFromAddress } from '@utils/domainService';
 
 const API_URL = process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK;
 

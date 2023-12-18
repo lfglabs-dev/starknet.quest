@@ -3,7 +3,7 @@ import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { NoToneMapping } from "three";
 import { Camera } from "./camera";
 import { LdtkReader } from "../../utils/parser";
-import { iLDtk } from "../../types/ldtk";
+import { iLDtk } from "types/ldtk";
 import { useGesture } from "@use-gesture/react";
 import ZoomSlider from "./zoomSlider";
 import { Map } from "./map";

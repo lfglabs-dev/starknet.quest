@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useMemo } from "react";
-import styles from "../../styles/achievements.module.css";
+import styles from "@styles/achievements.module.css";
 import {
   AchievementDocument,
   AchievementsDocument,
 } from "../../types/backTypes";
 import Level from "./level";
-import cdnize from "../../utils/cdnize";
+import cdnize from "@utils/cdnize";
 
 type AchievementProps = {
   achievements: AchievementsDocument;

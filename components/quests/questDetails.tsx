@@ -7,27 +7,27 @@ import React, {
   FunctionComponent,
   useContext,
 } from "react";
-import styles from "../../styles/quests.module.css";
+import styles from "@styles/quests.module.css";
 import Task from "./task";
 import Reward from "./reward";
-import quests_nft_abi from "../../abi/quests_nft_abi.json";
+import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
-import { hexToDecimal } from "../../utils/feltService";
+import { hexToDecimal } from "@utils/feltService";
 import {
   NFTItem,
   QueryError,
   QuestDocument,
   UserTask,
-} from "../../types/backTypes";
+} from "types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
-import TasksSkeleton from "../skeletons/tasksSkeleton";
-import { generateCodeChallenge } from "../../utils/codeChallenge";
+import TasksSkeleton from "@components/skeletons/tasksSkeleton";
+import { generateCodeChallenge } from "@utils/codeChallenge";
 import Timer from "./timer";
 import NftImage from "./nftImage";
-import { splitByNftContract } from "../../utils/rewards";
-import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
-import { getCompletedQuestsOfUser } from "../../services/apiService";
+import { splitByNftContract } from "@utils/rewards";
+import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
+import { getCompletedQuestsOfUser } from "@services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;

@@ -60,6 +60,18 @@ type Quest = {
   tasks: Task[];
 };
 
+type Boost = {
+  amount: number;
+  token: string;
+  expiry: number;
+  quests: number[];
+  claimed: boolean;
+  winner: string | null;
+  img_url: string;
+  id: number;
+  name: string;
+};
+
 type Reward = {
   onClick: () => void;
   reward: string;
@@ -151,6 +163,8 @@ type ProfileCard = {
   soloBuildings: StarkscanNftProps[];
 };
 
+type Signature = [string, string];
+
 type UserAchievement = {
   name: string;
   shortDescription: string;
@@ -196,6 +210,13 @@ type SQNotification<T> = {
   subtext: string;
   type: NotificationType;
   data: T;
+};
+
+type SQInfoData = {
+  title: string;
+  subtext: string;
+  link?: string;
+  linkText?: string;
 };
 
 type TransactionData = {

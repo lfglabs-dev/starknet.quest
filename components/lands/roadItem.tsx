@@ -1,8 +1,8 @@
-import { propsOffset, OffsetKey } from "../../constants/tiles";
-import { Coord, RoadObjects, TileData } from "../../types/land";
+import { propsOffset, OffsetKey } from "@constants/tiles";
+import { Coord, RoadObjects, TileData } from "types/land";
 import React, { ReactElement, memo, useMemo, useState } from "react";
 import { PlaneGeometry, Texture } from "three";
-import { Tileset } from "../../types/ldtk";
+import { Tileset } from "types/ldtk";
 
 type RoadItemProps = {
   tileset: Tileset;

@@ -1,6 +1,6 @@
 import Image, { ImageProps, StaticImageData } from "next/image";
 import React, { ImgHTMLAttributes } from "react";
-import cdnize from "../../utils/cdnize";
+import cdnize from "@utils/cdnize";
 
 export const CDNImg: React.FC<ImgHTMLAttributes<HTMLImageElement>> = ({
   src,

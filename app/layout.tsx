@@ -1,9 +1,9 @@
 import React from "next";
 import type { Metadata, Viewport } from "next";
 import { Providers } from "./provider";
-import "../styles/globals.css";
-import Navbar from "../components/UI/navbar";
-import Footer from "../components/UI/footer";
+import "@styles/globals.css";
+import Navbar from "@components/UI/navbar";
+import Footer from "@components/UI/footer";
 
 export const metadata: Metadata = {
   title: "Starknet Quest",

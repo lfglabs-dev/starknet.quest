@@ -1,16 +1,16 @@
 import React from "react";
-import RankingSkeleton from "../skeletons/rankingSkeleton";
-import { minifyAddress, minifyDomain } from "../../utils/stringService";
-import { getDomainFromAddress } from "../../utils/domainService";
-import { decimalToHex } from "../../utils/feltService";
-import Avatar from "../UI/avatar";
+import RankingSkeleton from "@components/skeletons/rankingSkeleton";
+import { minifyAddress, minifyDomain } from "@utils/stringService";
+import { getDomainFromAddress } from "@utils/domainService";
+import { decimalToHex } from "@utils/feltService";
+import Avatar from "@components/UI/avatar";
 import { FunctionComponent, useEffect, useState } from "react";
-import { getCompletedQuestsOfUser } from "../../services/apiService";
-import styles from "../../styles/leaderboard.module.css";
+import { getCompletedQuestsOfUser } from "@services/apiService";
+import styles from "@styles/leaderboard.module.css";
 import { useMediaQuery } from "@mui/material";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Link from "next/link";
-import { CDNImage } from "../cdn/image";
+import { CDNImage } from "@components/cdn/image";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
