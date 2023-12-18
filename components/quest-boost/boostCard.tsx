@@ -5,9 +5,6 @@ import Link from "next/link";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
 import { CDNImage } from "@components/cdn/image";
 
-
-import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
-
 type BoostCardProps = {
   boost: Boost;
 };

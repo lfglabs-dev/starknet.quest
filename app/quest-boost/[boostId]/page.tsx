@@ -16,13 +16,9 @@ import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
 import { useNotificationManager } from "@hooks/useNotificationManager";
-import {
-  NotificationType,
-  TransactionType,
-} from "@constants/notifications";
+import { NotificationType, TransactionType } from "@constants/notifications";
 import { CDNImage } from "@components/cdn/image";
-import { hexToDecimal } from "../../../utils/feltService";
-
+import { hexToDecimal } from "@utils/feltService";
 
 type BoostQuestPageProps = {
   params: {

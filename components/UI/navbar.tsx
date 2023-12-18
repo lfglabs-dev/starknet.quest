@@ -29,8 +29,8 @@ import NotificationIcon from "@components/UI/iconsComponents/icons/notificationI
 import ModalNotifications from "@components/UI/notifications/modalNotifications";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notificationIconUnread";
-        import { getPendingBoostClaims } from "../../services/apiService";
-import { hexToDecimal } from "../../utils/feltService";
+import { getPendingBoostClaims } from "@services/apiService";
+import { hexToDecimal } from "@utils/feltService";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
