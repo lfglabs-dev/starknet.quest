@@ -178,9 +178,11 @@
     font-size: 12px;
   }
   .title {
+    width: 100%;
     font-size: 18px;
   }
   .subtitle {
+    width: 100%;
     font-size: 14px;
   }
   .banner {

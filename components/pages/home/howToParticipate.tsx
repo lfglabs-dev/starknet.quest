@@ -5,7 +5,7 @@ import styles from "@styles/components/pages/home/howToParticipate.module.css";
 
 const HowToParticipate: FunctionComponent = () => {
   return (
-    <section>
+    <section className={styles.section}>
       <CategoryTitle
         title="How to Participate ?"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"

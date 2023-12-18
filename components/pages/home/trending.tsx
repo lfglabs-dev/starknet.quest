@@ -14,7 +14,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
 }) => {
   const router = useRouter();
   return (
-    <>
+    <section className={styles.section}>
       <h1 className={styles.title}>Trending quests</h1>
       <div className={styles.questContainer}>
         {trendingQuests ? (
@@ -39,7 +39,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
           <QuestsSkeleton />
         )}
       </div>
-    </>
+    </section>
   );
 };
 

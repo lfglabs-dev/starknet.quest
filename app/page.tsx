@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styles from "@styles/Home.module.css";
 
 import { useRouter } from "next/navigation";
@@ -10,7 +10,6 @@ import TrendingQuests from "@components/pages/home/trending";
 import Blur from "@components/shapes/blur";
 import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
-import { getBoosts } from "@services/apiService";
 
 export default function Page() {
   const router = useRouter();
