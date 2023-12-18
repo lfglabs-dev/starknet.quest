@@ -161,10 +161,12 @@ export default function Page({ params }: BoostQuestPageProps) {
               alt="usdc icon"
             />
           </div>
-          <p>among</p>
-          <p className={styles.claim_button_text_highlight}>
-            {participants} players
-          </p>
+          <div className="flex flex-row gap-2 items-center ">
+            <p>among</p>
+            <p className={styles.claim_button_text_highlight}>
+              {participants} players
+            </p>
+          </div>
         </div>
         <div>
           <Button
