@@ -33,8 +33,8 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
-          {boosts ? (
-            <Link href={`/quest-boost`} className={styles.questCategory}>
+          {boosts && boosts.length > 0 ? (
+            <Link href={`/quest-boost`} className={styles.questCategoryBoost}>
               <div className={styles.categoryInfos}>
                 <h2 className="text-gray-200">Boosts Quest</h2>
                 <p className="text-gray-200">

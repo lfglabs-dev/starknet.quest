@@ -117,4 +117,8 @@
     .instructions_container {
         padding: 0rem;
     }
+
+    .claim_button_text_content {
+        flex-direction: column;
+    }
 }
