@@ -7,7 +7,7 @@ import React, {
   FunctionComponent,
   useCallback,
 } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineMenu } from "react-icons/ai";
 import styles from "@styles/components/navbar.module.css";
 import Button from "./button";
 import {
@@ -31,6 +31,7 @@ import { useNotificationManager } from "@hooks/useNotificationManager";
 import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notificationIconUnread";
 import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
+import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 
 const Navbar: FunctionComponent = () => {
   const [nav, setNav] = useState<boolean>(false);
@@ -196,7 +197,7 @@ const Navbar: FunctionComponent = () => {
           <div className="ml-4">
             <Link href="/" className="modified-cursor-pointer">
               <img
-                className="modified-cursor-pointer"
+                className={styles.logo}
                 src="/visuals/starknetquestLogo.svg"
                 alt="Starknet.id Logo"
                 width={70}
@@ -268,14 +269,12 @@ const Navbar: FunctionComponent = () => {
           }
         >
           <div
-            className={
-              nav
-                ? "fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in duration-500 flex justify-between flex-col"
-                : "fixed left-[-100%] top-0 p-10 ease-in h-screen flex justify-between flex-col"
-            }
+            className={`fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${
+              nav ? styles.mobileNavbarShown : styles.mobileNavbarHidden
+            }`}
           >
             <div className="h-full flex flex-col">
-              <div className="flex w-full items-center justify-between">
+              <div className={styles.mobileNavBarHeader}>
                 <div>
                   <Link href="/">
                     <img
@@ -283,6 +282,7 @@ const Navbar: FunctionComponent = () => {
                       alt="Starknet Quest Logo"
                       width={70}
                       height={70}
+                      className={styles.logo}
                     />
                   </Link>
                 </div>
@@ -291,7 +291,10 @@ const Navbar: FunctionComponent = () => {
                   onClick={handleNav}
                   className="rounded-lg modified-cursor-pointer p-1"
                 >
-                  <AiOutlineClose color={theme.palette.secondary.main} />
+                  <CloseFilledIcon
+                    width="32"
+                    color={theme.palette.background.default}
+                  />
                 </div>
               </div>
               <div className="py-4 my-auto text-center font-extrabold">
@@ -336,11 +339,11 @@ const Navbar: FunctionComponent = () => {
               </div>
             </div>
             <div className="flex flex-col items-center my-4 w-full">
-              <div className="text-background">
+              <div className={styles.connectButtonContainer}>
                 <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
               </div>
               <div className="flex">
-                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-6">
                   <a
                     href="https://twitter.com/starknet_quest"
                     target="_blank"
@@ -349,7 +352,7 @@ const Navbar: FunctionComponent = () => {
                     <FaTwitter size={28} color={theme.palette.secondary.main} />
                   </a>
                 </div>
-                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-2">
+                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-6">
                   <a
                     href="https://discord.gg/byEGk6w6T6"
                     target="_blank"
