@@ -20,6 +20,7 @@
   flex-direction: column;
   bottom: 16px;
   padding-top: 48px;
+  margin: 0;
 }
 
 .profileCard {
@@ -62,7 +63,8 @@
 .profilePicture {
   border-radius: 36px;
   border: 1px solid var(--secondary, #f4faff);
-  box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px rgba(191, 158, 123, 0.06);
+  box-shadow: 0px 2.1599998474121094px 28.799999237060547px 0px
+    rgba(191, 158, 123, 0.06);
   width: 72px;
   height: 72px;
   overflow: hidden;
@@ -99,7 +101,7 @@
   background-blend-mode: overlay;
 }
 
-.memberSince>p {
+.memberSince > p {
   color: var(--secondary, #f4faff);
   text-align: center;
   font-family: Sora;
@@ -251,7 +253,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-bottom: 32px;
+    padding-bottom: 6rem;
     z-index: 0;
     top: 0;
   }

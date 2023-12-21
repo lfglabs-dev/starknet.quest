@@ -33,6 +33,9 @@ export const Land = ({
 
   useEffect(() => {
     if (address) {
+      setSoloBuildings([]);
+      setIsReady(true);
+      return;
       retrieveAssets(
         `https://${
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
