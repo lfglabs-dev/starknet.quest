@@ -249,7 +249,7 @@
 
 @media (max-width: 768px) {
   .profiles {
-    gap: 16px;
+    gap: 1.5rem;
     display: flex;
     flex-direction: column;
     position: relative;
