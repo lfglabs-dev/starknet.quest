@@ -254,6 +254,7 @@
     flex-direction: column;
     position: relative;
     padding-bottom: 6rem;
+    padding-top: 8px;
     z-index: 0;
     top: 0;
   }
