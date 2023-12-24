@@ -35,7 +35,6 @@ export const Land = ({
     if (address) {
       setSoloBuildings([]);
       setIsReady(true);
-      return;
       retrieveAssets(
         `https://${
           process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
@@ -175,6 +174,8 @@ export const Land = ({
     setSoloBuildings(nfts);
     setIsReady(true);
   };
+
+  console.log(isReady, userNft, hasNFTs);
 
   return (
     <div className={landStyles.landContainer}>
