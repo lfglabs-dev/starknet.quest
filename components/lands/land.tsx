@@ -175,8 +175,6 @@ export const Land = ({
     setIsReady(true);
   };
 
-  console.log(isReady, userNft, hasNFTs);
-
   return (
     <div className={landStyles.landContainer}>
       {isReady ? (

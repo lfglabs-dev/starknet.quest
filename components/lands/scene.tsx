@@ -8,6 +8,7 @@ import { useGesture } from "@use-gesture/react";
 import ZoomSlider from "./zoomSlider";
 import { Map } from "./map";
 import BuildingTooltip from "./buildingTooltip";
+import styles from "@styles/components/land.module.css";
 
 type SceneProps = {
   address: string;
@@ -59,6 +60,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
 
   const bind = useGesture({
     onDrag: ({ first, down, pinching, cancel }) => {
+      if (window.innerWidth < 768) return;
       if (first) setIsFirstTouch(true);
       else setIsFirstTouch(false);
       if (pinching) return cancel();
@@ -106,7 +108,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
         onContextMenu={(event) => {
           event.preventDefault();
         }}
-        style={{ touchAction: "none" }}
+        className={styles.canvas}
       >
         {mapReader ? (
           <>
