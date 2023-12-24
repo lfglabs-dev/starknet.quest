@@ -31,6 +31,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [boost, setBoost] = useState<Boost>();
   const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
+  const [displayCard, setDisplayCard] = useState<boolean>(false);
 
   const fetchPageData = async () => {
     const boostInfo = await getBoostById(boostId);
@@ -99,35 +100,42 @@ export default function Page({ params }: BoostQuestPageProps) {
   return (
     <div className={styles.claim_screen_container}>
       <div className="flex flex-col gap-4">
-        <div className={styles.claim_amount_card}>
-          <div className={styles.token_logo}>
-            <CDNImage
-              src={"/icons/usdc.svg"}
-              priority
-              width={97}
-              height={97}
-              alt="usdc icon"
-            />
-          </div>
-          <div className={styles.claim_button_text}>
-            <p className={styles.claim_amount}>{boost?.amount}</p>
-          </div>
-        </div>
-        <div className={styles.claim_button_animation}>
-          <Button
-            disabled={
-              boost?.claimed ||
-              hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
-            }
-            onClick={handleClaimClick}
-          >
-            Collect my reward
-          </Button>
-        </div>
+        {displayCard ? (
+          <>
+            <div className={styles.claim_amount_card}>
+              <div className={styles.token_logo}>
+                <CDNImage
+                  src={"/icons/usdc.svg"}
+                  priority
+                  width={97}
+                  height={97}
+                  alt="usdc icon"
+                />
+              </div>
+              <div className={styles.claim_button_text}>
+                <p className={styles.claim_amount}>{boost?.amount}</p>
+              </div>
+            </div>
+            <div className={styles.claim_button_animation}>
+              <Button
+                disabled={
+                  boost?.claimed ||
+                  hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
+                }
+                onClick={handleClaimClick}
+              >
+                Collect my reward
+              </Button>
+            </div>
+          </>
+        ) : null}
       </div>
-      <div>
+      <div className="absolute ml-auto mr-auto left-0 right-0 flex justify-center w-full">
         <Lottie
-          className="w-full"
+          onEnterFrame={() => {
+            setDisplayCard(true);
+          }}
+          className="w-[600px] h-[600px]"
           animationData={verifiedLottie}
           loop={false}
         />
