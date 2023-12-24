@@ -252,16 +252,15 @@
     gap: 1.5rem;
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: static;
     padding-bottom: 6rem;
     padding-top: 8px;
     z-index: 0;
-    top: 0;
   }
 
   .profileCard {
-    width: calc(100% - 32px);
-    margin-left: 38px;
+    width: calc(100% - 3rem);
+    margin: 0 1.5rem;
     max-height: none;
   }
 }
