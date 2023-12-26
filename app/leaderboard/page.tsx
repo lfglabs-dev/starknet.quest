@@ -25,15 +25,12 @@ import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
-import {
-  rankOrder,
-  rankOrderMobile,
-  timeFrameMap,
-} from "@utils/constants";
+import { rankOrder, rankOrderMobile, timeFrameMap } from "@utils/constants";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
-import { hexToDecimal } from "@utils/feltService";
+import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import { useMediaQuery } from "@mui/material";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -43,6 +40,7 @@ export default function Page() {
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const [userPercentile, setUserPercentile] = useState<number>(100);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
@@ -65,12 +63,16 @@ export default function Page() {
 
   // set user address on wallet connect and disconnect
   useEffect(() => {
+    setTimeout(() => {
+      setApiCallDelay(true);
+    }, 1000);
     if (address === "") return;
     if (address) setUserAddress(address);
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
   useEffect(() => {
+    if (!apiCallDelay) return;
     const requestBody = {
       addr:
         status === "connected"
@@ -98,7 +100,7 @@ export default function Page() {
     fetchLeaderboardToppersResult();
     fetchRankingResults();
     setLoading(false);
-  }, [userAddress, status]);
+  }, [userAddress, status, apiCallDelay]);
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -454,13 +456,18 @@ export default function Page() {
                         ]?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <RankCard
-                          key={index}
-                          name={item?.address}
-                          experience={item?.xp}
-                          trophy={item?.achievements}
-                          position={position}
-                        />
+                        <Link
+                          key={item?.address}
+                          href={`/${decimalToHex(item.address)}`}
+                        >
+                          <RankCard
+                            key={index}
+                            name={item?.address}
+                            experience={item?.xp}
+                            trophy={item?.achievements}
+                            position={position}
+                          />
+                        </Link>
                       );
                     })
                   : rankOrder.map((position, index) => {
@@ -472,13 +479,18 @@ export default function Page() {
                         ]?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <RankCard
-                          key={index}
-                          name={item?.address}
-                          experience={item?.xp}
-                          trophy={item?.achievements}
-                          position={position}
-                        />
+                        <Link
+                          key={item?.address}
+                          href={`/${decimalToHex(item.address)}`}
+                        >
+                          <RankCard
+                            key={index}
+                            name={item?.address}
+                            experience={item?.xp}
+                            trophy={item?.achievements}
+                            position={position}
+                          />
+                        </Link>
                       );
                     })
                 : null}

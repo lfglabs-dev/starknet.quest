@@ -255,8 +255,6 @@
 
 .ranking_position_layout {
   display: flex;
-  flex: 1;
-  max-width: 22px;
   align-items: center;
 }
 
