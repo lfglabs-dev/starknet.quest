@@ -91,12 +91,14 @@ type AchievementDocument = {
   title: string;
   desc: string;
   completed: boolean;
+  claimed: boolean;
   img_url: string;
   verify_type: string;
 };
 
 type CompletedDocument = {
   achieved: number[];
+  claimed?: boolean;
 };
 
 type DeployedTime = {

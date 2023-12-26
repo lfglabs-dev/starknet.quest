@@ -13,12 +13,7 @@ import Reward from "./reward";
 import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import {
-  NFTItem,
-  QueryError,
-  QuestDocument,
-  UserTask,
-} from "types/backTypes";
+import { NFTItem, QueryError, QuestDocument, UserTask } from "types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "@components/skeletons/tasksSkeleton";

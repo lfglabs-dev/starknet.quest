@@ -15,6 +15,8 @@ import { useLocation } from "react-use";
 import RefreshIcon from "@components/UI/iconsComponents/icons/refreshIcon";
 import theme from "@styles/theme";
 
+const NFT_ACHIEVEMENTS = [23, 24, 25, 26, 27];
+
 export default function Page() {
   const location = useLocation();
   const { address } = useAccount();
@@ -32,7 +34,9 @@ export default function Page() {
       // If address isn't loaded after 1 second, make the API call with the zero address
       if (shouldFetchWithZeroAddress) {
         fetch(`${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=0`)
-          .then((response) => response.json())
+          .then((response) => {
+            return response.json();
+          })
           .then((data: AchievementsDocument[] | QueryError) => {
             if (data as AchievementsDocument[])
               setUserAchievements(data as AchievementsDocument[]);
@@ -49,7 +53,9 @@ export default function Page() {
           process.env.NEXT_PUBLIC_API_LINK
         }/achievements/fetch?addr=${hexToDecimal(address)}`
       )
-        .then((response) => response.json())
+        .then((response) => {
+          return response.json();
+        })
         .then((data: AchievementsDocument[] | QueryError) => {
           if (data as AchievementsDocument[])
             setUserAchievements(data as AchievementsDocument[]);
@@ -101,7 +107,10 @@ export default function Page() {
             // otherwise we check each achievement individually
             const achievementsPromises = achievementCategory.achievements.map(
               async (achievement, aIndex) => {
-                if (!achievement.completed) {
+                if (
+                  !achievement.completed ||
+                  NFT_ACHIEVEMENTS.includes(achievement.id)
+                ) {
                   try {
                     const response = await fetch(
                       `${
@@ -111,14 +120,17 @@ export default function Page() {
                       }?addr=${hexToDecimal(address)}&id=${achievement.id}`
                     );
                     const data: CompletedDocument = await response.json();
-
+                    const newUserAchievements = [...userAchievements];
                     if (data?.achieved) {
-                      const newUserAchievements = [...userAchievements];
                       newUserAchievements[index].achievements[
                         aIndex
                       ].completed = true;
-                      setUserAchievements(newUserAchievements);
                     }
+                    if (data.claimed) {
+                      newUserAchievements[index].achievements[aIndex].claimed =
+                        data.claimed;
+                    }
+                    setUserAchievements(newUserAchievements);
                   } catch (error) {
                     console.error("Fetch error:", error);
                   }
