@@ -38,7 +38,7 @@ export default function Page() {
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
-  const [userPercentile, setUserPercentile] = useState<number>(100);
+  const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
   const searchAddress = useDebounce<string>(searchQuery, 200);
@@ -106,15 +106,15 @@ export default function Page() {
     useState<LeaderboardToppersData>({
       weekly: {
         best_users: [],
-        length: 0,
+        total_users: 0,
       },
       monthly: {
         best_users: [],
-        length: 0,
+        total_users: 0,
       },
       all_time: {
         best_users: [],
-        length: 0,
+        total_users: 0,
       },
     });
 
@@ -300,11 +300,11 @@ export default function Page() {
         timeFrameMap[
           duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ]?.length ?? 0
+      ]?.total_users ?? 0
     );
     setUserPercentile(res);
     setShowNoresults(false);
-  }, [leaderboardToppers, currentSearchedAddress]);
+  }, [leaderboardToppers, currentSearchedAddress, duration]);
 
   return (
     <div className={styles.leaderboard_container}>
@@ -365,29 +365,42 @@ export default function Page() {
             </div>
 
             {/* this will be displayed if user is present otherwise will not be displayed */}
-            {userPercentile >= 0 ? (
-              <div className={styles.percentile_container}>
-                {currentSearchedAddress.length > 0 || userAddress ? (
-                  <Avatar
-                    address={
-                      currentSearchedAddress.length > 0
-                        ? currentSearchedAddress
-                        : userAddress
-                    }
-                  />
-                ) : null}
-                <div className={styles.percentile_text_container}>
-                  <p className={styles.percentile_text_normal}>
-                    {currentSearchedAddress.length > 0 ? "He is" : "You are "}
-                  </p>
-                  <span className={styles.percentile_text_green}>
-                    &nbsp;better than {userPercentile}%&nbsp;
-                  </span>
-                  <p className={styles.percentile_text_normal}>
-                    of the other players
-                  </p>
+            {userPercentile ? (
+              userPercentile >= 0 ? (
+                <div className={styles.percentile_container}>
+                  {currentSearchedAddress.length > 0 || userAddress ? (
+                    <Avatar
+                      address={
+                        currentSearchedAddress.length > 0
+                          ? currentSearchedAddress
+                          : userAddress
+                      }
+                    />
+                  ) : null}
+                  <div className={styles.percentile_text_container}>
+                    <p className={styles.percentile_text_normal}>
+                      {currentSearchedAddress.length > 0 ? "He is" : "You are "}
+                    </p>
+                    <span className={styles.percentile_text_green}>
+                      &nbsp;better than {userPercentile}%&nbsp;
+                    </span>
+                    <p className={styles.percentile_text_normal}>
+                      of the other players
+                    </p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={styles.percentile_container}>
+                  <p className={styles.percentile_text_normal}>
+                    You werent active this week. ready to jump back in?
+                  </p>
+                  <Link href="/">
+                    <p className={styles.percentile_text_link}>
+                      Start your quest
+                    </p>
+                  </Link>
+                </div>
+              )
             ) : null}
             <Divider
               orientation="horizontal"
