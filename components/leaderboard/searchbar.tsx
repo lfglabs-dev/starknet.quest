@@ -5,9 +5,9 @@ import React, {
   FunctionComponent,
 } from "react";
 import Image from "next/image";
-import styles from "../../styles/leaderboard.module.css";
-import { StarknetIdJsContext } from "../../context/StarknetIdJsProvider";
-import { hexToDecimal } from "../../utils/feltService";
+import styles from "@styles/leaderboard.module.css";
+import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
+import { hexToDecimal } from "@utils/feltService";
 
 type SearchbarProps = {
   handleChange: (_: string) => void;

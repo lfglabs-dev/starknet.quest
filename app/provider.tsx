@@ -10,9 +10,9 @@ import {
   argent,
   braavos,
 } from "@starknet-react/core";
-import { StarknetIdJsProvider } from "../context/StarknetIdJsProvider";
+import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { QuestsContextProvider } from "../context/QuestsProvider";
+import { QuestsContextProvider } from "@context/QuestsProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const chains = [

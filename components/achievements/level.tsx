@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/achievements.module.css";
+import styles from "@styles/achievements.module.css";
 import { AchievementDocument } from "../../types/backTypes";
-import { CustomTooltip } from "../UI/tooltip";
-import { CDNImg } from "../cdn/image";
+import { CustomTooltip } from "@components/UI/tooltip";
+import { CDNImg } from "@components/cdn/image";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;

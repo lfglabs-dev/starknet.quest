@@ -6,8 +6,8 @@ import {
   Vector2,
   PlaneGeometry,
 } from "three";
-import { RoadObjects, TileData } from "../../types/land";
-import { Tileset } from "../../types/ldtk";
+import { RoadObjects, TileData } from "types/land";
+import { Tileset } from "types/ldtk";
 import { useLoader } from "@react-three/fiber";
 import RoadItem from "./roadItem";
 

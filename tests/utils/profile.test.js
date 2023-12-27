@@ -1,4 +1,4 @@
-import { memberSince, hasVerifiedSocials } from "../../utils/profile";
+import { memberSince, hasVerifiedSocials } from "@utils/profile";
 
 describe('memberSince function tests', () => {
     jest

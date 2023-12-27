@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/questboost.module.css";
-import Cardstyles from "../../styles/components/card.module.css";
+import styles from "@styles/questboost.module.css";
+import Cardstyles from "@styles/components/card.module.css";
 import Link from "next/link";
-import { CDNImage } from "../cdn/image";
-
-import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
+import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
+import { CDNImage } from "@components/cdn/image";
 
 type BoostCardProps = {
   boost: Boost;

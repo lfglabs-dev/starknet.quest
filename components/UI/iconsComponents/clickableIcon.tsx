@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../../styles/components/icons.module.css";
+import styles from "@styles/components/icons.module.css";
 import TwitterIcon from "./icons/twitterIcon";
 import DiscordIcon from "./icons/discordIcon";
 import GithubIcon from "./icons/githubIcon";

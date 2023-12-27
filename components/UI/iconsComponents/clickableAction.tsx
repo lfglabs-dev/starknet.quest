@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react";
-import styles from "../../../styles/components/identityMenu.module.css";
+import styles from "@styles/components/identityMenu.module.css";
 
 type ClickableActionProps = {
   icon: ReactNode;

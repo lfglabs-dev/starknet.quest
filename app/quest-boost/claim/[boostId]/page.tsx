@@ -1,23 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../../../styles/questboost.module.css";
+import styles from "@styles/questboost.module.css";
 import { CallData, uint256 } from "starknet";
-import {
-  getBoostById,
-  getQuestBoostClaimParams,
-} from "../../../../services/apiService";
+import { getBoostById, getQuestBoostClaimParams } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
-import Button from "../../../../components/UI/button";
-import { useNotificationManager } from "../../../../hooks/useNotificationManager";
-import {
-  NotificationType,
-  TransactionType,
-} from "../../../../constants/notifications";
-import { CDNImage } from "../../../../components/cdn/image";
+import Button from "@components/UI/button";
+import { useNotificationManager } from "@hooks/useNotificationManager";
+import { NotificationType, TransactionType } from "@constants/notifications";
+import { CDNImage } from "@components/cdn/image";
 import Lottie from "lottie-react";
-import verifiedLottie from "../../../../public/visuals/sq_claim.json";
-import { hexToDecimal } from "../../../../utils/feltService";
+import verifiedLottie from "@public/visuals/sq_claim.json";
+import { hexToDecimal } from "@utils/feltService";
 
 type BoostQuestPageProps = {
   params: {
@@ -117,7 +111,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                 <p className={styles.claim_amount}>{boost?.amount}</p>
               </div>
               <div className={styles.token_symbol_container}>
-                <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">USDC</div>
+                <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
+                  USDC
+                </div>
               </div>
             </div>
             <div className={styles.claim_button_animation}>

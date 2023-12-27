@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "../../styles/components/backButton.module.css";
+import styles from "@styles/components/backButton.module.css";
 
 type BackButtonProps = {
   onClick: () => void;

@@ -2,7 +2,7 @@ import { TileRect, Tileset } from "../../types/ldtk";
 import React, { ReactElement } from "react";
 import { memo, useMemo } from "react";
 import { PlaneGeometry, Texture } from "three";
-import { Coord } from "../../types/land";
+import { Coord } from "types/land";
 
 type BuildingItemProps = {
   tileset: Tileset;

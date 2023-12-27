@@ -1,10 +1,10 @@
 import { Tooltip } from "@mui/material";
 import React, { FunctionComponent } from "react";
-import DiscordIcon from "../../../UI/iconsComponents/icons/discordIcon";
-import styles from "../../../../styles/components/icons.module.css";
-import { minifyDomain } from "../../../../utils/stringService";
-import VerifiedIcon from "../../../UI/iconsComponents/icons/verifiedIcon";
-import theme from "../../../../styles/theme";
+import DiscordIcon from "@components/UI/iconsComponents/icons/discordIcon";
+import styles from "@styles/components/icons.module.css";
+import { minifyDomain } from "@utils/stringService";
+import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
+import theme from "@styles/theme";
 
 type ClickableDiscordIconProps = {
   width: string;

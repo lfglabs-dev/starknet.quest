@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useMemo } from "react";
 import { useContext } from "react";
-import { QuestsContext } from "../../context/QuestsProvider";
-import CheckIcon from "../UI/iconsComponents/icons/checkIcon";
-import UnavailableIcon from "../UI/iconsComponents/icons/unavailableIcon";
-import Card from "../UI/card";
-import styles from "../../styles/quests.module.css";
-import { CDNImg } from "../cdn/image";
+import { QuestsContext } from "@context/QuestsProvider";
+import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
+import Card from "@components/UI/card";
+import styles from "@styles/quests.module.css";
+import { CDNImg } from "@components/cdn/image";
 
 type QuestProps = {
   onClick: () => void;

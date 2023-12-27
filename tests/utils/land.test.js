@@ -7,7 +7,7 @@ import {
   computeCityCenter,
   setDirectionBasedOnCorner,
   getCustomDataArr,
-} from "../../utils/land";
+} from "@utils/land";
 
 describe("Should test convertTo2D function", () => {
     it("Should convert the array to 2D arrays of specified size", () => {

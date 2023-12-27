@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/informativeNotification.module.css";
+import styles from "@styles/components/informativeNotification.module.css";
 import { FunctionComponent } from "react";
 import Link from "next/link";
 

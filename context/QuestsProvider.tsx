@@ -3,8 +3,8 @@
 import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
-import { hexToDecimal } from "../utils/feltService";
-import { fetchQuestCategoryData } from "../services/questService";
+import { hexToDecimal } from "@utils/feltService";
+import { fetchQuestCategoryData } from "@services/questService";
 
 interface QuestsConfig {
   quests: QuestDocument[];

@@ -20,7 +20,7 @@
     padding: 1.5rem;
     align-items: center;
     gap: 1.5rem;
-    background-color: #1F1F25;
+    background-color: #1f1f25;
     border: 1px solid transparent;
     transition: all 0.2s ease-in-out;
 }
@@ -55,6 +55,14 @@
     text-align: left;
 }
 
+.card_title {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-family: "Sora-Bold";
+    margin: 0px;
+    text-align: left;
+}
+
 .issuer {
     display: flex;
     /* Auto layout */
@@ -67,6 +75,18 @@
     /* Background/600 */
     background: var(--background600);
     border-radius: 100px;
+    display: flex;
+    /* Auto layout */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    gap: 10px;
+    height: 36px;
+    /* Background/600 */
+    background: var(--background600);
+    border-radius: 100px;
+
 }
 
 .instructions_container {
@@ -82,7 +102,7 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 0.5rem;
-    background: #29282B;
+    background: #29282b;
     box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
 }
 
@@ -101,17 +121,26 @@
     color: #101012;
     padding: 1em 3em;
     border-radius: 10px;
-    background: var(--primary-gradient, linear-gradient(90deg, #6AFFAF -0.12%, #5CE3FE 99.88%));
+    background: var(--primary-gradient,
+            linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%));
 
     /* Button shadow */
-    box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.10);
+    box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 }
-
 
 @media screen and (max-width: 740px) {
     .claim_button_container {
         flex-direction: column;
         gap: 1rem;
+    }
+
+    .claim_button_container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .instructions_container {
+        padding: 0rem;
     }
 }
 

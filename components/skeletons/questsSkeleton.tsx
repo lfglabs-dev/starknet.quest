@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Skeleton } from "@mui/material";
-import styles from "../../styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 
 const FeaturedQuestSkeleton: FunctionComponent = () => {
   return (

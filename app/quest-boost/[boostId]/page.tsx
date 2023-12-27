@@ -1,20 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "../../../styles/questboost.module.css";
+import styles from "@styles/questboost.module.css";
 import {
   getBoostById,
   getQuestParticipants,
   getQuestsInBoost,
-} from "../../../services/apiService";
-import Quest from "../../../components/quests/quest";
+} from "@services/apiService";
+import Quest from "@components/quests/quest";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "../../../types/backTypes";
-import Timer from "../../../components/quests/timer";
+import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
-import Button from "../../../components/UI/button";
-import { CDNImage } from "../../../components/cdn/image";
-import { hexToDecimal } from "../../../utils/feltService";
+import Button from "@components/UI/button";
+import { CDNImage } from "@components/cdn/image";
+import { hexToDecimal } from "@utils/feltService";
 
 type BoostQuestPageProps = {
   params: {
@@ -45,7 +45,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
-
     setQuests(questsList);
     setBoost(boostInfo);
     setParticipants(totalParticipants);

@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "../../../styles/components/notifications.module.css";
+import styles from "@styles/components/notifications.module.css";
 import { FunctionComponent } from "react";
 import { Modal } from "@mui/material";
 import NotificationDetail from "./notificationDetail";
-import CloseIcon from "../iconsComponents/icons/closeIcon";
+import CloseIcon from "@components/UI/iconsComponents/icons/closeIcon";
 import InformativeNotification from "../infomativeNotifications";
 
 type ModalNotificationsProps = {

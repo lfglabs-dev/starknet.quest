@@ -3,7 +3,7 @@ import {
   decimalToHex,
   stringToHex,
   gweiToEth,
-} from "../../utils/feltService";
+} from "@utils/feltService";
 
 describe("Should test hexToDecimal function", () => {
   it("Should return the right decimal address", () => {

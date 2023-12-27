@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { basicAlphabet } from "../../utils/constants";
+import { basicAlphabet } from "@utils/constants";
 import {
   is1234Domain,
   getDomainWithoutStark,
