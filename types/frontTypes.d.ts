@@ -266,19 +266,7 @@ type RankingData = {
 };
 
 type LeaderboardToppersData = {
-  weekly: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    total_users: number;
-    position?: number;
-  };
-  monthly: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    total_users: number;
-    position?: number;
-  };
-  all_time: {
-    best_users: { address: string; xp: number; achievements: number }[];
-    total_users: number;
-    position?: number;
-  };
+  best_users: { address: string; xp: number; achievements: number }[];
+  total_users: number;
+  position?: number;
 };

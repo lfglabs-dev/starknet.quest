@@ -87,6 +87,8 @@ export default function Page() {
     const fetchLeaderboardToppersResult = async () => {
       const topperData = await fetchLeaderboardToppers({
         addr: requestBody.addr,
+        start_timestamp: new Date().setDate(new Date().getDate() - 7),
+        end_timestamp: new Date().getTime(),
       });
       setLeaderboardToppers(topperData);
     };
@@ -104,18 +106,8 @@ export default function Page() {
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
-      weekly: {
-        best_users: [],
-        total_users: 0,
-      },
-      monthly: {
-        best_users: [],
-        total_users: 0,
-      },
-      all_time: {
-        best_users: [],
-        total_users: 0,
-      },
+      best_users: [],
+      total_users: 0,
     });
 
   const contract = useMemo(() => {
@@ -245,11 +237,13 @@ export default function Page() {
     const fetchLeaderboard = async () => {
       const topperData = await fetchLeaderboardToppers({
         addr: requestBody.addr,
+        start_timestamp: requestBody.start_timestamp,
+        end_timestamp: requestBody.end_timestamp,
       });
       setLeaderboardToppers(topperData);
     };
 
-    if (searchAddress.length > 0) fetchLeaderboard();
+    fetchLeaderboard();
     fetchRankings();
   }, [
     rowsPerPage,
@@ -273,13 +267,7 @@ export default function Page() {
   // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
     // check if the user has position on the leaderboard
-    if (
-      !leaderboardToppers?.[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.position
-    ) {
+    if (!leaderboardToppers?.position) {
       setUserPercentile(-1);
       if (currentSearchedAddress.length > 0 && isCustomResult)
         setShowNoresults(true);
@@ -291,16 +279,8 @@ export default function Page() {
 
     // calculate user percentile
     const res = calculatePercentile(
-      leaderboardToppers[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.position ?? 0,
-      leaderboardToppers[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.total_users ?? 0
+      leaderboardToppers?.position ?? 0,
+      leaderboardToppers?.total_users ?? 0
     );
     setUserPercentile(res);
     setShowNoresults(false);
@@ -462,11 +442,7 @@ export default function Page() {
                 ? isMobile
                   ? rankOrderMobile.map((position, index) => {
                       const item =
-                        leaderboardToppers?.[
-                          timeFrameMap[
-                            duration as keyof typeof timeFrameMap
-                          ] as keyof typeof leaderboardToppers
-                        ]?.best_users?.[position - 1];
+                        leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
                         <Link
@@ -485,11 +461,7 @@ export default function Page() {
                     })
                   : rankOrder.map((position, index) => {
                       const item =
-                        leaderboardToppers?.[
-                          timeFrameMap[
-                            duration as keyof typeof timeFrameMap
-                          ] as keyof typeof leaderboardToppers
-                        ]?.best_users?.[position - 1];
+                        leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
                         <Link
