@@ -163,9 +163,16 @@
   margin: 1rem 0;
 }
 
+.navbarLogo {
+  margin-left: 1rem;
+}
+
 @media (max-width: 768px) {
   .navbarContainer {
-    height: 80px;
+    height: 92px;
+  }
+  .navbarLogo {
+    margin-left: 0.75rem;
   }
   .logo {
     width: 60px;

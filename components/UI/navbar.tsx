@@ -194,7 +194,7 @@ const Navbar: FunctionComponent = () => {
             navbarBg ? styles.navbarScrolled : ""
           }`}
         >
-          <div className="ml-4">
+          <div className={styles.navbarLogo}>
             <Link href="/" className="modified-cursor-pointer">
               <img
                 className={styles.logo}
