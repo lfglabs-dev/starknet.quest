@@ -32,6 +32,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [sign, setSign] = useState<Signature>(["", ""]);
   const { addTransaction } = useNotificationManager();
   const [displayCard, setDisplayCard] = useState<boolean>(false);
+  const [displayLottie, setDisplayLottie] = useState<boolean>(true);
 
   const fetchPageData = async () => {
     const boostInfo = await getBoostById(boostId);
@@ -99,7 +100,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   return (
     <div className={styles.claim_screen_container}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-12">
         {displayCard ? (
           <>
             <div className={styles.claim_amount_card}>
@@ -114,6 +115,9 @@ export default function Page({ params }: BoostQuestPageProps) {
               </div>
               <div className={styles.claim_button_text}>
                 <p className={styles.claim_amount}>{boost?.amount}</p>
+              </div>
+              <div className={styles.token_symbol_container}>
+                <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">USDC</div>
               </div>
             </div>
             <div className={styles.claim_button_animation}>
@@ -130,16 +134,21 @@ export default function Page({ params }: BoostQuestPageProps) {
           </>
         ) : null}
       </div>
-      <div className="absolute ml-auto mr-auto left-0 right-0 flex justify-center w-full">
-        <Lottie
-          onEnterFrame={() => {
-            setDisplayCard(true);
-          }}
-          className="w-[600px] h-[600px]"
-          animationData={verifiedLottie}
-          loop={false}
-        />
-      </div>
+      {displayLottie ? (
+        <div className="absolute ml-auto mr-auto left-0 right-0 flex justify-center w-full">
+          <Lottie
+            onEnterFrame={() => {
+              setDisplayCard(true);
+            }}
+            onComplete={() => {
+              setDisplayLottie(false);
+            }}
+            className="w-[600px] h-[600px]"
+            animationData={verifiedLottie}
+            loop={false}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

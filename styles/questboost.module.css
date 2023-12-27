@@ -137,6 +137,24 @@
     }
 }
 
+.claim_amount_card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    left: -1px;
+    bottom: 327px;
+    background: linear-gradient(90deg,
+            #437aba 0%,
+            #59c2e8 45%,
+            #00ff77 60%,
+            #59c2e8 70%,
+            #437aba50 100%);
+    border-radius: 8px;
+    z-index: 1;
+    mask: linear-gradient(0deg, transparent 92%, black);
+}
+
 .claim_amount_card {
     display: flex;
     flex-direction: column;
@@ -150,6 +168,8 @@
     animation: rotateCard 3s;
     aspect-ratio: 1/1;
     gap: 1rem;
+    position: relative;
+    margin-top: 1px;
 }
 
 .claim_amount {
@@ -216,4 +236,23 @@
     animation-delay: 3s;
     animation-fill-mode: forwards;
     transform-origin: center;
+}
+
+.token_symbol_container {
+    opacity: 0;
+    width: 100px;
+    height: 50px;
+    padding: 16px;
+    border-radius: 12px;
+    gap: 13px;
+    background: linear-gradient(90deg, #6AFFAF -0.12%, #5CE3FE 99.88%);
+    padding: 1px;
+    position: absolute;
+    bottom: 0px;
+    transform: translateY(50%);
+    display: flex;
+    flex: 1;
+    animation: opacityAnimation 2s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
 }
