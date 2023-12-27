@@ -94,7 +94,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   return (
     <div className={styles.claim_screen_container}>
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-16">
         {displayCard ? (
           <>
             <div className={styles.claim_amount_card}>
