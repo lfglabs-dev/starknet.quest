@@ -34,7 +34,7 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
         timeFrameMap[
           duration as keyof typeof timeFrameMap
         ] as keyof typeof leaderboardToppers
-      ]?.length
+      ]?.total_users
     )
       return true;
     return false;
