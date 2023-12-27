@@ -30,11 +30,7 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
 
     if (
       ranking?.first_elt_position + ranking?.ranking?.length >=
-      leaderboardToppers?.[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.total_users
+      leaderboardToppers?.total_users
     )
       return true;
     return false;

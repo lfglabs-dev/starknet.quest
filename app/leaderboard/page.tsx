@@ -72,6 +72,7 @@ export default function Page() {
   }, [address, status]);
 
   useEffect(() => {
+    // adding a delay for the browser to automatically detect wallet and fetch connection status on component mount
     if (!apiCallDelay) return;
     const requestBody = {
       addr:
