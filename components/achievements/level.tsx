@@ -4,6 +4,9 @@ import { AchievementDocument } from "../../types/backTypes";
 import { CustomTooltip } from "@components/UI/tooltip";
 import { CDNImg } from "@components/cdn/image";
 import Button from "@components/UI/button";
+import { updateAchievementClaimStatus } from "@services/apiService";
+import { useAccount } from "@starknet-react/core";
+import { useRouter } from "next/navigation";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;
@@ -12,6 +15,13 @@ type AchievementLevelProps = {
 const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
   achievement,
 }) => {
+  const router = useRouter();
+  const { address } = useAccount();
+  const updateClaimStatus = async () => {
+    if (!address) return;
+    await updateAchievementClaimStatus(address, achievement.id);
+    router.push(`/achievements/claim/${achievement.id}`);
+  };
   return (
     <CustomTooltip
       title={
@@ -30,7 +40,7 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
         }`}
       >
         {achievement.claimed ? (
-          <Button onClick={() => console.log("hey")}>Claim Rewards</Button>
+          <Button onClick={updateClaimStatus}>Claim Rewards</Button>
         ) : (
           <>
             <div className={styles.levelInfo}>

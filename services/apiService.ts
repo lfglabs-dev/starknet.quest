@@ -110,3 +110,17 @@ export const getPendingBoostClaims = async (addr: string) => {
     console.log(err);
   }
 };
+
+export const updateAchievementClaimStatus = async (
+  addr: string,
+  achievement_id: number
+) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/achievements/claim/quest_achievement?addr=${addr}&id=${achievement_id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

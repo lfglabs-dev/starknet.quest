@@ -79,11 +79,9 @@
 .backgroundFilter {
   position: absolute;
   border-radius: 30px;
-  background: linear-gradient(
-      90deg,
+  background: linear-gradient(90deg,
       rgba(17, 16, 24, 0),
-      rgba(17, 16, 24, 0.51)
-  );
+      rgba(17, 16, 24, 0.51));
   width: 100%;
   height: 100%;
   top: 0;
@@ -321,4 +319,147 @@
 
 .container:has(.skeleton) {
   padding: 0 30px;
+}
+
+
+.claim_screen_container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100vh;
+  background: url("/utils/dotBackground.svg") no-repeat center var(--background);
+}
+
+
+@keyframes rotateCard {
+  0% {
+    transform: rotate(0deg) scale(0.3);
+  }
+
+  100% {
+    transform: rotate(1080deg) scale(1);
+  }
+}
+
+.claim_amount_card::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  left: -1px;
+  bottom: 327px;
+  background: linear-gradient(90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%);
+  border-radius: 8px;
+  z-index: 1;
+  mask: linear-gradient(0deg, transparent 92%, black);
+}
+
+.claim_amount_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #1F1F25;
+  border: 1px solid transparent;
+  animation: rotateCard 3s;
+  aspect-ratio: 1/1;
+  gap: 1rem;
+  position: relative;
+  margin-top: 1px;
+}
+
+.claim_amount {
+  font-family: Sora;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    height: 0px;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    height: 42px;
+  }
+}
+
+@keyframes moveImg {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-20px);
+  }
+}
+
+
+.claim_button_animation {
+  opacity: 0;
+  animation: opacityAnimation 2s;
+  animation-delay: 3s;
+  animation-fill-mode: forwards;
+}
+
+.claim_button_text {
+  opacity: 0;
+  height: 0px;
+  animation: fadeInText 1s;
+  animation-delay: 3s;
+  animation-fill-mode: forwards;
+}
+
+.token_logo {
+  animation: moveImg 1s;
+  animation-delay: 3s;
+  animation-fill-mode: forwards;
+  transform-origin: center;
+}
+
+.token_symbol_container {
+  opacity: 0;
+  width: 100px;
+  height: 50px;
+  padding: 16px;
+  border-radius: 12px;
+  gap: 13px;
+  background: linear-gradient(90deg, #6AFFAF -0.12%, #5CE3FE 99.88%);
+  padding: 1px;
+  position: absolute;
+  bottom: 0px;
+  transform: translateY(50%);
+  display: flex;
+  flex: 1;
+  animation: opacityAnimation 2s;
+  animation-delay: 3s;
+  animation-fill-mode: forwards;
 }
