@@ -17,10 +17,8 @@ const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 export const fetchLeaderboardToppers = async (
   params: LeaderboardTopperParams
 ) => {
-  console.log({ params });
   try {
     const { addr, start_timestamp, end_timestamp } = params;
-    console.log({ params });
     const response = await fetch(
       `${baseurl}/leaderboard/get_static_info?addr=${addr}&start_timestamp=${start_timestamp}&end_timestamp=${end_timestamp}`
     );
