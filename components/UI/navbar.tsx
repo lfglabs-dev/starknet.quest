@@ -343,7 +343,7 @@ const Navbar: FunctionComponent = () => {
                 <Button onClick={onTopButtonClick}>{topButtonText()}</Button>
               </div>
               <div className="flex">
-                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-6">
+                <div className={styles.socialIconContainer}>
                   <a
                     href="https://twitter.com/starknet_quest"
                     target="_blank"
@@ -352,7 +352,7 @@ const Navbar: FunctionComponent = () => {
                     <FaTwitter size={28} color={theme.palette.secondary.main} />
                   </a>
                 </div>
-                <div className="rounded-full shadow-gray-400 p-3 modified-cursor-pointer hover:scale-105 ease-in duration-300 mt-6">
+                <div className={styles.socialIconContainer}>
                   <a
                     href="https://discord.gg/byEGk6w6T6"
                     target="_blank"

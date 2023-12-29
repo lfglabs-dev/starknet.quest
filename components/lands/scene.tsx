@@ -60,7 +60,7 @@ export const Scene: FunctionComponent<SceneProps> = ({
 
   const bind = useGesture({
     onDrag: ({ first, down, pinching, cancel }) => {
-      if (window.innerWidth < 768) return;
+      if (window.innerWidth < 740) return;
       if (first) setIsFirstTouch(true);
       else setIsFirstTouch(false);
       if (pinching) return cancel();
