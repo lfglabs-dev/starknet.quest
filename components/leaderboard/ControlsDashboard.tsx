@@ -30,11 +30,7 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
 
     if (
       ranking?.first_elt_position + ranking?.ranking?.length >=
-      leaderboardToppers?.[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.length
+      leaderboardToppers?.total_users
     )
       return true;
     return false;
@@ -65,6 +61,8 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
             <CDNImage
               src={"/icons/dropdownArrow.svg"}
               priority
+              width={22}
+              height={22}
               alt="Arrow icon"
             />
           </div>

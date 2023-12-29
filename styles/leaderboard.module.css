@@ -100,6 +100,13 @@
   color: #a6a5a7;
 }
 
+.percentile_text_link {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #ffffff;
+}
+
 .percentile_text_green {
   font-size: 20px;
   font-weight: 700;
@@ -255,8 +262,6 @@
 
 .ranking_position_layout {
   display: flex;
-  flex: 1;
-  max-width: 22px;
   align-items: center;
 }
 
