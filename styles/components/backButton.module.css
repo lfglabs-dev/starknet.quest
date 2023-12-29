@@ -8,3 +8,10 @@
   width: 16px;
   margin-right: 8px;
 }
+
+@media screen and (max-width: 768px) {
+  .backButton {
+    font-size: 18px;
+    color: var(--secondary);
+  }
+}

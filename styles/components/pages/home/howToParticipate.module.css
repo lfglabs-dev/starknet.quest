@@ -1,3 +1,7 @@
 .stepsContainer {
   position: relative;
 }
+
+.section {
+  padding-top: 26px;
+}

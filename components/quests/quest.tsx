@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
-import Card from "@components/UI/card";
 import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
+import QuestCard from "./questCard";
 
 type QuestProps = {
   onClick: () => void;
@@ -33,7 +33,7 @@ const Quest: FunctionComponent<QuestProps> = ({
   );
 
   return (
-    <Card
+    <QuestCard
       imgSrc={imgSrc}
       title={title}
       onClick={() => !expired && onClick()}
@@ -64,7 +64,7 @@ const Quest: FunctionComponent<QuestProps> = ({
           </>
         )}
       </div>
-    </Card>
+    </QuestCard>
   );
 };
 

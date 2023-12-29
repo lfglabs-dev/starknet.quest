@@ -12,7 +12,7 @@ const Footer: FunctionComponent = () => {
   const route = usePathname();
   if (
     route?.includes(".stark") ||
-    isHexString(route?.slice(1, route.length) as string)
+    (isHexString(route?.slice(1, route.length) as string) && route !== "/")
   )
     return null;
   return (

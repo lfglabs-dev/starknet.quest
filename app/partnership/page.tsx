@@ -8,7 +8,6 @@ import Crosses from "@components/shapes/crosses";
 import MainTitle from "@components/UI/titles/mainTitle";
 import Cross from "@components/shapes/cross";
 import Stats from "@components/UI/stats/stats";
-import Box from "@components/UI/box";
 import Dots from "@components/shapes/dots";
 import OnScrollIntoView from "@components/animations/onScrollIntoView";
 import Blur from "@components/shapes/blur";
@@ -47,6 +46,9 @@ export default function Page() {
               src="/visuals/partners/partnershipHeader.webp"
               className={styles.headerImg}
             />
+            <div className={styles.dots3}>
+              <Dots />
+            </div>
           </div>
           <div className={styles.cross1}>
             <Cross />
@@ -149,19 +151,17 @@ export default function Page() {
             </OnScrollIntoView>
           </div>
           <section className={`${styles.section} ${styles.partnerSection}`}>
-            <Box>
-              <CategoryTitle
-                subtitle="Our partners"
-                title="They worked with us"
-              />
-              <div className={styles.partnersContainer}>
-                <CDNImg src="/partners/braavosLogo.svg" />
-                <CDNImg src="/partners/zklendLogo.svg" />
-                <CDNImg src="/partners/sithswapLogo.svg" />
-                <CDNImg src="/partners/jediswapLogo.svg" />
-                <CDNImg src="/partners/avnuLogo.svg" />
-              </div>
-            </Box>
+            <CategoryTitle
+              subtitle="Our partners"
+              title="They worked with us"
+            />
+            <div className={styles.partners}>
+              <CDNImg src="/partners/braavosLogo.svg" />
+              <CDNImg src="/partners/zklendLogo.svg" />
+              <CDNImg src="/partners/sithswapLogo.svg" />
+              <CDNImg src="/partners/jediswapLogo.svg" />
+              <CDNImg src="/partners/avnuLogo.svg" />
+            </div>
             <div className={styles.lastCrosses}>
               <Crosses leftSide={false} number={2} xDecal={-50} />
             </div>
