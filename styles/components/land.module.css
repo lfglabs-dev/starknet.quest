@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.canvas {
+  touch-action: none;
+}
+
 .error {
   display: flex;
   margin-left: 1.25rem;
@@ -32,7 +36,10 @@
 
 @media (max-width: 768px) {
   .zoomSlider {
-    width: calc(100% - 50px) !important;
-    left: 25px;
+    display: none !important;
+  }
+  .landContainer,
+  .canvas {
+    touch-action: auto !important;
   }
 }

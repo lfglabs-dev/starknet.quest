@@ -43,9 +43,14 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} className={styles.close}>
-            <CloseIcon width="16" />
-          </button>
+          <>
+            <button onClick={onClose} className={styles.close}>
+              <CloseIcon width="16" />
+            </button>
+            <p className={styles.closeMobile} onClick={onClose}>
+              Close
+            </p>
+          </>
         )}
       </div>
     </Modal>

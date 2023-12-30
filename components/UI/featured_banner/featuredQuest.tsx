@@ -32,14 +32,18 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   return onClick ? (
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
-        <p className="mt-2 text-start">{heading}</p>
+        <p className={styles.featuredQuestHeading}>{heading}</p>
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
-        <p className="text-gray-200	 mt-4 text-start">{desc}</p>
+        <p className={styles.featuredQuestDescription}>{desc}</p>
         <div className="flex mt-4 mb-4 items-center">
-          <CDNImg width={20} src={issuer?.logoFavicon} />
-          <p className="text-white ml-2">{reward}</p>
+          <CDNImg
+            width={20}
+            src={issuer?.logoFavicon}
+            className={styles.featuredQuestRewardIcon}
+          />
+          <p className={styles.featuredQuestReward}>{reward}</p>
         </div>
-        <div>
+        <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>
         </div>
       </div>
