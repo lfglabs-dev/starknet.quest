@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import {
   getBoostById,
@@ -49,6 +49,18 @@ export default function Page({ params }: BoostQuestPageProps) {
     setBoost(boostInfo);
     setParticipants(totalParticipants);
   };
+
+  const getButtonText = useCallback(() => {
+    if (boost?.claimed) {
+      return "Claimed ✅";
+    } else if (hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)) {
+      return "Claim boost reward 🎉 ";
+    } else if (boost && boost?.expiry > Date.now()) {
+      return "Boost has not ended ⌛";
+    } else {
+      return "You’re not selected 🙁";
+    }
+  }, [boost, address]);
 
   useEffect(() => {
     fetchPageData();
@@ -112,19 +124,7 @@ export default function Page({ params }: BoostQuestPageProps) {
               }
               onClick={() => router.push(`/quest-boost/claim/${boost?.id}`)}
             >
-              {(() => {
-                if (boost?.claimed) {
-                  return "Claimed ✅";
-                } else if (
-                  hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)
-                ) {
-                  return "Claim boost reward 🎉 ";
-                } else if (boost && boost?.expiry > Date.now()) {
-                  return "Boost has not ended ⌛";
-                } else {
-                  return "You’re not selected 🙁";
-                }
-              })()}
+              {getButtonText()}
             </Button>
           </div>
         ) : null}

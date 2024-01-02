@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "@styles/questboost.module.css";
-import { CallData, uint256 } from "starknet";
 import { getBoostById, getQuestBoostClaimParams } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
@@ -12,6 +11,7 @@ import { CDNImage } from "@components/cdn/image";
 import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/sq_claim.json";
 import { hexToDecimal } from "@utils/feltService";
+import { boostClaimCall } from "@utils/callData";
 
 type BoostQuestPageProps = {
   params: {
@@ -27,6 +27,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const { addTransaction } = useNotificationManager();
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [displayLottie, setDisplayLottie] = useState<boolean>(true);
+  const [transactionHash, setTransactionHash] = useState<string>("");
 
   const fetchPageData = async () => {
     const boostInfo = await getBoostById(boostId);
@@ -61,36 +62,30 @@ export default function Page({ params }: BoostQuestPageProps) {
       return;
 
     const callContract = async () => {
-      const amount = uint256.bnToUint256(boost.amount);
-      const claimCallData = CallData.compile({
-        amount: amount,
-        token: boost.token,
-        boost_id: boost.id,
-        signature: sign,
-      });
-
-      const { transaction_hash } = await account.execute({
-        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
-        entrypoint: "claim",
-        calldata: claimCallData,
-      });
-
-      if (transaction_hash) {
-        addTransaction({
-          timestamp: Date.now(),
-          subtext: boost?.name ?? "Quest Boost Rewards",
-          type: NotificationType.TRANSACTION,
-          data: {
-            type: TransactionType.CLAIM_REWARDS,
-            hash: transaction_hash,
-            status: "pending",
-          },
-        });
-      }
+      const { transaction_hash } = await account.execute(
+        boostClaimCall(boost, sign)
+      );
+      setTransactionHash(transaction_hash);
     };
 
     callContract();
   }, [sign]);
+
+  useEffect(() => {
+    if (!(transactionHash.length > 0)) return;
+    if (transactionHash) {
+      addTransaction({
+        timestamp: Date.now(),
+        subtext: boost?.name ?? "Quest Boost Rewards",
+        type: NotificationType.TRANSACTION,
+        data: {
+          type: TransactionType.CLAIM_REWARDS,
+          hash: transactionHash,
+          status: "pending",
+        },
+      });
+    }
+  }, [transactionHash]);
 
   return (
     <div className={styles.claim_screen_container}>
