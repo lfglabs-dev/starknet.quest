@@ -34,9 +34,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 
       // if any of the quests are completed by user and is part of this boost
       if (completedQuests.includes(quest)) userParticipationCheck = true;
-
-      // if any of the quests are completed by user and is not part of this boost
-      if (!completedQuests.includes(quest)) userParticipationCheck = false;
     });
     setUserParticipationStatus(userParticipationCheck ? true : false);
     if (userParticipationCheck) {
