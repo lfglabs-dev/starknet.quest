@@ -7,6 +7,8 @@ import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import TokenSymbol from "./TokenSymbol";
+import { hexToDecimal } from "@utils/feltService";
+import { useAccount } from "@starknet-react/core";
 
 type BoostCardProps = {
   boost: Boost;
@@ -17,6 +19,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   boost,
   completedQuests,
 }) => {
+  const { address } = useAccount();
   const [userParticipationStatus, setUserParticipationStatus] =
     useState<boolean>(false);
   const [userBoostCheckStatus, setUserBoostCheckStatus] =
@@ -66,15 +69,21 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
               <div className="flex items-center">
                 <div className={styles.issuer}>
                   {userParticipationStatus ? (
-                    userBoostCheckStatus ? (
+                    !userBoostCheckStatus ? (
+                      <>
+                        <p className="text-white">See my reward</p>
+                        <TrophyIcon width="24" color="#8BEED9" />
+                      </>
+                    ) : hexToDecimal(boost?.winner ?? "") ===
+                      hexToDecimal(address) ? (
                       <>
                         <p className="text-white">Done</p>
                         <CheckIcon width="24" color="#6AFFAF" />
                       </>
                     ) : (
                       <>
-                        <p className="text-white">See my reward</p>
-                        <TrophyIcon width="24" color="#8BEED9" />
+                        <UnavailableIcon width="24" color="#D32F2F" />
+                        <p className="text-white mr-2">Boost ended</p>
                       </>
                     )
                   ) : (

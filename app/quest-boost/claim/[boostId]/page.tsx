@@ -9,11 +9,11 @@ import { useNotificationManager } from "@hooks/useNotificationManager";
 import { NotificationType, TransactionType } from "@constants/notifications";
 import { CDNImage } from "@components/cdn/image";
 import Lottie from "lottie-react";
-import verifiedLottie from "@public/visuals/sq_claim.json";
+import claimWinnerLottie from "@public/visuals/sq_claim.json";
+import claimLoserLottie from "@public/visuals/sq_looser.json";
 import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
-import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 
 type BoostQuestPageProps = {
@@ -177,7 +177,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           </>
         ) : null}
       </div>
-      {displayLottie ? (
+      {boost && displayLottie ? (
         <div className="absolute ml-auto mr-auto left-0 right-0 flex justify-center w-full">
           <Lottie
             onEnterFrame={() => {
@@ -187,7 +187,12 @@ export default function Page({ params }: BoostQuestPageProps) {
               setDisplayLottie(false);
             }}
             className="w-[600px] h-[600px]"
-            animationData={verifiedLottie}
+            animationData={
+              boost?.winner &&
+              hexToDecimal(boost?.winner) === hexToDecimal(address)
+                ? claimWinnerLottie
+                : claimLoserLottie
+            }
             loop={false}
           />
         </div>

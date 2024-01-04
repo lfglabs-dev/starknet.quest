@@ -65,28 +65,12 @@
 
 .issuer {
     display: flex;
-    /* Auto layout */
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
     gap: 10px;
     height: 36px;
-    /* Background/600 */
-    background: var(--background600);
     border-radius: 100px;
-    display: flex;
-    /* Auto layout */
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    gap: 10px;
-    height: 36px;
-    /* Background/600 */
-    background: var(--background600);
-    border-radius: 100px;
-
 }
 
 .instructions_container {
