@@ -243,6 +243,10 @@
 .claim_button_text {
     opacity: 0;
     height: 0px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     animation: fadeInText 1s;
     animation-delay: 3s;
     animation-fill-mode: forwards;

@@ -153,7 +153,12 @@ export default function Page({ params }: BoostQuestPageProps) {
                     />
                   </div>
                   <div className={styles.claim_button_text}>
-                    <p className="pb-[1.5rem]">Sorry, no win this time.</p>
+                    <p
+                      className="pb-[1.5rem] text-center"
+                      style={{ fontSize: 24 }}
+                    >
+                      Sorry, no win this time.
+                    </p>
                   </div>
                 </>
               )}
