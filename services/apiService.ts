@@ -1,15 +1,15 @@
+import { duration } from "@mui/material";
+
 export type LeaderboardTopperParams = {
   addr: string;
-  start_timestamp: number;
-  end_timestamp: number;
+  duration: "week" | "month" | "all";
 };
 
 export type LeaderboardRankingParams = {
   addr: string;
   page_size: number;
   shift: number;
-  start_timestamp: number;
-  end_timestamp: number;
+  duration: "week" | "month" | "all";
 };
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -18,9 +18,9 @@ export const fetchLeaderboardToppers = async (
   params: LeaderboardTopperParams
 ) => {
   try {
-    const { addr, start_timestamp, end_timestamp } = params;
+    const { addr, duration } = params;
     const response = await fetch(
-      `${baseurl}/leaderboard/get_static_info?addr=${addr}&start_timestamp=${start_timestamp}&end_timestamp=${end_timestamp}`
+      `${baseurl}/leaderboard/get_static_info?addr=${addr}&duration=${duration}`
     );
     return await response.json();
   } catch (err) {
@@ -32,9 +32,9 @@ export const fetchLeaderboardRankings = async (
   params: LeaderboardRankingParams
 ) => {
   try {
-    const { addr, page_size, shift, start_timestamp, end_timestamp } = params;
+    const { addr, page_size, shift, duration } = params;
     const response = await fetch(
-      `${baseurl}/leaderboard/get_ranking?addr=${addr}&page_size=${page_size}&shift=${shift}&start_timestamp=${start_timestamp}&end_timestamp=${end_timestamp}`
+      `${baseurl}/leaderboard/get_ranking?addr=${addr}&page_size=${page_size}&shift=${shift}&duration=${duration}`
     );
     return await response.json();
   } catch (err) {

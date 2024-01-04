@@ -33,7 +33,7 @@ import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
-import { rankOrder, rankOrderMobile } from "@utils/constants";
+import { rankOrder, rankOrderMobile, timeFrameMap } from "@utils/constants";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
 import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
@@ -89,15 +89,13 @@ export default function Page() {
           : "",
       page_size: 10,
       shift: 0,
-      start_timestamp: new Date().setDate(new Date().getDate() - 7),
-      end_timestamp: new Date().getTime(),
+      duration: timeFrameMap(duration),
     };
 
     setLoading(true);
     fetchLeaderboardToppersResult({
       addr: requestBody.addr,
-      start_timestamp: requestBody.start_timestamp,
-      end_timestamp: requestBody.end_timestamp,
+      duration: timeFrameMap(duration),
     });
     fetchRankingResults(requestBody);
     setLoading(false);
@@ -240,15 +238,14 @@ export default function Page() {
           : "",
       page_size: rowsPerPage,
       shift: currentPage,
-      ...getTimeRange(),
+      duration: timeFrameMap(duration),
     };
 
     setPaginationLoading(true);
     fetchRankingResults(requestBody);
     fetchLeaderboardToppersResult({
       addr: requestBody.addr,
-      start_timestamp: requestBody.start_timestamp,
-      end_timestamp: requestBody.end_timestamp,
+      duration: timeFrameMap(duration),
     });
   }, [
     rowsPerPage,
