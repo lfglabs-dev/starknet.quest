@@ -1,15 +1,47 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import Cardstyles from "@styles/components/card.module.css";
 import Link from "next/link";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
-import { CDNImage } from "@components/cdn/image";
+import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
+import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
+import TokenSymbol from "./TokenSymbol";
 
 type BoostCardProps = {
   boost: Boost;
+  completedQuests?: number[];
 };
 
-const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
+const BoostCard: FunctionComponent<BoostCardProps> = ({
+  boost,
+  completedQuests,
+}) => {
+  const [userParticipationStatus, setUserParticipationStatus] =
+    useState<boolean>(false);
+  const [userBoostCheckStatus, setUserBoostCheckStatus] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (!boost || !completedQuests) return;
+    let userParticipationCheck = false;
+    boost.quests.forEach((quest) => {
+      // no quests are completed by user
+      if (!completedQuests) return false;
+
+      // if any of the quests are completed by user and is part of this boost
+      if (completedQuests.includes(quest)) userParticipationCheck = true;
+
+      // if any of the quests are completed by user and is not part of this boost
+      if (!completedQuests.includes(quest)) userParticipationCheck = false;
+    });
+    setUserParticipationStatus(userParticipationCheck ? true : false);
+    if (userParticipationCheck) {
+      const res = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
+      setUserBoostCheckStatus(res);
+    }
+  }, [completedQuests]);
+
   return (
     <Link href={`/quest-boost/${boost?.id}`}>
       <div className={styles.boost_card_container}>
@@ -23,22 +55,34 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({ boost }) => {
           <p>
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
-          <div className="flex flex-row gap-2">
-            <p>{boost?.amount} USDC</p>
-            <CDNImage
-              src={"/icons/usdc.svg"}
-              priority
-              width={20}
-              height={20}
-              alt="usdc icon"
-            />
-          </div>
+          {boost.expiry > Date.now() ? (
+            <div className="flex flex-row gap-2 items-center">
+              <p>{boost?.amount}</p>
+              <TokenSymbol tokenAddress={boost.token} />
+            </div>
+          ) : null}
           <div className="flex w-full">
             {boost.expiry > Date.now() ? null : (
               <div className="flex items-center">
                 <div className={styles.issuer}>
-                  <UnavailableIcon width="24" color="#D32F2F" />
-                  <p className="text-white mr-2">Boost Ended</p>
+                  {userParticipationStatus ? (
+                    userBoostCheckStatus ? (
+                      <>
+                        <p className="text-white">Done</p>
+                        <CheckIcon width="24" color="#6AFFAF" />
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-white">See my reward</p>
+                        <TrophyIcon width="24" color="#8BEED9" />
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <UnavailableIcon width="24" color="#D32F2F" />
+                      <p className="text-white mr-2">Boost ended</p>
+                    </>
+                  )}
                 </div>
               </div>
             )}

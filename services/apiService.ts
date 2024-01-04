@@ -1,5 +1,3 @@
-import { hexToDecimal } from "../utils/feltService";
-
 type LeaderboardTopperParams = {
   addr: string;
 };

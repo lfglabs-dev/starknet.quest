@@ -65,6 +65,8 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
             <CDNImage
               src={"/icons/dropdownArrow.svg"}
               priority
+              width={16}
+              height={16}
               alt="Arrow icon"
             />
           </div>

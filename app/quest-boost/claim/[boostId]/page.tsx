@@ -12,6 +12,7 @@ import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/sq_claim.json";
 import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
+import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 
 type BoostQuestPageProps = {
   params: {
@@ -65,6 +66,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
+      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id);
       setTransactionHash(transaction_hash);
     };
 
@@ -93,35 +95,60 @@ export default function Page({ params }: BoostQuestPageProps) {
         {displayCard ? (
           <>
             <div className={styles.claim_amount_card}>
-              <div className={styles.token_logo}>
-                <CDNImage
-                  src={"/icons/usdc.svg"}
-                  priority
-                  width={97}
-                  height={97}
-                  alt="usdc icon"
-                />
-              </div>
-              <div className={styles.claim_button_text}>
-                <p className={styles.claim_amount}>{boost?.amount}</p>
-              </div>
-              <div className={styles.token_symbol_container}>
-                <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
-                  USDC
-                </div>
-              </div>
+              {boost &&
+              boost?.winner &&
+              hexToDecimal(boost?.winner) === hexToDecimal(address) ? (
+                <>
+                  <div className={styles.token_logo}>
+                    <CDNImage
+                      src={"/icons/usdc.svg"}
+                      priority
+                      width={97}
+                      height={97}
+                      alt="usdc icon"
+                    />
+                  </div>
+                  <div className={styles.claim_button_text}>
+                    <p className={styles.claim_amount}>{boost?.amount}</p>
+                  </div>
+                  <div className={styles.token_symbol_container}>
+                    <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
+                      USDC
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={styles.token_logo}>
+                    <img
+                      src="/visuals/animals/tiger.webp"
+                      height={256}
+                      width={254}
+                      alt="error image"
+                    />
+                  </div>
+                  <div className={styles.claim_button_text}>
+                    <p className="pb-[1.5rem]">Sorry, no win this time.</p>
+                  </div>
+                </>
+              )}
             </div>
-            <div className={styles.claim_button_animation}>
-              <Button
-                disabled={
-                  boost?.claimed ||
-                  hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
-                }
-                onClick={handleClaimClick}
-              >
-                Collect my reward
-              </Button>
-            </div>
+
+            {boost &&
+            boost?.winner &&
+            hexToDecimal(boost?.winner) === hexToDecimal(address) ? (
+              <div className={styles.claim_button_animation}>
+                <Button
+                  disabled={
+                    boost?.claimed ||
+                    hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
+                  }
+                  onClick={handleClaimClick}
+                >
+                  Collect my reward
+                </Button>
+              </div>
+            ) : null}
           </>
         ) : null}
       </div>

@@ -25,11 +25,7 @@ import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
-import {
-  rankOrder,
-  rankOrderMobile,
-  timeFrameMap,
-} from "@utils/constants";
+import { rankOrder, rankOrderMobile, timeFrameMap } from "@utils/constants";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
 import { hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";

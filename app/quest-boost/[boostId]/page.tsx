@@ -15,6 +15,7 @@ import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
 import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "@utils/feltService";
+import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 
 type BoostQuestPageProps = {
   params: {
@@ -51,14 +52,14 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   const getButtonText = useCallback(() => {
-    if (boost?.claimed) {
-      return "Claimed ✅";
-    } else if (hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)) {
-      return "Claim boost reward 🎉 ";
+    if (!boost) return;
+    const res = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
+    if (res || boost?.claimed) {
+      return "Chest already opened";
     } else if (boost && boost?.expiry > Date.now()) {
       return "Boost has not ended ⌛";
     } else {
-      return "You’re not selected 🙁";
+      return "See my reward 🎉";
     }
   }, [boost, address]);
 
@@ -119,10 +120,20 @@ export default function Page({ params }: BoostQuestPageProps) {
           <div>
             <Button
               disabled={
-                boost?.claimed ||
-                hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
+                boost &&
+                (boost?.claimed ||
+                  BoostClaimStatusManager.getBoostClaimStatus(boost.id))
               }
-              onClick={() => router.push(`/quest-boost/claim/${boost?.id}`)}
+              onClick={() => {
+                if (!boost) return;
+                if (hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address))
+                  BoostClaimStatusManager.updateBoostClaimStatus(
+                    boost?.id,
+                    true
+                  );
+
+                router.push(`/quest-boost/claim/${boost?.id}`);
+              }}
             >
               {getButtonText()}
             </Button>
