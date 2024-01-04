@@ -16,6 +16,8 @@ import Button from "@components/UI/button";
 import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "@utils/feltService";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
+import TokenSymbol from "@components/quest-boost/TokenSymbol";
+import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 
 type BoostQuestPageProps = {
   params: {
@@ -41,6 +43,19 @@ export default function Page({ params }: BoostQuestPageProps) {
     );
     return total;
   };
+
+  const getTokenName = useCallback(() => {
+    if (!boost) return "";
+    const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
+    switch (boost.token) {
+      case TOKEN_ADDRESS_MAP[network].USDC:
+        return "USDC";
+      case TOKEN_ADDRESS_MAP[network].ETH:
+        return "ETH";
+      default:
+        return "USDC";
+    }
+  }, [boost]);
 
   const fetchPageData = async () => {
     const questsList = await getQuestsInBoost(boostId);
@@ -101,15 +116,9 @@ export default function Page({ params }: BoostQuestPageProps) {
           <p>Reward:</p>
           <div className="flex flex-row gap-2">
             <p className={styles.claim_button_text_highlight}>
-              {boost?.amount} USDC
+              {boost?.amount} {getTokenName()}
             </p>
-            <CDNImage
-              src={"/icons/usdc.svg"}
-              priority
-              width={32}
-              height={32}
-              alt="usdc icon"
-            />
+            <TokenSymbol tokenAddress={boost?.token ?? ""} />
           </div>
           <p>among</p>
           <p className={styles.claim_button_text_highlight}>
