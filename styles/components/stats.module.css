@@ -36,12 +36,6 @@
   min-height: fit-content;
 }
 
-@media screen and (max-width: 740px) {
-  .container {
-    margin: 0 24px 64px;
-  }
-}
-
 .statValue {
   display: flex;
   flex-direction: column;
@@ -74,4 +68,20 @@
   font-style: normal;
   font-weight: 400;
   line-height: 32px;
+}
+
+@media screen and (max-width: 740px) {
+  .container {
+    margin: 10px 24px 0;
+    padding: 0;
+  }
+  .elementsContainer {
+    gap: 1.5rem;
+  }
+  .statValue {
+    font-size: 40px;
+  }
+  .statName {
+    font-size: 12px;
+  }
 }

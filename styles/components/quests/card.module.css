@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   background-color: var(--menu-background);
-  cursor: url(../../public/icons/pointer-cursor.png), pointer;
+  cursor: url(../../../public/icons/pointer-cursor.png), pointer;
   align-self: stretch;
   border: solid 1px transparent;
 }
@@ -51,8 +51,20 @@
 @media screen and (max-width: 740px) {
   .cardTitle {
     font-size: 16px;
+    text-align: center;
+    width: 100%;
+  }
+  .cardInfos div,
+  .cardInfos p {
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px; /* 178.571% */
   }
   .cardInfos p {
-    font-size: 12px;
+    margin-top: 4px;
   }
 }

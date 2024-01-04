@@ -36,7 +36,7 @@ const MainTitle: FunctionComponent<MainTitleProps> = ({
         {title} <strong>{highlighted}</strong>
       </h2>
       <p className={styles.mainSubtitle}>{subtitle}</p>
-      <div className="w-64 mt-5 ml-auto mr-auto sm:mx-0">
+      <div className={styles.buttonContainer}>
         <Button
           onClick={() => window.open("https://forms.gle/P2PUzet6KrKJQYZB8")}
         >

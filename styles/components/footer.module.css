@@ -64,18 +64,24 @@
   .footer {
     max-width: calc(100% - 48px);
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
   }
-
   .content {
     flex-direction: row;
     gap: 24px;
     align-items: center;
     justify-content: center;
   }
-
   .socials {
-    gap: 20px;
+    gap: 24px;
     flex-direction: column;
+  }
+  .social span {
+    background: transparent;
+  }
+  .social svg {
+    fill: var(--secondary);
+    width: 20px;
+    height: 20px;
   }
 }

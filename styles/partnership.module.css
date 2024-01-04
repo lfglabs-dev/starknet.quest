@@ -143,11 +143,20 @@
 }
 
 .partnerSection {
-  padding: 2rem 128px 2rem;
+  margin: 2rem 128px 2rem;
   position: relative;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #29282b 0%, rgba(41, 40, 43, 0) 100%);
+  padding: 24px;
+  width: calc(100% - 256px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.partnersContainer {
+.partners {
   display: flex;
   width: 100%;
   margin-top: 2rem;
@@ -156,7 +165,7 @@
   gap: 1rem;
 }
 
-.partnersContainer img {
+.partners img {
   margin: auto;
 }
 
@@ -183,16 +192,16 @@
   transform: translateY(-60px) translateX(70px);
 }
 
-@media screen and (max-width: 740px) {
-  .partnerSection {
-    padding: 2rem 24px 2rem;
-  }
-  .cross2 {
-    display: none;
-  }
-  .lastCrosses {
-    display: none;
-  }
+.dots3 {
+  display: none;
+}
+
+.lastCrosses {
+  position: absolute;
+  right: -128px;
+  top: 0;
+  bottom: 0;
+  background-color: red;
 }
 
 .teamContainer {
@@ -225,4 +234,78 @@
   z-index: 100;
   right: 0;
   transform: translateX(50%) translateY(50%);
+}
+
+@media screen and (max-width: 740px) {
+  .cross1,
+  .blueBlur,
+  .blur1,
+  .blur2,
+  .cross2,
+  .lastCrosses,
+  .divider,
+  .dots2,
+  .dots1 {
+    display: none;
+  }
+  .partnerSection {
+    padding: 2rem 24px 2rem;
+  }
+  .header {
+    padding-top: 12vh;
+    height: fit-content;
+    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    padding-bottom: 3rem;
+  }
+  .mainTitleContainer {
+    height: fit-content;
+    max-width: calc(100% - 40px);
+    transform: none;
+    margin-bottom: 1.5rem;
+  }
+  .headerContent {
+    flex-direction: column;
+    margin-top: 0;
+  }
+  .headerImg {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+    height: 280px;
+  }
+  .main {
+    padding-top: 3rem;
+  }
+  .dots3 {
+    display: block;
+    position: absolute;
+    left: calc(50% + 130px);
+    transform: translateY(180px);
+  }
+  .partnerSection {
+    background: transparent;
+    margin: 0 1rem;
+    width: calc(100% - 2rem);
+  }
+  .partners {
+    margin-top: 0;
+    padding-top: 10px;
+    gap: 1.5rem;
+  }
+  .teamContainer {
+    padding: 1.5rem;
+    gap: 1.5rem;
+    margin-bottom: 28px;
+  }
+  .title {
+    font-size: 24px;
+  }
+  .twitterIcon {
+    width: 16px;
+    height: 16px;
+    padding: 1.5px;
+  }
+  .stepsContainer {
+    margin: 0 1rem;
+  }
 }

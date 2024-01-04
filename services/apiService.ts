@@ -1,5 +1,7 @@
 type LeaderboardTopperParams = {
   addr: string;
+  start_timestamp: number;
+  end_timestamp: number;
 };
 
 type LeaderboardRankingParams = {
@@ -16,9 +18,9 @@ export const fetchLeaderboardToppers = async (
   params: LeaderboardTopperParams
 ) => {
   try {
-    const { addr } = params;
+    const { addr, start_timestamp, end_timestamp } = params;
     const response = await fetch(
-      `${baseurl}/leaderboard/get_static_info?addr=${addr}`
+      `${baseurl}/leaderboard/get_static_info?addr=${addr}&start_timestamp=${start_timestamp}&end_timestamp=${end_timestamp}`
     );
     return await response.json();
   } catch (err) {

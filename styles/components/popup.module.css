@@ -111,6 +111,10 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+.closeMobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .popupContainer {
     align-items: flex-end;
@@ -140,7 +144,73 @@
   }
 
   .banner {
-    width: 400px;
+    display: none;
+  }
+  .bannerPopup {
+    flex-direction: column;
+    padding: 3rem 1.5rem;
+    background-color: var(--menu-background);
+  }
+  .title {
+    color: var(--secondary);
+    text-align: center;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    /* Title/H4 */
+    font-family: Sora;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px; /* 166.667% */
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  .description {
+    color: var(--secondary);
+    text-align: center;
+
+    /* Body/small/regular */
+    font-family: Sora;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px; /* 178.571% */
+  }
+  .close {
+    display: none;
+  }
+  .closeMobile {
+    display: block;
+    margin: 3rem auto 0;
+    color: var(--dark-content);
+
+    color: var(--secondary);
+    /* Body/middle/bold */
+    font-family: Sora;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 133.333% */
+  }
+  .contentSide {
+    padding: 0;
+  }
+  .button {
+    width: 100%;
+    margin-top: 3rem;
+  }
+  .button button {
+    width: 100%;
+    color: var(--Background-700, #101012);
+    text-align: center;
+
+    /* Button/18px */
+    font-family: Sora;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 133.333% */
+    text-transform: none;
   }
 }
 

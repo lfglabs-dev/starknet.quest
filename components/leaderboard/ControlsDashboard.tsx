@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo, useState } from "react";
-import { PAGE_SIZE, timeFrameMap } from "@utils/constants";
+import { PAGE_SIZE } from "@utils/constants";
 import styles from "@styles/leaderboard.module.css";
 import ChevronLeftIcon from "@components/UI/iconsComponents/icons/chevronLeftIcon";
 import ChevronRightIcon from "@components/UI/iconsComponents/icons/ChevronRightIcon";
@@ -30,11 +30,7 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
 
     if (
       ranking?.first_elt_position + ranking?.ranking?.length >=
-      leaderboardToppers?.[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.length
+      leaderboardToppers?.total_users
     )
       return true;
     return false;
@@ -65,8 +61,8 @@ const ControlsDashboard: FunctionComponent<ControlsDashboardProps> = ({
             <CDNImage
               src={"/icons/dropdownArrow.svg"}
               priority
-              width={16}
-              height={16}
+              width={22}
+              height={22}
               alt="Arrow icon"
             />
           </div>

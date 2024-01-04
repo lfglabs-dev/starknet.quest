@@ -27,9 +27,10 @@ import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
 import { rankOrder, rankOrderMobile, timeFrameMap } from "@utils/constants";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
-import { hexToDecimal } from "@utils/feltService";
+import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import { useMediaQuery } from "@mui/material";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -37,8 +38,9 @@ export default function Page() {
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
-  const [userPercentile, setUserPercentile] = useState<number>(100);
+  const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
@@ -61,12 +63,17 @@ export default function Page() {
 
   // set user address on wallet connect and disconnect
   useEffect(() => {
+    setTimeout(() => {
+      setApiCallDelay(true);
+    }, 1000);
     if (address === "") return;
     if (address) setUserAddress(address);
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
   useEffect(() => {
+    // adding a delay for the browser to automatically detect wallet and fetch connection status on component mount
+    if (!apiCallDelay) return;
     const requestBody = {
       addr:
         status === "connected"
@@ -81,6 +88,8 @@ export default function Page() {
     const fetchLeaderboardToppersResult = async () => {
       const topperData = await fetchLeaderboardToppers({
         addr: requestBody.addr,
+        start_timestamp: new Date().setDate(new Date().getDate() - 7),
+        end_timestamp: new Date().getTime(),
       });
       setLeaderboardToppers(topperData);
     };
@@ -94,22 +103,12 @@ export default function Page() {
     fetchLeaderboardToppersResult();
     fetchRankingResults();
     setLoading(false);
-  }, [userAddress, status]);
+  }, [userAddress, status, apiCallDelay]);
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
-      weekly: {
-        best_users: [],
-        length: 0,
-      },
-      monthly: {
-        best_users: [],
-        length: 0,
-      },
-      all_time: {
-        best_users: [],
-        length: 0,
-      },
+      best_users: [],
+      total_users: 0,
     });
 
   const contract = useMemo(() => {
@@ -239,11 +238,13 @@ export default function Page() {
     const fetchLeaderboard = async () => {
       const topperData = await fetchLeaderboardToppers({
         addr: requestBody.addr,
+        start_timestamp: requestBody.start_timestamp,
+        end_timestamp: requestBody.end_timestamp,
       });
       setLeaderboardToppers(topperData);
     };
 
-    if (searchAddress.length > 0) fetchLeaderboard();
+    fetchLeaderboard();
     fetchRankings();
   }, [
     rowsPerPage,
@@ -267,13 +268,7 @@ export default function Page() {
   // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
     // check if the user has position on the leaderboard
-    if (
-      !leaderboardToppers?.[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.position
-    ) {
+    if (!leaderboardToppers?.position) {
       setUserPercentile(-1);
       if (currentSearchedAddress.length > 0 && isCustomResult)
         setShowNoresults(true);
@@ -285,20 +280,12 @@ export default function Page() {
 
     // calculate user percentile
     const res = calculatePercentile(
-      leaderboardToppers[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.position ?? 0,
-      leaderboardToppers[
-        timeFrameMap[
-          duration as keyof typeof timeFrameMap
-        ] as keyof typeof leaderboardToppers
-      ]?.length ?? 0
+      leaderboardToppers?.position ?? 0,
+      leaderboardToppers?.total_users ?? 0
     );
     setUserPercentile(res);
     setShowNoresults(false);
-  }, [leaderboardToppers, currentSearchedAddress]);
+  }, [leaderboardToppers, currentSearchedAddress, duration]);
 
   return (
     <div className={styles.leaderboard_container}>
@@ -359,29 +346,42 @@ export default function Page() {
             </div>
 
             {/* this will be displayed if user is present otherwise will not be displayed */}
-            {userPercentile >= 0 ? (
-              <div className={styles.percentile_container}>
-                {currentSearchedAddress.length > 0 || userAddress ? (
-                  <Avatar
-                    address={
-                      currentSearchedAddress.length > 0
-                        ? currentSearchedAddress
-                        : userAddress
-                    }
-                  />
-                ) : null}
-                <div className={styles.percentile_text_container}>
-                  <p className={styles.percentile_text_normal}>
-                    {currentSearchedAddress.length > 0 ? "He is" : "You are "}
-                  </p>
-                  <span className={styles.percentile_text_green}>
-                    &nbsp;better than {userPercentile}%&nbsp;
-                  </span>
-                  <p className={styles.percentile_text_normal}>
-                    of the other players
-                  </p>
+            {userPercentile ? (
+              userPercentile >= 0 ? (
+                <div className={styles.percentile_container}>
+                  {currentSearchedAddress.length > 0 || userAddress ? (
+                    <Avatar
+                      address={
+                        currentSearchedAddress.length > 0
+                          ? currentSearchedAddress
+                          : userAddress
+                      }
+                    />
+                  ) : null}
+                  <div className={styles.percentile_text_container}>
+                    <p className={styles.percentile_text_normal}>
+                      {currentSearchedAddress.length > 0 ? "He is" : "You are "}
+                    </p>
+                    <span className={styles.percentile_text_green}>
+                      &nbsp;better than {userPercentile}%&nbsp;
+                    </span>
+                    <p className={styles.percentile_text_normal}>
+                      of the other players
+                    </p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={styles.percentile_container}>
+                  <p className={styles.percentile_text_normal}>
+                    You werent active this week. ready to jump back in?
+                  </p>
+                  <Link href="/">
+                    <p className={styles.percentile_text_link}>
+                      Start your quest
+                    </p>
+                  </Link>
+                </div>
+              )
             ) : null}
             <Divider
               orientation="horizontal"
@@ -443,38 +443,40 @@ export default function Page() {
                 ? isMobile
                   ? rankOrderMobile.map((position, index) => {
                       const item =
-                        leaderboardToppers?.[
-                          timeFrameMap[
-                            duration as keyof typeof timeFrameMap
-                          ] as keyof typeof leaderboardToppers
-                        ]?.best_users?.[position - 1];
+                        leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <RankCard
-                          key={index}
-                          name={item?.address}
-                          experience={item?.xp}
-                          trophy={item?.achievements}
-                          position={position}
-                        />
+                        <Link
+                          key={item?.address}
+                          href={`/${decimalToHex(item.address)}`}
+                        >
+                          <RankCard
+                            key={index}
+                            name={item?.address}
+                            experience={item?.xp}
+                            trophy={item?.achievements}
+                            position={position}
+                          />
+                        </Link>
                       );
                     })
                   : rankOrder.map((position, index) => {
                       const item =
-                        leaderboardToppers?.[
-                          timeFrameMap[
-                            duration as keyof typeof timeFrameMap
-                          ] as keyof typeof leaderboardToppers
-                        ]?.best_users?.[position - 1];
+                        leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <RankCard
-                          key={index}
-                          name={item?.address}
-                          experience={item?.xp}
-                          trophy={item?.achievements}
-                          position={position}
-                        />
+                        <Link
+                          key={item?.address}
+                          href={`/${decimalToHex(item.address)}`}
+                        >
+                          <RankCard
+                            key={index}
+                            name={item?.address}
+                            experience={item?.xp}
+                            trophy={item?.achievements}
+                            position={position}
+                          />
+                        </Link>
                       );
                     })
                 : null}

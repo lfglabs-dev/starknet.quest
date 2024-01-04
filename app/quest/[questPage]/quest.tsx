@@ -15,6 +15,7 @@ import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "@utils/links";
 import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
+import NftIssuerTag from "@components/quests/nftIssuerTag";
 
 type QuestPageProps = {
   questId: string;
@@ -117,7 +118,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
             <RewardSkeleton />
           ) : (
             <div className="mb-4">
-              <NftIssuer
+              <NftIssuerTag
                 issuer={{
                   name: quest.issuer,
                   logoFavicon: quest.logo,

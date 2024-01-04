@@ -28,22 +28,24 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   }, []);
 
   return (
-    <>
+    <section className={styles.section}>
       <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
           {boosts ? (
-            <Link href={`/quest-boost`} className={styles.questCategory}>
-              <div className={styles.categoryInfos}>
-                <h2 className="text-gray-200">Boosts Quest</h2>
-                <p className="text-gray-200">
-                  {boosts.length} quest
-                  {boosts.length > 1 ? "s" : null}
-                </p>
-              </div>
-              <img src="/avnu/astronaut.webp" />
-            </Link>
+            <div className={styles.questCategoryContainer}>
+              <Link href={`/quest-boost`} className={styles.questCategory}>
+                <div className={styles.categoryInfos}>
+                  <h2 className="text-gray-200">Boosts Quest</h2>
+                  <p className="text-gray-200">
+                    {boosts.length} quest
+                    {boosts.length > 1 ? "s" : null}
+                  </p>
+                </div>
+                <img src="/avnu/astronaut.webp" />
+              </Link>
+            </div>
           ) : null}
           {categories ? (
             categories.map((category) => {
@@ -54,7 +56,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
           )}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

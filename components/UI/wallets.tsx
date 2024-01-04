@@ -100,6 +100,9 @@ const Wallets: FunctionComponent<WalletsProps> = ({
             }
           }
         })}
+        <p onClick={() => closeWallet()} className={styles.closeMobile}>
+          Close
+        </p>
       </div>
     </Modal>
   );

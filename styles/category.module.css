@@ -1,7 +1,7 @@
 .screen {
   z-index: 0;
   position: relative;
-  padding-top: calc(12vh + 2rem);
+  padding-top: calc(12vh);
   background-color: var(--background);
   width: 100%;
   min-height: calc(100vh - 117px - 112px + 2em);
@@ -12,10 +12,8 @@
 }
 
 .backButton {
-  position: absolute;
   margin-left: 63px;
   z-index: 10;
-  top: 12vh;
 }
 
 .questList {
@@ -38,4 +36,10 @@
   display: block;
   margin: 0 auto;
   max-width: calc(290px * 3 + 48px * 2);
+}
+
+@media screen and (max-width: 768px) {
+  .backButton {
+    margin: 3rem 1.5rem;
+  }
 }

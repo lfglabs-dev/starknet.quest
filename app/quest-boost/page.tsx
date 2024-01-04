@@ -7,10 +7,14 @@ import CategoryTitle from "@components/UI/titles/categoryTitle";
 import Componentstyles from "@styles/components/pages/home/howToParticipate.module.css";
 import Steps from "@components/UI/steps/steps";
 import { getBoosts, getCompletedQuestsOfUser } from "@services/apiService";
+import BackButton from "@components/UI/backButton";
+import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 
 export default function Page() {
+  const router = useRouter();
   const { address } = useAccount();
+
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const [completedQuests, setCompletedQuests] = useState<number[]>([]);
 
@@ -40,6 +44,9 @@ export default function Page() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.backButton}>
+        <BackButton onClick={() => router.back()} />
+      </div>
       <h1 className={styles.title}>Boosts Quest</h1>
       <div className={styles.card_container}>
         {boosts?.map((boost) => {
