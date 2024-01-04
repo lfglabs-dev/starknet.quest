@@ -1,10 +1,10 @@
-type LeaderboardTopperParams = {
+export type LeaderboardTopperParams = {
   addr: string;
   start_timestamp: number;
   end_timestamp: number;
 };
 
-type LeaderboardRankingParams = {
+export type LeaderboardRankingParams = {
   addr: string;
   page_size: number;
   shift: number;
