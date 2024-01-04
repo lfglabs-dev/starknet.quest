@@ -13,7 +13,6 @@ import { QuestDocument } from "../../../types/backTypes";
 import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
-import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "@utils/feltService";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
@@ -68,13 +67,13 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const getButtonText = useCallback(() => {
     if (!boost) return;
-    const res = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
-    if (res || boost?.claimed) {
-      return "Chest already opened";
-    } else if (boost && boost?.expiry > Date.now()) {
+    const chestOpened = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
+    if (boost && boost?.expiry > Date.now()) {
       return "Boost has not ended ⌛";
-    } else {
+    } else if (!chestOpened) {
       return "See my reward 🎉";
+    } else {
+      return "Chest already opened";
     }
   }, [boost, address]);
 
@@ -130,7 +129,8 @@ export default function Page({ params }: BoostQuestPageProps) {
             <Button
               disabled={
                 boost &&
-                (boost?.claimed ||
+                (boost?.expiry > Date.now() ||
+                  boost?.claimed ||
                   BoostClaimStatusManager.getBoostClaimStatus(boost.id))
               }
               onClick={() => {

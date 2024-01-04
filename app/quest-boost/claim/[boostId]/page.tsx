@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import { getBoostById, getQuestBoostClaimParams } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
@@ -13,6 +13,8 @@ import verifiedLottie from "@public/visuals/sq_claim.json";
 import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
+import TokenSymbol from "@components/quest-boost/TokenSymbol";
+import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 
 type BoostQuestPageProps = {
   params: {
@@ -58,6 +60,19 @@ export default function Page({ params }: BoostQuestPageProps) {
     setSign(signature);
   };
 
+  const getTokenName = useCallback(() => {
+    if (!boost) return "";
+    const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
+    switch (boost.token) {
+      case TOKEN_ADDRESS_MAP[network].USDC:
+        return "USDC";
+      case TOKEN_ADDRESS_MAP[network].ETH:
+        return "ETH";
+      default:
+        return "USDC";
+    }
+  }, [boost]);
+
   useEffect(() => {
     if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
       return;
@@ -66,7 +81,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
-      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id);
+      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id, true);
       setTransactionHash(transaction_hash);
     };
 
@@ -100,20 +115,30 @@ export default function Page({ params }: BoostQuestPageProps) {
               hexToDecimal(boost?.winner) === hexToDecimal(address) ? (
                 <>
                   <div className={styles.token_logo}>
-                    <CDNImage
-                      src={"/icons/usdc.svg"}
-                      priority
-                      width={97}
-                      height={97}
-                      alt="usdc icon"
-                    />
+                    {getTokenName() === "USDC" ? (
+                      <CDNImage
+                        src={"/icons/usdc.svg"}
+                        priority
+                        width={97}
+                        height={97}
+                        alt="usdc icon"
+                      />
+                    ) : (
+                      <CDNImage
+                        src={"/icons/eth.svg"}
+                        priority
+                        width={97}
+                        height={97}
+                        alt="usdc icon"
+                      />
+                    )}
                   </div>
                   <div className={styles.claim_button_text}>
                     <p className={styles.claim_amount}>{boost?.amount}</p>
                   </div>
                   <div className={styles.token_symbol_container}>
                     <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
-                      USDC
+                      {getTokenName()}
                     </div>
                   </div>
                 </>

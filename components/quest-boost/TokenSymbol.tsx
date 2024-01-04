@@ -4,18 +4,21 @@ import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 
 type TokenSymbolProps = {
   tokenAddress: string;
+  imageDimensions?: { width: number; height: number };
 };
-const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({ tokenAddress }) => {
+const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
+  tokenAddress,
+  imageDimensions = { width: 20, height: 20 },
+}) => {
   let tokenImageLink = "";
-  let imageDimensions = { width: 20, height: 20 };
   const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
   switch (tokenAddress) {
     case TOKEN_ADDRESS_MAP[network].USDC:
       tokenImageLink = "/icons/usdc.svg";
       break;
     case TOKEN_ADDRESS_MAP[network].ETH:
-      tokenImageLink = "/icons/eth.svg";
       imageDimensions = { width: 15, height: 20 };
+      tokenImageLink = "/icons/eth.svg";
       break;
     default:
       tokenImageLink = "/icons/usdc.svg";
