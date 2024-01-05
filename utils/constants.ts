@@ -19,7 +19,6 @@ export const timeFrameMap = (input: string): "week" | "month" | "all" => {
     default:
       output = "week";
   }
-  console.log({ output });
   return output;
 };
 
