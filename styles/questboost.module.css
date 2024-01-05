@@ -110,6 +110,11 @@
   box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 }
 
+.backButton {
+  margin-left: 39px;
+  z-index: 10;
+}
+
 @media screen and (max-width: 740px) {
   .claim_button_container {
     flex-direction: column;
@@ -118,5 +123,8 @@
 
   .instructions_container {
     padding: 0rem;
+  }
+  .backButton {
+    margin: 3rem 0;
   }
 }

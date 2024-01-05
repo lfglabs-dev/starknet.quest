@@ -1,9 +1,17 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import ChipList from "@components/UI/ChipList";
 import RankCard from "@components/leaderboard/RankCard";
 import {
+  LeaderboardRankingParams,
+  LeaderboardTopperParams,
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
 } from "@services/apiService";
@@ -81,29 +89,33 @@ export default function Page() {
           : "",
       page_size: 10,
       shift: 0,
-      start_timestamp: new Date().setDate(new Date().getDate() - 7),
-      end_timestamp: new Date().getTime(),
-    };
-
-    const fetchLeaderboardToppersResult = async () => {
-      const topperData = await fetchLeaderboardToppers({
-        addr: requestBody.addr,
-        start_timestamp: new Date().setDate(new Date().getDate() - 7),
-        end_timestamp: new Date().getTime(),
-      });
-      setLeaderboardToppers(topperData);
-    };
-
-    const fetchRankingResults = async () => {
-      const response = await fetchLeaderboardRankings(requestBody);
-      setRanking(response);
+      duration: timeFrameMap(duration),
     };
 
     setLoading(true);
-    fetchLeaderboardToppersResult();
-    fetchRankingResults();
+    fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
+      duration: timeFrameMap(duration),
+    });
+    fetchRankingResults(requestBody);
     setLoading(false);
   }, [userAddress, status, apiCallDelay]);
+
+  const fetchRankingResults = useCallback(
+    async (requestBody: LeaderboardRankingParams) => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking(response);
+    },
+    []
+  );
+
+  const fetchLeaderboardToppersResult = useCallback(
+    async (requestBody: LeaderboardTopperParams) => {
+      const topperData = await fetchLeaderboardToppers(requestBody);
+      setLeaderboardToppers(topperData);
+    },
+    []
+  );
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -226,32 +238,21 @@ export default function Page() {
           : "",
       page_size: rowsPerPage,
       shift: currentPage,
-      ...getTimeRange(),
+      duration: timeFrameMap(duration),
     };
 
-    const fetchRankings = async () => {
-      setPaginationLoading(true);
-      const rankingData = await fetchLeaderboardRankings(requestBody);
-      setRanking(rankingData);
-    };
-
-    const fetchLeaderboard = async () => {
-      const topperData = await fetchLeaderboardToppers({
-        addr: requestBody.addr,
-        start_timestamp: requestBody.start_timestamp,
-        end_timestamp: requestBody.end_timestamp,
-      });
-      setLeaderboardToppers(topperData);
-    };
-
-    fetchLeaderboard();
-    fetchRankings();
+    setPaginationLoading(true);
+    fetchRankingResults(requestBody);
+    fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
+      duration: timeFrameMap(duration),
+    });
   }, [
     rowsPerPage,
     currentPage,
-    duration,
     currentSearchedAddress,
     isCustomResult,
+    duration,
   ]);
 
   // handle pagination with forward and backward direction as params

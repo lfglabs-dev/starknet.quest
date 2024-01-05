@@ -19,6 +19,7 @@ import { useNotificationManager } from "@hooks/useNotificationManager";
 import { NotificationType, TransactionType } from "@constants/notifications";
 import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "@utils/feltService";
+import BackButton from "@components/UI/backButton";
 
 type BoostQuestPageProps = {
   params: {
@@ -119,6 +120,9 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.backButton}>
+        <BackButton onClick={() => router.back()} />
+      </div>
       <div className="flex flex-col">
         <h1 className={styles.title}>{boost?.name}</h1>
         {boost?.expiry && boost.expiry > Date.now() ? (
