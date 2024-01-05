@@ -1,5 +1,3 @@
-import { duration } from "@mui/material";
-
 export type LeaderboardTopperParams = {
   addr: string;
   duration: "week" | "month" | "all";
