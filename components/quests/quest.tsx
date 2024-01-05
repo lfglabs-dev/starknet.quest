@@ -7,7 +7,7 @@ import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 
-const BOOSTED_QUESTS = [23];
+const BOOSTED_QUESTS = [23, 104];
 
 type QuestProps = {
   onClick: () => void;
