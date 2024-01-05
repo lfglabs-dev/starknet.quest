@@ -23,6 +23,7 @@
   background-color: #1f1f25;
   border: 1px solid transparent;
   transition: all 0.2s ease-in-out;
+  max-width: 260px;
 }
 
 .boost_card_container:hover {
