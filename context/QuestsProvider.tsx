@@ -12,6 +12,7 @@ interface QuestsConfig {
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
   completedQuestIds: number[];
+  completedBoostIds: number[];
 }
 
 type GetQuestsRes =
@@ -26,6 +27,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   categories: [],
   trendingQuests: [],
   completedQuestIds: [],
+  completedBoostIds: [],
 });
 
 export const QuestsContextProvider = ({
@@ -40,6 +42,7 @@ export const QuestsContextProvider = ({
   const [categories, setCategories] = useState<QuestCategory[]>([]);
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
+  const [completedBoostIds, setCompletedBoostIds] = useState<number[]>([]);
   const { address } = useAccount();
 
   useMemo(() => {
@@ -102,6 +105,20 @@ export const QuestsContextProvider = ({
     fetch(
       `${
         process.env.NEXT_PUBLIC_API_LINK
+      }/get_completed_boosts?addr=${hexToDecimal(address)}`
+    )
+      .then((response) => response.json())
+      .then((data: number[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        setCompletedBoostIds(data as number[]);
+      });
+  }, [address]);
+
+  useMemo(() => {
+    if (!address) return;
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_LINK
       }/get_completed_quests?addr=${hexToDecimal(address)}`
     )
       .then((response) => response.json())
@@ -118,8 +135,16 @@ export const QuestsContextProvider = ({
       categories,
       trendingQuests,
       completedQuestIds,
+      completedBoostIds,
     };
-  }, [quests, featuredQuest, categories, trendingQuests, completedQuestIds]);
+  }, [
+    quests,
+    featuredQuest,
+    categories,
+    trendingQuests,
+    completedQuestIds,
+    completedBoostIds,
+  ]);
 
   return (
     <QuestsContext.Provider value={contextValues}>
