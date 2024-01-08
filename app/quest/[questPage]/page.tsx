@@ -17,7 +17,6 @@ export async function generateMetadata(
 
   try {
     const data = await fetchQuestData(questId);
-    console.log({ data });
 
     if (data?.name) {
       console.log({
