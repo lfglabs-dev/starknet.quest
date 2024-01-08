@@ -4,11 +4,11 @@ import Cardstyles from "@styles/components/card.module.css";
 import Link from "next/link";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
-import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import TokenSymbol from "./TokenSymbol";
 import { hexToDecimal } from "@utils/feltService";
 import { useAccount } from "@starknet-react/core";
+import useBoost from "@hooks/useBoost";
 
 type BoostCardProps = {
   boost: Boost;
@@ -24,6 +24,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     useState<boolean>(false);
   const [userBoostCheckStatus, setUserBoostCheckStatus] =
     useState<boolean>(false);
+  const { getBoostClaimStatus } = useBoost();
 
   useEffect(() => {
     if (!boost || !completedQuests) return;
@@ -37,7 +38,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     });
     setUserParticipationStatus(userParticipationCheck ? true : false);
     if (userParticipationCheck) {
-      const res = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
+      const res = getBoostClaimStatus(boost?.id);
       setUserBoostCheckStatus(res);
     }
   }, [completedQuests]);
