@@ -14,10 +14,11 @@ import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
 import { hexToDecimal } from "@utils/feltService";
-import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 import BackButton from "@components/UI/backButton";
+import useBoost from "@hooks/useBoost";
+import { getTokenName } from "@utils/tokenService";
 
 type BoostQuestPageProps = {
   params: {
@@ -32,6 +33,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [quests, setQuests] = useState<QuestDocument[]>([]);
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
+  const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
 
   const getTotalParticipants = async (questIds: number[]) => {
     let total = 0;
@@ -44,19 +46,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     return total;
   };
 
-  const getTokenName = useCallback(() => {
-    if (!boost) return "";
-    const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
-    switch (boost.token) {
-      case TOKEN_ADDRESS_MAP[network].USDC:
-        return "USDC";
-      case TOKEN_ADDRESS_MAP[network].ETH:
-        return "ETH";
-      default:
-        return "USDC";
-    }
-  }, [boost]);
-
   const fetchPageData = async () => {
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
@@ -68,7 +57,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const getButtonText = useCallback(() => {
     if (!boost) return;
-    const chestOpened = BoostClaimStatusManager.getBoostClaimStatus(boost?.id);
+    const chestOpened = getBoostClaimStatus(boost?.id);
     if (boost && boost?.expiry > Date.now()) {
       return "Boost has not ended ⌛";
     } else if (!chestOpened) {
@@ -81,7 +70,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const handleButtonClick = useCallback(() => {
     if (!boost) return;
     if (hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address))
-      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id, true);
+      updateBoostClaimStatus(boost?.id, true);
 
     router.push(`/quest-boost/claim/${boost?.id}`);
   }, [boost, address]);
@@ -127,7 +116,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           <p>Reward:</p>
           <div className="flex flex-row gap-2">
             <p className={styles.claim_button_text_highlight}>
-              {boost?.amount} {getTokenName()}
+              {boost?.amount} {getTokenName(boost?.token ?? "")}
             </p>
             <TokenSymbol tokenAddress={boost?.token ?? ""} />
           </div>
@@ -143,7 +132,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                 boost &&
                 (boost?.expiry > Date.now() ||
                   boost?.claimed ||
-                  BoostClaimStatusManager.getBoostClaimStatus(boost.id))
+                  getBoostClaimStatus(boost.id))
               }
               onClick={handleButtonClick}
             >

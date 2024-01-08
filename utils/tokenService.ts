@@ -1,7 +1,8 @@
 import { TOKEN_ADDRESS_MAP } from "./constants";
+import { getCurrentNetwork } from "./network";
 
 export const getTokenName = (token: string) => {
-  const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
+  const network = getCurrentNetwork();
   switch (token) {
     case TOKEN_ADDRESS_MAP[network].USDC:
       return "USDC";

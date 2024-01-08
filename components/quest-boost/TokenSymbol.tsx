@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { CDNImage } from "@components/cdn/image";
 import { TOKEN_ADDRESS_MAP } from "@utils/constants";
+import { getCurrentNetwork } from "@utils/network";
 
 type TokenSymbolProps = {
   tokenAddress: string;
@@ -11,7 +12,7 @@ const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
   imageDimensions = { width: 20, height: 20 },
 }) => {
   let tokenImageLink = "";
-  const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
+  const network = getCurrentNetwork();
   switch (tokenAddress) {
     case TOKEN_ADDRESS_MAP[network].USDC:
       tokenImageLink = "/icons/usdc.svg";

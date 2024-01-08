@@ -3,6 +3,8 @@ export enum NetworkType {
   MAINNET = "MAINNET",
 }
 
-export const getCurrentNetwork = () => {
-  return process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "TESTNET" : "MAINNET";
+export const getCurrentNetwork = (): NetworkType => {
+  return process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+    ? NetworkType.TESTNET
+    : NetworkType.MAINNET;
 };

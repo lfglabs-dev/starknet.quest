@@ -13,8 +13,8 @@ import claimWinnerLottie from "@public/visuals/sq_claim.json";
 import claimLoserLottie from "@public/visuals/sq_looser.json";
 import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
-import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
 import { getTokenName } from "@utils/tokenService";
+import useBoost from "@hooks/useBoost";
 
 type BoostQuestPageProps = {
   params: {
@@ -31,6 +31,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [displayLottie, setDisplayLottie] = useState<boolean>(true);
   const [transactionHash, setTransactionHash] = useState<string>("");
+  const { updateBoostClaimStatus } = useBoost();
 
   const fetchPageData = async () => {
     const boostInfo = await getBoostById(boostId);
@@ -68,7 +69,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
-      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id, true);
+      updateBoostClaimStatus(boost?.id, true);
       setTransactionHash(transaction_hash);
     };
 
