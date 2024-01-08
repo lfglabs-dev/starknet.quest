@@ -19,24 +19,6 @@ export async function generateMetadata(
     const data = await fetchQuestData(questId);
 
     if (data?.name) {
-      console.log({
-        yay: {
-          title: data.name,
-          description: data.desc,
-          openGraph: {
-            title: data.name,
-            description: data.desc,
-            images: [data.img_card],
-          },
-          twitter: {
-            card: "summary_large_image",
-            title: data.name,
-            description: data.desc,
-            images: [data.img_card],
-          },
-        },
-      });
-
       return {
         title: data.name,
         description: data.desc,
