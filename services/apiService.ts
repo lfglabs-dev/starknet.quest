@@ -112,3 +112,12 @@ export const getPendingBoostClaims = async (addr: string) => {
     console.log(err);
   }
 };
+
+export const getBoostedQuests = async () => {
+  try {
+    const response = await fetch(`${baseurl}/get_boosted_quests`);
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

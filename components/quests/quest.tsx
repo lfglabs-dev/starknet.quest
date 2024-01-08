@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useMemo } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useContext } from "react";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
@@ -6,8 +12,7 @@ import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIco
 import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
-
-const BOOSTED_QUESTS = [23, 104];
+import { getBoostedQuests } from "@services/apiService";
 
 type QuestProps = {
   onClick: () => void;
@@ -33,6 +38,16 @@ const Quest: FunctionComponent<QuestProps> = ({
     () => completedQuestIds.includes(id),
     [id, completedQuestIds]
   );
+  const [boostedQuests, setBoostedQuests] = useState<number[]>([]);
+
+  const fetchBoostedQuests = useCallback(async () => {
+    const response = await getBoostedQuests();
+    setBoostedQuests(response);
+  }, []);
+
+  useEffect(() => {
+    fetchBoostedQuests();
+  }, []);
 
   return (
     <QuestCard
@@ -67,7 +82,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             </>
           )}
         </div>
-        {BOOSTED_QUESTS.includes(id) ? (
+        {boostedQuests.includes(id) ? (
           <div
             className={styles.issuer}
             style={{ gap: 0, padding: "8px 16px" }}
