@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import { getBoostById, getQuestBoostClaimParams } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
@@ -14,7 +14,7 @@ import claimLoserLottie from "@public/visuals/sq_looser.json";
 import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
 import BoostClaimStatusManager from "@utils/boostClaimStatusManager";
-import { TOKEN_ADDRESS_MAP } from "@utils/constants";
+import { getTokenName } from "@utils/tokenService";
 
 type BoostQuestPageProps = {
   params: {
@@ -60,19 +60,6 @@ export default function Page({ params }: BoostQuestPageProps) {
     setSign(signature);
   };
 
-  const getTokenName = useCallback(() => {
-    if (!boost) return "";
-    const network = process.env.NEXT_PUBLIC_IS_TESTNET ? "TESTNET" : "MAINNET";
-    switch (boost.token) {
-      case TOKEN_ADDRESS_MAP[network].USDC:
-        return "USDC";
-      case TOKEN_ADDRESS_MAP[network].ETH:
-        return "ETH";
-      default:
-        return "USDC";
-    }
-  }, [boost]);
-
   useEffect(() => {
     if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
       return;
@@ -104,18 +91,24 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
   }, [transactionHash]);
 
+  const isUserWinner = useMemo(() => {
+    return (
+      boost &&
+      boost?.winner &&
+      hexToDecimal(boost?.winner) === hexToDecimal(address)
+    );
+  }, [boost, address]);
+
   return (
     <div className={styles.claim_screen_container}>
       <div className="flex flex-col gap-16">
         {displayCard ? (
           <>
             <div className={styles.claim_amount_card}>
-              {boost &&
-              boost?.winner &&
-              hexToDecimal(boost?.winner) === hexToDecimal(address) ? (
+              {isUserWinner ? (
                 <>
                   <div className={styles.token_logo}>
-                    {getTokenName() === "USDC" ? (
+                    {boost && getTokenName(boost?.token) === "USDC" ? (
                       <CDNImage
                         src={"/icons/usdc.svg"}
                         priority
@@ -138,7 +131,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   </div>
                   <div className={styles.token_symbol_container}>
                     <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
-                      {getTokenName()}
+                      {getTokenName(boost ? boost?.token : "")}
                     </div>
                   </div>
                 </>
@@ -164,9 +157,7 @@ export default function Page({ params }: BoostQuestPageProps) {
               )}
             </div>
 
-            {boost &&
-            boost?.winner &&
-            hexToDecimal(boost?.winner) === hexToDecimal(address) ? (
+            {isUserWinner ? (
               <div className={styles.claim_button_animation}>
                 <Button
                   disabled={
@@ -185,19 +176,10 @@ export default function Page({ params }: BoostQuestPageProps) {
       {boost && displayLottie ? (
         <div className="absolute ml-auto mr-auto left-0 right-0 flex justify-center w-full">
           <Lottie
-            onEnterFrame={() => {
-              setDisplayCard(true);
-            }}
-            onComplete={() => {
-              setDisplayLottie(false);
-            }}
+            onEnterFrame={() => setDisplayCard(true)}
+            onComplete={() => setDisplayLottie(false)}
             className="w-[600px] h-[600px]"
-            animationData={
-              boost?.winner &&
-              hexToDecimal(boost?.winner) === hexToDecimal(address)
-                ? claimWinnerLottie
-                : claimLoserLottie
-            }
+            animationData={isUserWinner ? claimWinnerLottie : claimLoserLottie}
             loop={false}
           />
         </div>

@@ -78,6 +78,14 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
   }, [boost, address]);
 
+  const handleButtonClick = useCallback(() => {
+    if (!boost) return;
+    if (hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address))
+      BoostClaimStatusManager.updateBoostClaimStatus(boost?.id, true);
+
+    router.push(`/quest-boost/claim/${boost?.id}`);
+  }, [boost, address]);
+
   useEffect(() => {
     fetchPageData();
   }, []);
@@ -137,16 +145,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   boost?.claimed ||
                   BoostClaimStatusManager.getBoostClaimStatus(boost.id))
               }
-              onClick={() => {
-                if (!boost) return;
-                if (hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address))
-                  BoostClaimStatusManager.updateBoostClaimStatus(
-                    boost?.id,
-                    true
-                  );
-
-                router.push(`/quest-boost/claim/${boost?.id}`);
-              }}
+              onClick={handleButtonClick}
             >
               {getButtonText()}
             </Button>
