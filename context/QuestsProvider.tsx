@@ -5,6 +5,12 @@ import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/questService";
+import {
+  getCompletedBoosts,
+  getCompletedQuests,
+  getQuests,
+  getTrendingQuests,
+} from "@services/apiService";
 
 interface QuestsConfig {
   quests: QuestDocument[];
@@ -47,11 +53,7 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/get_quests`
-      );
-      const data: GetQuestsRes = await response.json();
-      if ((data as QueryError).error) return;
+      const data: GetQuestsRes = await getQuests();
 
       const q = Object.values(data).flat();
 
@@ -92,40 +94,31 @@ export const QuestsContextProvider = ({
   }, []);
 
   useMemo(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`)
-      .then((response) => response.json())
-      .then((data: QuestDocument[] | QueryError) => {
-        if ((data as QueryError).error) return;
-        setTrendingQuests(data as QuestDocument[]);
-      });
+    getTrendingQuests().then((data: QuestDocument[] | QueryError) => {
+      if ((data as QueryError).error) return;
+      setTrendingQuests(data as QuestDocument[]);
+    });
   }, []);
 
   useMemo(() => {
     if (!address) return;
-    fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_LINK
-      }/get_completed_boosts?addr=${hexToDecimal(address)}`
-    )
-      .then((response) => response.json())
-      .then((data: number[] | QueryError) => {
+    getCompletedBoosts(hexToDecimal(address)).then(
+      (data: number[] | QueryError) => {
+        console.log(data);
         if ((data as QueryError).error) return;
         setCompletedBoostIds(data as number[]);
-      });
+      }
+    );
   }, [address]);
 
   useMemo(() => {
     if (!address) return;
-    fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_LINK
-      }/get_completed_quests?addr=${hexToDecimal(address)}`
-    )
-      .then((response) => response.json())
-      .then((data: number[] | QueryError) => {
+    getCompletedQuests(hexToDecimal(address)).then(
+      (data: number[] | QueryError) => {
         if ((data as QueryError).error) return;
         setCompletedQuestIds(data as number[]);
-      });
+      }
+    );
   }, [address]);
 
   const contextValues = useMemo(() => {
