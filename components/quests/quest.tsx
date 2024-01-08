@@ -82,7 +82,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             </>
           )}
         </div>
-        {boostedQuests.includes(id) ? (
+        {boostedQuests?.length > 0 && boostedQuests?.includes(id) ? (
           <div
             className={styles.issuer}
             style={{ gap: 0, padding: "8px 16px" }}
