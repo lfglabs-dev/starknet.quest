@@ -76,7 +76,7 @@ export const getBoostById = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boost data", err);
   }
 };
 

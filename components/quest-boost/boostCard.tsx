@@ -42,13 +42,12 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     });
     setHasUserCompletedBoost(userBoostCompletionCheck);
     setUserParticipationStatus(userParticipationCheck ? true : false);
-  }, [completedQuests]);
+  }, [completedQuests, boost]);
 
   useEffect(() => {
-    if (userParticipationStatus) {
-      const res = getBoostClaimStatus(boost?.id);
-      setUserBoostCheckStatus(res);
-    }
+    if (!userParticipationStatus) return;
+    const res = getBoostClaimStatus(boost?.id);
+    setUserBoostCheckStatus(res);
   }, [userParticipationStatus]);
 
   const isClickable = useMemo(

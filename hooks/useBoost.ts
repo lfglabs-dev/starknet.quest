@@ -29,10 +29,8 @@ export default function useBoost() {
         const parsed = res ? JSON.parse(res) : {};
         parsed[address] = parsed[address] ?? {};
         parsed[address][boostId] = value;
-        console.log(parsed);
         localStorage.setItem("boostClaimStatus", JSON.stringify(parsed));
       } catch (err) {
-        console.log({ err });
         return false;
       }
     },

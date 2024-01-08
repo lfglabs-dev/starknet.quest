@@ -1,5 +1,6 @@
 "use client";
 
+import { getCurrentNetwork } from "@utils/network";
 import React from "react";
 import { ReactNode, createContext, useMemo } from "react";
 import { Provider, constants } from "starknet";
@@ -15,7 +16,8 @@ export const StarknetIdJsContext = createContext<StarknetIdJsConfig>({
 
 export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
   const isTestnet = useMemo(() => {
-    return process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? true : false;
+    const network = getCurrentNetwork();
+    return network === "TESTNET" ? true : false;
   }, []);
 
   const starknetIdNavigator = useMemo(() => {

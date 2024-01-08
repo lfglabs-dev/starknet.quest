@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import {
   getBoostById,
@@ -35,15 +35,24 @@ export default function Page({ params }: BoostQuestPageProps) {
   const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
 
   const getTotalParticipants = async (questIds: number[]) => {
-    let total = 0;
-    await Promise.all(
-      questIds?.map(async (questID) => {
-        const res = await getQuestParticipants(questID);
-        if (res?.count) total += res?.count;
-      })
-    );
-    return total;
+    try {
+      let total = 0;
+      await Promise.all(
+        questIds?.map(async (questID) => {
+          const res = await getQuestParticipants(questID);
+          if (res?.count) total += res?.count;
+        })
+      );
+      return total;
+    } catch (err) {
+      console.log("Error while fetching total participants", err);
+    }
   };
+
+  const isBoostExpired = useMemo(
+    () => boost && boost?.expiry <= Date.now(),
+    [boost]
+  );
 
   const fetchPageData = async () => {
     const questsList = await getQuestsInBoost(boostId);
@@ -57,14 +66,14 @@ export default function Page({ params }: BoostQuestPageProps) {
   const getButtonText = useCallback(() => {
     if (!boost) return;
     const chestOpened = getBoostClaimStatus(boost?.id);
-    if (boost && boost?.expiry > Date.now()) {
-      return "Boost has not ended ⌛";
+    if (!isBoostExpired) {
+      return "Boost in progress ⌛";
     } else if (!chestOpened) {
       return "See my reward 🎉";
     } else {
       return "Chest already opened";
     }
-  }, [boost, address]);
+  }, [boost, address, isBoostExpired]);
 
   const handleButtonClick = useCallback(() => {
     if (!boost) return;
@@ -129,8 +138,8 @@ export default function Page({ params }: BoostQuestPageProps) {
             <Button
               disabled={
                 boost &&
-                (boost?.expiry > Date.now() ||
-                  boost?.claimed ||
+                (boost?.claimed ||
+                  !isBoostExpired ||
                   getBoostClaimStatus(boost.id))
               }
               onClick={handleButtonClick}

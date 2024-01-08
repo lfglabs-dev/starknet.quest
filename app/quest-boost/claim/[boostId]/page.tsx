@@ -34,8 +34,12 @@ export default function Page({ params }: BoostQuestPageProps) {
   const { updateBoostClaimStatus } = useBoost();
 
   const fetchPageData = async () => {
-    const boostInfo = await getBoostById(boostId);
-    setBoost(boostInfo);
+    try {
+      const boostInfo = await getBoostById(boostId);
+      setBoost(boostInfo);
+    } catch (err) {
+      console.log("Error while fetching boost data", err);
+    }
   };
 
   useEffect(() => {
@@ -50,10 +54,18 @@ export default function Page({ params }: BoostQuestPageProps) {
       formattedSign = [res?.r, res?.s];
       return formattedSign;
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching claim signature", err);
       return formattedSign;
     }
   };
+
+  const isUserWinner = useMemo(() => {
+    return (
+      boost &&
+      boost?.winner &&
+      hexToDecimal(boost?.winner) === hexToDecimal(address)
+    );
+  }, [boost, address]);
 
   const handleClaimClick = async () => {
     if (isUserWinner) {
@@ -78,7 +90,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     };
 
     callContract();
-  }, [sign]);
+  }, [sign, account, boost]);
 
   useEffect(() => {
     if (!(transactionHash.length > 0)) return;
@@ -95,14 +107,6 @@ export default function Page({ params }: BoostQuestPageProps) {
       });
     }
   }, [transactionHash]);
-
-  const isUserWinner = useMemo(() => {
-    return (
-      boost &&
-      boost?.winner &&
-      hexToDecimal(boost?.winner) === hexToDecimal(address)
-    );
-  }, [boost, address]);
 
   return (
     <div className={styles.claim_screen_container}>
