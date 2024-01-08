@@ -38,7 +38,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const [changeWallet, setChangeWallet] = useState<boolean>(false);
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
-  const network = network === "TESTNET" ? "testnet" : "mainnet";
+  const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
 
   const buttonName = useMemo(
