@@ -45,7 +45,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       );
       return total;
     } catch (err) {
-      console.log("Error while fetching total participants", err);
+      console.log(err);
     }
   };
 

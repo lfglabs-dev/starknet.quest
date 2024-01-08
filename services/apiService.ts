@@ -49,7 +49,7 @@ export const getCompletedQuestsOfUser = async (address: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching completed quests", err);
   }
 };
 
@@ -58,7 +58,7 @@ export const getBoosts = async () => {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boosts", err);
   }
 };
 
@@ -87,7 +87,7 @@ export const getQuestParticipants = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching total participants", err);
   }
 };
 
@@ -98,7 +98,7 @@ export const getQuestBoostClaimParams = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching claim signature", err);
   }
 };
 
@@ -109,6 +109,6 @@ export const getPendingBoostClaims = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching pending claims", err);
   }
 };

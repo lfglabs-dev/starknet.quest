@@ -23,7 +23,7 @@ export default function Page() {
       const res = await getBoosts();
       setBoosts(res);
     } catch (err) {
-      console.log("Error while fetching boosts", err);
+      console.log(err);
     }
   };
 
@@ -33,7 +33,7 @@ export default function Page() {
       const res = await getCompletedQuestsOfUser(address);
       setCompletedQuests(res);
     } catch (err) {
-      console.log("Error while fetching completed quests", err);
+      console.log(err);
     }
   };
 
