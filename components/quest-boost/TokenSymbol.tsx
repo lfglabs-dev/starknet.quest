@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { CDNImage } from "@components/cdn/image";
 import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 import { getCurrentNetwork } from "@utils/network";
@@ -16,19 +16,24 @@ const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
 }) => {
   const [tokenImageLink, setTokenImageLink] =
     useState<string>("/icons/usdc.svg");
-  const network = getCurrentNetwork();
-  switch (tokenAddress) {
-    case TOKEN_ADDRESS_MAP[network].USDC:
-      setTokenImageLink("/icons/usdc.svg");
-      break;
-    case TOKEN_ADDRESS_MAP[network].ETH:
-      setTokenImageLink("/icons/eth.svg");
-      imageDimensions = { width: 15, height: 20 };
-      break;
-    default:
-      setTokenImageLink("/icons/usdc.svg");
-      break;
-  }
+
+  useEffect(() => {
+    const network = getCurrentNetwork();
+
+    switch (tokenAddress) {
+      case TOKEN_ADDRESS_MAP[network].USDC:
+        setTokenImageLink("/icons/usdc.svg");
+        break;
+      case TOKEN_ADDRESS_MAP[network].ETH:
+        setTokenImageLink("/icons/eth.svg");
+        imageDimensions = { width: 15, height: 20 };
+        break;
+      default:
+        setTokenImageLink("/icons/usdc.svg");
+        break;
+    }
+  }, []);
+
   return (
     <CDNImage
       src={tokenImageLink}
