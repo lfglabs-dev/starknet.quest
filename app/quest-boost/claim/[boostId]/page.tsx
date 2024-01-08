@@ -56,9 +56,13 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   const handleClaimClick = async () => {
-    const signature = await fetchBoostClaimParams();
-    if (!signature) return;
-    setSign(signature);
+    if (isUserWinner) {
+      const signature = await fetchBoostClaimParams();
+      if (!signature) return;
+      setSign(signature);
+    } else {
+      updateBoostClaimStatus(parseInt(boostId), false);
+    }
   };
 
   useEffect(() => {

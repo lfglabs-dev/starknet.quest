@@ -15,7 +15,6 @@ import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
 import { hexToDecimal } from "@utils/feltService";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
-import { TOKEN_ADDRESS_MAP } from "@utils/constants";
 import BackButton from "@components/UI/backButton";
 import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";

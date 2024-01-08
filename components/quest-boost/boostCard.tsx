@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import Cardstyles from "@styles/components/card.module.css";
 import Link from "next/link";
@@ -6,8 +6,6 @@ import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIco
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import TokenSymbol from "./TokenSymbol";
-import { hexToDecimal } from "@utils/feltService";
-import { useAccount } from "@starknet-react/core";
 import useBoost from "@hooks/useBoost";
 
 type BoostCardProps = {
@@ -19,33 +17,56 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   boost,
   completedQuests,
 }) => {
-  const { address } = useAccount();
   const [userParticipationStatus, setUserParticipationStatus] =
     useState<boolean>(false);
   const [userBoostCheckStatus, setUserBoostCheckStatus] =
     useState<boolean>(false);
+  const [hasUserCompletedBoost, setHasUserCompletedBoost] =
+    useState<boolean>(false);
   const { getBoostClaimStatus } = useBoost();
+  const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     if (!boost || !completedQuests) return;
     let userParticipationCheck = false;
+    let userBoostCompletionCheck = true;
     boost.quests.forEach((quest) => {
       // no quests are completed by user
       if (!completedQuests) return false;
 
       // if any of the quests are completed by user and is part of this boost
       if (completedQuests.includes(quest)) userParticipationCheck = true;
+
+      // check if all quests are completed by the user and if not then set this flag value to false
+      if (!completedQuests.includes(quest)) userBoostCompletionCheck = false;
     });
+    setHasUserCompletedBoost(userBoostCompletionCheck);
     setUserParticipationStatus(userParticipationCheck ? true : false);
-    if (userParticipationCheck) {
+  }, [completedQuests]);
+
+  useEffect(() => {
+    if (userParticipationStatus) {
       const res = getBoostClaimStatus(boost?.id);
       setUserBoostCheckStatus(res);
     }
-  }, [completedQuests]);
+  }, [userParticipationStatus]);
+
+  const isClickable = useMemo(
+    () => userParticipationStatus && !userBoostCheckStatus,
+    [boost, userParticipationStatus, userBoostCheckStatus]
+  );
 
   return (
-    <Link href={`/quest-boost/${boost?.id}`}>
-      <div className={styles.boost_card_container}>
+    <Link href={isClickable ? `/quest-boost/${boost?.id}` : ""}>
+      <div
+        className={styles.boost_card_container}
+        style={{
+          borderColor: hovered && isClickable ? "#e1dcea" : "transparent",
+          cursor: isClickable ? "inherit" : "not-allowed",
+        }}
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <img
           className={Cardstyles.cardImage}
           src={boost?.img_url}
@@ -56,34 +77,27 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           <p>
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
-          {boost.expiry > Date.now() ? (
-            <div className="flex flex-row gap-2 items-center">
+          {!hasUserCompletedBoost && boost.expiry > Date.now() ? (
+            <div className="flex flex-row gap-2 items-center p-1.5">
               <p>{boost?.amount}</p>
               <TokenSymbol tokenAddress={boost.token} />
             </div>
-          ) : null}
-          <div className="flex w-full">
-            {boost.expiry > Date.now() ? null : (
+          ) : (
+            <div className="flex w-full">
               <div className="flex items-center">
                 <div className={styles.issuer}>
-                  {userParticipationStatus ? (
-                    !userBoostCheckStatus ? (
-                      <>
-                        <p className="text-white">See my reward</p>
-                        <TrophyIcon width="24" color="#8BEED9" />
-                      </>
-                    ) : hexToDecimal(boost?.winner ?? "") ===
-                      hexToDecimal(address) ? (
+                  {boost.expiry > Date.now() ? (
+                    hasUserCompletedBoost ? (
                       <>
                         <p className="text-white">Done</p>
                         <CheckIcon width="24" color="#6AFFAF" />
                       </>
-                    ) : (
-                      <>
-                        <UnavailableIcon width="24" color="#D32F2F" />
-                        <p className="text-white mr-2">Boost ended</p>
-                      </>
-                    )
+                    ) : null
+                  ) : isClickable ? (
+                    <>
+                      <p className="text-white">See my reward</p>
+                      <TrophyIcon width="24" color="#8BEED9" />
+                    </>
                   ) : (
                     <>
                       <UnavailableIcon width="24" color="#D32F2F" />
@@ -92,8 +106,8 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                   )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </Link>
