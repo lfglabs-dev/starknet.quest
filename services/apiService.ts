@@ -24,7 +24,7 @@ export const fetchLeaderboardToppers = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard position", err);
   }
 };
 
@@ -38,7 +38,7 @@ export const fetchLeaderboardRankings = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard ranks", err);
   }
 };
 
@@ -67,7 +67,7 @@ export const getQuestsInBoost = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching quests in boost", err);
   }
 };
 
