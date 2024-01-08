@@ -5,7 +5,10 @@ import { getCurrentNetwork } from "@utils/network";
 
 type TokenSymbolProps = {
   tokenAddress: string;
-  imageDimensions?: { width: number; height: number };
+  imageDimensions?: {
+    width: number;
+    height: number;
+  };
 };
 const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
   tokenAddress,
