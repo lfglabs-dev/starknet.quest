@@ -110,3 +110,47 @@ export const getPendingBoostClaims = async (addr: string) => {
     console.log(err);
   }
 };
+
+export const getCompletedBoosts = async (addr: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_LINK}/boost/get_completed_boosts?addr=${addr}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getQuests = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_LINK}/get_quests`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTrendingQuests = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getCompletedQuests = async (addr: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_LINK}/get_completed_quests?addr=${addr}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};

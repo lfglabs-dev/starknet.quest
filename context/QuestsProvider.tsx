@@ -5,6 +5,12 @@ import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/questService";
+import {
+  getCompletedBoosts,
+  getCompletedQuests,
+  getQuests,
+  getTrendingQuests,
+} from "@services/apiService";
 
 interface QuestsConfig {
   quests: QuestDocument[];
@@ -12,6 +18,7 @@ interface QuestsConfig {
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
   completedQuestIds: number[];
+  completedBoostIds: number[];
 }
 
 type GetQuestsRes =
@@ -26,6 +33,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   categories: [],
   trendingQuests: [],
   completedQuestIds: [],
+  completedBoostIds: [],
 });
 
 export const QuestsContextProvider = ({
@@ -40,15 +48,12 @@ export const QuestsContextProvider = ({
   const [categories, setCategories] = useState<QuestCategory[]>([]);
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
+  const [completedBoostIds, setCompletedBoostIds] = useState<number[]>([]);
   const { address } = useAccount();
 
   useMemo(() => {
     (async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/get_quests`
-      );
-      const data: GetQuestsRes = await response.json();
-      if ((data as QueryError).error) return;
+      const data: GetQuestsRes = await getQuests();
 
       const q = Object.values(data).flat();
 
@@ -89,26 +94,31 @@ export const QuestsContextProvider = ({
   }, []);
 
   useMemo(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`)
-      .then((response) => response.json())
-      .then((data: QuestDocument[] | QueryError) => {
-        if ((data as QueryError).error) return;
-        setTrendingQuests(data as QuestDocument[]);
-      });
+    getTrendingQuests().then((data: QuestDocument[] | QueryError) => {
+      if ((data as QueryError).error) return;
+      setTrendingQuests(data as QuestDocument[]);
+    });
   }, []);
 
   useMemo(() => {
     if (!address) return;
-    fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_LINK
-      }/get_completed_quests?addr=${hexToDecimal(address)}`
-    )
-      .then((response) => response.json())
-      .then((data: number[] | QueryError) => {
+    getCompletedBoosts(hexToDecimal(address)).then(
+      (data: number[] | QueryError) => {
+        console.log(data);
+        if ((data as QueryError).error) return;
+        setCompletedBoostIds(data as number[]);
+      }
+    );
+  }, [address]);
+
+  useMemo(() => {
+    if (!address) return;
+    getCompletedQuests(hexToDecimal(address)).then(
+      (data: number[] | QueryError) => {
         if ((data as QueryError).error) return;
         setCompletedQuestIds(data as number[]);
-      });
+      }
+    );
   }, [address]);
 
   const contextValues = useMemo(() => {
@@ -118,8 +128,16 @@ export const QuestsContextProvider = ({
       categories,
       trendingQuests,
       completedQuestIds,
+      completedBoostIds,
     };
-  }, [quests, featuredQuest, categories, trendingQuests, completedQuestIds]);
+  }, [
+    quests,
+    featuredQuest,
+    categories,
+    trendingQuests,
+    completedQuestIds,
+    completedBoostIds,
+  ]);
 
   return (
     <QuestsContext.Provider value={contextValues}>
