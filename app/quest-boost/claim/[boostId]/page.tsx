@@ -38,7 +38,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       const boostInfo = await getBoostById(boostId);
       setBoost(boostInfo);
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching boost", err);
     }
   };
 
@@ -54,7 +54,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       formattedSign = [res?.r, res?.s];
       return formattedSign;
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching signature", err);
       return formattedSign;
     }
   };

@@ -7,6 +7,7 @@ import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
+import theme from "@styles/theme";
 
 type BoostCardProps = {
   boost: Boost;
@@ -60,7 +61,10 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
       <div
         className={styles.boost_card_container}
         style={{
-          borderColor: hovered && isClickable ? "#e1dcea" : "transparent",
+          borderColor:
+            hovered && isClickable
+              ? theme.palette.secondary.dark
+              : "transparent",
           cursor: isClickable ? "inherit" : "not-allowed",
         }}
         onMouseOver={() => setHovered(true)}

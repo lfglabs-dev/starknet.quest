@@ -45,7 +45,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       );
       return total;
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching total participants", err);
     }
   };
 
@@ -137,10 +137,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           <div>
             <Button
               disabled={
-                boost &&
-                (boost?.claimed ||
-                  !isBoostExpired ||
-                  getBoostClaimStatus(boost.id))
+                boost && (!isBoostExpired || getBoostClaimStatus(boost.id))
               }
               onClick={handleButtonClick}
             >

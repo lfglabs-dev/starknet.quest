@@ -75,7 +75,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
       })
       .catch((err) => {
         if (questId) {
-          console.log(err);
+          console.log("Error while fetching quests", err);
           setErrorPageDisplay(true);
         }
       });
