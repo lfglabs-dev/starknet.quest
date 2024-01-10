@@ -104,7 +104,6 @@ export const QuestsContextProvider = ({
     if (!address) return;
     getCompletedBoosts(hexToDecimal(address)).then(
       (data: number[] | QueryError) => {
-        console.log(data);
         if ((data as QueryError).error) return;
         setCompletedBoostIds(data as number[]);
       }
