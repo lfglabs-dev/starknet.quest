@@ -13,12 +13,7 @@ import Reward from "./reward";
 import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import {
-  NFTItem,
-  QueryError,
-  QuestDocument,
-  UserTask,
-} from "types/backTypes";
+import { NFTItem, QueryError, QuestDocument, UserTask } from "types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "@components/skeletons/tasksSkeleton";
@@ -27,7 +22,7 @@ import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "@utils/rewards";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import { getCompletedQuestsOfUser } from "@services/apiService";
+import { getCompletedQuests } from "@services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -212,7 +207,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 
   const checkUserRewards = async () => {
     if (!address) return;
-    const res = await getCompletedQuestsOfUser(address);
+    const res = await getCompletedQuests(address);
     if (res.includes(parseInt(questId))) {
       setRewardsEnabled(true);
     }
@@ -332,7 +327,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             sx={{ fontSize: "0.8rem", bgcolor: "grey.900" }}
           />
         ) : (
-          <p className="text-center max-w-lg">{quest.desc}</p>
+          <p className="text-center max-w-[50vw]">{quest.desc}</p>
         )}
       </div>
       {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
