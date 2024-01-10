@@ -153,7 +153,7 @@ export const getCompletedQuests = async (addr: string) => {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export const getBoostedQuests = async () => {
   try {
