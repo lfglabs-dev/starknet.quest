@@ -61,9 +61,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const isUserWinner = useMemo(() => {
     return (
-      boost &&
-      boost?.winner &&
-      hexToDecimal(boost?.winner) === hexToDecimal(address)
+      boost && boost?.winner && boost?.winner?.includes(hexToDecimal(address))
     );
   }, [boost, address]);
 
@@ -171,7 +169,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                 <Button
                   disabled={
                     boost?.claimed ||
-                    hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
+                    boost?.winner?.includes(hexToDecimal(address))
                   }
                   onClick={handleClaimClick}
                 >
