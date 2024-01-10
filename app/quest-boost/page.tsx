@@ -6,26 +6,41 @@ import BoostCard from "@components/quest-boost/boostCard";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
 import Componentstyles from "@styles/components/pages/home/howToParticipate.module.css";
 import Steps from "@components/UI/steps/steps";
-import { getBoosts } from "@services/apiService";
+import { getBoosts, getCompletedQuestsOfUser } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
+import { useAccount } from "@starknet-react/core";
 
 export default function Page() {
   const router = useRouter();
+  const { address } = useAccount();
+
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<number[]>([]);
 
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
       setBoosts(res);
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching boosts", err);
+    }
+  };
+
+  const fetchCompletedQuests = async () => {
+    try {
+      if (!address) return;
+      const res = await getCompletedQuestsOfUser(address);
+      setCompletedQuests(res);
+    } catch (err) {
+      console.log("Error while fetching completed quests", err);
     }
   };
 
   useEffect(() => {
     fetchBoosts();
-  }, []);
+    fetchCompletedQuests();
+  }, [address]);
 
   return (
     <div className={styles.container}>
@@ -35,7 +50,13 @@ export default function Page() {
       <h1 className={styles.title}>Boosts Quest</h1>
       <div className={styles.card_container}>
         {boosts?.map((boost) => {
-          return <BoostCard key={boost.id} boost={boost} />;
+          return (
+            <BoostCard
+              key={boost.id}
+              boost={boost}
+              completedQuests={completedQuests}
+            />
+          );
         })}
       </div>
 

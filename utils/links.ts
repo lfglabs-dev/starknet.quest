@@ -1,3 +1,5 @@
+import { getCurrentNetwork } from "./network";
+
 export const starknetIdAppLink = `https://${
-  process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "goerli." : ""
+  getCurrentNetwork() === "TESTNET" ? "goerli." : ""
 }app.starknet.id/`;

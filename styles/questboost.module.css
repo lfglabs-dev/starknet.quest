@@ -1,130 +1,279 @@
 .title {
-  font-family: "Sora-Bold";
-  font-size: 2.5rem;
-  text-align: center;
-  background: linear-gradient(45deg, var(--primary), var(--tertiary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+    font-family: "Sora-Bold";
+    font-size: 2.5rem;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
 }
 
 .container {
-  padding: 12vh 1.5rem;
+    padding: 12vh 1.5rem;
 }
 
 .boost_card_container {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  align-items: center;
-  gap: 1.5rem;
-  background-color: #1f1f25;
-  border: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #1f1f25;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
 }
 
 .boost_card_container:hover {
-  border-color: var(--secondary500);
+    border-color: var(--secondary500);
 }
 
 .boost_card_content {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 0.75rem;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.75rem;
+    width: 100%;
 }
 
 .card_container {
-  padding: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: center;
-  min-height: 400px;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    min-height: 400px;
 }
 
 .card_title {
-  font-size: 1.2rem;
-  color: var(--secondary);
-  font-family: "Sora-Bold";
-  margin: 0px;
-  text-align: left;
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-family: "Sora-Bold";
+    margin: 0px;
+    text-align: left;
+}
+
+.card_title {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-family: "Sora-Bold";
+    margin: 0px;
+    text-align: left;
 }
 
 .issuer {
-  display: flex;
-  /* Auto layout */
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  gap: 10px;
-  height: 36px;
-  /* Background/600 */
-  background: var(--background600);
-  border-radius: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    height: 36px;
+    border-radius: 100px;
 }
 
 .instructions_container {
-  padding: 4rem 8rem;
+    padding: 4rem 8rem;
 }
 
 .claim_button_container {
-  margin: 2rem auto;
-  display: flex;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 1000px;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 0.5rem;
-  background: #29282b;
-  box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
+    margin: 2rem auto;
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 1000px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+    background: #29282b;
+    box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
 }
 
 .claim_button_text_content {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
 }
 
 .claim_button_text_highlight {
-  font-size: 20px;
-  font-weight: 700;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .claim_button_cta {
-  color: #101012;
-  padding: 1em 3em;
-  border-radius: 10px;
-  background: var(
-    --primary-gradient,
-    linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%)
-  );
+    color: #101012;
+    padding: 1em 3em;
+    border-radius: 10px;
+    background: var(--primary-gradient,
+            linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%));
 
-  /* Button shadow */
-  box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
+    /* Button shadow */
+    box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 }
 
 .backButton {
-  margin-left: 39px;
-  z-index: 10;
+    margin-left: 39px;
+    z-index: 10;
 }
 
 @media screen and (max-width: 740px) {
-  .claim_button_container {
-    flex-direction: column;
-    gap: 1rem;
-  }
+    .claim_button_container {
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-  .instructions_container {
-    padding: 0rem;
-  }
-  .backButton {
-    margin: 3rem 0;
-  }
+    .instructions_container {
+        padding: 0rem;
+    }
+
+    .backButton {
+        margin: 3rem 0;
+    }
+}
+
+.claim_screen_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100vh;
+    background: url("/utils/dotBackground.svg") no-repeat center var(--background);
+}
+
+
+@keyframes rotateCard {
+    0% {
+        transform: rotate(0deg) scale(0.3);
+    }
+
+    100% {
+        transform: rotate(1080deg) scale(1);
+    }
+}
+
+.claim_amount_card::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    left: -1px;
+    bottom: 327px;
+    background: linear-gradient(90deg,
+            #437aba 0%,
+            #59c2e8 45%,
+            #00ff77 60%,
+            #59c2e8 70%,
+            #437aba50 100%);
+    border-radius: 8px;
+    z-index: 1;
+    mask: linear-gradient(0deg, transparent 92%, black);
+}
+
+.claim_amount_card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #1F1F25;
+    border: 1px solid transparent;
+    animation: rotateCard 3s;
+    aspect-ratio: 1/1;
+    gap: 1rem;
+    position: relative;
+    margin-top: 1px;
+}
+
+.claim_amount {
+    font-family: Sora;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+@keyframes opacityAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+        height: 0px;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        height: 42px;
+    }
+}
+
+@keyframes moveImg {
+    0% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+
+.claim_button_animation {
+    opacity: 0;
+    animation: opacityAnimation 2s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+}
+
+.claim_button_text {
+    opacity: 0;
+    height: 0px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInText 1s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+}
+
+.token_logo {
+    animation: moveImg 1s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+    transform-origin: center;
+}
+
+.token_symbol_container {
+    opacity: 0;
+    width: 100px;
+    height: 50px;
+    padding: 16px;
+    border-radius: 12px;
+    gap: 13px;
+    background: linear-gradient(90deg, #6AFFAF -0.12%, #5CE3FE 99.88%);
+    padding: 1px;
+    position: absolute;
+    bottom: 0px;
+    transform: translateY(50%);
+    display: flex;
+    flex: 1;
+    animation: opacityAnimation 2s;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
 }

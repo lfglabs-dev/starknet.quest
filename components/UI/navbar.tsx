@@ -32,8 +32,10 @@ import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notific
 import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
 import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
+import { getCurrentNetwork } from "@utils/network";
 
 const Navbar: FunctionComponent = () => {
+  const currentNetwork = getCurrentNetwork();
   const [nav, setNav] = useState<boolean>(false);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
   const { address, account } = useAccount();
@@ -45,8 +47,7 @@ const Navbar: FunctionComponent = () => {
   const domain = useDomainFromAddress(address ?? "").domain;
   const addressOrDomain =
     domain && domain.endsWith(".stark") ? domain : address;
-  const network =
-    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
   const route = usePathname();

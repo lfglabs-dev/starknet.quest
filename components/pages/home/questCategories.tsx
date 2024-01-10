@@ -28,7 +28,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
       const res = await getBoosts();
       setBoosts(res);
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching boosts", err);
     }
   };
 
