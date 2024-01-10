@@ -31,6 +31,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [displayLottie, setDisplayLottie] = useState<boolean>(true);
   const [transactionHash, setTransactionHash] = useState<string>("");
+  const [winnerList, setWinnerList] = useState<string[]>([]);
   const { updateBoostClaimStatus } = useBoost();
 
   const fetchPageData = async () => {
@@ -46,6 +47,15 @@ export default function Page({ params }: BoostQuestPageProps) {
     fetchPageData();
   }, []);
 
+  useEffect(() => {
+    if (!boost) return;
+    const winners = boost?.winner?.map((winner) => {
+      return hexToDecimal(winner);
+    });
+    if (!winners) return;
+    setWinnerList(winners);
+  }, [boost]);
+
   const fetchBoostClaimParams = async (): Promise<Signature> => {
     let formattedSign: Signature = ["", ""];
     try {
@@ -60,10 +70,12 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   const isUserWinner = useMemo(() => {
-    return (
-      boost && boost?.winner && boost?.winner?.includes(hexToDecimal(address))
-    );
-  }, [boost, address]);
+    if (!boost || !address || winnerList.length === 0) return false;
+    // convert values in winner array from hex to decimal
+    if (!boost.winner) return false;
+
+    return winnerList.includes(hexToDecimal(address));
+  }, [boost, address, winnerList]);
 
   const handleClaimClick = async () => {
     if (isUserWinner) {
@@ -173,10 +185,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             {isUserWinner ? (
               <div className={styles.claim_button_animation}>
                 <Button
-                  disabled={
-                    boost?.claimed ||
-                    boost?.winner?.includes(hexToDecimal(address))
-                  }
+                  disabled={(boost?.claimed && isUserWinner) || !isUserWinner}
                   onClick={handleClaimClick}
                 >
                   Collect my reward
