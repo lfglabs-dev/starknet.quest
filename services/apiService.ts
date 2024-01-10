@@ -119,6 +119,5 @@ export const getBoostedQuests = async () => {
     return await response.json();
   } catch (err) {
     console.log("Error while getting boosted quests", err);
-    console.log(err);
   }
 };
