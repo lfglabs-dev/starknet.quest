@@ -12,6 +12,7 @@ import {
   notificationTitle,
 } from "@constants/notifications";
 import { CircularProgress } from "@mui/material";
+import { getCurrentNetwork } from "@utils/network";
 
 type NotificationDetailProps = {
   notification: SQNotification<NotificationData>;
@@ -22,6 +23,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
   notification,
   isLastItem,
 }) => {
+  const currentNetwork = getCurrentNetwork();
   const statusIcon = useMemo(() => {
     if (notification.type === NotificationType.TRANSACTION) {
       if (notification.data.status === "pending") {
@@ -37,7 +39,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
   const externalUrl = useMemo(() => {
     if (notification.type === NotificationType.TRANSACTION) {
       return `https://${
-        process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet." : ""
+        currentNetwork === "TESTNET" ? "testnet." : ""
       }starkscan.co/tx/${notification.data.hash}`;
     }
   }, [notification]);

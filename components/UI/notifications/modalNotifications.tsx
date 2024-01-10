@@ -6,8 +6,6 @@ import NotificationDetail from "./notificationDetail";
 import CloseIcon from "@components/UI/iconsComponents/icons/closeIcon";
 import InformativeNotification from "../infomativeNotifications";
 
-
-
 type ModalNotificationsProps = {
   closeModal: () => void;
   open: boolean;

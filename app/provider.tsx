@@ -13,11 +13,11 @@ import {
 import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { QuestsContextProvider } from "@context/QuestsProvider";
+import { getCurrentNetwork } from "@utils/network";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const chains = [
-    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? goerli : mainnet,
-  ];
+  const network = getCurrentNetwork();
+  const chains = [network === "TESTNET" ? goerli : mainnet];
   const provider = alchemyProvider({
     apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
   });
@@ -28,12 +28,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       argent(),
       new WebWalletConnector({
         url:
-          process.env.NEXT_PUBLIC_IS_TESTNET === "true"
+          network === "TESTNET"
             ? "https://web.hydrogen.argent47.net"
             : "https://web.argent.xyz/",
       }),
     ],
-    []
+    [network]
   );
 
   const theme = createTheme({

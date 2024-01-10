@@ -11,6 +11,7 @@ import {
 } from "@constants/nft";
 import { AchievementsDocument } from "types/backTypes";
 import Link from "next/link";
+import { getCurrentNetwork } from "@utils/network";
 
 type LandProps = {
   address: string;
@@ -27,6 +28,7 @@ export const Land = ({
   setAchievements,
   setSoloBuildings,
 }: LandProps) => {
+  const network = getCurrentNetwork();
   const [userNft, setUserNft] = useState<BuildingsInfo[]>();
   const [hasNFTs, setHasNFTs] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -37,7 +39,7 @@ export const Land = ({
       setIsReady(true);
       retrieveAssets(
         `https://${
-          process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "api-testnet" : "api"
+          network === "TESTNET" ? "api-testnet" : "api"
         }.starkscan.co/api/v0/nfts?owner_address=${address}`
       ).then((data) => {
         filterAssets(data.data);

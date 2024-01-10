@@ -22,7 +22,7 @@ export const fetchLeaderboardToppers = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard position", err);
   }
 };
 
@@ -36,7 +36,7 @@ export const fetchLeaderboardRankings = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard ranks", err);
   }
 };
 
@@ -47,7 +47,7 @@ export const getCompletedQuestsOfUser = async (address: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching completed quests", err);
   }
 };
 
@@ -56,7 +56,7 @@ export const getBoosts = async () => {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boosts", err);
   }
 };
 
@@ -65,7 +65,7 @@ export const getQuestsInBoost = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching quests in boost", err);
   }
 };
 
@@ -74,7 +74,7 @@ export const getBoostById = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boost data", err);
   }
 };
 
@@ -85,7 +85,7 @@ export const getQuestParticipants = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching total participants", err);
   }
 };
 
@@ -96,7 +96,7 @@ export const getQuestBoostClaimParams = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching claim signature", err);
   }
 };
 
@@ -107,7 +107,7 @@ export const getPendingBoostClaims = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching pending claims", err);
   }
 };
 
