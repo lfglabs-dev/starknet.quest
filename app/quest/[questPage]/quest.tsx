@@ -27,7 +27,7 @@ type QuestPageProps = {
 const Quest: FunctionComponent<QuestPageProps> = ({
   questId,
   taskId,
-  res,
+res,
   errorMsg,
 }) => {
   const router = useRouter();

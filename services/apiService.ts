@@ -153,4 +153,13 @@ export const getCompletedQuests = async (addr: string) => {
   } catch (err) {
     console.log(err);
   }
+}
+
+export const getBoostedQuests = async () => {
+  try {
+    const response = await fetch(`${baseurl}/get_boosted_quests`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while getting boosted quests", err);
+  }
 };

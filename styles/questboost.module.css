@@ -14,15 +14,16 @@
 }
 
 .boost_card_container {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    align-items: center;
-    gap: 1.5rem;
-    background-color: #1f1f25;
-    border: 1px solid transparent;
-    transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: #1f1f25;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+  max-width: 260px;
 }
 
 .boost_card_container:hover {
