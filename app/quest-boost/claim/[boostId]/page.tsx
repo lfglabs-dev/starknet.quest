@@ -134,7 +134,13 @@ export default function Page({ params }: BoostQuestPageProps) {
                     )}
                   </div>
                   <div className={styles.claim_button_text}>
-                    <p className={styles.claim_amount}>{boost?.amount}</p>
+                    <p className={styles.claim_amount}>
+                      {boost
+                        ? parseInt(
+                            String(boost?.amount / boost?.num_of_winners)
+                          )
+                        : 0}
+                    </p>
                   </div>
                   <div className={styles.token_symbol_container}>
                     <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
