@@ -27,7 +27,7 @@ type QuestPageProps = {
 const Quest: FunctionComponent<QuestPageProps> = ({
   questId,
   taskId,
-res,
+  res,
   errorMsg,
 }) => {
   const router = useRouter();
@@ -50,6 +50,7 @@ res,
     mandatory_domain: null,
     expired: false,
     rewards_description: null,
+    additional_desc: null,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
