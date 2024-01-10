@@ -118,7 +118,7 @@ export const getCompletedBoosts = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching completed boosts", err);
+    console.log(err);
   }
 };
 
@@ -129,7 +129,7 @@ export const getQuests = async () => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching quests", err);
+    console.log(err);
   }
 };
 
@@ -140,7 +140,7 @@ export const getTrendingQuests = async () => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching trending quests", err);
+    console.log(err);
   }
 };
 
@@ -151,7 +151,7 @@ export const getCompletedQuests = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching completed quests", err);
+    console.log(err);
   }
 };
 
