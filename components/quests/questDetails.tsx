@@ -327,7 +327,16 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             sx={{ fontSize: "0.8rem", bgcolor: "grey.900" }}
           />
         ) : (
-          <p className="text-center max-w-[50vw]">{quest.desc}</p>
+          <>
+            <p className="text-center max-w-[50vw]">{quest.desc}</p>
+            {quest?.additional_desc ? (
+              <>
+                <p className="text-center max-w-[50vw]">
+                  {quest.additional_desc}
+                </p>
+              </>
+            ) : null}
+          </>
         )}
       </div>
       {quest?.expiry_timestamp && quest?.expiry_timestamp !== "loading" ? (
