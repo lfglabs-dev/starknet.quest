@@ -57,7 +57,10 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   );
 
   return (
-    <Link href={isClickable ? `/quest-boost/${boost?.id}` : ""}>
+    <Link
+      className="flex"
+      href={isClickable ? `/quest-boost/${boost?.id}` : ""}
+    >
       <div
         className={styles.boost_card_container}
         style={{

@@ -40,17 +40,6 @@ export const fetchLeaderboardRankings = async (
   }
 };
 
-export const getCompletedQuestsOfUser = async (address: string) => {
-  try {
-    const response = await fetch(
-      `${baseurl}/get_completed_quests?addr=${address}`
-    );
-    return await response.json();
-  } catch (err) {
-    console.log("Error while fetching completed quests", err);
-  }
-};
-
 export const getBoosts = async () => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
@@ -114,44 +103,40 @@ export const getPendingBoostClaims = async (addr: string) => {
 export const getCompletedBoosts = async (addr: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/boost/get_completed_boosts?addr=${addr}`
+      `${baseurl}/boost/get_completed_boosts?addr=${addr}`
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching completed boosts", err);
   }
 };
 
 export const getQuests = async () => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/get_quests`
-    );
+    const response = await fetch(`${baseurl}/get_quests`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching trending quests", err);
   }
 };
 
 export const getTrendingQuests = async () => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/get_trending_quests`
-    );
+    const response = await fetch(`${baseurl}/get_trending_quests`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching trending quests", err);
   }
 };
 
 export const getCompletedQuests = async (addr: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LINK}/get_completed_quests?addr=${addr}`
+      `${baseurl}/get_completed_quests?addr=${addr}`
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching completed quests", err);
   }
 };
 

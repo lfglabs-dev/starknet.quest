@@ -70,7 +70,7 @@ const Reward: FunctionComponent<RewardProps> = ({
 
   return (
     <div className={styles.reward}>
-      <div className="flex">
+      <div className="flex items-center">
         <p className="mr-1">Reward: </p>
         <CDNImg width={25} src={imgSrc} />
         <p className="ml-1">{reward}</p>

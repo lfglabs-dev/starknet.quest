@@ -6,7 +6,7 @@ import BoostCard from "@components/quest-boost/boostCard";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
 import Componentstyles from "@styles/components/pages/home/howToParticipate.module.css";
 import Steps from "@components/UI/steps/steps";
-import { getBoosts, getCompletedQuestsOfUser } from "@services/apiService";
+import { getBoosts, getCompletedQuests } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
@@ -30,7 +30,7 @@ export default function Page() {
   const fetchCompletedQuests = async () => {
     try {
       if (!address) return;
-      const res = await getCompletedQuestsOfUser(address);
+      const res = await getCompletedQuests(address);
       setCompletedQuests(res);
     } catch (err) {
       console.log("Error while fetching completed quests", err);

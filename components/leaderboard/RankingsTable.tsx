@@ -5,7 +5,7 @@ import { getDomainFromAddress } from "@utils/domainService";
 import { decimalToHex } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import { FunctionComponent, useEffect, useState } from "react";
-import { getCompletedQuestsOfUser } from "@services/apiService";
+import { getCompletedQuests } from "@services/apiService";
 import styles from "@styles/leaderboard.module.css";
 import { useMediaQuery } from "@mui/material";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
@@ -39,7 +39,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
       await Promise.all(
         await res?.map(async (item) => {
           // fetch completed quests and add to the display data
-          const completedQuestsResponse = await getCompletedQuestsOfUser(
+          const completedQuestsResponse = await getCompletedQuests(
             item?.address
           );
           item.completedQuests = completedQuestsResponse?.length;
