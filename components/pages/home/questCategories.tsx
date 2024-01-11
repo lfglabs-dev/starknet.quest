@@ -37,7 +37,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   }, []);
 
   const completedBoostNumber = useMemo(
-    () => boosts.filter((b) => completedBoostIds.includes(b.id)).length,
+    () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
     [boosts, completedBoostIds]
   );
 
