@@ -18,6 +18,7 @@ import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import BackButton from "@components/UI/backButton";
 import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";
+import BoostSkeleton from "@components/skeletons/boostSkeleton";
 
 type BoostQuestPageProps = {
   params: {
@@ -33,6 +34,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
   const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getTotalParticipants = async (questIds: number[]) => {
     try {
@@ -55,12 +57,14 @@ export default function Page({ params }: BoostQuestPageProps) {
   );
 
   const fetchPageData = async () => {
+    setLoading(true);
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
     setQuests(questsList);
     setBoost(boostInfo);
     setParticipants(totalParticipants);
+    setLoading(false);
   };
 
   const getButtonText = useCallback(() => {
@@ -92,60 +96,66 @@ export default function Page({ params }: BoostQuestPageProps) {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <div className="flex flex-col">
-        <h1 className={styles.title}>{boost?.name}</h1>
-        {boost?.expiry && boost.expiry > Date.now() ? (
-          <Timer fixed={false} expiry={Number(boost?.expiry)} />
-        ) : null}
-      </div>
+      {loading ? (
+        <BoostSkeleton />
+      ) : (
+        <>
+          <div className="flex flex-col">
+            <h1 className={styles.title}>{boost?.name}</h1>
+            {boost?.expiry && boost.expiry > Date.now() ? (
+              <Timer fixed={false} expiry={Number(boost?.expiry)} />
+            ) : null}
+          </div>
 
-      <div className={styles.card_container}>
-        {quests?.map((quest, index) => {
-          if (quest?.hidden || quest?.disabled) return null;
-          return (
-            <Quest
-              key={index}
-              title={quest.title_card}
-              onClick={() => router.push(`/quest/${quest.id}`)}
-              imgSrc={quest.img_card}
-              issuer={{
-                name: quest.issuer,
-                logoFavicon: quest.logo,
-              }}
-              reward={quest.rewards_title}
-              id={quest.id}
-              expired={quest.expired}
-            />
-          );
-        })}
-      </div>
-      <div className={styles.claim_button_container}>
-        <div className={styles.claim_button_text_content}>
-          <p>Reward:</p>
-          <div className="flex flex-row gap-2">
-            <p className={styles.claim_button_text_highlight}>
-              {boost?.amount} {getTokenName(boost?.token ?? "")}
-            </p>
-            <TokenSymbol tokenAddress={boost?.token ?? ""} />
+          <div className={styles.card_container}>
+            {quests?.map((quest, index) => {
+              if (quest?.hidden || quest?.disabled) return null;
+              return (
+                <Quest
+                  key={index}
+                  title={quest.title_card}
+                  onClick={() => router.push(`/quest/${quest.id}`)}
+                  imgSrc={quest.img_card}
+                  issuer={{
+                    name: quest.issuer,
+                    logoFavicon: quest.logo,
+                  }}
+                  reward={quest.rewards_title}
+                  id={quest.id}
+                  expired={quest.expired}
+                />
+              );
+            })}
           </div>
-          <p>among</p>
-          <p className={styles.claim_button_text_highlight}>
-            {participants} players
-          </p>
-        </div>
-        {address ? (
-          <div>
-            <Button
-              disabled={
-                boost && (!isBoostExpired || getBoostClaimStatus(boost.id))
-              }
-              onClick={handleButtonClick}
-            >
-              {getButtonText()}
-            </Button>
+          <div className={styles.claim_button_container}>
+            <div className={styles.claim_button_text_content}>
+              <p>Reward:</p>
+              <div className="flex flex-row gap-2">
+                <p className={styles.claim_button_text_highlight}>
+                  {boost?.amount} {getTokenName(boost?.token ?? "")}
+                </p>
+                <TokenSymbol tokenAddress={boost?.token ?? ""} />
+              </div>
+              <p>among</p>
+              <p className={styles.claim_button_text_highlight}>
+                {participants} players
+              </p>
+            </div>
+            {address ? (
+              <div>
+                <Button
+                  disabled={
+                    boost && (!isBoostExpired || getBoostClaimStatus(boost.id))
+                  }
+                  onClick={handleButtonClick}
+                >
+                  {getButtonText()}
+                </Button>
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
+        </>
+      )}
     </div>
   );
 }
