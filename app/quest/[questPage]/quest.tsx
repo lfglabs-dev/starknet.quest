@@ -50,6 +50,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
     mandatory_domain: null,
     expired: false,
     rewards_description: null,
+    additional_desc: null,
   });
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
@@ -75,7 +76,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
       })
       .catch((err) => {
         if (questId) {
-          console.log(err);
+          console.log("Error while fetching quests", err);
           setErrorPageDisplay(true);
         }
       });

@@ -1,9 +1,17 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import styles from "@styles/Home.module.css";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { getBoosts } from "@services/apiService";
 import Link from "next/link";
+import { QuestsContext } from "@context/QuestsProvider";
+import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 
 type QuestCategoriesProps = {
   categories: QuestCategory[];
@@ -13,19 +21,25 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   categories,
 }) => {
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const { completedBoostIds } = useContext(QuestsContext);
 
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
       setBoosts(res);
     } catch (err) {
-      console.log(err);
+      console.log("Error while fetching boosts", err);
     }
   };
 
   useEffect(() => {
     fetchBoosts();
   }, []);
+
+  const completedBoostNumber = useMemo(
+    () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
+    [boosts, completedBoostIds]
+  );
 
   return (
     <section className={styles.section}>
@@ -38,9 +52,17 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
               <Link href={`/quest-boost`} className={styles.questCategory}>
                 <div className={styles.categoryInfos}>
                   <h2 className="text-gray-200">Boosts Quest</h2>
-                  <p className="text-gray-200">
-                    {boosts.length} quest
-                    {boosts.length > 1 ? "s" : null}
+                  <p className="text-gray-200 normal-case">
+                    {completedBoostNumber === boosts.length ? (
+                      <div className="flex">
+                        <span className="mr-2">All boosts done</span>
+                        <CheckIcon width="24" color="#6AFFAF" />
+                      </div>
+                    ) : (
+                      `${completedBoostNumber}/${boosts.length} Boost${
+                        boosts.length > 1 ? "s" : ""
+                      } done`
+                    )}
                   </p>
                 </div>
                 <img src="/avnu/astronaut.webp" />

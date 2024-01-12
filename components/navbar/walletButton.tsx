@@ -14,6 +14,7 @@ import ChangeWallet from "@components/UI/changeWallet";
 import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
+import { getCurrentNetwork } from "@utils/network";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -28,6 +29,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   refreshAndShowWallet,
   disconnectByClick,
 }) => {
+  const currentNetwork = getCurrentNetwork();
   const { address, connector } = useAccount();
   const { notifications } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
@@ -36,8 +38,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const [changeWallet, setChangeWallet] = useState<boolean>(false);
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
-  const network =
-    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
 
   const buttonName = useMemo(

@@ -22,7 +22,7 @@ export const fetchLeaderboardToppers = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard position", err);
   }
 };
 
@@ -36,18 +36,7 @@ export const fetchLeaderboardRankings = async (
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getCompletedQuestsOfUser = async (address: string) => {
-  try {
-    const response = await fetch(
-      `${baseurl}/get_completed_quests?addr=${address}`
-    );
-    return await response.json();
-  } catch (err) {
-    console.log(err);
+    console.log("Error while fetching leaderboard ranks", err);
   }
 };
 
@@ -56,7 +45,7 @@ export const getBoosts = async () => {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boosts", err);
   }
 };
 
@@ -65,7 +54,7 @@ export const getQuestsInBoost = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching quests in boost", err);
   }
 };
 
@@ -74,7 +63,7 @@ export const getBoostById = async (id: string) => {
     const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching boost data", err);
   }
 };
 
@@ -85,7 +74,7 @@ export const getQuestParticipants = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching total participants", err);
   }
 };
 
@@ -96,7 +85,7 @@ export const getQuestBoostClaimParams = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching claim signature", err);
   }
 };
 
@@ -107,6 +96,55 @@ export const getPendingBoostClaims = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log(err);
+    console.log("Error while fetching pending claims", err);
+  }
+};
+
+export const getCompletedBoosts = async (addr: string) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/boost/get_completed_boosts?addr=${addr}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching completed boosts", err);
+  }
+};
+
+export const getQuests = async () => {
+  try {
+    const response = await fetch(`${baseurl}/get_quests`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching trending quests", err);
+  }
+};
+
+export const getTrendingQuests = async () => {
+  try {
+    const response = await fetch(`${baseurl}/get_trending_quests`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching trending quests", err);
+  }
+};
+
+export const getCompletedQuests = async (addr: string) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/get_completed_quests?addr=${addr}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching completed quests", err);
+  }
+};
+
+export const getBoostedQuests = async () => {
+  try {
+    const response = await fetch(`${baseurl}/get_boosted_quests`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while getting boosted quests", err);
   }
 };

@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
-import { CallData, uint256 } from "starknet";
 import {
   getBoostById,
-  getQuestBoostClaimParams,
   getQuestParticipants,
   getQuestsInBoost,
 } from "@services/apiService";
@@ -15,11 +13,12 @@ import { QuestDocument } from "../../../types/backTypes";
 import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
-import { useNotificationManager } from "@hooks/useNotificationManager";
-import { NotificationType, TransactionType } from "@constants/notifications";
-import { CDNImage } from "@components/cdn/image";
 import { hexToDecimal } from "@utils/feltService";
+import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import BackButton from "@components/UI/backButton";
+import useBoost from "@hooks/useBoost";
+import { getTokenName } from "@utils/tokenService";
+import BoostSkeleton from "@components/skeletons/boostSkeleton";
 
 type BoostQuestPageProps = {
   params: {
@@ -29,171 +28,134 @@ type BoostQuestPageProps = {
 
 export default function Page({ params }: BoostQuestPageProps) {
   const router = useRouter();
-  const { address, account } = useAccount();
+  const { address } = useAccount();
   const { boostId } = params;
   const [quests, setQuests] = useState<QuestDocument[]>([]);
   const [boost, setBoost] = useState<Boost>();
   const [participants, setParticipants] = useState<number>();
-  const [sign, setSign] = useState<Signature>(["", ""]);
-  const [disableClaimButton, setDisableClaimButton] = useState<boolean>(false);
-  const { addTransaction } = useNotificationManager();
+  const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getTotalParticipants = async (questIds: number[]) => {
-    let total = 0;
-    await Promise.all(
-      questIds?.map(async (questID) => {
-        const res = await getQuestParticipants(questID);
-        if (res?.count) total += res?.count;
-      })
-    );
-    return total;
+    try {
+      let total = 0;
+      await Promise.all(
+        questIds?.map(async (questID) => {
+          const res = await getQuestParticipants(questID);
+          if (res?.count) total += res?.count;
+        })
+      );
+      return total;
+    } catch (err) {
+      console.log("Error while fetching total participants", err);
+    }
   };
 
+  const isBoostExpired = useMemo(
+    () => boost && boost?.expiry <= Date.now(),
+    [boost]
+  );
+
   const fetchPageData = async () => {
+    setLoading(true);
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
     setQuests(questsList);
     setBoost(boostInfo);
     setParticipants(totalParticipants);
+    setLoading(false);
   };
+
+  const getButtonText = useCallback(() => {
+    if (!boost) return;
+    const chestOpened = getBoostClaimStatus(boost?.id);
+    if (!isBoostExpired) {
+      return "Boost in progress ⌛";
+    } else if (!chestOpened) {
+      return "See my reward 🎉";
+    } else {
+      return "Chest already opened";
+    }
+  }, [boost, address, isBoostExpired]);
+
+  const handleButtonClick = useCallback(() => {
+    if (!boost) return;
+    if (hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address))
+      updateBoostClaimStatus(boost?.id, true);
+
+    router.push(`/quest-boost/claim/${boost?.id}`);
+  }, [boost, address]);
 
   useEffect(() => {
     fetchPageData();
   }, []);
-
-  const fetchBoostClaimParams = async (): Promise<Signature> => {
-    let formattedSign: Signature = ["", ""];
-    try {
-      if (!boost?.id || !address) return formattedSign;
-      const res = await getQuestBoostClaimParams(boost.id);
-      formattedSign = [res?.r, res?.s];
-      return formattedSign;
-    } catch (err) {
-      console.log(err);
-      return formattedSign;
-    }
-  };
-
-  const handleClaimClick = async () => {
-    const signature = await fetchBoostClaimParams();
-    if (!signature) return;
-    setSign(signature);
-  };
-
-  useEffect(() => {
-    if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
-      return;
-
-    const callContract = async () => {
-      const amount = uint256.bnToUint256(boost.amount);
-      const claimCallData = CallData.compile({
-        amount: amount,
-        token: boost.token,
-        boost_id: boost.id,
-        signature: sign,
-      });
-
-      const { transaction_hash } = await account.execute({
-        contractAddress: process.env.NEXT_PUBLIC_QUEST_BOOST_CONTRACT ?? "",
-        entrypoint: "claim",
-        calldata: claimCallData,
-      });
-
-      if (transaction_hash) {
-        setDisableClaimButton(true);
-        addTransaction({
-          timestamp: Date.now(),
-          subtext: boost?.name ?? "Quest Boost Rewards",
-          type: NotificationType.TRANSACTION,
-          data: {
-            type: TransactionType.CLAIM_REWARDS,
-            hash: transaction_hash,
-            status: "pending",
-          },
-        });
-      }
-    };
-
-    callContract();
-  }, [sign]);
 
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <div className="flex flex-col">
-        <h1 className={styles.title}>{boost?.name}</h1>
-        {boost?.expiry && boost.expiry > Date.now() ? (
-          <Timer fixed={false} expiry={Number(boost?.expiry)} />
-        ) : null}
-      </div>
-
-      <div className={styles.card_container}>
-        {quests?.map((quest, index) => {
-          if (quest?.hidden || quest?.disabled) return null;
-          return (
-            <Quest
-              key={index}
-              title={quest.title_card}
-              onClick={() => router.push(`/quest/${quest.id}`)}
-              imgSrc={quest.img_card}
-              issuer={{
-                name: quest.issuer,
-                logoFavicon: quest.logo,
-              }}
-              reward={quest.rewards_title}
-              id={quest.id}
-              expired={quest.expired}
-            />
-          );
-        })}
-      </div>
-      <div className={styles.claim_button_container}>
-        <div className={styles.claim_button_text_content}>
-          <p>Reward:</p>
-          <div className="flex flex-row gap-2">
-            <p className={styles.claim_button_text_highlight}>
-              {boost?.amount} USDC
-            </p>
-            <CDNImage
-              src={"/icons/usdc.svg"}
-              priority
-              width={32}
-              height={32}
-              alt="usdc icon"
-            />
+      {loading ? (
+        <BoostSkeleton />
+      ) : (
+        <>
+          <div className="flex flex-col">
+            <h1 className={styles.title}>{boost?.name}</h1>
+            {boost?.expiry && boost.expiry > Date.now() ? (
+              <Timer fixed={false} expiry={Number(boost?.expiry)} />
+            ) : null}
           </div>
-          <p>among</p>
-          <p className={styles.claim_button_text_highlight}>
-            {participants} players
-          </p>
-        </div>
-        <div>
-          <Button
-            disabled={
-              boost?.claimed ||
-              hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
-            }
-            onClick={handleClaimClick}
-          >
-            {(() => {
-              if (boost?.claimed) {
-                return "Claimed ✅";
-              } else if (
-                hexToDecimal(boost?.winner ?? "") === hexToDecimal(address)
-              ) {
-                return "Claim boost reward 🎉 ";
-              } else if (boost && boost?.expiry > Date.now()) {
-                return "Boost has not ended ⌛";
-              } else {
-                return "You’re not selected 🙁";
-              }
-            })()}
-          </Button>
-        </div>
-      </div>
+
+          <div className={styles.card_container}>
+            {quests?.map((quest, index) => {
+              if (quest?.hidden || quest?.disabled) return null;
+              return (
+                <Quest
+                  key={index}
+                  title={quest.title_card}
+                  onClick={() => router.push(`/quest/${quest.id}`)}
+                  imgSrc={quest.img_card}
+                  issuer={{
+                    name: quest.issuer,
+                    logoFavicon: quest.logo,
+                  }}
+                  reward={quest.rewards_title}
+                  id={quest.id}
+                  expired={quest.expired}
+                />
+              );
+            })}
+          </div>
+          <div className={styles.claim_button_container}>
+            <div className={styles.claim_button_text_content}>
+              <p>Reward:</p>
+              <div className="flex flex-row gap-2">
+                <p className={styles.claim_button_text_highlight}>
+                  {boost?.amount} {getTokenName(boost?.token ?? "")}
+                </p>
+                <TokenSymbol tokenAddress={boost?.token ?? ""} />
+              </div>
+              <p>among</p>
+              <p className={styles.claim_button_text_highlight}>
+                {participants} players
+              </p>
+            </div>
+            {address ? (
+              <div>
+                <Button
+                  disabled={
+                    boost && (!isBoostExpired || getBoostClaimStatus(boost.id))
+                  }
+                  onClick={handleButtonClick}
+                >
+                  {getButtonText()}
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        </>
+      )}
     </div>
   );
 }
