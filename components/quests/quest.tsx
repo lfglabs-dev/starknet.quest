@@ -64,7 +64,7 @@ const Quest: FunctionComponent<QuestProps> = ({
   useEffect(() => {
     if (!isQuestBoosted) return;
     fetchBoosts(id.toString());
-  }, [isQuestBoosted]);
+  }, [isQuestBoosted, id]);
 
   useEffect(() => {
     checkIfBoostedQuest();
