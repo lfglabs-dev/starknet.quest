@@ -6,6 +6,7 @@ import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/questService";
 import {
+  getBoostedQuests,
   getCompletedBoosts,
   getCompletedQuests,
   getQuests,
@@ -19,6 +20,7 @@ interface QuestsConfig {
   trendingQuests: QuestDocument[];
   completedQuestIds: number[];
   completedBoostIds: number[];
+  boostedQuests: number[];
 }
 
 type GetQuestsRes =
@@ -34,6 +36,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   trendingQuests: [],
   completedQuestIds: [],
   completedBoostIds: [],
+  boostedQuests: [],
 });
 
 export const QuestsContextProvider = ({
@@ -49,6 +52,7 @@ export const QuestsContextProvider = ({
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
   const [completedBoostIds, setCompletedBoostIds] = useState<number[]>([]);
+  const [boostedQuests, setBoostedQuests] = useState<number[]>([]);
   const { address } = useAccount();
 
   useMemo(() => {
@@ -120,6 +124,13 @@ export const QuestsContextProvider = ({
     );
   }, [address]);
 
+  useMemo(() => {
+    getBoostedQuests().then((data: number[] | QueryError) => {
+      if ((data as QueryError).error) return;
+      setBoostedQuests(data as number[]);
+    });
+  }, []);
+
   const contextValues = useMemo(() => {
     return {
       quests,
@@ -128,6 +139,7 @@ export const QuestsContextProvider = ({
       trendingQuests,
       completedQuestIds,
       completedBoostIds,
+      boostedQuests,
     };
   }, [
     quests,
@@ -136,6 +148,7 @@ export const QuestsContextProvider = ({
     trendingQuests,
     completedQuestIds,
     completedBoostIds,
+    boostedQuests,
   ]);
 
   return (

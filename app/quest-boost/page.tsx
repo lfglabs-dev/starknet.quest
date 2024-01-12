@@ -39,6 +39,9 @@ export default function Page() {
 
   useEffect(() => {
     fetchBoosts();
+  }, []);
+
+  useEffect(() => {
     fetchCompletedQuests();
   }, [address]);
 
