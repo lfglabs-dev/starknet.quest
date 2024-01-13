@@ -52,8 +52,8 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   }, [userParticipationStatus]);
 
   const isClickable = useMemo(
-    () => userParticipationStatus && !userBoostCheckStatus,
-    [boost, userParticipationStatus, userBoostCheckStatus]
+    () => !userBoostCheckStatus,
+    [userBoostCheckStatus]
   );
 
   return (
