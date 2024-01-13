@@ -58,6 +58,11 @@ export default function Page() {
             />
           );
         })}
+        {boosts?.length === 0 && (
+          <h2 className={styles.noBoosts}>
+            No quest are being boosted at the moment.
+          </h2>
+        )}
       </div>
 
       <section className={styles.instructions_container}>
