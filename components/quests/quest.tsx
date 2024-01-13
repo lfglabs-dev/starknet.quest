@@ -12,7 +12,7 @@ import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIco
 import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
-import { getBoostedQuests } from "@services/apiService";
+import { getBoosts } from "@services/apiService";
 
 type QuestProps = {
   onClick: () => void;
@@ -33,20 +33,41 @@ const Quest: FunctionComponent<QuestProps> = ({
   id,
   expired,
 }) => {
-  const { completedQuestIds } = useContext(QuestsContext);
+  const { completedQuestIds, boostedQuests } = useContext(QuestsContext);
   const isCompleted = useMemo(
     () => completedQuestIds.includes(id),
     [id, completedQuestIds]
   );
-  const [boostedQuests, setBoostedQuests] = useState<number[]>([]);
+  const [boost, setBoost] = useState<Boost>();
+  const [isQuestBoosted, setIsQuestBoosted] = useState<boolean>(false);
 
-  const fetchBoostedQuests = useCallback(async () => {
-    const response = await getBoostedQuests();
-    setBoostedQuests(response);
+  const checkIfBoostedQuest = useCallback(async () => {
+    if (!boostedQuests) return;
+    if (boostedQuests.length > 0 && boostedQuests.includes(id))
+      setIsQuestBoosted(true);
+  }, []);
+
+  const fetchBoosts = useCallback(async (id: string) => {
+    try {
+      const response = await getBoosts();
+      if (!response) return;
+      const boost = response.find((b: Boost) =>
+        b.quests.includes(parseInt(id))
+      );
+      if (!boost) return;
+      setBoost(boost);
+    } catch (err) {
+      console.log("Error while fetching boost by id", err);
+    }
   }, []);
 
   useEffect(() => {
-    fetchBoostedQuests();
+    if (!isQuestBoosted) return;
+    fetchBoosts(id.toString());
+  }, [isQuestBoosted, id]);
+
+  useEffect(() => {
+    checkIfBoostedQuest();
   }, []);
 
   return (
@@ -82,7 +103,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             </>
           )}
         </div>
-        {boostedQuests?.length > 0 && boostedQuests?.includes(id) ? (
+        {boost && isQuestBoosted ? (
           <div
             className={styles.issuer}
             style={{ gap: 0, padding: "8px 16px" }}
@@ -93,7 +114,7 @@ const Quest: FunctionComponent<QuestProps> = ({
               height={20}
               alt="usdc icon"
             />
-            <p className="text-white ml-2">{1500}</p>
+            <p className="text-white ml-2">{boost?.amount}</p>
           </div>
         ) : null}
       </div>
