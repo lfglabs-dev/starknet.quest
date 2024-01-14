@@ -66,10 +66,11 @@ type Boost = {
   expiry: number;
   quests: number[];
   claimed: boolean;
-  winner: string | null;
+  winner: string[] | null;
   img_url: string;
   id: number;
   name: string;
+  num_of_winners: number;
 };
 
 type Reward = {

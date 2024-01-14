@@ -31,7 +31,9 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [displayCard, setDisplayCard] = useState<boolean>(false);
   const [displayLottie, setDisplayLottie] = useState<boolean>(true);
   const [transactionHash, setTransactionHash] = useState<string>("");
+  const [winnerList, setWinnerList] = useState<string[]>([]);
   const { updateBoostClaimStatus } = useBoost();
+  const [displayAmount, setDisplayAmount] = useState<number>(0);
 
   const fetchPageData = async () => {
     try {
@@ -45,6 +47,15 @@ export default function Page({ params }: BoostQuestPageProps) {
   useEffect(() => {
     fetchPageData();
   }, []);
+
+  useEffect(() => {
+    if (!boost) return;
+    const winners = boost?.winner?.map((winner) => {
+      return hexToDecimal(winner);
+    });
+    if (!winners) return;
+    setWinnerList(winners);
+  }, [boost]);
 
   const fetchBoostClaimParams = async (): Promise<Signature> => {
     let formattedSign: Signature = ["", ""];
@@ -60,12 +71,13 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   const isUserWinner = useMemo(() => {
-    return (
-      boost &&
-      boost?.winner &&
-      hexToDecimal(boost?.winner) === hexToDecimal(address)
-    );
-  }, [boost, address]);
+    if (!boost || !address || winnerList.length === 0) return false;
+    // convert values in winner array from hex to decimal
+    if (!boost.winner) return false;
+
+    setDisplayAmount(parseInt(String(boost?.amount / boost?.num_of_winners)));
+    return winnerList.includes(hexToDecimal(address));
+  }, [boost, address, winnerList]);
 
   const handleClaimClick = async () => {
     if (isUserWinner) {
@@ -136,7 +148,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                     )}
                   </div>
                   <div className={styles.claim_button_text}>
-                    <p className={styles.claim_amount}>{boost?.amount}</p>
+                    <p className={styles.claim_amount}>
+                      {boost ? displayAmount : 0}
+                    </p>
                   </div>
                   <div className={styles.token_symbol_container}>
                     <div className="bg-[#1F1F25] flex-1 rounded-[12px] flex justify-center items-center">
@@ -169,10 +183,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             {isUserWinner ? (
               <div className={styles.claim_button_animation}>
                 <Button
-                  disabled={
-                    boost?.claimed ||
-                    hexToDecimal(boost?.winner ?? "") !== hexToDecimal(address)
-                  }
+                  disabled={(boost?.claimed && isUserWinner) || !isUserWinner}
                   onClick={handleClaimClick}
                 >
                   Collect my reward
