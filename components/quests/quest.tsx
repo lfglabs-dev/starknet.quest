@@ -13,6 +13,7 @@ import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import { getBoosts } from "@services/apiService";
+import TokenSymbol from "@components/quest-boost/TokenSymbol";
 
 type QuestProps = {
   onClick: () => void;
@@ -108,12 +109,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             className={styles.issuer}
             style={{ gap: 0, padding: "8px 16px" }}
           >
-            <CDNImg
-              src={"/icons/usdc.svg"}
-              width={20}
-              height={20}
-              alt="usdc icon"
-            />
+            <TokenSymbol tokenAddress={boost?.token} />
             <p className="text-white ml-2">{boost?.amount}</p>
           </div>
         ) : null}
