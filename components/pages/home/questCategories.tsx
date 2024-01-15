@@ -65,7 +65,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
                     )}
                   </p>
                 </div>
-                <img src="/avnu/astronaut.webp" />
+                <img src="/visuals/boost/logo.webp" />
               </Link>
             </div>
           ) : null}
