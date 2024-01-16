@@ -374,13 +374,16 @@ export default function Page() {
               ) : (
                 <div className={styles.percentile_container}>
                   <p className={styles.percentile_text_normal}>
-                    You werent active this week. ready to jump back in?
+                    {currentSearchedAddress.length > 0 ? "They " : "You "}
+                    werent active this week. ready to jump back in?
                   </p>
-                  <Link href="/">
-                    <p className={styles.percentile_text_link}>
-                      Start your quest
-                    </p>
-                  </Link>
+                  {!(currentSearchedAddress.length > 0) ? (
+                    <Link href="/">
+                      <p className={styles.percentile_text_link}>
+                        Start your quest
+                      </p>
+                    </Link>
+                  ) : null}
                 </div>
               )
             ) : null}
