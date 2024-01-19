@@ -2,13 +2,13 @@
 
 import React, { useMemo } from "react";
 import { WebWalletConnector } from "starknetkit/webwallet";
-import { goerli, mainnet } from "@starknet-react/chains";
+import { Chain, goerli, mainnet } from "@starknet-react/chains";
 import {
   Connector,
   StarknetConfig,
-  alchemyProvider,
   argent,
   braavos,
+  jsonRpcProvider,
 } from "@starknet-react/core";
 import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
@@ -18,8 +18,10 @@ import { getCurrentNetwork } from "@utils/network";
 export function Providers({ children }: { children: React.ReactNode }) {
   const network = getCurrentNetwork();
   const chains = [network === "TESTNET" ? goerli : mainnet];
-  const provider = alchemyProvider({
-    apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY as string,
+  const provider = jsonRpcProvider({
+    rpc: (_chain: Chain) => ({
+      nodeUrl: process.env.NEXT_PUBLIC_RPC_URL as string,
+    }),
   });
 
   const connectors = useMemo(
