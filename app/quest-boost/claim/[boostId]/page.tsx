@@ -61,7 +61,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     let formattedSign: Signature = ["", ""];
     try {
       if (!boost?.id || !address) return formattedSign;
-      const res = await getQuestBoostClaimParams(boost.id);
+      const res = await getQuestBoostClaimParams(boost.id, address);
       formattedSign = [res?.r, res?.s];
       return formattedSign;
     } catch (err) {

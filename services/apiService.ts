@@ -78,10 +78,10 @@ export const getQuestParticipants = async (id: number) => {
   }
 };
 
-export const getQuestBoostClaimParams = async (id: number) => {
+export const getQuestBoostClaimParams = async (id: number, addr: string) => {
   try {
     const response = await fetch(
-      `${baseurl}/boost/get_claim_params?boost_id=${id}`
+      `${baseurl}/boost/get_claim_params?boost_id=${id}&addr=${addr}`
     );
     return await response.json();
   } catch (err) {
