@@ -20,20 +20,22 @@ export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
     return network === "TESTNET" ? true : false;
   }, []);
 
+  const provider = useMemo(() => {
+    return new Provider({
+      rpc: {
+        nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
+      },
+    });
+  }, []);
+
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
-      new Provider({
-        rpc: {
-          nodeUrl: `https://starknet-${
-            isTestnet ? "goerli" : "mainnet"
-          }.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
-        },
-      }),
+      provider,
       isTestnet
         ? constants.StarknetChainId.SN_GOERLI
         : constants.StarknetChainId.SN_MAIN
     );
-  }, []);
+  }, [provider]);
 
   const contextValues = useMemo(() => {
     return {
