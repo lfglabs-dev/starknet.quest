@@ -1,11 +1,8 @@
-import { useAccount } from "@starknet-react/core";
 import { useCallback } from "react";
 
 export default function useBoost() {
-  const { address } = useAccount();
-
   const getBoostClaimStatus = useCallback(
-    (boostId: number) => {
+    (address: string, boostId: number) => {
       try {
         if (!address) return false;
         const res = localStorage.getItem("boostClaimStatus");
@@ -18,11 +15,11 @@ export default function useBoost() {
         return false;
       }
     },
-    [address]
+    []
   );
 
   const updateBoostClaimStatus = useCallback(
-    (boostId: number, value: boolean) => {
+    (address: string, boostId: number, value: boolean) => {
       try {
         if (!address) return false;
         const res = localStorage.getItem("boostClaimStatus");
@@ -34,7 +31,7 @@ export default function useBoost() {
         return false;
       }
     },
-    [address]
+    []
   );
 
   return { getBoostClaimStatus, updateBoostClaimStatus };
