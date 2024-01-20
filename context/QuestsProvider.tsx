@@ -98,11 +98,13 @@ export const QuestsContextProvider = ({
   }, []);
 
   useMemo(() => {
-    getTrendingQuests().then((data: QuestDocument[] | QueryError) => {
-      if ((data as QueryError).error) return;
-      setTrendingQuests(data as QuestDocument[]);
-    });
-  }, []);
+    getTrendingQuests(hexToDecimal(address)).then(
+      (data: QuestDocument[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        setTrendingQuests(data as QuestDocument[]);
+      }
+    );
+  }, [address]);
 
   useMemo(() => {
     if (!address) return;
