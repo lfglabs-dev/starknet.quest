@@ -35,6 +35,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [participants, setParticipants] = useState<number>();
   const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
   const [loading, setLoading] = useState<boolean>(true);
+  const [winnerList, setWinnerList] = useState<string[]>([]);
 
   const getTotalParticipants = async (questIds: number[]) => {
     try {
@@ -56,6 +57,15 @@ export default function Page({ params }: BoostQuestPageProps) {
     [boost]
   );
 
+  useEffect(() => {
+    if (!boost) return;
+    const winners = boost?.winner?.map((winner) => {
+      return hexToDecimal(winner);
+    });
+    if (!winners) return;
+    setWinnerList(winners);
+  }, [boost]);
+
   const fetchPageData = async () => {
     setLoading(true);
     const questsList = await getQuestsInBoost(boostId);
@@ -68,8 +78,8 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   const getButtonText = useCallback(() => {
-    if (!boost) return;
-    const chestOpened = getBoostClaimStatus(boost?.id);
+    if (!boost || !address) return;
+    const chestOpened = getBoostClaimStatus(address, boost?.id);
     if (!isBoostExpired) {
       return "Boost in progress ⌛";
     } else if (!chestOpened) {
@@ -80,9 +90,9 @@ export default function Page({ params }: BoostQuestPageProps) {
   }, [boost, address, isBoostExpired]);
 
   const handleButtonClick = useCallback(() => {
-    if (!boost) return;
-    if (boost?.winner?.includes(hexToDecimal(address)))
-      updateBoostClaimStatus(boost?.id, true);
+    if (!boost || !address) return;
+    if (!winnerList.includes(hexToDecimal(address)))
+      updateBoostClaimStatus(address, boost?.id, true);
 
     router.push(`/quest-boost/claim/${boost?.id}`);
   }, [boost, address]);
@@ -145,7 +155,8 @@ export default function Page({ params }: BoostQuestPageProps) {
               <div>
                 <Button
                   disabled={
-                    boost && (!isBoostExpired || getBoostClaimStatus(boost.id))
+                    boost &&
+                    (!isBoostExpired || getBoostClaimStatus(address, boost.id))
                   }
                   onClick={handleButtonClick}
                 >

@@ -8,6 +8,7 @@ import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
+import { useAccount } from "@starknet-react/core";
 
 type BoostCardProps = {
   boost: Boost;
@@ -18,6 +19,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   boost,
   completedQuests,
 }) => {
+  const { address } = useAccount();
   const [userParticipationStatus, setUserParticipationStatus] =
     useState<boolean>(false);
   const [userBoostCheckStatus, setUserBoostCheckStatus] =
@@ -34,7 +36,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     boost.quests.forEach((quest) => {
       // no quests are completed by user
       if (!completedQuests) return false;
-
       // if any of the quests are completed by user and is part of this boost
       if (completedQuests.includes(quest)) userParticipationCheck = true;
 
@@ -46,10 +47,10 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   }, [completedQuests, boost]);
 
   useEffect(() => {
-    if (!userParticipationStatus) return;
-    const res = getBoostClaimStatus(boost?.id);
+    if (!address) return;
+    const res = getBoostClaimStatus(address, boost?.id);
     setUserBoostCheckStatus(res);
-  }, [userParticipationStatus]);
+  }, [address]);
 
   const isClickable = useMemo(
     () => !userBoostCheckStatus,
