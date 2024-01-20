@@ -80,24 +80,31 @@ export default function Page({ params }: BoostQuestPageProps) {
   }, [boost, address, winnerList]);
 
   const handleClaimClick = async () => {
+    if (!address) return;
     if (isUserWinner) {
       const signature = await fetchBoostClaimParams();
       if (!signature) return;
       setSign(signature);
     } else {
-      updateBoostClaimStatus(parseInt(boostId), false);
+      updateBoostClaimStatus(address, parseInt(boostId), false);
     }
   };
 
   useEffect(() => {
-    if (!account || !boost || sign[0].length === 0 || sign[1].length === 0)
+    if (
+      !address ||
+      !account ||
+      !boost ||
+      sign[0].length === 0 ||
+      sign[1].length === 0
+    )
       return;
 
     const callContract = async () => {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
-      updateBoostClaimStatus(boost?.id, true);
+      updateBoostClaimStatus(address, boost?.id, true);
       setTransactionHash(transaction_hash);
     };
 
