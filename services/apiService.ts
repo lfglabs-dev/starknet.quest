@@ -120,9 +120,11 @@ export const getQuests = async () => {
   }
 };
 
-export const getTrendingQuests = async () => {
+export const getTrendingQuests = async (addr = "") => {
   try {
-    const response = await fetch(`${baseurl}/get_trending_quests`);
+    const response = await fetch(
+      `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ""}`
+    );
     return await response.json();
   } catch (err) {
     console.log("Error while fetching trending quests", err);
