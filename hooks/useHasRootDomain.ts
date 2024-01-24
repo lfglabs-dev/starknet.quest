@@ -1,33 +1,45 @@
 import BN from "bn.js";
-import { useContext, useEffect, useState } from "react";
-import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
+import { useEffect, useState } from "react";
 import { utils } from "starknetid.js";
+import { hexToDecimal } from "@utils/feltService";
 
 export default function useHasRootDomain(
   mandatoryDomain: string | null,
   address: string | BN | undefined
 ) {
   const [hasRootDomain, setHasRootDomain] = useState(false);
-  const { starknetIdNavigator } = useContext(StarknetIdJsContext);
 
   useEffect(() => {
     if (!address) return;
     if (mandatoryDomain === "none") setHasRootDomain(true);
-    starknetIdNavigator?.getStarkName(address.toString()).then((res) => {
-      switch (mandatoryDomain) {
-        case null:
-        case "root":
-          if (utils.isStarkRootDomain(res)) setHasRootDomain(true);
-          break;
-        case "braavos":
-          if (utils.isStarkRootDomain(res) || utils.isBraavosSubdomain(res))
-            setHasRootDomain(true);
-          break;
-        default:
-          break;
-      }
-    });
-  }, [starknetIdNavigator, address, mandatoryDomain]);
+    fetch(
+      `${
+        process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK
+      }/addr_to_domain?addr=${hexToDecimal(address.toString())}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        switch (mandatoryDomain) {
+          case null:
+          case "root":
+            if (utils.isStarkRootDomain(data.domain)) setHasRootDomain(true);
+            break;
+          case "braavos":
+            if (
+              utils.isStarkRootDomain(data.domain) ||
+              utils.isBraavosSubdomain(data.domain)
+            )
+              setHasRootDomain(true);
+            break;
+          default:
+            break;
+        }
+      })
+      .catch((err) => {
+        console.log("Error fetching domain", err);
+        setHasRootDomain(false);
+      });
+  }, [address, mandatoryDomain]);
 
   return hasRootDomain;
 }
