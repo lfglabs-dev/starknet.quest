@@ -2,7 +2,7 @@ import { CallData, uint256 } from "starknet";
 
 export function boostClaimCall(boost: Boost, sign: Signature) {
   const amount = uint256.bnToUint256(
-    parseInt(String(boost.amount / boost.num_of_winners))
+    parseInt(String(boost.amount / boost.num_of_winners)) * Math.pow(10, 6)
   );
   const claimCallData = CallData.compile({
     amount: amount,
