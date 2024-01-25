@@ -116,7 +116,10 @@ const Quest: FunctionComponent<QuestProps> = ({
               {parseInt(
                 String(
                   boost?.amount /
-                    TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+                    Math.pow(
+                      10,
+                      TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+                    )
                 )
               )}
             </p>

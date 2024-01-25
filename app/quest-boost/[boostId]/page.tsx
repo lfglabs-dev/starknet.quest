@@ -147,7 +147,12 @@ export default function Page({ params }: BoostQuestPageProps) {
                     ? parseInt(
                         String(
                           boost?.amount /
-                            TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+                            Math.pow(
+                              10,
+                              TOKEN_DECIMAL_MAP[
+                                getTokenName(boost?.token ?? "")
+                              ]
+                            )
                         )
                       )
                     : 0}{" "}

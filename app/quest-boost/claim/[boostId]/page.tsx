@@ -79,7 +79,8 @@ export default function Page({ params }: BoostQuestPageProps) {
     setDisplayAmount(
       parseInt(
         String(
-          boost?.amount / TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+          boost?.amount /
+            Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
         )
       )
     );

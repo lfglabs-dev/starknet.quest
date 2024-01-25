@@ -78,7 +78,8 @@ const Navbar: FunctionComponent = () => {
         title: "Congratulations! 🎉",
         subtext: `You have just won ${parseInt(
           String(
-            boost?.amount / TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+            boost?.amount /
+              Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
           )
         )} USDC thanks to the "${boost.name}” boost`,
         link: "/quest-boost/" + boost.id,
