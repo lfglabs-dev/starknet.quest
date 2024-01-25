@@ -98,7 +98,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
 
     router.push(`/quest-boost/claim/${boost?.id}`);
-  }, [boost, address]);
+  }, [boost, address, winnerList]);
 
   useEffect(() => {
     fetchPageData();
