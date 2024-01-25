@@ -75,12 +75,10 @@ const Navbar: FunctionComponent = () => {
     res.forEach((boost: Boost) => {
       const data = {
         title: "Congratulations! 🎉",
-        subtext: `You have just won ${parseInt(
-          String(
-            boost?.amount /
-              Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
-          )
-        )} USDC thanks to the "${boost.name}” boost`,
+        subtext: `You have just won ${
+          parseInt(String(boost?.amount / boost?.num_of_winners)) /
+          Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
+        } USDC thanks to the "${boost.name}” boost`,
         link: "/quest-boost/" + boost.id,
         linkText: "Claim your reward",
       };
