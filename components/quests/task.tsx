@@ -73,8 +73,12 @@ const Task: FunctionComponent<Task> = ({
         }
 
         if (verifyRedirect) {
-          // if the redirect is to a realm, we set a timeout of 2 minutes
-          const timeout = verifyRedirect.includes("realms") ? 120000 : 15000;
+          // if the verify_endpoint_type contains a timeout indication we use it,
+          // otherwise we use the default timeout of 15 seconds
+          const timeout =
+            verifyEndpointType.split("_").length === 2
+              ? parseInt(verifyEndpointType.split("_")[1]) ?? 15000
+              : 15000;
           await new Promise((resolve) =>
             setTimeout(() => {
               setIsVerified(true);
