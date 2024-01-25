@@ -112,7 +112,9 @@ export default function Page({ params }: BoostQuestPageProps) {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
-      updateBoostClaimStatus(address, boost?.id, true);
+      if (transaction_hash) {
+        updateBoostClaimStatus(address, boost?.id, true);
+      }
       setTransactionHash(transaction_hash);
     };
 

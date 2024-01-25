@@ -66,7 +66,6 @@ const Navbar: FunctionComponent = () => {
       linkText: "",
     },
   ]);
-  const [displayAmount, setDisplayAmount] = useState<string>("0");
 
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
