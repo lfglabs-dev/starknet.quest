@@ -73,6 +73,8 @@ const Task: FunctionComponent<Task> = ({
         }
 
         if (verifyRedirect) {
+          // if the redirect is to a realm, we set a timeout of 2 minutes
+          const timeout = verifyRedirect.includes("realms") ? 120000 : 15000;
           await new Promise((resolve) =>
             setTimeout(() => {
               setIsVerified(true);
@@ -80,7 +82,7 @@ const Task: FunctionComponent<Task> = ({
               refreshRewards();
               setIsLoading(false);
               resolve(null);
-            }, 15000)
+            }, timeout)
           );
         } else {
           setIsVerified(true);
