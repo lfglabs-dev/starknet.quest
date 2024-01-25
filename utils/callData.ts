@@ -4,7 +4,6 @@ export function boostClaimCall(boost: Boost, sign: Signature) {
   const amount = uint256.bnToUint256(
     parseInt(String(boost.amount / boost.num_of_winners))
   );
-  console.log("amount", amount);
   const claimCallData = CallData.compile({
     amount: amount,
     token: boost.token,

@@ -14,6 +14,7 @@ import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import { getBoosts } from "@services/apiService";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
+import { TOKEN_DECIMAL_MAP } from "@utils/constants";
 
 type QuestProps = {
   onClick: () => void;
@@ -110,7 +111,14 @@ const Quest: FunctionComponent<QuestProps> = ({
             style={{ gap: 0, padding: "8px 16px" }}
           >
             <TokenSymbol tokenAddress={boost?.token} />
-            <p className="text-white ml-2">{boost?.amount}</p>
+            <p className="text-white ml-2">
+              {parseInt(
+                String(
+                  boost?.amount /
+                    TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+                )
+              )}
+            </p>
           </div>
         ) : null}
       </div>
