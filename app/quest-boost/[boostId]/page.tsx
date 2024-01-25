@@ -145,7 +145,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                 <p className={styles.claim_button_text_highlight}>
                   {parseInt(
                     String(
-                      boost?.amount /
+                      boost.amount /
                         TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
                     )
                   )}{" "}
