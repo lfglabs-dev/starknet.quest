@@ -15,6 +15,7 @@ import QuestCard from "./questCard";
 import { getBoosts } from "@services/apiService";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { getTokenName } from "@utils/tokenService";
 
 type QuestProps = {
   onClick: () => void;

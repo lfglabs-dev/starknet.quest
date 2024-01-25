@@ -34,6 +34,7 @@ import { hexToDecimal } from "@utils/feltService";
 import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
 import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { getTokenName } from "@utils/tokenService";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -65,6 +66,7 @@ const Navbar: FunctionComponent = () => {
       linkText: "",
     },
   ]);
+  const [displayAmount, setDisplayAmount] = useState<string>("0");
 
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
