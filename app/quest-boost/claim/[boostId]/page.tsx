@@ -109,7 +109,6 @@ export default function Page({ params }: BoostQuestPageProps) {
         boostClaimCall(boost, sign)
       );
       if (transaction_hash) {
-        console.log("Transaction hash", transaction_hash);
         updateBoostClaimStatus(address, boost?.id, true);
       }
       setTransactionHash(transaction_hash);
