@@ -77,12 +77,8 @@ export default function Page({ params }: BoostQuestPageProps) {
     if (!boost.winner) return false;
 
     setDisplayAmount(
-      parseInt(
-        String(
-          boost?.amount /
-            Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
-        )
-      )
+      parseInt(String(boost?.amount / boost?.num_of_winners)) /
+        Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
     );
     return winnerList.includes(hexToDecimal(address));
   }, [boost, address, winnerList]);
