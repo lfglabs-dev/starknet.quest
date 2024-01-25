@@ -8,6 +8,8 @@ export const getTokenName = (token: string) => {
       return "USDC";
     case TOKEN_ADDRESS_MAP[network].ETH:
       return "ETH";
+    case TOKEN_ADDRESS_MAP[network].LORDS:
+      return "LORDS";
     default:
       return "USDC";
   }

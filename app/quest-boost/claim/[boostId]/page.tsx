@@ -144,6 +144,14 @@ export default function Page({ params }: BoostQuestPageProps) {
                         height={97}
                         alt="usdc icon"
                       />
+                    ) : boost && getTokenName(boost?.token) === "LORDS" ? (
+                      <CDNImage
+                        src={"/icons/lord.webp"}
+                        priority
+                        width={97}
+                        height={97}
+                        alt="lords icon"
+                      />
                     ) : (
                       <CDNImage
                         src={"/icons/eth.svg"}

@@ -379,7 +379,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   verifyRedirect={task.verify_redirect}
                   verifyEndpoint={
                     task.verify_endpoint_type &&
-                    task.verify_endpoint_type === "default"
+                    task.verify_endpoint_type.startsWith("default")
                       ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
                       : task.verify_endpoint_type === "quiz"
                       ? task.verify_endpoint
