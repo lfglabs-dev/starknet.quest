@@ -93,7 +93,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const handleButtonClick = useCallback(() => {
     if (!boost || !address) return;
     if (!winnerList.includes(hexToDecimal(address))) {
-      console.log({ winnerList, address: hexToDecimal(address) });
       updateBoostClaimStatus(address, boost?.id, true);
     }
 
