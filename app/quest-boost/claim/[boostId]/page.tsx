@@ -76,10 +76,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     // convert values in winner array from hex to decimal
     if (!boost.winner) return false;
 
-    setDisplayAmount(
-      parseInt(String(boost?.amount / boost?.num_of_winners)) /
-        Math.pow(10, boost?.token_decimals ?? 0)
-    );
+    setDisplayAmount(parseInt(String(boost?.amount / boost?.num_of_winners)));
     return winnerList.includes(hexToDecimal(address));
   }, [boost, address, winnerList]);
 
