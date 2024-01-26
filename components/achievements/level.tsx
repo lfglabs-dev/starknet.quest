@@ -3,6 +3,7 @@ import styles from "@styles/achievements.module.css";
 import { AchievementDocument } from "../../types/backTypes";
 import { CustomTooltip } from "@components/UI/tooltip";
 import { CDNImg } from "@components/cdn/image";
+import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;
@@ -39,6 +40,11 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
         >
           <CDNImg src={achievement.img_url} alt="achievement level image" />
         </div>
+        {achievement.completed && (
+          <div className={styles.checkIcon}>
+            <CheckIcon width="24" color="#6AFFAF" />
+          </div>
+        )}
       </div>
     </CustomTooltip>
   );

@@ -19,6 +19,7 @@ import BackButton from "@components/UI/backButton";
 import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";
 import BoostSkeleton from "@components/skeletons/boostSkeleton";
+import { TOKEN_DECIMAL_MAP } from "@utils/constants";
 
 type BoostQuestPageProps = {
   params: {
@@ -95,7 +96,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       updateBoostClaimStatus(address, boost?.id, true);
 
     router.push(`/quest-boost/claim/${boost?.id}`);
-  }, [boost, address]);
+  }, [boost, address, winnerList]);
 
   useEffect(() => {
     fetchPageData();
@@ -142,7 +143,20 @@ export default function Page({ params }: BoostQuestPageProps) {
               <p>Reward:</p>
               <div className="flex flex-row gap-2">
                 <p className={styles.claim_button_text_highlight}>
-                  {boost?.amount} {getTokenName(boost?.token ?? "")}
+                  {boost
+                    ? parseInt(
+                        String(
+                          boost?.amount /
+                            Math.pow(
+                              10,
+                              TOKEN_DECIMAL_MAP[
+                                getTokenName(boost?.token ?? "")
+                              ]
+                            )
+                        )
+                      )
+                    : 0}{" "}
+                  {getTokenName(boost?.token ?? "")}
                 </p>
                 <TokenSymbol tokenAddress={boost?.token ?? ""} />
               </div>

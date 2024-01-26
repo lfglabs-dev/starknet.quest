@@ -89,20 +89,24 @@ export const QuestsContextProvider = ({
 
       setCategories(categoriesWithImages);
       setQuests(q);
-
-      const notExpired = q.filter((quest) => !quest.expired);
-      setFeaturedQuest(
-        notExpired.length >= 1 ? notExpired[notExpired.length - 1] : undefined
-      );
     })();
   }, []);
 
   useMemo(() => {
-    getTrendingQuests().then((data: QuestDocument[] | QueryError) => {
-      if ((data as QueryError).error) return;
-      setTrendingQuests(data as QuestDocument[]);
-    });
-  }, []);
+    getTrendingQuests(hexToDecimal(address)).then(
+      (data: QuestDocument[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        const quests = data as QuestDocument[];
+        setTrendingQuests(quests);
+        const notExpired = quests.filter((quest) => !quest.expired);
+        setFeaturedQuest(
+          notExpired.length >= 1
+            ? notExpired[Math.floor(Math.random() * notExpired.length)]
+            : undefined
+        );
+      }
+    );
+  }, [address]);
 
   useMemo(() => {
     if (!address) return;
