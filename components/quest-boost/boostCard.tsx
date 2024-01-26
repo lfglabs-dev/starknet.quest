@@ -9,6 +9,8 @@ import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
+import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { getTokenName } from "@utils/tokenService";
 
 type BoostCardProps = {
   boost: Boost;
@@ -86,7 +88,17 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           </p>
           {!hasUserCompletedBoost && boost.expiry > Date.now() ? (
             <div className="flex flex-row gap-2 items-center p-1.5">
-              <p>{boost?.amount}</p>
+              <p>
+                {parseInt(
+                  String(
+                    boost?.amount /
+                      Math.pow(
+                        10,
+                        TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
+                      )
+                  )
+                )}
+              </p>
               <TokenSymbol tokenAddress={boost.token} />
             </div>
           ) : (

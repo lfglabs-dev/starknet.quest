@@ -33,6 +33,8 @@ import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
 import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
+import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { getTokenName } from "@utils/tokenService";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -73,7 +75,10 @@ const Navbar: FunctionComponent = () => {
     res.forEach((boost: Boost) => {
       const data = {
         title: "Congratulations! 🎉",
-        subtext: `You have just won ${boost.amount} USDC thanks to the "${boost.name}” boost`,
+        subtext: `You have just won ${
+          parseInt(String(boost?.amount / boost?.num_of_winners)) /
+          Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
+        } USDC thanks to the "${boost.name}” boost`,
         link: "/quest-boost/" + boost.id,
         linkText: "Claim your reward",
       };

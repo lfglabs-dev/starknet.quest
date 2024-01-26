@@ -15,6 +15,7 @@ import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
 import { getTokenName } from "@utils/tokenService";
 import useBoost from "@hooks/useBoost";
+import { TOKEN_DECIMAL_MAP } from "@utils/constants";
 
 type BoostQuestPageProps = {
   params: {
@@ -75,7 +76,10 @@ export default function Page({ params }: BoostQuestPageProps) {
     // convert values in winner array from hex to decimal
     if (!boost.winner) return false;
 
-    setDisplayAmount(parseInt(String(boost?.amount / boost?.num_of_winners)));
+    setDisplayAmount(
+      parseInt(String(boost?.amount / boost?.num_of_winners)) /
+        Math.pow(10, TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")])
+    );
     return winnerList.includes(hexToDecimal(address));
   }, [boost, address, winnerList]);
 
@@ -104,7 +108,9 @@ export default function Page({ params }: BoostQuestPageProps) {
       const { transaction_hash } = await account.execute(
         boostClaimCall(boost, sign)
       );
-      updateBoostClaimStatus(address, boost?.id, true);
+      if (transaction_hash) {
+        updateBoostClaimStatus(address, boost?.id, true);
+      }
       setTransactionHash(transaction_hash);
     };
 

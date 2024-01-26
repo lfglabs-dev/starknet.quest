@@ -37,3 +37,8 @@ export const TOKEN_ADDRESS_MAP = {
     LORDS: "0x05e367ac160e5f90c5775089b582dfc987dd148a5a2f977c49def2a6644f724b",
   },
 };
+
+export const TOKEN_DECIMAL_MAP = {
+  USDC: 6,
+  ETH: 18,
+};
