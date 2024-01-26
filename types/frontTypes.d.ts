@@ -71,6 +71,7 @@ type Boost = {
   id: number;
   name: string;
   num_of_winners: number;
+  decimals: number;
 };
 
 type Reward = {

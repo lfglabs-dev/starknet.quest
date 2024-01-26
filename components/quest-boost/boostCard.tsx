@@ -90,13 +90,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
             <div className="flex flex-row gap-2 items-center p-1.5">
               <p>
                 {parseInt(
-                  String(
-                    boost?.amount /
-                      Math.pow(
-                        10,
-                        TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
-                      )
-                  )
+                  String(boost?.amount / Math.pow(10, boost?.decimals ?? 0))
                 )}
               </p>
               <TokenSymbol tokenAddress={boost.token} />
