@@ -41,4 +41,5 @@ export const TOKEN_ADDRESS_MAP = {
 export const TOKEN_DECIMAL_MAP = {
   USDC: 6,
   ETH: 18,
+  LORDS:18,
 };
