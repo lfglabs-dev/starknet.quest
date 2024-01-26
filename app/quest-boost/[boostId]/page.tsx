@@ -92,9 +92,8 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const handleButtonClick = useCallback(() => {
     if (!boost || !address) return;
-    if (!winnerList.includes(hexToDecimal(address))) {
+    if (!winnerList.includes(hexToDecimal(address)))
       updateBoostClaimStatus(address, boost?.id, true);
-    }
 
     router.push(`/quest-boost/claim/${boost?.id}`);
   }, [boost, address, winnerList]);
