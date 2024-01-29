@@ -143,8 +143,7 @@ export default function Page({ params }: BoostQuestPageProps) {
               <p>Reward:</p>
               <div className="flex flex-row gap-2">
                 <p className={styles.claim_button_text_highlight}>
-                  {boost?.amount}
-                  {getTokenName(boost?.token ?? "")}
+                  {boost?.amount} {getTokenName(boost?.token ?? "")}
                 </p>
                 <TokenSymbol tokenAddress={boost?.token ?? ""} />
               </div>
