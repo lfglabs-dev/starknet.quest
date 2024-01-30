@@ -112,17 +112,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             style={{ gap: 0, padding: "8px 16px" }}
           >
             <TokenSymbol tokenAddress={boost?.token} />
-            <p className="text-white ml-2">
-              {parseInt(
-                String(
-                  boost?.amount /
-                    Math.pow(
-                      10,
-                      TOKEN_DECIMAL_MAP[getTokenName(boost?.token ?? "")]
-                    )
-                )
-              )}
-            </p>
+            <p className="text-white ml-2">{boost?.amount}</p>
           </div>
         ) : null}
       </div>
