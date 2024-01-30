@@ -88,6 +88,12 @@ const Quest: FunctionComponent<QuestPageProps> = ({
       buttonText="Go back to quests"
       onClick={() => router.push("/")}
     />
+  ) : quest.expired ? (
+    <ErrorScreen
+      errorMessage="This quest has expired."
+      buttonText="Go back to quests"
+      onClick={() => router.push("/")}
+    />
   ) : (
     <>
       <div className={homeStyles.screen}>
