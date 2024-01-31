@@ -23,22 +23,20 @@ export default function Page() {
           <Blur />
         </div>
         <div className={styles.featured_quest_banner_container}>
-          {featuredQuest && (
-            <FeaturedQuest
-              heading="Featured"
-              key={featuredQuest?.id}
-              title={featuredQuest?.title_card}
-              onClick={() => router.push(`/quest/${featuredQuest?.id}`)}
-              imgSrc={featuredQuest?.img_card}
-              issuer={{
-                name: featuredQuest?.issuer ?? "",
-                logoFavicon: featuredQuest?.logo ?? "",
-              }}
-              reward={featuredQuest?.rewards_title}
-              desc={featuredQuest?.desc}
-              expiry={featuredQuest?.expiry_timestamp}
-            />
-          )}
+          <FeaturedQuest
+            heading="Featured"
+            key={featuredQuest?.id}
+            title={featuredQuest?.title_card}
+            onClick={() => router.push(`/quest/${featuredQuest?.id}`)}
+            imgSrc={featuredQuest?.img_card}
+            issuer={{
+              name: featuredQuest?.issuer ?? "",
+              logoFavicon: featuredQuest?.logo ?? "",
+            }}
+            reward={featuredQuest?.rewards_title}
+            desc={featuredQuest?.desc}
+            expiry={featuredQuest?.expiry_timestamp}
+          />
         </div>
 
         <QuestCategories categories={categories} />
