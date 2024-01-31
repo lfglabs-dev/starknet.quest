@@ -109,6 +109,16 @@ export const QuestsContextProvider = ({
   }, [address]);
 
   useMemo(() => {
+    if (!quests || featuredQuest) return;
+    const notExpired = quests.filter((quest) => !quest.expired);
+    setFeaturedQuest(
+      notExpired.length >= 1
+        ? notExpired[Math.floor(Math.random() * notExpired.length)]
+        : undefined
+    );
+  }, [quests]);
+
+  useMemo(() => {
     if (!address) return;
     getCompletedBoosts(hexToDecimal(address)).then(
       (data: number[] | QueryError) => {
