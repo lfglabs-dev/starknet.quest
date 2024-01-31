@@ -17,6 +17,8 @@ import { getTokenName } from "@utils/tokenService";
 import useBoost from "@hooks/useBoost";
 import { TOKEN_DECIMAL_MAP } from "@utils/constants";
 import { useRouter } from "next/navigation";
+import ModalMessage from "@components/UI/modalMessage";
+import verifiedLottie from "@public/visuals/verifiedLottie.json";
 
 type BoostQuestPageProps = {
   params: {
@@ -36,6 +38,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [winnerList, setWinnerList] = useState<string[]>([]);
   const { updateBoostClaimStatus } = useBoost();
   const [displayAmount, setDisplayAmount] = useState<number>(0);
+  const [modalTxOpen, setModalTxOpen] = useState(false);
   const router = useRouter();
 
   const fetchPageData = async () => {
@@ -111,6 +114,7 @@ export default function Page({ params }: BoostQuestPageProps) {
         updateBoostClaimStatus(address, boost?.id, true);
       }
       setTransactionHash(transaction_hash);
+      setModalTxOpen(true);
     };
 
     callContract();
@@ -230,6 +234,28 @@ export default function Page({ params }: BoostQuestPageProps) {
           />
         </div>
       ) : null}
+      <ModalMessage
+        open={modalTxOpen}
+        title="Your NFT is on it's way !"
+        closeModal={() => {
+          setModalTxOpen(false);
+          router.back();
+        }}
+        message={
+          <div className="mt-7 flex flex-col items-center justify-center text-center">
+            <Lottie
+              className="w-52"
+              animationData={verifiedLottie}
+              loop={false}
+            />
+            <div className="mt-4">
+              <Button onClick={() => router.push("/")}>
+                Complete another quest !
+              </Button>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 }
