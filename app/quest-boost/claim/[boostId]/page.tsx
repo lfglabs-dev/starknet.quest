@@ -16,6 +16,7 @@ import { boostClaimCall } from "@utils/callData";
 import { getTokenName } from "@utils/tokenService";
 import useBoost from "@hooks/useBoost";
 import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { useRouter } from "next/navigation";
 
 type BoostQuestPageProps = {
   params: {
@@ -35,6 +36,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [winnerList, setWinnerList] = useState<string[]>([]);
   const { updateBoostClaimStatus } = useBoost();
   const [displayAmount, setDisplayAmount] = useState<number>(0);
+  const router = useRouter();
 
   const fetchPageData = async () => {
     try {
@@ -207,7 +209,13 @@ export default function Page({ params }: BoostQuestPageProps) {
                   Collect my reward
                 </Button>
               </div>
-            ) : null}
+            ) : (
+              <div className="block ml-auto mr-auto">
+                <Button onClick={() => router.back()}>
+                  Back on boosts quest
+                </Button>
+              </div>
+            )}
           </>
         ) : null}
       </div>
