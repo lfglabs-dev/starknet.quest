@@ -72,6 +72,14 @@ export default function Page({ params }: BoostQuestPageProps) {
     const questsList = await getQuestsInBoost(boostId);
     const boostInfo = await getBoostById(boostId);
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
+    if (Array.isArray(questsList)) {
+      questsList.forEach((quest) => {
+        let timestamp = quest?.expiry["$date"]["$numberLong"];
+        if (timestamp <= Date.now()) {
+          quest["expired"] = true;
+        }
+      });
+    }
     setQuests(questsList);
     setBoost(boostInfo);
     setParticipants(totalParticipants);
