@@ -1,22 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import React, {
-  useState,
-  useEffect,
-  FunctionComponent,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import styles from "@styles/components/navbar.module.css";
 import Button from "./button";
-import {
-  useConnect,
-  useAccount,
-  Connector,
-  useDisconnect,
-} from "@starknet-react/core";
-import Wallets from "./wallets";
+import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "@hooks/displayName.tsx";
 import { useDomainFromAddress } from "../../hooks/naming";
@@ -33,17 +22,16 @@ import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
 import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
-import { TOKEN_DECIMAL_MAP } from "@utils/constants";
-import { getTokenName } from "@utils/tokenService";
+import { availableConnectors } from "@app/provider";
+import { useStarknetkitConnectModal } from "starknetkit";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
   const [nav, setNav] = useState<boolean>(false);
-  const [hasWallet, setHasWallet] = useState<boolean>(false);
   const { address, account } = useAccount();
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
-  const { connect, connectors } = useConnect();
+  const { connectAsync } = useConnect();
   const { disconnect } = useDisconnect();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const domain = useDomainFromAddress(address ?? "").domain;
@@ -66,6 +54,9 @@ const Navbar: FunctionComponent = () => {
       linkText: "",
     },
   ]);
+  const { starknetkitConnectModal } = useStarknetkitConnectModal({
+    connectors: availableConnectors,
+  });
 
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
@@ -91,30 +82,23 @@ const Navbar: FunctionComponent = () => {
     fetchAndUpdateNotifications();
   }, [address]);
 
+  // Autoconnect
   useEffect(() => {
-    // to handle autoconnect starknet-react adds connector id in local storage
-    // if there is no value stored, we show the wallet modal
-    const timeout = setTimeout(() => {
-      if (!address) {
-        if (
-          !localStorage.getItem("lastUsedConnector") &&
-          route !== "/partnership"
-        ) {
-          if (connectors.length > 0) setHasWallet(true);
-        } else {
-          const lastConnectedConnectorId =
-            localStorage.getItem("lastUsedConnector");
-          if (lastConnectedConnectorId === null) return;
-
-          const lastConnectedConnector = connectors.find(
-            (connector) => connector.id === lastConnectedConnectorId
-          );
-          if (lastConnectedConnector === undefined) return;
-          tryConnect(lastConnectedConnector);
-        }
+    const connectToStarknet = async () => {
+      if (
+        !localStorage.getItem("SQ-connectedWallet") &&
+        route !== "/partnership"
+      ) {
+        connectWallet();
+      } else {
+        const connectordId = localStorage.getItem("SQ-connectedWallet");
+        const connector = availableConnectors.find(
+          (item) => item.id === connectordId
+        );
+        await connectAsync({ connector });
       }
-    }, 1000);
-    return () => clearTimeout(timeout);
+    };
+    connectToStarknet();
   }, []);
 
   useEffect(() => {
@@ -133,23 +117,21 @@ const Navbar: FunctionComponent = () => {
     });
   }, [account, network, isConnected]);
 
-  const tryConnect = useCallback(
-    async (connector: Connector) => {
-      if (address) return;
-      if (await connector.ready()) {
-        connect({ connector });
-
-        return;
-      }
-    },
-    [address, connectors]
-  );
+  const connectWallet = async () => {
+    const { connector } = await starknetkitConnectModal();
+    if (!connector) {
+      return;
+    }
+    await connectAsync({ connector });
+    localStorage.setItem("SQ-connectedWallet", connector.id);
+  };
 
   function disconnectByClick(): void {
     disconnect();
     setIsConnected(false);
     setIsWrongNetwork(false);
     setShowWallet(false);
+    localStorage.removeItem("SQ-connectedWallet");
   }
 
   function handleNav(): void {
@@ -158,7 +140,7 @@ const Navbar: FunctionComponent = () => {
 
   function onTopButtonClick(): void {
     if (!isConnected) {
-      setHasWallet(true);
+      connectWallet();
     } else {
       setShowWallet(true);
     }
@@ -252,7 +234,7 @@ const Navbar: FunctionComponent = () => {
               <WalletButton
                 setShowWallet={setShowWallet}
                 showWallet={showWallet}
-                refreshAndShowWallet={() => setHasWallet(true)}
+                connect={connectWallet}
                 disconnectByClick={disconnectByClick}
               />
             </ul>
@@ -388,10 +370,6 @@ const Navbar: FunctionComponent = () => {
             </div>
           </div>
         }
-      />
-      <Wallets
-        closeWallet={() => setHasWallet(false)}
-        hasWallet={Boolean(hasWallet && !isWrongNetwork)}
       />
       {showNotifications ? (
         <ModalNotifications
