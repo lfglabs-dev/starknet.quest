@@ -1,19 +1,31 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
+import { InjectedConnector } from "starknetkit/injected";
 import { WebWalletConnector } from "starknetkit/webwallet";
+import { ArgentMobileConnector } from "starknetkit/argentMobile";
 import { Chain, goerli, mainnet } from "@starknet-react/chains";
 import {
   Connector,
   StarknetConfig,
-  argent,
-  braavos,
   jsonRpcProvider,
 } from "@starknet-react/core";
 import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { QuestsContextProvider } from "@context/QuestsProvider";
 import { getCurrentNetwork } from "@utils/network";
+
+export const availableConnectors = [
+  new InjectedConnector({ options: { id: "braavos", name: "Braavos" } }),
+  new InjectedConnector({ options: { id: "argentX", name: "Argent X" } }),
+  new WebWalletConnector({
+    url:
+      getCurrentNetwork() === "TESTNET"
+        ? "https://web.hydrogen.argent47.net"
+        : "https://web.argent.xyz/",
+  }),
+  new ArgentMobileConnector(),
+];
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const network = getCurrentNetwork();
@@ -23,20 +35,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       nodeUrl: process.env.NEXT_PUBLIC_RPC_URL as string,
     }),
   });
-
-  const connectors = useMemo(
-    () => [
-      braavos(),
-      argent(),
-      new WebWalletConnector({
-        url:
-          network === "TESTNET"
-            ? "https://web.hydrogen.argent47.net"
-            : "https://web.argent.xyz/",
-      }),
-    ],
-    [network]
-  );
 
   const theme = createTheme({
     palette: {
@@ -58,7 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <StarknetConfig
       chains={chains}
       provider={provider}
-      connectors={connectors as Connector[]}
+      connectors={availableConnectors as Connector[]}
       autoConnect
     >
       <StarknetIdJsProvider>

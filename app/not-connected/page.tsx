@@ -1,28 +1,40 @@
 "use client";
 
-import { useAccount } from "@starknet-react/core";
-import React, { useEffect, useState } from "react";
+import { useAccount, useConnect } from "@starknet-react/core";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Wallets from "@components/UI/wallets";
 import ErrorScreen from "@components/UI/screens/errorScreen";
+import { useStarknetkitConnectModal } from "starknetkit";
+import { availableConnectors } from "@app/provider";
 
 export default function Page() {
   const { address } = useAccount();
+  const { connectAsync } = useConnect();
   const { push } = useRouter();
-  const [hasWallet, setHasWallet] = useState<boolean>(true);
+  const { starknetkitConnectModal } = useStarknetkitConnectModal({
+    connectors: availableConnectors,
+  });
 
   useEffect(() => {
     if (address) push(`/${address}`);
   }, [address]);
+
+  const connectWallet = async () => {
+    const { connector } = await starknetkitConnectModal();
+    if (!connector) {
+      return;
+    }
+    await connectAsync({ connector });
+    localStorage.setItem("SQ-connectedWallet", connector.id);
+  };
 
   return (
     <>
       <ErrorScreen
         errorMessage="You're not connected !"
         buttonText="Connect wallet"
-        onClick={() => setHasWallet(true)}
+        onClick={connectWallet}
       />
-      <Wallets closeWallet={() => setHasWallet(false)} hasWallet={hasWallet} />
     </>
   );
 }
