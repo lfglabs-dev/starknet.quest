@@ -87,7 +87,7 @@ const Quest: FunctionComponent<QuestProps> = ({
       >
         <p className="text-gray-400">{issuer.name}</p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-3">
         <div className={styles.issuer}>
           {isCompleted ? (
             <>

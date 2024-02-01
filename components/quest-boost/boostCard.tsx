@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
+import questStyles from "@styles/quests.module.css";
 import Cardstyles from "@styles/components/card.module.css";
 import Link from "next/link";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
@@ -87,7 +88,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
           {!hasUserCompletedBoost && boost.expiry > Date.now() ? (
-            <div className="flex flex-row gap-2 items-center p-1.5">
+            <div className={questStyles.issuer}>
               <p>{boost?.amount}</p>
               <TokenSymbol tokenAddress={boost.token} />
             </div>

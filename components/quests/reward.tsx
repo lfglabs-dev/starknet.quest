@@ -8,10 +8,7 @@ import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
 import { useNotificationManager } from "@hooks/useNotificationManager";
-import {
-  NotificationType,
-  TransactionType,
-} from "@constants/notifications";
+import { NotificationType, TransactionType } from "@constants/notifications";
 import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
 import rewardStyles from "@styles/components/quests/modal.module.css";
@@ -71,9 +68,11 @@ const Reward: FunctionComponent<RewardProps> = ({
   return (
     <div className={styles.reward}>
       <div className="flex items-center">
-        <p className="mr-1">Reward: </p>
-        <CDNImg width={25} src={imgSrc} />
-        <p className="ml-1">{reward}</p>
+        <p className="mr-2">Reward: </p>
+        <div className={styles.issuer}>
+          <p>{reward}</p>
+          <CDNImg width={25} src={imgSrc} />
+        </div>
       </div>
       <div className="max-w-lg">
         {/* getReward */}

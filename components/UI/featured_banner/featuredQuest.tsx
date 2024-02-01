@@ -35,14 +35,16 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         <p className={styles.featuredQuestHeading}>{heading}</p>
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
         <p className={styles.featuredQuestDescription}>{desc}</p>
-        <div className="flex mt-4 mb-4 items-center">
-          <CDNImg
-            width={20}
-            src={issuer?.logoFavicon}
-            className={styles.featuredQuestRewardIcon}
-          />
-          <p className={styles.featuredQuestReward}>{reward}</p>
-        </div>
+        {issuer?.name || issuer?.logoFavicon ? (
+          <div className={`${styles.issuer}  mb-4 mt-6`}>
+            <CDNImg
+              width={20}
+              src={issuer?.logoFavicon}
+              className={styles.featuredQuestRewardIcon}
+            />
+            <p className={styles.featuredQuestReward}>{reward}</p>
+          </div>
+        ) : null}
         <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>
         </div>

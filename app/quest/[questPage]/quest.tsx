@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { QueryError, QuestDocument } from "../../../types/backTypes";
 import RewardSkeleton from "@components/skeletons/rewardSkeleton";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import NftIssuer from "@components/quests/nftIssuer";
 import BackButton from "@components/UI/backButton";
 import useHasRootDomain from "@hooks/useHasRootDomain";
 import { useAccount } from "@starknet-react/core";

@@ -35,8 +35,12 @@
   font-size: 1.3rem;
   color: var(--secondary);
   font-family: "Sora-Bold";
-  margin: 0px;
+  margin: 0;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 240px;
 }
 
 .card[aria-disabled="true"] {
