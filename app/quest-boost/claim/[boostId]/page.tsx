@@ -214,7 +214,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                 </Button>
               ) : (
                 <div className="block ml-auto mr-auto">
-                  <Button onClick={() => router.back()}>
+                  <Button onClick={() => router.push("/quest-boost")}>
                     Back on boosts quest
                   </Button>
                 </div>
@@ -239,7 +239,7 @@ export default function Page({ params }: BoostQuestPageProps) {
         title="Your NFT is on it's way !"
         closeModal={() => {
           setModalTxOpen(false);
-          router.back();
+          router.push("/quest-boost");
         }}
         message={
           <div className="mt-7 flex flex-col items-center justify-center text-center">
@@ -249,7 +249,7 @@ export default function Page({ params }: BoostQuestPageProps) {
               loop={false}
             />
             <div className="mt-4">
-              <Button onClick={() => router.push("/")}>
+              <Button onClick={() => router.push("/quest-boost")}>
                 Complete another quest !
               </Button>
             </div>
