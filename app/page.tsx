@@ -36,6 +36,7 @@ export default function Page() {
             reward={featuredQuest?.rewards_title}
             desc={featuredQuest?.desc}
             expiry={featuredQuest?.expiry_timestamp}
+            questId={featuredQuest?.id}
           />
         </div>
 

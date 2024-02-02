@@ -13,6 +13,7 @@ import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
 import rewardStyles from "@styles/components/quests/modal.module.css";
 import { CDNImg } from "@components/cdn/image";
+import BoostReward from "./boostReward";
 
 type RewardProps = {
   onClick: () => void;
@@ -67,12 +68,13 @@ const Reward: FunctionComponent<RewardProps> = ({
 
   return (
     <div className={styles.reward}>
-      <div className="flex items-center">
-        <p className="mr-2">Reward: </p>
+      <div className="flex items-center gap-2">
+        <p>Reward: </p>
         <div className={styles.issuer}>
           <p>{reward}</p>
           <CDNImg width={25} src={imgSrc} />
         </div>
+        <BoostReward questId={quest.id} />
       </div>
       <div className="max-w-lg">
         {/* getReward */}

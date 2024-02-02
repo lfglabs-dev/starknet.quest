@@ -88,10 +88,12 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
           </p>
           {!hasUserCompletedBoost && boost.expiry > Date.now() ? (
-            <div className={questStyles.issuer}>
-              <p>{boost?.amount}</p>
-              <TokenSymbol tokenAddress={boost.token} />
-            </div>
+            <>
+              <div className={questStyles.issuer}>
+                <p>{boost?.amount}</p>
+                <TokenSymbol tokenAddress={boost.token} />
+              </div>
+            </>
           ) : (
             <div className="flex w-full">
               <div className="flex items-center">

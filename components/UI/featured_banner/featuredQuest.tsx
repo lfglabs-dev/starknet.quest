@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import FeaturedQuestSkeleton from "@components/skeletons/featuredQuestSkeleton";
 import Timer from "@components/quests/timer";
 import { CDNImg } from "@components/cdn/image";
+import BoostReward from "@components/quests/boostReward";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -15,6 +16,7 @@ type FeaturedQuestProps = {
   desc?: string;
   expiry: string | null | undefined;
   heading: string;
+  questId?: number;
 };
 
 const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
@@ -26,6 +28,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   desc,
   expiry,
   heading,
+  questId,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
 
@@ -35,16 +38,19 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         <p className={styles.featuredQuestHeading}>{heading}</p>
         <h3 className={styles.featuredQuestTitle}>{title}</h3>
         <p className={styles.featuredQuestDescription}>{desc}</p>
-        {issuer?.name || issuer?.logoFavicon ? (
-          <div className={`${styles.issuer}  mb-4 mt-6`}>
-            <CDNImg
-              width={20}
-              src={issuer?.logoFavicon}
-              className={styles.featuredQuestRewardIcon}
-            />
-            <p className={styles.featuredQuestReward}>{reward}</p>
-          </div>
-        ) : null}
+        <div className="flex items-center mb-4 mt-6 gap-2">
+          {issuer?.name || issuer?.logoFavicon ? (
+            <div className={styles.issuer}>
+              <CDNImg
+                width={20}
+                src={issuer?.logoFavicon}
+                className={styles.featuredQuestRewardIcon}
+              />
+              <p className={styles.featuredQuestReward}>{reward}</p>
+            </div>
+          ) : null}
+          {questId ? <BoostReward questId={questId} /> : null}
+        </div>
         <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>
         </div>
