@@ -8,10 +8,7 @@ import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
 import { Call } from "starknet";
 import { useNotificationManager } from "@hooks/useNotificationManager";
-import {
-  NotificationType,
-  TransactionType,
-} from "@constants/notifications";
+import { NotificationType, TransactionType } from "@constants/notifications";
 import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
 import rewardStyles from "@styles/components/quests/modal.module.css";
@@ -25,6 +22,7 @@ type RewardProps = {
   mintCalldata: Call[] | undefined;
   questName: string;
   hasNftReward?: boolean;
+  claimed?: boolean;
   quest: QuestDocument;
 };
 
@@ -36,6 +34,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   mintCalldata,
   questName,
   hasNftReward,
+  claimed,
   quest,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
@@ -77,8 +76,8 @@ const Reward: FunctionComponent<RewardProps> = ({
       </div>
       <div className="max-w-lg">
         {/* getReward */}
-        <Button onClick={submitTx} disabled={disabled}>
-          Get Reward
+        <Button onClick={submitTx} disabled={disabled || claimed}>
+          {claimed ? "Claimed" : "Get Reward"}
         </Button>
       </div>
 

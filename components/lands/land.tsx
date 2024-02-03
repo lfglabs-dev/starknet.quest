@@ -12,6 +12,7 @@ import {
 import { AchievementsDocument } from "types/backTypes";
 import Link from "next/link";
 import { getCurrentNetwork } from "@utils/network";
+import { getNfts } from "@utils/assets";
 
 type LandProps = {
   address: string;
@@ -37,40 +38,11 @@ export const Land = ({
     if (address) {
       setSoloBuildings([]);
       setIsReady(true);
-      retrieveAssets(
-        `https://${
-          network === "TESTNET" ? "api-testnet" : "api"
-        }.starkscan.co/api/v0/nfts?owner_address=${address}`
-      ).then((data) => {
-        filterAssets(data.data);
+      getNfts(address, network).then((nfts) => {
+        filterAssets(nfts);
       });
     }
   }, [address]);
-
-  // Retrieve assets from Starkscan API
-  const retrieveAssets = async (
-    url: string,
-    accumulatedAssets: StarkscanNftProps[] = []
-  ): Promise<StarkscanApiResult> => {
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": `${process.env.NEXT_PUBLIC_STARKSCAN}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const assets = [...accumulatedAssets, ...data.data];
-        if (data.next_url) {
-          return retrieveAssets(data.next_url, assets);
-        } else {
-          return {
-            data: assets,
-          };
-        }
-      });
-  };
 
   // Fetch achievements from database and add building id from highest achievement level
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
