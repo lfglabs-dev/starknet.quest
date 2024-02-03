@@ -10,7 +10,6 @@ import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { Wallet } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
-import ChangeWallet from "@components/UI/changeWallet";
 import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
@@ -19,14 +18,14 @@ import { getCurrentNetwork } from "@utils/network";
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
   showWallet: boolean;
-  refreshAndShowWallet: () => void;
+  connect: () => void;
   disconnectByClick: () => void;
 };
 
 const WalletButton: FunctionComponent<WalletButtonProps> = ({
   setShowWallet,
   showWallet,
-  refreshAndShowWallet,
+  connect,
   disconnectByClick,
 }) => {
   const currentNetwork = getCurrentNetwork();
@@ -35,7 +34,6 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
-  const [changeWallet, setChangeWallet] = useState<boolean>(false);
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
@@ -81,7 +79,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
     e.stopPropagation();
     setHovering(false);
     setUnfocus(true);
-    setChangeWallet(true);
+    connect();
   };
 
   const handleOpenWebWallet = () => {
@@ -111,11 +109,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
         onMouseLeave={() => setHovering(false)}
       >
         <Button
-          onClick={
-            address
-              ? () => setShowWallet(!showWallet)
-              : () => refreshAndShowWallet()
-          }
+          onClick={address ? () => setShowWallet(!showWallet) : () => connect()}
         >
           <>
             <div className="flex items-center justify-between">
@@ -166,10 +160,6 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
           </>
         </Button>
       </div>
-      <ChangeWallet
-        closeWallet={() => setChangeWallet(false)}
-        hasWallet={changeWallet}
-      />
     </>
   );
 };
