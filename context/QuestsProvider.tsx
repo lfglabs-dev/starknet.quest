@@ -100,23 +100,19 @@ export const QuestsContextProvider = ({
         setTrendingQuests(quests);
         const notExpired = quests.filter((quest) => !quest.expired);
         setFeaturedQuest(
-          notExpired.length >= 1
-            ? notExpired[Math.floor(Math.random() * notExpired.length)]
-            : undefined
+          notExpired[Math.floor(Math.random() * notExpired.length)]
         );
       }
     );
   }, [address]);
 
   useMemo(() => {
-    if (!quests || featuredQuest) return;
+    if (!quests || featuredQuest || !quests.length) return;
     const notExpired = quests.filter((quest) => !quest.expired);
-    setFeaturedQuest(
-      notExpired.length >= 1
-        ? notExpired[Math.floor(Math.random() * notExpired.length)]
-        : undefined
-    );
-  }, [quests]);
+    const randomQuest =
+      notExpired[Math.floor(Math.random() * notExpired.length)];
+    setFeaturedQuest(randomQuest);
+  }, [quests, address, featuredQuest]);
 
   useMemo(() => {
     if (!address) return;
