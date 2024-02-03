@@ -99,11 +99,10 @@ export const QuestsContextProvider = ({
         const quests = data as QuestDocument[];
         setTrendingQuests(quests);
         const notExpired = quests.filter((quest) => !quest.expired);
-        setFeaturedQuest(
-          notExpired.length >= 1
-            ? notExpired[Math.floor(Math.random() * notExpired.length)]
-            : undefined
-        );
+        if (notExpired.length > 0)
+          setFeaturedQuest(
+            notExpired[Math.floor(Math.random() * notExpired.length)]
+          );
       }
     );
   }, [address]);
