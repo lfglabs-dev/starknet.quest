@@ -52,16 +52,12 @@
   font-size: 1.2rem;
   color: var(--secondary);
   font-family: "Sora-Bold";
-  margin: 0px;
+  margin: 0;
   text-align: left;
-}
-
-.card_title {
-  font-size: 1.2rem;
-  color: var(--secondary);
-  font-family: "Sora-Bold";
-  margin: 0px;
-  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 210px;
 }
 
 .issuer {
@@ -87,7 +83,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 0.5rem;
-  background: #29282b;
+  background: var(--menu-background);
   box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
 }
 

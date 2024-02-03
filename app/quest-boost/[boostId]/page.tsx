@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
+import questStyles from "@styles/quests.module.css";
 import {
   getBoostById,
   getQuestParticipants,
@@ -141,8 +142,8 @@ export default function Page({ params }: BoostQuestPageProps) {
           <div className={styles.claim_button_container}>
             <div className={styles.claim_button_text_content}>
               <p>Reward:</p>
-              <div className="flex flex-row gap-2">
-                <p className={styles.claim_button_text_highlight}>
+              <div className={questStyles.issuer}>
+                <p>
                   {boost?.amount} {getTokenName(boost?.token ?? "")}
                 </p>
                 <TokenSymbol tokenAddress={boost?.token ?? ""} />
