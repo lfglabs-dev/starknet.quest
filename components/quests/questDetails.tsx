@@ -244,7 +244,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     });
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
-    } else setClaimed(true);
+    } else setRewardsEnabled(false);
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards, eligibleRewards]);
 
@@ -417,7 +417,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               }}
               disabled={!rewardsEnabled}
               mintCalldata={mintCalldata}
-              claimed={claimed}
+              claimed={unclaimedRewards?.length === 0}
               questName={quest.name}
             />
           </>
