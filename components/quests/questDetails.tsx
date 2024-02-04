@@ -417,7 +417,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               }}
               disabled={!rewardsEnabled}
               mintCalldata={mintCalldata}
-              claimed={unclaimedRewards?.length === 0}
+              claimed={rewardsEnabled && unclaimedRewards?.length === 0}
               questName={quest.name}
             />
           </>
