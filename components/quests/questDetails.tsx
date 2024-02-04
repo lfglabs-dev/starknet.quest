@@ -23,8 +23,6 @@ import NftImage from "./nftImage";
 import { splitByNftContract } from "@utils/rewards";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { getCompletedQuests } from "@services/apiService";
-import { getNfts } from "@utils/assets";
-import { getCurrentNetwork } from "@utils/network";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -45,7 +43,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   hasRootDomain,
   hasNftReward,
 }) => {
-  const network = getCurrentNetwork();
   const { address } = useAccount();
   const { provider } = useProvider();
   const [tasks, setTasks] = useState<UserTask[]>([]);
@@ -68,18 +65,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     count: 0,
     firstParticipants: [] as string[],
   });
-
-  useEffect(() => {
-    if (!address || !quest) return;
-    getNfts(address, network).then((nfts) => {
-      const rewardNftImages = quest.rewards_nfts.map((nft) => nft.img);
-      // Check all reward images are in the user's nfts
-      const hasAllNfts = rewardNftImages.every((img) =>
-        nfts.map((nft) => nft.image_url).find((nftImg) => nftImg?.includes(img))
-      );
-      setClaimed(hasAllNfts);
-    });
-  }, [address, quest]);
 
   // This fetches the number of participants in the quest and up to 3 of their starknet ids
   useEffect(() => {
@@ -259,7 +244,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     });
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
-    } else setRewardsEnabled(false);
+    } else setClaimed(true);
     setMintCalldata(calldata);
   }, [questId, unclaimedRewards, eligibleRewards]);
 
