@@ -23,6 +23,7 @@ type RewardProps = {
   mintCalldata: Call[] | undefined;
   questName: string;
   hasNftReward?: boolean;
+  claimed?: boolean;
   quest: QuestDocument;
 };
 
@@ -34,6 +35,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   mintCalldata,
   questName,
   hasNftReward,
+  claimed,
   quest,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
@@ -78,8 +80,8 @@ const Reward: FunctionComponent<RewardProps> = ({
       </div>
       <div className="max-w-lg">
         {/* getReward */}
-        <Button onClick={submitTx} disabled={disabled}>
-          Get Reward
+        <Button onClick={submitTx} disabled={disabled || claimed}>
+          {claimed ? "Claimed" : "Get Reward"}
         </Button>
       </div>
 
