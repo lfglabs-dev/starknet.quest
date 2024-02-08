@@ -206,12 +206,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
             <div className={styles.claim_button_animation}>
               {isUserWinner ? (
-                <Button
-                  disabled={(boost?.claimed && isUserWinner) || !isUserWinner}
-                  onClick={handleClaimClick}
-                >
-                  Collect my reward
-                </Button>
+                <Button onClick={handleClaimClick}>Collect my reward</Button>
               ) : (
                 <div className="block ml-auto mr-auto">
                   <Button onClick={() => router.push("/quest-boost")}>
