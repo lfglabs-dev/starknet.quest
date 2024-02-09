@@ -101,6 +101,21 @@ export default function Page({ params }: BoostQuestPageProps) {
     router.push(`/quest-boost/claim/${boost?.id}`);
   }, [boost, address, winnerList]);
 
+  const buttonDisabled = useMemo(() => {
+    if (!address) return true;
+
+    // check if boost is not expired
+    // check if user has already claimed the boost
+    // check if boost expired but no winners assigned
+
+    return (
+      boost &&
+      (!isBoostExpired ||
+        getBoostClaimStatus(address, boost.id) ||
+        (isBoostExpired && boost.winner === null))
+    );
+  }, [boost, address, isBoostExpired]);
+
   useEffect(() => {
     fetchPageData();
   }, []);
@@ -157,15 +172,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             </div>
             {address ? (
               <div>
-                <Button
-                  disabled={
-                    boost &&
-                    (!isBoostExpired ||
-                      getBoostClaimStatus(address, boost.id) ||
-                      (isBoostExpired && boost.winner === null))
-                  }
-                  onClick={handleButtonClick}
-                >
+                <Button disabled={buttonDisabled} onClick={handleButtonClick}>
                   {getButtonText()}
                 </Button>
               </div>
