@@ -2,7 +2,11 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
-import { getBoostById, getQuestBoostClaimParams } from "@services/apiService";
+import {
+  getBoostById,
+  getPendingBoostClaims,
+  getQuestBoostClaimParams,
+} from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
 import { useNotificationManager } from "@hooks/useNotificationManager";
@@ -15,7 +19,6 @@ import { hexToDecimal } from "@utils/feltService";
 import { boostClaimCall } from "@utils/callData";
 import { getTokenName } from "@utils/tokenService";
 import useBoost from "@hooks/useBoost";
-import { TOKEN_DECIMAL_MAP } from "@utils/constants";
 import { useRouter } from "next/navigation";
 import ModalMessage from "@components/UI/modalMessage";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
@@ -36,6 +39,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [displayLottie, setDisplayLottie] = useState<boolean>(true);
   const [transactionHash, setTransactionHash] = useState<string>("");
   const [winnerList, setWinnerList] = useState<string[]>([]);
+  const [isUnclaimed, setIsUnclaimed] = useState<boolean>(false);
   const { updateBoostClaimStatus } = useBoost();
   const [displayAmount, setDisplayAmount] = useState<number>(0);
   const [modalTxOpen, setModalTxOpen] = useState(false);
@@ -44,6 +48,17 @@ export default function Page({ params }: BoostQuestPageProps) {
   const fetchPageData = async () => {
     try {
       const boostInfo = await getBoostById(boostId);
+      const pendingClaimStatus = await getPendingBoostClaims(
+        hexToDecimal(address)
+      );
+      // check if current boost is not claimed
+      if (pendingClaimStatus) {
+        setIsUnclaimed(
+          pendingClaimStatus.filter(
+            (claim: Boost) => claim.id === parseInt(boostId)
+          ).length > 0
+        );
+      }
       setBoost(boostInfo);
     } catch (err) {
       console.log("Error while fetching boost", err);
@@ -51,8 +66,9 @@ export default function Page({ params }: BoostQuestPageProps) {
   };
 
   useEffect(() => {
+    if (!address) return;
     fetchPageData();
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     if (!boost) return;
@@ -206,7 +222,9 @@ export default function Page({ params }: BoostQuestPageProps) {
 
             <div className={styles.claim_button_animation}>
               {isUserWinner ? (
-                <Button onClick={handleClaimClick}>Collect my reward</Button>
+                <Button disabled={!isUnclaimed} onClick={handleClaimClick}>
+                  Collect my reward
+                </Button>
               ) : (
                 <div className="block ml-auto mr-auto">
                   <Button onClick={() => router.push("/quest-boost")}>

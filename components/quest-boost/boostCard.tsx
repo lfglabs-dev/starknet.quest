@@ -105,6 +105,11 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                         <CheckIcon width="24" color="#6AFFAF" />
                       </>
                     ) : null
+                  ) : boost.winner === null ? (
+                    <>
+                      <p className="text-white">Done</p>
+                      <CheckIcon width="24" color="#6AFFAF" />
+                    </>
                   ) : isClickable ? (
                     <>
                       <p className="text-white">See my reward</p>

@@ -84,6 +84,8 @@ export default function Page({ params }: BoostQuestPageProps) {
     const chestOpened = getBoostClaimStatus(address, boost?.id);
     if (!isBoostExpired) {
       return "Boost in progress ⌛";
+    } else if (isBoostExpired && boost.winner === null) {
+      return "Raffle in Progress 🎩";
     } else if (!chestOpened) {
       return "See my reward 🎉";
     } else {
@@ -158,7 +160,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                 <Button
                   disabled={
                     boost &&
-                    (!isBoostExpired || getBoostClaimStatus(address, boost.id))
+                    (!isBoostExpired ||
+                      getBoostClaimStatus(address, boost.id) ||
+                      (isBoostExpired && boost.winner === null))
                   }
                   onClick={handleButtonClick}
                 >
