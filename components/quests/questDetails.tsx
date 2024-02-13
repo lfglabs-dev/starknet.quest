@@ -58,6 +58,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
+  const [claimed, setClaimed] = useState<boolean>(false);
 
   const questId = quest.id.toString();
   const [participants, setParticipants] = useState({
@@ -416,6 +417,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               }}
               disabled={!rewardsEnabled}
               mintCalldata={mintCalldata}
+              claimed={rewardsEnabled && unclaimedRewards?.length === 0}
               questName={quest.name}
             />
           </>
