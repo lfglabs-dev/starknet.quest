@@ -14,6 +14,7 @@ import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { QuestsContextProvider } from "@context/QuestsProvider";
 import { getCurrentNetwork } from "@utils/network";
+import { constants } from "starknet";
 
 export const availableConnectors = [
   new InjectedConnector({ options: { id: "braavos", name: "Braavos" } }),
@@ -24,7 +25,12 @@ export const availableConnectors = [
         ? "https://web.hydrogen.argent47.net"
         : "https://web.argent.xyz/",
   }),
-  new ArgentMobileConnector(),
+  new ArgentMobileConnector({
+    dappName: "Starknet Quest",
+    url: process.env.NEXT_PUBLIC_APP_LINK as string,
+    chainId: constants.NetworkName.SN_MAIN,
+    icons: ["https://starknet.quest/visuals/starknetquestLogo.svg"],
+  }),
 ];
 
 export function Providers({ children }: { children: React.ReactNode }) {
