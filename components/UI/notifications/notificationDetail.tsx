@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "../../../styles/components/notifications.module.css";
 import { FunctionComponent } from "react";
 import DoneIcon from "@components/UI/iconsComponents/icons/doneIcon";
@@ -13,6 +13,8 @@ import {
 } from "@constants/notifications";
 import { CircularProgress } from "@mui/material";
 import { getCurrentNetwork } from "@utils/network";
+import { useWaitForTransaction } from "@starknet-react/core";
+import { useNotificationManager } from "@hooks/useNotificationManager";
 
 type NotificationDetailProps = {
   notification: SQNotification<NotificationData>;
@@ -24,17 +26,27 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
   isLastItem,
 }) => {
   const currentNetwork = getCurrentNetwork();
+  const { updateNotificationStatus } = useNotificationManager();
+  const { data, error, isLoading, isError } = useWaitForTransaction({
+    hash:
+      notification.type === NotificationType.TRANSACTION
+        ? notification.data.hash
+        : "",
+    watch: true,
+    retry: true,
+  });
+
   const statusIcon = useMemo(() => {
     if (notification.type === NotificationType.TRANSACTION) {
-      if (notification.data.status === "pending") {
+      if (isLoading) {
         return <CircularProgress color="secondary" size={24} />;
-      } else if (notification.data.status === "error") {
+      } else if (isError || data?.status === "REJECTED") {
         return <CloseCircleIcon width="24" color="" />;
       } else {
         return <DoneIcon width="24" color={theme.palette.primary.main} />;
       }
     }
-  }, [notification, notification.data?.status]);
+  }, [notification, isLoading, error, isError, data]);
 
   const externalUrl = useMemo(() => {
     if (notification.type === NotificationType.TRANSACTION) {
@@ -44,13 +56,30 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
     }
   }, [notification]);
 
+  const status = useMemo(() => {
+    return isLoading
+      ? "pending"
+      : isError
+      ? "error"
+      : data?.status === "REJECTED"
+      ? "error"
+      : "success";
+  }, [notification, isLoading, error, isError, data]);
+
   const title = useMemo(() => {
     if (notification.type === NotificationType.TRANSACTION) {
       return notificationTitle[notification.data.type as TransactionType][
-        notification.data.status
+        status
       ];
     }
-  }, [notification, notification.data?.status]);
+  }, [notification, isLoading, error, isError, data]);
+
+  useEffect(() => {
+    if (!status) return;
+    if (status !== notification.data.status) {
+      updateNotificationStatus(notification.data.hash, status);
+    }
+  }, [notification, isLoading, error, isError, data, status]);
 
   return (
     <div className={styles.notif_detail}>
