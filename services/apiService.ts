@@ -159,3 +159,14 @@ export const getQuestById = async (id: number) => {
     console.log("Error while fetching quest data", err);
   }
 };
+
+export const getQuestActivityData = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/analytics/get_quest_activity?id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching quest data", err);
+  }
+};

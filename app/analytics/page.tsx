@@ -50,7 +50,7 @@ export default function Page() {
                   }}
                   reward={quest.rewards_title}
                   id={quest.id}
-                  expired={quest.expired}
+                  expired={false}
                 />
               );
             }
