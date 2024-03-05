@@ -71,8 +71,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const { address } = useAccount();
   const { boostId } = params;
 
-  //get data from the server
-
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
