@@ -69,15 +69,17 @@ export default function Page({ params }: BoostQuestPageProps) {
   const fetchGraphData = useCallback(async () => {
     try {
       const res = await getQuestActivityData(parseInt(questId));
-      const formattedData = res.map((data: any) => {
-        const dateString = data._id.split(" ")[0];
-        const month = getMonthName(parseInt(dateString.split("-")[1]));
-        const day = dateString.split("-")[2];
-        return {
-          _id: day + " " + month,
-          participants: data.participants,
-        };
-      });
+      const formattedData = res.map(
+        (data: { _id: string; participants: number }) => {
+          const dateString = data._id.split(" ")[0];
+          const month = getMonthName(parseInt(dateString.split("-")[1]));
+          const day = dateString.split("-")[2];
+          return {
+            _id: day + " " + month,
+            participants: data.participants,
+          };
+        }
+      );
       setGraphData(formattedData);
     } catch (error) {
       console.log("Error while fetching graph data", error);
@@ -166,16 +168,22 @@ export default function Page({ params }: BoostQuestPageProps) {
         <>
           <div className="flex flex-col justify-center items-center mb-16">
             <div className="flex flex-col justify-center items-center mb-16 gap-4">
-              <div>
-                <div className={analyticsStyles.tag}>
-                  <CDNImg width={20} src={questData.logo} />
-                  <p className="text-white">{questData.issuer}</p>
-                </div>
-              </div>
-              <h1 className={`${analyticsStyles.title}`}>{questData?.name}</h1>
-              <p className="text-white">
-                {questData.expired ? "Finished" : "Ongoing"}
-              </p>
+              {questData ? (
+                <>
+                  <div>
+                    <div className={analyticsStyles.tag}>
+                      <CDNImg width={20} src={questData?.logo} />
+                      <p className="text-white">{questData?.issuer}</p>
+                    </div>
+                  </div>
+                  <h1 className={`${analyticsStyles.title}`}>
+                    {questData?.name}
+                  </h1>
+                  <p className="text-white">
+                    {questData?.expired ? "Finished" : "Ongoing"}
+                  </p>
+                </>
+              ) : null}
             </div>
             <div className="w-full flex max-w-[950px]">
               <div className="flex flex-col sm:flex-row gap-8 w-full">
@@ -217,7 +225,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
           <div className="flex justify-center mb-16">
             <div className={`${analyticsStyles.dataCard} max-w-[950px]`}>
-              {graphData.length > 0 ? (
+              {graphData?.length > 0 ? (
                 <>
                   <div className="flex flex-col gap-1 w-full mb-6">
                     <p className={analyticsStyles.metricName}>
@@ -323,7 +331,7 @@ export default function Page({ params }: BoostQuestPageProps) {
               </div>
 
               <div className="flex flex-wrap justify-center gap-6 w-full">
-                {questParticipationData.length > 0 ? (
+                {questParticipationData?.length > 0 ? (
                   questParticipationData?.map(
                     (
                       eachParticipation: {
