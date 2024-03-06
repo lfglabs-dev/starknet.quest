@@ -1,3 +1,34 @@
+.title {
+    font-family: "Sora-Bold";
+    font-size: 2.5rem;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    max-width: 950px;
+    text-align: center;
+}
+
+.container {
+    padding: 12vh 1.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tag {
+    width: auto;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background600);
+    border-radius: 24px;
+    gap: 0.5rem;
+}
+
 .dataCard {
     background: linear-gradient(180deg, #29282B 0%, #101012 100%);
     width: 100%;
@@ -7,7 +38,6 @@
     padding: 1.25rem;
     border-radius: 8px;
     position: relative;
-    margin-top: 1px;
 }
 
 .dataCard::before {
@@ -16,7 +46,7 @@
     top: -2px;
     right: -2px;
     left: -1px;
-    bottom: 93%;
+    bottom: 95%;
     background: linear-gradient(90deg,
             #437aba 0%,
             #59c2e8 45%,
@@ -69,4 +99,23 @@
     letter-spacing: 0em;
     text-align: left;
     color: #A6A5A7;
+}
+
+.tasksContainer {
+    width: 100%;
+    padding: 2rem;
+    background: #1F1F25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 950px;
+    border-radius: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .dataCard {
+        justify-content: center;
+        align-items: center;
+    }
 }

@@ -181,3 +181,14 @@ export const getQuestsParticipation = async (id: number) => {
     console.log("Error while fetching quest participation", err);
   }
 };
+
+export const getUniqueVisitorCount = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/analytics/get_unique_visitors?id=${id}`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+  }
+};
