@@ -110,12 +110,24 @@
     align-items: center;
     gap: 1rem;
     max-width: 950px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 @media screen and (max-width: 768px) {
     .dataCard {
         justify-content: center;
         align-items: center;
+    }
+
+    .tasksContainer {
+        padding: 1rem;
+    }
+
+    .counterText {
+        font-size: 20px;
+    }
+
+    .title {
+        font-size: 2rem;
     }
 }
