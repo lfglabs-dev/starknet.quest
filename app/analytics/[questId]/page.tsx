@@ -51,8 +51,8 @@ export default function Page({ params }: BoostQuestPageProps) {
     try {
       const res = await getQuestActivityData(parseInt(questId));
       const formattedData = res.map(
-        (data: { _id: string; participants: number }) => {
-          const dateString = data._id.split(" ")[0];
+        (data: { date: string; participants: number }) => {
+          const dateString = data.date.split(" ")[0];
           const month = getMonthName(parseInt(dateString.split("-")[1]));
           const day = dateString.split("-")[2];
           return {
