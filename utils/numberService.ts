@@ -5,5 +5,6 @@ export const calculatePercentile = (rank: number, total: number): number => {
 };
 
 export const numberWithCommas = (x: number) => {
+  if (x === undefined) return "";
   return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

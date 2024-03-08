@@ -16,7 +16,7 @@ describe("getTokenName function", () => {
 
   it("should return 'LORDS' for LORDS token address on the current network", () => {
     // Assuming TOKEN_ADDRESS_MAP is defined and has the necessary structure
-    const tokenName = getTokenName(TOKEN_ADDRESS_MAP["MAINNET"].LORDS);
+    const tokenName = getTokenName(TOKEN_ADDRESS_MAP["TESTNET"].LORDS);
     expect(tokenName).toBe("LORDS");
   });
 

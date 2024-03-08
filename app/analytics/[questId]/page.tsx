@@ -27,6 +27,7 @@ import { numberWithCommas } from "@utils/numberService";
 import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
+import { QuestDefault } from "@constants/common";
 
 type BoostQuestPageProps = {
   params: {
@@ -44,27 +45,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [questParticipants, setQuestParticipants] = useState(0);
   const [uniqueVisitors, setUniqueVisitors] = useState(0);
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [questData, setQuestData] = useState<QuestDocument>({
-    id: 0,
-    name: "loading",
-    desc: "loading",
-    issuer: "loading",
-    category: "loading",
-    rewards_endpoint: "",
-    logo: "",
-    rewards_img: "",
-    rewards_title: "loading",
-    rewards_nfts: [],
-    img_card: "",
-    title_card: "",
-    hidden: false,
-    disabled: false,
-    expiry_timestamp: "loading",
-    mandatory_domain: null,
-    expired: false,
-    rewards_description: null,
-    additional_desc: null,
-  });
+  const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
 
   const fetchGraphData = useCallback(async () => {
     try {

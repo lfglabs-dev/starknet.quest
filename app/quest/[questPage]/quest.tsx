@@ -15,6 +15,7 @@ import { starknetIdAppLink } from "@utils/links";
 import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
 import NftIssuerTag from "@components/quests/nftIssuerTag";
+import { QuestDefault } from "@constants/common";
 
 type QuestPageProps = {
   questId: string;
@@ -30,27 +31,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   errorMsg,
 }) => {
   const router = useRouter();
-  const [quest, setQuest] = useState<QuestDocument>({
-    id: 0,
-    name: "loading",
-    desc: "loading",
-    issuer: "loading",
-    category: "loading",
-    rewards_endpoint: "",
-    logo: "",
-    rewards_img: "",
-    rewards_title: "loading",
-    rewards_nfts: [],
-    img_card: "",
-    title_card: "",
-    hidden: false,
-    disabled: false,
-    expiry_timestamp: "loading",
-    mandatory_domain: null,
-    expired: false,
-    rewards_description: null,
-    additional_desc: null,
-  });
+  const [quest, setQuest] = useState<QuestDocument>(QuestDefault);
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
