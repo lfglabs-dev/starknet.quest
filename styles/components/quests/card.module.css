@@ -48,7 +48,7 @@
  
 }
 .card[aria-disabled="true"]:hover{
-  border: none;
+  border: 1px solid transparent;
 }
 
 .card[aria-disabled="true"] .cardImage,

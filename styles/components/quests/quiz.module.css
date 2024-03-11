@@ -376,16 +376,6 @@
 .labelNumberIcon+* {
   margin-right: auto;
 }
-/* @media (max-width: 900px) {
-  .tableLayout{
-    grid-template-columns: 100%;
-    gap: 0;
-  }
-  .checkBoxContainer {
-    width: 100%;
-    margin: 25px 0 !important;
-  }
-} */
 @media (max-width: 600px) {
   .mainContainer {
     padding: 0 5vw 15px;
@@ -424,13 +414,11 @@
 
   .checkBoxContainer {
     width: 100%;
-    /* margin: 25px 0 !important; */
   }
 
   .tableLayout {
     width: 100%;
    grid-template-columns: 100%;
-   /* gap: 0; */
   }
 
   .listLayout {
