@@ -1,4 +1,4 @@
-import { AchievementsDocument, CompletedDocument, DeployedTime, QueryError, UserTask } from "@types/backTypes";
+import { AchievementsDocument, CompletedDocument, DeployedTime, QueryError, UserTask } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
   addr: string;
