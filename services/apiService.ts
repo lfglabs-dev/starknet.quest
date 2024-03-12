@@ -1,4 +1,5 @@
-import { AchievementsDocument, CompletedDocument, DeployedTime, QueryError, UserTask } from "types/backTypes";
+import { AchievementsDocument, CompletedDocument, DeployedTime, QueryError, UserTask,   QuestCategoryDocument,
+  QuestDocument, } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
   addr: string;
@@ -263,3 +264,19 @@ export const getUniqueVisitorCount = async (id: number) => {
     console.log("Error while fetching unique visitor count", err);
   }
 };
+
+export async function getQuestById(questId: string | number) {
+  const response = await fetch(
+    `${baseurl}/get_quest?id=${questId}`
+  );
+  const data: QuestDocument | QueryError = await response.json();
+  return data as QuestDocument;
+}
+
+export async function fetchQuestCategoryData(name: string) {
+  const response = await fetch(
+    `${baseurl}/get_quest_category?name=${name}`
+  );
+  const data: QuestCategoryDocument | QueryError = await response.json();
+  return data as QuestCategoryDocument;
+}

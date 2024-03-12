@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Quest from "./quest";
-import { fetchQuestData } from "@services/questService";
 import { defaultMetatags } from "@constants/metatags";
+import { getQuestById } from "@services/apiService";
 
 type Props = {
   params: { questPage: string };
@@ -16,7 +16,7 @@ export async function generateMetadata(
   const questId = params.questPage;
 
   try {
-    const data = await fetchQuestData(questId);
+    const data = await getQuestById(questId);
 
     if (data?.name) {
       return {

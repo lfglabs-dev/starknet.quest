@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Category from "./category";
-import { fetchQuestCategoryData } from "@services/questService";
+import { fetchQuestCategoryData } from "@services/apiService";
 import { defaultMetatags } from "@constants/metatags";
 
 type Props = {

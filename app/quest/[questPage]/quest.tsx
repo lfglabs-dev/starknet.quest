@@ -15,8 +15,8 @@ import { starknetIdAppLink } from "@utils/links";
 import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
 import NftIssuerTag from "@components/quests/nftIssuerTag";
-import { fetchQuestData } from "@services/questService";
 import { QuestDefault } from "@constants/common";
+import { getQuestById } from "@services/apiService";
 
 type QuestPageProps = {
   questId: string;
@@ -42,7 +42,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
 
   // this fetches quest data
   useEffect(() => {
-      fetchQuestData(questId).then((data: QuestDocument | QueryError) => {
+      getQuestById(questId).then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
           if (
             (data as QuestDocument).rewards_nfts &&
