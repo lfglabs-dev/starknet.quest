@@ -24,7 +24,7 @@ export default function Page() {
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
   
-  const fetchAchievementsByAddress = async (address: string = '0') => {
+  const fetchAchievementsByAddress = async (address = '0') => {
     const achievements = await getUserAchievements(address)
     if (achievements as AchievementsDocument[]) {
       setUserAchievements(achievements as AchievementsDocument[]); 
