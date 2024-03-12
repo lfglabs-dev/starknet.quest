@@ -151,6 +151,15 @@ export const getBoostedQuests = async () => {
   }
 };
 
+export const getQuestById = async (id: number) => {
+  try {
+    const response = await fetch(`${baseurl}/get_quest?id=${id}`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching quest data", err);
+  }
+};
+
 export const getQuestActivityData = async (id: number) => {
   try {
     const response = await fetch(

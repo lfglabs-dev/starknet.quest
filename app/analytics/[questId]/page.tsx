@@ -16,7 +16,6 @@ import {
 } from "recharts";
 import {
   getQuestActivityData,
-  getQuestById,
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
@@ -28,6 +27,7 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
+import { fetchQuestData } from "@services/questService";
 
 type BoostQuestPageProps = {
   params: {
@@ -67,9 +67,9 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
   }, []);
 
-  const fetchQuestData = useCallback(async () => {
+  const fetchQuestById = useCallback(async () => {
     try {
-      const res = await getQuestById(parseInt(questId));
+      const res = await fetchQuestData(questId);
       setQuestData(res);
     } catch (error) {
       console.log("Error while fetching quest data", error);
@@ -121,7 +121,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const fetchPageData = useCallback(async () => {
     setLoading(true);
-    await fetchQuestData();
+    await fetchQuestById();
     await fetchGraphData();
     await fetchQuestParticipation();
     await fetchQuestParticipants();
