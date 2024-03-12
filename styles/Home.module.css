@@ -179,7 +179,7 @@
   }
 
   .featured_quest_banner_container {
-    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    background: linear-gradient(180deg, var(--background) 0.04%, var(--background600) 347.42%);
     margin-bottom: 0;
   }
 
@@ -268,7 +268,7 @@
   }
 
   .section {
-    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    background: linear-gradient(180deg, var(--background) 0.04%, var(--background600) 347.42%);
     padding-top: 3rem;
   }
 

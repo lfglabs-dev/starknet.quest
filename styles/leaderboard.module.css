@@ -34,7 +34,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
-  background-color: #1f1f25;
+  background-color: var(--menu-background);
   width: 100%;
   gap: 1.5rem;
   z-index: 1;
@@ -112,7 +112,7 @@
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.2px;
-  color: #6affaf;
+  color: var(--primary);
 }
 
 .percentile_text_container {
@@ -155,7 +155,7 @@
 }
 
 .quests_text {
-  color: var(--background-400, #e1dcea);
+  color: var(--background-400, --secondary500);
   text-align: right;
   font-size: 10px;
   font-weight: 400;
@@ -178,7 +178,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  background-color: #101012;
+  background-color: var(--background);
   width: 100%;
   border-radius: 0.5rem;
   z-index: 100;
@@ -195,7 +195,7 @@
   bottom: 0.4rem;
   transform: translateY(100%);
   width: 100%;
-  background-color: #101012;
+  background-color: var(--background);
   border-bottom-left-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
   padding: 0.5rem 0.5rem;
@@ -322,7 +322,7 @@
   padding: 1.5rem 1rem;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(180deg, #29282b 0%, #101012 100%);
+  background: linear-gradient(180deg, var(--background600) 0%, var(--background) 100%);
 }
 
 .rank_card_badge {
