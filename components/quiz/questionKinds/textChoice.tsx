@@ -24,6 +24,8 @@ const TextChoice: FunctionComponent<TextChoiceProps> = ({
       <div className={styles.tableLayout}>
         {question.options.map((option, index) => (
           <div key={index} className={styles.checkBoxContainer}>
+           
+            <label className={`${styles.checkboxLabel} ${ selectedOptions.includes(index) && styles.checkboxchecked}`} htmlFor={option} >
             <input
               type="checkbox"
               name="option"
@@ -38,7 +40,6 @@ const TextChoice: FunctionComponent<TextChoiceProps> = ({
               className={styles.checkbox}
               checked={selectedOptions.includes(index)}
             />
-            <label className={styles.checkboxLabel} htmlFor={option}>
               {option}
             </label>
           </div>
