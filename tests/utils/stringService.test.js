@@ -9,6 +9,7 @@ import {
   generateString,
   numberToString,
   minifyAddressFromStrings,
+  getMonthName,
   // getDomainKind,
   shortenDomain,
   minifyAddressWithChars,
@@ -298,5 +299,28 @@ describe("minifyAddressFromStrings", () => {
   it("Should returns the minified version of the first string corresponding to a valid address in the array", () => {
     const result = minifyAddressFromStrings(["test2", "0x1234567890abcdef"], 4);
     expect(result).toEqual("0x12...cdef");
+  });
+});
+
+describe("getMonthName function", () => {
+  it("should return the correct month name for valid indices", () => {
+    expect(getMonthName(1)).toBe("Jan");
+    expect(getMonthName(2)).toBe("Feb");
+    expect(getMonthName(3)).toBe("Mar");
+    expect(getMonthName(4)).toBe("Apr");
+    expect(getMonthName(5)).toBe("May");
+    expect(getMonthName(6)).toBe("Jun");
+    expect(getMonthName(7)).toBe("Jul");
+    expect(getMonthName(8)).toBe("Aug");
+    expect(getMonthName(9)).toBe("Sep");
+    expect(getMonthName(10)).toBe("Oct");
+    expect(getMonthName(11)).toBe("Nov");
+    expect(getMonthName(12)).toBe("Dec");
+  });
+
+  it("should return an empty string for invalid indices", () => {
+    expect(getMonthName(0)).toBe("");
+    expect(getMonthName(13)).toBe("");
+    expect(getMonthName(-1)).toBe("");
   });
 });
