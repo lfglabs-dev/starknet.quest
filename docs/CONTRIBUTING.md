@@ -48,3 +48,9 @@ Please try to create bug reports that are:
 4. Commit your changes (`git commit -m 'feat: add amazing_feature'`)
 5. Push to the branch (`git push origin feat/amazing_feature`)
 6. [Open a Pull Request](https://github.com/starknet-id/starknet.quest/compare)
+
+#### Understanding and using correct labels on your Pull Request
+
+- If your PR is ready for review or merging then add a label which says - **Ready for Review**
+- If your PR is in progress and is not ready for review or merging then add a label which says - **In progress do not merge**
+- If the maintainer has reviewed and has asked for a change then they would attach the label - **Changes Requested**.  You can remove this label and replace with the **Ready for review** label once you resolve all the review comments made by the reviewer.
