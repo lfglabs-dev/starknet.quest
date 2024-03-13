@@ -10,7 +10,7 @@
 
 Leading quests platform on Starknet to onboard your next million users. We provide a platform for users to discover new apps and for companies to pitch your products and new features to users and get user feedback.
 
-[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/keep-starknet-strange/tsubasa/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/starknet-id/starknet.quest/issues?q=is:issue+is:open+label:%22open+for+contribution%22)
 
 ## About
 
