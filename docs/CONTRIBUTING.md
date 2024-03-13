@@ -9,15 +9,11 @@ before making a change.
 
 To set up a development environment, please follow these steps:
 
-1. Clone the repo
-
    ```sh
    git clone https://github.com/starknet-id/starknet.quest.git
    cd starknet.quest
    npm i && npm run dev
    ```
-
-2. TODO
 
 ## Issues and feature requests
 

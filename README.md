@@ -1,7 +1,7 @@
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<div align="center">
-  <img src="public/visuals/starknetquest.webp" height="256">
+<div align="center" style="margin-top:50px">
+  <img src="public/visuals/starknetquest.webp" height="300">
 </div>
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
@@ -41,7 +41,6 @@ Starknet Quest is a platform which helps users to interact with a variety of Sta
 Clone the repository
 ```bash
 git clone https://github.com/starknet-id/starknet.quest.git
-
 ```
 
 
