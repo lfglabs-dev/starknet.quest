@@ -19,7 +19,7 @@ To set up a development environment, please follow these steps:
 
 Issues with the label **open for contribution** are for you to contribute to. These are exclusively for people who are interested in contributing meaningfully to the repository. We welcome your effort in issues which come under this label.
 
-**All issues can be completed within 3 business days so this can be taken as a hard deadline for resolving a particular issue once you start working on it**
+**All tasks must be completed by the deadline stated in the task description. Failure to meet the deadline may result in reassignment to another person or a reduction in the potential OnlyDust reward.**
 
 ### Creating an issue
 
