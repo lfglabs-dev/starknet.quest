@@ -19,6 +19,8 @@ To set up a development environment, please follow these steps:
 
 Issues with the label **open for contribution** are for you to contribute to. These are exclusively for people who are interested in contributing meaningfully to the repository. We welcome your effort in issues which come under this label.
 
+**All issues can be completed within 3 business days so this can be taken as a hard deadline for resolving a particular issue once you start working on it**
+
 ### Creating an issue
 
 You've found a bug in the source code or maybe
@@ -51,4 +53,6 @@ Please try to create bug reports that are:
 6. [Open a Pull Request](https://github.com/starknet-id/starknet.quest/compare)
 
 ### Understanding the labels on your Pull Request
-If the maintainer has reviewed and has asked for a change then they would attach the label - **Changes Requested**. You can address the comments made during the review and tag the reviewer once done so that they can come back to it later and complete the review and merge 🎉
+- If your PR is ready for review or merging then add a label which says - **Ready for Review**
+- If your PR is in progress and is not ready for review or merging then add a label which says - **In progress do not merge**
+- If the maintainer has reviewed and has asked for a change then they would attach the label - **Changes Requested**. You can address the comments made in the review and add the label **Ready for review** once done so that they can come back to it later and complete the review and merge 🎉

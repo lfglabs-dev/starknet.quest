@@ -15,30 +15,10 @@ Please add the labels corresponding to the type of changes your PR introduces:
 - Testing
 - Other (please describe):
 
-## What is the current behavior?
-
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
-
 Resolves: #NA
 
-## What is the new behavior?
 
-<!-- Please describe the behavior or changes that are being added by this PR. -->
-
--
--
--
-
-## Does this introduce a breaking change?
-
-<!-- Yes or No -->
-<!-- If this does introduce a breaking change, please describe the impact and migration path for existing applications below. -->
-
-## Is the PR ready for review?
-
-<!-- Yes or No -->
-<!-- If not then you can answer 'NO' here. Once you feel it is ready then you can update this with a 'YES' when the PR is ready for reviewers to check.  -->
 
 ## Other information
 
-<!-- Any other information that is important to this PR, such as screenshots of how the component looks before and after the change. -->
+<!-- any other description of the issue it is solving or anything you'd liek the maintainer to know before reviewing-->
