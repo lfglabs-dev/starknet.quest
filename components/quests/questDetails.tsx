@@ -68,7 +68,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 
   // This fetches the number of participants in the quest and up to 3 of their starknet ids
   useEffect(() => {
-    if (questId && starknetIdNavigator) {
+    if (questId && questId !== "0" && starknetIdNavigator) {
       fetch(
         `${process.env.NEXT_PUBLIC_API_LINK}/get_quest_participants?quest_id=${questId}`,
         {

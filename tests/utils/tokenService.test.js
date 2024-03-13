@@ -20,6 +20,12 @@ describe("getTokenName function", () => {
     expect(tokenName).toBe("LORDS");
   });
 
+  it("should return 'STRK' for STRK token address on the current network", () => {
+    // Assuming TOKEN_ADDRESS_MAP is defined and has the necessary structure
+    const tokenName = getTokenName(TOKEN_ADDRESS_MAP["TESTNET"].STRK);
+    expect(tokenName).toBe("STRK");
+  });
+
   it("should return 'USDC' for unknown token addresses on the current network", () => {
     // Assuming TOKEN_ADDRESS_MAP is defined and has the necessary structure
     const tokenName = getTokenName("unknownTokenAddress");
