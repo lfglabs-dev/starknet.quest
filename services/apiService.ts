@@ -192,3 +192,12 @@ export const getUniqueVisitorCount = async (id: number) => {
     console.log("Error while fetching unique visitor count", err);
   }
 };
+
+export const updateUniqueVisitors = async (id: string) => {
+  try {
+    const response = await fetch(`${baseurl}/unique_page_visit?page_id=${id}`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+  }
+};
