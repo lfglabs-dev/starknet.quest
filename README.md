@@ -6,7 +6,7 @@
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
-# Starknet Quest
+# Starknet Quest Client
 
 Leading quests platform on Starknet to onboard your next million users. We provide a platform for users to discover new apps and for companies to pitch your products and new features to users and get user feedback.
 
