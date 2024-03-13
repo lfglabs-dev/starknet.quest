@@ -14,7 +14,7 @@ Leading quests platform on Starknet to onboard your next million users. We provi
 
 ## About
 
-Starknet Quest is a platform which helps users to interact with a variety of Starknet Dapps and play around with them and get rewarded for it. We also help companies building on the Starknet ecosystem a platform to pitch their new features and products to the Starknet users.
+Starknet Quest helps protocols attract and retain users by creating gamified quest experiences on Starknet.
 
 ## How it works
 
@@ -22,7 +22,7 @@ Starknet Quest is a platform which helps users to interact with a variety of Sta
 
 #### Quests
 
-* A Quest is a set of tasks which a user can do. On completing a quest they are eligible to get a NFT as a reward.
+* A Quest is a set of tasks which a user can do. On completing a quest they are eligible to get an NFT as proof of completion and possible tokens as a reward.
 * Each Quest is created by one of the leading Dapps on starknet and are reviewed by the maintainers on the repo before publishing on the application.
 
 #### Achievements
@@ -32,8 +32,8 @@ Starknet Quest is a platform which helps users to interact with a variety of Sta
 
 #### Land
 
-* Lands is a kingdom you build which grows in size as you complete more quests and achievements on the platform. 
-* You can visit this to check your overall progress on the starknet quest platfrom and expand it by completing any new quests or achievements which come on the platform
+* Your land is the visual representation of your on-chain reputation which grows in size as you complete more quests and achievements on the platform.
+* You can visit this to check your overall progress on the starknet quest platfrom and expand it by completing any new quests or achievements.
 
 
 ## How to get started
