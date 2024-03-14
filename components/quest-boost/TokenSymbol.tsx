@@ -32,6 +32,10 @@ const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
         setTokenImageLink("/icons/lord.webp");
         imageDimensions = { width: 20, height: 20 };
         break;
+      case TOKEN_ADDRESS_MAP[network].STRK:
+        setTokenImageLink("/icons/strk.webp");
+        imageDimensions = { width: 20, height: 20 };
+        break;
       default:
         setTokenImageLink("/icons/usdc.svg");
         break;
