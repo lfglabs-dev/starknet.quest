@@ -15,7 +15,7 @@ const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
     <>
       {profileData?.profilePicture ? (
         <img
-          src={profileData?.profilePicture ?? "https://starknet.id/api/identicons/0"}
+          src={profileData?.profilePicture}
           width={width}
           height={width}
           className="rounded-full"
