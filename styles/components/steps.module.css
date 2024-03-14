@@ -186,7 +186,7 @@
     font-size: 14px;
   }
   .banner {
-    max-width: 200px;
+    width: 90%;
     display: block;
     margin: 0 auto;
   }
