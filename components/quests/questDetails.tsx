@@ -22,7 +22,7 @@ import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "@utils/rewards";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import { getCompletedQuests } from "@services/apiService";
+import { getCompletedQuests, getEligibleRewards, getQuestParticipants, getTasksByQuestId } from "@services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -69,14 +69,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // This fetches the number of participants in the quest and up to 3 of their starknet ids
   useEffect(() => {
     if (questId && questId !== "0" && starknetIdNavigator) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/get_quest_participants?quest_id=${questId}`,
-        {
-          method: "GET",
-        }
-      )
-        .then((response) => response.json())
-        .then(async (data) => {
+        getQuestParticipants(questId).then(async (data) => {
           setParticipants(data);
           const addrs = data.firstParticipants;
           const identities = addrs.map(async (addr: string) => {
@@ -108,13 +101,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       const timer = setTimeout(() => {
         // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_LINK}/get_tasks?quest_id=${questId}&addr=0`
-          )
-            .then((response) => response.json())
-            .then((data: UserTask[] | QueryError) => {
-              if ((data as UserTask[]).length) setTasks(data as UserTask[]);
-            });
+          getTasksByQuestId({questId: questId, address: '0'}).then((data) => {
+            if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+          });
         }
       }, 1000);
 
@@ -122,15 +111,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       if (address) {
         shouldFetchWithZeroAddress = false;
         clearTimeout(timer);
-        fetch(
-          `${
-            process.env.NEXT_PUBLIC_API_LINK
-          }/get_tasks?quest_id=${questId}&addr=${hexToDecimal(address)}`
-        )
-          .then((response) => response.json())
-          .then((data: UserTask[] | QueryError) => {
-            if ((data as UserTask[]).length) setTasks(data as UserTask[]);
-          });
+        getTasksByQuestId({questId: questId, address: hexToDecimal(address)}).then((data) => {
+          if ((data as UserTask[]).length) setTasks(data as UserTask[]);
+        });
       }
 
       // Clear the timer when component unmounts or dependencies change to prevent memory leaks
@@ -145,13 +128,10 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
     address: string | undefined
   ) => {
     if (address && quest.rewards_endpoint) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/${
-          quest.rewards_endpoint
-        }?addr=${hexToDecimal(address)}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
+      getEligibleRewards({
+        rewardEndpoint:  quest.rewards_endpoint,
+        address: hexToDecimal(address)
+      }).then((data) => {
           if (data.rewards) {
             setEligibleRewards(splitByNftContract(data.rewards));
           }
