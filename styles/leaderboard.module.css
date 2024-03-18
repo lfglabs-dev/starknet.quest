@@ -97,7 +97,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 32px;
-  color: #a6a5a7;
+  color: var(--textGray);
 }
 
 .percentile_text_link {
@@ -125,7 +125,7 @@
 }
 
 .rows_text {
-  color: #a6a5a7;
+  color: var(--textGray);
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
@@ -147,7 +147,7 @@
 
 .menu_button {
   padding: 6px;
-  color: #a6a5a7;
+  color: var(--textGray);
 }
 
 .menu_button:hover {

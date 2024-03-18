@@ -137,7 +137,7 @@
 }
 
 .selectedTab {
-  background: #fff;
+  background: var(--white);
   color: var(--background);
   border-radius: 10px;
 }

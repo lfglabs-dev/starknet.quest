@@ -74,7 +74,7 @@
     line-height: 20px;
     letter-spacing: 0.01em;
     text-align: left;
-    color: #A6A5A7;
+    color: var(--textGray);
 }
 
 .highlightedText {
@@ -98,7 +98,7 @@
     line-height: 18px;
     letter-spacing: 0em;
     text-align: left;
-    color: #A6A5A7;
+    color: var(--textGray);
 }
 
 .tasksContainer {
