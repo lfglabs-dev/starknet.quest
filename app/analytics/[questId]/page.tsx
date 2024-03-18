@@ -19,6 +19,7 @@ import {
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
+  getQuestById
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
 import { QuestDocument } from "../../../types/backTypes";
@@ -27,7 +28,7 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-import { fetchQuestData } from "@services/questService";
+
 
 type BoostQuestPageProps = {
   params: {
@@ -69,7 +70,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const fetchQuestById = useCallback(async () => {
     try {
-      const res = await fetchQuestData(questId);
+      const res = await getQuestById(questId);
       setQuestData(res);
     } catch (error) {
       console.log("Error while fetching quest data", error);
