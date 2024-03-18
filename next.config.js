@@ -20,6 +20,7 @@ module.exports = {
       "api.briq.construction",
       "cdn.starknet.quest",
       "goerli.cdn.starknet.quest",
+      "sepolia.cdn.starknet.quest",
     ],
   },
 };
