@@ -154,7 +154,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address: string = '0') => {
+export const getUserAchievements = async (address = '0') => {
   try {
     const response = await fetch(`${baseurl}/achievements/fetch?addr=${address}`);
     const data: AchievementsDocument[] | QueryError =  await response.json()
@@ -194,7 +194,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 }
 
-export const getQuizById = async (quizId: string, address: string = '0') => {
+export const getQuizById = async (quizId: string, address = '0') => {
   try {
     const response = await fetch(`${baseurl}/get_quiz?id=${quizId}&addr=${address}`);
     return await response.json()
