@@ -12,7 +12,7 @@ module.exports = {
     "^@services/(.*)$": "<rootDir>/services/$1",
   },
   collectCoverage: true,
-  coverageReporters: [["text", { skipFull: true }]],
+  coverageReporters: [["text"]],
   coverageThreshold: {
     "./utils/": {
       branches: 75,
