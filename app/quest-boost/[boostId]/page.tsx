@@ -20,7 +20,7 @@ import BackButton from "@components/UI/backButton";
 import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";
 import BoostSkeleton from "@components/skeletons/boostSkeleton";
-import { TOKEN_DECIMAL_MAP } from "@utils/constants";
+import { TOKEN_DECIMAL_MAP } from "@constants/common";
 
 type BoostQuestPageProps = {
   params: {

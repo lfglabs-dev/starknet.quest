@@ -87,6 +87,7 @@ export function numberToString(element: number | undefined): string {
 }
 // a function that take a number as a string like 1111 and convert it to 000000001111
 export function convertNumberToFixedLengthString(number: string): string {
+  if (!number) return "000000000000";
   return number.padStart(12, "0");
 }
 

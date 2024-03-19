@@ -1,4 +1,4 @@
-import { retrieveAssets, getNfts } from "../../utils/assets";
+import { retrieveAssets, getNfts } from "@utils/assets";
 
 global.fetch = jest.fn();
 

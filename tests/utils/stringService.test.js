@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { basicAlphabet } from "@utils/constants";
+import { basicAlphabet } from "@constants/common";
 import {
   is1234Domain,
   getDomainWithoutStark,
@@ -13,7 +13,8 @@ import {
   // getDomainKind,
   shortenDomain,
   minifyAddressWithChars,
-} from "../../utils/stringService";
+  convertNumberToFixedLengthString,
+} from "@utils/stringService";
 import { utils } from "starknetid.js";
 
 describe("Should test is1234Domain", () => {
@@ -322,5 +323,18 @@ describe("getMonthName function", () => {
     expect(getMonthName(0)).toBe("");
     expect(getMonthName(13)).toBe("");
     expect(getMonthName(-1)).toBe("");
+  });
+});
+
+describe("convertNumberToFixedLengthString function", () => {
+  it("should convert number to fixed length string with leading zeros", () => {
+    expect(convertNumberToFixedLengthString("1111")).toBe("000000001111");
+    expect(convertNumberToFixedLengthString("1234567890")).toBe("001234567890");
+    expect(convertNumberToFixedLengthString("9876543210")).toBe("009876543210");
+  });
+
+  it("should handle edge cases such as empty or undefined input", () => {
+    expect(convertNumberToFixedLengthString("")).toBe("000000000000");
+    expect(convertNumberToFixedLengthString(undefined)).toBe("000000000000");
   });
 });

@@ -1,7 +1,7 @@
 import BN from "bn.js";
 import { useContext, useEffect, useState } from "react";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import { basicAlphabet } from "@utils/constants";
+import { basicAlphabet } from "@constants/common";
 
 type DomainData = {
   domain: string;
