@@ -64,6 +64,7 @@ export default function Page({ params }: AddressOrDomainProps) {
             console.log({ id });
             getIdentityData(id).then((data: Identity) => {
               if (data.error) {
+                console.log("error", data.error);
                 setNotFound(true);
                 return;
               }
