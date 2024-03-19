@@ -145,6 +145,10 @@ export const Land = ({
     setIsReady(true);
   };
 
+  useEffect(() => {
+    console.log({ address, isReady, userNft, hasNFTs });
+  }, [isReady, userNft, hasNFTs, address]);
+
   return (
     <div className={landStyles.landContainer}>
       {isReady ? (
