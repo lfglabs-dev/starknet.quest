@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { CDNImage } from "@components/cdn/image";
-import { TOKEN_ADDRESS_MAP } from "@utils/constants";
+import { TOKEN_ADDRESS_MAP } from "@constants/common";
 import { getCurrentNetwork } from "@utils/network";
 
 type TokenSymbolProps = {

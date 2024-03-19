@@ -21,7 +21,7 @@ import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
 import NftIssuerTag from "@components/quests/nftIssuerTag";
 import { QuestDefault } from "@constants/common";
-import { updateUniqueVisitors } from "@services/apiService";
+import { updateUniqueVisitors, getQuestById } from "@services/apiService";
 
 type QuestPageProps = {
   questId: string;
@@ -56,8 +56,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
 
   // this fetches quest data
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`)
-      .then((response) => response.json())
+    getQuestById(questId)
       .then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
           if (

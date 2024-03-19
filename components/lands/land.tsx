@@ -13,6 +13,7 @@ import { AchievementsDocument } from "types/backTypes";
 import Link from "next/link";
 import { getCurrentNetwork } from "@utils/network";
 import { getNfts } from "@utils/assets";
+import { fetchBuildings, getUserAchievements } from "@services/apiService";
 
 type LandProps = {
   address: string;
@@ -47,10 +48,7 @@ export const Land = ({
   // Fetch achievements from database and add building id from highest achievement level
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=${address}`
-      );
-      const results: AchievementsDocument[] = await response.json();
+      const results = await getUserAchievements(address)
       if (results) {
         results.forEach((result: AchievementsDocument) => {
           for (let i = result.achievements.length - 1; i >= 0; i--) {
@@ -69,12 +67,7 @@ export const Land = ({
   // Fetch buildings info (name, desc, img) from database
   const getBuildingsInfo = async (filteredAssets: number[]) => {
     try {
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_LINK
-        }/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
-      );
-      const results: BuildingsInfo[] = await response.json();
+      const results = await fetchBuildings(filteredAssets)
       if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);

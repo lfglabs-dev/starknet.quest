@@ -15,7 +15,7 @@
   display: flex;
   width: 600px;
   flex-direction: column;
-  color: #f4faff;
+  color: var(--secondary);
   text-align: left;
   /* Title/H1 */
   font-family: Sora;
@@ -42,7 +42,7 @@
   display: flex;
   width: 487px;
   flex-direction: column;
-  color: var(--secondary-700, #f4faff);
+  color: var(--secondary-700, --secondary);
   text-align: left;
   font-family: Sora;
   font-size: 16px;
