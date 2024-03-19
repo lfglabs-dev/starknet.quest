@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "prettier": "prettier --write '**/*.{ts,tsx,css}'",
-    "coverage": "jest --coverage"
+    "prettier": "prettier --write '**/*.{ts,tsx,css}'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",

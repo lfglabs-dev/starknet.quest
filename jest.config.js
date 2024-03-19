@@ -11,4 +11,14 @@ module.exports = {
     "^@constants/(.*)$": "<rootDir>/constants/$1",
     "^@services/(.*)$": "<rootDir>/services/$1",
   },
+  collectCoverage: true,
+  coverageReporters: [["text", { skipFull: true }]],
+  coverageThreshold: {
+    "./utils/": {
+      branches: 75,
+      functions: 90,
+      lines: 90,
+      statements: -10,
+    },
+  },
 };
