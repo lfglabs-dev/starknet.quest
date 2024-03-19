@@ -185,6 +185,10 @@ export default function Page({ params }: AddressOrDomainProps) {
     return response.json();
   };
 
+  useEffect(() => {
+    console.log({ identity });
+  }, [identity]);
+
   return (
     <div className={styles.profileBg}>
       {initProfile && identity ? (
