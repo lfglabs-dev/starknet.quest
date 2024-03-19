@@ -2,7 +2,7 @@ import { Vector2 } from "three";
 import { ClosestCorner, Coord } from "../types/land";
 
 export const convertTo2D = (array: number[], size: number) => {
-  let result: number[][] = [];
+  const result: number[][] = [];
   for (let i = 0; i < array.length; i += size) {
     result.push(array.slice(i, i + size));
   }
@@ -45,7 +45,7 @@ export const getSubArray = (
   minY: number,
   maxY: number
 ) => {
-  let myArr: number[][] = [];
+  const myArr: number[][] = [];
   for (let i = minY; i <= maxY; i++) {
     myArr[i - minY] = [];
     for (let j = minX; j <= maxX; j++) {
@@ -72,7 +72,7 @@ export const findClosestCorner = (
   let closestDistance = Infinity;
 
   for (const corner of corners) {
-    let dist = distance(center, corner);
+    const dist = distance(center, corner);
     if (dist < closestDistance) {
       closestDistance = dist;
       closestCorner = corner;
@@ -132,8 +132,8 @@ export const setDirectionBasedOnCorner = (
 export const getCustomDataArr = (
   customData: string
 ): { [key: string]: any } => {
-  let res: { [key: string]: any } = {};
-  let data = customData.split("|");
+  const res: { [key: string]: any } = {};
+  const data = customData.split("|");
   data.map((d) => {
     const subData = d.split(":");
     if (subData[0] === "offset") {

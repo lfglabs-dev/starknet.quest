@@ -86,3 +86,22 @@ export function timeElapsed(timestamp: number) {
       )} years ago`;
   }
 }
+
+// used to map the time frame to the api call for leaderaboard
+export const timeFrameMap = (input: string): "week" | "month" | "all" => {
+  let output: "week" | "month" | "all" = "week";
+  switch (input) {
+    case "Last 7 Days":
+      output = "week";
+      break;
+    case "Last 30 Days":
+      output = "month";
+      break;
+    case "All time":
+      output = "all";
+      break;
+    default:
+      output = "week";
+  }
+  return output;
+};
