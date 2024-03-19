@@ -37,6 +37,7 @@ export const Land = ({
 
   useEffect(() => {
     if (address) {
+      console.log("address detected", address);
       setSoloBuildings([]);
       setIsReady(true);
       getNfts(address, network).then((nfts) => {
@@ -48,7 +49,8 @@ export const Land = ({
   // Fetch achievements from database and add building id from highest achievement level
   const getBuildingsFromAchievements = async (filteredAssets: number[]) => {
     try {
-      const results = await getUserAchievements(address)
+      const results = await getUserAchievements(address);
+      console.log({ achievements: results });
       if (results) {
         results.forEach((result: AchievementsDocument) => {
           for (let i = result.achievements.length - 1; i >= 0; i--) {
@@ -67,7 +69,8 @@ export const Land = ({
   // Fetch buildings info (name, desc, img) from database
   const getBuildingsInfo = async (filteredAssets: number[]) => {
     try {
-      const results = await fetchBuildings(filteredAssets)
+      const results = await fetchBuildings(filteredAssets);
+      console.log({ buildings: results });
       if (results && results.length > 0) {
         setUserNft(results);
         setHasNFTs(true);
