@@ -1,0 +1,86 @@
+{
+  "projectName": "Starknet Quest Client",
+  "projectOwner": "Starknet Quest.",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "contributors": [
+
+   
+{
+      "login": " irisdv",
+      "name": " Iris",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8224462?v=4",
+      "profile": "https://github.com/irisdv",
+      "contributions": ["code"]
+    },
+    {
+      "login": "Marchand-Nicolas",
+      "name": " Nico",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60229704?v=4",
+      "profile": "https://github.com/Marchand-Nicolas",
+      "contributions": ["code"]
+    },
+{
+      "login": "ayushtom",
+      "name": "Ayush Tomar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41674634?v=4",
+      "profile": "https://github.com/ayushtom",
+      "contributions": ["code"]
+    },
+{
+      "login": "Th0rgal",
+      "name": "Thomas Marchand",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41830259?v=4",
+      "profile": "https://github.com/Th0rgal",
+      "contributions": ["code"]
+    },
+{
+      "login": "fricoben",
+      "name": "Fricoben",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78437165?v=4",
+      "profile": "https://github.com/fricoben",
+      "contributions": ["code"]
+    },
+{
+      "login": "him2312",
+      "name": "Himanshu Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11074657?v=4",
+      "profile": "https://github.com/him2312",
+      "contributions": ["code"]
+    },
+{
+      "login": "ktarun141",
+      "name": "tarun kaushik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86646398?v=4",
+      "profile": "https://github.com/ktarun1419",
+      "contributions": ["code"]
+    },
+{
+      "login": "odeWhizperer",
+      "name": "Adegbite Ademola Kelvin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63842643?v=4",
+      "profile": "https://github.com/codeWhizperer",
+      "contributions": ["code"]
+    },
+{
+      "login": "manoahLinks",
+      "name": "Mano.dev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100848212?v=4",
+      "profile": "https://github.com/manoahLinks",
+      "contributions": ["code"]
+    },
+{
+      "login": "Khemmie-Ray",
+      "name": "Atoyebi Oluwakemi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/89976006?v=4",
+      "profile": "https://github.com/Khemmie-Ray",
+      "contributions": ["code"]
+    },
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}
