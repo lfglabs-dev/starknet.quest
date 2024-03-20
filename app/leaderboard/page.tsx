@@ -410,7 +410,7 @@ export default function Page() {
 
 ranking ? (
   showNoresults ? (
-                // {/* this will be if searched user is not present in leaderboard or server returns 500 */}
+                // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
                     src="/visuals/animals/tiger.webp"
