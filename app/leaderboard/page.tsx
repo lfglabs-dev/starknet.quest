@@ -37,6 +37,7 @@ import { rankOrder, rankOrderMobile, timeFrameMap } from "@utils/constants";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
 import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
+import RankingSkeleton from "@components/skeletons/rankingSkeleton";
 import { useMediaQuery } from "@mui/material";
 import Link from "next/link";
 
@@ -58,6 +59,7 @@ export default function Page() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -103,8 +105,18 @@ export default function Page() {
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);
+      try {
+        setRankingdataloading(true);
+      const response = await fetchLeaderboardRankings(requestBody); 
       setRanking(response);
+      
+    } catch (error) {
+      console.log(error);
+    } finally {
+     
+     setRankingdataloading(false);
+      
+    }
     },
     []
   );
@@ -113,6 +125,7 @@ export default function Page() {
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
+      
     },
     []
   );
@@ -391,9 +404,13 @@ export default function Page() {
               className={styles.divider}
             />
 
-            {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {ranking ? (
-              showNoresults ? (
+            {/* shows loader skeleton while data is still being fetched*/}
+
+            {rankingdataloading ? <RankingSkeleton /> :
+
+ranking ? (
+  showNoresults ? (
+                // {/* this will be if searched user is not present in leaderboard or server returns 500 */}
                 <div className={styles.no_result_container}>
                   <img
                     src="/visuals/animals/tiger.webp"
@@ -439,7 +456,7 @@ export default function Page() {
                 </>
               )
             ) : null}
-
+                  
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
                 ? isMobile
