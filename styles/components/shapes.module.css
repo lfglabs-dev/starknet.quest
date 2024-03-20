@@ -32,7 +32,7 @@
   margin: auto;
   transform: translateX(-50%);
   opacity: 0.5;
-  background: linear-gradient(45deg, #70abee 0%, #6affaf 50%, #70abee 100%);
+  background: linear-gradient(45deg, #70abee 0%, var(--primary) 50%, #70abee 100%);
   -webkit-mask-image: url("/masks/verticalBarMask.png");
   mask-image: url("/masks/verticalBarMask.png");
   -webkit-mask-repeat: repeat;

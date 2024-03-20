@@ -1,5 +1,12 @@
-import { AchievementsDocument, CompletedDocument, DeployedTime, QueryError, UserTask,   QuestCategoryDocument,
-  QuestDocument, } from "types/backTypes";
+import {
+  AchievementsDocument,
+  CompletedDocument,
+  DeployedTime,
+  QueryError,
+  UserTask,
+  QuestCategoryDocument,
+  QuestDocument,
+} from "types/backTypes";
 
 export type LeaderboardTopperParams = {
   addr: string;
@@ -154,83 +161,126 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address: string = '0') => {
+export const getUserAchievements = async (address: string = "0") => {
   try {
-    const response = await fetch(`${baseurl}/achievements/fetch?addr=${address}`);
-    const data: AchievementsDocument[] | QueryError =  await response.json()
+    const response = await fetch(
+      `${baseurl}/achievements/fetch?addr=${address}`
+    );
+    const data: AchievementsDocument[] | QueryError = await response.json();
     return data as AchievementsDocument[];
   } catch (err) {
     console.log("Error while fetching user achievements", err);
   }
-}
+};
 
-export const getUserAchievementByCategory = async ({category, address, categoryId}: {category: string, address: string, categoryId: number}) => {
+export const getUserAchievementByCategory = async ({
+  category,
+  address,
+  categoryId,
+}: {
+  category: string;
+  address: string;
+  categoryId: number;
+}) => {
   try {
-    const response = await fetch(`${baseurl}/achievements/${category}?addr=${address}&category_id=${categoryId}`);
-    const data: CompletedDocument | QueryError =  await response.json()
+    const response = await fetch(
+      `${baseurl}/achievements/${category}?addr=${address}&category_id=${categoryId}`
+    );
+    const data: CompletedDocument | QueryError = await response.json();
     return data as CompletedDocument;
   } catch (err) {
     console.log("Error while fetching user achievement by category", err);
   }
-}
+};
 
-
-export const verifyUserAchievement = async ({verifyType, address, achievementId}: {verifyType: string, address: string, achievementId: number}) => {
+export const verifyUserAchievement = async ({
+  verifyType,
+  address,
+  achievementId,
+}: {
+  verifyType: string;
+  address: string;
+  achievementId: number;
+}) => {
   try {
-    const response = await fetch(`${baseurl}/achievements/verify_${verifyType}?addr=${address}&id=${achievementId}`);
-    const data: CompletedDocument | QueryError = await response.json()
+    const response = await fetch(
+      `${baseurl}/achievements/verify_${verifyType}?addr=${address}&id=${achievementId}`
+    );
+    const data: CompletedDocument | QueryError = await response.json();
     return data as CompletedDocument;
   } catch (err) {
     console.log("Error while verifying user achievement by category", err);
   }
-}
+};
 
 export const fetchBuildings = async (filteredAssets: number[]) => {
   try {
-    const response = await fetch(`${baseurl}/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`);
-    return await response.json() as BuildingsInfo[];
+    const response = await fetch(
+      `${baseurl}/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
+    );
+    return (await response.json()) as BuildingsInfo[];
   } catch (err) {
     console.log("Error while fetching buildings data", err);
   }
-}
+};
 
-export const getQuizById = async (quizId: string, address: string = '0') => {
+export const getQuizById = async (quizId: string, address: string = "0") => {
   try {
-    const response = await fetch(`${baseurl}/get_quiz?id=${quizId}&addr=${address}`);
-    return await response.json()
+    const response = await fetch(
+      `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
+    );
+    return await response.json();
   } catch (err) {
     console.log("Error while fetching quiz data by Id", err);
   }
-}
+};
 
-export const getTasksByQuestId = async ({questId, address} : {questId: string, address: string}) => {
+export const getTasksByQuestId = async ({
+  questId,
+  address,
+}: {
+  questId: string;
+  address: string;
+}) => {
   try {
-    const response = await fetch(`${baseurl}/get_tasks?quest_id=${questId}&addr=${address}`);
-    const data: UserTask[] | QueryError = await response.json()
-    return data as UserTask[]
+    const response = await fetch(
+      `${baseurl}/get_tasks?quest_id=${questId}&addr=${address}`
+    );
+    const data: UserTask[] | QueryError = await response.json();
+    return data as UserTask[];
   } catch (err) {
     console.log("Error while fetching tasks by quest Id", err);
   }
-}
+};
 
 export const getDeployedTimeByAddress = async (address: string) => {
   try {
-    const response = await fetch(`${baseurl}/get_deployed_time?addr=${address}`);
-    const data: DeployedTime | QueryError = await response.json()
-    return data as DeployedTime
+    const response = await fetch(
+      `${baseurl}/get_deployed_time?addr=${address}`
+    );
+    const data: DeployedTime | QueryError = await response.json();
+    return data as DeployedTime;
   } catch (err) {
     console.log("Error while fetching deployed time by address", err);
   }
-}
+};
 
-export const getEligibleRewards = async ({rewardEndpoint, address} : {rewardEndpoint: string, address: string}) => {
+export const getEligibleRewards = async ({
+  rewardEndpoint,
+  address,
+}: {
+  rewardEndpoint: string;
+  address: string;
+}) => {
   try {
-    const response = await fetch(`${baseurl}/${rewardEndpoint}?addr=${address}`);
-    return await response.json()
+    const response = await fetch(
+      `${baseurl}/${rewardEndpoint}?addr=${address}`
+    );
+    return await response.json();
   } catch (err) {
     console.log("Error while fetching eligible rewards", err);
   }
-}
+};
 
 export const getQuestActivityData = async (id: number) => {
   try {
@@ -266,17 +316,13 @@ export const getUniqueVisitorCount = async (id: number) => {
 };
 
 export async function getQuestById(questId: string | number) {
-  const response = await fetch(
-    `${baseurl}/get_quest?id=${questId}`
-  );
+  const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
   const data: QuestDocument | QueryError = await response.json();
   return data as QuestDocument;
 }
 
 export async function fetchQuestCategoryData(name: string) {
-  const response = await fetch(
-    `${baseurl}/get_quest_category?name=${name}`
-  );
+  const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
   const data: QuestCategoryDocument | QueryError = await response.json();
   return data as QuestCategoryDocument;
 }

@@ -92,7 +92,7 @@
   line-height: 20px;
   background: var(
     --primary-gradient,
-    linear-gradient(90deg, #6affaf 0%, #5ce3fe 100%)
+    linear-gradient(90deg, var(--primary) 0%, var(--tertiary) 100%)
   );
   background-clip: text;
   -webkit-background-clip: text;
