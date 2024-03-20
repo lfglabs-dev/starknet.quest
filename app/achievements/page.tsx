@@ -14,6 +14,7 @@ import AchievementSkeleton from "@components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
 import RefreshIcon from "@components/UI/iconsComponents/icons/refreshIcon";
 import theme from "@styles/theme";
+import { getUserAchievementByCategory, getUserAchievements, verifyUserAchievement } from "@services/apiService";
 
 export default function Page() {
   const location = useLocation();
@@ -22,21 +23,23 @@ export default function Page() {
     AchievementsDocument[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
+  
+  const fetchAchievementsByAddress = async (address = '0') => {
+    const achievements = await getUserAchievements(address)
+    if (achievements as AchievementsDocument[]) {
+      setUserAchievements(achievements as AchievementsDocument[]); 
+    }
+  }
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
     let shouldFetchWithZeroAddress = true;
 
     // Set a 1-second timer to allow time for address loading
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       // If address isn't loaded after 1 second, make the API call with the zero address
       if (shouldFetchWithZeroAddress) {
-        fetch(`${process.env.NEXT_PUBLIC_API_LINK}/achievements/fetch?addr=0`)
-          .then((response) => response.json())
-          .then((data: AchievementsDocument[] | QueryError) => {
-            if (data as AchievementsDocument[])
-              setUserAchievements(data as AchievementsDocument[]);
-          });
+        fetchAchievementsByAddress('0')
       }
     }, 1000);
 
@@ -44,16 +47,7 @@ export default function Page() {
     if (address) {
       shouldFetchWithZeroAddress = false;
       clearTimeout(timer);
-      fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_LINK
-        }/achievements/fetch?addr=${hexToDecimal(address)}`
-      )
-        .then((response) => response.json())
-        .then((data: AchievementsDocument[] | QueryError) => {
-          if (data as AchievementsDocument[])
-            setUserAchievements(data as AchievementsDocument[]);
-        });
+      fetchAchievementsByAddress(hexToDecimal(address))
     }
     // Clear the timer when component unmounts or dependencies change to prevent memory leaks
     return () => {
@@ -72,15 +66,12 @@ export default function Page() {
             );
             if (needsVerify.length > 0) {
               try {
-                const response = await fetch(
-                  `${process.env.NEXT_PUBLIC_API_LINK}/achievements/${
-                    achievementCategory.category_override_verified_type
-                  }?addr=${hexToDecimal(address)}&category_id=${
-                    achievementCategory.category_id
-                  }`
-                );
+                const data = await getUserAchievementByCategory({
+                  category: achievementCategory.category_override_verified_type,
+                  address: hexToDecimal(address),
+                  categoryId: achievementCategory.category_id
+                })
 
-                const data: CompletedDocument = await response.json();
                 if (data?.achieved && data.achieved.length > 0) {
                   const newUserAchievements = [...userAchievements];
                   data.achieved.map((task) => {
@@ -103,14 +94,11 @@ export default function Page() {
               async (achievement, aIndex) => {
                 if (!achievement.completed) {
                   try {
-                    const response = await fetch(
-                      `${
-                        process.env.NEXT_PUBLIC_API_LINK
-                      }/achievements/verify_${
-                        achievement.verify_type
-                      }?addr=${hexToDecimal(address)}&id=${achievement.id}`
-                    );
-                    const data: CompletedDocument = await response.json();
+                    const data = await verifyUserAchievement({
+                      verifyType: achievement.verify_type,
+                      address: hexToDecimal(address),
+                      achievementId: achievement.id
+                    })
 
                     if (data?.achieved) {
                       const newUserAchievements = [...userAchievements];

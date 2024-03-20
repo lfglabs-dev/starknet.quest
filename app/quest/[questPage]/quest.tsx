@@ -1,7 +1,12 @@
 "use client";
 
 import QuestDetails from "@components/quests/questDetails";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import homeStyles from "@styles/Home.module.css";
 import styles from "@styles/quests.module.css";
 import { useRouter } from "next/navigation";
@@ -15,6 +20,8 @@ import { starknetIdAppLink } from "@utils/links";
 import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
 import NftIssuerTag from "@components/quests/nftIssuerTag";
+import { QuestDefault } from "@constants/common";
+import { updateUniqueVisitors, getQuestById } from "@services/apiService";
 
 type QuestPageProps = {
   questId: string;
@@ -30,27 +37,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   errorMsg,
 }) => {
   const router = useRouter();
-  const [quest, setQuest] = useState<QuestDocument>({
-    id: 0,
-    name: "loading",
-    desc: "loading",
-    issuer: "loading",
-    category: "loading",
-    rewards_endpoint: "",
-    logo: "",
-    rewards_img: "",
-    rewards_title: "loading",
-    rewards_nfts: [],
-    img_card: "",
-    title_card: "",
-    hidden: false,
-    disabled: false,
-    expiry_timestamp: "loading",
-    mandatory_domain: null,
-    expired: false,
-    rewards_description: null,
-    additional_desc: null,
-  });
+  const [quest, setQuest] = useState<QuestDocument>(QuestDefault);
   const [errorPageDisplay, setErrorPageDisplay] = useState(false);
   const { address } = useAccount();
   const [showDomainPopup, setShowDomainPopup] = useState<boolean>(false);
@@ -58,11 +45,18 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   const [hasNftReward, setHasNftReward] = useState<boolean>(false);
   const { domain } = useDomainFromAddress(address);
 
+  const updatePageViews = useCallback(async (quest_id: string) => {
+    try {
+      const pageName = `quest_${quest_id}`;
+      await updateUniqueVisitors(pageName);
+    } catch (err) {
+      console.log("Error while updating page views", err);
+    }
+  }, []);
+
   // this fetches quest data
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quest?id=${questId}`)
-      .then((response) => response.json())
-      .then((data: QuestDocument | QueryError) => {
+      getQuestById(questId).then((data: QuestDocument | QueryError) => {
         if ((data as QuestDocument).name) {
           if (
             (data as QuestDocument).rewards_nfts &&
@@ -80,6 +74,19 @@ const Quest: FunctionComponent<QuestPageProps> = ({
         }
       });
   }, [questId]);
+
+  useEffect(() => {
+    // dont log if questId is not present
+    if (!questId) return;
+
+    /*
+    we only want to update page views if the quest is not expired.
+    Expired quests don't need to be updated.
+    */
+    if (quest.expired) return;
+
+    updatePageViews(questId);
+  }, [questId, updatePageViews, quest]);
 
   return errorPageDisplay ? (
     <ErrorScreen

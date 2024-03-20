@@ -1,0 +1,133 @@
+.title {
+    font-family: "Sora-Bold";
+    font-size: 2.5rem;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    max-width: 950px;
+    text-align: center;
+}
+
+.container {
+    padding: 12vh 1.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tag {
+    width: auto;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background600);
+    border-radius: 24px;
+    gap: 0.5rem;
+}
+
+.dataCard {
+    background: linear-gradient(180deg, #29282B 0%, #101012 100%);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border-radius: 8px;
+    position: relative;
+}
+
+.dataCard::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    left: -1px;
+    bottom: 95%;
+    background: linear-gradient(90deg,
+            #437aba 0%,
+            #59c2e8 45%,
+            #00ff77 60%,
+            #59c2e8 70%,
+            #437aba50 100%);
+    border-radius: 8px;
+    z-index: 1;
+    mask: linear-gradient(0deg, transparent 92%, black);
+}
+
+.counterText {
+    font-family: "Sora-Bold";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 48px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--secondary);
+}
+
+.metricName {
+    font-family: "Sora-Bold";
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #A6A5A7;
+}
+
+.highlightedText {
+    font-family: "Sora";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    background: linear-gradient(45deg, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.normalText {
+    font-family: "Sora";
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #A6A5A7;
+}
+
+.tasksContainer {
+    width: 100%;
+    padding: 2rem;
+    background: #1F1F25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 950px;
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 768px) {
+    .dataCard {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tasksContainer {
+        padding: 1rem;
+    }
+
+    .counterText {
+        font-size: 20px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+}

@@ -45,6 +45,10 @@
 
 .card[aria-disabled="true"] {
   cursor: not-allowed;
+ 
+}
+.card[aria-disabled="true"]:hover{
+  border: 1px solid transparent;
 }
 
 .card[aria-disabled="true"] .cardImage,

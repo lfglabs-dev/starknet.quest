@@ -26,8 +26,10 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
         {question.options.map((option, index) => (
           <div
             key={index}
-            className={`${styles.checkBoxContainer} ${styles.checkboxImageContainer}`}
+            className={`${styles.checkBoxContainer} ${styles.checkboxImageContainer} ${selectedOptions.includes(index) && styles.checkboxchecked}`}
           >
+            
+            <label className={styles.checkboxLabel} htmlFor={option}>
             <input
               type="checkbox"
               name="option"
@@ -42,7 +44,6 @@ const ImageChoice: FunctionComponent<ImageChoiceProps> = ({
               className={styles.checkbox}
               checked={selectedOptions.includes(index)}
             />
-            <label className={styles.checkboxLabel} htmlFor={option}>
               <CDNImg src={option} className={styles.checkboxImage} />
             </label>
           </div>
