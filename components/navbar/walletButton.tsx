@@ -39,7 +39,6 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const isWebWallet =
     (connector as any)?._wallet?.id === "argentWebWallet" || "braavos";
-  console.log("connector is => ", connector);
   const buttonName = useMemo(
     () =>
       address
