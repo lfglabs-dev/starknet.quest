@@ -19,7 +19,7 @@ import {
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
-  getQuestById
+  getQuestById,
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
 import { QuestDocument } from "../../../types/backTypes";
@@ -28,7 +28,6 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-
 
 type BoostQuestPageProps = {
   params: {
@@ -192,7 +191,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
                         {uniqueVisitors > 0
-                          ? computePercentage(questParticipants)
+                          ? String(`${computePercentage(questParticipants)}%`)
                           : "NA"}
                       </span>
                       <span className={analyticsStyles.normalText}>
@@ -214,7 +213,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       User Progress Visualization
                     </p>
                     <p className={analyticsStyles.counterText}>
-                      Tasks Completion Over Time
+                      Quests Completion over time
                     </p>
                   </div>
                   <ResponsiveContainer
@@ -338,8 +337,10 @@ export default function Page({ params }: BoostQuestPageProps) {
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
-                                  ? computePercentage(
-                                      eachParticipation.participants
+                                  ? String(
+                                      `${computePercentage(
+                                        eachParticipation.participants
+                                      )}%`
                                     )
                                   : "NA"}
                               </span>
