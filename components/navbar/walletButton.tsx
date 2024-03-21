@@ -10,7 +10,7 @@ import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import WalletIcon from "@mui/icons-material/Wallet";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
-import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
 import { getCurrentNetwork } from "@utils/network";
@@ -37,8 +37,9 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
-  const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
-
+  const isWebWallet =
+    (connector as any)?._wallet?.id === "argentWebWallet" || "braavos";
+  console.log("connector is => ", connector);
   const buttonName = useMemo(
     () =>
       address
@@ -83,13 +84,21 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   };
 
   const handleOpenWebWallet = () => {
-    window.open(
-      network === "mainnet"
-        ? "https://web.argent.xyz"
-        : "https://web.hydrogen.argent47.net",
-      "_blank",
-      "noopener noreferrer"
-    );
+    if ((connector as any)?._wallet?.id === "argentWebWallet") {
+      window.open(
+        network === "mainnet"
+          ? "https://web.argent.xyz"
+          : "https://web.hydrogen.argent47.net",
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else if ((connector as any)?._wallet?.id === "braavos") {
+      window.open(
+        "https://braavos.app/download-braavos-wallet/",
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
   };
 
   useEffect(() => {
@@ -143,7 +152,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                 </button>
                 {isWebWallet && (
                   <button onClick={handleOpenWebWallet}>
-                    <ArgentIcon width="24" />
+                    <SpaceDashboardIcon width="24" />
                     <p>Web wallet Dashboard</p>
                   </button>
                 )}
