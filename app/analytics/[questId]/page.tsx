@@ -46,7 +46,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [uniqueVisitors, setUniqueVisitors] = useState(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
-
   const fetchGraphData = useCallback(async () => {
     try {
       const res = await getQuestActivityData(parseInt(questId));
@@ -191,7 +190,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
                         {uniqueVisitors > 0
-                          ? String(`${computePercentage(questParticipants)}%`)
+                          ? `${computePercentage(questParticipants)}%`
                           : "NA"}
                       </span>
                       <span className={analyticsStyles.normalText}>
@@ -337,11 +336,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
-                                  ? String(
-                                      `${computePercentage(
-                                        eachParticipation.participants
-                                      )}%`
-                                    )
+                                  ? `${computePercentage(
+                                      eachParticipation.participants
+                                    )}%`
                                   : "NA"}
                               </span>
                               <span className={analyticsStyles.normalText}>
