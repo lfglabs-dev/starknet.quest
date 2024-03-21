@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo, useState } from "react";
-import { PAGE_SIZE } from "@utils/constants";
+import { PAGE_SIZE } from "@constants/common";
 import styles from "@styles/leaderboard.module.css";
 import ChevronLeftIcon from "@components/UI/iconsComponents/icons/chevronLeftIcon";
 import ChevronRightIcon from "@components/UI/iconsComponents/icons/ChevronRightIcon";

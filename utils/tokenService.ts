@@ -1,4 +1,4 @@
-import { TOKEN_ADDRESS_MAP } from "./constants";
+import { TOKEN_ADDRESS_MAP } from "../constants/common";
 import { getCurrentNetwork } from "./network";
 
 export const getTokenName = (token: string) => {

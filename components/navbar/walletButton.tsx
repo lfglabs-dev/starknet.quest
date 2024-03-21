@@ -7,7 +7,7 @@ import ProfilIcon from "@components/UI/iconsComponents/icons/profilIcon";
 import theme from "@styles/theme";
 import Avatar from "@components/UI/avatar";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
-import { Wallet } from "@mui/icons-material";
+import WalletIcon from "@mui/icons-material/Wallet";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
 import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
@@ -148,7 +148,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                   </button>
                 )}
                 <button onClick={handleWalletChange}>
-                  <Wallet width="24" />
+                  <WalletIcon width="24" />
                   <p>Change Wallet</p>
                 </button>
                 <button onClick={handleDisconnect}>

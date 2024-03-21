@@ -11,6 +11,7 @@ import EndScreen from "./endScreen";
 import QuizLoading from "@components/quiz/quizLoading";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
+import { getQuizById } from "@services/apiService";
 
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
@@ -65,19 +66,17 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     if (restart) return setRestart(false);
     setLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_LINK}/get_quiz?id=${quizId}&addr=0`)
-      .then((res) => res.json())
-      .then((data) => {
-        const quizObj: Quiz = {
-          name: data.name,
-          description: data.desc,
-          questions: data.questions,
-        };
-        setAnswers([]);
-        setQuiz(quizObj);
-        setStep(-1);
-        setLoading(false);
-      });
+    getQuizById(quizId).then((data) => {
+      const quizObj: Quiz = {
+        name: data.name,
+        description: data.desc,
+        questions: data.questions,
+      };
+      setAnswers([]);
+      setQuiz(quizObj);
+      setStep(-1);
+      setLoading(false);
+    });
   }, [quizId, restart]);
 
   useEffect(() => {

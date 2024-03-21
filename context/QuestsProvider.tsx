@@ -4,7 +4,7 @@ import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import { fetchQuestCategoryData } from "@services/questService";
+import { fetchQuestCategoryData } from "@services/apiService";
 import {
   getBoostedQuests,
   getCompletedBoosts,
