@@ -4,8 +4,9 @@ import Button from "@components/UI/button";
 import { useMediaQuery } from "@mui/material";
 import FeaturedQuestSkeleton from "@components/skeletons/featuredQuestSkeleton";
 import Timer from "@components/quests/timer";
-import { CDNImg } from "@components/cdn/image";
+import { CDNImg, CDNImage } from "@components/cdn/image";
 import BoostReward from "@components/quests/boostReward";
+import { Skeleton } from "@mui/material";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -41,7 +42,9 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         <div className="flex items-center mb-4 mt-6 gap-2">
           {issuer?.name || issuer?.logoFavicon ? (
             <div className={styles.issuer}>
-              <CDNImg
+              <CDNImage
+                alt={"Feature Quest Reward"}
+                height={20}
                 width={20}
                 src={issuer?.logoFavicon}
                 className={styles.featuredQuestRewardIcon}
@@ -56,7 +59,9 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
         </div>
       </div>
       <div className={styles.featuredQuestImageContainer}>
-        <CDNImg src={imgSrc} className={styles.featuredQuestImage} />
+        {imgSrc
+        ? <CDNImage alt={"Feature Quest Image"} src={imgSrc} fill className={styles.featuredQuestImage} priority />
+        : <Skeleton variant="rectangular" animation="wave" className={styles.featuredQuestImage} sx={{ bgcolor: 'grey.900' }} /> }
         {expiry ? <Timer expiry={Number(expiry)} /> : null}
       </div>
     </div>
