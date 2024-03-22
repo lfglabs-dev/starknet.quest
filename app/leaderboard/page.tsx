@@ -59,7 +59,7 @@ export default function Page() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
-  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
+  const [rankingdataloading, setRankingdataloading] = useState<boolean>(true);
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -95,23 +95,27 @@ export default function Page() {
     };
 
     setLoading(true);
+    setRankingdataloading(true);
     fetchLeaderboardToppersResult({
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
     });
     fetchRankingResults(requestBody);
     setLoading(false);
+    setRankingdataloading(false);
   }, [userAddress, status, apiCallDelay]);
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
       try {
         setRankingdataloading(true);
-      const response = await fetchLeaderboardRankings(requestBody); 
-      setRanking(response);
+      const response = await fetchLeaderboardRankings(requestBody);         
+        setRanking(response); 
+        setRankingdataloading(false);
+      
       
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
      
      setRankingdataloading(false);
@@ -406,7 +410,7 @@ export default function Page() {
 
             {/* shows loader skeleton while data is still being fetched*/}
 
-            {rankingdataloading ? <RankingSkeleton /> :
+            {loading || rankingdataloading ? <RankingSkeleton /> :
 
 ranking ? (
   showNoresults ? (
@@ -455,7 +459,17 @@ ranking ? (
                   />
                 </>
               )
-            ) : null}
+            ) :    
+            <div className={styles.no_result_container}>
+            <p className="pb-[1.5rem] text-[1.5rem]">
+              Something went wrong! Try again...
+            </p>
+            <Divider
+              orientation="horizontal"
+              variant="fullWidth"
+              className={styles.divider}
+            />
+          </div>}
                   
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
