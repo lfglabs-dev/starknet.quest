@@ -7,7 +7,7 @@
 .spinner * {
   width: 6%;
   height: 16%;
-  background: #fff;
+  background: var(--white);
   position: absolute;
   left: 49%;
   top: 43%;

@@ -19,7 +19,7 @@ import {
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
-  getQuestById
+  getQuestById,
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
 import { QuestDocument } from "../../../types/backTypes";
@@ -28,7 +28,6 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-
 
 type BoostQuestPageProps = {
   params: {
