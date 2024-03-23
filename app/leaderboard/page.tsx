@@ -117,10 +117,7 @@ export default function Page() {
       
     } catch (error) {
       console.error(error);
-    } finally {
-     
-     setRankingdataloading(false);
-      
+      setRankingdataloading(false);
     }
     },
     []
