@@ -60,7 +60,7 @@ export default function Page() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
-  const [rankingdataloading, setRankingdataloading] = useState<boolean>(true);
+  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -82,29 +82,12 @@ export default function Page() {
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
-  useEffect(() => {
-    // adding a delay for the browser to automatically detect wallet and fetch connection status on component mount
+  useEffect(()=>{
     if (!apiCallDelay) return;
-    const requestBody = {
-      addr:
-        status === "connected"
-          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
-          : "",
-      page_size: 10,
-      shift: 0,
-      duration: timeFrameMap(duration),
-    };
+    fetchPageData()
+},[apiCallDelay]);
 
-    setLoading(true);
-    setRankingdataloading(true);
-    fetchLeaderboardToppersResult({
-      addr: requestBody.addr,
-      duration: timeFrameMap(duration),
-    });
-    fetchRankingResults(requestBody);
-    setLoading(false);
-    setRankingdataloading(false);
-  }, [userAddress, status, apiCallDelay]);
+
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
@@ -123,6 +106,27 @@ export default function Page() {
     },
     []
   );
+
+  const fetchPageData=useCallback(async ()=>{
+ const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
+          : "",
+      page_size: 10,
+      shift: 0,
+      duration: timeFrameMap(duration),
+    };
+    setRankingdataloading(true);
+    await fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
+      duration: timeFrameMap(duration),
+    });
+    await fetchRankingResults(requestBody);
+    setRankingdataloading(false);
+},[fetchRankingResults,fetchLeaderboardToppersResult,address,userAddress,status]);
+
+
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -303,6 +307,7 @@ export default function Page() {
         </div>
       ) : (
         <>
+        
           <div className={styles.leaderboard_quest_banner}>
             <div className={styles.blur1}>
               <Blur green />
@@ -400,7 +405,7 @@ export default function Page() {
 
             {/* shows loader skeleton while data is still being fetched*/}
 
-            {loading || rankingdataloading ? <RankingSkeleton /> :
+            {rankingdataloading ? <RankingSkeleton /> :
 
 ranking ? (
   showNoresults ? (
