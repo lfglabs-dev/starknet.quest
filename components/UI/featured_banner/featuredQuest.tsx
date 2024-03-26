@@ -4,7 +4,7 @@ import Button from "@components/UI/button";
 import { useMediaQuery } from "@mui/material";
 import FeaturedQuestSkeleton from "@components/skeletons/featuredQuestSkeleton";
 import Timer from "@components/quests/timer";
-import { CDNImg, CDNImage } from "@components/cdn/image";
+import { CDNImage } from "@components/cdn/image";
 import BoostReward from "@components/quests/boostReward";
 import { Skeleton } from "@mui/material";
 
@@ -37,8 +37,16 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
         <p className={styles.featuredQuestHeading}>{heading}</p>
-        <h3 className={styles.featuredQuestTitle}>{title}</h3>
-        <p className={styles.featuredQuestDescription}>{desc}</p>
+        {title ? <h3 className={styles.featuredQuestTitle}>{title}</h3> : <Skeleton
+            variant="text"
+            width={400}
+            sx={{ fontSize: "2.5rem", bgcolor: "grey.700" }}
+          />}
+        {desc ? <p className={styles.featuredQuestDescription}>{desc}</p> : <Skeleton
+            variant="text"
+            width={400}
+            sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
+          />}
         <div className="flex items-center mb-4 mt-6 gap-2">
           {issuer?.name || issuer?.logoFavicon ? (
             <div className={styles.issuer}>
@@ -60,7 +68,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
       </div>
       <div className={styles.featuredQuestImageContainer}>
         {imgSrc
-        ? <CDNImage alt={"Feature Quest Image"} src={imgSrc} fill className={styles.featuredQuestImage} priority />
+        ? <CDNImage alt={"Feature Quest Image"} src={imgSrc} fill className={styles.featuredQuestImage} priority sizes="(max-width: 1025px) 85vw, 33vw"/>
         : <Skeleton variant="rectangular" animation="wave" className={styles.featuredQuestImage} sx={{ bgcolor: 'grey.900' }} /> }
         {expiry ? <Timer expiry={Number(expiry)} /> : null}
       </div>
