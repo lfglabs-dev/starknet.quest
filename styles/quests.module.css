@@ -226,6 +226,10 @@
   position: absolute !important;
 }
 
+.featuredQuestContentLoading {
+  width: 90%;
+}
+
 .featuredQuestTitle {
   font-family: "Sora-Bold";
   font-size: 2.5rem;
@@ -320,6 +324,15 @@
   .featuredQuestImage {
     height: fit-content;
     margin-top: 3rem;
+  }
+  .featuredQuestImageSkeleton {
+    height: 100% !important;
+    width: 100%;
+    position: absolute !important;
+    margin-top: 3rem;
+  }
+  .featuredQuestContentLoading {
+    width: 100%;
   }
   .featuredQuestTitle {
     font-size: 30px;

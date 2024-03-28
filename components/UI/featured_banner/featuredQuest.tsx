@@ -43,7 +43,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
               [...Array(2)].map((_, index) => (<Skeleton
               variant="text"
               key={index}
-              width={400}
+              className={styles.featuredQuestContentLoading}
               sx={{ fontSize: "3rem", bgcolor: "grey.700" }}
             />))
             }
@@ -55,7 +55,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
               [...Array(5)].map((_, index) => (<Skeleton
                 variant="text"
                 key={index}
-                width={400}
+                className={styles.featuredQuestContentLoading}
                 sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
               />))
             }
