@@ -217,6 +217,15 @@
   border-radius: 8px;
 }
 
+/* Setting !important to override MuiSkeleton-root styles */
+/* Reference: https://github.com/starknet-id/starknet.quest/pull/557#discussion_r1542804881 */
+.featuredQuestImageSkeleton {
+  height: 100% !important;
+  width: 100%;
+  border-radius: 8px;
+  position: absolute !important;
+}
+
 .featuredQuestTitle {
   font-family: "Sora-Bold";
   font-size: 2.5rem;

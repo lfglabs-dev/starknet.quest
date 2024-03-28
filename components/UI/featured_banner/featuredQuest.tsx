@@ -37,16 +37,30 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
         <p className={styles.featuredQuestHeading}>{heading}</p>
-        {title ? <h3 className={styles.featuredQuestTitle}>{title}</h3> : <Skeleton
-            variant="text"
-            width={400}
-            sx={{ fontSize: "2.5rem", bgcolor: "grey.700" }}
-          />}
-        {desc ? <p className={styles.featuredQuestDescription}>{desc}</p> : <Skeleton
-            variant="text"
-            width={400}
-            sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
-          />}
+        {title ? <h3 className={styles.featuredQuestTitle}>{title}</h3> : 
+          <>
+            {
+              [...Array(2)].map((_, index) => (<Skeleton
+              variant="text"
+              key={index}
+              width={400}
+              sx={{ fontSize: "3rem", bgcolor: "grey.700" }}
+            />))
+            }
+          </>
+          }
+        {desc ? <p className={styles.featuredQuestDescription}>{desc}</p> : 
+          <>
+          {
+              [...Array(5)].map((_, index) => (<Skeleton
+                variant="text"
+                key={index}
+                width={400}
+                sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
+              />))
+            }
+          </>
+          }
         <div className="flex items-center mb-4 mt-6 gap-2">
           {issuer?.name || issuer?.logoFavicon ? (
             <div className={styles.issuer}>
@@ -69,7 +83,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
       <div className={styles.featuredQuestImageContainer}>
         {imgSrc
         ? <CDNImage alt={"Feature Quest Image"} src={imgSrc} fill className={styles.featuredQuestImage} priority sizes="(max-width: 1025px) 85vw, 33vw"/>
-        : <Skeleton variant="rectangular" animation="wave" className={styles.featuredQuestImage} sx={{ bgcolor: 'grey.900' }} /> }
+        : <Skeleton variant="rectangular" animation="wave" className={styles.featuredQuestImageSkeleton} sx={{ bgcolor: 'grey.900' }} /> }
         {expiry ? <Timer expiry={Number(expiry)} /> : null}
       </div>
     </div>
