@@ -24,6 +24,7 @@ import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
+import Image from "next/image";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -183,12 +184,13 @@ const Navbar: FunctionComponent = () => {
         >
           <div className={styles.navbarLogo}>
             <Link href="/" className="modified-cursor-pointer">
-              <img
+              <Image
                 className={styles.logo}
                 src="/visuals/starknetquestLogo.svg"
                 alt="Starknet.id Logo"
                 width={70}
                 height={70}
+                priority
               />
             </Link>
           </div>
@@ -264,12 +266,13 @@ const Navbar: FunctionComponent = () => {
               <div className={styles.mobileNavBarHeader}>
                 <div>
                   <Link href="/">
-                    <img
+                    <Image
                       src="/visuals/starknetquestLogo.svg"
                       alt="Starknet Quest Logo"
                       width={70}
                       height={70}
                       className={styles.logo}
+                      priority
                     />
                   </Link>
                 </div>
