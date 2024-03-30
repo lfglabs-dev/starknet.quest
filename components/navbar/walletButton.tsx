@@ -29,7 +29,6 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const currentNetwork = getCurrentNetwork();
-  const [nav, setNav] = useState<boolean>(false);
   const { address, connector } = useAccount();
   const { notifications } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
