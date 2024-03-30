@@ -10,7 +10,7 @@ import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import WalletIcon from "@mui/icons-material/Wallet";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VerifiedIcon from "@components/UI/iconsComponents/icons/verifiedIcon";
-import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
 import { getCurrentNetwork } from "@utils/network";
@@ -29,6 +29,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   disconnectByClick,
 }) => {
   const currentNetwork = getCurrentNetwork();
+  const [nav, setNav] = useState<boolean>(false);
   const { address, connector } = useAccount();
   const { notifications } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
@@ -37,9 +38,8 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
-  const isWebWallet =
-    (connector as any)?._wallet?.id === "argentWebWallet" || "braavos";
-  console.log("connector is => ", connector);
+  const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
+
   const buttonName = useMemo(
     () =>
       address
@@ -84,21 +84,13 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   };
 
   const handleOpenWebWallet = () => {
-    if ((connector as any)?._wallet?.id === "argentWebWallet") {
-      window.open(
-        network === "mainnet"
-          ? "https://web.argent.xyz"
-          : "https://web.hydrogen.argent47.net",
-        "_blank",
-        "noopener noreferrer"
-      );
-    } else if ((connector as any)?._wallet?.id === "braavos") {
-      window.open(
-        "https://braavos.app/download-braavos-wallet/",
-        "_blank",
-        "noopener noreferrer"
-      );
-    }
+    window.open(
+      network === "mainnet"
+        ? "https://web.argent.xyz"
+        : "https://web.hydrogen.argent47.net",
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   useEffect(() => {
@@ -152,7 +144,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                 </button>
                 {isWebWallet && (
                   <button onClick={handleOpenWebWallet}>
-                    <SpaceDashboardIcon width="24" />
+                    <ArgentIcon width="24" />
                     <p>Web wallet Dashboard</p>
                   </button>
                 )}

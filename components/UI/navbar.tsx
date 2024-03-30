@@ -197,19 +197,11 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/achievements">
-                <li className={styles.menuItem}>Achievements</li>
-              </Link>
               <Link href="/leaderboard">
                 <li className={styles.menuItem}>Leaderboard</li>
               </Link>
               {address ? (
                 <>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li className={styles.menuItem}>My land</li>
-                  </Link>
                   <li
                     className={styles.menuItem}
                     onClick={openNotificationModal}

@@ -133,10 +133,11 @@
   border: 1px solid var(--secondary500);
 }
 
-.walletMenu button {
+.walletMenu button, .walletMenu a {
   display: flex;
   align-items: center;
   color: var(--secondary500);
+  text-transform: none;
 }
 
 .walletMenu svg {
