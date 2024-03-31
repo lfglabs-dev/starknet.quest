@@ -19,7 +19,7 @@ import {
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
-  getQuestById
+  getQuestById,
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
 import { QuestDocument } from "../../../types/backTypes";
@@ -28,7 +28,6 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-
 
 type BoostQuestPageProps = {
   params: {
@@ -47,7 +46,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [uniqueVisitors, setUniqueVisitors] = useState(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
-
   const fetchGraphData = useCallback(async () => {
     try {
       const res = await getQuestActivityData(parseInt(questId));
@@ -192,7 +190,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
                         {uniqueVisitors > 0
-                          ? computePercentage(questParticipants)
+                          ? `${computePercentage(questParticipants)}%`
                           : "NA"}
                       </span>
                       <span className={analyticsStyles.normalText}>
@@ -214,7 +212,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       User Progress Visualization
                     </p>
                     <p className={analyticsStyles.counterText}>
-                      Tasks Completion Over Time
+                      Quests Completion over time
                     </p>
                   </div>
                   <ResponsiveContainer
@@ -338,9 +336,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
-                                  ? computePercentage(
+                                  ? `${computePercentage(
                                       eachParticipation.participants
-                                    )
+                                    )}%`
                                   : "NA"}
                               </span>
                               <span className={analyticsStyles.normalText}>

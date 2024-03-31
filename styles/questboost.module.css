@@ -20,7 +20,7 @@
   padding: 1.5rem;
   align-items: center;
   gap: 1.5rem;
-  background-color: #1f1f25;
+  background-color: var(--menu-background);
   border: 1px solid transparent;
   transition: all 0.2s ease-in-out;
   max-width: 260px;
@@ -99,12 +99,12 @@
 }
 
 .claim_button_cta {
-  color: #101012;
+  color: var(--background);
   padding: 1em 3em;
   border-radius: 10px;
   background: var(
     --primary-gradient,
-    linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%)
+    linear-gradient(90deg, var(--primary) -0.12%, var(--tertiary) 99.88%)
   );
 
   /* Button shadow */
@@ -180,7 +180,7 @@
   width: 350px;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  background-color: #1f1f25;
+  background-color: var(--menu-background);
   border: 1px solid transparent;
   animation: rotateCard 3s;
   aspect-ratio: 1/1;
@@ -265,7 +265,7 @@
   padding: 16px;
   border-radius: 12px;
   gap: 13px;
-  background: linear-gradient(90deg, #6affaf -0.12%, #5ce3fe 99.88%);
+  background: linear-gradient(90deg, var(--primary) -0.12%, var(--tertiary) 99.88%);
   padding: 1px;
   position: absolute;
   bottom: 0px;

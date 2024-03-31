@@ -81,7 +81,7 @@
 }
 
 .quest_name {
-  color: #FFF;
+  color: var(--white);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

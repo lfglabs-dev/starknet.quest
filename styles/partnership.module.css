@@ -111,7 +111,7 @@
   position: absolute;
   border-radius: 488px;
   opacity: 0.15;
-  background: var(--primary-blue, #5ce3fe);
+  background: var(--primary-blue, --tertiary);
   filter: blur(100px);
   left: -200px;
   top: -100px;
@@ -146,7 +146,7 @@
   margin: 2rem 128px 2rem;
   position: relative;
   border-radius: 8px;
-  background: linear-gradient(180deg, #29282b 0%, rgba(41, 40, 43, 0) 100%);
+  background: linear-gradient(180deg, var(--background600) 0%, rgba(41, 40, 43, 0) 100%);
   padding: 24px;
   width: calc(100% - 256px);
   height: 100%;
@@ -254,7 +254,7 @@
   .header {
     padding-top: 12vh;
     height: fit-content;
-    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    background: linear-gradient(180deg, var(--background) 0.04%, var(--background600) 347.42%);
     padding-bottom: 3rem;
   }
   .mainTitleContainer {

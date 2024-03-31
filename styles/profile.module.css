@@ -50,7 +50,7 @@
   height: 0.5px;
   align-self: stretch;
   opacity: 0.3;
-  background: var(--background500, #e1dcea);
+  background: var(--background500, --secondary500);
 }
 
 .nameCard {
@@ -120,7 +120,7 @@
   height: 32px;
   cursor: url(../public/icons/pointer-cursor.png), pointer;
 
-  color: #e1dcea;
+  color: var(--secondary500);
   font-family: Sora;
   font-size: 12px;
   font-style: normal;
@@ -137,8 +137,8 @@
 }
 
 .selectedTab {
-  background: #fff;
-  color: #101012;
+  background: var(--white);
+  color: var(--background);
   border-radius: 10px;
 }
 
@@ -160,11 +160,11 @@
 .nftContainer {
   width: calc(50% - 5px);
   border-radius: 8px;
-  background: #1f1f25;
+  background: var(--menu-background);
 }
 
 .nftName {
-  color: #f4faff;
+  color: var(--secondary);
   font-size: 9px;
   text-align: center;
   padding: 10px;
@@ -185,7 +185,7 @@
 }
 
 .achievementLvl {
-  color: #f4faff;
+  color: var(--secondary);
   text-align: center;
   font-size: 12px;
   font-style: normal;
@@ -195,7 +195,7 @@
 }
 
 .achievementName {
-  color: #f4faff;
+  color: var(--secondary);
   font-size: 9px;
   text-align: center;
   opacity: 0.7;
@@ -242,7 +242,7 @@
   padding: 4px 16px;
   gap: 8px;
   border-radius: 10px;
-  background: var(--background-700, #101012);
+  background: var(--background-700, --background);
   /* Button shadow */
   box-shadow: 0px 0px 6px 0px rgba(106, 255, 175, 0.1);
 }

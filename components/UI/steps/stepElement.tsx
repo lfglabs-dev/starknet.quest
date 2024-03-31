@@ -20,7 +20,7 @@ const StepElement: FunctionComponent<StepElementProps> = ({
   return (
     <div className={styles.cardContainer}>
       <div className={styles.barsContainer}>
-        <CDNImg className={styles.icon} src={step.icon} />
+        <CDNImg className={styles.icon} src={step.icon} loading="lazy" />
         {index !== steps.length - 1 && (
           <div className={styles.verticalBarContainer}>
             <VerticalBar />
@@ -44,7 +44,7 @@ const StepElement: FunctionComponent<StepElementProps> = ({
             <div className={styles.overlay}>{step.overlay}</div>
           ) : null}
           <div>
-            <CDNImg className={styles.banner} src={step.banner} />
+            <CDNImg className={styles.banner} src={step.banner} loading="lazy"/>
           </div>
         </div>
       </OnScrollIntoView>

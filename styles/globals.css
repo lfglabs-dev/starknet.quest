@@ -31,6 +31,8 @@
   --nimiq-ease: cubic-bezier(0.25, 0, 0, 1);
   --shapes: #66666f;
   --menu-background: #1f1f25;
+  --white: #fff;
+  --textGray: #a6a5a7;
 }
 
 html,

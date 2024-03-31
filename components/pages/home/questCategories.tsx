@@ -54,10 +54,10 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
                   <h2 className="text-gray-200">Boosts Quest</h2>
                   <p className="text-gray-200 normal-case">
                     {completedBoostNumber === boosts.length ? (
-                      <div className="flex">
+                      <span className="flex">
                         <span className="mr-2">All boosts done</span>
                         <CheckIcon width="24" color="#6AFFAF" />
-                      </div>
+                      </span>
                     ) : (
                       `${completedBoostNumber}/${boosts.length} Boost${
                         boosts.length > 1 ? "s" : ""
