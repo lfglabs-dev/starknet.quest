@@ -195,7 +195,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             {
               !boost && (<ErrorScreen
                 errorMessage="This quest doesn't exist !"
-                buttonText="Go back to quests"
+                buttonText="Go back to boosts"
                 onClick={() => router.push("/")}
               />)
             }
