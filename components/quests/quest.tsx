@@ -61,7 +61,7 @@ const Quest: FunctionComponent<QuestProps> = ({
             </>
           ) : (
             <>
-              <CDNImg width={20} src={issuer.logoFavicon} />
+              <CDNImg width={20} src={issuer.logoFavicon} loading="lazy"/>
               <p className="text-white ml-2">{reward}</p>
             </>
           )}

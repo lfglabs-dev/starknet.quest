@@ -24,6 +24,7 @@ import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
+import Image from "next/image";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -183,12 +184,13 @@ const Navbar: FunctionComponent = () => {
         >
           <div className={styles.navbarLogo}>
             <Link href="/" className="modified-cursor-pointer">
-              <img
+              <Image
                 className={styles.logo}
                 src="/visuals/starknetquestLogo.svg"
                 alt="Starknet.id Logo"
                 width={70}
                 height={70}
+                priority
               />
             </Link>
           </div>
@@ -197,19 +199,11 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/achievements">
-                <li className={styles.menuItem}>Achievements</li>
-              </Link>
               <Link href="/leaderboard">
                 <li className={styles.menuItem}>Leaderboard</li>
               </Link>
               {address ? (
                 <>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li className={styles.menuItem}>My land</li>
-                  </Link>
                   <li
                     className={styles.menuItem}
                     onClick={openNotificationModal}
@@ -264,12 +258,13 @@ const Navbar: FunctionComponent = () => {
               <div className={styles.mobileNavBarHeader}>
                 <div>
                   <Link href="/">
-                    <img
+                    <Image
                       src="/visuals/starknetquestLogo.svg"
                       alt="Starknet Quest Logo"
                       width={70}
                       height={70}
                       className={styles.logo}
+                      priority
                     />
                   </Link>
                 </div>
@@ -294,26 +289,6 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/achievements">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Achievements
-                    </li>
-                  </Link>
-                  {address ? (
-                    <Link
-                      href={`/${address ? addressOrDomain : "not-connected"}`}
-                    >
-                      <li
-                        onClick={() => setNav(false)}
-                        className={styles.menuItemSmall}
-                      >
-                        My land
-                      </li>
-                    </Link>
-                  ) : null}
                   <Link href="/leaderboard">
                     <li
                       onClick={() => setNav(false)}

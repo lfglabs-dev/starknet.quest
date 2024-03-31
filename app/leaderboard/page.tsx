@@ -37,6 +37,7 @@ import { rankOrder, rankOrderMobile } from "@constants/common";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
 import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
+import RankingSkeleton from "@components/skeletons/rankingSkeleton";
 import { useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { timeFrameMap } from "@utils/timeService";
@@ -59,6 +60,7 @@ export default function Page() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -80,32 +82,18 @@ export default function Page() {
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
-  useEffect(() => {
-    // adding a delay for the browser to automatically detect wallet and fetch connection status on component mount
+  useEffect(()=>{
     if (!apiCallDelay) return;
-    const requestBody = {
-      addr:
-        status === "connected"
-          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
-          : "",
-      page_size: 10,
-      shift: 0,
-      duration: timeFrameMap(duration),
-    };
+    fetchPageData()
+},[apiCallDelay]);
 
-    setLoading(true);
-    fetchLeaderboardToppersResult({
-      addr: requestBody.addr,
-      duration: timeFrameMap(duration),
-    });
-    fetchRankingResults(requestBody);
-    setLoading(false);
-  }, [userAddress, status, apiCallDelay]);
+
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);
-      setRanking(response);
+      const response = await fetchLeaderboardRankings(requestBody);         
+        setRanking(response); 
+ 
     },
     []
   );
@@ -114,9 +102,31 @@ export default function Page() {
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
+      
     },
     []
   );
+
+  const fetchPageData=useCallback(async ()=>{
+ const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
+          : "",
+      page_size: 10,
+      shift: 0,
+      duration: timeFrameMap(duration),
+    };
+    setRankingdataloading(true);
+    await fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
+      duration: timeFrameMap(duration),
+    });
+    await fetchRankingResults(requestBody);
+    setRankingdataloading(false);
+},[fetchRankingResults,fetchLeaderboardToppersResult,address,userAddress,status]);
+
+
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -297,6 +307,7 @@ export default function Page() {
         </div>
       ) : (
         <>
+        
           <div className={styles.leaderboard_quest_banner}>
             <div className={styles.blur1}>
               <Blur green />
@@ -392,9 +403,13 @@ export default function Page() {
               className={styles.divider}
             />
 
-            {/* this will be if searched user is not present in leaderboard or server returns 500 */}
-            {ranking ? (
-              showNoresults ? (
+            {/* shows loader skeleton while data is still being fetched*/}
+
+            {rankingdataloading ? <RankingSkeleton /> :
+
+ranking ? (
+  showNoresults ? (
+                // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
                     src="/visuals/animals/tiger.webp"
@@ -439,8 +454,18 @@ export default function Page() {
                   />
                 </>
               )
-            ) : null}
-
+            ) :    
+            <div className={styles.no_result_container}>
+            <p className="pb-[1.5rem] text-[1.5rem]">
+              Something went wrong! Try again...
+            </p>
+            <Divider
+              orientation="horizontal"
+              variant="fullWidth"
+              className={styles.divider}
+            />
+          </div>}
+                  
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
                 ? isMobile
