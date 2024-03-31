@@ -199,19 +199,11 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/achievements">
-                <li className={styles.menuItem}>Achievements</li>
-              </Link>
               <Link href="/leaderboard">
                 <li className={styles.menuItem}>Leaderboard</li>
               </Link>
               {address ? (
                 <>
-                  <Link
-                    href={`/${address ? addressOrDomain : "not-connected"}`}
-                  >
-                    <li className={styles.menuItem}>My land</li>
-                  </Link>
                   <li
                     className={styles.menuItem}
                     onClick={openNotificationModal}
@@ -297,26 +289,6 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/achievements">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Achievements
-                    </li>
-                  </Link>
-                  {address ? (
-                    <Link
-                      href={`/${address ? addressOrDomain : "not-connected"}`}
-                    >
-                      <li
-                        onClick={() => setNav(false)}
-                        className={styles.menuItemSmall}
-                      >
-                        My land
-                      </li>
-                    </Link>
-                  ) : null}
                   <Link href="/leaderboard">
                     <li
                       onClick={() => setNav(false)}
