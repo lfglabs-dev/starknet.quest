@@ -68,6 +68,7 @@ You should see something like this:
 
 We're always looking for passionate developers to join our community and contribute to Starknet Quest. Check out our [contributing guide](./docs/CONTRIBUTING.md)
 for more information on how to get started.
+
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
