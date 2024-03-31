@@ -286,26 +286,6 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/achievements">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Achievements
-                    </li>
-                  </Link>
-                  {address ? (
-                    <Link
-                      href={`/${address ? addressOrDomain : "not-connected"}`}
-                    >
-                      <li
-                        onClick={() => setNav(false)}
-                        className={styles.menuItemSmall}
-                      >
-                        My land
-                      </li>
-                    </Link>
-                  ) : null}
                   <Link href="/leaderboard">
                     <li
                       onClick={() => setNav(false)}
