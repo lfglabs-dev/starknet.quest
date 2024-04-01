@@ -69,3 +69,17 @@ for more information on how to get started.
 
 To connect with us regarding any queries about contributing to the repo, feel free to join our telegram group [here](https://t.me/SQcontributors)
 
+
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
