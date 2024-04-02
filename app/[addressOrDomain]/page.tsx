@@ -23,18 +23,18 @@ type AddressOrDomainProps = {
 
 export default function Page({ params }: AddressOrDomainProps) {
   const router = useRouter();
-  const addressOrDomain = params.addressOrDomain;
+  const addressOrDomain = params.addressOrDomain; // 2
   const { address } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
-  const [identity, setIdentity] = useState<Identity>();
+  const [identity, setIdentity] = useState<Identity>(); // 1
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const dynamicRoute = usePathname();
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
-  const [soloBuildings, setSoloBuildings] = useState<StarkscanNftProps[]>([]);
-  const sinceDate = useCreationDate(identity);
+  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]); // 4
+  const [soloBuildings, setSoloBuildings] = useState<StarkscanNftProps[]>([]); //5
+  const sinceDate = useCreationDate(identity); // 3
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
