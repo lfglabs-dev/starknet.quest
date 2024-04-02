@@ -136,69 +136,66 @@ export default function Page({ params }: BoostQuestPageProps) {
         <BoostSkeleton />
       ) : (
         <>
-          {boost && (
-            <>
-              <div className="flex flex-col">
-                <h1 className={styles.title}>{boost?.name}</h1>
-                {boost?.expiry && boost.expiry > Date.now() ? (
-                  <Timer fixed={false} expiry={Number(boost?.expiry)} />
-                ) : null}
-              </div>
-
-              <div className={styles.card_container}>
-                {quests?.map((quest, index) => {
-                  if (quest?.hidden || quest?.disabled) return null;
-                  return (
-                    <Quest
-                      key={index}
-                      title={quest.title_card}
-                      onClick={() => router.push(`/quest/${quest.id}`)}
-                      imgSrc={quest.img_card}
-                      issuer={{
-                        name: quest.issuer,
-                        logoFavicon: quest.logo,
-                      }}
-                      reward={quest.rewards_title}
-                      id={quest.id}
-                      expired={quest.expired}
-                    />
-                  );
-                })}
-              </div>
-              <div className={styles.claim_button_container}>
-                <div className={styles.claim_button_text_content}>
-                  <p>Reward:</p>
-                  <div className={questStyles.issuer}>
-                    <p>
-                      {boost?.amount} {getTokenName(boost?.token ?? "")}
-                    </p>
-                    <TokenSymbol tokenAddress={boost?.token ?? ""} />
-                  </div>
-                  <p>among</p>
-                  <p className={styles.claim_button_text_highlight}>
-                    {participants} players
-                  </p>
+            {boost ? (
+              <>
+                <div className="flex flex-col">
+                  <h1 className={styles.title}>{boost?.name}</h1>
+                  {boost?.expiry && boost.expiry > Date.now() ? (
+                    <Timer fixed={false} expiry={Number(boost?.expiry)} />
+                  ) : null}
                 </div>
-                {address ? (
-                  <div>
-                    <Button
-                      disabled={buttonDisabled}
-                      onClick={handleButtonClick}
-                    >
-                      {getButtonText()}
-                    </Button>
+
+                <div className={styles.card_container}>
+                  {quests?.map((quest, index) => {
+                    if (quest?.hidden || quest?.disabled) return null;
+                    return (
+                      <Quest
+                        key={index}
+                        title={quest.title_card}
+                        onClick={() => router.push(`/quest/${quest.id}`)}
+                        imgSrc={quest.img_card}
+                        issuer={{
+                          name: quest.issuer,
+                          logoFavicon: quest.logo,
+                        }}
+                        reward={quest.rewards_title}
+                        id={quest.id}
+                        expired={quest.expired}
+                      />
+                    );
+                  })}
+                </div>
+                <div className={styles.claim_button_container}>
+                  <div className={styles.claim_button_text_content}>
+                    <p>Reward:</p>
+                    <div className={questStyles.issuer}>
+                      <p>
+                        {boost?.amount} {getTokenName(boost?.token ?? "")}
+                      </p>
+                      <TokenSymbol tokenAddress={boost?.token ?? ""} />
+                    </div>
+                    <p>among</p>
+                    <p className={styles.claim_button_text_highlight}>
+                      {participants} players
+                    </p>
                   </div>
-                ) : null}
-              </div>
-            </>
-            )}
-            {
-              !boost && (<ErrorScreen
-                errorMessage="This boost doesn't exist !"
-                buttonText="Go back to boosts"
-                onClick={() => router.push("/quest-boost")}
-              />)
-            }
+                  {address ? (
+                    <div>
+                      <Button disabled={buttonDisabled} onClick={handleButtonClick}>
+                        {getButtonText()}
+                      </Button>
+                    </div>
+                  ) : null}
+                </div>
+              </>
+            )
+              : (
+                <ErrorScreen
+                  errorMessage="This boost doesn't exist !"
+                  buttonText="Go back to boosts"
+                  onClick={() => router.push("/quest-boost")}
+                />
+              )}
         </>
       )}
     </div>
