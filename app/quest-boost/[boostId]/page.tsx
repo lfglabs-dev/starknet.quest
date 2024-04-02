@@ -130,7 +130,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
-        <BackButton onClick={() => router.back()} />
       </div>
       {loading ? (
         <BoostSkeleton />
