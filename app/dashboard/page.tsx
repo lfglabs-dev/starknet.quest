@@ -82,12 +82,12 @@ export default function Page() {
                     </div>
                 </div>
                 <div className={`${styles.center} ${styles.child}`}>
-                    <p className={styles.profile_paragraph}>Member since 10 months</p>
+                    <p className={styles.profile_paragraph0}>Member since 10 months</p>
                     <h2 className={styles.profile_name}>Momchillo.stark</h2>
                     <div className={styles.address_div}>
                         <CopyIcon width="24" color="white">
                         </CopyIcon>
-                        <p className={styles.profile_paragraph}>0x0ffABC123abc123ABC123abc123ABC123abc</p>
+                        <p className={styles.profile_paragraph}>0x0ffABC123abc1...ABC123abc</p>
                     </div>
                     <p className={styles.profile_paragraph2}>You are <span className={styles.green_span}>better than 90%</span> of players.</p>
                 </div>

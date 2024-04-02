@@ -62,7 +62,7 @@
 .dashboard_profile_card {
     display: flex;
     width: 100%;
-    height: 200px;
+    max-width: 950px;
     padding: 1.5rem 2.5rem;
     background: rgb(89, 89, 89);
     background: linear-gradient(180deg, rgba(89, 89, 89, 1) 0%, rgba(36, 36, 36, 0.6937368697478992) 70%, rgba(0, 0, 0, 0) 100%);
@@ -87,6 +87,7 @@
 }
 
 .left {
+    max-width: fit-content;
 }
 
 .center {
@@ -114,14 +115,13 @@
 .right_top {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     gap: 20px;
     align-items: center;
 }
 
 .right_socials {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     gap: 10px;
 }
 
@@ -160,33 +160,40 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .right_bottom_content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 5px;
 }
 
+.right_bottom_content p {
+    font-size: 12px;
+} 
 
 .profile_name {
     font-size: 24px;
     font-weight: bold;
 }
 
-.profile_paragraph {
+
+
+.profile_paragraph, .profile_paragraph0 {
     font-size: 12px;
 }
 
 .profile_paragraph2 {
     font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .address_div {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .green_span {
@@ -207,7 +214,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
     margin-top: 12vh;
     max-width: 900px;
     margin-bottom: 24px;
@@ -219,9 +227,68 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
     gap: 10px;
+}
 
+@media (max-width: 768px) {
+    .dashboard_profile_card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .quests_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .right_top {
+        padding: 0 50px;
+    }
+
+    .center {
+        gap: 0;
+    }
+
+    .right_top {
+        margin-bottom: 10px;
+        order: -1;
+    }
+
+    .address_div {
+        justify-content: center;
+    }
+
+    .right_bottom {
+        padding: 5px 50px;
+    }
+
+    .profile_picture_div {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile_paragraph {
+        font-size: 10px;
+    }
+
+    .profile_paragraph0 {
+        padding-top: 10px;
+        font-size: 10px;
+    }
+
+    .profile_paragraph2 {
+        font-size: 14px;
+    }
+
+    .second_header_label {
+        text-align: center;
+    }
+
+    .dashboard_completed_tasks_container {
+        margin-top: 6vh;
+    }
 }
 
 
