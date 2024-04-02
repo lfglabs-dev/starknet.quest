@@ -72,6 +72,28 @@ export function Providers({ children }: { children: React.ReactNode }) {
         default: "#29282b",
       },
     },
+    components: {
+      MuiTabs: {
+        styleOverrides: {
+          // Surcharge les styles pour l'indicateur de l'onglet sélectionné
+          indicator: {
+            backgroundColor: "transparent",
+          },
+        },
+      },
+      MuiTab: {
+        styleOverrides: {
+          // Surcharge les styles pour les onglets non sélectionnés
+          root: {
+            color: "#E1DCEA", // Couleur de texte pour les onglets non sélectionnés
+            "&.Mui-selected": {
+              color: "#000", // Couleur de texte pour l'onglet sélectionné
+              backgroundColor: "#fff", // Fond de l'onglet sélectionné
+            },
+          },
+        },
+      },
+    },
   });
 
   return (

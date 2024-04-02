@@ -5,15 +5,16 @@ import styles from "@styles/Home.module.css";
 
 import { useRouter } from "next/navigation";
 import HowToParticipate from "@components/pages/home/howToParticipate";
-import QuestCategories from "@components/pages/home/questCategories";
-import TrendingQuests from "@components/pages/home/trending";
+import Stats from "@components/UI/stats/stats";
 import Blur from "@components/shapes/blur";
 import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
+import QuestAndCollectionTabs from "@components/pages/home/questAndCollectionTabs";
+import CategoryTitle from "@components/UI/titles/categoryTitle";
 
 export default function Page() {
   const router = useRouter();
-  const { featuredQuest, categories, trendingQuests } =
+  const { featuredQuest, categories, trendingQuests, quests } =
     useContext(QuestsContext);
 
   return (
@@ -40,11 +41,36 @@ export default function Page() {
           />
         </div>
 
-        <QuestCategories categories={categories} />
+        <QuestAndCollectionTabs
+          quests={quests}
+          categories={categories}
+          trendingQuests={trendingQuests}
+        />
+        <CategoryTitle
+          subtitle="Get access to our community"
+          title="About our quests"
+          corner="bottomLeft"
+          squares="bottomRight"
+        />
+        <Stats
+          stats={[
+            {
+              name: "Quests NFT minted",
+              value: "+1M",
+            },
+            {
+              name: "Unique addresses",
+              value: "398K",
+            },
+            {
+              name: "Unique visitors on our website",
+              value: "+200K",
+            },
+          ]}
+        />
         <div className={styles.blur2}>
           <Blur green />
         </div>
-        <TrendingQuests trendingQuests={trendingQuests} />
         <HowToParticipate />
       </div>
     </div>
