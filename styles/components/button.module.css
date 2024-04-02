@@ -96,6 +96,13 @@
   opacity: 1;
 }
 
+a.nq-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, var(--primary) -0.12%, var(--tertiary) 99.88%);
+}
+
 @media (max-width: 1024px) {
   .nq-button {
     font-size: 0.75rem;
