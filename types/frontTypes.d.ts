@@ -81,7 +81,7 @@ type Reward = {
   disabled: boolean;
 };
 
-type Identity = {
+export type Identity = {
   addr: string;
   domain?: string;
   domain_expiry?: number | null;
@@ -103,7 +103,7 @@ type NftCard = {
   url: string;
 };
 
-type StarkscanNftProps = {
+export type StarkscanNftProps = {
   animation_url: string | null;
   attributes: Attribute[];
   contract_address: string;
@@ -138,7 +138,7 @@ type BraavosScoreProps = {
   protocols: string[];
 };
 
-type StarkscanApiResult = {
+export type StarkscanApiResult = {
   data: StarkscanNftProps[];
   next_url?: string;
   remainder?: StarkscanNftProps[];
@@ -184,7 +184,7 @@ type UserAchievements = {
   achievements: Achievement[];
 };
 
-type BuildingsInfo = {
+export type BuildingsInfo = {
   id: number;
   name: string;
   description: string;
