@@ -127,17 +127,8 @@ export default function Page({ params }: BoostQuestPageProps) {
     fetchPageData();
   }, []);
 
-  // Check if the user landed on the page directly
-  // const showButton = typeof window !== "undefined" && window.history.length === 1;
-
   return (
     <div className={styles.container}>
-      {/* {showButton ? null : (
-        <div className={styles.backButton}>
-          <BackButton onClick={() => router.back()} />
-        </div>
-      )} */}
-
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
