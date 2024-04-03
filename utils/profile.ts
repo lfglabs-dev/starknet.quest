@@ -1,4 +1,4 @@
-import { Identity } from "@types/frontTypes";
+import { Identity } from "../types/frontTypes";
 
 export const hasVerifiedSocials = (identity: Identity) => {
   if (identity.old_discord || identity.old_twitter || identity.old_github) {

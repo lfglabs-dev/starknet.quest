@@ -1,4 +1,4 @@
-import { BuildingsInfo } from "@types/frontTypes";
+import { BuildingsInfo } from "../types/frontTypes";
 import {
   AchievementsDocument,
   CompletedDocument,
