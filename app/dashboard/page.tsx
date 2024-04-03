@@ -48,7 +48,6 @@ export default function Page() {
     useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
@@ -56,7 +55,8 @@ export default function Page() {
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
-
+  const [loading, setLoading] = useState<boolean>(false);
+  
 
   return (
     <div className={styles.dashboard_container}>
@@ -194,5 +194,3 @@ export default function Page() {
     </div>
   );
 }
-
-

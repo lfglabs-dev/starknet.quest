@@ -178,7 +178,10 @@
     font-weight: bold;
 }
 
-
+.profile_paragraph0 {
+    color: lightgray;
+    font-weight: 100;
+}
 
 .profile_paragraph, .profile_paragraph0 {
     font-size: 12px;
@@ -187,13 +190,11 @@
 .profile_paragraph2 {
     font-size: 16px;
     margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .address_div {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .green_span {
@@ -201,7 +202,7 @@
 }
 
 .second_header_label {
-    text-align: left;
+    margin-right: auto;
 }
 
 .second_header {
@@ -280,6 +281,7 @@
 
     .profile_paragraph2 {
         font-size: 14px;
+        margin-bottom: 10px;
     }
 
     .second_header_label {
@@ -289,6 +291,12 @@
     .dashboard_completed_tasks_container {
         margin-top: 6vh;
     }
+
+    .second_header_label {
+        margin: auto;
+    }
+
+    
 }
 
 
