@@ -1,5 +1,4 @@
 import { QuestDocument } from "../types/backTypes";
-import { PickRandomObjects } from "../types/frontTypes";
 
 export const getOrderedQuests = (quests: QuestDocument[]) => {
   // Place ongoing quests firsts and the expired ones last

@@ -1,5 +1,3 @@
-import { StarkscanApiResult, StarkscanNftProps } from "../types/frontTypes";
-
 export const retrieveAssets = async (
   url: string,
   accumulatedAssets: StarkscanNftProps[] = []
