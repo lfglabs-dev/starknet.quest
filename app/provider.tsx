@@ -79,7 +79,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             "& .MuiTabs-flexContainer": {
               display: "flex",
               flexDirection: "column", // For mobile versions
-              ["@media (min-width:376px)"]: {
+              alignItems: "center",
+              ["@media (min-width:768px)"]: {
                 flexDirection: "row", // For desktop versions
               },
             },
@@ -95,6 +96,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           // Overrides the styles for unselected tabs
           root: {
             color: "#E1DCEA", // Text color for unselected tabs
+            width: "100%",
+            ["@media (min-width:768px)"]: {
+              width: "fit-content",
+            },
             "&.Mui-selected": {
               color: "#000", // Text color for the selected tab
               backgroundColor: "#fff", // Background of the selected tab

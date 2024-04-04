@@ -76,7 +76,10 @@ const QuestAndCollectionTabs: FunctionComponent<
         <div className="w-full">
           <div>
             <Tabs
-              style={{ borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)" }}
+              style={{
+                borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
+                margin: "0 3rem",
+              }}
               className="pb-4"
               value={tabIndex}
               onChange={handleChangeTab}
