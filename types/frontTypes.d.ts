@@ -165,6 +165,17 @@ type ProfileCard = {
   soloBuildings: StarkscanNftProps[];
 };
 
+type ProfileCardModified = {
+  identity: Identity;
+  addressOrDomain: string | string[] | undefined;
+  sinceDate: string | null;
+  userPercentile: number;
+  data: {
+    ranking: { address: string; xp: number; achievements: number }[];
+  } | undefined;
+
+}
+
 type Signature = [string, string];
 
 type UserAchievement = {

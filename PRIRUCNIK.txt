@@ -1,0 +1,44 @@
+to-do: modifikovati ProfileCard na osnovu ProfileCards (proslediti identity) // done
+to-do: pokupiti potrebno iz leaderboard/page.tsx na dashboard/page.tsx // done
+to-do: pokupiti potrebno iz [addressOrDomain]/page.tsx na dashboard/page.tsx // done
+to-do: proslediti podatke u <ProfileCard/> na dashboard/page.tsx // done
+to-do: proveriti kako najbolje dobiti memberSince i profilePictureUrl (videti na njihovom primeru) // done
+
+
+
+to-do: prikazati completedQuests za trenutnog usera 
+to-do: proslediti podatke u <QuestCard/> na dashboard/page.tsx
+to-do: modifikovati endpoint koji salje na /dashboard tako da prosledimo params kao sto se radi za /[addressOrDomain]
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+moja porfileCard:
+
+<ProfileCard
+ identity={}
+ addressOrDomain={}
+ memberSince={}
+ userPercentile={}
+/>
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+njihov model identity-a:
+
+type Identity = {
+  addr: string;
+  domain?: string;
+  domain_expiry?: number | null;
+  is_owner_main?: boolean;
+  owner_addr?: string;
+  old_discord?: string;
+  old_twitter?: string;
+  old_github?: string;
+  discord?: string;
+  twitter?: string;
+  github?: string;
+  starknet_id?: string;
+  error?: string;
+};
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
