@@ -41,8 +41,6 @@
 }
 
 
-
-
 .blur1 {
     display: none;
     position: absolute;
@@ -64,11 +62,11 @@
     width: 100%;
     max-width: 950px;
     padding: 1.5rem 2.5rem;
-    background: rgb(89, 89, 89);
-    background: linear-gradient(180deg, rgba(89, 89, 89, 1) 0%, rgba(36, 36, 36, 0.6937368697478992) 70%, rgba(0, 0, 0, 0) 100%);
+    background: rgb(51, 51, 51);
+    background: linear-gradient(180deg, rgba(51, 51, 51, 1) 0%, rgba(46, 46, 46, 0.8996192226890756) 25%, rgba(36, 36, 36, 0.6937368697478992) 70%, rgba(0, 0, 0, 0.09849877450980393) 100%);
     align-items: center;
     border-radius: 12px;
-    margin: 2rem;
+    margin-top: 2rem;
 }
 
 .profile_picture_div {
@@ -218,12 +216,13 @@
     justify-content: center;
     align-items: center;
     margin-top: 12vh;
-    max-width: 900px;
+    max-width: 950px;
     margin-bottom: 24px;
 }
 
 .quests_container {
     max-width: 950px;
+    min-height: 350px;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -294,6 +293,13 @@
 
     .second_header_label {
         margin: auto;
+    }
+
+    .noBoosts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     

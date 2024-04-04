@@ -18,6 +18,7 @@ interface QuestsConfig {
   featuredQuest?: QuestDocument;
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
+  completedQuests: QuestDocument[];
   completedQuestIds: number[];
   completedBoostIds: number[];
   boostedQuests: number[];
@@ -34,6 +35,7 @@ export const QuestsContext = createContext<QuestsConfig>({
   featuredQuest: undefined,
   categories: [],
   trendingQuests: [],
+  completedQuests: [],
   completedQuestIds: [],
   completedBoostIds: [],
   boostedQuests: [],
@@ -50,6 +52,7 @@ export const QuestsContextProvider = ({
   >();
   const [categories, setCategories] = useState<QuestCategory[]>([]);
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<QuestDocument[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
   const [completedBoostIds, setCompletedBoostIds] = useState<number[]>([]);
   const [boostedQuests, setBoostedQuests] = useState<number[]>([]);
@@ -106,6 +109,8 @@ export const QuestsContextProvider = ({
     );
   }, [address]);
 
+
+
   useMemo(() => {
     if (!quests || featuredQuest || !quests.length) return;
     const notExpired = quests.filter((quest) => !quest.expired);
@@ -120,6 +125,18 @@ export const QuestsContextProvider = ({
       (data: number[] | QueryError) => {
         if ((data as QueryError).error) return;
         setCompletedBoostIds(data as number[]);
+      }
+    );
+  }, [address]);
+
+  
+
+  useMemo(() => {
+    getCompletedQuests(hexToDecimal(address)).then(
+      (data: QuestDocument[] | QueryError) => {
+        if ((data as QueryError).error) return;
+        const quests = data as QuestDocument[];
+        setCompletedQuests(quests);        
       }
     );
   }, [address]);
@@ -147,6 +164,7 @@ export const QuestsContextProvider = ({
       featuredQuest,
       categories,
       trendingQuests,
+      completedQuests,
       completedQuestIds,
       completedBoostIds,
       boostedQuests,
@@ -156,6 +174,7 @@ export const QuestsContextProvider = ({
     featuredQuest,
     categories,
     trendingQuests,
+    completedQuests,
     completedQuestIds,
     completedBoostIds,
     boostedQuests,

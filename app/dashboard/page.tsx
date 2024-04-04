@@ -4,42 +4,25 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
-import ProfilePhoto from "../../public/visuals/profile.webp";
 import styles from "@styles/dashboard.module.css";
 import { useAccount, useStarkName } from "@starknet-react/core";
 import { QuestsContext } from "@context/QuestsProvider";
 import { usePathname, useRouter } from "next/navigation";
 import { useDebounce } from "@hooks/useDebounce";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
-import Avatar from "@components/UI/avatar";
-import { useMediaQuery } from "@mui/material";
-import Link from "next/link";
 import DashboardSkeleton from "@components/skeletons/dashboardSkeleton";
-import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
-import StarkIcon from "../../components/UI/iconsComponents/icons/starknetIcon";
-import ClickableTwitterIcon from "@components/UI/actions/clickable/clickableTwitterIcon";
-import ClickableDiscordIcon from "@components/UI/actions/clickable/clickableDiscordIcon";
-import ClickableGithubIcon from "@components/UI/actions/clickable/clickableGithubIcon";
-import AchievementIcon from "@components/UI/iconsComponents/icons/achievementIcon";
-import { CDNImage } from "@components/cdn/image";
-import ShareIcon from "@components/UI/iconsComponents/icons/shareIcon";
-import QuestCard from "@components/quests/questCard";
-import RhinoSrc from "public/rhino/silverRhino.webp";
-import { log } from "console";
 import { isHexString, minifyAddress } from "@utils/stringService";
 import useCreationDate from "@hooks/useCreationDate";
 import { utils } from "starknetid.js";
 import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import ProfileCard from "@components/UI/profileCard/profileCard";
-import { LeaderboardTopperParams, fetchLeaderboardToppers, getCompletedQuests } from "@services/apiService";
-import { timeFrameMap } from "@utils/timeService";
+import { LeaderboardTopperParams, fetchLeaderboardToppers, getBoosts, getCompletedQuests } from "@services/apiService";
 import { calculatePercentile } from "@utils/numberService";
 import { getDomainFromAddress } from "@utils/domainService";
+import BoostCard from "@components/quest-boost/boostCard";
 
 
 
@@ -54,54 +37,38 @@ type DashboardProps = {
 
 export default function Page({ params, questData }: DashboardProps) {
   const router = useRouter();
-  const [identity, setIdentity] = useState<Identity>(); // ovo treba 1
-  const addressOrDomain = params.addressOrDomain; // ovo treba 2
-  const sinceDate = useCreationDate(identity); // ovo treba 3
-  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]); // ovo treba 4
+  const [identity, setIdentity] = useState<Identity>();
+  const addressOrDomain = params.addressOrDomain;
+  const sinceDate = useCreationDate(identity);
+  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
   const [initProfile, setInitProfile] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const dynamicRoute = usePathname();
-  
-
-  const { account, address, status } = useAccount();
-  const { featuredQuest } = useContext(QuestsContext);
-
-  const [duration, setDuration] = useState<string>("Last 7 Days");
+  const { address } = useAccount();
   const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
   const searchAddress = useDebounce<string>(searchQuery, 200);
-  const [currentSearchedAddress, setCurrentSearchedAddress] =
-    useState<string>("");
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
-  const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
-  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
-  const [showNoresults, setShowNoresults] = useState(false);
-  const [userAddress, setUserAddress] = useState<string>("");
-  const isMobile = useMediaQuery("(max-width:768px)");
   const [loading, setLoading] = useState<boolean>(false);
-  const { data, isLoading, isError } = useStarkName({ address });
   const [ displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-
+  const [completedQuests, setCompletedQuests] = useState<Boost[]>([]);
+  const [numOfCompletedQuests, setNumOfCompletedQuests] = useState<number[]>([]);
 
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
 
-  useEffect(() => { // ovo treba
+  useEffect(() => {
     setInitProfile(false);
     setAchievements([]);
   }, [address, addressOrDomain]); 
 
-  useEffect(() => { // ovo treba
+  useEffect(() => {
     if (!address) setIsOwner(false);
   }, [address]);
 
-  useEffect(() => { // ovo treba
+  useEffect(() => {
     if (
       typeof addressOrDomain === "string" &&
       addressOrDomain?.toString().toLowerCase().endsWith(".stark")
@@ -221,31 +188,14 @@ export default function Page({ params, questData }: DashboardProps) {
     return response.json();
   };
 
+
   const fetchLeaderboardToppersResult = useCallback( // ovo treba
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
-      
     },
     []
   );
-
-  const fetchPageData = useCallback(async ()=> { // ovo treba
-    const requestBody = {
-        addr:
-          status === "connected"
-            ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
-            : "",
-        page_size: 10,
-        shift: 0,
-        duration: timeFrameMap(duration),
-    };
-    setRankingdataloading(true);
-    await fetchLeaderboardToppersResult({
-      addr: requestBody.addr,
-      duration: timeFrameMap(duration),
-    });
-  },[fetchLeaderboardToppersResult,address,userAddress,status]);
 
 
   const [leaderboardToppers, setLeaderboardToppers] = // ovo treba
@@ -253,6 +203,26 @@ export default function Page({ params, questData }: DashboardProps) {
       best_users: [],
       total_users: 0,
   });
+
+  // Fetch all boosts
+  
+  // const fetchCompletedQuests = async () => {
+  //   try {
+  //     const res = await getBoosts();
+  //     setCompletedQuests(res);
+  //   } catch (err) {
+  //     console.log("Error while fetching boosts", err);
+  //   }
+  // };
+
+  const fetchCompletedQuests = async () => {
+    try {
+      const res = await getCompletedQuests(identity?.addr ? identity.addr : "");
+      setCompletedQuests(res);
+    } catch (err) {
+      console.log("Error while fetching boosts", err);
+    }
+  };
 
 
   // calculate user percentile
@@ -262,8 +232,9 @@ export default function Page({ params, questData }: DashboardProps) {
       leaderboardToppers?.total_users ?? 0
     );
     setUserPercentile(res);
-    setShowNoresults(false);
-  }, [leaderboardToppers, currentSearchedAddress, duration]);
+  }, [leaderboardToppers]);
+
+
 
   useEffect(() => {
     if (!questData) return;
@@ -276,6 +247,7 @@ export default function Page({ params, questData }: DashboardProps) {
           const completedQuestsResponse = await getCompletedQuests(
             addressOrDomain
           );
+          console.log(completedQuestsResponse);
           item.completedQuests = completedQuestsResponse?.length;
 
           // get the domain name from the address
@@ -293,6 +265,12 @@ export default function Page({ params, questData }: DashboardProps) {
     };
     makeCall();
   }, [questData, addressOrDomain]);
+
+  useEffect(() => {
+    fetchCompletedQuests();
+  }, []);
+
+  
 
   
 
@@ -325,42 +303,20 @@ export default function Page({ params, questData }: DashboardProps) {
             
             <div className={styles.quests_container}>
               
-                <QuestCard 
-                    children={undefined}
-                    imgSrc={"public/rhino/silverRhino.webp"}
-                    title={"The Rhino Charge..."}
-                    onClick={function (): void {
-                    console.log("Quest click");
-                    } }            
-                >
-                </QuestCard>
-                <QuestCard 
-                    children={undefined}
-                    imgSrc={"public/rhino/silverRhino.webp"}
-                    title={"The Rhino Charge..."}
-                    onClick={function (): void {
-                    console.log("Quest click");
-                    } }            
-                >
-                </QuestCard>
-                <QuestCard 
-                    children={undefined}
-                    imgSrc={"public/rhino/silverRhino.webp"}
-                    title={"The Rhino Charge..."}
-                    onClick={function (): void {
-                    console.log("Quest click");
-                    } }            
-                >
-                </QuestCard>
-                <QuestCard 
-                    children={undefined}
-                    imgSrc={"public/rhino/silverRhino.webp"}
-                    title={"The Rhino Charge..."}
-                    onClick={function (): void {
-                    console.log("Quest click");
-                    } }            
-                >
-                </QuestCard>
+                {completedQuests?.map((completedQuest) => {
+                  return (
+                    <BoostCard
+                      key={completedQuest.id}
+                      boost={completedQuest}
+                      completedQuests={numOfCompletedQuests}
+                    />
+                  );
+                })}
+                  {completedQuests?.length === 0 && (
+                    <h2 className={styles.noBoosts}>
+                      No completed quests at the moment.
+                    </h2>
+                  )}
                 
             </div>
             
