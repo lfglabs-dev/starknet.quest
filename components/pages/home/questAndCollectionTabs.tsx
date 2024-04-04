@@ -56,7 +56,7 @@ const QuestAndCollectionTabs: FunctionComponent<
     []
   );
   const sortedAndFilteredQuests = useMemo(() => {
-    const filteredQuests = address ? trendingQuests : quests;
+    const filteredQuests = address ? [...trendingQuests,...quests] : quests;
     return filteredQuests
       .filter((quest) => !quest.expired)
       .sort((questA, questB) => {
