@@ -117,7 +117,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             {isConnecting ? (
               "Connecting to wallet..."
             ) : (
-              <div className="flex flex-wrap gap-10">
+              <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
                 {sortedAndFilteredQuests.map((quest) => (
                   <Quest
                     key={quest.id}
@@ -137,7 +137,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="space-y-6">
+            <div className="space-y-6 flex flex-col items-center">
               {categories ? (
                 categories.map((category) => {
                   return (

@@ -75,6 +75,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
     components: {
       MuiTabs: {
         styleOverrides: {
+          root: {
+            "& .MuiTabs-flexContainer": {
+              display: "flex",
+              flexDirection: "column", // For mobile versions
+              ["@media (min-width:376px)"]: {
+                flexDirection: "row", // For desktop versions
+              },
+            },
+          },
           // Overrides the styles for the selected tab indicator
           indicator: {
             backgroundColor: "transparent",
