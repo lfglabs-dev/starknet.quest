@@ -78,7 +78,6 @@ const QuestAndCollectionTabs: FunctionComponent<
             <Tabs
               style={{
                 borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
-                margin: "0 3rem",
               }}
               className="pb-4"
               value={tabIndex}
