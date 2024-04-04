@@ -56,9 +56,9 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   }, [address]);
 
   const isClickable = useMemo(
-    () => !userBoostCheckStatus,
-    [userBoostCheckStatus]
-  );
+		() => !userBoostCheckStatus && address && hasUserCompletedBoost,
+		[userBoostCheckStatus]
+	);
 
   return (
     <Link
