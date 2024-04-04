@@ -39,7 +39,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 			if (!completedQuests) return false;
 			// if any of the quests are completed by user and is part of this boost
 			if (completedQuests.includes(quest)) userParticipationCheck = true;
-
 			// check if all quests are completed by the user and if not then set this flag value to false
 			if (!completedQuests.includes(quest)) userBoostCompletionCheck = false;
 		});
@@ -58,7 +57,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 
 		[userBoostCheckStatus, address, hasUserCompletedBoost]
 	);
-
 	return (
 		<Link
 			className="flex"
