@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback, useMemo } from "react";
 import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
@@ -49,9 +49,26 @@ const QuestAndCollectionTabs: FunctionComponent<
   const { address, isConnecting } = useAccount();
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
-    setTabIndex(newValue);
-  };
+  const handleChangeTab = useCallback(
+    (event: React.SyntheticEvent, newValue: number) => {
+      setTabIndex(newValue);
+    },
+    []
+  );
+  const sortedAndFilteredQuests = useMemo(() => {
+    const filteredQuests = address ? trendingQuests : quests;
+    return filteredQuests
+      .filter((quest) => !quest.expired)
+      .sort((questA, questB) => {
+        const aExpiry = questA.expiry_timestamp
+          ? Number(questA.expiry_timestamp)
+          : Number.MAX_SAFE_INTEGER;
+        const bExpiry = questB.expiry_timestamp
+          ? Number(questB.expiry_timestamp)
+          : Number.MAX_SAFE_INTEGER;
+        return aExpiry - bExpiry; // Quests that expired soon will be first
+      });
+  }, [address, quests, trendingQuests]);
 
   return (
     <div className={styles.featured_quest_banner_container}>
@@ -67,14 +84,28 @@ const QuestAndCollectionTabs: FunctionComponent<
               indicatorColor="secondary"
             >
               <Tab
-                sx={{ borderRadius: "12px" }}
-                label={`Quests (${
-                  address ? trendingQuests.length : quests.length
-                })`}
+                sx={{
+                  borderRadius: "10px",
+                  padding: "0px 12px 0px 12px",
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "12px",
+                  fontFamily: "Sora",
+                  minHeight: "32px",
+                }}
+                label={`Quests (${sortedAndFilteredQuests.length})`}
                 {...a11yProps(0)}
               />
               <Tab
-                sx={{ borderRadius: "12px" }}
+                sx={{
+                  borderRadius: "10px",
+                  padding: "0px 12px 0px 12px",
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "12px",
+                  fontFamily: "Sora",
+                  minHeight: "32px",
+                }}
                 label={`Collections (${categories.length})`}
                 {...a11yProps(1)}
               />
@@ -85,37 +116,21 @@ const QuestAndCollectionTabs: FunctionComponent<
               "Connecting to wallet..."
             ) : (
               <div className="flex flex-wrap gap-10">
-                {address
-                  ? trendingQuests.map((quest) => (
-                      <Quest
-                        key={quest.id}
-                        title={quest.title_card}
-                        onClick={() => router.push(`/quest/${quest.id}`)}
-                        imgSrc={quest.img_card}
-                        issuer={{
-                          name: quest.issuer,
-                          logoFavicon: quest.logo,
-                        }}
-                        reward={quest.rewards_title}
-                        id={quest.id}
-                        expired={quest.expired}
-                      />
-                    ))
-                  : quests.map((quest) => (
-                      <Quest
-                        key={quest.id}
-                        title={quest.title_card}
-                        onClick={() => router.push(`/quest/${quest.id}`)}
-                        imgSrc={quest.img_card}
-                        issuer={{
-                          name: quest.issuer,
-                          logoFavicon: quest.logo,
-                        }}
-                        reward={quest.rewards_title}
-                        id={quest.id}
-                        expired={quest.expired}
-                      />
-                    ))}
+                {sortedAndFilteredQuests.map((quest) => (
+                  <Quest
+                    key={quest.id}
+                    title={quest.title_card}
+                    onClick={() => router.push(`/quest/${quest.id}`)}
+                    imgSrc={quest.img_card}
+                    issuer={{
+                      name: quest.issuer,
+                      logoFavicon: quest.logo,
+                    }}
+                    reward={quest.rewards_title}
+                    id={quest.id}
+                    expired={quest.expired}
+                  />
+                ))}
               </div>
             )}
           </CustomTabPanel>

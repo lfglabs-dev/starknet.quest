@@ -75,7 +75,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     components: {
       MuiTabs: {
         styleOverrides: {
-          // Surcharge les styles pour l'indicateur de l'onglet sélectionné
+          // Overrides the styles for the selected tab indicator
           indicator: {
             backgroundColor: "transparent",
           },
@@ -83,12 +83,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       },
       MuiTab: {
         styleOverrides: {
-          // Surcharge les styles pour les onglets non sélectionnés
+          // Overrides the styles for unselected tabs
           root: {
-            color: "#E1DCEA", // Couleur de texte pour les onglets non sélectionnés
+            color: "#E1DCEA", // Text color for unselected tabs
             "&.Mui-selected": {
-              color: "#000", // Couleur de texte pour l'onglet sélectionné
-              backgroundColor: "#fff", // Fond de l'onglet sélectionné
+              color: "#000", // Text color for the selected tab
+              backgroundColor: "#fff", // Background of the selected tab
             },
           },
         },
