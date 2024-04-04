@@ -358,8 +358,7 @@
 @media screen and (max-width: 740px) {
   /* Check if the parent is not .issuerTag */
   *:not(.issuerTag) > .issuer {
-    width: 100%;
-    background: transparent;
+    width: fit-content;
     align-items: center;
     justify-content: center;
     margin: 4px 0 0 0;
