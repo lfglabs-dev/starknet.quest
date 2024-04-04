@@ -2,7 +2,6 @@
 
 import React, { useContext, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Button from "@components/UI/button";
 import styles from "@styles/quests.module.css";
 import moduleStyles from "@styles/category.module.css";
 import homeStyles from "@styles/Home.module.css";
@@ -11,7 +10,7 @@ import { pickRandomObjectsFn } from "@utils/quest";
 import buttonStyles from "@styles/components/button.module.css";
 import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
-import CategoryTitle from "@components/UI/titles/categoryTitle";
+import CompletedCategoryTitle from "@components/UI/titles/completedCategoryTitle";
 import Quest from "@components/quests/quest";
 
 export default function Page() {
@@ -41,10 +40,10 @@ export default function Page() {
     "🏆 Achievement Unlocked! 🎉 I've completed all the quests and I'm ready for more. Always pushing forward!\nKeep an eye out for what's next. 🚀"
   );
   const tweetText = `https://twitter.com/intent/tweet?text=${textQuery}&hashtags=QuestCompleted,OnToTheNext,StarknetQuest`;
-  return uncompletedQuests ? (
+  return !uncompletedQuests ? (
     <>
       <div className={homeStyles.screen}>
-        <CategoryTitle title="Your NFT is on it's way !" subtitle="" />
+        <CompletedCategoryTitle title="Your NFT is on it's way !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
             <p className="text-center mb-8 max-w-[690px]">
@@ -79,7 +78,7 @@ export default function Page() {
   ) : (
     <>
       <div className={homeStyles.screen}>
-        <CategoryTitle title="Congratulations !" subtitle="" />
+        <CompletedCategoryTitle title="Congratulations !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
             <p className="text-center mb-8 max-w-[690px]">
