@@ -52,5 +52,4 @@ const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
     />
   );
 };
-
 export default TokenSymbol;
