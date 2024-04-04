@@ -40,3 +40,4 @@ next-env.d.ts
 
 # package
 package-json.lock
+.vscode
