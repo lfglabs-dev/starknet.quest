@@ -10,8 +10,6 @@ import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
-import { TOKEN_DECIMAL_MAP } from "@constants/common";
-import { getTokenName } from "@utils/tokenService";
 
 type BoostCardProps = {
 	boost: Boost;
@@ -57,7 +55,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 
 	const isClickable = useMemo(
 		() => !userBoostCheckStatus && address && hasUserCompletedBoost,
-    
+
 		[userBoostCheckStatus, address, hasUserCompletedBoost]
 	);
 
