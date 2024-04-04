@@ -98,7 +98,7 @@ export default function Page() {
     []
   );
 
-  const fetchLeaderboardToppersResult = useCallback( // ovo treba
+  const fetchLeaderboardToppersResult = useCallback( 
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
@@ -107,7 +107,7 @@ export default function Page() {
     []
   );
 
-const fetchPageData=useCallback(async ()=> { // ovo treba
+const fetchPageData=useCallback(async ()=> { 
   const requestBody = {
       addr:
         status === "connected"
@@ -129,7 +129,7 @@ const fetchPageData=useCallback(async ()=> { // ovo treba
 
 
 
-  const [leaderboardToppers, setLeaderboardToppers] = // ovo treba
+  const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
       best_users: [],
       total_users: 0,
@@ -278,7 +278,7 @@ const fetchPageData=useCallback(async ()=> { // ovo treba
     }
   };
 
-  // used to calculate user percentile as soon as required data is fetched // ovo treba
+  // used to calculate user percentile as soon as required data is fetched 
   useEffect(() => {
     // check if the user has position on the leaderboard
     if (!leaderboardToppers?.position) {

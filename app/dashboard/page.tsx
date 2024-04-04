@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import styles from "@styles/dashboard.module.css";
 import { useAccount, useStarkName } from "@starknet-react/core";
-import { QuestsContext } from "@context/QuestsProvider";
 import { usePathname, useRouter } from "next/navigation";
 import { useDebounce } from "@hooks/useDebounce";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
@@ -19,11 +18,11 @@ import useCreationDate from "@hooks/useCreationDate";
 import { utils } from "starknetid.js";
 import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import ProfileCard from "@components/UI/profileCard/profileCard";
-import { LeaderboardTopperParams, fetchLeaderboardToppers, getBoosts, getCompletedQuests } from "@services/apiService";
+import { LeaderboardTopperParams, fetchLeaderboardToppers, getBoostById, getBoosts, getCompletedQuests, getQuestById } from "@services/apiService";
 import { calculatePercentile } from "@utils/numberService";
 import { getDomainFromAddress } from "@utils/domainService";
 import BoostCard from "@components/quest-boost/boostCard";
-
+import { QuestDocument } from "../../types/backTypes";
 
 
 type DashboardProps = {
@@ -51,9 +50,11 @@ export default function Page({ params, questData }: DashboardProps) {
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [loading, setLoading] = useState<boolean>(false);
-  const [ displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-  const [completedQuests, setCompletedQuests] = useState<Boost[]>([]);
+  const [displayData, setDisplayData] = useState([]);
+  const [completedQuests, setCompletedQuests] = useState<QuestDocument[]>([]);
   const [numOfCompletedQuests, setNumOfCompletedQuests] = useState<number[]>([]);
+  const [quests, setQuests] = useState<QuestDocument[]>([]);
+  const [boosts, setBoosts] = useState<Boost[]>([]);
 
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
@@ -181,7 +182,7 @@ export default function Page({ params, questData }: DashboardProps) {
     }
   }, [addressOrDomain, address]);
 
-  const getIdentityData = async (id: string) => { // ovo treba
+  const getIdentityData = async (id: string) => { 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
@@ -189,7 +190,7 @@ export default function Page({ params, questData }: DashboardProps) {
   };
 
 
-  const fetchLeaderboardToppersResult = useCallback( // ovo treba
+  const fetchLeaderboardToppersResult = useCallback( 
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
@@ -198,31 +199,32 @@ export default function Page({ params, questData }: DashboardProps) {
   );
 
 
-  const [leaderboardToppers, setLeaderboardToppers] = // ovo treba
+  const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
       best_users: [],
       total_users: 0,
   });
 
-  // Fetch all boosts
-  
-  // const fetchCompletedQuests = async () => {
-  //   try {
-  //     const res = await getBoosts();
-  //     setCompletedQuests(res);
-  //   } catch (err) {
-  //     console.log("Error while fetching boosts", err);
-  //   }
-  // };
+  useEffect(() => {
+    const fetchCompletedQuests = async () => {
+      try {
+        const res = await getCompletedQuests(address ? address : "");
+        setNumOfCompletedQuests(res);
 
-  const fetchCompletedQuests = async () => {
-    try {
-      const res = await getCompletedQuests(identity?.addr ? identity.addr : "");
-      setCompletedQuests(res);
-    } catch (err) {
-      console.log("Error while fetching boosts", err);
-    }
-  };
+        const updatedQuests = await Promise.all(res.map((id:number) => getQuestById(id)));
+        const questsToUpdate = Array.isArray(updatedQuests) ? updatedQuests : [updatedQuests];
+        setQuests(prevQuests => [...prevQuests, ...questsToUpdate]);
+      
+        const updatedBoosts = await Promise.any(res.map((id:number) => getBoostById(id.toString()))); 
+        const boostsToUpdate = Array.isArray(updatedBoosts) ? updatedBoosts : [updatedBoosts];
+        setBoosts(prevBoosts => [...prevBoosts, ...boostsToUpdate])
+      } catch (err) {
+        console.log("Error while fetching quests", err);
+      }
+    };
+
+    fetchCompletedQuests();
+  }, [address]);
 
 
   // calculate user percentile
@@ -233,46 +235,6 @@ export default function Page({ params, questData }: DashboardProps) {
     );
     setUserPercentile(res);
   }, [leaderboardToppers]);
-
-
-
-  useEffect(() => {
-    if (!questData) return;
-    if (!(Object.keys(questData).length > 0)) return;
-    const res: FormattedRankingProps = questData?.ranking;
-    const makeCall = async () => {
-      const updatedDisplayData = await Promise.all(
-        res?.map(async (item) => {
-          // fetch completed quests and add to the display data
-          const completedQuestsResponse = await getCompletedQuests(
-            addressOrDomain
-          );
-          console.log(completedQuestsResponse);
-          item.completedQuests = completedQuestsResponse?.length;
-
-          // get the domain name from the address
-          const hexAddress = decimalToHex(addressOrDomain);
-          const domainName = await getDomainFromAddress(hexAddress);
-          if (domainName.length > 0) {
-            item.displayName = domainName;
-          } else {
-            item.displayName = minifyAddress(hexAddress);
-          }
-          return item;
-        })
-      );
-      setDisplayData(updatedDisplayData);
-    };
-    makeCall();
-  }, [questData, addressOrDomain]);
-
-  useEffect(() => {
-    fetchCompletedQuests();
-  }, []);
-
-  
-
-  
 
   return (
     <div className={styles.dashboard_container}>
@@ -303,16 +265,16 @@ export default function Page({ params, questData }: DashboardProps) {
             
             <div className={styles.quests_container}>
               
-                {completedQuests?.map((completedQuest) => {
+                {quests?.map((quest) => {
                   return (
                     <BoostCard
-                      key={completedQuest.id}
-                      boost={completedQuest}
+                      key={quest.id}
+                      boost={boosts[quest.id]}
                       completedQuests={numOfCompletedQuests}
                     />
                   );
                 })}
-                  {completedQuests?.length === 0 && (
+                  {quests?.length === 0 && (
                     <h2 className={styles.noBoosts}>
                       No completed quests at the moment.
                     </h2>
