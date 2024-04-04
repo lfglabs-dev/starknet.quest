@@ -58,11 +58,6 @@ export const QuestsContextProvider = ({
   useMemo(() => {
     (async () => {
       const data: GetQuestsRes = await getQuests();
-      
-      if (!data) {
-        // Handle the case when data is null or undefined, maybe by setting a default value or returning early
-        return;
-    }
       const q = Object.values(data).flat();
 
       const categoriesWithImages = await Promise.all(
@@ -123,8 +118,8 @@ export const QuestsContextProvider = ({
     getCompletedBoosts(hexToDecimal(address)).then(
       (data: number[] | QueryError) => {
         if ((data as QueryError).error) return;
-        if (data && (data as QueryError).error) return; // Check if 'data' exists before accessing 'error'
-        // setCompletedBoostIds(data as number[]);
+        if ((data as QueryError).error) return;
+        setCompletedBoostIds(data as number[]);
       }
     );
   }, [address]);
