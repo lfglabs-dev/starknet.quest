@@ -84,6 +84,7 @@ const QuestAndCollectionTabs: FunctionComponent<
               indicatorColor="secondary"
             >
               <Tab
+                disableRipple
                 sx={{
                   borderRadius: "10px",
                   padding: "0px 12px 0px 12px",
@@ -97,6 +98,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                 {...a11yProps(0)}
               />
               <Tab
+                disableRipple
                 sx={{
                   borderRadius: "10px",
                   padding: "0px 12px 0px 12px",
