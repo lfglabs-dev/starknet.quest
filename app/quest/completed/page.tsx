@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@components/UI/button";
 import styles from "@styles/quests.module.css";
@@ -18,20 +18,29 @@ export default function Page() {
   const router = useRouter();
   const { completedQuestIds, categories } = useContext(QuestsContext);
 
-  const computeIncompleteQuests = categories.map((item) => {
-    return item.quests.filter(
-      (quest: { id: number; expired: boolean }) =>
-        !completedQuestIds.includes(quest.id) && !quest.expired
-    );
-  });
-  const incompleteQuests = computeIncompleteQuests.flat();
+  const computeIncompleteQuests = useMemo(() => {
+    return categories.map((item) => {
+      return item.quests.filter(
+        (quest: { id: number; expired: boolean }) =>
+          !completedQuestIds.includes(quest.id) && !quest.expired
+      );
+    });
+  }, [categories, completedQuestIds]);
 
-  const uncompletedQuests = pickRandomObjectsFn({ questArray: incompleteQuests });
+  const incompleteQuests = useMemo(() => {
+    return computeIncompleteQuests.flat();
+  }, [computeIncompleteQuests]);
 
-  const tweetText =
-    "https://twitter.com/intent/tweet?text=🏆 Achievement Unlocked! 🎉 I've completed all the quests and I'm ready for more. Always pushing forward!\nKeep an eye out for what's next. 🚀&hashtags=QuestCompleted,OnToTheNext,StarknetQuest";
-
-
+  const uncompletedQuests = useMemo(() => {
+    return pickRandomObjectsFn({
+      questArray: incompleteQuests,
+    });
+  }, [incompleteQuests]);
+  
+  const textQuery = encodeURIComponent(
+    "🏆 Achievement Unlocked! 🎉 I've completed all the quests and I'm ready for more. Always pushing forward!\nKeep an eye out for what's next. 🚀"
+  );
+  const tweetText = `https://twitter.com/intent/tweet?text=${textQuery}&hashtags=QuestCompleted,OnToTheNext,StarknetQuest`;
   return uncompletedQuests ? (
     <>
       <div className={homeStyles.screen}>
