@@ -40,7 +40,7 @@ export default function Page() {
     "🏆 Achievement Unlocked! 🎉 I've completed all the quests and I'm ready for more. Always pushing forward!\nKeep an eye out for what's next. 🚀"
   );
   const tweetText = `https://twitter.com/intent/tweet?text=${textQuery}&hashtags=QuestCompleted,OnToTheNext,StarknetQuest`;
-  return !uncompletedQuests ? (
+  return uncompletedQuests ? (
     <>
       <div className={homeStyles.screen}>
         <CompletedCategoryTitle title="Your NFT is on it's way !" subtitle="" />
