@@ -120,7 +120,12 @@
 
 .right_socials {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 2rem;
+}
+
+.social_icon_wrap {
+    cursor: pointer;
 }
 
 .social_icon {
@@ -146,7 +151,7 @@
 
 .right_top {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
 }
 
 .right_middle {
@@ -239,6 +244,10 @@
         flex-direction: column;
         text-align: center;
         padding: 1rem;
+    }
+    .right_top {
+        justify-content: center;
+        margin: 10px;
     }
 
     .quests_container {

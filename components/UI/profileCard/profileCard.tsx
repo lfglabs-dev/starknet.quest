@@ -19,15 +19,17 @@ import router from "next/router";
 import SocialMediaActions from "../actions/socialmediaActions";
 import trophyUrl from "public/icons/trophy.svg";
 import starkUrl from "public/icons/starknet.svg";
-
+import SharePopup from "../menus/sharePopup";
+import theme from "@styles/theme";
+import DiscordIcon from "../iconsComponents/icons/discordIcon";
+import GitHubIcon from "../iconsComponents/icons/githubIcon";
+import TwitterIcon from "../iconsComponents/icons/twitterIcon";
 
 
 
 const ProfileCard: FunctionComponent<ProfileCardModified> = ({
-  addressOrDomain,
   data,
   userPercentile,
-  achievemenets
 }) => {
   
   const [copied, setCopied] = useState(false);
@@ -40,6 +42,8 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const [notFound, setNotFound] = useState(false);
   const [initProfile, setInitProfile] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [showSharePopup, setShowSharePopup] = useState(false);
+
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -189,8 +193,10 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
             setIsOwner(true);
         });
     } else {
-      setNotFound(true);
+      console.log("Address is:" + address);
+      console.log("Identity is: " + identity);
     }
+    console.log(identity);
   }, [address]);
 
 
@@ -198,6 +204,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
+    console.log(response.json());
     return response.json();
   };
 
@@ -207,7 +214,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
 
   return (
-    
+    <>
     <div className={styles.dashboard_profile_card}>
       <div className={`${styles.left} ${styles.child}`}>
         <div className={styles.profile_picture_div}>
@@ -234,12 +241,21 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       <div className={`${styles.right} ${styles.child}`}>
         <div className={styles.right_top}>
           <div className={styles.right_socials}>
-            <SocialMediaActions identity={identity}/>
+            <a href="" className={styles.social_icon_wrap}>
+              <TwitterIcon width={"24"}/>
+            </a>
+            <a href="" className={styles.social_icon_wrap}>
+              <DiscordIcon width={"24"}/>
+            </a>
+            <a href="" className={styles.social_icon_wrap}>
+              <GitHubIcon width={"24"}/>
+            </a>
+            <div className={styles.right_share_button}>
+              <ShareIcon width="20" color="white" />
+              <p >Share</p>
+            </div>
           </div>
-          <div className={styles.right_share_button}>
-            <ShareIcon width="20" color="white" />
-            <p className={styles.profile_paragraph}> Share </p>
-          </div>
+          
         </div>
         <div className={styles.right_middle}></div>
         <div className={styles.right_bottom}>
@@ -258,6 +274,13 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         </div>
       </div>
     </div>
+    {showSharePopup ? (
+        <SharePopup
+          close={() => setShowSharePopup(false)}
+          toCopy={window.location.href}
+        />
+      ) : null}
+    </>
   );
 };
 
