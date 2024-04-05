@@ -22,7 +22,7 @@ const CompletedQuests: FunctionComponent<CompletedQuestsProps> = ({
               <Quest
                 key={quest.id}
                 title={quest.title_card}
-                onClick={() => router.push(`/quest/${quest.id}`)}
+                onClick={() => ({})}
                 imgSrc={quest.img_card}
                 issuer={{
                   name: quest.issuer,
