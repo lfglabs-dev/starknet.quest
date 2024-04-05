@@ -315,7 +315,7 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
-export async function getQuestById(questId: string | number): Promise<QuestDocument | null> {
+export const getQuestById = async (questId: string | number) => {
   try {
     const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
 
