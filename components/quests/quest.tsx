@@ -35,8 +35,10 @@ const Quest: FunctionComponent<QuestProps> = ({
 
   return (
     <QuestCard
+      id={id}
       imgSrc={imgSrc}
       title={title}
+      issuer={issuer}
       onClick={() => !expired && onClick()}
       disabled={expired}
     >

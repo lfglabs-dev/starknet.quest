@@ -3,7 +3,7 @@ import styles from "@styles/dashboard.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import ShareIcon from "@components/UI/iconsComponents/icons/shareIcon";
 import { CDNImage } from "@components/cdn/image";
-import { useStarkProfile } from "@starknet-react/core";
+import { useAccount, useStarkProfile } from "@starknet-react/core";
 import { minifyAddress, minifyAddressFromStrings } from "@utils/stringService";
 import StarknetIcon from "@components/UI/iconsComponents/icons/starknetIcon";
 import TrophyIcon from "../iconsComponents/icons/trophyIcon";
@@ -11,19 +11,27 @@ import xpUrl from "public/icons/xpBadge.svg";
 import { getCompletedQuests } from "@services/apiService";
 import { decimalToHex } from "@utils/feltService";
 import { getDomainFromAddress } from "@utils/domainService";
+import useCreationDate from "@hooks/useCreationDate";
+import { calculatePercentile } from "@utils/numberService";
+
 
 
 
 const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   identity,
   addressOrDomain,
-  sinceDate,
+  data,
   userPercentile,
-  data
 }) => {
+  if (!identity) {
+    return <div>Loading profile data...</div>;
+  }
   const [copied, setCopied] = useState(false);
   const { data: profileData } = useStarkProfile({ address: identity?.addr });
   const [ displayData, setDisplayData] = useState<FormattedRankingProps>([]);
+  const sinceDate = useCreationDate(identity); 
+  const { address } = useAccount();
+
 
 
   const copyToClipboard = () => {
@@ -43,7 +51,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         await res?.map(async (item) => {
           // fetch completed quests and add to the display data
           const completedQuestsResponse = await getCompletedQuests(
-            identity.addr
+            identity.addr? identity.addr : ""
           );
           item.completedQuests = completedQuestsResponse?.length;
 
@@ -64,6 +72,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
 
   return (
+    
     <div className={styles.dashboard_profile_card}>
       <div className={`${styles.left} ${styles.child}`}>
         <div className={styles.profile_picture_div}>

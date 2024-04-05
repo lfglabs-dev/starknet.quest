@@ -93,7 +93,6 @@ export default function Page() {
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);         
         setRanking(response); 
- 
     },
     []
   );

@@ -166,15 +166,13 @@ type ProfileCard = {
 };
 
 type ProfileCardModified = {
-  identity: Identity;
+  identity?: Identity; 
+  userPercentile?: number;
   addressOrDomain: string | string[] | undefined;
-  sinceDate: string | null;
-  userPercentile: number;
-  data: {
+  data?: {
     ranking: { address: string; xp: number; achievements: number }[];
-  } | undefined;
-
-}
+  };
+};
 
 type Signature = [string, string];
 

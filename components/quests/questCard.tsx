@@ -2,14 +2,17 @@ import React, { FunctionComponent } from "react";
 import styles from "@styles/components/quests/card.module.css";
 import cdnize from "@utils/cdnize";
 type QuestCardProps = {
+  id: number;
   children: React.ReactNode;
   imgSrc: string;
+  issuer: Issuer;
   title: string;
   onClick: () => void;
   disabled?: boolean;
 };
 
 const QuestCard: FunctionComponent<QuestCardProps> = ({
+  id,
   children,
   title,
   imgSrc,

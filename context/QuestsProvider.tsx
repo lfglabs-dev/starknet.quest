@@ -4,7 +4,7 @@ import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import { fetchQuestCategoryData } from "@services/apiService";
+import { fetchQuestCategoryData, getQuestById } from "@services/apiService";
 import {
   getBoostedQuests,
   getCompletedBoosts,
@@ -19,7 +19,7 @@ interface QuestsConfig {
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
   completedQuests: QuestDocument[];
-  completedQuestIds: number[];
+  completedQuestIds: number[]; 
   completedBoostIds: number[];
   boostedQuests: number[];
 }
@@ -111,6 +111,7 @@ export const QuestsContextProvider = ({
 
 
 
+
   useMemo(() => {
     if (!quests || featuredQuest || !quests.length) return;
     const notExpired = quests.filter((quest) => !quest.expired);
@@ -130,26 +131,24 @@ export const QuestsContextProvider = ({
   }, [address]);
 
   
-
   useMemo(() => {
-    getCompletedQuests(hexToDecimal(address)).then(
-      (data: QuestDocument[] | QueryError) => {
-        if ((data as QueryError).error) return;
-        const quests = data as QuestDocument[];
-        setCompletedQuests(quests);        
-      }
-    );
-  }, [address]);
+  const fetchCompletedQuests = async () => {
+    try {
+      const questIds = await getCompletedQuests(hexToDecimal(address));
+      const completedQuests = await Promise.all(
+        questIds.map((id:number) => getQuestById(id)) 
+      );
+      setCompletedQuests(completedQuests.filter((quest) => quest !== null));
 
-  useMemo(() => {
-    if (!address) return;
-    getCompletedQuests(hexToDecimal(address)).then(
-      (data: number[] | QueryError) => {
-        if ((data as QueryError).error) return;
-        setCompletedQuestIds(data as number[]);
-      }
-    );
-  }, [address]);
+
+    } catch (error) {
+      console.error("Error fetching completed quests:", error);
+    }
+  };
+
+  fetchCompletedQuests(); 
+}, [address]);
+
 
   useMemo(() => {
     getBoostedQuests().then((data: number[] | QueryError) => {
