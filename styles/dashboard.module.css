@@ -62,8 +62,7 @@
     width: 100%;
     max-width: 950px;
     padding: 1.5rem 2.5rem;
-    background: rgb(51, 51, 51);
-    background: linear-gradient(180deg, rgba(51, 51, 51, 1) 0%, rgba(46, 46, 46, 0.8996192226890756) 25%, rgba(36, 36, 36, 0.6937368697478992) 70%, rgba(0, 0, 0, 0.09849877450980393) 100%);
+    background: linear-gradient(var(--background600), transparent);
     align-items: center;
     border-radius: 12px;
     margin-top: 2rem;
@@ -121,7 +120,7 @@
 .right_socials {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .social_icon_wrap {
@@ -140,9 +139,8 @@
     width: auto;
     height: 32px;
     border-radius: 12px;
-    border: solid 1px white;
-    background-color: black;
-    padding: 10px;
+    background-color: rgb(13, 13, 13);
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -161,7 +159,8 @@
 
 .right_bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 5rem;
     align-items: center;
     width: 100%;
 }
@@ -248,6 +247,14 @@
     .right_top {
         justify-content: center;
         margin: 10px;
+    }
+
+    .right_bottom {
+        justify-content: space-around;
+    }
+
+    .profile_paragraph0{
+        padding-bottom: 10px;
     }
 
     .quests_container {
