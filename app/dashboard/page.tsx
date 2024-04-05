@@ -23,15 +23,7 @@ import { getDomainFromAddress } from "@utils/domainService";
 import { timeFrameMap } from "@utils/timeService";
 
 
-
-interface RankAndTotalUsers {
-  userRank: number;
-  totalUsers: number;
-}
-
-
-
-export default function DashboardPage (userRank : RankAndTotalUsers, totalUsers: RankAndTotalUsers){
+export default function DashboardPage (){
   const { address } = useAccount();
   const { data: profileData, isLoading, isError } = useStarkProfile({ address });
   const [userPercentile, setUserPercentile] = useState<number>();
