@@ -4,7 +4,7 @@ import styles from "@styles/dashboard.module.css";
 import DashboardSkeleton from "@components/skeletons/dashboardSkeleton";
 import ProfileCard from "@components/UI/profileCard/profileCard";
 import BoostCard from "@components/quest-boost/boostCard";
-import { LeaderboardTopperParams, fetchLeaderboardToppers, getCompletedBoosts, getCompletedQuests, getQuestById } from "@services/apiService"; 
+import { LeaderboardRankingParams, LeaderboardTopperParams, fetchLeaderboardRankings, fetchLeaderboardToppers, getCompletedBoosts, getCompletedQuests, getQuestById } from "@services/apiService"; 
 import { useAccount } from "@starknet-react/core";
 import { useStarkProfile } from "@starknet-react/core";
 import { calculatePercentile } from "@utils/numberService";
@@ -12,12 +12,16 @@ import QuestCard from "@components/quests/questCard";
 import Blur from "@components/shapes/blur";
 import { utils } from "starknetid.js";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import { hexToDecimal } from "@utils/feltService";
+import { decimalToHex, hexToDecimal } from "@utils/feltService";
 import { isHexString, minifyAddress } from "@utils/stringService";
 import { useRouter } from "next/router";
 import Quest from "@components/quests/quest";
 import CompletedQuests from "@components/dashboard/completedQuests";
 import { QuestsContext } from "@context/QuestsProvider";
+import { rankOrder, rankOrderMobile } from "@constants/common";
+import { getDomainFromAddress } from "@utils/domainService";
+import { timeFrameMap } from "@utils/timeService";
+
 
 
 interface RankAndTotalUsers {
@@ -25,13 +29,9 @@ interface RankAndTotalUsers {
   totalUsers: number;
 }
 
-type AddressOrDomainProps = {
-  params: {
-    addressOrDomain: string;
-  };
-}
 
-export default function DashboardPage({ params }: AddressOrDomainProps) {
+
+export default function DashboardPage (userRank : RankAndTotalUsers, totalUsers: RankAndTotalUsers){
   const { address } = useAccount();
   const { data: profileData, isLoading, isError } = useStarkProfile({ address });
   const [userPercentile, setUserPercentile] = useState<number>();
@@ -40,20 +40,54 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
   const [numOfCompletedQuests, setNumOfCompletedQuests] = useState<number>(0);
   const [initProfile, setInitProfile] = useState(false);
   const [identity, setIdentity] = useState<Identity>(); 
-  const addressOrDomain = params.addressOrDomain;
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [achievements, setAchievements] = useState<BuildingsInfo[]>([]); 
   const { completedQuests } = useContext(QuestsContext);
+  const [ranking, setRanking] = useState<RankingData>({
+    first_elt_position: 0,
+    ranking: [],
+  });
+  const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
+  const [duration, setDuration] = useState<string>("Last 7 Days");
+
+
+
+  const fetchRankingResults = useCallback(
+    async (requestBody: LeaderboardRankingParams) => {
+      const response = await fetchLeaderboardRankings(requestBody);         
+        setRanking(response); 
+    },
+    []
+  );
 
   const fetchLeaderboardToppersResult = useCallback( 
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
-      
     },
     []
   );
+
+  const fetchPageData = useCallback(async ()=> { 
+    const requestBody = {
+      addr:
+        status === "connected"
+          ? hexToDecimal(address && address?.length > 0 ? address : "Connect Wallet")
+          : "",
+      page_size: 10,
+      shift: 0,
+      duration: timeFrameMap(duration),
+  };
+    setRankingdataloading(true);
+    await fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
+      duration: timeFrameMap(duration),
+    });
+    await fetchRankingResults(requestBody);
+    setRankingdataloading(false);
+
+  },[fetchRankingResults,fetchLeaderboardToppersResult,address]);
   
   const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
@@ -61,11 +95,13 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
       total_users: 0,
   });
 
+  const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
+
 
   useEffect(() => { 
     setInitProfile(false);
     setAchievements([]);
-  }, [address, addressOrDomain]); 
+  }, [address]); 
 
   useEffect(() => { 
     if (!address) setIsOwner(false);
@@ -97,30 +133,49 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
     fetchCompletedQuests();
   }, [address]);
 
-  useEffect(() => {
-    const fetchUserRankAndTotalUsers = async (): Promise<RankAndTotalUsers> => {
-      const { userRank, totalUsers } = await fetchUserRankAndTotalUsers();
-      const percentile = calculatePercentile(userRank, totalUsers);
-      setUserPercentile(percentile);
-      return {userRank, totalUsers};
-    };
+  
 
-    if (address) {
-      fetchUserRankAndTotalUsers();
-    }
-  }, [address]);
+
+
+  useEffect(() => {
+
+    // calculate user percentile
+    const res = calculatePercentile(
+      leaderboardToppers?.position ?? 0,
+      leaderboardToppers?.total_users ?? 0
+    );
+    setUserPercentile(res);
+  }, [leaderboardToppers]);
+
+
+  // DashboardSkeleton needs to be finished and isError is commented for testing
+  // the completed quests part
+
+  // if (isLoading) return <DashboardSkeleton />;
+  // if (isError) return <span>Error fetching profile...</span>;
+
+  const getIdentityData = async (id: string) => { 
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
+    );
+    console.log(response);
+    return response.json();
+  };
+  
+  const completedQuestsCount = quests.length;
+  const containerClass = completedQuestsCount > 3 ? styles.centerAligned : styles.leftAligned;
 
   useEffect(() => { 
     if (
-      typeof addressOrDomain === "string" &&
-      addressOrDomain?.toString().toLowerCase().endsWith(".stark")
+      typeof address === "string" &&
+      address?.toString().toLowerCase().endsWith(".stark")
     ) {
       if (
-        !utils.isBraavosSubdomain(addressOrDomain) &&
-        !utils.isXplorerSubdomain(addressOrDomain)
+        !utils.isBraavosSubdomain(address) &&
+        !utils.isXplorerSubdomain(address)
       ) {
         starknetIdNavigator
-          ?.getStarknetId(addressOrDomain)
+          ?.getStarknetId(address)
           .then((id) => {
             getIdentityData(id).then((data: Identity) => {
               if (data.error) {
@@ -141,12 +196,12 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           });
       } else {
         starknetIdNavigator
-          ?.getAddressFromStarkName(addressOrDomain)
+          ?.getAddressFromStarkName(address)
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
               addr: addr,
-              domain: addressOrDomain,
+              domain: address,
               is_owner_main: false,
             });
             setInitProfile(true);
@@ -157,11 +212,11 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           });
       }
     } else if (
-      typeof addressOrDomain === "string" &&
-      isHexString(addressOrDomain)
+      typeof address === "string" &&
+      isHexString(address)
     ) {
       starknetIdNavigator
-        ?.getStarkName(hexToDecimal(addressOrDomain))
+        ?.getStarkName(hexToDecimal(address))
         .then((name) => {
           if (name) {
             if (
@@ -188,19 +243,19 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: addressOrDomain,
+                addr: address,
                 domain: name,
                 is_owner_main: false,
               });
               setInitProfile(true);
-              if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+              if (hexToDecimal(address) === hexToDecimal(address))
                 setIsOwner(true);
             }
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: addressOrDomain,
-              domain: minifyAddress(addressOrDomain),
+              addr: address,
+              domain: minifyAddress(address),
               is_owner_main: false,
             });
             setIsOwner(false);
@@ -210,45 +265,23 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
         .catch(() => {
           setIdentity({
             starknet_id: "0",
-            addr: addressOrDomain,
-            domain: minifyAddress(addressOrDomain),
+            addr: address,
+            domain: minifyAddress(address),
             is_owner_main: false,
           });
           setInitProfile(true);
-          if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
+          if (hexToDecimal(address) === hexToDecimal(address))
             setIsOwner(true);
         });
     } else {
       setNotFound(true);
     }
-  }, [addressOrDomain, address]);
+  }, [address]);
 
   useEffect(() => {
-
-    // calculate user percentile
-    const res = calculatePercentile(
-      leaderboardToppers?.position ?? 0,
-      leaderboardToppers?.total_users ?? 0
-    );
-    setUserPercentile(res);
-  }, [leaderboardToppers]);
-
-
-  // DashboardSkeleton needs to be finished and isError is commented for testing
-  // the completed quests part
-
-  // if (isLoading) return <DashboardSkeleton />;
-  // if (isError) return <span>Error fetching profile...</span>;
-
-  const getIdentityData = async (id: string) => { 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
-    );
-    return response.json();
-  };
-  
-  const completedQuestsCount = quests.length;
-  const containerClass = completedQuestsCount > 3 ? styles.centerAligned : styles.leftAligned;
+  console.log("Address or domain:", address);
+  // Add other conditions and logs here
+}, [address]);
 
   return (
     <div className={styles.dashboard_container}>
@@ -262,7 +295,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
             </div>
 
             {/* Profile Card */}
-            {identity ? <ProfileCard identity={identity} addressOrDomain={addressOrDomain} userPercentile={userPercentile} /> : <div className={styles.dashboard_profile_card}>Fetching data...</div> }
+            <ProfileCard identity={identity} addressOrDomain={address} userPercentile={userPercentile} achievemenets={achievements} data={ranking}/>
       
         </div>
 

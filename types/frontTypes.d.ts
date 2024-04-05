@@ -172,6 +172,7 @@ type ProfileCardModified = {
   data?: {
     ranking: { address: string; xp: number; achievements: number }[];
   };
+  achievemenets: BuildingsInfo[];
 };
 
 type Signature = [string, string];
