@@ -233,6 +233,10 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
     setUserPercentile(res);
   }, [leaderboardToppers]);
 
+
+  // DashboardSkeleton needs to be finished and isError is commented for testing
+  // the completed quests part
+
   // if (isLoading) return <DashboardSkeleton />;
   // if (isError) return <span>Error fetching profile...</span>;
 
@@ -242,6 +246,10 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
     );
     return response.json();
   };
+  
+  const completedQuestsCount = quests.length;
+  const containerClass = completedQuestsCount > 3 ? styles.centerAligned : styles.leftAligned;
+  console.log(completedQuestsCount);
 
   return (
     <div className={styles.dashboard_container}>
@@ -265,7 +273,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
                 <h2 className={styles.second_header}>Quests Completed</h2>
             </div>
             
-            <div className={styles.quests_container}>
+            <div className={`${styles.quests_container} ${containerClass}`}>
               
                 <CompletedQuests completedQuests={completedQuests} />
                 
