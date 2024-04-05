@@ -249,7 +249,6 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
   
   const completedQuestsCount = quests.length;
   const containerClass = completedQuestsCount > 3 ? styles.centerAligned : styles.leftAligned;
-  console.log(completedQuestsCount);
 
   return (
     <div className={styles.dashboard_container}>
