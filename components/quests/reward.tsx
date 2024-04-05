@@ -65,7 +65,7 @@ const Reward: FunctionComponent<RewardProps> = ({
         status: "pending",
       },
     });
-    setModalTxOpen(true);
+    router.push('/quest/completed');
   }, [executeMint, address]);
 
   return (

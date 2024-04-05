@@ -272,3 +272,8 @@ type LeaderboardToppersData = {
   total_users: number;
   position?: number;
 };
+
+type PickRandomObjects = {
+  questArray: QuestDocument[];
+  count?: number;
+};
