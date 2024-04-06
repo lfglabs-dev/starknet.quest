@@ -99,7 +99,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 										{boost.expiry > Date.now() ? (
 											hasUserCompletedBoost ? (
 												<>
-													<p className="text-white capitalize">Done</p>
+													<p className="text-white ">Done</p>
 													<CheckIcon width="24" color="#6AFFAF" />
 												</>
 											) : null
