@@ -105,7 +105,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 											) : null
 										) : boost.winner === null ? (
 											<>
-												<p className="text-white capitalize">Done</p>
+												<p className="text-white">Done</p>
 												<CheckIcon width="24" color="#6AFFAF" />
 											</>
 										) : isClickable ? (
