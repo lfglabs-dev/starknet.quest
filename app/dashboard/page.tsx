@@ -22,8 +22,13 @@ import { rankOrder, rankOrderMobile } from "@constants/common";
 import { getDomainFromAddress } from "@utils/domainService";
 import { timeFrameMap } from "@utils/timeService";
 
+type AddressOrDomainProps = {
+  params: {
+    addressOrDomain: string;
+  };
+};
 
-export default function DashboardPage (){
+export default function DashboardPage ({ params }: AddressOrDomainProps){
   const { address } = useAccount();
   const { data: profileData, isLoading, isError } = useStarkProfile({ address });
   const [userPercentile, setUserPercentile] = useState<number>();
@@ -42,6 +47,7 @@ export default function DashboardPage (){
   });
   const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [duration, setDuration] = useState<string>("Last 7 Days");
+  const addressOrDomain = params.addressOrDomain;
 
 
 
@@ -93,7 +99,7 @@ export default function DashboardPage (){
   useEffect(() => { 
     setInitProfile(false);
     setAchievements([]);
-  }, [address]); 
+  }, [address, addressOrDomain]); 
 
   useEffect(() => { 
     if (!address) setIsOwner(false);
@@ -123,7 +129,7 @@ export default function DashboardPage (){
     };
 
     fetchCompletedQuests();
-  }, [address]);
+  }, [addressOrDomain, address]);
 
   
 
@@ -158,15 +164,15 @@ export default function DashboardPage (){
 
   useEffect(() => { 
     if (
-      typeof address === "string" &&
-      address?.toString().toLowerCase().endsWith(".stark")
+      typeof addressOrDomain === "string" &&
+      addressOrDomain?.toString().toLowerCase().endsWith(".stark")
     ) {
       if (
-        !utils.isBraavosSubdomain(address) &&
-        !utils.isXplorerSubdomain(address)
+        !utils.isBraavosSubdomain(addressOrDomain) &&
+        !utils.isXplorerSubdomain(addressOrDomain)
       ) {
         starknetIdNavigator
-          ?.getStarknetId(address)
+          ?.getStarknetId(addressOrDomain)
           .then((id) => {
             getIdentityData(id).then((data: Identity) => {
               if (data.error) {
@@ -187,12 +193,12 @@ export default function DashboardPage (){
           });
       } else {
         starknetIdNavigator
-          ?.getAddressFromStarkName(address)
+          ?.getAddressFromStarkName(addressOrDomain)
           .then((addr) => {
             setIdentity({
               starknet_id: "0",
               addr: addr,
-              domain: address,
+              domain: addressOrDomain,
               is_owner_main: false,
             });
             setInitProfile(true);
@@ -203,11 +209,11 @@ export default function DashboardPage (){
           });
       }
     } else if (
-      typeof address === "string" &&
-      isHexString(address)
+      typeof addressOrDomain === "string" &&
+      isHexString(addressOrDomain)
     ) {
       starknetIdNavigator
-        ?.getStarkName(hexToDecimal(address))
+        ?.getStarkName(hexToDecimal(addressOrDomain))
         .then((name) => {
           if (name) {
             if (
@@ -234,19 +240,19 @@ export default function DashboardPage (){
             } else {
               setIdentity({
                 starknet_id: "0",
-                addr: address,
+                addr: addressOrDomain,
                 domain: name,
                 is_owner_main: false,
               });
               setInitProfile(true);
-              if (hexToDecimal(address) === hexToDecimal(address))
+              if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
                 setIsOwner(true);
             }
           } else {
             setIdentity({
               starknet_id: "0",
-              addr: address,
-              domain: minifyAddress(address),
+              addr: addressOrDomain,
+              domain: minifyAddress(addressOrDomain),
               is_owner_main: false,
             });
             setIsOwner(false);
@@ -256,23 +262,24 @@ export default function DashboardPage (){
         .catch(() => {
           setIdentity({
             starknet_id: "0",
-            addr: address,
-            domain: minifyAddress(address),
+            addr: addressOrDomain,
+            domain: minifyAddress(addressOrDomain),
             is_owner_main: false,
           });
           setInitProfile(true);
-          if (hexToDecimal(address) === hexToDecimal(address))
+          if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
             setIsOwner(true);
         });
     } else {
       setNotFound(true);
     }
-  }, [address]);
+  }, [addressOrDomain, address]);
 
   useEffect(() => {
   console.log("Address or domain:", address);
-  // Add other conditions and logs here
-}, [address]);
+  }, [addressOrDomain, address]);
+
+  console.log("addressOrDomain: " + addressOrDomain);
 
   return (
     <div className={styles.dashboard_container}>
@@ -286,7 +293,7 @@ export default function DashboardPage (){
             </div>
 
             {/* Profile Card */}
-            <ProfileCard identity={identity} addressOrDomain={address} achievemenets={achievements} data={ranking}/>
+            <ProfileCard identity={identity} addressOrDomain={addressOrDomain} achievemenets={achievements} data={ranking}/>
       
         </div>
 

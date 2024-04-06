@@ -271,6 +271,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
             setIsOwner(true);
         });
     } else {
+      setNotFound(true);
     }
   }, [address]);
 
@@ -403,20 +404,20 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
             {leaderboardToppers
                 ? isMobile
-                  ? rankOrderMobile.map((position) => {
+                  ? rankOrderMobile.map((position, index) => {
                       const item =
                         leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <p className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
+                        <p key={index} className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
                       );
                     })
-                  : rankOrder.map((position) => {
+                  : rankOrder.map((position, index) => {
                       const item =
                         leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <p className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
+                        <p key={index} className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
                       );
                     })
              : null}
@@ -425,20 +426,20 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
             <CDNImage src={xpUrl} priority width={20} height={20} alt="xp badge" />
             {leaderboardToppers
                 ? isMobile
-                  ? rankOrderMobile.map((position) => {
+                  ? rankOrderMobile.map((position, index) => {
                       const item =
                         leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <p className={styles.profile_paragraph}>{item?.xp}</p>
+                        <p key={index} className={styles.profile_paragraph}>{item?.xp}</p>
                       );
                     })
-                  : rankOrder.map((position) => {
+                  : rankOrder.map((position, index) => {
                       const item =
                         leaderboardToppers?.best_users?.[position - 1];
                       if (!item) return null;
                       return (
-                        <p className={styles.profile_paragraph}>{item?.xp}</p>
+                        <p key={index} className={styles.profile_paragraph}>{item?.xp}</p>
                       );
                     })
              : null}
