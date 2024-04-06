@@ -167,7 +167,6 @@ type ProfileCard = {
 
 type ProfileCardModified = {
   identity?: Identity; 
-  userPercentile?: number;
   addressOrDomain: string | string[] | undefined;
   data?: {
     ranking: { address: string; xp: number; achievements: number }[];

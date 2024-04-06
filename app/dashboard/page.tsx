@@ -150,7 +150,6 @@ export default function DashboardPage (){
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
-    console.log(response);
     return response.json();
   };
   
@@ -287,7 +286,7 @@ export default function DashboardPage (){
             </div>
 
             {/* Profile Card */}
-            <ProfileCard identity={identity} addressOrDomain={address} userPercentile={userPercentile} achievemenets={achievements} data={ranking}/>
+            <ProfileCard identity={identity} addressOrDomain={address} achievemenets={achievements} data={ranking}/>
       
         </div>
 
