@@ -73,6 +73,9 @@
     width: 150px;
     height: 150px;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile_picture_img {
@@ -195,6 +198,10 @@
     margin-top: 10px;
 }
 
+.small_divider {
+    width: 20px;
+}
+
 .address_div {
     display: flex;
     align-items: center;
@@ -271,6 +278,10 @@
         justify-content: center;
     }
 
+    .profile_name {
+        margin-bottom: 10px;
+    }
+
     .right_top {
         padding: 0 50px;
     }
@@ -286,6 +297,7 @@
 
     .address_div {
         justify-content: center;
+        gap: 0.5rem;
     }
 
     .right_bottom {

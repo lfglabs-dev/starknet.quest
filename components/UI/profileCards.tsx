@@ -32,6 +32,7 @@ const ProfileCards: FunctionComponent<ProfileCard> = ({
     }, 1500);
   };
 
+
   return (
     <>
       <div className={styles.profileCard}>

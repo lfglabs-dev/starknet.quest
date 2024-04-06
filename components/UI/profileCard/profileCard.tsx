@@ -29,6 +29,11 @@ import { rankOrder, rankOrderMobile } from "@constants/common";
 import { Tooltip, useMediaQuery } from "@mui/material";
 import { timeFrameMap } from "@utils/timeService";
 import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
+import ClickableTwitterIcon from "../actions/clickable/clickableTwitterIcon";
+import { isStarkRootDomain } from "starknetid.js/packages/core/dist/utils";
+import ClickableDiscordIcon from "../actions/clickable/clickableDiscordIcon";
+import ClickableGithubIcon from "../actions/clickable/clickableGithubIcon";
+import ProfilIcon from "../iconsComponents/icons/profilIcon";
 
 
 
@@ -59,9 +64,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
 
-
-
-  
+  const [apiIdentity, setApiIdentity] = useState<Identity | undefined>();
 
   const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
@@ -100,22 +103,22 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   );
 
   const fetchPageData=useCallback(async ()=> { 
-  const requestBody = {
-      addr:
-        status === "connected"
-          ? hexToDecimal(address && address?.length > 0 ? address : "")
-          : "",
-      page_size: 10,
-      shift: 0,
+    const requestBody = {
+        addr:
+          status === "connected"
+            ? hexToDecimal(address && address?.length > 0 ? address : "")
+            : "",
+        page_size: 10,
+        shift: 0,
+        duration: timeFrameMap(duration),
+    };
+    await fetchLeaderboardToppersResult({
+      addr: requestBody.addr,
       duration: timeFrameMap(duration),
-  };
-  await fetchLeaderboardToppersResult({
-    addr: requestBody.addr,
-    duration: timeFrameMap(duration),
-  });
-  await fetchRankingResults(requestBody);
+    });
+    await fetchRankingResults(requestBody);
 
-},[fetchRankingResults,fetchLeaderboardToppersResult,address]);
+  },[fetchRankingResults,fetchLeaderboardToppersResult,address]);
 
 
   const copyToClipboard = () => {
@@ -125,6 +128,8 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       setCopied(false);
     }, 1500);
   };
+
+  
 
   useEffect(() => {
     if (!data) return;
@@ -278,6 +283,27 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     setUserPercentile(res);
   }, [leaderboardToppers ]);
 
+  useEffect(() => {
+    if (isStarkRootDomain(identity?.domain ?? "")) {
+      const refreshData = () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/domain_to_data?domain=${identity?.domain}`
+        )
+          .then(async (response) => {
+            if (!response.ok) {
+              throw new Error(await response.text());
+            }
+            return response.json();
+          })
+          .then((data: Identity) => {
+            setApiIdentity(data);
+          });
+      refreshData();
+      const timer = setInterval(() => refreshData(), 30e3);
+      return () => clearInterval(timer);
+    }
+  }, [identity]);
+
 
   const getIdentityData = async (id: string) => { 
     console.log("id" + id);
@@ -295,22 +321,26 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   if (!identity) {
       return <div>Loading profile data...</div>;
   }
-  
-
+  console.log("Identity from profileCard:" + identity.addr + ", discord: " + identity.discord + ", domain: " + identity.domain);
+  console.log("Profile data: " + profileData.data);
   return (
     <>
     <div className={styles.dashboard_profile_card}>
       <div className={`${styles.left} ${styles.child}`}>
         <div className={styles.profile_picture_div}>
-          <img
-            className={styles.profile_picture_img}
+          {profileData?.data?.profilePicture ? (
+            <img
             src={profileData?.data?.profilePicture}
-          />
+            className="rounded-full"
+            />
+            ) : (
+              <ProfilIcon width={"120"} color={theme.palette.secondary.main} />
+          )}
         </div>
       </div>
       <div className={`${styles.center} ${styles.child}`}>
         <p className={styles.profile_paragraph0}>{ sinceDate? sinceDate : "" } ago</p>
-        <h2 className={styles.profile_name}>{profileData ? profileData.data?.name : address}</h2>
+        <h2 className={styles.profile_name}>{identity.domain}</h2>
         <div className={styles.address_div}>
           <div onClick={() => copyToClipboard()}>
             {!copied ? (
@@ -333,16 +363,27 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       <div className={`${styles.right} ${styles.child}`}>
         <div className={styles.right_top}>
           <div className={styles.right_socials}>
-            <a href="" className={styles.social_icon_wrap}>
+            {apiIdentity? 
+             
+                <>
+                <ClickableTwitterIcon width={"20"} twitterId={apiIdentity?.twitter ?? apiIdentity?.old_twitter} domain={identity.domain} />
+                <ClickableDiscordIcon width={"20"} discordId={apiIdentity?.discord ?? apiIdentity?.old_discord} domain={identity.domain}/>
+                <ClickableGithubIcon width={"20"} githubId={apiIdentity?.github ?? apiIdentity?.old_github} domain={identity.domain}/>
+                </>
+              
+            : <>
+              <a href={""} className={styles.social_icon_wrap}>
               <TwitterIcon width={"24"}/>
-            </a>
-            {/* <ClickableTwitterIcon width={"20"} twitterId={identity.twitter} domain={identity.domain} /> */}
-            <a href="" className={styles.social_icon_wrap}>
-              <DiscordIcon width={"24"}/>
-            </a>
-            <a href="" className={styles.social_icon_wrap}>
-              <GitHubIcon width={"24"}/>
-            </a>
+              </a>
+              <a href={""} className={styles.social_icon_wrap}>
+                <DiscordIcon width={"24"}/>
+              </a>
+              <a href="" className={styles.social_icon_wrap}>
+                <GitHubIcon width={"24"}/>
+              </a>
+              </>
+              }
+            
             <button className={styles.right_share_button}
                     onClick={() => setShowSharePopup(true)}
             >
