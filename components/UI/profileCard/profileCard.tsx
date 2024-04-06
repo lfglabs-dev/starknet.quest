@@ -26,8 +26,9 @@ import DiscordIcon from "../iconsComponents/icons/discordIcon";
 import GitHubIcon from "../iconsComponents/icons/githubIcon";
 import TwitterIcon from "../iconsComponents/icons/twitterIcon";
 import { rankOrder, rankOrderMobile } from "@constants/common";
-import { useMediaQuery } from "@mui/material";
+import { Tooltip, useMediaQuery } from "@mui/material";
 import { timeFrameMap } from "@utils/timeService";
+import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 
 
 
@@ -312,7 +313,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <h2 className={styles.profile_name}>{profileData ? profileData.data?.name : address}</h2>
         <div className={styles.address_div}>
           <div onClick={() => copyToClipboard()}>
-            <CopyIcon width={"20"} color="#F4FAFF" />
+            {!copied ? (
+                    <Tooltip title="Copy" arrow>
+                      <div onClick={() => copyToClipboard()}>
+                        <CopyIcon width={"20"} color="#F4FAFF" />
+                      </div>
+                    </Tooltip>
+                  ) : (
+                    <VerifiedIcon width={"20"} />
+                  )}
           </div>
         <p className={styles.profile_paragraph}>{typeof address === "string" && minifyAddressFromStrings([address, identity?.addr || ""],8)}
         </p>
