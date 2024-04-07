@@ -380,13 +380,13 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
               
             : <>
               <a href={""} className={styles.social_icon_wrap}>
-              <TwitterIcon width={"24"}/>
+              <TwitterIcon color={"white"} width={"24"}/>
               </a>
               <a href={""} className={styles.social_icon_wrap}>
-                <DiscordIcon width={"24"}/>
+                <DiscordIcon color={"white"} width={"24"}/>
               </a>
               <a href="" className={styles.social_icon_wrap}>
-                <GitHubIcon width={"24"}/>
+                <GitHubIcon color={"white"} width={"24"}/>
               </a>
               </>
               }
@@ -404,7 +404,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            <p className={styles.profile_paragraph}>{balanceData? balanceData?.value.toString() : 1}</p>
+            <p className={styles.profile_paragraph}>0</p>
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>

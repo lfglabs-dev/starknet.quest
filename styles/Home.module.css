@@ -278,9 +278,9 @@
     margin: 3rem 1.5rem;
   }
 
-  .section {
+  /* .section {
     background: linear-gradient(180deg, var(--background) 0.04%, var(--background600) 347.42%);
-  }
+  } */
 
   .questContainer {
     margin-top: 1.5rem;
