@@ -3,7 +3,7 @@ import styles from "@styles/dashboard.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import ShareIcon from "@components/UI/iconsComponents/icons/shareIcon";
 import { CDNImage } from "@components/cdn/image";
-import { useAccount, useStarkProfile } from "@starknet-react/core";
+import { useAccount, useBalance, useStarkProfile } from "@starknet-react/core";
 import { isHexString, minifyAddress, minifyAddressFromStrings } from "@utils/stringService";
 import TrophyIcon from "../iconsComponents/icons/trophyIcon";
 import xpUrl from "public/icons/xpBadge.svg";
@@ -40,6 +40,7 @@ import ProfilIcon from "../iconsComponents/icons/profilIcon";
 
 const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   data,
+  addressOrDomain
 }) => {
   
   const [copied, setCopied] = useState(false);
@@ -48,7 +49,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [identity, setIdentity] = useState<Identity>(); 
   const sinceDate = useCreationDate(identity); 
-  const profileData = useStarkProfile({ address });
+  const {data: profileData} = useStarkProfile({ address });
   const [notFound, setNotFound] = useState(false);
   const [initProfile, setInitProfile] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
@@ -61,6 +62,12 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     ranking: [],
   });
   const [userAddress, setUserAddress] = useState<string>("");
+
+  const { isLoading, isError, error, data: balanceData } = useBalance({
+        token: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        address,
+        watch: true
+    })
 
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
 
@@ -162,6 +169,27 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     makeCall();
   }, [data]);
 
+  useEffect(() => {
+    if (isStarkRootDomain(identity?.domain ?? "")) {
+      const refreshData = () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/domain_to_data?domain=${identity?.domain}`
+        )
+          .then(async (response) => {
+            if (!response.ok) {
+              throw new Error(await response.text());
+            }
+            return response.json();
+          })
+          .then((data: Identity) => {
+            setApiIdentity(data);
+          });
+      refreshData();
+      const timer = setInterval(() => refreshData(), 30e3);
+      return () => clearInterval(timer);
+    }
+  }, [identity]);
+
   useEffect(() => { 
     if (
       typeof address === "string" &&
@@ -212,7 +240,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       typeof address === "string" &&
       isHexString(address)
     ) {
-      starknetIdNavigator
+        starknetIdNavigator
         ?.getStarkName(hexToDecimal(address))
         .then((name) => {
           if (name) {
@@ -284,34 +312,13 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     setUserPercentile(res);
   }, [leaderboardToppers ]);
 
-  useEffect(() => {
-    if (isStarkRootDomain(identity?.domain ?? "")) {
-      const refreshData = () =>
-        fetch(
-          `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/domain_to_data?domain=${identity?.domain}`
-        )
-          .then(async (response) => {
-            if (!response.ok) {
-              throw new Error(await response.text());
-            }
-            return response.json();
-          })
-          .then((data: Identity) => {
-            setApiIdentity(data);
-          });
-      refreshData();
-      const timer = setInterval(() => refreshData(), 30e3);
-      return () => clearInterval(timer);
-    }
-  }, [identity]);
+  
 
 
   const getIdentityData = async (id: string) => { 
-    console.log("id" + id);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
-    console.log("Response:" + response.json());
     return response.json();
   };
 
@@ -322,16 +329,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   if (!identity) {
       return <div>Loading profile data...</div>;
   }
-  console.log("Identity from profileCard:" + identity.addr + ", discord: " + identity.discord + ", domain: " + identity.domain);
-  console.log("Profile data: " + profileData.data);
+
   return (
     <>
     <div className={styles.dashboard_profile_card}>
       <div className={`${styles.left} ${styles.child}`}>
         <div className={styles.profile_picture_div}>
-          {profileData?.data?.profilePicture ? (
+          {profileData?.profilePicture ? (
             <img
-            src={profileData?.data?.profilePicture}
+            src={profileData?.profilePicture}
             className="rounded-full"
             />
             ) : (
@@ -398,7 +404,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            <p className={styles.profile_paragraph}>1,475</p>
+            <p className={styles.profile_paragraph}>{balanceData? balanceData?.value.toString() : 1}</p>
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>

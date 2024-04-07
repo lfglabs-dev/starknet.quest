@@ -275,11 +275,6 @@ export default function DashboardPage ({ params }: AddressOrDomainProps){
     }
   }, [addressOrDomain, address]);
 
-  useEffect(() => {
-  console.log("Address or domain:", address);
-  }, [addressOrDomain, address]);
-
-  console.log("addressOrDomain: " + addressOrDomain);
 
   return (
     <div className={styles.dashboard_container}>

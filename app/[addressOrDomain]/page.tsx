@@ -160,6 +160,8 @@ export default function Page({ params }: AddressOrDomainProps) {
     }
   }, [addressOrDomain, address, dynamicRoute]);
 
+
+
   if (notFound) {
     return (
       <ErrorScreen
@@ -176,6 +178,7 @@ export default function Page({ params }: AddressOrDomainProps) {
     );
     return response.json();
   };
+
 
   return (
     <div className={styles.profileBg}>

@@ -72,7 +72,7 @@
     border-radius: 50%;
     width: 150px;
     height: 150px;
-    background-color: white;
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -226,7 +226,7 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
-    margin-top: 12vh;
+    margin-top: 6vh;
     max-width: 950px;
     margin-bottom: 24px;
 }
@@ -251,6 +251,10 @@
         flex-direction: column;
         text-align: center;
         padding: 1rem;
+    }
+
+    .second_header {
+        margin-bottom: 0;
     }
 
 
@@ -301,7 +305,7 @@
     }
 
     .right_bottom {
-        padding: 5px 50px;
+        padding: 5px 80px;
     }
 
     .profile_picture_div {
@@ -327,9 +331,7 @@
         text-align: center;
     }
 
-    .dashboard_completed_tasks_container {
-        margin-top: 6vh;
-    }
+    
 
     .second_header_label {
         margin: auto;
