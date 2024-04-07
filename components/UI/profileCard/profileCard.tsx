@@ -15,7 +15,7 @@ import { calculatePercentile, formatNumberThousandEqualsK } from "@utils/numberS
 import { utils } from "starknetid.js";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import ErrorScreen from "../screens/errorScreen";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import SocialMediaActions from "../actions/socialmediaActions";
 import trophyUrl from "public/icons/trophy.svg";
 import starkUrl from "public/icons/starknet.svg";
@@ -42,7 +42,6 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   data,
   addressOrDomain
 }) => {
-  
   const [copied, setCopied] = useState(false);
   const [ displayData, setDisplayData] = useState<FormattedRankingProps>([]);
   const { address } = useAccount();
@@ -346,7 +345,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         </div>
       </div>
       <div className={`${styles.center} ${styles.child}`}>
-        <p className={styles.profile_paragraph0}>{ sinceDate? sinceDate : "" } ago</p>
+        <p className={styles.profile_paragraph0}>{ sinceDate? sinceDate+ " ago" : "" }</p>
         <h2 className={styles.profile_name}>{identity.domain}</h2>
         <div className={styles.address_div}>
           <div onClick={() => copyToClipboard()}>
@@ -370,8 +369,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       <div className={`${styles.right} ${styles.child}`}>
         <div className={styles.right_top}>
           <div className={styles.right_socials}>
-            {apiIdentity? 
-             
+            {apiIdentity ? 
                 <>
                 <ClickableTwitterIcon width={"20"} twitterId={apiIdentity?.twitter ?? apiIdentity?.old_twitter} domain={identity.domain} />
                 <ClickableDiscordIcon width={"20"} discordId={apiIdentity?.discord ?? apiIdentity?.old_discord} domain={identity.domain}/>
@@ -379,7 +377,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
                 </>
               
             : <>
-              <a href={""} className={styles.social_icon_wrap}>
+              {/* <a href={""} className={styles.social_icon_wrap}>
               <TwitterIcon color={"white"} width={"24"}/>
               </a>
               <a href={""} className={styles.social_icon_wrap}>
@@ -387,16 +385,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
               </a>
               <a href="" className={styles.social_icon_wrap}>
                 <GitHubIcon color={"white"} width={"24"}/>
-              </a>
+              </a> */}
               </>
               }
             
-            <button className={styles.right_share_button}
-                    onClick={() => setShowSharePopup(true)}
-            >
-              <CDNImage src={shareSrc} width={20} height={20} alt={"share-icon"}/>
-              <p>Share</p>
-            </button>
+              <a className={styles.right_share_button} href="https://twitter.com/intent/post?url=Check%20out%20my%20Starknet%20Quest%20land%20at%20http%3A%2F%2Flocalhost%3A3000%2Fdashboard%F0%9F%8F%9E%EF%B8%8F%20%23Starknet%20%23StarknetID" target="_blank">
+                <CDNImage src={shareSrc} width={20} height={20} alt={"share-icon"}/>
+                <p>Share</p>
+              </a>
+              
           </div>
           
         </div>
