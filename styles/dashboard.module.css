@@ -207,6 +207,25 @@
     font-size: 12px;
 } 
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.mintTurquoiseGradientSpinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #98ff98, #32a6a8, #98ff98);
+    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff 0);
+    animation: spin 1s linear infinite;
+}
+
 .profile_name {
     font-size: 30px;
     font-weight: bold;

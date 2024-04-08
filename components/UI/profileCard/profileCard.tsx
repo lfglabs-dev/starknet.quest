@@ -18,7 +18,7 @@ import ErrorScreen from "../screens/errorScreen";
 import router, { useRouter } from "next/router";
 import SocialMediaActions from "../actions/socialmediaActions";
 import trophyUrl from "public/icons/trophy.svg";
-import starkUrl from "public/icons/starknet.svg";
+import starkUrl from "public/icons/strk.webp"
 import shareSrc from "public/icons/share.svg";
 import SharePopup from "../menus/sharePopup";
 import theme from "@styles/theme";
@@ -34,6 +34,8 @@ import { isStarkRootDomain } from "starknetid.js/packages/core/dist/utils";
 import ClickableDiscordIcon from "../actions/clickable/clickableDiscordIcon";
 import ClickableGithubIcon from "../actions/clickable/clickableGithubIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
+import { getCurrentNetwork } from "@utils/network";
+import { TOKEN_ADDRESS_MAP } from "@constants/common";
 
 interface LeaderboardUserData {
   address: string;
@@ -53,7 +55,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [ displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-  const { address } = useAccount();
+  const { isConnecting, address } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [identity, setIdentity] = useState<Identity>(); 
   const sinceDate = useCreationDate(identity); 
@@ -72,8 +74,11 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const [userAddress, setUserAddress] = useState<string>("");
   const [user, setUser] = useState<LeaderboardUserData>();
 
+  const network = getCurrentNetwork();
+  const tokenAddress= TOKEN_ADDRESS_MAP[network].STRK;
+
   const { isLoading, isError, error, data: balanceData } = useBalance({
-        token: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        token: tokenAddress,
         address,
         watch: true
   })
@@ -81,6 +86,8 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
 
   const [apiIdentity, setApiIdentity] = useState<Identity | undefined>();
+
+  const [dataLoading, setDataLoading] = useState(true);
 
   const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
@@ -90,9 +97,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
   const [currentUserData, setCurrentUserData] = useState<LeaderboardUserData | null>(null);
 
-  useEffect(() => {
-    console.log("Address:", address);
-  }, [address]);
+ 
 
   useEffect(() => { 
     setTimeout(() => {
@@ -104,8 +109,8 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
   useEffect(()=>{
     if (!apiCallDelay) return;
-    fetchPageData()
-  },[apiCallDelay]);
+    fetchPageData();
+  },[apiCallDelay, dataLoading]);
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
@@ -136,13 +141,17 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       if (item.address === requestBody.addr) {
         setUser(item);
       }
+      else {
+        setUser(item); // added this when sepolia doesnt return good data
+      }
     })
     await fetchLeaderboardToppersResult({
     addr: requestBody.addr,
     duration: timeFrameMap(duration),
-  });
+    });
+    setDataLoading(false);
 
-  },[fetchLeaderboardRankings,fetchLeaderboardToppersResult,user, address]);
+  },[fetchLeaderboardRankings,fetchLeaderboardToppersResult,user, address, dataLoading]);
 
 
   const copyToClipboard = () => {
@@ -326,13 +335,11 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       leaderboardToppers?.position ?? 0,
       leaderboardToppers?.total_users ?? 0
     );
-    console.log("labela: " + res);
     setUserPercentile(res);
   }, [userPercentile, leaderboardToppers]);
 
   useEffect(() => {
     if (!identity){
-      console.log("This gets printed");
       return;
   } 
 
@@ -347,7 +354,6 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       const response: RankingData = await fetchLeaderboardRankings(params).then();
       // Now we use the ranking array inside the response to find our user
       const userData = response.ranking.find((user) => user.address.toLowerCase() === identity.addr.toLowerCase());
-      console.log(userData);
       if (userData) {
         setCurrentUserData(userData);
       }
@@ -366,12 +372,6 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   }
   
   const currentUserAchievementsAndXP = leaderboardToppers.best_users.find(user => user.address.toLowerCase() === address?.toLowerCase());
-  console.log("address: " + address);
-  console.log("currentUserAchievementsAndXP: " + currentUserAchievementsAndXP);
-  console.log(leaderboardToppers.best_users);
-  console.log("Current user data: " + currentUserData);
-  console.log("identity" + JSON.stringify(identity));
-  console.log("Formated: " + balanceData?.formatted);
 
   return (
     <>
@@ -445,15 +445,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>
+            {isLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
-            <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>
+            {dataLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={xpUrl} priority width={20} height={20} alt="xp badge" />
-            <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>
+            {dataLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>}
           </div>
         </div>
       </div>

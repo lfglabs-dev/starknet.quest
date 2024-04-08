@@ -148,12 +148,6 @@ export default function DashboardPage ({ params }: AddressOrDomainProps){
   }, [leaderboardToppers]);
 
 
-  // DashboardSkeleton needs to be finished and isError is commented for testing
-  // the completed quests part
-
-  // if (isLoading) return <DashboardSkeleton />;
-  // if (isError) return <span>Error fetching profile...</span>;
-
   const getIdentityData = async (id: string) => { 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
