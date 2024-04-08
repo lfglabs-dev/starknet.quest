@@ -56,8 +56,8 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   }, [address]);
 
   const isClickable = useMemo(
-    () => !userBoostCheckStatus,
-    [userBoostCheckStatus]
+    () => !userBoostCheckStatus && address && hasUserCompletedBoost,
+    [userBoostCheckStatus, address, hasUserCompletedBoost]
   );
 
   return (
@@ -97,31 +97,33 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           ) : (
             <div className="flex w-full">
               <div className="flex items-center">
-                <div className={styles.issuer}>
-                  {boost.expiry > Date.now() ? (
-                    hasUserCompletedBoost ? (
+                {address && (
+                  <div className={styles.issuer}>
+                    {boost.expiry > Date.now() ? (
+                      hasUserCompletedBoost ? (
+                        <>
+                          <p className="text-white">Done</p>
+                          <CheckIcon width="24" color="#6AFFAF" />
+                        </>
+                      ) : null
+                    ) : boost.winner === null ? (
                       <>
                         <p className="text-white">Done</p>
                         <CheckIcon width="24" color="#6AFFAF" />
                       </>
-                    ) : null
-                  ) : boost.winner === null ? (
-                    <>
-                      <p className="text-white">Done</p>
-                      <CheckIcon width="24" color="#6AFFAF" />
-                    </>
-                  ) : isClickable ? (
-                    <>
-                      <p className="text-white">See my reward</p>
-                      <TrophyIcon width="24" color="#8BEED9" />
-                    </>
-                  ) : (
-                    <>
-                      <UnavailableIcon width="24" color="#D32F2F" />
-                      <p className="text-white mr-2">Boost ended</p>
-                    </>
-                  )}
-                </div>
+                    ) : isClickable ? (
+                      <>
+                        <p className="text-white">See my reward</p>
+                        <TrophyIcon width="24" color="#8BEED9" />
+                      </>
+                    ) : (
+                      <>
+                        <UnavailableIcon width="24" color="#D32F2F" />
+                        <p className="text-white mr-2">Boost ended</p>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
