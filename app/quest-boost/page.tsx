@@ -23,7 +23,6 @@ export default function Page() {
     try {
       const res = await getBoosts();
       setBoosts(res);
-      console.log(res);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
