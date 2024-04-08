@@ -98,7 +98,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                     {boost.expiry > Date.now() ? (
                       hasUserCompletedBoost ? (
                         <>
-                          <p className="text-white ">Done</p>
+                          <p className="text-white">Done</p>
                           <CheckIcon width="24" color="#6AFFAF" />
                         </>
                       ) : null
@@ -109,7 +109,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                       </>
                     ) : isClickable ? (
                       <>
-                        <p className="text-white ">See my reward</p>
+                        <p className="text-white">See my reward</p>
                         <TrophyIcon width="24" color="#8BEED9" />
                       </>
                     ) : (
