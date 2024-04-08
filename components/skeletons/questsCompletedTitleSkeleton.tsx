@@ -2,24 +2,24 @@ import React, { FunctionComponent } from "react";
 import { Skeleton } from "@mui/material";
 import styles from "@styles/dashboard.module.css";
 
-const DashboardSkeleton: FunctionComponent = () => {
+const QuestsCompletedTitleSkeleton: FunctionComponent = () => {
   return (
     <>
-      <div className={styles.dashboardSkeleton}>
+      <div className={styles.questsCompletedTitleSkeleton}>
         <Skeleton
           variant="rounded"
-          className={styles.dashboardLoading}
-          height={'90vh'}
+          className={styles.questsCompletedTitleLoading}
+          height={'5vh'}
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",
-            margin: "40px auto",
+            margin: "40px"
           }}
         />
-      </div>
 
+      </div>
     </>
   );
 };
 
-export default DashboardSkeleton;
+export default QuestsCompletedTitleSkeleton;

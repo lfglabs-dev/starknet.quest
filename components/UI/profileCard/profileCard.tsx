@@ -35,7 +35,16 @@ import ClickableDiscordIcon from "../actions/clickable/clickableDiscordIcon";
 import ClickableGithubIcon from "../actions/clickable/clickableGithubIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 
+interface LeaderboardUserData {
+  address: string;
+  achievements: number;
+  xp: number;
+}
 
+interface RankingData {
+  first_elt_position: number;
+  ranking: LeaderboardUserData[];
+}
 
 
 const ProfileCard: FunctionComponent<ProfileCardModified> = ({
@@ -61,12 +70,13 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     ranking: [],
   });
   const [userAddress, setUserAddress] = useState<string>("");
+  const [user, setUser] = useState<LeaderboardUserData>();
 
   const { isLoading, isError, error, data: balanceData } = useBalance({
         token: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
         address,
         watch: true
-    })
+  })
 
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
 
@@ -77,6 +87,12 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       best_users: [],
       total_users: 0,
   });
+
+  const [currentUserData, setCurrentUserData] = useState<LeaderboardUserData | null>(null);
+
+  useEffect(() => {
+    console.log("Address:", address);
+  }, [address]);
 
   useEffect(() => { 
     setTimeout(() => {
@@ -110,21 +126,23 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
   const fetchPageData=useCallback(async ()=> { 
     const requestBody = {
-        addr:
-          status === "connected"
-            ? hexToDecimal(address && address?.length > 0 ? address : "")
-            : "",
+        addr: hexToDecimal(address && address?.length > 0 ? address : ""),
         page_size: 10,
         shift: 0,
         duration: timeFrameMap(duration),
     };
+    const rankingData = await fetchLeaderboardRankings(requestBody);
+    rankingData.ranking.forEach((item: LeaderboardUserData) => {
+      if (item.address === requestBody.addr) {
+        setUser(item);
+      }
+    })
     await fetchLeaderboardToppersResult({
-      addr: requestBody.addr,
-      duration: timeFrameMap(duration),
-    });
-    await fetchRankingResults(requestBody);
+    addr: requestBody.addr,
+    duration: timeFrameMap(duration),
+  });
 
-  },[fetchRankingResults,fetchLeaderboardToppersResult,address]);
+  },[fetchLeaderboardRankings,fetchLeaderboardToppersResult,user, address]);
 
 
   const copyToClipboard = () => {
@@ -308,18 +326,36 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       leaderboardToppers?.position ?? 0,
       leaderboardToppers?.total_users ?? 0
     );
+    console.log("labela: " + res);
     setUserPercentile(res);
-  }, [leaderboardToppers ]);
+  }, [userPercentile, leaderboardToppers]);
 
-  
+  useEffect(() => {
+    if (!identity){
+      console.log("This gets printed");
+      return;
+  } 
 
+    const fetchData = async () => {
+      const params: LeaderboardRankingParams = {
+        addr: identity.addr,
+        page_size: 10, // Might need adjustment based on how you want to use it
+        shift: 0,
+        duration: "week", // or "month" or "all", depending on the desired timeframe
+      };
 
-  const getIdentityData = async (id: string) => { 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
-    );
-    return response.json();
-  };
+      const response: RankingData = await fetchLeaderboardRankings(params).then();
+      // Now we use the ranking array inside the response to find our user
+      const userData = response.ranking.find((user) => user.address.toLowerCase() === identity.addr.toLowerCase());
+      console.log(userData);
+      if (userData) {
+        setCurrentUserData(userData);
+      }
+    };
+
+    fetchData();
+  }, [address]);
+
 
   const handleChangeSelection = (title: string) => {
     setDuration(title);
@@ -328,6 +364,14 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   if (!identity) {
       return <div>Loading profile data...</div>;
   }
+  
+  const currentUserAchievementsAndXP = leaderboardToppers.best_users.find(user => user.address.toLowerCase() === address?.toLowerCase());
+  console.log("address: " + address);
+  console.log("currentUserAchievementsAndXP: " + currentUserAchievementsAndXP);
+  console.log(leaderboardToppers.best_users);
+  console.log("Current user data: " + currentUserData);
+  console.log("identity" + JSON.stringify(identity));
+  console.log("Formated: " + balanceData?.formatted);
 
   return (
     <>
@@ -389,7 +433,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
               </>
               }
             
-              <a className={styles.right_share_button} href="https://twitter.com/intent/post?url=Check%20out%20my%20Starknet%20Quest%20land%20at%20http%3A%2F%2Flocalhost%3A3000%2Fdashboard%F0%9F%8F%9E%EF%B8%8F%20%23Starknet%20%23StarknetID" target="_blank">
+              <a className={styles.right_share_button} href="https://twitter.com/intent/post?url=Check%20out%20my%20Starknet%20Quest%20land%20at%20http%3A%2F%2Flocalhost%3A3000%2Fdashboard%F0%9F%8F%9E%EF%B8%8F%20%23Starknet%20%23StarknetID" target="_blank" rel="noreferrer">
                 <CDNImage src={shareSrc} width={20} height={20} alt={"share-icon"}/>
                 <p>Share</p>
               </a>
@@ -401,51 +445,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            <p className={styles.profile_paragraph}>0</p>
+            <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
-            {leaderboardToppers
-                ? isMobile
-                  ? rankOrderMobile.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <p key={index} className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
-                      );
-                    })
-                  : rankOrder.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <p key={index} className={styles.profile_paragraph}>{formatNumberThousandEqualsK(item?.achievements)}</p>
-                      );
-                    })
-             : null}
+            <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={xpUrl} priority width={20} height={20} alt="xp badge" />
-            {leaderboardToppers
-                ? isMobile
-                  ? rankOrderMobile.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <p key={index} className={styles.profile_paragraph}>{item?.xp}</p>
-                      );
-                    })
-                  : rankOrder.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <p key={index} className={styles.profile_paragraph}>{item?.xp}</p>
-                      );
-                    })
-             : null}
+            <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>
           </div>
         </div>
       </div>

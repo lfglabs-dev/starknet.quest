@@ -1,7 +1,6 @@
 "use client";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import styles from "@styles/dashboard.module.css";
-import DashboardSkeleton from "@components/skeletons/dashboardSkeleton";
 import ProfileCard from "@components/UI/profileCard/profileCard";
 import BoostCard from "@components/quest-boost/boostCard";
 import { LeaderboardRankingParams, LeaderboardTopperParams, fetchLeaderboardRankings, fetchLeaderboardToppers, getCompletedBoosts, getCompletedQuests, getQuestById } from "@services/apiService"; 
@@ -21,6 +20,8 @@ import { QuestsContext } from "@context/QuestsProvider";
 import { rankOrder, rankOrderMobile } from "@constants/common";
 import { getDomainFromAddress } from "@utils/domainService";
 import { timeFrameMap } from "@utils/timeService";
+import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
+import QuestsCompletedTitleSkeleton from "@components/skeletons/questsCompletedTitleSkeleton";
 
 type AddressOrDomainProps = {
   params: {
@@ -48,6 +49,7 @@ export default function DashboardPage ({ params }: AddressOrDomainProps){
   const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const addressOrDomain = params.addressOrDomain;
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
 
 
 
@@ -275,6 +277,12 @@ export default function DashboardPage ({ params }: AddressOrDomainProps){
     }
   }, [addressOrDomain, address]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSkeletonLoading(false);
+    }, 1000);
+  }, []);
+
 
   return (
     <div className={styles.dashboard_container}>
@@ -286,10 +294,9 @@ export default function DashboardPage ({ params }: AddressOrDomainProps){
             <div className={styles.blur2}>
               <Blur green />
             </div>
-
+            {skeletonLoading ? <><ProfileCardSkeleton/></>: <ProfileCard identity={identity} addressOrDomain={addressOrDomain} achievemenets={achievements} data={ranking}/>}
             {/* Profile Card */}
-            <ProfileCard identity={identity} addressOrDomain={addressOrDomain} achievemenets={achievements} data={ranking}/>
-      
+            
         </div>
 
         {/* Completed Quests */}
