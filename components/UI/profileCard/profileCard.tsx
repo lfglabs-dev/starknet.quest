@@ -75,7 +75,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const [user, setUser] = useState<LeaderboardUserData>();
 
   const network = getCurrentNetwork();
-  const tokenAddress= TOKEN_ADDRESS_MAP[network].STRK;
+  const tokenAddress = TOKEN_ADDRESS_MAP[network].STRK;
 
   const { isLoading, isError, error, data: balanceData } = useBalance({
         token: tokenAddress,
@@ -371,8 +371,11 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       return <div>Loading profile data...</div>;
   }
   
-  const currentUserAchievementsAndXP = leaderboardToppers.best_users.find(user => user.address.toLowerCase() === address?.toLowerCase());
-
+  console.log("Token address: " + tokenAddress);
+  console.log(balanceData);
+  console.log("Balance formatted: " + balanceData?.formatted);
+  console.log("Balance value: " + balanceData?.value);
+  console.log("Balance symbol: " + balanceData?.symbol);
   return (
     <>
     <div className={styles.dashboard_profile_card}>
@@ -445,7 +448,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            {isLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>}
+            {isLoading && !isError ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData ? balanceData.formatted : "NaN"}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
