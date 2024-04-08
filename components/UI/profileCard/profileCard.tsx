@@ -445,15 +445,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            {isLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>}
+            {isLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData? balanceData.formatted : 0}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
-            {dataLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>}
+            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={xpUrl} priority width={20} height={20} alt="xp badge" />
-            {dataLoading ? <div className={styles.mintTurquoiseGradientSpinner}></div> : <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>}
+            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>}
           </div>
         </div>
       </div>
