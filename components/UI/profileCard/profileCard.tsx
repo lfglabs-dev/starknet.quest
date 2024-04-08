@@ -112,13 +112,13 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     fetchPageData();
   },[apiCallDelay, dataLoading]);
 
-  const fetchRankingResults = useCallback(
-    async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);         
-        setRanking(response); 
-    },
-    []
-  );
+  // const fetchRankingResults = useCallback(
+  //   async (requestBody: LeaderboardRankingParams) => {
+  //     const response = await fetchLeaderboardRankings(requestBody);         
+  //       setRanking(response); 
+  //   },
+  //   []
+  // );
 
   const fetchLeaderboardToppersResult = useCallback( 
     async (requestBody: LeaderboardTopperParams) => {
@@ -142,7 +142,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         setUser(item);
       }
       else {
-        setUser(item); // added this when sepolia doesnt return good data
+        setUser(item); // added this for sepolia endpoints because they dont return expected data
       }
     })
     await fetchLeaderboardToppersResult({
