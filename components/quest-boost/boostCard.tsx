@@ -116,9 +116,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 										) : (
 											<>
 												<UnavailableIcon width="24" color="#D32F2F" />
-												<p className="text-white  mr-2">
-													Boost ended
-												</p>
+												<p className="text-white  mr-2">Boost ended</p>
 											</>
 										)}
 									</div>
