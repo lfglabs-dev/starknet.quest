@@ -102,24 +102,24 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                 {boost.expiry > Date.now() ? (
                   hasUserCompletedBoost ? (
                     <>
-                      <p className="text-white capitalize">Done</p>
+                      <p className="text-white">Done</p>
                       <CheckIcon width="24" color="#6AFFAF" />
                     </>
                   ) : null
                 ) : boost.winner === null ? (
                   <>
-                    <p className="text-white capitalize">Done</p>
+                    <p className="text-white">Done</p>
                     <CheckIcon width="24" color="#6AFFAF" />
                   </>
                 ) : isClickable ? (
                   <>
-                    <p className="text-white capitalize">See my reward</p>
+                    <p className="text-white">See my reward</p>
                     <TrophyIcon width="24" color="#8BEED9" />
                   </>
                 ) : (
                   <>
                     <UnavailableIcon width="24" color="#D32F2F" />
-                    <p className="text-white mr-2 capitalize">Boost ended</p>
+                    <p className="text-white mr-2">Boost ended</p>
                   </>
                 )}
               </div>
