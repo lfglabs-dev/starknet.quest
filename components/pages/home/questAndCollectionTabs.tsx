@@ -1,4 +1,11 @@
-import React, { FunctionComponent, useCallback, useMemo } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
@@ -7,6 +14,10 @@ import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { QuestDocument } from "../../../types/backTypes";
+import Link from "next/link";
+import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import { QuestsContext } from "@context/QuestsProvider";
+import { getBoosts } from "@services/apiService";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,7 +67,11 @@ const QuestAndCollectionTabs: FunctionComponent<
     []
   );
   const sortedAndFilteredQuests = useMemo(() => {
-    const filteredQuests = address ? trendingQuests?.length > 0 ? trendingQuests : quests : quests;
+    const filteredQuests = address
+      ? trendingQuests?.length > 0
+        ? trendingQuests
+        : quests
+      : quests;
     return filteredQuests
       .filter((quest) => !quest.expired)
       .sort((questA, questB) => {
@@ -69,6 +84,27 @@ const QuestAndCollectionTabs: FunctionComponent<
         return aExpiry - bExpiry; // Quests that expired soon will be first
       });
   }, [address, quests, trendingQuests]);
+
+  const [boosts, setBoosts] = useState<Boost[]>([]);
+  const { completedBoostIds } = useContext(QuestsContext);
+
+  const fetchBoosts = async () => {
+    try {
+      const res = await getBoosts();
+      setBoosts(res);
+    } catch (err) {
+      console.log("Error while fetching boosts", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoosts();
+  }, []);
+
+  const completedBoostNumber = useMemo(
+    () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
+    [boosts, completedBoostIds]
+  );
 
   return (
     <div className={styles.featured_quest_banner_container}>
@@ -110,7 +146,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${categories.length})`}
+                label={`Collections (${categories.length + (boosts && 1)})`}
                 {...a11yProps(1)}
               />
             </Tabs>
@@ -140,6 +176,28 @@ const QuestAndCollectionTabs: FunctionComponent<
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
             <div className="space-y-6 flex flex-col items-center">
+              {boosts ? (
+                <div className={styles.questCategoryContainer}>
+                  <Link href={`/quest-boost`} className={styles.questCategory}>
+                    <div className={styles.categoryInfos}>
+                      <h2 className="text-gray-200">Boosts Quest</h2>
+                      <p className="text-gray-200 normal-case">
+                        {completedBoostNumber === boosts.length ? (
+                          <span className="flex">
+                            <span className="mr-2">All boosts done</span>
+                            <CheckIcon width="24" color="#6AFFAF" />
+                          </span>
+                        ) : (
+                          `${completedBoostNumber}/${boosts.length} Boost${
+                            boosts.length > 1 ? "s" : ""
+                          } done`
+                        )}
+                      </p>
+                    </div>
+                    <img src="/visuals/boost/logo.webp" />
+                  </Link>
+                </div>
+              ) : null}
               {categories ? (
                 categories.map((category) => {
                   return (
