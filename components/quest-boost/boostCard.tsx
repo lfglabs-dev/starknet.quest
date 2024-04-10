@@ -56,8 +56,14 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   }, [address]);
 
   const isClickable = useMemo(
-    () => !userBoostCheckStatus && address && hasUserCompletedBoost,
-    [userBoostCheckStatus, address, hasUserCompletedBoost]
+    () => !userBoostCheckStatus,
+    [userBoostCheckStatus]
+  );
+
+
+  const isBoostCompleteWithAddress = useMemo(
+    () => address && hasUserCompletedBoost,
+    [ address, hasUserCompletedBoost]
   );
 
   return (
@@ -111,7 +117,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                         <p className="text-white capitalize">Done</p>
                         <CheckIcon width="24" color="#6AFFAF" />
                       </>
-                    ) : isClickable ? (
+                    ) : isClickable && isBoostCompleteWithAddress ? (
                       <>
                         <p className="text-white capitalize">See my reward</p>
                         <TrophyIcon width="24" color="#8BEED9" />
