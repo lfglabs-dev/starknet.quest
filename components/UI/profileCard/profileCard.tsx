@@ -66,7 +66,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [userPercentile, setUserPercentile] = useState<number>();
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [duration, setDuration] = useState<string>("Last 7 Days");
+  const [duration, setDuration] = useState<string>("All time");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
@@ -104,6 +104,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       setApiCallDelay(true);
     }, 1000);
     if (address === "") return;
+    if (identity) setUserAddress(identity.addr);
     if (address) setUserAddress(address);
   }, [address]);
 
@@ -131,7 +132,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
 
   const fetchPageData=useCallback(async ()=> { 
     const requestBody = {
-        addr: hexToDecimal(address && address?.length > 0 ? address : ""),
+        addr: hexToDecimal(address && address?.length > 0 ? address : userAddress),
         page_size: 10,
         shift: 0,
         duration: timeFrameMap(duration),
@@ -140,9 +141,6 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     rankingData.ranking.forEach((item: LeaderboardUserData) => {
       if (item.address === requestBody.addr) {
         setUser(item);
-      }
-      else {
-        setUser(item); // added this for sepolia endpoints because they dont return expected data
       }
     })
     await fetchLeaderboardToppersResult({
@@ -217,6 +215,9 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
   }, [identity]);
 
   useEffect(() => { 
+    if (identity ) {
+      return;
+    }
     if (
       typeof address === "string" &&
       address?.toString().toLowerCase().endsWith(".stark")
@@ -327,7 +328,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
     } else {
       setNotFound(true);
     }
-  }, [address]);
+  }, [address, identity]);
 
   useEffect(() => {
     // calculate user percentile
@@ -348,7 +349,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         addr: identity.addr,
         page_size: 10, // Might need adjustment based on how you want to use it
         shift: 0,
-        duration: "week", // or "month" or "all", depending on the desired timeframe
+        duration: "all", // or "month" or "all", depending on the desired timeframe
       };
 
       const response: RankingData = await fetchLeaderboardRankings(params).then();
@@ -371,11 +372,6 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
       return <div>Loading profile data...</div>;
   }
   
-  console.log("Token address: " + tokenAddress);
-  console.log(balanceData);
-  console.log("Balance formatted: " + balanceData?.formatted);
-  console.log("Balance value: " + balanceData?.value);
-  console.log("Balance symbol: " + balanceData?.symbol);
   return (
     <>
     <div className={styles.dashboard_profile_card}>
@@ -410,7 +406,7 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         </p>
         </div>
         <p className={styles.profile_paragraph2}>
-          You are <span className={styles.green_span}>better than {userPercentile}%</span> of other players.
+          {user ? <>You are <span className={styles.green_span}>better than {userPercentile}%</span> of other players.</> : ""}
         </p>
       </div>
       <div className={`${styles.right} ${styles.child}`}>
@@ -448,15 +444,15 @@ const ProfileCard: FunctionComponent<ProfileCardModified> = ({
         <div className={styles.right_bottom}>
           <div className={styles.right_bottom_content}>
             <CDNImage src={starkUrl} priority width={20} height={20} alt="STRK"/>
-            {isLoading && !isError ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData ? balanceData.formatted : "NaN"}</p>}
+            {isLoading && !isError ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{balanceData ? balanceData.formatted : <><div className={styles.smallSpinner}></div></>}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={trophyUrl} priority width={20} height={20} alt="achievements"/>
-            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : 0}</p>}
+            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? formatNumberThousandEqualsK(user?.achievements) : <><div className={styles.smallSpinner}></div></>}</p>}
           </div>
           <div className={styles.right_bottom_content}>
             <CDNImage src={xpUrl} priority width={20} height={20} alt="xp badge" />
-            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? user?.xp : 0}</p>}
+            {dataLoading ? <div className={styles.smallSpinner}></div> : <p className={styles.profile_paragraph}>{user ? user?.xp : <><div className={styles.smallSpinner}></div></>}</p>}
           </div>
         </div>
       </div>
