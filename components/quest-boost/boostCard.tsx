@@ -10,8 +10,7 @@ import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
-import { TOKEN_DECIMAL_MAP } from "@constants/common";
-import { getTokenName } from "@utils/tokenService";
+import { useRouter } from "next/navigation";
 
 type BoostCardProps = {
   boost: Boost;
@@ -29,8 +28,9 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     useState<boolean>(false);
   const [hasUserCompletedBoost, setHasUserCompletedBoost] =
     useState<boolean>(false);
-  const { getBoostClaimStatus } = useBoost();
+  const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
   const [hovered, setHovered] = useState<boolean>(false);
+  const navigate = useRouter();
 
   useEffect(() => {
     if (!boost || !completedQuests) return;
@@ -55,22 +55,34 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     setUserBoostCheckStatus(res);
   }, [address]);
 
-  const isClickable = useMemo(
-    () => !userBoostCheckStatus,
-    [userBoostCheckStatus]
-  );
+  const isClickable = useMemo(() => {
+    if (
+      boost.expiry < Date.now() &&
+      hasUserCompletedBoost &&
+      !userBoostCheckStatus &&
+      boost.winner != null
+    ) {
+      // see my reward check
+      return true;
+    } else if (boost.expiry > Date.now() && !hasUserCompletedBoost) {
+      // not expired and not completed by user
+      return true;
+    } else if (boost.expiry > Date.now() && hasUserCompletedBoost) {
+      // has expired and completed  by user
+      return true;
+    }
+    return false;
+  }, [userBoostCheckStatus, hasUserCompletedBoost]);
 
-
-  const isBoostCompleteWithAddress = useMemo(
-    () => address && hasUserCompletedBoost,
-    [ address, hasUserCompletedBoost]
-  );
+  const navigateAndUpdateBoostStatus = () => {
+    if (isClickable) {
+      navigate.push(isClickable ? `/quest-boost/${boost?.id}` : "");
+    }
+    updateBoostClaimStatus(address ?? "", boost.id, !userBoostCheckStatus);
+  };
 
   return (
-    <Link
-      className="flex"
-      href={isClickable ? `/quest-boost/${boost?.id}` : ""}
-    >
+    <div className="flex" onClick={navigateAndUpdateBoostStatus}>
       <div
         className={styles.boost_card_container}
         style={{
@@ -105,28 +117,49 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
               <div className="flex items-center">
                 {address && (
                   <div className={styles.issuer}>
-                    {boost.expiry > Date.now() ? (
+                    {boost.expiry < Date.now() ? (
                       hasUserCompletedBoost ? (
+                        !userBoostCheckStatus ? (
+                          boost.winner != null ? (
+                            <>
+                              <p className="text-white capitalize">
+                                See my rewards
+                              </p>
+                              <CheckIcon width="24" color="#6AFFAF" />
+                            </>
+                          ) : (
+                            <>
+                              <UnavailableIcon width="24" color="#D32F2F" />
+                              <p className="text-white mr-2 capitalize">
+                                Boost ended
+                              </p>
+                            </>
+                          )
+                        ) : (
+                          userBoostCheckStatus && (
+                            <>
+                              <UnavailableIcon width="24" color="#D32F2F" />
+                              <p className="text-white mr-2 capitalize">
+                                Boost ended
+                              </p>
+                            </>
+                          )
+                        )
+                      ) : (
+                        <>
+                          <UnavailableIcon width="24" color="#D32F2F" />
+                          <p className="text-white mr-2 capitalize">
+                            Boost ended
+                          </p>
+                        </>
+                      )
+                    ) : (
+                      hasUserCompletedBoost && (
                         <>
                           <p className="text-white capitalize">Done</p>
                           <CheckIcon width="24" color="#6AFFAF" />
                         </>
-                      ) : null
-                    ) : boost.winner === null ? (
-                      <>
-                        <p className="text-white capitalize">Done</p>
-                        <CheckIcon width="24" color="#6AFFAF" />
-                      </>
-                    ) : isClickable && isBoostCompleteWithAddress ? (
-                      <>
-                        <p className="text-white capitalize">See my reward</p>
-                        <TrophyIcon width="24" color="#8BEED9" />
-                      </>
-                    ) : (
-                      <>
-                        <UnavailableIcon width="24" color="#D32F2F" />
-                        <p className="text-white mr-2 capitalize">Boost ended</p>
-                      </>
+                      )
                     )}
                   </div>
                 )}
@@ -135,7 +168,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
