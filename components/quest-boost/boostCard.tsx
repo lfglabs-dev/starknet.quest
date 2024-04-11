@@ -68,7 +68,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
       // not expired and not completed by user
       return true;
     } else if (boost.expiry > Date.now() && hasUserCompletedBoost) {
-      // has expired and completed  by user
+      // not expired and completed  by user
       return true;
     }
     return false;
