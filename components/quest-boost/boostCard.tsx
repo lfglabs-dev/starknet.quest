@@ -124,35 +124,27 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 												!userBoostCheckStatus ? (
 													boost.winner != null ? (
 														<>
-															<p className="text-white">
-																See my rewards
-															</p>
+															<p className="text-white">See my rewards</p>
 															<CheckIcon width="24" color="#6AFFAF" />
 														</>
 													) : (
 														<>
 															<UnavailableIcon width="24" color="#D32F2F" />
-															<p className="text-white mr-2">
-																Boost ended
-															</p>
+															<p className="text-white mr-2">Boost ended</p>
 														</>
 													)
 												) : (
 													userBoostCheckStatus && (
 														<>
 															<UnavailableIcon width="24" color="#D32F2F" />
-															<p className="text-white mr-2">
-																Boost ended
-															</p>
+															<p className="text-white mr-2">Boost ended</p>
 														</>
 													)
 												)
 											) : (
 												<>
 													<UnavailableIcon width="24" color="#D32F2F" />
-													<p className="text-white mr-2">
-														Boost ended
-													</p>
+													<p className="text-white mr-2">Boost ended</p>
 												</>
 											)
 										) : (
