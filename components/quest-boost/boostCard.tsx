@@ -74,17 +74,11 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     return false;
   }, [userBoostCheckStatus, hasUserCompletedBoost]);
 
-  const navigateAndUpdateBoostStatus = () => {
-    if (isClickable) {
-      navigate.push(isClickable ? `/quest-boost/${boost?.id}` : "");
-    }
-    if (hasUserCompletedBoost && !userBoostCheckStatus) {
-      updateBoostClaimStatus(address ?? "", boost.id, !userBoostCheckStatus);
-    }
-  };
-
   return (
-    <div className="flex" onClick={navigateAndUpdateBoostStatus}>
+    <Link
+      className="flex"
+      href={isClickable ? `/quest-boost/${boost?.id}` : ""}
+    >
       <div
         className={styles.boost_card_container}
         style={{
@@ -162,7 +156,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
