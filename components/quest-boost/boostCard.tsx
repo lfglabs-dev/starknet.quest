@@ -78,7 +78,9 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     if (isClickable) {
       navigate.push(isClickable ? `/quest-boost/${boost?.id}` : "");
     }
-   
+    if (hasUserCompletedBoost && !userBoostCheckStatus) {
+      updateBoostClaimStatus(address ?? "", boost.id, !userBoostCheckStatus);
+    }
   };
 
   return (
