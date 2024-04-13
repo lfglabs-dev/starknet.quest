@@ -59,19 +59,13 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     if (
       boost.expiry < Date.now() &&
       hasUserCompletedBoost &&
-      !userBoostCheckStatus &&
-      boost.winner != null
+      userBoostCheckStatus
     ) {
-      // "see my reward" check
-      return true;
-    } else if (boost.expiry > Date.now() && !hasUserCompletedBoost) {
-      // not expired and not completed by user
-      return true;
-    } else if (boost.expiry > Date.now() && hasUserCompletedBoost) {
-      // not expired and completed  by user
-      return true;
+      return false;
+    } else if (boost.expiry < Date.now() && !hasUserCompletedBoost) {
+      return false;
     }
-    return false;
+    return true;
   }, [userBoostCheckStatus, hasUserCompletedBoost]);
 
   return (
@@ -114,7 +108,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                 {address && (
                   <div className={styles.issuer}>
                     {boost.expiry < Date.now() ? (
-                      !hasUserCompletedBoost ? (
+                      hasUserCompletedBoost ? (
                         !userBoostCheckStatus ? (
                           boost.winner != null ? (
                             <>
