@@ -113,7 +113,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                           boost.winner != null ? (
                             <>
                               <p className="text-white">See my rewards</p>
-                              <TrophyIcon width="24" color="#6AFFAF" />
+                              <TrophyIcon width="24" color="#8BEED9" />
                             </>
                           ) : (
                             <>
