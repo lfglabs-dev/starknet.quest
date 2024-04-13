@@ -30,7 +30,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     useState<boolean>(false);
   const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
   const [hovered, setHovered] = useState<boolean>(false);
-  const navigate = useRouter();
 
   useEffect(() => {
     if (!boost || !completedQuests) return;
