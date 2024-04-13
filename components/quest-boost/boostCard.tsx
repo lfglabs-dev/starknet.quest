@@ -108,12 +108,12 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                 {address && (
                   <div className={styles.issuer}>
                     {boost.expiry < Date.now() ? (
-                      hasUserCompletedBoost ? (
+                      !hasUserCompletedBoost ? (
                         !userBoostCheckStatus ? (
                           boost.winner != null ? (
                             <>
                               <p className="text-white">See my rewards</p>
-                              <CheckIcon width="24" color="#6AFFAF" />
+                              <TrophyIcon width="24" color="#6AFFAF" />
                             </>
                           ) : (
                             <>
