@@ -107,7 +107,7 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                 {address && (
                   <div className={styles.issuer}>
                     {boost.expiry < Date.now() ? (
-                      !hasUserCompletedBoost ? (
+                      hasUserCompletedBoost ? (
                         !userBoostCheckStatus ? (
                           boost.winner != null ? (
                             <>
