@@ -7,7 +7,7 @@ const HowToParticipate: FunctionComponent = () => {
   return (
     <section className={styles.section}>
       <CategoryTitle
-        title="How to Participate ?"
+        title="Amplify your rewards"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
       />
       <div className={styles.stepsContainer}>
@@ -15,29 +15,21 @@ const HowToParticipate: FunctionComponent = () => {
           subTitleBefore={true}
           steps={[
             {
-              title: "Get Your Stark Domain",
+              title: "Boost Quests",
               subtitle: "01",
               description:
-                "Participation in Starknet quests requires a Stark Domain. This domain will serve as your on-chain representation and is compatible with all major Starknet apps such as ArgentX, Braavos, and Starkscan.",
+                "Unlock the full potential of your Starknet journey. Complete Boost Quests to earn exclusive tokens and NFTs that enrich your digital experience.",
               icon: "/icons/starknet.svg",
-              banner: "/visuals/partners/getYourStarkDomain.webp",
+              banner: "/visuals/partners/boost-quests.svg",
             },
             {
-              title: "Collect NFTs in Starknet Quest",
+              title: "Reward Quests",
               subtitle: "02",
               description:
-                "Complete Starknet quests to earn exclusive NFTs for each protocol, or simply purchase them to enhance your collection!",
+                "Discover the thrill of reward quests on Starknet. Engage in challenges and accumulate rare tokens and NFTs as you elevate your collection.",
               icon: "/icons/crown.svg",
-              banner: "/visuals/partners/collectNFTsInStarknetQuest.webp",
-            },
-            {
-              title: "Build your Starknet Land",
-              subtitle: "03",
-              description:
-                "Experience your Starknet on-chain reputation like never before with your Starknet land, directly influenced by your Starknet Quest NFT collection and overall Starknet activities. The more you engage and develop your land, the greater are your chances of receiving rewards for your on-chain activities. ",
-              icon: "/icons/verified.svg",
-              banner: "/visuals/partners/buildYourStarknetLand.webp",
-            },
+              banner: "/visuals/partners/reward-quests.svg",
+            }
           ]}
         />
       </div>
