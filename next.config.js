@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
 const { withAxiom } = require("next-axiom");
-const isProd = process.env.NODE_ENV === "production";
 
 module.exports = module.exports = withAxiom({
   reactStrictMode: true,
-  assetPrefix: isProd ? process.env.NEXT_PUBLIC_CDN_URL : undefined,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;
