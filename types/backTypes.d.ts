@@ -18,6 +18,7 @@ type QuestDocument = {
   expiry_timestamp: string | null;
   mandatory_domain: string | null;
   expired: boolean;
+  visible: boolean;
   rewards_description: string | null;
   additional_desc: string | null;
 };
