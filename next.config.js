@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { withAxiom } = require("next-axiom");
-const isProd = process.env.VERCEL_ENV === "production";
+const isProd = process.env.NODE_ENV === "production";
 
 module.exports = module.exports = withAxiom({
   reactStrictMode: true,
