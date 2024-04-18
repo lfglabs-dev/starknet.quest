@@ -4,7 +4,7 @@ import { ReactNode, createContext, useMemo, useState } from "react";
 import { QueryError, QuestDocument } from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import { fetchQuestCategoryData, getQuestById } from "@services/apiService";
+import { fetchQuestCategoryData } from "@services/apiService";
 import {
   getBoostedQuests,
   getCompletedBoosts,
@@ -18,8 +18,7 @@ interface QuestsConfig {
   featuredQuest?: QuestDocument;
   categories: QuestCategory[];
   trendingQuests: QuestDocument[];
-  completedQuests: QuestDocument[];
-  completedQuestIds: number[]; 
+  completedQuestIds: number[];
   completedBoostIds: number[];
   boostedQuests: number[];
 }
@@ -35,7 +34,6 @@ export const QuestsContext = createContext<QuestsConfig>({
   featuredQuest: undefined,
   categories: [],
   trendingQuests: [],
-  completedQuests: [],
   completedQuestIds: [],
   completedBoostIds: [],
   boostedQuests: [],
@@ -52,7 +50,6 @@ export const QuestsContextProvider = ({
   >();
   const [categories, setCategories] = useState<QuestCategory[]>([]);
   const [trendingQuests, setTrendingQuests] = useState<QuestDocument[]>([]);
-  const [completedQuests, setCompletedQuests] = useState<QuestDocument[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<number[]>([]);
   const [completedBoostIds, setCompletedBoostIds] = useState<number[]>([]);
   const [boostedQuests, setBoostedQuests] = useState<number[]>([]);
@@ -109,9 +106,6 @@ export const QuestsContextProvider = ({
     );
   }, [address]);
 
-
-
-
   useMemo(() => {
     if (!quests || featuredQuest || !quests.length) return;
     const notExpired = quests.filter((quest) => !quest.expired);
@@ -130,25 +124,18 @@ export const QuestsContextProvider = ({
     );
   }, [address]);
 
-  
   useMemo(() => {
-  const fetchCompletedQuests = async () => {
-    try {
-      const questIds = await getCompletedQuests(hexToDecimal(address));
-      const completedQuests = await Promise.all(
-        questIds.map((id:number) => getQuestById(id)) 
-      );
-      setCompletedQuests(completedQuests.filter((quest) => quest !== null));
+    const fetchCompletedQuests = async () => {
+      try {
+        const questIds = await getCompletedQuests(hexToDecimal(address));
+        setCompletedQuestIds(questIds);
+      } catch (error) {
+        console.error("Error fetching completed quests:", error);
+      }
+    };
 
-
-    } catch (error) {
-      console.error("Error fetching completed quests:", error);
-    }
-  };
-
-  fetchCompletedQuests(); 
-}, [address]);
-
+    fetchCompletedQuests();
+  }, [address]);
 
   useMemo(() => {
     getBoostedQuests().then((data: number[] | QueryError) => {
@@ -163,7 +150,6 @@ export const QuestsContextProvider = ({
       featuredQuest,
       categories,
       trendingQuests,
-      completedQuests,
       completedQuestIds,
       completedBoostIds,
       boostedQuests,
@@ -173,7 +159,6 @@ export const QuestsContextProvider = ({
     featuredQuest,
     categories,
     trendingQuests,
-    completedQuests,
     completedQuestIds,
     completedBoostIds,
     boostedQuests,

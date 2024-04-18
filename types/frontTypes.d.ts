@@ -157,21 +157,11 @@ type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 
 type ProfileCard = {
-  title: string;
   identity: Identity;
   addressOrDomain: string | string[] | undefined;
-  sinceDate: string | null;
-  achievements: BuildingsInfo[];
-  soloBuildings: StarkscanNftProps[];
-};
-
-type ProfileCardModified = {
-  identity?: Identity; 
-  addressOrDomain: string | string[] | undefined;
-  data?: {
-    ranking: { address: string; xp: number; achievements: number }[];
-  };
-  achievemenets: BuildingsInfo[];
+  rankingData?: RankingData;
+  leaderboardData?: LeaderboardToppersData;
+  isOwner?: boolean;
 };
 
 type Signature = [string, string];

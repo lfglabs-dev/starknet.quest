@@ -199,7 +199,7 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              {isConnected && <Link href="/dashboard"><li className={styles.menuItem}>Dashboard</li></Link>}
+              {isConnected && <Link href={`/${address}`}><li className={styles.menuItem}>Dashboard</li></Link>}
               {address ? (
                 <>
                   <li
@@ -287,7 +287,7 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  { isConnected && <Link href="/dashboard"><li onClick={() => setNav(false)} className={styles.menuItemSmall}>Dashboard</li></Link>}
+                  {isConnected && <Link href={`/${address}`}><li onClick={() => setNav(false)} className={styles.menuItemSmall}>Dashboard</li></Link>}
                 </ul>
               </div>
             </div>

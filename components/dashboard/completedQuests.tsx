@@ -2,8 +2,8 @@ import React, { FunctionComponent } from "react";
 import styles from "@styles/Home.module.css";
 import Quest from "@components/quests/quest";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
-import { useRouter } from "next/navigation";
 import { QuestDocument } from "types/backTypes";
+import { useRouter } from "next/navigation";
 
 type CompletedQuestsProps = {
   completedQuests: QuestDocument[];
@@ -13,16 +13,17 @@ const CompletedQuests: FunctionComponent<CompletedQuestsProps> = ({
   completedQuests,
 }) => {
   const router = useRouter();
+
   return (
     <section className={styles.section}>
       <div className={styles.questContainer}>
-        {completedQuests ? (
+        {completedQuests &&
           completedQuests.map((quest) => {
             return (
               <Quest
                 key={quest.id}
                 title={quest.title_card}
-                onClick={() => ({})}
+                onClick={() => router.push(`/quest/${quest.id}`)}
                 imgSrc={quest.img_card}
                 issuer={{
                   name: quest.issuer,
@@ -33,10 +34,7 @@ const CompletedQuests: FunctionComponent<CompletedQuestsProps> = ({
                 expired={quest.expired}
               />
             );
-          })
-        ) : (
-          <QuestsSkeleton />
-        )}
+          })}
       </div>
     </section>
   );
