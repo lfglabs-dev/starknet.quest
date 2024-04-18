@@ -33,6 +33,7 @@
     "maath": "^0.7.0",
     "mongodb": "^4.12.1",
     "next": "^14.0.1",
+    "next-axiom": "^1.1.1",
     "posthog-js": "^1.116.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

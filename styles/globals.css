@@ -43,6 +43,13 @@ body {
   background-color: var(--background);
   color: var(--secondary);
   cursor: url(../public/icons/cursor.png), auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
 }
 
 a {
