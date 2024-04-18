@@ -16,9 +16,7 @@ Leading quests platform on Starknet to onboard your next million users. We provi
 
 Starknet Quest helps protocols attract and retain users by creating gamified quest experiences on Starknet.
 
-## How it works
-
-### Some things to help you get familiar with the codebase
+### Terms to help you get familiar with codebase - 
 
 #### Quests
 
@@ -68,4 +66,20 @@ You should see something like this:
 
 We're always looking for passionate developers to join our community and contribute to Starknet Quest. Check out our [contributing guide](./docs/CONTRIBUTING.md)
 for more information on how to get started.
+
+To connect with us regarding any queries about contributing to the repo, feel free to join our telegram group [here](https://t.me/SQcontributors)
+
+
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 

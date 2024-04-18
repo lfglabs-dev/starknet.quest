@@ -41,7 +41,7 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
             )}
           </p>
         </div>
-        <CDNImg src={category.img} />
+        <CDNImg src={category.img} loading="lazy" />
       </Link>
     </div>
   );

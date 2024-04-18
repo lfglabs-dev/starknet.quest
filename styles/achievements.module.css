@@ -174,7 +174,7 @@
   align-items: center;
   padding: 0 16px;
   border-radius: 8px;
-  border: 1px solid #e1dcea;
+  border: 1px solid var(--secondary500);
   background: var(--background600);
   height: 85px;
   gap: 16px;
@@ -234,7 +234,7 @@
 }
 
 .tooltipTitle {
-  color: #e1dcea;
+  color: var(--secondary500);
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
@@ -242,7 +242,7 @@
 }
 
 .tooltipSub {
-  color: #e1dcea;
+  color: var(--secondary500);
   font-size: 10px;
   font-style: normal;
   font-weight: 400;

@@ -158,7 +158,7 @@
 
 @media (max-width: 768px) {
   .container {
-    margin-top: 1.5rem;  
+    margin-top: 1.5rem;
   }
 
   .blur1,
@@ -179,7 +179,11 @@
   }
 
   .featured_quest_banner_container {
-    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    background: linear-gradient(
+      180deg,
+      var(--background) 0.04%,
+      var(--background600) 347.42%
+    );
     margin-bottom: 0;
   }
 
@@ -223,12 +227,14 @@
     right: -1px;
     left: 0;
     bottom: 0;
-    background: linear-gradient(90deg,
-        #437aba 0%,
-        #59c2e8 45%,
-        #00ff77 60%,
-        #59c2e8 70%,
-        #437aba50 100%);
+    background: linear-gradient(
+      90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%
+    );
     border-radius: 8px;
     mask: linear-gradient(8deg, transparent 85%, black);
   }
@@ -266,7 +272,11 @@
   }
 
   .section {
-    background: linear-gradient(180deg, #101012 0.04%, #29282b 347.42%);
+    background: linear-gradient(
+      180deg,
+      var(--background) 0.04%,
+      var(--background600) 347.42%
+    );
     padding-top: 3rem;
   }
 
@@ -302,7 +312,6 @@
   border-radius: 8px;
 }
 
-
 .questCategoryBoost::before {
   content: "";
   position: absolute;
@@ -310,12 +319,14 @@
   right: -2px;
   left: -1px;
   bottom: -1px;
-  background: linear-gradient(90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%);
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
   border-radius: 8px;
   z-index: -1;
   mask: linear-gradient(4deg, transparent 92%, black);

@@ -13,7 +13,7 @@ import Reward from "./reward";
 import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import { NFTItem, QueryError, QuestDocument, UserTask } from "types/backTypes";
+import { NFTItem, QuestDocument, UserTask } from "types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "@components/skeletons/tasksSkeleton";
@@ -22,7 +22,12 @@ import Timer from "./timer";
 import NftImage from "./nftImage";
 import { splitByNftContract } from "@utils/rewards";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
-import { getCompletedQuests, getEligibleRewards, getQuestParticipants, getTasksByQuestId } from "@services/apiService";
+import {
+  getCompletedQuests,
+  getEligibleRewards,
+  getQuestParticipants,
+  getTasksByQuestId,
+} from "@services/apiService";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -58,7 +63,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [taskError, setTaskError] = useState<TaskError>();
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
-  const [claimed, setClaimed] = useState<boolean>(false);
 
   const questId = quest.id.toString();
   const [participants, setParticipants] = useState({
@@ -69,25 +73,25 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // This fetches the number of participants in the quest and up to 3 of their starknet ids
   useEffect(() => {
     if (questId && questId !== "0" && starknetIdNavigator) {
-        getQuestParticipants(questId).then(async (data) => {
-          setParticipants(data);
-          const addrs = data.firstParticipants;
-          const identities = addrs.map(async (addr: string) => {
-            const domain = await starknetIdNavigator
-              ?.getStarkName(addr)
-              .catch(console.error);
-            return domain
-              ? await starknetIdNavigator
-                  ?.getStarknetId(domain)
-                  .catch(console.error)
-              : 0;
-          });
-          const identitiesResolved = await Promise.all(identities);
-          setParticipants({
-            count: data.count,
-            firstParticipants: identitiesResolved,
-          });
+      getQuestParticipants(questId).then(async (data) => {
+        setParticipants(data);
+        const addrs = data.firstParticipants;
+        const identities = addrs.map(async (addr: string) => {
+          const domain = await starknetIdNavigator
+            ?.getStarkName(addr)
+            .catch(console.error);
+          return domain
+            ? await starknetIdNavigator
+                ?.getStarknetId(domain)
+                .catch(console.error)
+            : 0;
         });
+        const identitiesResolved = await Promise.all(identities);
+        setParticipants({
+          count: data.count,
+          firstParticipants: identitiesResolved,
+        });
+      });
     }
   }, [questId, starknetIdNavigator]);
 
@@ -101,7 +105,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       const timer = setTimeout(() => {
         // If address isn't loaded after 1 second, make the API call with the zero address
         if (shouldFetchWithZeroAddress) {
-          getTasksByQuestId({questId: questId, address: '0'}).then((data) => {
+          getTasksByQuestId({ questId: questId, address: "0" }).then((data) => {
             if ((data as UserTask[]).length) setTasks(data as UserTask[]);
           });
         }
@@ -111,7 +115,10 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       if (address) {
         shouldFetchWithZeroAddress = false;
         clearTimeout(timer);
-        getTasksByQuestId({questId: questId, address: hexToDecimal(address)}).then((data) => {
+        getTasksByQuestId({
+          questId: questId,
+          address: hexToDecimal(address),
+        }).then((data) => {
           if ((data as UserTask[]).length) setTasks(data as UserTask[]);
         });
       }
@@ -129,13 +136,13 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   ) => {
     if (address && quest.rewards_endpoint) {
       getEligibleRewards({
-        rewardEndpoint:  quest.rewards_endpoint,
-        address: hexToDecimal(address)
+        rewardEndpoint: quest.rewards_endpoint,
+        address: hexToDecimal(address),
       }).then((data) => {
-          if (data.rewards) {
-            setEligibleRewards(splitByNftContract(data.rewards));
-          }
-        });
+        if (data.rewards) {
+          setEligibleRewards(splitByNftContract(data.rewards));
+        }
+      });
     }
   };
 

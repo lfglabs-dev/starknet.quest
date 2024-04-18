@@ -1,5 +1,5 @@
 import { getTokenName } from "@utils/tokenService";
-import { TOKEN_ADDRESS_MAP } from "@utils/constants";
+import { TOKEN_ADDRESS_MAP } from "@constants/common";
 
 describe("getTokenName function", () => {
   it("should return 'USDC' for USDC token address on the current network", () => {

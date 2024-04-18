@@ -15,7 +15,7 @@
   display: flex;
   width: 600px;
   flex-direction: column;
-  color: #f4faff;
+  color: var(--secondary);
   text-align: left;
   /* Title/H1 */
   font-family: Sora;
@@ -42,7 +42,7 @@
   display: flex;
   width: 487px;
   flex-direction: column;
-  color: var(--secondary-700, #f4faff);
+  color: var(--secondary-700, --secondary);
   text-align: left;
   font-family: Sora;
   font-size: 16px;
@@ -60,6 +60,18 @@
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
+  line-height: 38px;
+  margin-top: 8px;
+}
+
+.newCategoryTitle {
+  color: var(--secondary);
+
+  /* Title/H2 */
+  font-family: Sora-Bold;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
   line-height: 38px;
   margin-top: 8px;
 }

@@ -4,6 +4,7 @@ When contributing to this repository, please first discuss the change you wish
 to make via issue, email, or any other method with the owners of this repository
 before making a change.
 
+To connect with us regarding any queries about contributing to the repo, feel free to join our telegram group [here](https://t.me/SQcontributors)
 
 ## Development environment setup
 
