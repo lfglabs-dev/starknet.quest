@@ -73,7 +73,7 @@ export default function Page() {
   const [isCustomResult, setCustomResult] = useState<boolean>(false);
 
   // set user address on wallet connect and disconnect
-  useEffect(() => {
+  useEffect(() => { 
     setTimeout(() => {
       setApiCallDelay(true);
     }, 1000);
@@ -85,7 +85,7 @@ export default function Page() {
   useEffect(()=>{
     if (!apiCallDelay) return;
     fetchPageData()
-},[apiCallDelay]);
+  },[apiCallDelay]);
 
 
 
@@ -93,12 +93,11 @@ export default function Page() {
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);         
         setRanking(response); 
- 
     },
     []
   );
 
-  const fetchLeaderboardToppersResult = useCallback(
+  const fetchLeaderboardToppersResult = useCallback( 
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
@@ -107,8 +106,8 @@ export default function Page() {
     []
   );
 
-  const fetchPageData=useCallback(async ()=>{
- const requestBody = {
+const fetchPageData=useCallback(async ()=> { 
+  const requestBody = {
       addr:
         status === "connected"
           ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
@@ -116,23 +115,24 @@ export default function Page() {
       page_size: 10,
       shift: 0,
       duration: timeFrameMap(duration),
-    };
-    setRankingdataloading(true);
-    await fetchLeaderboardToppersResult({
-      addr: requestBody.addr,
-      duration: timeFrameMap(duration),
-    });
-    await fetchRankingResults(requestBody);
-    setRankingdataloading(false);
+  };
+  setRankingdataloading(true);
+  await fetchLeaderboardToppersResult({
+    addr: requestBody.addr,
+    duration: timeFrameMap(duration),
+  });
+  await fetchRankingResults(requestBody);
+  setRankingdataloading(false);
+
 },[fetchRankingResults,fetchLeaderboardToppersResult,address,userAddress,status]);
 
 
 
-  const [leaderboardToppers, setLeaderboardToppers] =
+  const [leaderboardToppers, setLeaderboardToppers] = 
     useState<LeaderboardToppersData>({
       best_users: [],
       total_users: 0,
-    });
+  });
 
   const contract = useMemo(() => {
     return new Contract(
@@ -277,7 +277,7 @@ export default function Page() {
     }
   };
 
-  // used to calculate user percentile as soon as required data is fetched
+  // used to calculate user percentile as soon as required data is fetched 
   useEffect(() => {
     // check if the user has position on the leaderboard
     if (!leaderboardToppers?.position) {

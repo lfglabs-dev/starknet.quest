@@ -199,9 +199,7 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/leaderboard">
-                <li className={styles.menuItem}>Leaderboard</li>
-              </Link>
+              {isConnected && <Link href="/dashboard"><li className={styles.menuItem}>Dashboard</li></Link>}
               {address ? (
                 <>
                   <li
@@ -289,14 +287,7 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/leaderboard">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Leaderboard
-                    </li>
-                  </Link>
+                  { isConnected && <Link href="/dashboard"><li onClick={() => setNav(false)} className={styles.menuItemSmall}>Dashboard</li></Link>}
                 </ul>
               </div>
             </div>

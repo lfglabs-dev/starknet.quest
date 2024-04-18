@@ -27,28 +27,27 @@ export default function Page({ params }: AddressOrDomainProps) {
   const { address } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
-  const [identity, setIdentity] = useState<Identity>();
+  const [identity, setIdentity] = useState<Identity>(); 
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const dynamicRoute = usePathname();
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]);
+  const [achievements, setAchievements] = useState<BuildingsInfo[]>([]); 
   const [soloBuildings, setSoloBuildings] = useState<StarkscanNftProps[]>([]);
-  const sinceDate = useCreationDate(identity);
-
+  const sinceDate = useCreationDate(identity); 
   useEffect(() => setNotFound(false), [dynamicRoute]);
 
-  useEffect(() => {
+  useEffect(() => { 
     setInitProfile(false);
     setAchievements([]);
-    setSoloBuildings([]);
-  }, [address, addressOrDomain]);
+    setSoloBuildings([]); 
+  }, [address, addressOrDomain]); 
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!address) setIsOwner(false);
   }, [address]);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (
       typeof addressOrDomain === "string" &&
       addressOrDomain?.toString().toLowerCase().endsWith(".stark")
@@ -161,6 +160,8 @@ export default function Page({ params }: AddressOrDomainProps) {
     }
   }, [addressOrDomain, address, dynamicRoute]);
 
+
+
   if (notFound) {
     return (
       <ErrorScreen
@@ -171,12 +172,13 @@ export default function Page({ params }: AddressOrDomainProps) {
     );
   }
 
-  const getIdentityData = async (id: string) => {
+  const getIdentityData = async (id: string) => { 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/id_to_data?id=${id}`
     );
     return response.json();
   };
+
 
   return (
     <div className={styles.profileBg}>

@@ -11,6 +11,7 @@ type AvatarProps = {
 const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
   const { data: profileData } = useStarkProfile({ address });
 
+
   return (
     <>
       {profileData?.profilePicture ? (

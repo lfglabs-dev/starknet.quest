@@ -315,10 +315,27 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
-export async function getQuestById(questId: string | number) {
-  const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
-  const data: QuestDocument | QueryError = await response.json();
-  return data as QuestDocument;
+export const getQuestById = async (questId: string | number) => {
+  try {
+    const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
+
+    if (!response.ok) {
+      console.error(`Error fetching quest with ID ${questId}: ${response.statusText}`);
+      return null; // Return null or a custom error object
+    }
+
+    const data: QuestDocument | QueryError = await response.json();
+    
+    if ('error' in data) {
+      console.error(`Error in quest data for ID ${questId}: ${data.error}`);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`Failed to fetch or parse quest with ID ${questId}:`, error);
+    return null;
+  }
 }
 
 export async function fetchQuestCategoryData(name: string) {
