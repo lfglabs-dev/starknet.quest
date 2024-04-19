@@ -337,9 +337,8 @@ export default function Page({ params }: BoostQuestPageProps) {
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
                                   ? `${computePercentage(
-                                      eachParticipation.participants
+                                      eachParticipation.count
                                     )}%`
-
                                   : "NA"}
                               </span>
                               <span className={analyticsStyles.normalText}>
