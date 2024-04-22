@@ -382,6 +382,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                       ? taskError.error
                       : ""
                   }
+                  expired={quest.expired}
                   setShowQuiz={setShowQuiz}
                   quizName={task.quiz_name || undefined}
                   issuer={{
