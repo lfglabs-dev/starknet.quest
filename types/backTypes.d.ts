@@ -110,3 +110,17 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type SingleBoostResponse = {
+  amount: number;
+  expiry: number;
+  hidden: boolean;
+  id: number;
+  img_url: string;
+  name: string;
+  num_of_winners: number;
+  quests: number[];
+  token: string;
+  token_decimals: number;
+  winner: null;
+}
