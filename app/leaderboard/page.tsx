@@ -33,9 +33,9 @@ import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
-import { rankOrder, rankOrderMobile } from "@constants/common";
+import { TOP_50_TAB_STRING } from "@constants/common";
 import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
-import { decimalToHex, hexToDecimal } from "@utils/feltService";
+import { hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import RankingSkeleton from "@components/skeletons/rankingSkeleton";
 import { useMediaQuery } from "@mui/material";
@@ -82,18 +82,15 @@ export default function Page() {
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!apiCallDelay) return;
-    fetchPageData()
-},[apiCallDelay]);
-
-
+    fetchPageData();
+  }, [apiCallDelay]);
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);         
-        setRanking(response); 
- 
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking(response);
     },
     []
   );
@@ -102,13 +99,12 @@ export default function Page() {
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
       setLeaderboardToppers(topperData);
-      
     },
     []
   );
 
-  const fetchPageData=useCallback(async ()=>{
- const requestBody = {
+  const fetchPageData = useCallback(async () => {
+    const requestBody = {
       addr:
         status === "connected"
           ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
@@ -124,9 +120,13 @@ export default function Page() {
     });
     await fetchRankingResults(requestBody);
     setRankingdataloading(false);
-},[fetchRankingResults,fetchLeaderboardToppersResult,address,userAddress,status]);
-
-
+  }, [
+    fetchRankingResults,
+    fetchLeaderboardToppersResult,
+    address,
+    userAddress,
+    status,
+  ]);
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -239,7 +239,7 @@ export default function Page() {
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!isCustomResult) return;
+    if (!isCustomResult || duration === TOP_50_TAB_STRING) return;
     const requestBody = {
       addr:
         currentSearchedAddress.length > 0
@@ -307,7 +307,6 @@ export default function Page() {
         </div>
       ) : (
         <>
-        
           <div className={styles.leaderboard_quest_banner}>
             <div className={styles.blur1}>
               <Blur green />
@@ -341,7 +340,12 @@ export default function Page() {
                 <ChipList
                   selected={duration}
                   handleChangeSelection={handleChangeSelection}
-                  tags={["Last 7 Days", "Last 30 Days", "All time"]}
+                  tags={[
+                    "Last 7 Days",
+                    "Last 30 Days",
+                    "All time",
+                    TOP_50_TAB_STRING,
+                  ]}
                 />
               </div>
               <div style={{ flex: 0.4 }}>
@@ -405,10 +409,10 @@ export default function Page() {
 
             {/* shows loader skeleton while data is still being fetched*/}
 
-            {rankingdataloading ? <RankingSkeleton /> :
-
-ranking ? (
-  showNoresults ? (
+            {rankingdataloading ? (
+              <RankingSkeleton />
+            ) : ranking ? (
+              showNoresults ? (
                 // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
@@ -429,6 +433,7 @@ ranking ? (
               ) : (
                 <>
                   <RankingsTable
+                    duration={duration}
                     data={ranking}
                     selectedAddress={
                       currentSearchedAddress.length > 0
@@ -438,35 +443,28 @@ ranking ? (
                     paginationLoading={paginationLoading}
                     setPaginationLoading={setPaginationLoading}
                   />
-                  <ControlsDashboard
-                    ranking={ranking}
-                    handlePagination={handlePagination}
-                    leaderboardToppers={leaderboardToppers}
-                    rowsPerPage={rowsPerPage}
-                    setRowsPerPage={setRowsPerPage}
-                    duration={duration}
-                    setCustomResult={setCustomResult}
-                  />
-                  <Divider
-                    orientation="horizontal"
-                    variant="fullWidth"
-                    className={styles.divider}
-                  />
                 </>
               )
-            ) :    
-            <div className={styles.no_result_container}>
-            <p className="pb-[1.5rem] text-[1.5rem]">
-              Something went wrong! Try again...
-            </p>
-            <Divider
-              orientation="horizontal"
-              variant="fullWidth"
-              className={styles.divider}
-            />
-          </div>}
-                  
-            <div className={styles.leaderboard_topper_layout}>
+            ) : (
+              <div className={styles.no_result_container}>
+                <p className="pb-[1.5rem] text-[1.5rem]">
+                  Something went wrong! Try again...
+                </p>
+                <Divider
+                  orientation="horizontal"
+                  variant="fullWidth"
+                  className={styles.divider}
+                />
+              </div>
+            )}
+            {duration !== TOP_50_TAB_STRING && address && (
+              <ControlsDashboard
+                setRowsPerPage={setRowsPerPage}
+                setCustomResult={setCustomResult}
+              />
+            )}
+            {/* Keep comment for now because I will use It in Top50RankedUsers Tab */}
+            {/* <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
                 ? isMobile
                   ? rankOrderMobile.map((position, index) => {
@@ -508,7 +506,7 @@ ranking ? (
                       );
                     })
                 : null}
-            </div>
+            </div> */}
           </div>
         </>
       )}
