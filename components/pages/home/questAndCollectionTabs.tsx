@@ -146,7 +146,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${categories.length + (boosts && 1)})`}
+                label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
                 {...a11yProps(1)}
               />
             </Tabs>
