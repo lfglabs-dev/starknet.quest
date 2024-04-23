@@ -317,7 +317,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       eachParticipation: {
                         name: string;
                         desc: string;
-                        count: number;
+                        participants: number;
                       },
                       index: number
                     ) => (
@@ -330,14 +330,14 @@ export default function Page({ params }: BoostQuestPageProps) {
                             {eachParticipation.name}
                           </p>
                           <p className={analyticsStyles.counterText}>
-                            {numberWithCommas(eachParticipation.count)}
+                            {numberWithCommas(eachParticipation.participants)}
                           </p>
                           {uniqueVisitors > 0 ? (
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
                                   ? `${computePercentage(
-                                      eachParticipation.count
+                                      eachParticipation.participants
                                     )}%`
                                   : "NA"}
                               </span>
