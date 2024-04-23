@@ -26,7 +26,7 @@ describe("fetchLeaderboardToppers", () => {
   it("handles errors gracefully", async () => {
     const params = { addr: "exampleAddr", duration: "exampleDuration" };
 
-    const mockResponse = "Leaderboard positions not found";
+    const mockResponse = "Error querying ranks";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
