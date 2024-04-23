@@ -81,7 +81,7 @@ describe("getQuestActivityData function", () => {
 
   it("should handle null cases in parameters", async () => {
     // mock fetch response with null parameters
-    const mockResponse = [{ date: "2024-04-04 04", participants: 2 }];
+    const mockResponse = null;
     fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getQuestActivityData(null);
     expect(fetch).toHaveBeenCalledWith(
@@ -92,7 +92,7 @@ describe("getQuestActivityData function", () => {
 
   it("should handle undefined cases in parameters", async () => {
     // mock fetch response with undefined parameters
-    const mockResponse = [{ date: "2024-04-04 04", participants: 2 }];
+    const mockResponse = undefined;
     fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getQuestActivityData(undefined);
     expect(fetch).toHaveBeenCalledWith(
