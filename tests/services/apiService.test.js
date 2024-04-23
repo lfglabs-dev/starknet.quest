@@ -1,4 +1,4 @@
-import { fetchQuestCategoryData } from "@services/apiService";
+import { fetchQuestCategoryData, getQuestActivityData, } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -40,3 +40,65 @@ describe("fetchQuestCategoryData function", () => {
     expect(result).toEqual(mockResponse);
   });
 });
+describe("getQuestActivityData function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+  it("should fetch and return data for a valid id", async () => {
+    //mock data for successful response
+    const mockData = [{ date: "2024-04-04 04", participants: 2 }];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+    const result = await getQuestActivityData(1);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=1`
+    );
+    expect(result).toEqual(mockData);
+  });
+  it("should handle API returning no response", async () => {
+    // Mock fetch response with no data
+    const mockResponse = undefined;
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+
+    const result = await getQuestActivityData("invalidId");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=invalidId`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle unexpected response format", async () => {
+    // Mock fetch response with unexpected data format
+    const mockResponse = "Unexpected response format";
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await getQuestActivityData(10);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=10`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    // mock fetch response with null parameters
+    const mockResponse = [{ date: "2024-04-04 04", participants: 2 }];
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await getQuestActivityData(null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=null`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    // mock fetch response with undefined parameters
+    const mockResponse = [{ date: "2024-04-04 04", participants: 2 }];
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await getQuestActivityData(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=undefined`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+});
+
