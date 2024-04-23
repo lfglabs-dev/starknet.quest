@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  QuestActivityData,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -287,7 +288,7 @@ export const getQuestActivityData = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_activity?id=${id}`
     );
-    return await response.json();
+    return (await response.json()) as QuestActivityData[];
   } catch (err) {
     console.log("Error while fetching quest data", err);
   }
