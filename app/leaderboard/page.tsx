@@ -64,7 +64,7 @@ export default function Page() {
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [ranking, setRanking] = useState<RankingData>({
+  const [ranking, setRanking] = useState<RankingData | undefined>({
     first_elt_position: 0,
     ranking: [],
   });

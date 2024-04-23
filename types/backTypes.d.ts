@@ -110,3 +110,14 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type LeaderboardRankings = {
+  ranking: Ranking[];
+  first_elt_position: number;
+};
+
+type Ranking = {
+  address: string;
+  xp: number;
+  achievements: number;
+};
