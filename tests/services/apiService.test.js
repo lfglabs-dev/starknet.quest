@@ -65,19 +65,19 @@ describe("getBoostById function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const result = await getBoostById("BoostId");
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=BoostId`);
+    const result = await getBoostById("boost-id");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=boost-id`);
     expect(result).toEqual(mockData);
   })
   
-  it("should handle fetcherrors gracefully", async () => {
-    const mockResponse = "Boost not found";
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = new Error("Error while fetching boost data");
     fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockResponse),
+      json: () => Promise.reject(mockResponse),
     });
 
-    const result = await getBoostById("InvalidId");
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=InvalidId`);
+    const result = await getBoostById("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=invalid-id`);
     expect(result).toEqual(mockResponse);
   })
 });
