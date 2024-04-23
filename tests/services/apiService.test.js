@@ -1,5 +1,4 @@
 import { fetchQuestCategoryData, getBoostedQuests } from "@services/apiService";
-import { describe, it } from "node:test";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
