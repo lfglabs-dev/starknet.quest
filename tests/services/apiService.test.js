@@ -1,4 +1,5 @@
-import { fetchQuestCategoryData } from "@services/apiService";
+import { fetchQuestCategoryData, getBoostedQuests } from "@services/apiService";
+import { describe, it } from "node:test";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -38,5 +39,54 @@ describe("fetchQuestCategoryData function", () => {
       `${API_URL}/get_quest_category?name=InvalidCategory`
     );
     expect(result).toEqual(mockResponse);
+  });
+});
+
+describe("getBoostedQuests function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return all boosted quests", async () => {
+    const mockData = [23, 104, 24, 105, 106, 26, 27];
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostedQuests();
+
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch with empty response", async () => {
+    const mockData = [];
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostedQuests();
+
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
+    expect(result).toEqual(result);
+  });
+
+  it("should handle unexpected reesponse", async () => {
+    const mockData = {
+      error: 000,
+      message: "Error",
+      data: {},
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostedQuests();
+
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
+    expect(result).toEqual(result);
   });
 });
