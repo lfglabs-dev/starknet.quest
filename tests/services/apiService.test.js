@@ -74,30 +74,47 @@ describe("fetchLeaderboardRankings function", () => {
     // Mock fetch response with no data
     fetch.mockResolvedValueOnce(undefined);
 
-    const params = { addr: 'invalidAddr', page_size: 10, shift: 0, duration: 'week' };
+    const params = { addr: 'invalidAddr', page_size: -1, shift: 0, duration: 'string' };
     const result = await fetchLeaderboardRankings(params);
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/leaderboard/get_ranking?addr=invalidAddr&page_size=10&shift=0&duration=week`
+      `${API_URL}/leaderboard/get_ranking?addr=invalidAddr&page_size=-1&shift=0&duration=string`
     );
     expect(result).toBeUndefined();
   });
 
   it("should handle API returning response in unexpected format", async () => {
-    // Mock fetch response with unexpected data format
-    const mockResponse = "Unexpected response format";
+    // Mock fetch response with unexpected data formats
+    const mockResponsePageSize = "Error querying ranks";
+    const mockResponseDuration = "Invalid duration";
+
     fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockResponse),
+      json: () => Promise.resolve(mockResponsePageSize),
     });
 
-    const params = { addr: 'sampleAddr', page_size: 10, shift: 0, duration: 'week' };
-    const result = await fetchLeaderboardRankings(params);
+    // Test with page_size as -1
+    const paramsPageSize = { addr: 'sampleAddr', page_size: -1, shift: 0, duration: 'week' };
+    const resultPageSize = await fetchLeaderboardRankings(paramsPageSize);
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/leaderboard/get_ranking?addr=sampleAddr&page_size=10&shift=0&duration=week`
+      `${API_URL}/leaderboard/get_ranking?addr=sampleAddr&page_size=-1&shift=0&duration=week`
     );
-    expect(result).toEqual(mockResponse);
+    expect(resultPageSize).toEqual(mockResponsePageSize);
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponseDuration),
+    });
+
+    // Test with duration with a invalid duration
+    const paramsDuration = { addr: 'sampleAddr', page_size: 10, shift: 0, duration: 'string' };
+    const resultDuration = await fetchLeaderboardRankings(paramsDuration);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=sampleAddr&page_size=10&shift=0&duration=string`
+    );
+    expect(resultDuration).toEqual(mockResponseDuration);
   });
+
 
   it("should handle undefined cases in parameters", async () => {
     const mockData = {
@@ -113,11 +130,11 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const params1 = { addr: undefined, page_size: 10, shift: 0, duration: 'week' };
+    const params1 = { addr: undefined, page_size: -1, shift: 0, duration: 'string' };
     const result1 = await fetchLeaderboardRankings(params1);
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/leaderboard/get_ranking?addr=undefined&page_size=10&shift=0&duration=week`
+      `${API_URL}/leaderboard/get_ranking?addr=undefined&page_size=-1&shift=0&duration=string`
     );
     expect(result1).toEqual(mockData);
   });
@@ -136,11 +153,11 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const params2 = { addr: null, page_size: 10, shift: 0, duration: 'week' };
+    const params2 = { addr: null, page_size: -1, shift: 0, duration: 'string' };
     const result2 = await fetchLeaderboardRankings(params2);
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/leaderboard/get_ranking?addr=null&page_size=10&shift=0&duration=week`
+      `${API_URL}/leaderboard/get_ranking?addr=null&page_size=-1&shift=0&duration=string`
     );
     expect(result2).toEqual(mockData);
   });
