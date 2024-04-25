@@ -126,3 +126,4 @@ describe("getCompletedQuests", () => {
     expect(result).toEqual(mockDataRes)
   })
 });
+
