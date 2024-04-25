@@ -53,7 +53,8 @@ export const fetchLeaderboardRankings = async (
 export const getBoosts = async () => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
-    return await response.json();
+    const data: Boost[] | QueryError = await response.json();
+    return data as Boost[];
   } catch (err) {
     console.log("Error while fetching boosts", err);
   }
@@ -162,7 +163,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -225,7 +226,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`

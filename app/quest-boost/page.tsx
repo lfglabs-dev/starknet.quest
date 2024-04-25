@@ -22,7 +22,7 @@ export default function Page() {
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      setBoosts(res);
+      if (res) setBoosts(res);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
