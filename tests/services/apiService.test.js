@@ -1,4 +1,8 @@
-import { fetchQuestCategoryData, getBoostById } from "@services/apiService";
+import {
+  fetchQuestCategoryData,
+  getBoostById,
+  getQuizById,
+} from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -133,6 +137,102 @@ describe("getBoostById function", () => {
     const result = await getBoostById("invalid-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_boost?id=invalid-id`
+    );
+    expect(result).toBeUndefined();
+  });
+});
+
+describe("getQuizById function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid quiz id", async () => {
+    const mockData = {
+      name: "Nostra Quiz",
+      desc: "Take part in our Quiz to test your knowledge about Nostra, and you'll have a chance to win an exclusive LaFamiglia Rose NFT as your reward.",
+      questions: [
+        {
+          kind: "text_choice",
+          layout: "default",
+          question: "Which network is Nostra built on?",
+          options: ["Scroll", "Starknet", "Binance Smart Chain", "zkSync"],
+          image_for_layout: null,
+        },
+        {
+          kind: "text_choice",
+          layout: "default",
+          question: "How many sub-accounts can a user open on Nostra?",
+          options: ["10", "100", "255", "Unlimited"],
+          image_for_layout: null,
+        },
+        {
+          kind: "text_choice",
+          layout: "default",
+          question: "What is the minimum borrow amount for USDC on Nostra?",
+          options: [
+            "500 USDC",
+            "100 USDC.",
+            "3000 USDC.",
+            "There is no minimum amount",
+          ],
+          image_for_layout: null,
+        },
+      ],
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuizById("nostra");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuizById("nostra");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuizById(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_quiz?id=undefined&addr=0`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuizById(null, null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=null&addr=null`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Quiz not found";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getQuizById("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_quiz?id=invalid-id&addr=0`
     );
     expect(result).toBeUndefined();
   });
