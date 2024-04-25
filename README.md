@@ -36,7 +36,7 @@ Starknet Quest helps protocols attract and retain users by creating gamified que
 
 ## How to get started
 
-Clone the repository
+Fork the repository and clone it to your local system from the forked repository. 
 ```bash
 git clone https://github.com/starknet-id/starknet.quest.git
 ```
