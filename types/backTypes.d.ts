@@ -64,7 +64,7 @@ export type RequestResponse = {
   error_msg?: string;
 };
 
-export type RequestProps = {
+type RequestProps = {
   address: string;
 };
 export interface TwitterRequestProps {

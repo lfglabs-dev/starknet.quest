@@ -1,4 +1,4 @@
-import { fetchQuestCategoryData, fetchLeaderboardRankings } from "@services/apiService";
+import { fetchQuestCategoryData, fetchLeaderboardRankings, getBoostById } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -47,7 +47,6 @@ describe("fetchLeaderboardRankings function", () => {
   });
 
   it("should fetch and return data for valid parameters", async () => {
-    // Mock data creation for a successful response
     const mockData = {
       rankings: [
         { address: '0x123abc', xp: 100, achievements: 5 },
@@ -56,7 +55,6 @@ describe("fetchLeaderboardRankings function", () => {
       ],
       first_elt_position: 1,
     };
-
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
@@ -71,8 +69,10 @@ describe("fetchLeaderboardRankings function", () => {
   });
 
   it("should handle API returning no response", async () => {
-    // Mock fetch response with no data
-    fetch.mockResolvedValueOnce(undefined);
+    const mockResponse = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
 
     const params = { addr: 'invalidAddr', page_size: -1, shift: 0, duration: 'string' };
     const result = await fetchLeaderboardRankings(params);
@@ -84,7 +84,6 @@ describe("fetchLeaderboardRankings function", () => {
   });
 
   it("should handle API returning response in unexpected format", async () => {
-    // Mock fetch response with unexpected data formats
     const mockResponsePageSize = "Error querying ranks";
     const mockResponseDuration = "Invalid duration";
 
@@ -92,7 +91,6 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockResponsePageSize),
     });
 
-    // Test with page_size as -1
     const paramsPageSize = { addr: 'sampleAddr', page_size: -1, shift: 0, duration: 'week' };
     const resultPageSize = await fetchLeaderboardRankings(paramsPageSize);
 
@@ -105,7 +103,6 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockResponseDuration),
     });
 
-    // Test with duration with a invalid duration
     const paramsDuration = { addr: 'sampleAddr', page_size: 10, shift: 0, duration: 'string' };
     const resultDuration = await fetchLeaderboardRankings(paramsDuration);
 
@@ -114,7 +111,6 @@ describe("fetchLeaderboardRankings function", () => {
     );
     expect(resultDuration).toEqual(mockResponseDuration);
   });
-
 
   it("should handle undefined cases in parameters", async () => {
     const mockData = {
@@ -164,6 +160,99 @@ describe("fetchLeaderboardRankings function", () => {
 
 });
 
+describe("getBoostById function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
 
+  it("should fetch and return data for a valid boost id", async () => {
+    const mockData = {
+      amount: 1000,
+      expiry: 1718052414000,
+      hidden: false,
+      id: 9,
+      img_url: "/nostra/cigar.webp",
+      name: "nostra - Stake and Win",
+      num_of_winners: 4,
+      quests: [27],
+      token:
+        "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      token_decimals: 18,
+      winner: null,
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
 
+    const result = await getBoostById("boost-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_boost?id=boost-id`
+    );
+    expect(result).toEqual(mockData);
+  });
 
+  it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostById("boost-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_boost?id=boost-id`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle when API returns response in unexpected format", async () => {
+    const mockData = "Unexpected response format";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostById("boost-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_boost?id=boost-id`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostById(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_boost?id=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getBoostById(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=null`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Error while fetching boost data";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getBoostById("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_boost?id=invalid-id`
+    );
+    expect(result).toBeUndefined();
+  });
+});
