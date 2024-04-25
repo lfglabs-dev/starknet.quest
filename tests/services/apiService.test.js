@@ -1,4 +1,4 @@
-import { fetchQuestCategoryData, getBoostById } from "@services/apiService";
+import { fetchQuestCategoryData, getBoostById, getQuestsParticipation } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -135,5 +135,71 @@ describe("getBoostById function", () => {
       `${API_URL}/boost/get_boost?id=invalid-id`
     );
     expect(result).toBeUndefined();
+  });
+});
+
+describe("getQuestParticipation", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid quest id", async () => {
+    const mockData = {
+      firstParticipants: [23, 32, 29, 982],
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestsParticipation(33);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_participation?id=33`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should return error message for invalid quest id", async () => {
+    const mockData = "Invalid quest ID";
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestsParticipation(-1);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_participation?id=-1`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle empty participant array", async () => {
+    const mockData = {
+      firstParticipants: [],
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestsParticipation(99);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_participation?id=99`
+    );
+    expect(result.firstParticipants.length).toEqual(0)
+  });
+
+  it("should handle when API returns no respose", async () => {
+    const mockData = undefined
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestsParticipation(99);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_participation?id=99`
+    );
+    expect().toBeUndefined()
   });
 });
