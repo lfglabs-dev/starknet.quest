@@ -44,10 +44,12 @@ import { timeFrameMap } from "@utils/timeService";
 
 export default function Page() {
   const router = useRouter();
-  const { status, address } = useAccount();
+  const { status, address, isConnecting } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
   const [duration, setDuration] = useState<string>("Last 7 Days");
+  const isTop50RankedView =
+    duration === TOP_50_TAB_STRING || (!isConnecting && !address);
   const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
@@ -113,12 +115,22 @@ export default function Page() {
       shift: 0,
       duration: timeFrameMap(duration),
     };
+
+    const getTop50RequestBody: LeaderboardRankingParams = {
+      addr: "",
+      page_size: 50,
+      shift: 0,
+      duration: "all",
+    };
+
     setRankingdataloading(true);
     await fetchLeaderboardToppersResult({
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
     });
-    await fetchRankingResults(requestBody);
+    await fetchRankingResults(
+      isTop50RankedView ? getTop50RequestBody : requestBody
+    );
     setRankingdataloading(false);
   }, [
     fetchRankingResults,
@@ -239,7 +251,6 @@ export default function Page() {
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!isCustomResult || duration === TOP_50_TAB_STRING) return;
     const requestBody = {
       addr:
         currentSearchedAddress.length > 0
@@ -252,8 +263,16 @@ export default function Page() {
       duration: timeFrameMap(duration),
     };
 
+    const getTop50RequestBody: LeaderboardRankingParams = {
+      addr: "",
+      page_size: 50,
+      shift: 0,
+      duration: "all",
+    };
+
     setPaginationLoading(true);
-    fetchRankingResults(requestBody);
+    fetchRankingResults(isTop50RankedView ? getTop50RequestBody : requestBody);
+
     fetchLeaderboardToppersResult({
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
@@ -264,6 +283,7 @@ export default function Page() {
     currentSearchedAddress,
     isCustomResult,
     duration,
+    address,
   ]);
 
   // handle pagination with forward and backward direction as params
@@ -440,6 +460,7 @@ export default function Page() {
                         ? currentSearchedAddress
                         : hexToDecimal(userAddress)
                     }
+                    leaderboardToppers={leaderboardToppers}
                     paginationLoading={paginationLoading}
                     setPaginationLoading={setPaginationLoading}
                   />
@@ -463,50 +484,6 @@ export default function Page() {
                 setCustomResult={setCustomResult}
               />
             )}
-            {/* Keep comment for now because I will use It in Top50RankedUsers Tab */}
-            {/* <div className={styles.leaderboard_topper_layout}>
-              {leaderboardToppers
-                ? isMobile
-                  ? rankOrderMobile.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <Link
-                          key={item?.address}
-                          href={`/${decimalToHex(item.address)}`}
-                        >
-                          <RankCard
-                            key={index}
-                            name={item?.address}
-                            experience={item?.xp}
-                            trophy={item?.achievements}
-                            position={position}
-                          />
-                        </Link>
-                      );
-                    })
-                  : rankOrder.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <Link
-                          key={item?.address}
-                          href={`/${decimalToHex(item.address)}`}
-                        >
-                          <RankCard
-                            key={index}
-                            name={item?.address}
-                            experience={item?.xp}
-                            trophy={item?.achievements}
-                            position={position}
-                          />
-                        </Link>
-                      );
-                    })
-                : null}
-            </div> */}
           </div>
         </>
       )}

@@ -29,6 +29,7 @@ type Task = {
   hasRootDomain: boolean;
   customError: string;
   checkUserRewards: () => void;
+  expired: boolean;
 };
 
 type TaskProps = Task & { id: number };
@@ -248,6 +249,7 @@ type RankingProps = {
     ranking: { address: string; xp: number; achievements: number }[];
   };
   duration: string;
+  leaderboardToppers: LeaderboardToppersData;
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
   selectedAddress: string;
