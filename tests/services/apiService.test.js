@@ -1,4 +1,4 @@
-import { fetchQuestCategoryData } from "@services/apiService";
+import { fetchQuestCategoryData, getCompletedQuests } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -39,4 +39,90 @@ describe("fetchQuestCategoryData function", () => {
     );
     expect(result).toEqual(mockResponse);
   });
+});
+
+describe("getCompletedQuests", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return completed quests", async () => {
+    const mockDataRes = [];
+    const address = "ksdjiewmcoew"
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataRes),
+    });
+
+    const result = await getCompletedQuests(address)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_completed_quests?addr=${address}`
+    );
+
+    expect(result).toEqual(mockDataRes)
+  });
+
+  it("should handle fetch with no response", async () => {
+    const mockDataRes = null;
+    const address = "ksdjiewmcoew"
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataRes),
+    });
+
+    const result = await getCompletedQuests(address)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_completed_quests?addr=${address}`
+    );
+
+    expect(result).toEqual(mockDataRes)
+  })
+
+  it("should handle fetch with invalid response", async () => {
+    const mockDataRes = "Invalid response";
+    const address = "ksdjiewmcoew"
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataRes),
+    });
+
+    const result = await getCompletedQuests(address)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_completed_quests?addr=${address}`
+    );
+
+    expect(result).toEqual(mockDataRes)
+  })
+
+  it("should handle fetch with invalid address", async () => {
+    const mockDataRes = "Invalid address";
+    const address = "2009cx-920.299z/w"
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataRes),
+    });
+
+    const result = await getCompletedQuests(address)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_completed_quests?addr=${address}`
+    );
+
+    expect(result).toEqual(mockDataRes)
+  })
+
+  it("should handle fetch with empty address", async () => {
+    const mockDataRes = "Empty address";
+    const address = ""
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataRes),
+    });
+
+    const result = await getCompletedQuests(address)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_completed_quests?addr=${address}`
+    );
+
+    expect(result).toEqual(mockDataRes)
+  })
 });
