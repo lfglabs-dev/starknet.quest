@@ -65,52 +65,64 @@ describe("getTasksByQuestId function", () => {
     expect(result).not.toEqual(expect.any(Array))
   });
 
-  it("should handle undefined and null values", async () => {
-    const mockResponse = undefined
+  it("should handle undefined values", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid character"
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     })
 
-    let result = await getTasksByQuestId({ address: '2' })
+    let result = await getTasksByQuestId({questId: undefined, address: undefined });
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_tasks?quest_id=undefined&addr=undefined`
+    );
+    expect(result).toEqual(mockResponse);
     
-    expect(result).toBeUndefined()
+  });
 
-    result = await getTasksByQuestId({ questId: null, address: '2' })
-    
-    expect(result).toBeUndefined()
+  it("should handle an undefined value", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string"
 
-    result = await getTasksByQuestId({ questId: '1', })
-    
-    expect(result).toBeUndefined()
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
 
-    result = await getTasksByQuestId({ questId: '1', address: null })
+    let result = await getTasksByQuestId({questId: undefined, address: 2 });
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_tasks?quest_id=undefined&addr=2`
+    );
+    expect(result).toEqual(mockResponse)
     
-    expect(result).toBeUndefined()
+  });
 
-    result = await getTasksByQuestId({  })
-    
-    expect(result).toBeUndefined()
+  it("should handle null values", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string"
 
-    result = await getTasksByQuestId({ questId: null, address: null })
-    
-    expect(result).toBeUndefined()
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    let result = await getTasksByQuestId({questId: null, address: 2 });
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_tasks?quest_id=null&addr=2`
+    );
+    expect(result).toEqual(mockResponse)
   });
 
   it("should fetch and return data for a valid task", async () => {
     const mockData = [
       {
-        id: "Task Id",
-        quest_id: "Quest Id",
-        name: "Task Name",
-        href: "Task Link",
-        cta: "Task CTA",
-        verify_endpoint: "Task Verify Endpoint",
-        verify_endpoint_type: "Task Verify Endpoint Type",
-        verify_redirect: "Task Verify Redirect",
+        id: 56,
+        quest_id: 1,
+        name: "Starknet Tribe",
+        href: "https://docs.starknet.id/",
+        cta: "Start Starknet Tribe Quiz",
+        verify_endpoint: "quests/verify_quiz",
+        verify_endpoint_type: "quiz",
+        verify_redirect: null,
         desc: "Task Description",
-        completed: "Task Completed",
-        quiz_name: "Quiz Name"
+        completed: false,
+        quiz_name: null
       }
     ]
     fetch.mockResolvedValueOnce({
