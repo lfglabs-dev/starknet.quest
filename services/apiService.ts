@@ -136,7 +136,8 @@ export const getTrendingQuests = async (addr = "") => {
     const response = await fetch(
       `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ""}`
     );
-    return await response.json();
+    const data: QuestDocument[] | QueryError = await response.json();
+    return data as QuestDocument[];
   } catch (err) {
     console.log("Error while fetching trending quests", err);
   }
@@ -162,7 +163,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -225,7 +226,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`

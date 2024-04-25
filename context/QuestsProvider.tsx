@@ -94,8 +94,8 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     getTrendingQuests(hexToDecimal(address)).then(
-      (data: QuestDocument[] | QueryError) => {
-        if ((data as QueryError).error) return;
+      (data: QuestDocument[] | QueryError | undefined) => {
+        if (!data || (data as QueryError).error) return;
         const quests = data as QuestDocument[];
         setTrendingQuests(quests);
         const notExpired = quests.filter((quest) => !quest.expired);
