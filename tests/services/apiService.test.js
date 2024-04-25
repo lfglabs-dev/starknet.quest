@@ -49,7 +49,7 @@ describe("updateUniqueVisitors function", () => {
 
   it("should fetch unique visitor count", async () => {
     const mockData = {
-      res: "unique visitor count",
+      res: "true",
     };
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
@@ -57,13 +57,13 @@ describe("updateUniqueVisitors function", () => {
 
     const result = await updateUniqueVisitors("1");
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/unique_page_visit?page_id=${"1"}`
+      `${API_URL}/unique_page_visit?page_id=1`
     );
     expect(result).toEqual(mockData);
   });
 
   it("should handle fetch errors gracefully", async () => {
-    const mockResponse = "Category not found";
+    const mockResponse = "Failed to deserialize query string: missing field `page_id`";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
