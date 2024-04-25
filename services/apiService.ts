@@ -161,7 +161,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -224,7 +224,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
@@ -293,7 +293,9 @@ export const getQuestActivityData = async (id: number) => {
   }
 };
 
-export const getQuestsParticipation = async (id: number) => {
+export const getQuestsParticipation = async (
+  id: number
+): Promise<object[] | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_participation?id=${id}`
