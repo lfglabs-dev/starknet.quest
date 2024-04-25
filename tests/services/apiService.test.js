@@ -92,7 +92,7 @@ describe("getQuestById function", () => {
   });
 
   /* 
-    This test case checks if the function returns the quest data for a valid quest id.
+    This test case checks if the function shows the error for invalid quest id.
     URL: `${API_URL}/get_quest?id=2`
   */
   it("should return an error message for an invalid quest id", async function () {
@@ -113,6 +113,10 @@ describe("getQuestById function", () => {
     expect(result).toEqual(mockData);
   });
 
+  /* 
+    This test case checks if the function displays error for incorrect id type
+    URL: `${API_URL}/get_quest?id="invalid"`
+  */
   it("should return an error message for an invalid type id", async function () {
     const mockData =
       "Failed to deserialize query string: invalid digit found in string";
@@ -132,6 +136,10 @@ describe("getQuestById function", () => {
     expect(result).toEqual(mockData);
   });
 
+  /* 
+    This test case checks if the function displays error if no id is provided
+    URL: `${API_URL}/get_quest`
+  */
 
   /* 
     it("should return an error message for missing query id", async function () {
