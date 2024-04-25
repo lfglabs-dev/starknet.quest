@@ -317,6 +317,9 @@ export const getUniqueVisitorCount = async (id: number) => {
 
 export async function getQuestById(questId: string | number) {
   const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
+  if(!response.ok) {
+    return await response.text()
+  }
   const data: QuestDocument | QueryError = await response.json();
   return data as QuestDocument;
 }
