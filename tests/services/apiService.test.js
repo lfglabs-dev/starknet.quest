@@ -70,7 +70,7 @@ describe("getQuestActivityData function", () => {
 
   it("should handle unexpected response format", async () => {
     // Mock fetch response with unexpected data format
-    const mockResponse = "Unexpected response format";
+    const mockResponse = [];
     fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getQuestActivityData(10);
     expect(fetch).toHaveBeenCalledWith(
@@ -81,11 +81,11 @@ describe("getQuestActivityData function", () => {
 
   it("should handle null cases in parameters", async () => {
     // mock fetch response with null parameters
-    const mockResponse = null;
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
     fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
-    const result = await getQuestActivityData(null);
+    const result = await getQuestActivityData("");
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/analytics/get_quest_activity?id=null`
+      `${API_URL}/analytics/get_quest_activity?id=`
     );
     expect(result).toEqual(mockResponse);
   });
@@ -99,6 +99,19 @@ describe("getQuestActivityData function", () => {
       `${API_URL}/analytics/get_quest_activity?id=undefined`
     );
     expect(result).toEqual(mockResponse);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Error while fetching quest data";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getQuestActivityData("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_quest_activity?id=invalid-id`
+    );
+    expect(result).toBeUndefined();
   });
 });
 
