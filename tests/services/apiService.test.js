@@ -1,9 +1,8 @@
 import {
   fetchQuestCategoryData,
   fetchLeaderboardToppers,
-  getBoostById
+  getBoostById,
 } from "@services/apiService";
-
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -112,6 +111,8 @@ describe("fetchLeaderboardToppers", () => {
       `${API_URL}/leaderboard/get_static_info?addr=${params.addr}&duration=${params.duration}`
     );
     expect(result).toEqual(mockResponse);
+  });
+});
 
 describe("getBoostById function", () => {
   beforeEach(() => {
@@ -207,6 +208,5 @@ describe("getBoostById function", () => {
       `${API_URL}/boost/get_boost?id=invalid-id`
     );
     expect(result).toBeUndefined();
-
   });
 });
