@@ -137,3 +137,37 @@ describe("getBoostById function", () => {
     expect(result).toBeUndefined();
   });
 });
+
+describe("updateUniqueVisitors function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch unique visitor count", async () => {
+    const mockData = {
+      res: "true",
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await updateUniqueVisitors("1");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/unique_page_visit?page_id=1`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Failed to deserialize query string: missing field `page_id`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await updateUniqueVisitors("3");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/unique_page_visit?page_id=${"3"}`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+});
