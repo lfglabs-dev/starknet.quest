@@ -64,7 +64,7 @@ export default function Page() {
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const isMobile = useMediaQuery("(max-width:768px)");
-  const [ranking, setRanking] = useState<RankingData | undefined>({
+  const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
   });
@@ -91,9 +91,11 @@ export default function Page() {
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);         
-        setRanking(response); 
- 
+      const response = await fetchLeaderboardRankings(requestBody);
+      if (!response) {
+        return;
+      }
+      setRanking(response);
     },
     []
   );
