@@ -62,8 +62,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="8.31733"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EFEDB3" />
-          <stop offset="1" stop-color="#F8AB30" />
+          <stop stopColor="#EFEDB3" />
+          <stop offset="1" stopColor="#F8AB30" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2854_23694"
@@ -73,8 +73,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="25.5599"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F8AB30" />
-          <stop offset="1" stop-color="#EFEDB3" />
+          <stop stopColor="#F8AB30" />
+          <stop offset="1" stopColor="#EFEDB3" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_2854_23694"
@@ -84,8 +84,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="24.4468"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E1783A" />
-          <stop offset="1" stop-color="#EB9130" />
+          <stop stopColor="#E1783A" />
+          <stop offset="1" stopColor="#EB9130" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_2854_23694"
@@ -95,8 +95,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="8.37822"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E1783A" />
-          <stop offset="1" stop-color="#EB9130" />
+          <stop stopColor="#E1783A" />
+          <stop offset="1" stopColor="#EB9130" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_2854_23694"
@@ -106,8 +106,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="16.9997"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E46F26" />
-          <stop offset="1" stop-color="#FFA835" />
+          <stop stopColor="#E46F26" />
+          <stop offset="1" stopColor="#FFA835" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_2854_23694"
@@ -117,8 +117,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="16.9997"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E46F26" />
-          <stop offset="1" stop-color="#FFA835" />
+          <stop stopColor="#E46F26" />
+          <stop offset="1" stopColor="#FFA835" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_2854_23694"
@@ -128,8 +128,8 @@ const Rank3Icon: FunctionComponent<IconProps> = ({ width = 24 }) => {
           y2="5.88774"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#ED9448" />
-          <stop offset="1" stop-color="#F5CC75" />
+          <stop stopColor="#ED9448" />
+          <stop offset="1" stopColor="#F5CC75" />
         </linearGradient>
       </defs>
     </svg>
