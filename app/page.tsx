@@ -63,7 +63,7 @@ export default function Page() {
               value: "398K",
             },
             {
-              name: "Unique visitors on our website",
+              name: "Unique visitors",
               value: "+200K",
             },
           ]}

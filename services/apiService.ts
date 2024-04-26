@@ -72,7 +72,8 @@ export const getQuestsInBoost = async (id: string) => {
 export const getBoostById = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
-    return await response.json();
+    const data: Boost | QueryError = await response.json();
+    return data as Boost;
   } catch (err) {
     console.log("Error while fetching boost data", err);
   }
