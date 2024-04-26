@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  QuizDocument,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -225,13 +226,21 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = "0") => {
+export const getQuizById = async (
+  quizId: string,
+  address = "0"
+): Promise<Quiz | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
     );
-    const data: Quiz | QueryError = await response.json();
-    return data as Quiz;
+    const data: QuizDocument | QueryError = await response.json();
+    const result = data as QuizDocument;
+    return {
+      name: result.name,
+      description: result.desc,
+      questions: result.questions,
+    };
   } catch (err) {
     console.log("Error while fetching quiz data by Id", err);
   }

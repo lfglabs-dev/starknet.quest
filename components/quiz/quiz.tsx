@@ -66,16 +66,14 @@ const Quiz: FunctionComponent<QuizProps> = ({
   useEffect(() => {
     if (restart) return setRestart(false);
     setLoading(true);
-    getQuizById(quizId).then((data) => {
-      const quizObj: Quiz = {
-        name: data.name,
-        description: data.desc,
-        questions: data.questions,
-      };
-      setAnswers([]);
-      setQuiz(quizObj);
-      setStep(-1);
+    getQuizById(quizId).then((quiz) => {
       setLoading(false);
+      if (!quiz) {
+        return;
+      }
+      setAnswers([]);
+      setQuiz(quiz);
+      setStep(-1);
     });
   }, [quizId, restart]);
 

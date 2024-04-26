@@ -110,3 +110,17 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type QuizQuestionDocument = {
+  kind: "text_choice" | "image_choice" | "ordering";
+  layout: "default" | "illustrated_left";
+  question: string;
+  options: string[];
+  image_for_layout: string | null;
+};
+
+export type QuizDocument = {
+  name: string;
+  desc: string;
+  questions: QuizQuestionDocument[];
+};
