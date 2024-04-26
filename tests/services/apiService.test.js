@@ -1,4 +1,4 @@
-import { fetchQuestCategoryData, getBoostById } from "@services/apiService";
+import { fetchQuestCategoryData, getBoostById, getUniqueVisitorCount } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -137,3 +137,68 @@ describe("getBoostById function", () => {
     expect(result).toBeUndefined();
   });
 });
+
+describe("getUniqueVisitorCount function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+  it("should return data for valid page id", async () => {
+    const mockResponse = 14;
+    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    const result = await getUniqueVisitorCount(1);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=1`);
+    expect(result).toEqual(mockResponse);
+  })
+  it("should handle errors gracefully", async () => {
+    const mockResponse = "Error while fetching unique visitor count";
+    fetch.mockResolvedValueOnce({json: () => Promise.reject(mockResponse)})
+    const result = await getUniqueVisitorCount("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=invalid-id`);
+    expect(result).toBeUndefined();
+  })
+  it("should handle null cases in parameters", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    const result = await getUniqueVisitorCount(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=null`);
+    expect(result).toEqual(mockResponse);
+  })
+  it("should handle undefined cases in parameters", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=undefined`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+  it("should handle when API returns no response", async () => {
+    const mockResponse = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount("page-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=page-id`
+    );
+    expect(result).toBeUndefined();
+  });
+  it("should handle when API returns response in unexpected format", async () => {
+    const mockResponse = 0;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount(10);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=10`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+})
+
