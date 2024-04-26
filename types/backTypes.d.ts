@@ -110,3 +110,8 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type fetchLeaderboardToppers = {
+  addr: string;
+  duration: string | "day" | "month" | "all";
+};

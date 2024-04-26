@@ -30,7 +30,8 @@ export const fetchLeaderboardToppers = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_static_info?addr=${addr}&duration=${duration}`
     );
-    return await response.json();
+    const data: LeaderboardTopperParams | QueryError = await response.json();
+    return data as LeaderboardTopperParams;
   } catch (err) {
     console.log("Error while fetching leaderboard position", err);
   }
@@ -161,7 +162,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -224,7 +225,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
