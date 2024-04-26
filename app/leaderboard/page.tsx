@@ -34,11 +34,10 @@ import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
 import { TOP_50_TAB_STRING } from "@constants/common";
-import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
 import { hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import RankingSkeleton from "@components/skeletons/rankingSkeleton";
-import { useMediaQuery } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { timeFrameMap } from "@utils/timeService";
 
@@ -47,6 +46,7 @@ export default function Page() {
   const { status, address, isConnecting } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
+  const [viewMore, setViewMore] = useState(true);
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const isTop50RankedView =
     duration === TOP_50_TAB_STRING || (!isConnecting && !address);
@@ -57,7 +57,7 @@ export default function Page() {
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
@@ -93,6 +93,16 @@ export default function Page() {
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
       setRanking(response);
+    },
+    []
+  );
+
+  const addRankingResults = useCallback(
+    async (requestBody: LeaderboardRankingParams) => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      setRanking((prev) => {
+        return { ...prev, ranking: [...prev.ranking, ...response.ranking] };
+      });
     },
     []
   );
@@ -173,7 +183,8 @@ export default function Page() {
 
   // to reset the page shift when duration is changes or new address is searched
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentPage(1);
+    setViewMore(true);
   }, [duration, currentSearchedAddress]);
 
   // on user selecting duration
@@ -246,6 +257,25 @@ export default function Page() {
     }
   };
 
+  const checkIfLastPage = useMemo(() => {
+    /*
+    check if the current page is the last page
+
+    first_elt_position is the index of the first element in the current page
+    and ranking.length is the number of elements in the current page
+
+    so if the sum of these two is greater than the number of players in the
+    leaderboard toppers api response, then we are on the last page
+    */
+
+    if (
+      ranking?.first_elt_position + ranking?.ranking?.length >=
+      leaderboardToppers?.total_users
+    )
+      return true;
+    return false;
+  }, [leaderboardToppers, ranking, duration]);
+
   /*
     fetch data whenever page size , page number changes, 
     duration  changes, search address changes
@@ -259,7 +289,7 @@ export default function Page() {
           ? hexToDecimal(userAddress)
           : "",
       page_size: rowsPerPage,
-      shift: currentPage,
+      shift: 0,
       duration: timeFrameMap(duration),
     };
 
@@ -277,25 +307,7 @@ export default function Page() {
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
     });
-  }, [
-    rowsPerPage,
-    currentPage,
-    currentSearchedAddress,
-    isCustomResult,
-    duration,
-    address,
-  ]);
-
-  // handle pagination with forward and backward direction as params
-  const handlePagination = (type: string) => {
-    setCustomResult(true);
-    if (type === "next") {
-      setCurrentPage((prev) => prev + 1);
-    } else {
-      // type==='prev' is this case
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
+  }, [rowsPerPage, currentSearchedAddress, isCustomResult, duration, address]);
 
   // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
@@ -454,7 +466,11 @@ export default function Page() {
                 <>
                   <RankingsTable
                     duration={duration}
-                    data={ranking}
+                    data={
+                      checkIfLastPage && !viewMore
+                        ? { ...ranking, ranking: ranking.ranking.slice(0, 10) }
+                        : ranking
+                    }
                     selectedAddress={
                       currentSearchedAddress.length > 0
                         ? currentSearchedAddress
@@ -479,10 +495,40 @@ export default function Page() {
               </div>
             )}
             {duration !== TOP_50_TAB_STRING && address && (
-              <ControlsDashboard
-                setRowsPerPage={setRowsPerPage}
-                setCustomResult={setCustomResult}
-              />
+              <Button
+                onClick={() => {
+                  if (checkIfLastPage && !viewMore) {
+                    setViewMore(true);
+                    return;
+                  }
+                  if (!checkIfLastPage && viewMore) {
+                    const requestBody = {
+                      addr:
+                        currentSearchedAddress.length > 0
+                          ? currentSearchedAddress
+                          : userAddress
+                          ? hexToDecimal(userAddress)
+                          : "",
+                      page_size: rowsPerPage,
+                      shift: currentPage,
+                      duration: timeFrameMap(duration),
+                    };
+
+                    addRankingResults(requestBody);
+                    setCurrentPage((prev) => prev + 1);
+                    return;
+                  }
+                  if (checkIfLastPage && viewMore) {
+                    setViewMore(false);
+                  }
+                }}
+                variant="text"
+                disableRipple
+                className="w-fit text-white text self-center"
+                style={{ textTransform: "none" }}
+              >
+                {checkIfLastPage && viewMore ? "View less" : "View more"}
+              </Button>
             )}
           </div>
         </>
