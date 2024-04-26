@@ -94,7 +94,7 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     getTrendingQuests(hexToDecimal(address)).then(
-      (data: QuestDocument[] | QueryError | undefined) => {
+      (data: QuestDocument[] | QueryError) => {
         if (!data || (data as QueryError).error) return;
         const quests = data as QuestDocument[];
         setTrendingQuests(quests);
