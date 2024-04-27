@@ -111,12 +111,11 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
-
-type FetchLeaderboardToppers = {
-  addr: string;
-  duration: "week" | "month" | "all";
-  };
-
+type LeaderboardToppersData = {
+  best_users: { address: string; xp: number; achievements: number }[];
+  total_users: number;
+  position?: number;
+};
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;
