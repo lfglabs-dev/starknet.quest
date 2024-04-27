@@ -106,7 +106,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </p>
           </div>
           <p className={styles.percentileText}>
-            {userPercentile ? (
+            {userPercentile !== "NA" ? (
               <>
                 {isOwner ? "You are " : "User is "}
                 <span className={styles.green_span}>
@@ -115,7 +115,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 of other players.
               </>
             ) : (
-              ""
+              <></>
             )}
           </p>
         </div>
