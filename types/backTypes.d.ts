@@ -127,5 +127,5 @@ type Ranking = {
 
 type fetchLeaderboardToppers = {
   addr: string;
-  duration: string | "day" | "month" | "all";
+  duration: "week" | "month" | "all";
 };
