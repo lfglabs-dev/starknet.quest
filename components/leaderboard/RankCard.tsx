@@ -47,7 +47,7 @@ const RankCard: FunctionComponent<RankCardProps> = ({
   }, [name]);
 
   return (
-    <div className={styles.rank_card_container}>
+    <div className={`${styles.rank_card_container} modified-cursor-pointer`}>
       <div className={styles.rank_card_badge}>
         {position === 1 ? (
           <Rank1Icon width="40" />

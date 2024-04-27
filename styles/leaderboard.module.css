@@ -337,7 +337,7 @@
   position: absolute;
   top: 0px;
 
-  transform: translateY(-1rem) translateX(10px);
+  transform: translateY(-20px) translateX(10px);
 }
 
 .rank_card_naming {
