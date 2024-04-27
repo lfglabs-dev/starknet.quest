@@ -64,7 +64,7 @@ export type RequestResponse = {
   error_msg?: string;
 };
 
-export type RequestProps = {
+type RequestProps = {
   address: string;
 };
 export interface TwitterRequestProps {
@@ -123,4 +123,15 @@ export type QuizDocument = {
   name: string;
   desc: string;
   questions: QuizQuestionDocument[];
+};
+
+type LeaderboardRankings = {
+  ranking: Ranking[];
+  first_elt_position: number;
+};
+
+type Ranking = {
+  address: string;
+  xp: number;
+  achievements: number;
 };
