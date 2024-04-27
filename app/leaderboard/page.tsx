@@ -288,6 +288,8 @@ export default function Page() {
           ? currentSearchedAddress
           : userAddress
           ? hexToDecimal(userAddress)
+          : address
+          ? address
           : "",
       page_size: rowsPerPage,
       shift: 0,
