@@ -4,7 +4,7 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    padding: 20px;
 }
 
 .dashboard_wrapper {
@@ -319,6 +319,10 @@
         flex-direction: column;
         text-align: center;
         padding: 1rem;
+    }
+
+    .dashboard_container {
+        padding: 5px;
     }
 
     .second_header {
