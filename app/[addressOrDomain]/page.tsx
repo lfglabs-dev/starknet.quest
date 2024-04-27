@@ -95,6 +95,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           shift: 0,
           duration: "all",
         });
+        if (!res) return;
         setUserRanking(res);
       } catch (err) {
         console.log("Error while fetching leaderboard position", err);

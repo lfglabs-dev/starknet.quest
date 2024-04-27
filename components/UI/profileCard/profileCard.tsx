@@ -7,7 +7,7 @@ import React, {
 import styles from "@styles/dashboard.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
-import { useAccount, useStarkProfile } from "@starknet-react/core";
+import { useStarkProfile } from "@starknet-react/core";
 import { minifyAddressFromStrings } from "@utils/stringService";
 import xpIcon from "public/icons/xpBadge.svg";
 
