@@ -137,9 +137,13 @@ export const getTrendingQuests = async (addr = "") => {
     const response = await fetch(
       `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ""}`
     );
-    return await response.json();
+    const data: QuestDocument[] = await response.json();
+    return data;
   } catch (err) {
     console.log("Error while fetching trending quests", err);
+    return {
+      error: "Error While Fetching Trending Quests",
+    } as QueryError;
   }
 };
 
