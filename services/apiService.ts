@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  LeaderboardRankings,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -44,7 +45,7 @@ export const fetchLeaderboardRankings = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_ranking?addr=${addr}&page_size=${page_size}&shift=${shift}&duration=${duration}`
     );
-    return await response.json();
+    return (await response.json()) as LeaderboardRankings;
   } catch (err) {
     console.log("Error while fetching leaderboard ranks", err);
   }
@@ -71,7 +72,8 @@ export const getQuestsInBoost = async (id: string) => {
 export const getBoostById = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boost?id=${id}`);
-    return await response.json();
+    const data: Boost | QueryError = await response.json();
+    return data as Boost;
   } catch (err) {
     console.log("Error while fetching boost data", err);
   }
@@ -135,9 +137,13 @@ export const getTrendingQuests = async (addr = "") => {
     const response = await fetch(
       `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ""}`
     );
-    return await response.json();
+    const data: QuestDocument[] = await response.json();
+    return data;
   } catch (err) {
     console.log("Error while fetching trending quests", err);
+    return {
+      error: "Error While Fetching Trending Quests",
+    } as QueryError;
   }
 };
 
@@ -161,7 +167,7 @@ export const getBoostedQuests = async () => {
   }
 };
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -224,7 +230,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
