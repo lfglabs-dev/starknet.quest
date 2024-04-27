@@ -64,7 +64,7 @@ export type RequestResponse = {
   error_msg?: string;
 };
 
-export type RequestProps = {
+type RequestProps = {
   address: string;
 };
 export interface TwitterRequestProps {
@@ -111,7 +111,19 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
+
 type FetchLeaderboardToppers = {
   addr: string;
   duration: "week" | "month" | "all";
+  };
+
+type LeaderboardRankings = {
+  ranking: Ranking[];
+  first_elt_position: number;
+};
+
+type Ranking = {
+  address: string;
+  xp: number;
+  achievements: number;
 };
