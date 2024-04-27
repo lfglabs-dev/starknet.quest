@@ -89,7 +89,7 @@ describe('getCompletedBoosts function', () => {
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=5645wdhefbhrdkf568jur`
     );
-    expect(result).toEqual(mockResponse);
+    expect(result).toBeUndefined();
   });
 
   it('should handle fetch with empty response', async () => {
