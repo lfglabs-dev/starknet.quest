@@ -69,10 +69,10 @@ describe("getQuestsParticipation", () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await getBoostedQuests();
+    const result = await getQuestsParticipation();
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}//analytics/get_quest_participation`
+      `${API_URL}/analytics/get_quest_participation?id=undefined`
     );
     expect(result).toEqual(result);
   });
