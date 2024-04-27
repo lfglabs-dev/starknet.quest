@@ -110,7 +110,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           <p className={styles.percentileText}>
             {userPercentile.length > 0 && userPercentile !== "NA" ? (
               <>
-                {isOwner ? "You are " : "User is "}
+                {isOwner ? "You are " : "This user is "}
                 <span className={styles.green_span}>
                   better than {userPercentile}%
                 </span>{" "}
@@ -127,7 +127,11 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               <SocialMediaActions identity={identity} />
               <Link
                 href={`${getTweetLink(
-                  `Check out my Starknet Quest Profile at ${window.location.href} #Starknet #StarknetID`
+                  `Check out${
+                    isOwner ? " my " : " "
+                  }Starknet Quest Profile at ${
+                    window.location.href
+                  } #Starknet #StarknetID`
                 )}`}
                 target="_blank"
                 rel="noreferrer"
