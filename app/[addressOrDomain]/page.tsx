@@ -106,7 +106,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
       try {
         if (!addr) return;
         const res = await fetchLeaderboardToppers({
-          addr: addr,
+          addr: hexToDecimal(addr),
           duration: "all",
         });
         setLeaderboardData(res);
