@@ -175,7 +175,7 @@
     height: 32px;
     border-radius: 12px;
     background-color: rgb(13, 13, 13);
-    padding: 15px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -214,29 +214,24 @@
     }
 }
 
-.smallSpinner {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, #98ff98, #32a6a8, #98ff98);
-    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff 0);
-    animation: spin 1s linear infinite;
-}
-
-
 .profile_name {
     font-size: 30px;
     font-weight: bold;
 }
 
 .accountCreationDate {
-    color: lightgray;
-    font-weight: 100;
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
 }
 
 .addressText,
 .accountCreationDate {
-    font-size: 12px;
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
 }
 
 .percentileText {
@@ -400,7 +395,7 @@
 
     .accountCreationDate {
         padding-top: 10px;
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .percentileText {

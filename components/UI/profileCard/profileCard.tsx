@@ -7,7 +7,7 @@ import React, {
 import styles from "@styles/dashboard.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
-import { useStarkProfile } from "@starknet-react/core";
+import { useAccount, useStarkProfile } from "@starknet-react/core";
 import { minifyAddressFromStrings } from "@utils/stringService";
 import xpIcon from "public/icons/xpBadge.svg";
 
@@ -20,6 +20,7 @@ import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
+import { getTweetLink } from "@utils/browserService";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -30,23 +31,23 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const sinceDate = useCreationDate(identity);
-  const { data: profileData } = useStarkProfile({ address: identity.addr });
+  const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [userPercentile, setUserPercentile] = useState("");
   const [userXp, setUserXp] = useState<number>(0);
 
   const copyToClipboard = () => {
     setCopied(true);
-    navigator.clipboard.writeText(identity?.addr as string);
+    navigator.clipboard.writeText(identity?.owner as string);
     setTimeout(() => {
       setCopied(false);
     }, 1500);
   };
 
   const computeData = useCallback(() => {
-    if (rankingData && identity.addr && leaderboardData) {
+    if (rankingData && identity.owner && leaderboardData) {
       const user = rankingData.ranking.find(
-        (user) => user.address === identity.addr
+        (user) => user.address === identity.owner
       );
       if (user) {
         if (!leaderboardData.position) {
@@ -80,9 +81,9 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
         </div>
         <div className={`${styles.center} ${styles.child}`}>
           <p className={styles.accountCreationDate}>
-            {sinceDate ? `Member since ${sinceDate}` : ""}
+            {sinceDate ? `${sinceDate}` : ""}
           </p>
-          <h2 className={styles.profile_name}>{identity.domain}</h2>
+          <h2 className={styles.profile_name}>{identity.domain.domain}</h2>
           <div className={styles.address_div}>
             <div onClick={() => copyToClipboard()}>
               {!copied ? (
@@ -98,7 +99,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             <p className={styles.addressText}>
               {typeof addressOrDomain === "string" &&
                 minifyAddressFromStrings(
-                  [addressOrDomain, identity?.addr || ""],
+                  [addressOrDomain, identity?.owner || ""],
                   8
                 )}
             </p>
@@ -122,18 +123,21 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             <div className={styles.right_socials}>
               <SocialMediaActions identity={identity} />
               <Link
-                className={styles.right_share_button}
-                href="https://twitter.com/intent/post?url=Check%20out%20my%20Starknet%20Quest%20land%20at%20http%3A%2F%2Flocalhost%3A3000%2Fdashboard%F0%9F%8F%9E%EF%B8%8F%20%23Starknet%20%23StarknetID"
+                href={`${getTweetLink(
+                  `Check out my Starknet Quest Profile at ${window.location.href} #Starknet #StarknetID`
+                )}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                <CDNImage
-                  src={shareSrc}
-                  width={20}
-                  height={20}
-                  alt={"share-icon"}
-                />
-                <p>Share</p>
+                <div className={styles.right_share_button}>
+                  <CDNImage
+                    src={shareSrc}
+                    width={20}
+                    height={20}
+                    alt={"share-icon"}
+                  />
+                  <p>Share</p>
+                </div>
               </Link>
             </div>
           </div>

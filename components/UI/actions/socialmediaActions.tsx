@@ -3,6 +3,7 @@ import ClickableDiscordIcon from "./clickable/clickableDiscordIcon";
 import ClickableGithubIcon from "./clickable/clickableGithubIcon";
 import ClickableTwitterIcon from "./clickable/clickableTwitterIcon";
 import { isStarkRootDomain } from "starknetid.js/packages/core/dist/utils";
+import { cairo } from "starknet";
 
 type SocialMediaActionsProps = {
   identity: Identity;
@@ -11,26 +12,23 @@ type SocialMediaActionsProps = {
 const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   identity,
 }) => {
-  const [apiIdentity, setApiIdentity] = useState<Identity | undefined>();
+  const [twitter, setTwitter] = useState<string | undefined>();
+  const [discord, setDiscord] = useState<string | undefined>();
+  const [github, setGithub] = useState<string | undefined>();
 
   useEffect(() => {
-    if (isStarkRootDomain(identity?.domain ?? "")) {
-      const refreshData = () =>
-        fetch(
-          `${process.env.NEXT_PUBLIC_STARKNET_ID_API_LINK}/domain_to_data?domain=${identity.domain}`
-        )
-          .then(async (response) => {
-            if (!response.ok) {
-              throw new Error(await response.text());
-            }
-            return response.json();
-          })
-          .then((data: Identity) => {
-            setApiIdentity(data);
-          });
-      refreshData();
-      const timer = setInterval(() => refreshData(), 30e3);
-      return () => clearInterval(timer);
+    if (isStarkRootDomain(identity?.domain.domain)) {
+      identity?.verifier_data?.forEach((verifier) => {
+        if (cairo.felt(verifier.field) === cairo.felt("twitter")) {
+          setTwitter(verifier.data);
+        }
+        if (cairo.felt(verifier.field) === cairo.felt("discord")) {
+          setDiscord(verifier.data);
+        }
+        if (cairo.felt(verifier.field) === cairo.felt("github")) {
+          setGithub(verifier.data);
+        }
+      });
     }
   }, [identity]);
 
@@ -38,18 +36,18 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
     <div className="flex flex-row gap-3 w-full justify-evenly">
       <ClickableTwitterIcon
         width="16"
-        domain={identity?.domain}
-        twitterId={apiIdentity?.twitter ?? apiIdentity?.old_twitter}
+        domain={identity?.domain.domain}
+        twitterId={twitter}
       />
       <ClickableDiscordIcon
         width="16"
-        domain={identity?.domain}
-        discordId={apiIdentity?.discord ?? apiIdentity?.old_discord}
+        domain={identity?.domain.domain}
+        discordId={discord}
       />
       <ClickableGithubIcon
         width="16"
-        domain={identity?.domain}
-        githubId={apiIdentity?.github ?? apiIdentity?.old_github}
+        domain={identity?.domain.domain}
+        githubId={github}
       />
     </div>
   );
