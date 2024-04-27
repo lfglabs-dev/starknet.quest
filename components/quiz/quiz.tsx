@@ -34,7 +34,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
   const [step, setStep] = useState<number>(-1);
   const [quiz, setQuiz] = useState<Quiz>({
     name: "",
-    description: "",
+    desc: "",
     questions: [],
   });
   const [loading, setLoading] = useState<boolean>(true);
@@ -113,7 +113,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
         <StartScreen
           setStep={setStep}
           name={quiz.name}
-          description={quiz.description}
+          description={quiz.desc}
           step={step}
         />
       ) : step === quiz?.questions.length ? (

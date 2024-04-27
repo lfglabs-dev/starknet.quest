@@ -235,12 +235,7 @@ export const getQuizById = async (
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
     );
     const data: QuizDocument | QueryError = await response.json();
-    const result = data as QuizDocument;
-    return {
-      name: result.name,
-      description: result.desc,
-      questions: result.questions,
-    };
+    return data as Quiz;
   } catch (err) {
     console.log("Error while fetching quiz data by Id", err);
   }
