@@ -30,8 +30,7 @@ export const fetchLeaderboardToppers = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_static_info?addr=${addr}&duration=${duration}`
     );
-    const data: LeaderboardTopperParams | QueryError = await response.json();
-    return data as LeaderboardTopperParams;
+    return await response.json();
   } catch (err) {
     console.log("Error while fetching leaderboard position", err);
   }
