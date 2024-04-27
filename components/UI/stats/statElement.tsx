@@ -9,7 +9,7 @@ type StatElementProps = {
 
 const StatElement: FunctionComponent<StatElementProps> = ({ name, value }) => {
   return (
-    <div className={styles.statElement}>
+    <div className="flex flex-1 w-full px-4 sm:px-2">
       <Box>
         <p className={styles.statValue}>{value}</p>
         <p className={styles.statName}>{name}</p>

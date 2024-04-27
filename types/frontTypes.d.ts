@@ -29,6 +29,7 @@ type Task = {
   hasRootDomain: boolean;
   customError: string;
   checkUserRewards: () => void;
+  expired: boolean;
 };
 
 type TaskProps = Task & { id: number };

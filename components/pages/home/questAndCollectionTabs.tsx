@@ -67,13 +67,12 @@ const QuestAndCollectionTabs: FunctionComponent<
     []
   );
   const sortedAndFilteredQuests = useMemo(() => {
-    const filteredQuests = address
-      ? trendingQuests?.length > 0
-        ? trendingQuests
-        : quests
-      : quests;
-    return filteredQuests
-      .filter((quest) => !quest.expired)
+    const filteredQuests = quests
+      .filter((quest) => {
+        return (
+          !quest.expired && !trendingQuests.find((tq) => tq.id === quest.id)
+        );
+      })
       .sort((questA, questB) => {
         const aExpiry = questA.expiry_timestamp
           ? Number(questA.expiry_timestamp)
@@ -83,6 +82,7 @@ const QuestAndCollectionTabs: FunctionComponent<
           : Number.MAX_SAFE_INTEGER;
         return aExpiry - bExpiry; // Quests that expired soon will be first
       });
+    return [...trendingQuests, ...filteredQuests];
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
@@ -146,7 +146,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${categories.length + (boosts && 1)})`}
+                label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
                 {...a11yProps(1)}
               />
             </Tabs>
