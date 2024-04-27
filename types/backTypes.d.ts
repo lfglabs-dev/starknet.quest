@@ -113,5 +113,5 @@ type QuestCategoryDocument = {
 
 type FetchLeaderboardToppers = {
   addr: string;
-  duration: string | "day" | "month" | "all";
+  duration: "week" | "month" | "all";
 };
