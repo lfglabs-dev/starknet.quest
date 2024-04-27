@@ -22,6 +22,7 @@ import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
 import { getTweetLink } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
+import { calculatePercentile } from "@utils/numberService";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -55,8 +56,9 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           setUserPercentile("NA");
           return;
         }
-        const computedUserPercentile = Math.round(
-          (leaderboardData.position / leaderboardData.total_users) * 100
+        const computedUserPercentile = calculatePercentile(
+          leaderboardData?.position ?? 0,
+          leaderboardData?.total_users ?? 0
         ).toString();
         setUserPercentile(computedUserPercentile);
         setUserXp(user.xp);
@@ -106,7 +108,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </p>
           </div>
           <p className={styles.percentileText}>
-            {userPercentile !== "NA" ? (
+            {userPercentile.length > 0 && userPercentile !== "NA" ? (
               <>
                 {isOwner ? "You are " : "User is "}
                 <span className={styles.green_span}>
