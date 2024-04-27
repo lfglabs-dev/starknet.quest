@@ -21,6 +21,7 @@ import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
 import { getTweetLink } from "@utils/browserService";
+import { hexToDecimal } from "@utils/feltService";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -47,7 +48,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const computeData = useCallback(() => {
     if (rankingData && identity.owner && leaderboardData) {
       const user = rankingData.ranking.find(
-        (user) => user.address === identity.owner
+        (user) => user.address === hexToDecimal(identity.owner)
       );
       if (user) {
         if (!leaderboardData.position) {

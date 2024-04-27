@@ -29,7 +29,7 @@
   gap: 2rem;
   max-width: 950px;
   margin-bottom: 3rem;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .title {
@@ -108,15 +108,15 @@
 
 @media (max-width: 768px) {
   .questContainer {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 2rem;
-      max-width: 950px;
-      margin-bottom: 3rem;
-      margin-top: 1rem;
-      margin-top: 3rem;
-      justify-content: center;
-    }
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 950px;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+    margin-top: 3rem;
+    justify-content: center;
+  }
 }
 
 .blur1 {
@@ -192,11 +192,9 @@
   }
 
   .featured_quest_banner_container {
-    background: linear-gradient(
-      180deg,
-      var(--background) 0.04%,
-      var(--background600) 347.42%
-    );
+    background: linear-gradient(180deg,
+        var(--background) 0.04%,
+        var(--background600) 347.42%);
     margin-bottom: 0;
   }
 
@@ -240,14 +238,12 @@
     right: -1px;
     left: 0;
     bottom: 0;
-    background: linear-gradient(
-      90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%
-    );
+    background: linear-gradient(90deg,
+        #437aba 0%,
+        #59c2e8 45%,
+        #00ff77 60%,
+        #59c2e8 70%,
+        #437aba50 100%);
     border-radius: 8px;
     mask: linear-gradient(8deg, transparent 85%, black);
   }
@@ -285,11 +281,9 @@
   }
 
   .section {
-    background: linear-gradient(
-      180deg,
-      var(--background) 0.04%,
-      var(--background600) 347.42%
-    );
+    background: linear-gradient(180deg,
+        var(--background) 0.04%,
+        var(--background600) 347.42%);
     padding-top: 3rem;
   }
 
@@ -333,14 +327,12 @@
   right: -2px;
   left: -1px;
   bottom: -1px;
-  background: linear-gradient(
-    90deg,
-    #437aba 0%,
-    #59c2e8 45%,
-    #00ff77 60%,
-    #59c2e8 70%,
-    #437aba50 100%
-  );
+  background: linear-gradient(90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%);
   border-radius: 8px;
   z-index: -1;
   mask: linear-gradient(4deg, transparent 92%, black);

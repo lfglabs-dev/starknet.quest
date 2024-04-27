@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/Home.module.css";
 import Quest from "@components/quests/quest";
-import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { QuestDocument } from "types/backTypes";
 import { useRouter } from "next/navigation";
 

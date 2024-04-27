@@ -72,11 +72,8 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           )
           .map((result) => result.value);
 
-        const questCards = successfulCompletedQuests;
-
-        setQuests((prevQuests: QuestDocument[]) => [
-          ...prevQuests,
-          ...questCards.filter((quest) => quest !== null),
+        setQuests(() => [
+          ...successfulCompletedQuests.filter((quest) => quest !== null),
         ]);
       } catch (err) {
         console.log("Error while fetching quests", err);
@@ -90,7 +87,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
       try {
         if (!addr) return;
         const res = await fetchLeaderboardRankings({
-          addr: addr,
+          addr: hexToDecimal(addr),
           page_size: 10,
           shift: 0,
           duration: "all",
