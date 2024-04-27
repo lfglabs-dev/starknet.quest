@@ -3,7 +3,8 @@ import {
   fetchLeaderboardRankings,
   getBoostById,
   getTrendingQuests,
-  getTasksByQuestId
+  getTasksByQuestId,
+  getQuestsInBoost
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -143,7 +144,6 @@ describe("getTasksByQuestId function", () => {
     expect(result).toEqual(mockData)
   });
 })
-
 
 describe("fetchLeaderboardRankings function", () => {
   beforeEach(() => {
@@ -454,5 +454,87 @@ describe("getTrendingQuests function", () => {
     const result = await getTrendingQuests(null);
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_trending_quests`);
     expect(result).toHaveLength(0);
+  });
+});
+
+describe("getQuestsInBoost function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should handle unexpected params format", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('my-test-id');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=my-test-id`
+    );
+
+    expect(result).toEqual(mockResponse)
+  });
+
+  it("should handle empty params", async () => {
+    const mockResponse = "Failed to deserialize query string: cannot parse integer from empty string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=`
+    );
+
+    expect(result).toEqual(mockResponse)
+  });
+  
+  it("should handle quest not found", async () => {
+    const mockResponse = "Quest not found";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('10');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=10`
+    );
+
+    expect(result).toEqual(mockResponse)
+  });
+
+  it("should fetch and return data for a valid boost id", async () => {
+    const mockResponse = {
+      "amount": 500,
+      "token": "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+      "expiry": 1706633876113,
+      "quests": [
+          105
+      ],
+      "winner": [
+          "0x06c3fd41bdb9c3b6714fe2acf5646b57174ae097ed5cad8c4111111112222222",
+      ],
+      "img_url": "/braavos/zklend.webp",
+      "id": 4,
+      "name": "Starknet Pro Score by Braavos quests",
+      "hidden": false,
+      "num_of_winners": 1,
+      "token_decimals": 6
+    };
+    
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('4');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=4`
+    );
+    expect(result).toEqual(mockResponse)
   });
 });
