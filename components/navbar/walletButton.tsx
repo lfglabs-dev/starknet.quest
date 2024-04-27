@@ -14,6 +14,8 @@ import ArgentIcon from "@components/UI/iconsComponents/icons/argentIcon";
 import { useNotificationManager } from "@hooks/useNotificationManager";
 import { CircularProgress } from "@mui/material";
 import { getCurrentNetwork } from "@utils/network";
+import Link from "next/link";
+import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -133,6 +135,12 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
             </div>
             {showWallet ? (
               <div className={styles.walletMenu}>
+                <Link href="/leaderboard">
+                  <button>
+                    <TrophyIcon width="24" />
+                    <p>Leaderboard</p>
+                  </button>
+                </Link>
                 <button onClick={copyAddress}>
                   {copied ? (
                     <VerifiedIcon width="24" />

@@ -32,7 +32,9 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
 
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-
+  const slicedDisplayedData = isTop50RankedView
+    ? displayData.slice(3)
+    : displayData;
   // make single digit numbers to double digit
   const addNumberPadding = (num: number) => {
     return num > 9 ? num : `0${num}`;
@@ -62,7 +64,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
           }
         })
       );
-      setDisplayData(isTop50RankedView ? res.slice(3) : res);
+      setDisplayData(res);
       setPaginationLoading(false);
     };
     makeCall();
@@ -77,7 +79,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
           {isTop50RankedView && (
             <Top3RankedUsers leaderboardToppers={leaderboardToppers} />
           )}
-          {displayData?.map((item, index) => {
+          {slicedDisplayedData?.map((item, index) => {
             const isMyRank =
               index === 0 && item.address === connectedUserAddress; // According to api, first item should be connected user rank
             const itemRank =
