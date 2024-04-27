@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  LeaderboardRankings,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -44,7 +45,7 @@ export const fetchLeaderboardRankings = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_ranking?addr=${addr}&page_size=${page_size}&shift=${shift}&duration=${duration}`
     );
-    return await response.json();
+    return (await response.json()) as LeaderboardRankings;
   } catch (err) {
     console.log("Error while fetching leaderboard ranks", err);
   }

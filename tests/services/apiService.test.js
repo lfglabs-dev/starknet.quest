@@ -1,5 +1,6 @@
 import {
   fetchQuestCategoryData,
+  fetchLeaderboardRankings,
   getBoostById,
   getTrendingQuests,
 } from "@services/apiService";
@@ -43,6 +44,125 @@ describe("fetchQuestCategoryData function", () => {
     );
     expect(result).toEqual(mockResponse);
   });
+});
+
+describe("fetchLeaderboardRankings function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for valid parameters", async () => {
+    const mockData = {
+      rankings: [
+        { address: '0x123abc', xp: 100, achievements: 5 },
+        { address: '0x456def', xp: 80, achievements: 3 },
+        { address: '0x789ghi', xp: 120, achievements: 7 },
+      ],
+      first_elt_position: 1,
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const params = { addr: '', page_size: 10, shift: 0, duration: 'week' };
+    const result = await fetchLeaderboardRankings(params);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=&page_size=10&shift=0&duration=week`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle API returning no response", async () => {
+    const mockResponse = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const params = { addr: 'invalidAddr', page_size: -1, shift: 0, duration: 'string' };
+    const result = await fetchLeaderboardRankings(params);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=invalidAddr&page_size=-1&shift=0&duration=string`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle API returning response in unexpected format", async () => {
+    const mockResponsePageSize = "Error querying ranks";
+    const mockResponseDuration = "Invalid duration";
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponsePageSize),
+    });
+
+    const paramsPageSize = { addr: 'sampleAddr', page_size: -1, shift: 0, duration: 'week' };
+    const resultPageSize = await fetchLeaderboardRankings(paramsPageSize);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=sampleAddr&page_size=-1&shift=0&duration=week`
+    );
+    expect(resultPageSize).toEqual(mockResponsePageSize);
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponseDuration),
+    });
+
+    const paramsDuration = { addr: 'sampleAddr', page_size: 10, shift: 0, duration: 'string' };
+    const resultDuration = await fetchLeaderboardRankings(paramsDuration);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=sampleAddr&page_size=10&shift=0&duration=string`
+    );
+    expect(resultDuration).toEqual(mockResponseDuration);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData = {
+      rankings: [
+        { address: '0x123abc', xp: 100, achievements: 5 },
+        { address: '0x456def', xp: 80, achievements: 3 },
+        { address: '0x789ghi', xp: 120, achievements: 7 },
+      ],
+      first_elt_position: 1,
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const params1 = { addr: undefined, page_size: -1, shift: 0, duration: 'string' };
+    const result1 = await fetchLeaderboardRankings(params1);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=undefined&page_size=-1&shift=0&duration=string`
+    );
+    expect(result1).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData = {
+      rankings: [
+        { address: '0x123abc', xp: 100, achievements: 5 },
+        { address: '0x456def', xp: 80, achievements: 3 },
+        { address: '0x789ghi', xp: 120, achievements: 7 },
+      ],
+      first_elt_position: 1,
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const params2 = { addr: null, page_size: -1, shift: 0, duration: 'string' };
+    const result2 = await fetchLeaderboardRankings(params2);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_ranking?addr=null&page_size=-1&shift=0&duration=string`
+    );
+    expect(result2).toEqual(mockData);
+  });
+
 });
 
 describe("getBoostById function", () => {
