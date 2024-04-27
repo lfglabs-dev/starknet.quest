@@ -91,9 +91,11 @@ export default function Page() {
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);         
-        setRanking(response); 
- 
+      const response = await fetchLeaderboardRankings(requestBody);
+      if (!response) {
+        return;
+      }
+      setRanking(response);
     },
     []
   );
