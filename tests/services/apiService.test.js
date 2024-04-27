@@ -75,7 +75,7 @@ describe("getBoostedQuests function", () => {
   it("should handle unexpected reesponse", async () => {
     const mockData = {
       error: 000,
-      message: "Error",
+      message: "Error querying boosts",
       data: {},
     };
 

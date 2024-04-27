@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  BoostedQuests,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -152,16 +153,17 @@ export const getCompletedQuests = async (addr: string) => {
   }
 };
 
-export const getBoostedQuests = async () => {
+export async function getBoostedQuests() {
   try {
     const response = await fetch(`${baseurl}/get_boosted_quests`);
-    return await response.json();
+    const boostedQuests: BoostedQuests | QueryError = await response.json();
+    return boostedQuests;
   } catch (err) {
     console.log("Error while getting boosted quests", err);
   }
-};
+}
 
-export const getUserAchievements = async (address = '0') => {
+export const getUserAchievements = async (address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/achievements/fetch?addr=${address}`
@@ -224,7 +226,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = '0') => {
+export const getQuizById = async (quizId: string, address = "0") => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`

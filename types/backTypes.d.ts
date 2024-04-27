@@ -110,3 +110,5 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type BoostedQuests =  number[]
