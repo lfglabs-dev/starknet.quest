@@ -92,8 +92,7 @@ export default function Page() {
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
-
-      setRanking(response);
+      if (response) setRanking(response);
     },
     []
   );
@@ -101,9 +100,10 @@ export default function Page() {
   const addRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
-      setRanking((prev) => {
-        return { ...prev, ranking: [...prev.ranking, ...response.ranking] };
-      });
+      if (response)
+        setRanking((prev) => {
+          return { ...prev, ranking: [...prev.ranking, ...response.ranking] };
+        });
     },
     []
   );
