@@ -67,7 +67,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
         );
         const successfulCompletedQuests = updatedQuestsResults
           .filter(
-            (result): result is PromiseFulfilledResult<any> =>
+            (result): result is PromiseFulfilledResult<QuestDocument> =>
               result.status === "fulfilled"
           )
           .map((result) => result.value);
@@ -129,7 +129,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
 
   useEffect(() => {
     if (!identity) return;
-    fetchPageData(identity.addr);
+    fetchPageData(identity.owner);
   }, [identity]);
 
   useEffect(() => setNotFound(false), [dynamicRoute]);
@@ -157,14 +157,14 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
               }
               setIdentity({
                 ...data,
-                starknet_id: id.toString(),
+                id: id.toString(),
               });
-              if (hexToDecimal(address) === hexToDecimal(data.addr))
+              if (hexToDecimal(address) === hexToDecimal(data.owner))
                 setIsOwner(true);
               setInitProfile(true);
             });
           })
-          .catch((e) => {
+          .catch(() => {
             return;
           });
       } else {
@@ -172,15 +172,15 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           ?.getAddressFromStarkName(addressOrDomain)
           .then((addr) => {
             setIdentity({
-              starknet_id: "0",
-              addr: addr,
-              domain: addressOrDomain,
-              is_owner_main: false,
+              id: "0",
+              owner: addr,
+              domain: { domain: addressOrDomain },
+              main: false,
             });
             setInitProfile(true);
             if (hexToDecimal(address) === hexToDecimal(addr)) setIsOwner(true);
           })
-          .catch((e) => {
+          .catch(() => {
             return;
           });
       }
@@ -203,22 +203,22 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
                     if (data.error) return;
                     setIdentity({
                       ...data,
-                      starknet_id: id.toString(),
+                      id: id.toString(),
                     });
-                    if (hexToDecimal(address) === hexToDecimal(data.addr))
+                    if (hexToDecimal(address) === hexToDecimal(data.owner))
                       setIsOwner(true);
                     setInitProfile(true);
                   });
                 })
-                .catch((e) => {
+                .catch(() => {
                   return;
                 });
             } else {
               setIdentity({
-                starknet_id: "0",
-                addr: addressOrDomain,
-                domain: name,
-                is_owner_main: false,
+                id: "0",
+                owner: addressOrDomain,
+                domain: { domain: name },
+                main: false,
               });
               setInitProfile(true);
               if (hexToDecimal(addressOrDomain) === hexToDecimal(address))
@@ -226,21 +226,21 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
             }
           } else {
             setIdentity({
-              starknet_id: "0",
-              addr: addressOrDomain,
-              domain: minifyAddress(addressOrDomain),
-              is_owner_main: false,
+              id: "0",
+              owner: addressOrDomain,
+              domain: { domain: minifyAddress(addressOrDomain) },
+              main: false,
             });
             setIsOwner(false);
             setInitProfile(true);
           }
         })
-        .catch((e) => {
+        .catch(() => {
           setIdentity({
-            starknet_id: "0",
-            addr: addressOrDomain,
-            domain: minifyAddress(addressOrDomain),
-            is_owner_main: false,
+            id: "0",
+            owner: addressOrDomain,
+            domain: { domain: minifyAddress(addressOrDomain) },
+            main: false,
           });
           setInitProfile(true);
           if (hexToDecimal(addressOrDomain) === hexToDecimal(address))

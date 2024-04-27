@@ -90,20 +90,21 @@ type Identity = {
   id: string;
   domain: {
     domain: string;
-    migrated: boolean;
-    root: boolean;
-    creation_date: number;
-    expiry: number;
-    resolver: string | null;
-    legacy_address: string;
-    rev_address: string;
+    migrated?: boolean;
+    root?: boolean;
+    creation_date?: number;
+    expiry?: number;
+    resolver?: string | null;
+    legacy_address?: string;
+    rev_address?: string;
   };
-  creation_date: number;
+  creation_date?: number;
   main: boolean;
   owner: string;
-  user_data: [];
-  extended_verifier_data: [];
-  verifier_data: VerifierData[];
+  user_data?: [];
+  extended_verifier_data?: [];
+  verifier_data?: VerifierData[];
+  error?: string;
 };
 
 type NftCard = {
