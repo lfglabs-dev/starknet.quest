@@ -44,7 +44,7 @@ describe("fetchQuestCategoryData function", () => {
   });
 });
 
-describe("getQuestsParticipation", () => {
+describe("getQuestsParticipation function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -112,7 +112,7 @@ describe("getQuestsParticipation", () => {
     const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}//analytics/get_quest_participation`
+      `${API_URL}/analytics/get_quest_participation`
     );
     expect(result).toEqual(result);
   });
