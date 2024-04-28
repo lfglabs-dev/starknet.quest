@@ -125,3 +125,7 @@ type Ranking = {
   achievements: number;
 };
 
+type fetchLeaderboardToppers = {
+  addr: string;
+  duration: string | "day" | "month" | "all";
+};
