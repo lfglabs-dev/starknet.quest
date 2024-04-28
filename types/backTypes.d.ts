@@ -129,8 +129,3 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
-
-type fetchLeaderboardToppers = {
-  addr: string;
-  duration: "week" | "month" | "all";
-};
