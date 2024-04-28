@@ -137,3 +137,74 @@ describe("getBoostById function", () => {
     expect(result).toBeUndefined();
   });
 });
+
+describe("getDeployedTimeByAddress function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid address or domain", async () => {
+    const mockData = {
+      timestamp: 9843327487
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDeployedTimeByAddress(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDeployedTimeByAddress(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_deployed_time?addr=null`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Error while fetching deployed time";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getDeployedTimeByAddress("invalid-address");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=invalid-address`
+    );
+    expect(result).toBeUndefined();
+  });
+});
