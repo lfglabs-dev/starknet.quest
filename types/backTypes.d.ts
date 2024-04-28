@@ -125,6 +125,11 @@ export type QuizDocument = {
   questions: QuizQuestionDocument[];
 };
 
+type LeaderboardToppersData = {
+  best_users: { address: string; xp: number; achievements: number }[];
+  total_users: number;
+  position?: number;
+};
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;
