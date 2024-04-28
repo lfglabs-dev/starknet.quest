@@ -7,6 +7,7 @@ import {
   QuestCategoryDocument,
   QuestDocument,
   LeaderboardRankings,
+  LeaderboardToppersData,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -31,7 +32,7 @@ export const fetchLeaderboardToppers = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_static_info?addr=${addr}&duration=${duration}`
     );
-    return await response.json();
+    return (await response.json()) as LeaderboardToppersData;
   } catch (err) {
     console.log("Error while fetching leaderboard position", err);
   }
