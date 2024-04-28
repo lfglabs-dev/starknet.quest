@@ -261,10 +261,7 @@ describe("fetchLeaderboardRankings function", () => {
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/leaderboard/get_ranking?addr=null&page_size=-1&shift=0&duration=string`
     );
-    expect(result2).toEqual(mockData);
-  });
-
-});
+    expect(result).toEqual(mockResponse);
 
 describe("getBoostById function", () => {
   beforeEach(() => {
