@@ -111,9 +111,17 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
+
 type QuestActivityData = {
   date: Date;
   participants: number;
+};
+
+
+type LeaderboardToppersData = {
+  best_users: { address: string; xp: number; achievements: number }[];
+  total_users: number;
+  position?: number;
 };
 
 type LeaderboardRankings = {
