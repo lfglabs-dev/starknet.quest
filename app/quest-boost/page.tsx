@@ -10,6 +10,7 @@ import { getBoosts, getCompletedQuests } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
+import LoadingScreen from "@components/UI/screens/loadingScreen";
 
 export default function Page() {
   const router = useRouter();
@@ -17,32 +18,40 @@ export default function Page() {
   const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [loadingBoosts, setLoadingBoosts] = useState<boolean>(true);
+  const [loadingCompletedQuests, setLoadingCompletedQuests] =
+    useState<boolean>(true);
   const [completedQuests, setCompletedQuests] = useState<number[]>([]);
 
-  const fetchBoosts = async () => {
-    try {
-      const res = await getBoosts();
-      if (res) setBoosts(res);
-    } catch (err) {
-      console.log("Error while fetching boosts", err);
-    }
-  };
-
-  const fetchCompletedQuests = async () => {
-    try {
-      if (!address) return;
-      const res = await getCompletedQuests(address);
-      setCompletedQuests(res);
-    } catch (err) {
-      console.log("Error while fetching completed quests", err);
-    }
-  };
-
   useEffect(() => {
+    const fetchBoosts = async () => {
+      try {
+        const res = await getBoosts();
+        if (res) setBoosts(res);
+      } catch (err) {
+        console.log("Error while fetching boosts", err);
+      } finally {
+        setLoadingBoosts(false);
+      }
+    };
+
     fetchBoosts();
   }, []);
 
   useEffect(() => {
+    const fetchCompletedQuests = async () => {
+      if (!address) return;
+
+      try {
+        const res = await getCompletedQuests(address);
+        setCompletedQuests(res);
+      } catch (err) {
+        console.log("Error while fetching completed quests", err);
+      } finally {
+        setLoadingCompletedQuests(false);
+      }
+    };
+
     fetchCompletedQuests();
   }, [address]);
 
@@ -52,27 +61,36 @@ export default function Page() {
         <BackButton onClick={() => router.back()} />
       </div>
       <h1 className={styles.title}>Boosts Quest</h1>
-      <div className={styles.card_container}>
-        {boosts
-          ?.filter(
-            (boost) =>
-              (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
-          )
-          ?.map((boost) => {
-            return (
-              <BoostCard
-                key={boost.id}
-                boost={boost}
-                completedQuests={completedQuests}
-              />
-            );
-          })}
-        {boosts?.length === 0 && (
-          <h2 className={styles.noBoosts}>
-            No quests are being boosted at the moment.
-          </h2>
-        )}
-      </div>
+      {!loadingBoosts && !loadingCompletedQuests ? (
+        <div className={styles.card_container}>
+          {boosts?.length !== 0 ? (
+            boosts
+              ?.filter(
+                (boost) =>
+                  (new Date().getTime() - boost.expiry) /
+                    MILLISECONDS_PER_WEEK <=
+                  3
+              )
+              ?.map((boost) => {
+                return (
+                  <BoostCard
+                    key={boost.id}
+                    boost={boost}
+                    completedQuests={completedQuests}
+                  />
+                );
+              })
+          ) : (
+            <h2 className={styles.noBoosts}>
+              No quests are being boosted at the moment.
+            </h2>
+          )}
+        </div>
+      ) : (
+        <div className="flex justify-center items-center w-full h-[430px]">
+          <LoadingScreen displayMessage={false} />
+        </div>
+      )}
 
       <section className={styles.instructions_container}>
         <CategoryTitle
