@@ -150,3 +150,17 @@ type Ranking = {
   achievements: number;
 };
 
+export type PendingBoostClaim = {
+  amount: number;
+  token: string;
+  expiry: number;
+  quests: number[];
+  winner: string;
+  img_url: string;
+  id: number;
+  name: string;
+  num_of_winners: number;
+  token_decimals: number;
+};
+
+
