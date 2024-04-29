@@ -6,7 +6,9 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  UniqueVisitorCount,
   LeaderboardRankings,
+  LeaderboardToppersData,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -31,7 +33,7 @@ export const fetchLeaderboardToppers = async (
     const response = await fetch(
       `${baseurl}/leaderboard/get_static_info?addr=${addr}&duration=${duration}`
     );
-    return await response.json();
+    return (await response.json()) as LeaderboardToppersData;
   } catch (err) {
     console.log("Error while fetching leaderboard position", err);
   }
@@ -316,7 +318,7 @@ export const getUniqueVisitorCount = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_unique_visitors?id=${id}`
     );
-    return await response.json();
+    return await response.json() as UniqueVisitorCount;
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
   }

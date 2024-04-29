@@ -1,10 +1,13 @@
 import {
   fetchQuestCategoryData,
+  fetchLeaderboardToppers,
   fetchLeaderboardRankings,
   getBoostById,
   getTrendingQuests,
+  getQuestsInBoost,
+  getUniqueVisitorCount,
   getTasksByQuestId,
-  getQuestsInBoost
+  getDeployedTimeByAddress
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -48,6 +51,75 @@ describe("fetchQuestCategoryData function", () => {
   });
 });
 
+
+describe("fetchLeaderboardToppers", () => {
+  afterEach(() => {
+    fetch.mockClear();
+  });
+
+  it("fetches leaderboard toppers correctly for a valid duration", async () => {
+    const mockResponse = {
+      best_users: [
+        {
+          address: "0x1234567890abcdef",
+          xp: 1000,
+          achievements: 8,
+        },
+        {
+          address: "0x1234567890abcefg",
+          xp: 900,
+          achievements: 7,
+        },
+      ],
+      total_users: 2,
+    };
+    const validDurations = ["week", "month", "all"];
+    for (const duration of validDurations) {
+      const params = { addr: "0x12345988hhnnef", duration };
+      fetch.mockResolvedValueOnce({
+        json: () => Promise.resolve(mockResponse),
+      });
+      const response = await fetchLeaderboardToppers(params);
+      expect(fetch).toHaveBeenCalledWith(
+        `${API_URL}/leaderboard/get_static_info?addr=${params.addr}&duration=${params.duration}`
+      );
+      expect(response).toEqual(mockResponse);
+    }
+  });
+
+  it("handles fetch with empty duration", async () => {
+    const params = { addr: "0x0iuh8999", duration: " " };
+    const mockResponse = "Invalid Duration";
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await fetchLeaderboardToppers(params);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_static_info?addr=${params.addr}&duration=${params.duration}`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("handles fetch with null duration", async () => {
+    const params = { addr: "0xo8hb98y89y9", duration: null };
+    const mockResponse = "Invalid Duration";
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await fetchLeaderboardToppers(params);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_static_info?addr=${params.addr}&duration=${params.duration}`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("handles fetch with undefined duration", async () => {
+    const params = { addr: "exampleAddr", duration: undefined };
+    const mockResponse = "Invalid Duration";
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
+    const result = await fetchLeaderboardToppers(params);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/leaderboard/get_static_info?addr=${params.addr}&duration=${params.duration}`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+  });
 
 describe("getTasksByQuestId function", () => {
   beforeEach(() => {
@@ -261,8 +333,8 @@ describe("fetchLeaderboardRankings function", () => {
     );
     expect(result2).toEqual(mockData);
   });
+  });
 
-});
 
 describe("getBoostById function", () => {
   beforeEach(() => {
@@ -361,11 +433,155 @@ describe("getBoostById function", () => {
   });
 });
 
+
+
+describe("getDeployedTimeByAddress function", () => {
+  
+    beforeEach(() => {
+    fetch.mockClear();
+  });
+  
+   it("should fetch and return data for a valid address or domain", async () => {
+    const mockData = {
+      timestamp: 9843327487
+    };
+     
+      fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+     
+      const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
+          );
+    expect(result).toEqual(mockData);
+  });
+  
+    it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+      
+      
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+      
+       const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+    
+     const result = await getTrendingQuests("kasjcaakjhasdajhd");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd` );
+    expect(result).toEqual(mockData);
+  });
+
+   it("should handle null cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+     
+      fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+     
+      const result = await getDeployedTimeByAddress(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_deployed_time?addr=null`);
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Error while fetching deployed time";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getDeployedTimeByAddress("invalid-address");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=invalid-address`
+    );
+    expect(result).toBeUndefined();
+  });
+});
+
+
+describe("getUniqueVisitorCount function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+  it("should return data for valid page id", async () => {
+    const mockResponse = 14;
+    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    const result = await getUniqueVisitorCount(1);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=1`);
+    expect(result).toEqual(mockResponse);
+  })
+  it("should handle errors gracefully", async () => {
+    const mockResponse = "Error while fetching unique visitor count";
+    fetch.mockResolvedValueOnce({json: () => Promise.reject(mockResponse)})
+    const result = await getUniqueVisitorCount("invalid-id");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=invalid-id`);
+    expect(result).toBeUndefined();
+  })
+  it("should handle null cases in parameters", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    const result = await getUniqueVisitorCount(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=null`);
+    expect(result).toEqual(mockResponse);
+  })
+  it("should handle undefined cases in parameters", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=undefined`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+  it("should handle when API returns no response", async () => {
+    const mockResponse = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount("page-id");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=page-id`
+    );
+    expect(result).toBeUndefined();
+  });
+  it("should handle when API returns response in unexpected format", async () => {
+    const mockResponse = 0;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getUniqueVisitorCount(10);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=10`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+})
+
+
 describe("getTrendingQuests function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
-
+  
   it("should fetch and return data for a valid addr", async () => {
     const mockData = [
       {
@@ -397,24 +613,24 @@ describe("getTrendingQuests function", () => {
         experience: 10,
       },
     ];
-    fetch.mockResolvedValueOnce({
+     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-
-    const result = await getTrendingQuests("1145");
+    
+     const result = await getTrendingQuests("1145");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=1145`
-    );
+          );
     expect(result).toEqual(mockData);
   });
-
-  it("should handle when API returns empty array", async () => {
+  
+    it("should handle when API returns empty array", async () => {
     const mockData = [];
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-
-    const result = await getTrendingQuests("1145");
+      
+       const result = await getTrendingQuests("1145");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=1145`
     );
@@ -426,21 +642,21 @@ describe("getTrendingQuests function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-
+    
     const result = await getTrendingQuests("kasjcaakjhasdajhd");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd`
     );
     expect(result).toEqual(mockData);
   });
-
-  it("should handle undefined cases in parameters", async () => {
+  
+    it("should handle undefined cases in parameters", async () => {
     const mockData = [];
-    fetch.mockResolvedValueOnce({
+       fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-
-    const result = await getTrendingQuests();
+      
+       const result = await getTrendingQuests();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_trending_quests`);
     expect(result).toHaveLength(0);
   });
