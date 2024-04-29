@@ -23,10 +23,13 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
   paginationLoading,
   setPaginationLoading,
   selectedAddress,
+  searchedAddress,
 }) => {
   const { address: connectedUserAddress, isConnecting } = useAccount();
   const isTop50RankedView =
-    duration === TOP_50_TAB_STRING || (!isConnecting && !connectedUserAddress);
+    !searchedAddress &&
+    (duration === TOP_50_TAB_STRING ||
+      (!isConnecting && !connectedUserAddress));
   const isMobile = useMediaQuery("(max-width:768px)");
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
 

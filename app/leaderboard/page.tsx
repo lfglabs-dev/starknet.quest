@@ -48,8 +48,6 @@ export default function Page() {
 
   const [viewMore, setViewMore] = useState(true);
   const [duration, setDuration] = useState<string>("Last 7 Days");
-  const isTop50RankedView =
-    duration === TOP_50_TAB_STRING || (!isConnecting && !address);
   const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [apiCallDelay, setApiCallDelay] = useState<boolean>(false);
@@ -70,7 +68,11 @@ export default function Page() {
     first_elt_position: 0,
     ranking: [],
   });
-
+  const isTop50RankedView =
+    !currentSearchedAddress &&
+    (duration === TOP_50_TAB_STRING || (!isConnecting && !address));
+  const isNoSearchResults =
+    ranking.ranking.length === 0 && currentSearchedAddress;
   // to check if current view is the default view or a user requested view(to prevent multiple api calls)
   const [isCustomResult, setCustomResult] = useState<boolean>(false);
 
@@ -317,8 +319,7 @@ export default function Page() {
     // check if the user has position on the leaderboard
     if (!leaderboardToppers?.position) {
       setUserPercentile(-1);
-      if (currentSearchedAddress.length > 0 && isCustomResult)
-        setShowNoresults(true);
+      if (currentSearchedAddress.length > 0) setShowNoresults(true);
       else {
         setShowNoresults(false);
       }
@@ -447,7 +448,7 @@ export default function Page() {
             {rankingdataloading ? (
               <RankingSkeleton />
             ) : ranking ? (
-              showNoresults ? (
+              isNoSearchResults ? (
                 // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
@@ -479,6 +480,7 @@ export default function Page() {
                         ? currentSearchedAddress
                         : hexToDecimal(userAddress)
                     }
+                    searchedAddress={currentSearchedAddress}
                     leaderboardToppers={leaderboardToppers}
                     paginationLoading={paginationLoading}
                     setPaginationLoading={setPaginationLoading}
@@ -497,42 +499,43 @@ export default function Page() {
                 />
               </div>
             )}
-            {duration !== TOP_50_TAB_STRING && address && (
-              <Button
-                onClick={() => {
-                  if (checkIfLastPage && !viewMore) {
-                    setViewMore(true);
-                    return;
-                  }
-                  if (!checkIfLastPage && viewMore) {
-                    const requestBody = {
-                      addr:
-                        currentSearchedAddress.length > 0
-                          ? currentSearchedAddress
-                          : userAddress
-                          ? hexToDecimal(userAddress)
-                          : "",
-                      page_size: rowsPerPage,
-                      shift: currentPage,
-                      duration: timeFrameMap(duration),
-                    };
+            {duration !== TOP_50_TAB_STRING &&
+              (address || (!isNoSearchResults && currentSearchedAddress)) && (
+                <Button
+                  onClick={() => {
+                    if (checkIfLastPage && !viewMore) {
+                      setViewMore(true);
+                      return;
+                    }
+                    if (!checkIfLastPage && viewMore) {
+                      const requestBody = {
+                        addr:
+                          currentSearchedAddress.length > 0
+                            ? currentSearchedAddress
+                            : userAddress
+                            ? hexToDecimal(userAddress)
+                            : "",
+                        page_size: rowsPerPage,
+                        shift: currentPage,
+                        duration: timeFrameMap(duration),
+                      };
 
-                    addRankingResults(requestBody);
-                    setCurrentPage((prev) => prev + 1);
-                    return;
-                  }
-                  if (checkIfLastPage && viewMore) {
-                    setViewMore(false);
-                  }
-                }}
-                variant="text"
-                disableRipple
-                className="w-fit text-white text self-center"
-                style={{ textTransform: "none" }}
-              >
-                {checkIfLastPage && viewMore ? "View less" : "View more"}
-              </Button>
-            )}
+                      addRankingResults(requestBody);
+                      setCurrentPage((prev) => prev + 1);
+                      return;
+                    }
+                    if (checkIfLastPage && viewMore) {
+                      setViewMore(false);
+                    }
+                  }}
+                  variant="text"
+                  disableRipple
+                  className="w-fit text-white text self-center"
+                  style={{ textTransform: "none" }}
+                >
+                  {checkIfLastPage && viewMore ? "View less" : "View more"}
+                </Button>
+              )}
           </div>
         </>
       )}
