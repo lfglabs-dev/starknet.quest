@@ -9,6 +9,7 @@ import {
   UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
+  QuestParticipantsDocument,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -86,7 +87,8 @@ export const getQuestParticipants = async (id: number | string) => {
     const response = await fetch(
       `${baseurl}/get_quest_participants?quest_id=${id}`
     );
-    return await response.json();
+    const data: QuestParticipantsDocument | QueryError = await response.json();
+    return data as QuestParticipantsDocument;
   } catch (err) {
     console.log("Error while fetching total participants", err);
   }
@@ -317,7 +319,7 @@ export const getUniqueVisitorCount = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_unique_visitors?id=${id}`
     );
-    return await response.json() as UniqueVisitorCount;
+    return (await response.json()) as UniqueVisitorCount;
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
   }

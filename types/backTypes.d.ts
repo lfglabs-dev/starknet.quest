@@ -111,7 +111,6 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
-
 type UniqueVisitorCount = number;
 
 type LeaderboardToppersData = {
@@ -128,4 +127,9 @@ type Ranking = {
   address: string;
   xp: number;
   achievements: number;
+};
+
+type QuestParticipantsDocument = {
+  count: string | number;
+  firstParticipants: string[];
 };
