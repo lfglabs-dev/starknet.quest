@@ -111,14 +111,20 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
+type QuestActivityData = {
+  date: string;
+  participants: number;
+};
 
 type UniqueVisitorCount = number;
+
 
 type LeaderboardToppersData = {
   best_users: { address: string; xp: number; achievements: number }[];
   total_users: number;
   position?: number;
 };
+
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;
@@ -129,3 +135,4 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
+
