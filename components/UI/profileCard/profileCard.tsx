@@ -36,7 +36,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [userPercentile, setUserPercentile] = useState("");
-  const [userXp, setUserXp] = useState<number>(0);
+  const [userXp, setUserXp] = useState<number>();
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -150,16 +150,20 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
           <div className={styles.right_middle}></div>
           <div className={styles.right_bottom}>
-            <div className={styles.right_bottom_content}>
-              <CDNImage
-                src={xpIcon}
-                priority
-                width={30}
-                height={30}
-                alt="xp badge"
-              />
-              <p className={styles.statsText}>{userXp ?? "Loading"}</p>
-            </div>
+            {userXp !== undefined ? (
+              <div className={styles.right_bottom_content}>
+                <CDNImage
+                  src={xpIcon}
+                  priority
+                  width={30}
+                  height={30}
+                  alt="xp badge"
+                />
+                <p className={styles.statsText}>{userXp ?? "Loading"}</p>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
