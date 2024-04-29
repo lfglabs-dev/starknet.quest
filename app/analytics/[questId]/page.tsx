@@ -105,7 +105,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const computePercentage = useCallback(
     (num: number) => {
-      if (uniqueVisitors === 0) return 'NA';
+      if (uniqueVisitors === 0 || uniqueVisitors === undefined) return 'NA';
       return ((num / uniqueVisitors) * 100).toFixed(2);
     },
     [uniqueVisitors]
