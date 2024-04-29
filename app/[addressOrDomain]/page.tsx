@@ -109,6 +109,7 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
           addr: hexToDecimal(addr),
           duration: "all",
         });
+        if (!res) return;
         setLeaderboardData(res);
       } catch (err) {
         console.log("Error while fetching leaderboard position", err);
