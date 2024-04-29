@@ -440,7 +440,7 @@ describe("getCompletedQuests", () => {
   });
 
   it("should fetch and return completed quests", async () => {
-    const mockDataRes = [];
+    const mockDataRes = [12, 24, 36, 48, 69];
     const address = "ksdjiewmcoew"
 
     fetch.mockResolvedValueOnce({
