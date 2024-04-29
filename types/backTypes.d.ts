@@ -112,7 +112,7 @@ type QuestCategoryDocument = {
 };
 
 type QuestActivityData = {
-  date: Date;
+  date: string;
   participants: number;
 };
 
