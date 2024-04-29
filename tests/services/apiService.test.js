@@ -1005,11 +1005,9 @@ describe('getCompletedBoosts function', () => {
   });
 
   it('should handle fetch with handle error gracefully', async () => {
-
-    const mockResponse = 'Boost with id 0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363 not found';
     const mockResponse = {
       error: 500,
-      message: 'Error while fetching completed quest',
+      message: 'Error querying quests',
       data: {},
     }
 
@@ -1017,9 +1015,9 @@ describe('getCompletedBoosts function', () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await getCompletedBoosts('');
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/boost/get_completed_boosts?addr=undefined`
+      `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
     );
 
     expect(result).toEqual(mockResponse);
@@ -1033,9 +1031,9 @@ describe('getCompletedBoosts function', () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await getCompletedBoosts('0');
+    const result = await getCompletedBoosts('');
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/boost/get_completed_boosts?addr=0`
+      `${API_URL}/boost/get_completed_boosts?addr=`
     );
     expect(result).toEqual(mockResponse);
   });
