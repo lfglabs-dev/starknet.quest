@@ -98,6 +98,9 @@ describe("getBoostedQuests function", () => {
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(result);
+  })
+
+})
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -264,7 +267,6 @@ describe("getTasksByQuestId function", () => {
   });
 })
 
-
 describe("fetchLeaderboardRankings function", () => {
   beforeEach(() => {
     fetch.mockClear();
@@ -383,7 +385,6 @@ describe("fetchLeaderboardRankings function", () => {
   });
   });
 
-
 describe("getBoostById function", () => {
   
    beforeEach(() => {
@@ -484,8 +485,6 @@ describe("getBoostById function", () => {
   });
 });
 
-
-
 describe("getDeployedTimeByAddress function", () => {
   
     beforeEach(() => {
@@ -562,7 +561,6 @@ describe("getDeployedTimeByAddress function", () => {
   });
 });
 
-
 describe("getUniqueVisitorCount function", () => {
   beforeEach(() => {
     fetch.mockClear();
@@ -626,7 +624,6 @@ describe("getUniqueVisitorCount function", () => {
     expect(result).toEqual(mockResponse);
   });
 })
-
 
 describe("getTrendingQuests function", () => {
   beforeEach(() => {
@@ -722,4 +719,4 @@ describe("getTrendingQuests function", () => {
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_trending_quests`);
     expect(result).toHaveLength(0);
   });
-});
+})
