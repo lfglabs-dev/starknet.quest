@@ -10,7 +10,7 @@ import { getBoosts, getCompletedQuests } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
-import LoadingScreen from "@components/UI/screens/loadingScreen";
+import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 
 export default function Page() {
   const router = useRouter();
@@ -87,8 +87,8 @@ export default function Page() {
           )}
         </div>
       ) : (
-        <div className="flex justify-center items-center w-full h-[430px]">
-          <LoadingScreen displayMessage={false} />
+        <div className="flex justify-center items-center w-full">
+          <FeaturedQuestSkeleton />
         </div>
       )}
 
