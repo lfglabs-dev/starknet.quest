@@ -296,7 +296,7 @@ export const getQuestActivityData = async (id: number) => {
 
 export const getQuestsParticipation = async (
   id: number
-): Promise<QuestParticipation[] | undefined> => {
+): Promise<QuestParticipation | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_participation?id=${id}`
