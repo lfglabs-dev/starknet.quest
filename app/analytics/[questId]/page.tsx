@@ -44,8 +44,6 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [questParticipationData, setQuestParticipationData] =
     useState<QuestParticipation>();
   const [questParticipants, setQuestParticipants] = useState(0);
-  const [uniqueVisitors, setUniqueVisitors] = useState(0);
-  const isMobile = useMediaQuery('(max-width:768px)');
   const [uniqueVisitors, setUniqueVisitors] = useState<number | undefined>(0);
   const isMobile = useMediaQuery('(max-width:768px)');
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
