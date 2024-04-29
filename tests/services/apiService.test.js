@@ -6,7 +6,8 @@ import {
   getTrendingQuests,
   getUniqueVisitorCount,
   getTasksByQuestId,
-  getDeployedTimeByAddress
+  getDeployedTimeByAddress,
+  getPendingBoostClaims,
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -49,7 +50,6 @@ describe("fetchQuestCategoryData function", () => {
     expect(result).toEqual(mockResponse);
   });
 });
-
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -118,74 +118,78 @@ describe("fetchLeaderboardToppers", () => {
     );
     expect(result).toEqual(mockResponse);
   });
-  });
+});
 
 describe("getTasksByQuestId function", () => {
   beforeEach(() => {
-    fetch.mockClear()
+    fetch.mockClear();
   });
 
   it("should handle when api returns no response", async () => {
     const mockResponse = null;
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    const result = await getTasksByQuestId({ questId: '1', address: '2'});
-    expect(result).toEqual(mockResponse)
+    const result = await getTasksByQuestId({ questId: "1", address: "2" });
+    expect(result).toEqual(mockResponse);
   });
 
   it("should handle when api return response in unexpected format", async () => {
     fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve("Unexpected Format")
-    })
+      json: () => Promise.resolve("Unexpected Format"),
+    });
 
-    const result = await getTasksByQuestId({ questId: '1', address: '2' })
-    expect(result).not.toEqual(expect.any(Array))
+    const result = await getTasksByQuestId({ questId: "1", address: "2" });
+    expect(result).not.toEqual(expect.any(Array));
   });
 
   it("should handle undefined values", async () => {
-    const mockResponse = "Failed to deserialize query string: invalid character"
+    const mockResponse =
+      "Failed to deserialize query string: invalid character";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    let result = await getTasksByQuestId({questId: undefined, address: undefined });
+    let result = await getTasksByQuestId({
+      questId: undefined,
+      address: undefined,
+    });
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_tasks?quest_id=undefined&addr=undefined`
     );
     expect(result).toEqual(mockResponse);
-    
   });
 
   it("should handle an undefined value", async () => {
-    const mockResponse = "Failed to deserialize query string: invalid digit found in string"
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    let result = await getTasksByQuestId({questId: undefined, address: 2 });
+    let result = await getTasksByQuestId({ questId: undefined, address: 2 });
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_tasks?quest_id=undefined&addr=2`
     );
-    expect(result).toEqual(mockResponse)
-    
+    expect(result).toEqual(mockResponse);
   });
 
   it("should handle null values", async () => {
-    const mockResponse = "Failed to deserialize query string: invalid digit found in string"
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    let result = await getTasksByQuestId({questId: null, address: 2 });
+    let result = await getTasksByQuestId({ questId: null, address: 2 });
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_tasks?quest_id=null&addr=2`
     );
-    expect(result).toEqual(mockResponse)
+    expect(result).toEqual(mockResponse);
   });
 
   it("should fetch and return data for a valid task", async () => {
@@ -201,21 +205,20 @@ describe("getTasksByQuestId function", () => {
         verify_redirect: null,
         desc: "Task Description",
         completed: false,
-        quiz_name: null
-      }
-    ]
+        quiz_name: null,
+      },
+    ];
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
-    })
+    });
 
-    const result = await getTasksByQuestId({questId:"1", address:"2"});
+    const result = await getTasksByQuestId({ questId: "1", address: "2" });
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_tasks?quest_id=1&addr=2`
     );
-    expect(result).toEqual(mockData)
+    expect(result).toEqual(mockData);
   });
-})
-
+});
 
 describe("fetchLeaderboardRankings function", () => {
   beforeEach(() => {
@@ -225,9 +228,9 @@ describe("fetchLeaderboardRankings function", () => {
   it("should fetch and return data for valid parameters", async () => {
     const mockData = {
       rankings: [
-        { address: '0x123abc', xp: 100, achievements: 5 },
-        { address: '0x456def', xp: 80, achievements: 3 },
-        { address: '0x789ghi', xp: 120, achievements: 7 },
+        { address: "0x123abc", xp: 100, achievements: 5 },
+        { address: "0x456def", xp: 80, achievements: 3 },
+        { address: "0x789ghi", xp: 120, achievements: 7 },
       ],
       first_elt_position: 1,
     };
@@ -235,7 +238,7 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const params = { addr: '', page_size: 10, shift: 0, duration: 'week' };
+    const params = { addr: "", page_size: 10, shift: 0, duration: "week" };
     const result = await fetchLeaderboardRankings(params);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -250,7 +253,12 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const params = { addr: 'invalidAddr', page_size: -1, shift: 0, duration: 'string' };
+    const params = {
+      addr: "invalidAddr",
+      page_size: -1,
+      shift: 0,
+      duration: "string",
+    };
     const result = await fetchLeaderboardRankings(params);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -267,7 +275,12 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockResponsePageSize),
     });
 
-    const paramsPageSize = { addr: 'sampleAddr', page_size: -1, shift: 0, duration: 'week' };
+    const paramsPageSize = {
+      addr: "sampleAddr",
+      page_size: -1,
+      shift: 0,
+      duration: "week",
+    };
     const resultPageSize = await fetchLeaderboardRankings(paramsPageSize);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -279,7 +292,12 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockResponseDuration),
     });
 
-    const paramsDuration = { addr: 'sampleAddr', page_size: 10, shift: 0, duration: 'string' };
+    const paramsDuration = {
+      addr: "sampleAddr",
+      page_size: 10,
+      shift: 0,
+      duration: "string",
+    };
     const resultDuration = await fetchLeaderboardRankings(paramsDuration);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -291,9 +309,9 @@ describe("fetchLeaderboardRankings function", () => {
   it("should handle undefined cases in parameters", async () => {
     const mockData = {
       rankings: [
-        { address: '0x123abc', xp: 100, achievements: 5 },
-        { address: '0x456def', xp: 80, achievements: 3 },
-        { address: '0x789ghi', xp: 120, achievements: 7 },
+        { address: "0x123abc", xp: 100, achievements: 5 },
+        { address: "0x456def", xp: 80, achievements: 3 },
+        { address: "0x789ghi", xp: 120, achievements: 7 },
       ],
       first_elt_position: 1,
     };
@@ -302,7 +320,12 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const params1 = { addr: undefined, page_size: -1, shift: 0, duration: 'string' };
+    const params1 = {
+      addr: undefined,
+      page_size: -1,
+      shift: 0,
+      duration: "string",
+    };
     const result1 = await fetchLeaderboardRankings(params1);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -314,9 +337,9 @@ describe("fetchLeaderboardRankings function", () => {
   it("should handle null cases in parameters", async () => {
     const mockData = {
       rankings: [
-        { address: '0x123abc', xp: 100, achievements: 5 },
-        { address: '0x456def', xp: 80, achievements: 3 },
-        { address: '0x789ghi', xp: 120, achievements: 7 },
+        { address: "0x123abc", xp: 100, achievements: 5 },
+        { address: "0x456def", xp: 80, achievements: 3 },
+        { address: "0x789ghi", xp: 120, achievements: 7 },
       ],
       first_elt_position: 1,
     };
@@ -325,7 +348,7 @@ describe("fetchLeaderboardRankings function", () => {
       json: () => Promise.resolve(mockData),
     });
 
-    const params2 = { addr: null, page_size: -1, shift: 0, duration: 'string' };
+    const params2 = { addr: null, page_size: -1, shift: 0, duration: "string" };
     const result2 = await fetchLeaderboardRankings(params2);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -333,8 +356,7 @@ describe("fetchLeaderboardRankings function", () => {
     );
     expect(result2).toEqual(mockData);
   });
-  });
-
+});
 
 describe("getBoostById function", () => {
   beforeEach(() => {
@@ -433,39 +455,39 @@ describe("getBoostById function", () => {
   });
 });
 
-
-
 describe("getDeployedTimeByAddress function", () => {
-  
-    beforeEach(() => {
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-   it("should fetch and return data for a valid address or domain", async () => {
+
+  it("should fetch and return data for a valid address or domain", async () => {
     const mockData = {
-      timestamp: 9843327487
+      timestamp: 9843327487,
     };
-     
-      fetch.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockData),
-    });
-     
-      const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
-    expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
-          );
-    expect(result).toEqual(mockData);
-  });
-  
-    it("should handle when API returns no response", async () => {
-    const mockData = undefined;
-      
-      
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-      
-       const result = await getDeployedTimeByAddress("0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52");
+
+    const result = await getDeployedTimeByAddress(
+      "0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDeployedTimeByAddress(
+      "0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52"
+    );
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
     );
@@ -473,27 +495,29 @@ describe("getDeployedTimeByAddress function", () => {
   });
 
   it("should handle undefined cases in parameters", async () => {
-    
     const mockData = "Failed to deserialize query string: invalid character";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getTrendingQuests("kasjcaakjhasdajhd");
+
+    const result = await getTrendingQuests("kasjcaakjhasdajhd");
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd` );
+      `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd`
+    );
     expect(result).toEqual(mockData);
   });
 
-   it("should handle null cases in parameters", async () => {
+  it("should handle null cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
-     
-      fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-     
-      const result = await getDeployedTimeByAddress(null);
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_deployed_time?addr=null`);
+
+    const result = await getDeployedTimeByAddress(null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/get_deployed_time?addr=null`
+    );
     expect(result).toEqual(mockData);
   });
 
@@ -511,32 +535,38 @@ describe("getDeployedTimeByAddress function", () => {
   });
 });
 
-
 describe("getUniqueVisitorCount function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
   it("should return data for valid page id", async () => {
     const mockResponse = 14;
-    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getUniqueVisitorCount(1);
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=1`);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=1`
+    );
     expect(result).toEqual(mockResponse);
-  })
+  });
   it("should handle errors gracefully", async () => {
     const mockResponse = "Error while fetching unique visitor count";
-    fetch.mockResolvedValueOnce({json: () => Promise.reject(mockResponse)})
+    fetch.mockResolvedValueOnce({ json: () => Promise.reject(mockResponse) });
     const result = await getUniqueVisitorCount("invalid-id");
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=invalid-id`);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=invalid-id`
+    );
     expect(result).toBeUndefined();
-  })
+  });
   it("should handle null cases in parameters", async () => {
-    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
-    fetch.mockResolvedValueOnce({json: () => Promise.resolve(mockResponse)})
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getUniqueVisitorCount(null);
-    expect(fetch).toHaveBeenCalledWith(`${API_URL}/analytics/get_unique_visitors?id=null`);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/analytics/get_unique_visitors?id=null`
+    );
     expect(result).toEqual(mockResponse);
-  })
+  });
   it("should handle undefined cases in parameters", async () => {
     const mockResponse =
       "Failed to deserialize query string: invalid digit found in string";
@@ -574,14 +604,13 @@ describe("getUniqueVisitorCount function", () => {
     );
     expect(result).toEqual(mockResponse);
   });
-})
-
+});
 
 describe("getTrendingQuests function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
-  
+
   it("should fetch and return data for a valid addr", async () => {
     const mockData = [
       {
@@ -613,24 +642,24 @@ describe("getTrendingQuests function", () => {
         experience: 10,
       },
     ];
-     fetch.mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getTrendingQuests("1145");
+
+    const result = await getTrendingQuests("1145");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=1145`
-          );
+    );
     expect(result).toEqual(mockData);
   });
-  
-    it("should handle when API returns empty array", async () => {
+
+  it("should handle when API returns empty array", async () => {
     const mockData = [];
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-      
-       const result = await getTrendingQuests("1145");
+
+    const result = await getTrendingQuests("1145");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=1145`
     );
@@ -642,21 +671,21 @@ describe("getTrendingQuests function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await getTrendingQuests("kasjcaakjhasdajhd");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd`
     );
     expect(result).toEqual(mockData);
   });
-  
-    it("should handle undefined cases in parameters", async () => {
+
+  it("should handle undefined cases in parameters", async () => {
     const mockData = [];
-       fetch.mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-      
-       const result = await getTrendingQuests();
+
+    const result = await getTrendingQuests();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_trending_quests`);
     expect(result).toHaveLength(0);
   });
@@ -670,5 +699,94 @@ describe("getTrendingQuests function", () => {
     const result = await getTrendingQuests(null);
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_trending_quests`);
     expect(result).toHaveLength(0);
+  });
+});
+
+describe("getPendingBoostClaims function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid address", async () => {
+    const mockData = {
+      amount: 1500,
+      token:
+        "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+      expiry: 1705708740000,
+      quests: [23],
+      winner:
+        "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+      img_url: "/rango/bridge.webp",
+      id: 5,
+      name: "The Rango Boost",
+      num_of_winners: 6,
+      token_decimals: 6,
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(
+      "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockData = undefined;
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(
+      "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536366"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536366`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=null`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Error while fetching pending claims";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(mockResponse),
+    });
+
+    const result = await getPendingBoostClaims("invalid-addr");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=invalid-addr`
+    );
+    expect(result).toBeUndefined();
   });
 });
