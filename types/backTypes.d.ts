@@ -111,6 +111,14 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
+
+type QuestParticipation = {
+  name: string;
+  desc: string;
+  count: number;
+}[];
+
+
 type QuizQuestionDocument = {
   kind: "text_choice" | "image_choice" | "ordering";
   layout: "default" | "illustrated_left";
@@ -129,6 +137,7 @@ type QuestActivityData = {
   date: string;
   participants: number;
 };
+
 
 type UniqueVisitorCount = number;
 
