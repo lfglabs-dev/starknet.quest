@@ -42,7 +42,7 @@ type TaskError = {
 
 type Quiz = {
   name: string;
-  description: string;
+  desc: string;
   questions: QuizQuestion[];
 };
 
