@@ -4,9 +4,8 @@ import {
   fetchLeaderboardRankings,
   getBoostById,
   getTrendingQuests,
+  getQuestsInBoost,
   getQuestActivityData,
-  getTasksByQuestId,
-  fetchLeaderboardToppers,
   getUniqueVisitorCount,
   getTasksByQuestId,
   getDeployedTimeByAddress
@@ -218,7 +217,6 @@ describe("getTasksByQuestId function", () => {
     expect(result).toEqual(mockData)
   });
 })
-
 
 describe("fetchLeaderboardRankings function", () => {
   beforeEach(() => {
@@ -755,3 +753,98 @@ describe("getTrendingQuests function", () => {
   });
 });
 
+describe("getQuestsInBoost function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should handle unexpected params format", async () => {
+    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('my-test-id');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=my-test-id`
+    );
+
+    expect(result).toEqual(mockResponse)
+  });
+
+  it("should handle empty params", async () => {
+    const mockResponse = "Failed to deserialize query string: cannot parse integer from empty string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=`
+    );
+
+    expect(result).toEqual(mockResponse)
+  });
+  
+  it("should handle no quests in boost", async () => {
+    const mockResponse = [];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('444');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=444`
+    );
+
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should fetch and return data for a valid boost id", async () => {
+    const mockResponse = [
+      {
+        "id": 78,
+        "name": "Ethereal Odyssey - Crossroads of Ether",
+        "desc": "Embark on an ethereal journey through the Crossroads of Ether, where the boundaries between realms blur.",
+        "additional_desc": "Unravel mysteries and forge alliances in this mystical quest.",
+        "issuer": "Ethereal Ventures",
+        "category": "Fantasy",
+        "rewards_endpoint": "quests/ethereal/claimable",
+        "logo": "/ethereal/favicon.ico",
+        "rewards_img": "/ethereal/ether_crossroads.webp",
+        "rewards_title": "Ethereal Amulet",
+        "rewards_description": "Obtain a powerful Ethereal Amulet upon completion.",
+        "rewards_nfts": [
+          {
+            "img": "/ethereal/ether_crossroads.webp",
+            "level": 5
+          }
+        ],
+        "img_card": "/ethereal/ether_crossroads.webp",
+        "title_card": "Ethereal Odyssey - Crossroads of Ether",
+        "hidden": false,
+        "disabled": false,
+        "expiry": 1794553600000,
+        "expiry_timestamp": null,
+        "mandatory_domain": "ethereal",
+        "expired": false,
+        "experience": 25,
+        "start_time": 1687862400000
+      }
+  ];
+    
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    })
+
+    const result = await getQuestsInBoost('13');
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_quests?boost_id=13`
+    );
+    expect(result).toEqual(mockResponse)
+  });
+});
