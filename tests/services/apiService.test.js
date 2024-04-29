@@ -1,6 +1,6 @@
 import {
   fetchQuestCategoryData,
-   fetchLeaderboardToppers,
+  fetchLeaderboardToppers,
   fetchLeaderboardRankings,
   getBoostById,
   getBoosts,
@@ -12,44 +12,43 @@ import {
   getUniqueVisitorCount,
   getTasksByQuestId,
   getDeployedTimeByAddress,
-    getQuestsParticipation,
+  getQuestsParticipation,
 } from "@services/apiService";
-
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
 global.fetch = jest.fn();
 
-describe('fetchQuestCategoryData function', () => {
+describe("fetchQuestCategoryData function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
 
-  it('should fetch and return data for a valid category name', async () => {
+  it("should fetch and return data for a valid category name", async () => {
     const mockData = {
-      name: 'Quest Name',
-      title: 'Quest title',
-      desc: 'Quests description.',
-      img_url: 'braavos/category.webp',
+      name: "Quest Name",
+      title: "Quest title",
+      desc: "Quests description.",
+      img_url: "braavos/category.webp",
     };
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
 
-    const result = await fetchQuestCategoryData('Quest Name');
+    const result = await fetchQuestCategoryData("Quest Name");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quest_category?name=Quest Name`
     );
     expect(result).toEqual(mockData);
   });
 
-  it('should handle fetch errors gracefully', async () => {
-    const mockResponse = 'Category not found';
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Category not found";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await fetchQuestCategoryData('InvalidCategory');
+    const result = await fetchQuestCategoryData("InvalidCategory");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quest_category?name=InvalidCategory`
     );
@@ -57,65 +56,65 @@ describe('fetchQuestCategoryData function', () => {
   });
 });
 
-describe('getQuestsParticipation', () => {
+describe("getQuestsParticipation", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
 
-  it('should fetch and return data for a valid id', async () => {
+  it("should fetch and return data for a valid id", async () => {
     const mockData = [
       {
-        name: 'Register a stark domain',
+        name: "Register a stark domain",
         desc: "In order to create a Starknet Profile, you need a Stark Domain ! This domain will represent you on-chain and is integrated in all the major Starknet apps. You can use it to send & receive money on with Braavos and ArgentX, Access to all the Starknet Quest, being recognized on Starkscan or access to the Stark Name holder's advantages.",
         participants: 3,
       },
       {
-        name: 'Follow Starknet Quest on Twitter',
-        desc: 'Follow Starknet Quest on Twitter to get updated on their news and rewards for domain holders.',
+        name: "Follow Starknet Quest on Twitter",
+        desc: "Follow Starknet Quest on Twitter to get updated on their news and rewards for domain holders.",
         participants: 4,
       },
       {
-        name: 'Starknet ID Tribe Quiz',
+        name: "Starknet ID Tribe Quiz",
         desc: "Take part in our Starknet ID Tribe Quiz to test your knowledge, and you'll have a chance to win an exclusive Starknet ID Tribe NFT as your reward.",
-        quiz_name: 'starknetid',
+        quiz_name: "starknetid",
         participants: 3,
       },
       {
-        name: 'Verify your Twitter & Discord',
-        desc: 'Verify your social media on your Starknet ID will permit you to access future quests, be careful you need to verify them on the Starknet ID of your domain.',
+        name: "Verify your Twitter & Discord",
+        desc: "Verify your social media on your Starknet ID will permit you to access future quests, be careful you need to verify them on the Starknet ID of your domain.",
         participants: 5,
       },
     ];
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-      const result = await getQuestsParticipation(1);
+
+    const result = await getQuestsParticipation(1);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/analytics/get_quest_participation?id=1`
-       );
+    );
     expect(result).toEqual(mockData);
   });
-  
-   it('should handle fetch with empty response', async () => {
+
+  it("should handle fetch with empty response", async () => {
     const mockResponse = [];
-     
-      fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
-     
-        const result = await getQuestsParticipation(0);
+
+    const result = await getQuestsParticipation(0);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/analytics/get_quest_participation?id=0`
     );
     expect(result).toEqual(mockResponse);
   });
 
-  it('should handle unexpected response', async () => {
+  it("should handle unexpected response", async () => {
     const mockResponse = {
       error: 500,
-      message: 'Error while fetching quest participation',
+      message: "Error while fetching quest participation",
       data: {},
     };
 
@@ -131,7 +130,7 @@ describe('getQuestsParticipation', () => {
     expect(result).toEqual(result);
   });
 
-  it('should handle no response', async () => {
+  it("should handle no response", async () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(undefined),
     });
@@ -142,8 +141,7 @@ describe('getQuestsParticipation', () => {
     );
     expect(result).toBeUndefined();
   });
-  
-  });
+});
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -328,25 +326,24 @@ describe("fetchLeaderboardRankings function", () => {
       ],
       first_elt_position: 1,
     };
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-    const params = { addr: '', page_size: 10, shift: 0, duration: 'week' };
+
+    const params = { addr: "", page_size: 10, shift: 0, duration: "week" };
     const result = await fetchLeaderboardRankings(params);
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/leaderboard/get_ranking?addr=&page_size=10&shift=0&duration=week`
-      
-       );
+    );
     expect(result).toEqual(mockData);
   });
-  
-   it("should handle API returning no response", async () => {
+
+  it("should handle API returning no response", async () => {
     const mockResponse = undefined;
-     
-      fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
 
@@ -543,7 +540,7 @@ describe("getBoostById function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.reject(mockResponse),
     });
-        const result = await getBoostById("invalid-id");
+    const result = await getBoostById("invalid-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_boost?id=invalid-id`
     );
@@ -575,12 +572,10 @@ describe("getQuestActivityData function", () => {
     const result = await getQuestActivityData("invalidId");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/analytics/get_quest_activity?id=invalidId`
-      
-       );
+    );
     expect(result).toBeUndefined();
   });
-  
-  
+
   it("should handle unexpected response format", async () => {
     // Mock fetch response with unexpected data format
     const mockResponse = [];
@@ -594,7 +589,8 @@ describe("getQuestActivityData function", () => {
 
   it("should handle null cases in parameters", async () => {
     // mock fetch response with null parameters
-    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
     fetch.mockResolvedValueOnce({ json: () => Promise.resolve(mockResponse) });
     const result = await getQuestActivityData("");
     expect(fetch).toHaveBeenCalledWith(
@@ -616,20 +612,18 @@ describe("getQuestActivityData function", () => {
 
   it("should handle fetch errors gracefully", async () => {
     const mockResponse = "Error while fetching quest data";
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.reject(mockResponse),
     });
-    
+
     const result = await getQuestActivityData("invalid-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/analytics/get_quest_activity?id=invalid-id`
-      
-        );
+    );
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("getDeployedTimeByAddress function", () => {
   beforeEach(() => {
@@ -666,8 +660,7 @@ describe("getDeployedTimeByAddress function", () => {
     );
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_deployed_time?addr=0x02baedbff795949d6aa1ebc0dead2b2ba5d34e97ae1c4aee6cd0796d6ad33b52`
-      
-       );
+    );
     expect(result).toBeUndefined();
   });
 
@@ -700,20 +693,18 @@ describe("getDeployedTimeByAddress function", () => {
 
   it("should handle fetch errors gracefully", async () => {
     const mockResponse = "Error while fetching deployed time";
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.reject(mockResponse),
     });
-    
-     const result = await getDeployedTimeByAddress("invalid-address");
+
+    const result = await getDeployedTimeByAddress("invalid-address");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_deployed_time?addr=invalid-address`
-      
-        );
+    );
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("getUniqueVisitorCount function", () => {
   beforeEach(() => {
@@ -785,7 +776,6 @@ describe("getUniqueVisitorCount function", () => {
     expect(result).toEqual(mockResponse);
   });
 });
-
 
 describe("getTrendingQuests function", () => {
   beforeEach(() => {
@@ -883,7 +873,6 @@ describe("getTrendingQuests function", () => {
     expect(result).toHaveLength(0);
   });
 });
-
 
 describe("getBoosts function", () => {
   beforeEach(() => {
@@ -1033,13 +1022,12 @@ describe("getBoosts function", () => {
         },
       ],
     ];
-    
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoosts();
+
+    const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
 
     expect(result).toEqual(mockData);
@@ -1047,11 +1035,11 @@ describe("getBoosts function", () => {
 
   it("should handle when API returns empty array", async () => {
     const mockData = [];
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
     expect(result).toHaveLength(0);
@@ -1059,13 +1047,12 @@ describe("getBoosts function", () => {
 
   it("should handle when API returns no response", async () => {
     const mockData = undefined;
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-    
-      const result = await getBoosts();
+
+    const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
     expect(result).toBeUndefined();
   });
@@ -1076,36 +1063,31 @@ describe("getBoosts function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoosts();
+
+    const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
-    
-      expect(result).toEqual(mockData);
+
+    expect(result).toEqual(mockData);
   });
 
   it("should handle fetch errors gracefully", async () => {
-    
     const mockResponse = "Error while fetching boosts";
     fetch.mockResolvedValueOnce({
       json: () => Promise.reject(mockResponse),
     });
-    
-     const result = await getBoosts();
+
+    const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
     expect(result).toBeUndefined();
   });
-  
-  });
-
-
+});
 
 describe("getQuizById function", () => {
-  
-    beforeEach(() => {
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-    it("should fetch and return data for a valid quiz id", async () => {
+
+  it("should fetch and return data for a valid quiz id", async () => {
     const mockData = {
       name: "Nostra Quiz",
       desc: "Take part in our Quiz to test your knowledge about Nostra, and you'll have a chance to win an exclusive LaFamiglia Rose NFT as your reward.",
@@ -1138,36 +1120,36 @@ describe("getQuizById function", () => {
         },
       ],
     };
-      
-       fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-      
-       const result = await getQuizById("nostra");
+
+    const result = await getQuizById("nostra");
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
     expect(result).toEqual(mockData);
   });
 
   it("should handle when API returns no response", async () => {
     const mockData = undefined;
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-      const result = await getQuizById("nostra");
+
+    const result = await getQuizById("nostra");
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
     expect(result).toBeUndefined();
   });
 
   it("should handle undefined cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getQuizById(undefined);
+
+    const result = await getQuizById(undefined);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quiz?id=undefined&addr=0`
     );
@@ -1176,73 +1158,70 @@ describe("getQuizById function", () => {
 
   it("should handle null cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getQuizById(null, null);
+
+    const result = await getQuizById(null, null);
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=null&addr=null`);
-    
-      expect(result).toEqual(mockData);
+
+    expect(result).toEqual(mockData);
   });
 
   it("should handle fetch errors gracefully", async () => {
-    
-        const mockResponse = "Quiz not found";
-    
-     fetch.mockResolvedValueOnce({
+    const mockResponse = "Quiz not found";
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.reject(mockResponse),
     });
-    
-      const result = await getQuizById("invalid-id");
+
+    const result = await getQuizById("invalid-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quiz?id=invalid-id&addr=0`
     );
     expect(result).toBeUndefined();
-      });
+  });
 });
 
-
 describe("getQuestsInBoost function", () => {
-  
-    it("should handle unexpected params format", async () => {
-    const mockResponse = "Failed to deserialize query string: invalid digit found in string";
+  it("should handle unexpected params format", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: invalid digit found in string";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    const result = await getQuestsInBoost('my-test-id');
+    const result = await getQuestsInBoost("my-test-id");
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_quests?boost_id=my-test-id`
     );
 
-    expect(result).toEqual(mockResponse)
+    expect(result).toEqual(mockResponse);
   });
 
   it("should handle empty params", async () => {
-    const mockResponse = "Failed to deserialize query string: cannot parse integer from empty string";
+    const mockResponse =
+      "Failed to deserialize query string: cannot parse integer from empty string";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    const result = await getQuestsInBoost('');
+    const result = await getQuestsInBoost("");
 
-    expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/boost/get_quests?boost_id=`
-    );
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_quests?boost_id=`);
 
-    expect(result).toEqual(mockResponse)
+    expect(result).toEqual(mockResponse);
   });
-  
+
   it("should handle no quests in boost", async () => {
     const mockResponse = [];
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    const result = await getQuestsInBoost('444');
+    const result = await getQuestsInBoost("444");
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_quests?boost_id=444`
@@ -1254,47 +1233,47 @@ describe("getQuestsInBoost function", () => {
   it("should fetch and return data for a valid boost id", async () => {
     const mockResponse = [
       {
-        "id": 78,
-        "name": "Ethereal Odyssey - Crossroads of Ether",
-        "desc": "Embark on an ethereal journey through the Crossroads of Ether, where the boundaries between realms blur.",
-        "additional_desc": "Unravel mysteries and forge alliances in this mystical quest.",
-        "issuer": "Ethereal Ventures",
-        "category": "Fantasy",
-        "rewards_endpoint": "quests/ethereal/claimable",
-        "logo": "/ethereal/favicon.ico",
-        "rewards_img": "/ethereal/ether_crossroads.webp",
-        "rewards_title": "Ethereal Amulet",
-        "rewards_description": "Obtain a powerful Ethereal Amulet upon completion.",
-        "rewards_nfts": [
+        id: 78,
+        name: "Ethereal Odyssey - Crossroads of Ether",
+        desc: "Embark on an ethereal journey through the Crossroads of Ether, where the boundaries between realms blur.",
+        additional_desc:
+          "Unravel mysteries and forge alliances in this mystical quest.",
+        issuer: "Ethereal Ventures",
+        category: "Fantasy",
+        rewards_endpoint: "quests/ethereal/claimable",
+        logo: "/ethereal/favicon.ico",
+        rewards_img: "/ethereal/ether_crossroads.webp",
+        rewards_title: "Ethereal Amulet",
+        rewards_description:
+          "Obtain a powerful Ethereal Amulet upon completion.",
+        rewards_nfts: [
           {
-            "img": "/ethereal/ether_crossroads.webp",
-            "level": 5
-          }
+            img: "/ethereal/ether_crossroads.webp",
+            level: 5,
+          },
         ],
-        "img_card": "/ethereal/ether_crossroads.webp",
-        "title_card": "Ethereal Odyssey - Crossroads of Ether",
-        "hidden": false,
-        "disabled": false,
-        "expiry": 1794553600000,
-        "expiry_timestamp": null,
-        "mandatory_domain": "ethereal",
-        "expired": false,
-        "experience": 25,
-        "start_time": 1687862400000
-      }
-  ];
-    
+        img_card: "/ethereal/ether_crossroads.webp",
+        title_card: "Ethereal Odyssey - Crossroads of Ether",
+        hidden: false,
+        disabled: false,
+        expiry: 1794553600000,
+        expiry_timestamp: null,
+        mandatory_domain: "ethereal",
+        expired: false,
+        experience: 25,
+        start_time: 1687862400000,
+      },
+    ];
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
-    })
+    });
 
-    const result = await getQuestsInBoost('13');
+    const result = await getQuestsInBoost("13");
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_quests?boost_id=13`
     );
-    expect(result).toEqual(mockResponse)
-      });
-  
+    expect(result).toEqual(mockResponse);
   });
-
+});
