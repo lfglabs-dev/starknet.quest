@@ -111,7 +111,7 @@ export default function Page() {
   const fetchLeaderboardToppersResult = useCallback(
     async (requestBody: LeaderboardTopperParams) => {
       const topperData = await fetchLeaderboardToppers(requestBody);
-      setLeaderboardToppers(topperData);
+      if (topperData) setLeaderboardToppers(topperData);
     },
     []
   );
