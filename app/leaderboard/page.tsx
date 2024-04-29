@@ -82,33 +82,35 @@ export default function Page() {
     if (status === "disconnected") setUserAddress("");
   }, [address, status]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!apiCallDelay) return;
-    fetchPageData()
-},[apiCallDelay]);
-
-
+    fetchPageData();
+  }, [apiCallDelay]);
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
-      const response = await fetchLeaderboardRankings(requestBody);         
-        setRanking(response); 
- 
+      const response = await fetchLeaderboardRankings(requestBody);
+      if (!response) {
+        return;
+      }
+      setRanking(response);
     },
     []
   );
 
   const fetchLeaderboardToppersResult = useCallback(
     async (requestBody: LeaderboardTopperParams) => {
-      const topperData = await fetchLeaderboardToppers(requestBody);
-      setLeaderboardToppers(topperData);
-      
+      const response = await fetchLeaderboardToppers(requestBody);
+      if (!response) {
+        return;
+      }
+      setLeaderboardToppers(response);
     },
     []
   );
 
-  const fetchPageData=useCallback(async ()=>{
- const requestBody = {
+  const fetchPageData = useCallback(async () => {
+    const requestBody = {
       addr:
         status === "connected"
           ? hexToDecimal(address && address?.length > 0 ? address : userAddress)
@@ -124,9 +126,13 @@ export default function Page() {
     });
     await fetchRankingResults(requestBody);
     setRankingdataloading(false);
-},[fetchRankingResults,fetchLeaderboardToppersResult,address,userAddress,status]);
-
-
+  }, [
+    fetchRankingResults,
+    fetchLeaderboardToppersResult,
+    address,
+    userAddress,
+    status,
+  ]);
 
   const [leaderboardToppers, setLeaderboardToppers] =
     useState<LeaderboardToppersData>({
@@ -307,7 +313,6 @@ export default function Page() {
         </div>
       ) : (
         <>
-        
           <div className={styles.leaderboard_quest_banner}>
             <div className={styles.blur1}>
               <Blur green />
@@ -405,10 +410,10 @@ export default function Page() {
 
             {/* shows loader skeleton while data is still being fetched*/}
 
-            {rankingdataloading ? <RankingSkeleton /> :
-
-ranking ? (
-  showNoresults ? (
+            {rankingdataloading ? (
+              <RankingSkeleton />
+            ) : ranking ? (
+              showNoresults ? (
                 // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
@@ -454,18 +459,19 @@ ranking ? (
                   />
                 </>
               )
-            ) :    
-            <div className={styles.no_result_container}>
-            <p className="pb-[1.5rem] text-[1.5rem]">
-              Something went wrong! Try again...
-            </p>
-            <Divider
-              orientation="horizontal"
-              variant="fullWidth"
-              className={styles.divider}
-            />
-          </div>}
-                  
+            ) : (
+              <div className={styles.no_result_container}>
+                <p className="pb-[1.5rem] text-[1.5rem]">
+                  Something went wrong! Try again...
+                </p>
+                <Divider
+                  orientation="horizontal"
+                  variant="fullWidth"
+                  className={styles.divider}
+                />
+              </div>
+            )}
+
             <div className={styles.leaderboard_topper_layout}>
               {leaderboardToppers
                 ? isMobile
