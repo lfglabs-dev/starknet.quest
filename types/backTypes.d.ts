@@ -115,7 +115,7 @@ type QuestCategoryDocument = {
 type QuestParticipation = {
   name: string;
   desc: string;
-  participants: number;
+  count: number;
 }[];
 
 
