@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: center;
   color: var(--secondary);
-  /* Body/normal/bold */
   font-family: Sora;
   font-size: 20px;
   font-style: normal;
@@ -18,8 +17,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 32px;
-  align-self: stretch;
-  margin: 0 128px 64px;
+  max-width: 950px;
+  width: 100%;
 }
 
 .elementsContainer {
@@ -28,12 +27,6 @@
   gap: 48px;
   align-self: stretch;
   flex-wrap: wrap;
-}
-
-.statElement {
-  flex: 1 0 0;
-  min-width: fit-content;
-  min-height: fit-content;
 }
 
 .statValue {
@@ -70,17 +63,21 @@
   line-height: 32px;
 }
 
-@media screen and (max-width: 740px) {
+@media screen and (max-width: 768px) {
   .container {
-    margin: 10px 24px 0;
-    padding: 0;
+    flex-direction: column;
   }
+
   .elementsContainer {
     gap: 1.5rem;
+    flex-direction: column;
+    width: 100%;
   }
+
   .statValue {
     font-size: 40px;
   }
+
   .statName {
     font-size: 12px;
   }

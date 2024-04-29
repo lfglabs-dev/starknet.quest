@@ -31,6 +31,7 @@ const Task: FunctionComponent<Task> = ({
   hasRootDomain,
   customError,
   checkUserRewards,
+  expired,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -64,6 +65,11 @@ const Task: FunctionComponent<Task> = ({
       setIsLoading(false);
     } else {
       try {
+        if (expired) {
+          setError("This quest has expired");
+          setIsLoading(false);
+          return;
+        }
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_LINK}/${verifyEndpoint}`
         );

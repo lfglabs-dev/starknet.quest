@@ -1,7 +1,6 @@
 .container {
   position: relative;
   padding: 22px 39px;
-  width: fit-content;
   display: block;
   margin: 0 auto;
   text-align: center;
@@ -60,6 +59,18 @@
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
+  line-height: 38px;
+  margin-top: 8px;
+}
+
+.newCategoryTitle {
+  color: var(--secondary);
+
+  /* Title/H2 */
+  font-family: Sora-Bold;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
   line-height: 38px;
   margin-top: 8px;
 }

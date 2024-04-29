@@ -382,6 +382,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                       ? taskError.error
                       : ""
                   }
+                  expired={quest.expired}
                   setShowQuiz={setShowQuiz}
                   quizName={task.quiz_name || undefined}
                   issuer={{
@@ -402,7 +403,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               onClick={() => {
                 setRewardsEnabled(false);
               }}
-              disabled={!rewardsEnabled}
+              disabled={
+                !rewardsEnabled && !tasks.every((task) => task.completed)
+              }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
               questName={quest.name}

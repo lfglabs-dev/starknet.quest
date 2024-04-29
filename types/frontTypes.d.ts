@@ -29,6 +29,7 @@ type Task = {
   hasRootDomain: boolean;
   customError: string;
   checkUserRewards: () => void;
+  expired: boolean;
 };
 
 type TaskProps = Task & { id: number };
@@ -271,4 +272,9 @@ type LeaderboardToppersData = {
   best_users: { address: string; xp: number; achievements: number }[];
   total_users: number;
   position?: number;
+};
+
+type PickRandomObjects = {
+  questArray: QuestDocument[];
+  count?: number;
 };

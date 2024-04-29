@@ -14,6 +14,7 @@ import { useAccount } from "@starknet-react/core";
 export default function Page() {
   const router = useRouter();
   const { address } = useAccount();
+  const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const [completedQuests, setCompletedQuests] = useState<number[]>([]);
@@ -52,15 +53,20 @@ export default function Page() {
       </div>
       <h1 className={styles.title}>Boosts Quest</h1>
       <div className={styles.card_container}>
-        {boosts?.map((boost) => {
-          return (
-            <BoostCard
-              key={boost.id}
-              boost={boost}
-              completedQuests={completedQuests}
-            />
-          );
-        })}
+        {boosts
+          ?.filter(
+            (boost) =>
+              (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
+          )
+          ?.map((boost) => {
+            return (
+              <BoostCard
+                key={boost.id}
+                boost={boost}
+                completedQuests={completedQuests}
+              />
+            );
+          })}
         {boosts?.length === 0 && (
           <h2 className={styles.noBoosts}>
             No quest are being boosted at the moment.
