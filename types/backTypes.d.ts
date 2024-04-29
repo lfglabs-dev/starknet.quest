@@ -125,6 +125,10 @@ export type QuizDocument = {
   questions: QuizQuestionDocument[];
 };
 
+type QuestActivityData = {
+  date: string;
+  participants: number;
+};
 
 type UniqueVisitorCount = number;
 
@@ -134,6 +138,7 @@ type LeaderboardToppersData = {
   total_users: number;
   position?: number;
 };
+
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;
@@ -144,3 +149,4 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
+
