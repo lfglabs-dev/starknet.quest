@@ -7,6 +7,8 @@ import {
   QuestCategoryDocument,
   QuestDocument,
   BoostedQuests,
+  QuizDocument,
+  QuestActivityData,
   UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
@@ -66,7 +68,8 @@ export const getBoosts = async () => {
 export const getQuestsInBoost = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
-    return await response.json();
+    const data: QuestDocument[] | QueryError = await response.json();
+    return data as QuestDocument[];
   } catch (err) {
     console.log("Error while fetching quests in boost", err);
   }
@@ -234,12 +237,16 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = "0") => {
+export const getQuizById = async (
+  quizId: string,
+  address = "0"
+): Promise<Quiz | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
     );
-    return await response.json();
+    const data: QuizDocument | QueryError = await response.json();
+    return data as Quiz;
   } catch (err) {
     console.log("Error while fetching quiz data by Id", err);
   }
@@ -297,7 +304,7 @@ export const getQuestActivityData = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_activity?id=${id}`
     );
-    return await response.json();
+    return (await response.json()) as QuestActivityData[];
   } catch (err) {
     console.log("Error while fetching quest data", err);
   }

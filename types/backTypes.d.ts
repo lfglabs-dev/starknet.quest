@@ -111,17 +111,37 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
+type QuizQuestionDocument = {
+  kind: "text_choice" | "image_choice" | "ordering";
+  layout: "default" | "illustrated_left";
+  question: string;
+  options: string[];
+  image_for_layout: string | null;
+};
+
+export type QuizDocument = {
+  name: string;
+  desc: string;
+  questions: QuizQuestionDocument[];
+};
+
+type QuestActivityData = {
+  date: string;
+  participants: number;
+};
 
 type BoostedQuests =  number[]
 
 
 type UniqueVisitorCount = number;
 
+
 type LeaderboardToppersData = {
   best_users: { address: string; xp: number; achievements: number }[];
   total_users: number;
   position?: number;
 };
+
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;
@@ -132,3 +152,4 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
+
