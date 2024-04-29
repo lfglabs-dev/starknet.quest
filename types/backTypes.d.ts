@@ -111,7 +111,6 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
-
 type UniqueVisitorCount = number;
 
 type LeaderboardToppersData = {
@@ -128,4 +127,17 @@ type Ranking = {
   address: string;
   xp: number;
   achievements: number;
+};
+
+export type PendingBoostClaim = {
+  amount: number;
+  token: string;
+  expiry: number;
+  quests: number[];
+  winner: string;
+  img_url: string;
+  id: number;
+  name: string;
+  num_of_winners: number;
+  token_decimals: number;
 };
