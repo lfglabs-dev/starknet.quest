@@ -713,7 +713,14 @@ describe('getCompletedBoosts function', () => {
   });
 
   it('should handle fetch with handle error gracefully', async () => {
+    
     const mockResponse = 'Boost with id 0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363 not found';
+
+     const mockErrorResponse = {
+      status: 500,
+      statusText: 'Internal Server Error',
+    };
+
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
@@ -723,7 +730,9 @@ describe('getCompletedBoosts function', () => {
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=5645wdhefbhrdkf568jur`
     );
-    expect(result).toEqual(mockResponse);
+
+    expect(result).toBeNull();
+
   });
 
   it('should handle fetch with empty response', async () => {
