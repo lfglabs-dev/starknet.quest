@@ -5,7 +5,8 @@ import {
   getBoostById,
   getTrendingQuests,
   getUniqueVisitorCount,
-  getTasksByQuestId
+  getTasksByQuestId,
+  getDeployedTimeByAddress
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -612,7 +613,6 @@ describe("getTrendingQuests function", () => {
         experience: 10,
       },
     ];
-    
      fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
@@ -620,15 +620,12 @@ describe("getTrendingQuests function", () => {
      const result = await getTrendingQuests("1145");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_trending_quests?addr=1145`
-      
           );
     expect(result).toEqual(mockData);
   });
   
     it("should handle when API returns empty array", async () => {
     const mockData = [];
-      
-      
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
@@ -641,21 +638,20 @@ describe("getTrendingQuests function", () => {
   });
 
   it("should handle when wrong address given in parameters", async () => {
-    
     const mockData = "Failed to deserialize query string: invalid character";
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
     
-     const result = await getDeployedTimeByAddress(undefined);
+    const result = await getTrendingQuests("kasjcaakjhasdajhd");
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_deployed_time?addr=undefined` );
+      `${API_URL}/get_trending_quests?addr=kasjcaakjhasdajhd`
+    );
     expect(result).toEqual(mockData);
   });
   
     it("should handle undefined cases in parameters", async () => {
     const mockData = [];
-
        fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
@@ -676,5 +672,3 @@ describe("getTrendingQuests function", () => {
     expect(result).toHaveLength(0);
   });
 });
-
-   
