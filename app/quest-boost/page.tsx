@@ -64,22 +64,32 @@ export default function Page() {
       {!loadingBoosts && !loadingCompletedQuests ? (
         <div className={styles.card_container}>
           {boosts?.length !== 0 ? (
-            boosts
-              ?.filter(
-                (boost) =>
-                  (new Date().getTime() - boost.expiry) /
-                    MILLISECONDS_PER_WEEK <=
-                  3
-              )
-              ?.map((boost) => {
-                return (
-                  <BoostCard
-                    key={boost.id}
-                    boost={boost}
-                    completedQuests={completedQuests}
-                  />
-                );
-              })
+            boosts?.filter(
+              (boost) =>
+                (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <=
+                3
+            )?.length !== 0 ? (
+              boosts
+                ?.filter(
+                  (boost) =>
+                    (new Date().getTime() - boost.expiry) /
+                      MILLISECONDS_PER_WEEK <=
+                    3
+                )
+                ?.map((boost) => {
+                  return (
+                    <BoostCard
+                      key={boost.id}
+                      boost={boost}
+                      completedQuests={completedQuests}
+                    />
+                  );
+                })
+            ) : (
+              <h2 className={styles.noBoosts}>
+                No quests are being boosted at the moment.
+              </h2>
+            )
           ) : (
             <h2 className={styles.noBoosts}>
               No quests are being boosted at the moment.
