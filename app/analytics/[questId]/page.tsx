@@ -40,7 +40,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const { questId } = params;
   const [loading, setLoading] = useState<boolean>(true);
-  const [graphData, setGraphData] = useState([]);
+  const [graphData, setGraphData] = useState([{}]);
   const [questParticipationData, setQuestParticipationData] = useState([]);
   const [questParticipants, setQuestParticipants] = useState(0);
   const [uniqueVisitors, setUniqueVisitors] = useState< number | undefined>(0);
