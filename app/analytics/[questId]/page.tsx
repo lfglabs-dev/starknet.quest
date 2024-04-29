@@ -40,7 +40,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const { questId } = params;
   const [loading, setLoading] = useState<boolean>(true);
-  const [graphData, setGraphData] = useState([]);
+  const [graphData, setGraphData] = useState([{}]);
   const [questParticipationData, setQuestParticipationData] = useState([]);
   const [questParticipants, setQuestParticipants] = useState(0);
   const [uniqueVisitors, setUniqueVisitors] = useState< number | undefined>(0);
@@ -49,7 +49,8 @@ export default function Page({ params }: BoostQuestPageProps) {
   const fetchGraphData = useCallback(async () => {
     try {
       const res = await getQuestActivityData(parseInt(questId));
-      const formattedData = res.map(
+      if (!res) return;
+      const formattedData = res?.map(
         (data: { date: string; participants: number }) => {
           const dateString = data.date.split(" ")[0];
           const month = getMonthName(parseInt(dateString.split("-")[1]));
