@@ -111,11 +111,12 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
-
 type QuestActivityData = {
   date: Date;
   participants: number;
 };
+
+type UniqueVisitorCount = number;
 
 
 type LeaderboardToppersData = {
