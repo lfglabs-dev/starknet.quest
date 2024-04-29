@@ -64,7 +64,7 @@ export type RequestResponse = {
   error_msg?: string;
 };
 
-export type RequestProps = {
+type RequestProps = {
   address: string;
 };
 export interface TwitterRequestProps {
@@ -109,4 +109,20 @@ type QuestCategoryDocument = {
   title: string;
   desc: string;
   img_url: string;
+};
+
+type LeaderboardToppersData = {
+  best_users: { address: string; xp: number; achievements: number }[];
+  total_users: number;
+  position?: number;
+};
+type LeaderboardRankings = {
+  ranking: Ranking[];
+  first_elt_position: number;
+};
+
+type Ranking = {
+  address: string;
+  xp: number;
+  achievements: number;
 };
