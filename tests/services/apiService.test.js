@@ -5,9 +5,9 @@ import {
   getBoostById,
   getTrendingQuests,
   getTasksByQuestId,
-  getCompletedBoosts
+  getCompletedBoosts,
   fetchLeaderboardToppers,
-  getTasksByQuestId
+  getTasksByQuestId,
   getUniqueVisitorCount,
   getTasksByQuestId,
   getDeployedTimeByAddress
@@ -689,7 +689,7 @@ describe('getCompletedBoosts function', () => {
       json: () => Promise.resolve(mockDataResponse),
     });
 
-    const result = await getCompletedBoosts('5645');
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=5645`
     );
@@ -713,17 +713,17 @@ describe('getCompletedBoosts function', () => {
   });
 
   it('should handle fetch with handle error gracefully', async () => {
-    const mockResponse = 'Boost with id 5645wdhefbhrdkf568jur not found';
+    const mockResponse = 'Boost with id 0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363 not found';
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await getCompletedBoosts('5645wdhefbhrdkf568jur');
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=5645wdhefbhrdkf568jur`
     );
-    expect(result).toBeUndefined();
+    expect(result).toEqual(mockResponse);
   });
 
   it('should handle fetch with empty response', async () => {
@@ -733,10 +733,24 @@ describe('getCompletedBoosts function', () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const result = await getCompletedBoosts('5645');
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=5645`
     );
     expect(result).toEqual(mockResponse);
+  });
+
+  it('should handle fetch with undefined result', async () => {
+    const mockResponse = undefined;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=5645wdhefbhrdkf568jur`
+    );
+    expect(result).toBeUndefined();
   });
 });
