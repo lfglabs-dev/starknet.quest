@@ -100,8 +100,12 @@ export default function Page() {
 
   const fetchLeaderboardToppersResult = useCallback(
     async (requestBody: LeaderboardTopperParams) => {
-      const topperData = await fetchLeaderboardToppers(requestBody);
-      setLeaderboardToppers(topperData);
+      const response = await fetchLeaderboardToppers(requestBody);
+      if (!response) {
+        return;
+      }
+      setLeaderboardToppers(response);
+
     },
     []
   );

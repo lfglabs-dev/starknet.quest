@@ -43,7 +43,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const [graphData, setGraphData] = useState([]);
   const [questParticipationData, setQuestParticipationData] = useState([]);
   const [questParticipants, setQuestParticipants] = useState(0);
-  const [uniqueVisitors, setUniqueVisitors] = useState(0);
+  const [uniqueVisitors, setUniqueVisitors] = useState< number | undefined>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
   const fetchGraphData = useCallback(async () => {
@@ -105,7 +105,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const computePercentage = useCallback(
     (num: number) => {
-      if (uniqueVisitors === 0) return "NA";
+      if (uniqueVisitors === 0 || uniqueVisitors === undefined) return "NA";
       return ((num / uniqueVisitors) * 100).toFixed(2);
     },
     [uniqueVisitors]
@@ -172,7 +172,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   <div className="flex w-full items-center flex-col h-full justify-center">
                     <p className={analyticsStyles.metricName}>Unique users</p>
                     <p className={analyticsStyles.counterText}>
-                      {uniqueVisitors > 0
+                      {uniqueVisitors && uniqueVisitors > 0
                         ? numberWithCommas(uniqueVisitors)
                         : "NA"}
                     </p>
@@ -187,7 +187,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       ? numberWithCommas(questParticipants)
                       : "NA"}
                   </p>
-                  {uniqueVisitors > 0 ? (
+                  {uniqueVisitors && uniqueVisitors > 0 ? (
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
                         {uniqueVisitors > 0
@@ -333,7 +333,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                           <p className={analyticsStyles.counterText}>
                             {numberWithCommas(eachParticipation.participants)}
                           </p>
-                          {uniqueVisitors > 0 ? (
+                          {uniqueVisitors && uniqueVisitors > 0 ? (
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
