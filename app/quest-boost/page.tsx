@@ -63,38 +63,57 @@ export default function Page() {
       <h1 className={styles.title}>Boosts Quest</h1>
       {!loadingBoosts && !loadingCompletedQuests ? (
         <div className={styles.card_container}>
-          {boosts?.length !== 0 ? (
-            boosts?.filter(
+          {(() => {
+            // Filter unexpired boosts
+            const unexpiredBoosts = boosts?.filter(
               (boost) =>
                 (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <=
                 3
-            )?.length !== 0 ? (
-              boosts
-                ?.filter(
-                  (boost) =>
-                    (new Date().getTime() - boost.expiry) /
-                      MILLISECONDS_PER_WEEK <=
-                    3
-                )
-                ?.map((boost) => {
-                  return (
+            );
+
+            // Filter expired boosts
+            const expiredBoosts = boosts?.filter(
+              (boost) =>
+                (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK >
+                  3 && boost.expiry !== null // Ensure expiry date exists
+            );
+
+            if (unexpiredBoosts.length !== 0) {
+              return (
+                <>
+                  {unexpiredBoosts.map((boost) => (
                     <BoostCard
                       key={boost.id}
                       boost={boost}
                       completedQuests={completedQuests}
                     />
-                  );
-                })
-            ) : (
-              <h2 className={styles.noBoosts}>
-                No quests are being boosted at the moment.
-              </h2>
-            )
-          ) : (
-            <h2 className={styles.noBoosts}>
-              No quests are being boosted at the moment.
-            </h2>
-          )}
+                  ))}
+                  {expiredBoosts.length !== 0 &&
+                    expiredBoosts.map((boost) => (
+                      <BoostCard
+                        key={boost.id}
+                        boost={boost}
+                        completedQuests={completedQuests}
+                      />
+                    ))}
+                </>
+              );
+            } else if (expiredBoosts.length !== 0) {
+              return expiredBoosts.map((boost) => (
+                <BoostCard
+                  key={boost.id}
+                  boost={boost}
+                  completedQuests={completedQuests}
+                />
+              ));
+            } else {
+              return (
+                <h2 className={styles.noBoosts}>
+                  No quests are being boosted at the moment.
+                </h2>
+              );
+            }
+          })()}
         </div>
       ) : (
         <div className="flex justify-center items-center w-full">
