@@ -62,7 +62,7 @@ const Navbar: FunctionComponent = () => {
 
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
-    const res: PendingBoostClaim[] | undefined = await getPendingBoostClaims(hexToDecimal(address));
+    const res = await getPendingBoostClaims(hexToDecimal(address));
     if (!res) return;
     const finalNotificationsList: SQInfoData[] = [];
     res.forEach((boost: PendingBoostClaim) => {
