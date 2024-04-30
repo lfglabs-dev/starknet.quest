@@ -6,22 +6,27 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  BoostedQuests,
+  QuestParticipation,
+  QuizDocument,
+  QuestActivityData,
   UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
-  CompletedQuests
+  CompletedQuests,
+  QuestParticipantsDocument,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
   addr: string;
-  duration: "week" | "month" | "all";
+  duration: 'week' | 'month' | 'all';
 };
 
 export type LeaderboardRankingParams = {
   addr: string;
   page_size: number;
   shift: number;
-  duration: "week" | "month" | "all";
+  duration: 'week' | 'month' | 'all';
 };
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -36,7 +41,7 @@ export const fetchLeaderboardToppers = async (
     );
     return (await response.json()) as LeaderboardToppersData;
   } catch (err) {
-    console.log("Error while fetching leaderboard position", err);
+    console.log('Error while fetching leaderboard position', err);
   }
 };
 
@@ -50,25 +55,27 @@ export const fetchLeaderboardRankings = async (
     );
     return (await response.json()) as LeaderboardRankings;
   } catch (err) {
-    console.log("Error while fetching leaderboard ranks", err);
+    console.log('Error while fetching leaderboard ranks', err);
   }
 };
 
 export const getBoosts = async () => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
-    return await response.json();
+    const data: Boost[] | QueryError = await response.json();
+    return data as Boost[];
   } catch (err) {
-    console.log("Error while fetching boosts", err);
+    console.log('Error while fetching boosts', err);
   }
 };
 
 export const getQuestsInBoost = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
-    return await response.json();
+    const data: QuestDocument[] | QueryError = await response.json();
+    return data as QuestDocument[];
   } catch (err) {
-    console.log("Error while fetching quests in boost", err);
+    console.log('Error while fetching quests in boost', err);
   }
 };
 
@@ -78,7 +85,7 @@ export const getBoostById = async (id: string) => {
     const data: Boost | QueryError = await response.json();
     return data as Boost;
   } catch (err) {
-    console.log("Error while fetching boost data", err);
+    console.log('Error while fetching boost data', err);
   }
 };
 
@@ -87,9 +94,11 @@ export const getQuestParticipants = async (id: number | string) => {
     const response = await fetch(
       `${baseurl}/get_quest_participants?quest_id=${id}`
     );
-    return await response.json();
+    const data: QuestParticipantsDocument | QueryError = await response.json();
+    return data as QuestParticipantsDocument;
   } catch (err) {
     console.log("Error while fetching total participants", err);
+    return err as QueryError
   }
 };
 
@@ -100,7 +109,7 @@ export const getQuestBoostClaimParams = async (id: number, addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching claim signature", err);
+    console.log('Error while fetching claim signature', err);
   }
 };
 
@@ -111,7 +120,7 @@ export const getPendingBoostClaims = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching pending claims", err);
+    console.log('Error while fetching pending claims', err);
   }
 };
 
@@ -122,7 +131,7 @@ export const getCompletedBoosts = async (addr: string) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching completed boosts", err);
+    console.log('Error while fetching completed boosts', err);
   }
 };
 
@@ -131,14 +140,14 @@ export const getQuests = async () => {
     const response = await fetch(`${baseurl}/get_quests`);
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching trending quests", err);
+    console.log('Error while fetching trending quests', err);
   }
 };
 
-export const getTrendingQuests = async (addr = "") => {
+export const getTrendingQuests = async (addr = '') => {
   try {
     const response = await fetch(
-      `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ""}`
+      `${baseurl}/get_trending_quests${addr ? `?addr=${addr}` : ''}`
     );
     const data: QuestDocument[] = await response.json();
     return data;
@@ -147,6 +156,7 @@ export const getTrendingQuests = async (addr = "") => {
     return {
       error: "Error While Fetching Trending Quests",
     } as QueryError;
+
   }
 };
 
@@ -166,9 +176,10 @@ export const getCompletedQuests = async (addr: string) => {
 export const getBoostedQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/get_boosted_quests`);
-    return await response.json();
+    const boostedQuests: BoostedQuests | QueryError = await response.json();
+    return boostedQuests;
   } catch (err) {
-    console.log("Error while getting boosted quests", err);
+    console.log('Error while getting boosted quests', err);
   }
 };
 
@@ -180,7 +191,7 @@ export const getUserAchievements = async (address = "0") => {
     const data: AchievementsDocument[] | QueryError = await response.json();
     return data as AchievementsDocument[];
   } catch (err) {
-    console.log("Error while fetching user achievements", err);
+    console.log('Error while fetching user achievements', err);
   }
 };
 
@@ -200,7 +211,7 @@ export const getUserAchievementByCategory = async ({
     const data: CompletedDocument | QueryError = await response.json();
     return data as CompletedDocument;
   } catch (err) {
-    console.log("Error while fetching user achievement by category", err);
+    console.log('Error while fetching user achievement by category', err);
   }
 };
 
@@ -220,29 +231,33 @@ export const verifyUserAchievement = async ({
     const data: CompletedDocument | QueryError = await response.json();
     return data as CompletedDocument;
   } catch (err) {
-    console.log("Error while verifying user achievement by category", err);
+    console.log('Error while verifying user achievement by category', err);
   }
 };
 
 export const fetchBuildings = async (filteredAssets: number[]) => {
   try {
     const response = await fetch(
-      `${baseurl}/achievements/fetch_buildings?ids=${filteredAssets.join(",")}`
+      `${baseurl}/achievements/fetch_buildings?ids=${filteredAssets.join(',')}`
     );
     return (await response.json()) as BuildingsInfo[];
   } catch (err) {
-    console.log("Error while fetching buildings data", err);
+    console.log('Error while fetching buildings data', err);
   }
 };
 
-export const getQuizById = async (quizId: string, address = "0") => {
+export const getQuizById = async (
+  quizId: string,
+  address = "0"
+): Promise<Quiz | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
     );
-    return await response.json();
+    const data: QuizDocument | QueryError = await response.json();
+    return data as Quiz;
   } catch (err) {
-    console.log("Error while fetching quiz data by Id", err);
+    console.log('Error while fetching quiz data by Id', err);
   }
 };
 
@@ -260,7 +275,7 @@ export const getTasksByQuestId = async ({
     const data: UserTask[] | QueryError = await response.json();
     return data as UserTask[];
   } catch (err) {
-    console.log("Error while fetching tasks by quest Id", err);
+    console.log('Error while fetching tasks by quest Id', err);
   }
 };
 
@@ -272,7 +287,7 @@ export const getDeployedTimeByAddress = async (address: string) => {
     const data: DeployedTime | QueryError = await response.json();
     return data as DeployedTime;
   } catch (err) {
-    console.log("Error while fetching deployed time by address", err);
+    console.log('Error while fetching deployed time by address', err);
   }
 };
 
@@ -289,7 +304,7 @@ export const getEligibleRewards = async ({
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching eligible rewards", err);
+    console.log('Error while fetching eligible rewards', err);
   }
 };
 
@@ -298,20 +313,22 @@ export const getQuestActivityData = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_activity?id=${id}`
     );
-    return await response.json();
+    return (await response.json()) as QuestActivityData[];
   } catch (err) {
-    console.log("Error while fetching quest data", err);
+    console.log('Error while fetching quest data', err);
   }
 };
 
-export const getQuestsParticipation = async (id: number) => {
+export const getQuestsParticipation = async (
+  id: number
+): Promise<QuestParticipation | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_participation?id=${id}`
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching quest participation", err);
+    console.log('Error while fetching quest participation', err);
   }
 };
 
@@ -320,9 +337,9 @@ export const getUniqueVisitorCount = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_unique_visitors?id=${id}`
     );
-    return await response.json() as UniqueVisitorCount;
+    return (await response.json()) as UniqueVisitorCount;
   } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
+    console.log('Error while fetching unique visitor count', err);
   }
 };
 
@@ -343,6 +360,6 @@ export const updateUniqueVisitors = async (id: string) => {
     const response = await fetch(`${baseurl}/unique_page_visit?page_id=${id}`);
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
+    console.log('Error while fetching unique visitor count', err);
   }
 };
