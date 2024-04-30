@@ -111,7 +111,6 @@ type QuestCategoryDocument = {
   img_url: string;
 };
 
-
 type QuestParticipation = {
   name: string;
   desc: string;
@@ -158,4 +157,13 @@ type Ranking = {
   address: string;
   xp: number;
   achievements: number;
+};
+
+type QuestParticipantsDocument = {
+  count: string | number;
+  firstParticipants: string[];
+};
+
+type UniquePageVisit = {
+  res: boolean;
 };
