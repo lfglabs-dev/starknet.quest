@@ -70,11 +70,17 @@ export default function Page() {
   });
   const [inititalFetchTop50, setInititalFetchTop50] = useState(false);
 
-  const isTop50RankedView =
-    !currentSearchedAddress &&
-    (duration === TOP_50_TAB_STRING || (!isConnecting && !address));
-  const isNoSearchResults =
-    ranking.ranking.length === 0 && currentSearchedAddress ? true : false;
+  const isTop50RankedView = useMemo(
+    () =>
+      !currentSearchedAddress &&
+      (duration === TOP_50_TAB_STRING || (!isConnecting && !address)),
+    [currentSearchedAddress, duration, isConnecting, address]
+  );
+  const isNoSearchResults = useMemo(
+    () =>
+      ranking.ranking.length === 0 && currentSearchedAddress ? true : false,
+    [ranking.ranking.length, currentSearchedAddress]
+  );
   // to check if current view is the default view or a user requested view(to prevent multiple api calls)
   const [isCustomResult, setCustomResult] = useState<boolean>(false);
 
@@ -420,7 +426,7 @@ export default function Page() {
                   ]}
                 />
               </div>
-              <div style={{ flex: 0.4 }}>
+              <div style={{ flex: 0.4 }} className="w-full">
                 <Searchbar
                   value={searchQuery}
                   handleChange={handleChange}
@@ -440,13 +446,15 @@ export default function Page() {
               userPercentile >= 0 ? (
                 <div className={styles.percentile_container}>
                   {currentSearchedAddress.length > 0 || userAddress ? (
-                    <Avatar
-                      address={
-                        currentSearchedAddress.length > 0
-                          ? currentSearchedAddress
-                          : userAddress
-                      }
-                    />
+                    <div className="hidden md:block">
+                      <Avatar
+                        address={
+                          currentSearchedAddress.length > 0
+                            ? currentSearchedAddress
+                            : userAddress
+                        }
+                      />
+                    </div>
                   ) : null}
                   <div className={styles.percentile_text_container}>
                     <p className={styles.percentile_text_normal}>
