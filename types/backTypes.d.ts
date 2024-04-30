@@ -130,11 +130,9 @@ type QuestActivityData = {
   participants: number;
 };
 
-type BoostedQuests =  number[]
-
+type BoostedQuests = number[];
 
 type UniqueVisitorCount = number;
-
 
 type LeaderboardToppersData = {
   best_users: { address: string; xp: number; achievements: number }[];
@@ -152,4 +150,3 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
-
