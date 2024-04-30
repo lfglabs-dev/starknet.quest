@@ -355,7 +355,7 @@ export async function getQuestById(id: string) {
     throw new Error("Failed to parse quest data");
   }
 
-
+};
 export async function fetchQuestCategoryData(name: string) {
   const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
   const data: QuestCategoryDocument | QueryError = await response.json();
@@ -369,4 +369,4 @@ export const updateUniqueVisitors = async (id: string) => {
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
   }
-};
+}
