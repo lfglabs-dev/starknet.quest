@@ -1631,3 +1631,70 @@ describe("getQuestById function", () => {
     }
   });
 });
+
+describe("getQuestBoostClaimParams function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid address and boost id", async () => {
+    const mockData = {
+      address:
+        "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+      r: "2328575043184937723727467456938795290152111035640589440945775742296008884937",
+      s: "2314906404127565163552396326236777531502314327598120407071208784203310551837",
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(
+      5,
+      "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=5&addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(undefined, undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=undefined&addr=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(null, null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=null&addr=null`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: missing field `boost_id`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getQuestBoostClaimParams();
+    expect(result).toEqual(mockResponse);
+  });
+});
