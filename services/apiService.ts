@@ -13,6 +13,7 @@ import {
   UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
+  UniquePageVisit
 } from 'types/backTypes';
 
 export type LeaderboardTopperParams = {
@@ -352,7 +353,7 @@ export async function fetchQuestCategoryData(name: string) {
 export const updateUniqueVisitors = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/unique_page_visit?page_id=${id}`);
-    return await response.json();
+    return await response.json() as UniquePageVisit;
   } catch (err) {
     console.log('Error while fetching unique visitor count', err);
   }

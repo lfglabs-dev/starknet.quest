@@ -159,3 +159,7 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
+
+type UniquePageVisit = {
+  res: boolean;
+};
