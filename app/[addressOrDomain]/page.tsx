@@ -21,7 +21,7 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { QuestDocument } from "../../types/backTypes";
+import { QueryError, QuestDocument } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 
 type AddressOrDomainProps = {
@@ -61,9 +61,9 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
       try {
         if (!addr) return;
         const res = await getCompletedQuests(addr);
-
+        if (!res || "error" in res) return;
         const updatedQuestsResults = await Promise.allSettled(
-          res.map((id: number) => getQuestById(id))
+          res.map ? res.map((id: number) => getQuestById(id)) : []
         );
         const successfulCompletedQuests = updatedQuestsResults
           .filter(
