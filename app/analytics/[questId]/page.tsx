@@ -23,7 +23,7 @@ import {
 
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
-import { QuestDocument, QuestParticipation } from "../../../types/backTypes";
+import { QuestDocument, QuestParticipation, QuestParticipantsDocument } from "../../../types/backTypes";
 import { numberWithCommas } from "@utils/numberService";
 import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
