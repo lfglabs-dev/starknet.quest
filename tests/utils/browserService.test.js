@@ -1,4 +1,20 @@
-import { getBrowser, getTweetLink } from "@utils/browserService";
+/**
+ * @jest-environment jsdom
+ */
+
+import {
+  getBrowser,
+  getTweetLink,
+  writeToClipboard,
+} from "@utils/browserService";
+
+const writeText = jest.fn();
+
+Object.assign(navigator, {
+  clipboard: {
+    writeText,
+  },
+});
 
 describe("Should test getBrowser function", () => {
   it("Should return Chrome", () => {
@@ -50,5 +66,28 @@ describe("getTweetLink function", () => {
     expect(getTweetLink(undefined)).toBe(
       "https://twitter.com/intent/tweet?text=undefined"
     );
+  });
+});
+
+describe("writeToClipboard function", () => {
+  const testData = "Test data to be copied to clipboard";
+
+  beforeAll(() => {
+    navigator.clipboard.writeText.mockResolvedValue(undefined);
+    writeToClipboard(testData);
+  });
+
+  it("should call navigator.clipboard.writeText with the provided data", () => {
+    // Mocking navigator.clipboard.writeText
+    const originalWriteText = navigator.clipboard.writeText;
+    navigator.clipboard.writeText = jest.fn();
+
+    writeToClipboard(testData);
+
+    // Expecting navigator.clipboard.writeText to be called with the provided data
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(testData);
+
+    // Restore the original function after the test
+    navigator.clipboard.writeText = originalWriteText;
   });
 });

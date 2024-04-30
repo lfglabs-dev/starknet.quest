@@ -84,36 +84,28 @@ export default function DashboardPage({ params }: AddressOrDomainProps) {
 
   const fetchRanking = useCallback(
     async (addr: string) => {
-      try {
-        if (!addr) return;
-        const res = await fetchLeaderboardRankings({
-          addr: hexToDecimal(addr),
-          page_size: 10,
-          shift: 0,
-          duration: "all",
-        });
-        if (!res) return;
-        setUserRanking(res);
-      } catch (err) {
-        console.log("Error while fetching leaderboard position", err);
-      }
+      if (!addr) return;
+      const res = await fetchLeaderboardRankings({
+        addr: hexToDecimal(addr),
+        page_size: 10,
+        shift: 0,
+        duration: "all",
+      });
+      if (!res) return;
+      setUserRanking(res);
     },
     [address]
   );
 
   const fetchLeaderboardData = useCallback(
     async (addr: string) => {
-      try {
-        if (!addr) return;
-        const res = await fetchLeaderboardToppers({
-          addr: hexToDecimal(addr),
-          duration: "all",
-        });
-        if (!res) return;
-        setLeaderboardData(res);
-      } catch (err) {
-        console.log("Error while fetching leaderboard position", err);
-      }
+      if (!addr) return;
+      const res = await fetchLeaderboardToppers({
+        addr: hexToDecimal(addr),
+        duration: "all",
+      });
+      if (!res) return;
+      setLeaderboardData(res);
     },
     [address]
   );

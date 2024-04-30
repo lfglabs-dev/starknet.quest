@@ -13,3 +13,7 @@ export const getTweetLink = (tweet: string): string => {
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodedTweet}`;
   return tweetUrl;
 };
+
+export const writeToClipboard = (data: string) => {
+  navigator.clipboard.writeText(data);
+};

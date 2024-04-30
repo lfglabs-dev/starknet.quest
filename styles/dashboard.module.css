@@ -376,6 +376,7 @@
 
     .center {
         gap: 0;
+        padding-left: unset;
     }
 
 

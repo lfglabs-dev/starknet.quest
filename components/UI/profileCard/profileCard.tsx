@@ -8,9 +8,8 @@ import styles from "@styles/dashboard.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
-import { minifyAddressFromStrings } from "@utils/stringService";
+import { minifyAddress } from "@utils/stringService";
 import xpIcon from "public/icons/xpBadge.svg";
-
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import SharePopup from "../menus/sharePopup";
@@ -20,7 +19,7 @@ import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
-import { getTweetLink } from "@utils/browserService";
+import { getTweetLink, writeToClipboard } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
 import { calculatePercentile } from "@utils/numberService";
 
@@ -40,7 +39,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
 
   const copyToClipboard = () => {
     setCopied(true);
-    navigator.clipboard.writeText(identity?.owner as string);
+    writeToClipboard(identity?.owner);
     setTimeout(() => {
       setCopied(false);
     }, 1500);
@@ -101,10 +100,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </div>
             <p className={styles.addressText}>
               {typeof addressOrDomain === "string" &&
-                minifyAddressFromStrings(
-                  [addressOrDomain, identity?.owner || ""],
-                  8
-                )}
+                minifyAddress(addressOrDomain ?? identity?.owner, 8)}
             </p>
           </div>
           <p className={styles.percentileText}>

@@ -9,14 +9,13 @@ const QuestsCompletedTitleSkeleton: FunctionComponent = () => {
         <Skeleton
           variant="rounded"
           className={styles.questsCompletedTitleLoading}
-          height={'5vh'}
+          height="5vh"
           sx={{
             bgcolor: "grey.900",
             borderRadius: "30px",
-            margin: "40px"
+            margin: "40px",
           }}
         />
-
       </div>
     </>
   );
