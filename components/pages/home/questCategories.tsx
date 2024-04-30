@@ -26,7 +26,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      setBoosts(res);
+      if (res) setBoosts(res);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
@@ -47,7 +47,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
-          {boosts ? (
+          {boosts.length !== 0 ? (
             <div className={styles.questCategoryContainer}>
               <Link href={`/quest-boost`} className={styles.questCategory}>
                 <div className={styles.categoryInfos}>

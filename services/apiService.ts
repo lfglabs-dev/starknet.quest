@@ -60,7 +60,8 @@ export const fetchLeaderboardRankings = async (
 export const getBoosts = async () => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
-    return await response.json();
+    const data: Boost[] | QueryError = await response.json();
+    return data as Boost[];
   } catch (err) {
     console.log('Error while fetching boosts', err);
   }
