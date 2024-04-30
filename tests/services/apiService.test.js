@@ -1,7 +1,9 @@
+
 import {
   fetchQuestCategoryData,
   fetchLeaderboardToppers,
   fetchLeaderboardRankings,
+  getQuestById,
   getBoostById,
   getBoosts,
   getQuizById,
@@ -17,7 +19,9 @@ import {
   getQuestsParticipation,
   updateUniqueVisitors,
   getPendingBoostClaims,
+  getQuestBoostClaimParams,
 } from "@services/apiService";
+
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -508,11 +512,13 @@ describe("fetchLeaderboardRankings function", () => {
   });
 });
 
+
 describe("getBoostById function", () => {
+  
   beforeEach(() => {
     fetch.mockClear();
   });
-
+  
   it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
@@ -604,6 +610,7 @@ describe("getBoostById function", () => {
     expect(result).toBeUndefined();
   });
 });
+
 
 describe("getQuestActivityData function", () => {
   beforeEach(() => {

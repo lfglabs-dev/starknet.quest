@@ -16,6 +16,7 @@ import {
   QuestParticipantsDocument,
   UniquePageVisit,
   PendingBoostClaim,
+  BoostClaimParams,
 } from "types/backTypes";
 
 export type QuestDocumentParams = {
@@ -112,7 +113,7 @@ export const getQuestBoostClaimParams = async (id: number, addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_claim_params?boost_id=${id}&addr=${addr}`
     );
-    return await response.json();
+    return (await response.json()) as BoostClaimParams;
   } catch (err) {
     console.log("Error while fetching claim signature", err);
   }
@@ -357,7 +358,7 @@ export async function getQuestById(id: string) {
     console.error("Error parsing quest data:", error);
     throw new Error("Failed to parse quest data");
   }
-}
+
 
 export async function fetchQuestCategoryData(name: string) {
   const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
