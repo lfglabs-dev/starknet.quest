@@ -22,7 +22,7 @@ import useBoost from "@hooks/useBoost";
 import { useRouter } from "next/navigation";
 import ModalMessage from "@components/UI/modalMessage";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
-import { PendingBoostClaim } from "@types/backTypes";
+import { PendingBoostClaim } from "types/backTypes";
 
 type BoostQuestPageProps = {
   params: {
