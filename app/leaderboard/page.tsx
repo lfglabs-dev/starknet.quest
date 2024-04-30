@@ -68,6 +68,8 @@ export default function Page() {
     first_elt_position: 0,
     ranking: [],
   });
+  const [inititalFetchTop50, setInititalFetchTop50] = useState(false);
+
   const isTop50RankedView =
     !currentSearchedAddress &&
     (duration === TOP_50_TAB_STRING || (!isConnecting && !address));
@@ -95,8 +97,10 @@ export default function Page() {
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
       if (response) setRanking(response);
+      if (response && !requestBody.addr) setInititalFetchTop50(true);
+      else setInititalFetchTop50(false);
     },
-    []
+    [address]
   );
 
   const addRankingResults = useCallback(
@@ -310,6 +314,41 @@ export default function Page() {
       duration: timeFrameMap(duration),
     });
   }, [rowsPerPage, currentSearchedAddress, isCustomResult, duration, address]);
+
+  useEffect(() => {
+    if (inititalFetchTop50 && address && duration !== TOP_50_TAB_STRING) {
+      const requestBody = {
+        addr:
+          currentSearchedAddress.length > 0
+            ? currentSearchedAddress
+            : userAddress
+            ? hexToDecimal(userAddress)
+            : address
+            ? address
+            : "",
+        page_size: rowsPerPage,
+        shift: 0,
+        duration: timeFrameMap(duration),
+      };
+
+      const getTop50RequestBody: LeaderboardRankingParams = {
+        addr: "",
+        page_size: 50,
+        shift: 0,
+        duration: "all",
+      };
+
+      setPaginationLoading(true);
+      fetchRankingResults(
+        isTop50RankedView ? getTop50RequestBody : requestBody
+      );
+
+      fetchLeaderboardToppersResult({
+        addr: requestBody.addr,
+        duration: timeFrameMap(duration),
+      });
+    }
+  }, [ranking]);
 
   // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
