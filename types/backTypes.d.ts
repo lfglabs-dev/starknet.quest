@@ -163,3 +163,7 @@ type QuestParticipantsDocument = {
   count: string | number;
   firstParticipants: string[];
 };
+
+type UniquePageVisit = {
+  res: boolean;
+};

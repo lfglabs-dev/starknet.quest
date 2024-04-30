@@ -15,6 +15,7 @@ import {
   getQuestParticipants,
   getBoostedQuests,
   getQuestsParticipation,
+  updateUniqueVisitors
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -59,19 +60,19 @@ describe("fetchQuestCategoryData function", () => {
 });
 
 describe("getBoostedQuests function", () => {
-  
-   beforeEach(() => {
+
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-   it("should fetch and return all boosted quests", async () => {
+
+  it("should fetch and return all boosted quests", async () => {
     const mockData = [23, 104, 24, 105, 106, 26, 27];
-     
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-     
-      const result = await getBoostedQuests();
+
+    const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(mockData);
@@ -79,12 +80,12 @@ describe("getBoostedQuests function", () => {
 
   it("should handle fetch with empty response", async () => {
     const mockData = [];
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoostedQuests();
+
+    const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(result);
@@ -94,11 +95,11 @@ describe("getBoostedQuests function", () => {
     const mockData = {
       error: 000,
       message: "Error querying boosts",
-        data: {},
+      data: {},
     };
 
     fetch.mockResolvedValueOnce({
-       json: () => Promise.resolve(mockData),
+      json: () => Promise.resolve(mockData),
     });
 
     const result = await getBoostedQuests();
@@ -172,7 +173,7 @@ describe('getQuestsParticipation', () => {
     };
 
     fetch.mockResolvedValueOnce({
-       json: () => Promise.resolve(mockResponse),
+      json: () => Promise.resolve(mockResponse),
     });
 
     const result = await getQuestsParticipation();
@@ -506,15 +507,15 @@ describe("fetchLeaderboardRankings function", () => {
     );
     expect(result2).toEqual(mockData);
   });
- });
+});
 
 describe("getBoostById function", () => {
-  
-   beforeEach(() => {
+
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-   it("should fetch and return data for a valid boost id", async () => {
+
+  it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
       expiry: 1718052414000,
@@ -542,12 +543,12 @@ describe("getBoostById function", () => {
 
   it("should handle when API returns no response", async () => {
     const mockData = undefined;
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoostById("boost-id");
+
+    const result = await getBoostById("boost-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_boost?id=boost-id`
     );
@@ -583,11 +584,11 @@ describe("getBoostById function", () => {
   it("should handle null cases in parameters", async () => {
     const mockData =
       "Failed to deserialize query string: invalid digit found in string";
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await getBoostById(null);
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=null`);
     expect(result).toEqual(mockData);
@@ -1421,3 +1422,33 @@ describe("getQuestsInBoost function", () => {
   });
 });
 
+describe("updateUniqueVisitors function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch unique visitor count", async () => {
+    const mockData = {
+      res: "true",
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await updateUniqueVisitors("1");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/unique_page_visit?page_id=1`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse = "Failed to deserialize query string: missing field `page_id`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await updateUniqueVisitors();
+    expect(result).toEqual(mockResponse);
+  });
+});
