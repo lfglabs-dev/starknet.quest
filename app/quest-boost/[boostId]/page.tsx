@@ -80,7 +80,9 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
 
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
-    setQuests(questsList);
+    if (questsList) { 
+      setQuests(questsList);
+    }
     setBoost(boostInfo);
     setParticipants(totalParticipants);
     setLoading(false);
