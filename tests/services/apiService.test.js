@@ -16,6 +16,9 @@ import {
   getQuestParticipants,
   getBoostedQuests,
   getQuestsParticipation,
+  updateUniqueVisitors,
+  getPendingBoostClaims,
+  getQuestBoostClaimParams,
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -60,19 +63,18 @@ describe("fetchQuestCategoryData function", () => {
 });
 
 describe("getBoostedQuests function", () => {
-  
-   beforeEach(() => {
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-   it("should fetch and return all boosted quests", async () => {
+
+  it("should fetch and return all boosted quests", async () => {
     const mockData = [23, 104, 24, 105, 106, 26, 27];
-     
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-     
-      const result = await getBoostedQuests();
+
+    const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(mockData);
@@ -80,12 +82,12 @@ describe("getBoostedQuests function", () => {
 
   it("should handle fetch with empty response", async () => {
     const mockData = [];
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoostedQuests();
+
+    const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(result);
@@ -95,22 +97,21 @@ describe("getBoostedQuests function", () => {
     const mockData = {
       error: 000,
       message: "Error querying boosts",
-        data: {},
+      data: {},
     };
 
     fetch.mockResolvedValueOnce({
-       json: () => Promise.resolve(mockData),
+      json: () => Promise.resolve(mockData),
     });
 
     const result = await getBoostedQuests();
 
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_boosted_quests`);
     expect(result).toEqual(result);
-  })
+  });
+});
 
-})
-
-describe('getQuestsParticipation', () => {
+describe("getQuestsParticipation", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -173,7 +174,7 @@ describe('getQuestsParticipation', () => {
     };
 
     fetch.mockResolvedValueOnce({
-       json: () => Promise.resolve(mockResponse),
+      json: () => Promise.resolve(mockResponse),
     });
 
     const result = await getQuestsParticipation();
@@ -196,7 +197,6 @@ describe('getQuestsParticipation', () => {
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -365,8 +365,7 @@ describe("getTasksByQuestId function", () => {
     );
     expect(result).toEqual(mockData);
   });
-})
-
+});
 
 describe("fetchLeaderboardRankings function", () => {
   beforeEach(() => {
@@ -507,15 +506,14 @@ describe("fetchLeaderboardRankings function", () => {
     );
     expect(result2).toEqual(mockData);
   });
- });
+});
 
 describe("getBoostById function", () => {
-  
-   beforeEach(() => {
+  beforeEach(() => {
     fetch.mockClear();
   });
-  
-   it("should fetch and return data for a valid boost id", async () => {
+
+  it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
       expiry: 1718052414000,
@@ -543,12 +541,12 @@ describe("getBoostById function", () => {
 
   it("should handle when API returns no response", async () => {
     const mockData = undefined;
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoostById("boost-id");
+
+    const result = await getBoostById("boost-id");
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_boost?id=boost-id`
     );
@@ -584,11 +582,11 @@ describe("getBoostById function", () => {
   it("should handle null cases in parameters", async () => {
     const mockData =
       "Failed to deserialize query string: invalid digit found in string";
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await getBoostById(null);
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boost?id=null`);
     expect(result).toEqual(mockData);
@@ -770,7 +768,6 @@ describe("getQuestActivityData function", () => {
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("getDeployedTimeByAddress function", () => {
   beforeEach(() => {
@@ -1028,44 +1025,45 @@ describe("getQuestParticipants function", () => {
 
   it("should handle when endpoint returns no response", async () => {
     let mockData;
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     let id = 212
+
+    let id = 212;
     const result = await getQuestParticipants(id);
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_quest_participants?quest_id=${id}`);
+      `${API_URL}/get_quest_participants?quest_id=${id}`
+    );
     expect(result).toEqual(mockData);
   });
-  
+
   it("should handle when endpoint returns response with unexpected format", async () => {
     const unexpectedFormat = {
-      "length": 2,
-      "partcipants": ["alice", "bob"]
+      length: 2,
+      partcipants: ["alice", "bob"],
     };
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(unexpectedFormat),
     });
 
-    let id = 212
+    let id = 212;
     const result = await getQuestParticipants(id);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quest_participants?quest_id=${id}`
     );
     expect(result).toEqual(unexpectedFormat);
   });
-  
+
   it("should handle when endpoint returns null or undefined", async () => {
     let nullValue = null;
-    let undefinedValue = undefined
-    let id = 212
+    let undefinedValue = undefined;
+    let id = 212;
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(nullValue),
     });
-    
+
     let result = await getQuestParticipants(id);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quest_participants?quest_id=${id}`
@@ -1085,25 +1083,24 @@ describe("getQuestParticipants function", () => {
 
   it("should handle a successful response", async () => {
     const successfulResponse = {
-      "count": 2,
-      "firstParticipants": [
+      count: 2,
+      firstParticipants: [
         "2743904720129156746180181293311338667551775614259360553548717267834876683107",
-        "2024382663004519338288950797130096007097807197019480655109492638824315612165"
-      ]
+        "2024382663004519338288950797130096007097807197019480655109492638824315612165",
+      ],
     };
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(successfulResponse),
     });
 
-    let id = 1
+    let id = 1;
     const result = await getQuestParticipants(id);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quest_participants?quest_id=${id}`
     );
     expect(result).toEqual(successfulResponse);
   });
-})
-
+});
 
 describe("getBoosts function", () => {
   beforeEach(() => {
@@ -1253,12 +1250,12 @@ describe("getBoosts function", () => {
         },
       ],
     ];
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getBoosts();
+
+    const result = await getBoosts();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_boosts`);
 
     expect(result).toEqual(mockData);
@@ -1383,11 +1380,11 @@ describe("getQuizById function", () => {
     const result = await getQuizById(undefined);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quiz?id=undefined&addr=0`
-       );
+    );
     expect(result).toEqual(mockData);
   });
 
-    it("should handle null cases in parameters", async () => {
+  it("should handle null cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
 
     fetch.mockResolvedValueOnce({
@@ -1509,3 +1506,175 @@ describe("getQuestsInBoost function", () => {
   });
 });
 
+describe("updateUniqueVisitors function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch unique visitor count", async () => {
+    const mockData = {
+      res: "true",
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await updateUniqueVisitors("1");
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/unique_page_visit?page_id=1`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: missing field `page_id`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await updateUniqueVisitors();
+    expect(result).toEqual(mockResponse);
+  });
+});
+
+describe("getPendingBoostClaims function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid address", async () => {
+    const mockData = [
+      {
+        amount: 1500,
+        token:
+          "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+        expiry: 1705708740000,
+        quests: [23],
+        winner:
+          "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+        img_url: "/rango/bridge.webp",
+        id: 5,
+        name: "The Rango Boost",
+        num_of_winners: 6,
+        token_decimals: 6,
+      },
+    ];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(
+      "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData = "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPendingBoostClaims(null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_pending_claims?addr=null`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: missing field `addr`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getPendingBoostClaims();
+    expect(result).toEqual(mockResponse);
+  });
+});
+
+describe("getQuestBoostClaimParams function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid address and boost id", async () => {
+    const mockData = {
+      address:
+        "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+      r: "2328575043184937723727467456938795290152111035640589440945775742296008884937",
+      s: "2314906404127565163552396326236777531502314327598120407071208784203310551837",
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(
+      5,
+      "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363"
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=5&addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(undefined, undefined);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=undefined&addr=undefined`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getQuestBoostClaimParams(null, null);
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_claim_params?boost_id=null&addr=null`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: missing field `boost_id`";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getQuestBoostClaimParams();
+    expect(result).toEqual(mockResponse);
+  });
+});

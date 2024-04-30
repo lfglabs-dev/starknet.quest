@@ -117,7 +117,6 @@ type QuestParticipation = {
   count: number;
 }[];
 
-
 type QuizQuestionDocument = {
   kind: "text_choice" | "image_choice" | "ordering";
   layout: "default" | "illustrated_left";
@@ -140,7 +139,6 @@ type QuestActivityData = {
 type BoostedQuests = number[];
 
 type UniqueVisitorCount = number;
-
 
 type LeaderboardToppersData = {
   best_users: { address: string; xp: number; achievements: number }[];
@@ -166,3 +164,25 @@ type QuestParticipantsDocument = {
   firstParticipants: string[];
 };
 
+type UniquePageVisit = {
+  res: boolean;
+};
+
+type PendingBoostClaim = {
+  amount: number;
+  token: string;
+  expiry: number;
+  quests: number[];
+  winner: string;
+  img_url: string;
+  id: number;
+  name: string;
+  num_of_winners: number;
+  token_decimals: number;
+};
+
+type BoostClaimParams = {
+  address: string;
+  r: string;
+  s: string;
+};
