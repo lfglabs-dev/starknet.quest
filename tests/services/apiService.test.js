@@ -1455,20 +1455,22 @@ describe("getPendingBoostClaims function", () => {
   });
 
   it("should fetch and return data for a valid address", async () => {
-    const mockData = {
-      amount: 1500,
-      token:
-        "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-      expiry: 1705708740000,
-      quests: [23],
-      winner:
-        "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
-      img_url: "/rango/bridge.webp",
-      id: 5,
-      name: "The Rango Boost",
-      num_of_winners: 6,
-      token_decimals: 6,
-    };
+    const mockData = [
+      {
+        amount: 1500,
+        token:
+          "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+        expiry: 1705708740000,
+        quests: [23],
+        winner:
+          "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+        img_url: "/rango/bridge.webp",
+        id: 5,
+        name: "The Rango Boost",
+        num_of_winners: 6,
+        token_decimals: 6,
+      },
+    ];
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
