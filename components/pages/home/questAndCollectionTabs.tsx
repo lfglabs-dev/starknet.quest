@@ -91,7 +91,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      setBoosts(res);
+      if (res) setBoosts(res);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
@@ -175,8 +175,8 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="space-y-6 flex flex-col items-center">
-              {boosts ? (
+            <div className="flex flex-col items-center space-y-6">
+              {boosts.length !== 0 ? (
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>

@@ -6,8 +6,16 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  BoostedQuests,
+  QuestParticipation,
+  QuizDocument,
+  QuestActivityData,
+  UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
+  QuestParticipantsDocument,
+  UniquePageVisit,
+  PendingBoostClaim,
 } from "types/backTypes";
 
 export type QuestDocumentParams = {
@@ -59,7 +67,8 @@ export const fetchLeaderboardRankings = async (
 export const getBoosts = async () => {
   try {
     const response = await fetch(`${baseurl}/boost/get_boosts`);
-    return await response.json();
+    const data: Boost[] | QueryError = await response.json();
+    return data as Boost[];
   } catch (err) {
     console.log("Error while fetching boosts", err);
   }
@@ -68,7 +77,8 @@ export const getBoosts = async () => {
 export const getQuestsInBoost = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/boost/get_quests?boost_id=${id}`);
-    return await response.json();
+    const data: QuestDocument[] | QueryError = await response.json();
+    return data as QuestDocument[];
   } catch (err) {
     console.log("Error while fetching quests in boost", err);
   }
@@ -89,9 +99,11 @@ export const getQuestParticipants = async (id: number | string) => {
     const response = await fetch(
       `${baseurl}/get_quest_participants?quest_id=${id}`
     );
-    return await response.json();
+    const data: QuestParticipantsDocument | QueryError = await response.json();
+    return data as QuestParticipantsDocument;
   } catch (err) {
     console.log("Error while fetching total participants", err);
+    return err as QueryError;
   }
 };
 
@@ -111,7 +123,7 @@ export const getPendingBoostClaims = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_pending_claims?addr=${addr}`
     );
-    return await response.json();
+    return (await response.json()) as PendingBoostClaim[];
   } catch (err) {
     console.log("Error while fetching pending claims", err);
   }
@@ -166,7 +178,8 @@ export const getCompletedQuests = async (addr: string) => {
 export const getBoostedQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/get_boosted_quests`);
-    return await response.json();
+    const boostedQuests: BoostedQuests | QueryError = await response.json();
+    return boostedQuests;
   } catch (err) {
     console.log("Error while getting boosted quests", err);
   }
@@ -235,12 +248,16 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
   }
 };
 
-export const getQuizById = async (quizId: string, address = "0") => {
+export const getQuizById = async (
+  quizId: string,
+  address = "0"
+): Promise<Quiz | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/get_quiz?id=${quizId}&addr=${address}`
     );
-    return await response.json();
+    const data: QuizDocument | QueryError = await response.json();
+    return data as Quiz;
   } catch (err) {
     console.log("Error while fetching quiz data by Id", err);
   }
@@ -298,13 +315,15 @@ export const getQuestActivityData = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_activity?id=${id}`
     );
-    return await response.json();
+    return (await response.json()) as QuestActivityData[];
   } catch (err) {
     console.log("Error while fetching quest data", err);
   }
 };
 
-export const getQuestsParticipation = async (id: number) => {
+export const getQuestsParticipation = async (
+  id: number
+): Promise<QuestParticipation | undefined> => {
   try {
     const response = await fetch(
       `${baseurl}/analytics/get_quest_participation?id=${id}`
@@ -320,7 +339,7 @@ export const getUniqueVisitorCount = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_unique_visitors?id=${id}`
     );
-    return await response.json();
+    return (await response.json()) as UniqueVisitorCount;
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
   }
@@ -349,7 +368,7 @@ export async function fetchQuestCategoryData(name: string) {
 export const updateUniqueVisitors = async (id: string) => {
   try {
     const response = await fetch(`${baseurl}/unique_page_visit?page_id=${id}`);
-    return await response.json();
+    return (await response.json()) as UniquePageVisit;
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
   }
