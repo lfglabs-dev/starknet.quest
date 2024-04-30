@@ -5,7 +5,7 @@ export function minifyAddress(address: string | undefined, length = 4): string {
 
   const firstPart = address.substring(0, length);
   const secondPart = address.substring(
-    address.length - length - 1,
+    address.length - length + 1,
     address.length
   );
 
