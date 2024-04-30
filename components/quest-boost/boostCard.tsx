@@ -11,10 +11,11 @@ import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
 import { useRouter } from "next/navigation";
+import { CompletedQuests, QueryError } from "types/backTypes";
 
 type BoostCardProps = {
   boost: Boost;
-  completedQuests?: number[];
+  completedQuests?: CompletedQuests | QueryError;
 };
 
 const BoostCard: FunctionComponent<BoostCardProps> = ({
@@ -39,10 +40,10 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
       // no quests are completed by user
       if (!completedQuests) return false;
       // if any of the quests are completed by user and is part of this boost
-      if (completedQuests.includes(quest)) userParticipationCheck = true;
+      if ((completedQuests as CompletedQuests).includes(quest)) userParticipationCheck = true;
 
       // check if all quests are completed by the user and if not then set this flag value to false
-      if (!completedQuests.includes(quest)) userBoostCompletionCheck = false;
+      if (!(completedQuests as CompletedQuests).includes(quest)) userBoostCompletionCheck = false;
     });
     setHasUserCompletedBoost(userBoostCompletionCheck);
     setUserParticipationStatus(userParticipationCheck ? true : false);

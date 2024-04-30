@@ -10,6 +10,7 @@ import { getBoosts, getCompletedQuests } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
+import { CompletedQuests, QueryError } from "types/backTypes";
 
 export default function Page() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function Page() {
   const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
-  const [completedQuests, setCompletedQuests] = useState<number[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<CompletedQuests | QueryError>([]);
 
   const fetchBoosts = async () => {
     try {

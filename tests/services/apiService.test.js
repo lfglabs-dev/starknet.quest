@@ -518,6 +518,7 @@ describe("getCompletedQuests", () => {
 
     expect(result).toEqual(mockDataRes)
   })
+})
 
 describe("getDeployedTimeByAddress function", () => {
   

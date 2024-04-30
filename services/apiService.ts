@@ -9,6 +9,7 @@ import {
   UniqueVisitorCount,
   LeaderboardRankings,
   LeaderboardToppersData,
+  CompletedQuests
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -154,9 +155,11 @@ export const getCompletedQuests = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/get_completed_quests?addr=${addr}`
     );
-    return await response.json();
+    const data: CompletedQuests | QueryError = await response.json();
+    return data as CompletedQuests
   } catch (err) {
     console.log("Error while fetching completed quests", err);
+    return err as QueryError
   }
 };
 

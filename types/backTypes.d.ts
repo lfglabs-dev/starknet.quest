@@ -129,3 +129,5 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
+
+type CompletedQuests = number[]
