@@ -20,14 +20,15 @@ import {
   getQuestsParticipation,
   getUniqueVisitorCount,
   getQuestById,
-} from '@services/apiService';
-import { getMonthName } from '@utils/stringService';
-import { QuestDocument, QuestParticipation } from '../../../types/backTypes';
-import { numberWithCommas } from '@utils/numberService';
-import { CDNImg } from '@components/cdn/image';
-import { useMediaQuery } from '@mui/material';
-import AnalyticsSkeleton from '@components/skeletons/analyticsSkeleton';
-import { QuestDefault } from '@constants/common';
+
+} from "@services/apiService";
+import { getMonthName } from "@utils/stringService";
+import { QuestDocument, QuestParticipation, QuestParticipantsDocument } from "../../../types/backTypes";
+import { numberWithCommas } from "@utils/numberService";
+import { CDNImg } from "@components/cdn/image";
+import { useMediaQuery } from "@mui/material";
+import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
+import { QuestDefault } from "@constants/common";
 
 type BoostQuestPageProps = {
   params: {
@@ -89,8 +90,8 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const fetchQuestParticipants = useCallback(async () => {
     try {
-      const res = await getQuestParticipants(parseInt(questId));
-      setQuestParticipants(res.count);
+      const res = (await getQuestParticipants(parseInt(questId))) as QuestParticipantsDocument;
+      setQuestParticipants(Number(res.count));
     } catch (error) {
       console.log('Error while fetching quest data', error);
     }
