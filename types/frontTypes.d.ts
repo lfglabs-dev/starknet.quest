@@ -42,7 +42,7 @@ type TaskError = {
 
 type Quiz = {
   name: string;
-  description: string;
+  desc: string;
   questions: QuizQuestion[];
 };
 
@@ -66,11 +66,12 @@ type Boost = {
   token: string;
   expiry: number;
   quests: number[];
-  claimed: boolean;
+  claimed?: boolean;
   winner: string[] | null;
   img_url: string;
   id: number;
   name: string;
+  hidden: boolean;
   num_of_winners: number;
   token_decimals: number;
 };

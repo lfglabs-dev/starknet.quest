@@ -22,6 +22,7 @@ import useBoost from "@hooks/useBoost";
 import { useRouter } from "next/navigation";
 import ModalMessage from "@components/UI/modalMessage";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
+import { BoostClaimParams, PendingBoostClaim } from "types/backTypes";
 
 type BoostQuestPageProps = {
   params: {
@@ -55,7 +56,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       if (pendingClaimStatus) {
         setIsUnclaimed(
           pendingClaimStatus.filter(
-            (claim: Boost) => claim.id === parseInt(boostId)
+            (claim: PendingBoostClaim) => claim.id === parseInt(boostId)
           ).length > 0
         );
       }
@@ -83,7 +84,10 @@ export default function Page({ params }: BoostQuestPageProps) {
     let formattedSign: Signature = ["", ""];
     try {
       if (!boost?.id || !address) return formattedSign;
-      const res = await getQuestBoostClaimParams(boost.id, address);
+      const res = await getQuestBoostClaimParams(boost?.id, address);
+      if (!res) {
+        return ["", ""];
+      }
       formattedSign = [res?.r, res?.s];
       return formattedSign;
     } catch (err) {
