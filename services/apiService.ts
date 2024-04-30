@@ -16,6 +16,7 @@ import {
   QuestParticipantsDocument,
   UniquePageVisit,
   PendingBoostClaim,
+  BoostClaimParams,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -108,7 +109,7 @@ export const getQuestBoostClaimParams = async (id: number, addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_claim_params?boost_id=${id}&addr=${addr}`
     );
-    return await response.json();
+    return (await response.json()) as BoostClaimParams;
   } catch (err) {
     console.log("Error while fetching claim signature", err);
   }
