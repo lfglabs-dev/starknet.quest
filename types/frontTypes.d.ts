@@ -274,28 +274,6 @@ type LeaderboardToppersData = {
   position?: number;
 };
 
-type QuestDocument = {
-  id: number;
-  name: string;
-  desc: string;
-  issuer: string;
-  category: string;
-  rewards_endpoint: string;
-  logo: string;
-  rewards_img: string;
-  rewards_title: string;
-  rewards_nfts: NFTItem[];
-  img_card: string;
-  title_card: string;
-  hidden: boolean;
-  disabled: boolean;
-  expiry_timestamp: string | null;
-  mandatory_domain: string | null;
-  expired: boolean;
-  rewards_description: string | null;
-  additional_desc: string | null;
-};
-
 type PickRandomObjects = {
   questArray: QuestDocument[];
   count?: number;

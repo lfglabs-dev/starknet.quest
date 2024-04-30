@@ -10,10 +10,6 @@ import {
   LeaderboardToppersData,
 } from "types/backTypes";
 
-export type QuestDocumentParams = {
-  id: string;
-};
-
 export type LeaderboardTopperParams = {
   addr: string;
   duration: "week" | "month" | "all";
