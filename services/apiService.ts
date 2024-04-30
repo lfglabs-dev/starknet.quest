@@ -121,7 +121,7 @@ export const getCompletedBoosts = async (addr: string) => {
   }
 };
 
-export const getQuests = async (): Promise<object | undefined> => {
+export const getQuests = async (): Promise<QuestDocument | undefined> => {
   try {
     const response = await fetch(`${baseurl}/get_quests`);
     return await response.json();
