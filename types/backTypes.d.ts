@@ -138,6 +138,7 @@ type QuestActivityData = {
   participants: number;
 };
 
+type BoostedQuests = number[];
 
 type UniqueVisitorCount = number;
 
@@ -158,4 +159,3 @@ type Ranking = {
   xp: number;
   achievements: number;
 };
-

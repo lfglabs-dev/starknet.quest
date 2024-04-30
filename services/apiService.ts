@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  BoostedQuests,
   QuestParticipation,
   QuizDocument,
   QuestActivityData,
@@ -169,7 +170,8 @@ export const getCompletedQuests = async (addr: string) => {
 export const getBoostedQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/get_boosted_quests`);
-    return await response.json();
+    const boostedQuests: BoostedQuests | QueryError = await response.json();
+    return boostedQuests;
   } catch (err) {
     console.log('Error while getting boosted quests', err);
   }
@@ -329,7 +331,7 @@ export const getUniqueVisitorCount = async (id: number) => {
     const response = await fetch(
       `${baseurl}/analytics/get_unique_visitors?id=${id}`
     );
-    return await response.json() as UniqueVisitorCount;
+    return (await response.json()) as UniqueVisitorCount;
   } catch (err) {
     console.log('Error while fetching unique visitor count', err);
   }
