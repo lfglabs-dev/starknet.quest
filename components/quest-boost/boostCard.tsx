@@ -34,16 +34,16 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
 
   useEffect(() => {
     // return if boost does not exist or no quests are completed
-    if (!boost || !completedQuests || completedQuests.length === 0) return;
+    if (!boost || !completedQuests || (completedQuests as CompletedQuests).length === 0) return;
 
     // check if any of the quests are completed by user
-    const userParticipationCheck = completedQuests.some((quest) =>
+    const userParticipationCheck = (completedQuests as CompletedQuests).some((quest) =>
       boost.quests.includes(quest)
     );
 
     // check if all quests are completed by the user
     const userBoostCompletionCheck = boost.quests.every((quest) =>
-      completedQuests.includes(quest)
+      (completedQuests as CompletedQuests).includes(quest)
     );
 
     setHasUserCompletedBoost(userBoostCompletionCheck);
