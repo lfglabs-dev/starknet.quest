@@ -22,7 +22,7 @@ import {
   getQuestById,
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
-import { QuestDocument } from "../../../types/backTypes";
+import { QuestDocument, QuestParticipantsDocument } from "../../../types/backTypes";
 import { numberWithCommas } from "@utils/numberService";
 import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
@@ -86,8 +86,8 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const fetchQuestParticipants = useCallback(async () => {
     try {
-      const res = await getQuestParticipants(parseInt(questId));
-      setQuestParticipants(res.count);
+      const res = (await getQuestParticipants(parseInt(questId))) as QuestParticipantsDocument;
+      setQuestParticipants(Number(res.count));
     } catch (error) {
       console.log("Error while fetching quest data", error);
     }

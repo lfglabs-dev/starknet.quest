@@ -91,6 +91,7 @@ export const getQuestParticipants = async (id: number | string) => {
     return data as QuestParticipantsDocument;
   } catch (err) {
     console.log("Error while fetching total participants", err);
+    return err as QueryError
   }
 };
 
