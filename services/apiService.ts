@@ -14,7 +14,8 @@ import {
   LeaderboardRankings,
   LeaderboardToppersData,
   QuestParticipantsDocument,
-  UniquePageVisit
+  UniquePageVisit,
+  PendingBoostClaim
 } from 'types/backTypes';
 
 export type LeaderboardTopperParams = {
@@ -118,9 +119,9 @@ export const getPendingBoostClaims = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_pending_claims?addr=${addr}`
     );
-    return await response.json();
+    return await response.json() as PendingBoostClaim;
   } catch (err) {
-    console.log('Error while fetching pending claims', err);
+    console.log("Error while fetching pending claims", err);
   }
 };
 
