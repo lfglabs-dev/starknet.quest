@@ -25,6 +25,7 @@ import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
 import Image from "next/image";
+import { PendingBoostClaim } from "types/backTypes";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -62,9 +63,9 @@ const Navbar: FunctionComponent = () => {
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
     const res = await getPendingBoostClaims(hexToDecimal(address));
-    if (!(res?.length > 0)) return;
+    if (!res) return;
     const finalNotificationsList: SQInfoData[] = [];
-    res.forEach((boost: Boost) => {
+    res.forEach((boost: PendingBoostClaim) => {
       const data = {
         title: "Congratulations! 🎉",
         subtext: `You have just won ${parseInt(
