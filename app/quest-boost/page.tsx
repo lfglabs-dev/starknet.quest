@@ -10,6 +10,7 @@ import { getBoosts, getCompletedQuests } from "@services/apiService";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
+import { CompletedQuests, QueryError } from "types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 
 export default function Page() {
@@ -18,10 +19,10 @@ export default function Page() {
   const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<CompletedQuests | QueryError>([]);
   const [loadingBoosts, setLoadingBoosts] = useState<boolean>(true);
   const [loadingCompletedQuests, setLoadingCompletedQuests] =
     useState<boolean>(true);
-  const [completedQuests, setCompletedQuests] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchBoosts = async () => {
