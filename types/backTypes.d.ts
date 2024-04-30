@@ -116,6 +116,7 @@ type LeaderboardToppersData = {
   total_users: number;
   position?: number;
 };
+
 type LeaderboardRankings = {
   ranking: Ranking[];
   first_elt_position: number;

@@ -10,6 +10,10 @@ import {
   LeaderboardToppersData,
 } from "types/backTypes";
 
+export type QuestDocumentParams = {
+  id: string;
+};
+
 export type LeaderboardTopperParams = {
   addr: string;
   duration: "week" | "month" | "all";
@@ -322,10 +326,18 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
-export async function getQuestById(questId: string | number) {
-  const response = await fetch(`${baseurl}/get_quest?id=${questId}`);
-  const data: QuestDocument | QueryError = await response.json();
-  return data as QuestDocument;
+export async function getQuestById(id: string) {
+  const response = await fetch(`${baseurl}/get_quest?id=${id}`);
+  if (!response.ok) {
+    throw new Error(`Error fetching quest data: ${response.status}`);
+  }
+  try {
+    const data: QuestDocument = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error parsing quest data:", error);
+    throw new Error("Failed to parse quest data");
+  }
 }
 
 export async function fetchQuestCategoryData(name: string) {
