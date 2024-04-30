@@ -11,9 +11,11 @@ import { useMediaQuery } from "@mui/material";
 import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Link from "next/link";
 import { CDNImage } from "@components/cdn/image";
+
 import { useAccount } from "@starknet-react/core";
 import { TOP_50_TAB_STRING } from "@constants/common";
 import Top3RankedUsers from "./Top3RankedUsers";
+import { CompletedQuests } from "types/backTypes";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
@@ -55,7 +57,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
           const completedQuestsResponse = await getCompletedQuests(
             item?.address
           );
-          item.completedQuests = completedQuestsResponse?.length;
+          item.completedQuests = (completedQuestsResponse as CompletedQuests)?.length;
 
           // get the domain name from the address
           const hexAddress = decimalToHex(item.address);
