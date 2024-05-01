@@ -132,9 +132,11 @@ export const getCompletedBoosts = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_completed_boosts?addr=${addr}`
     );
-    return await response.json();
+    const data: number[] | QueryError = await response.json();
+    return data as number[]
   } catch (err) {
     console.log("Error while fetching completed boosts", err);
+    return err as QueryError
   }
 };
 
@@ -348,7 +350,7 @@ export const getUniqueVisitorCount = async (id: number) => {
   export async function getQuestById(id: string) {
     try {
       const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-      const data: QuestDocument = await response.json();
+      const data: QuestDocument | QueryError = await response.json();
       return data;
     } catch (error) {
       console.error("Error parsing quest data:", error);

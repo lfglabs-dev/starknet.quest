@@ -21,6 +21,7 @@ import {
   updateUniqueVisitors,
   getPendingBoostClaims,
   getQuestBoostClaimParams,
+  getCompletedBoosts,
 } from "@services/apiService";
 
 
@@ -1785,3 +1786,71 @@ describe("getQuestBoostClaimParams function", () => {
     expect(result).toEqual(mockResponse);
   });
 });
+
+describe("getCompletedBoosts function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should return the completed boost data for a valid address", async function () {
+    const mockResponse = [6, 15, 24];
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse)
+    });
+
+    const result = await getCompletedBoosts(123)
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=${123}`
+    );
+    expect(result).toEqual(mockResponse)
+    
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockResponse = null
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse)
+    });
+
+    const result = await getCompletedBoosts(123)
+    expect(result).toEqual(mockResponse);
+
+  });
+
+  it("should handle when API returns response in unexpected format", async () => {
+    const mockResponse =
+      "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getCompletedBoosts("addr");
+    expect(result).not.toEqual(expect.any(Array));
+
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockResponse = []
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse)
+    });
+
+    const result = await getCompletedBoosts('');
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_completed_boosts?addr=`);
+    expect(result).toEqual(mockResponse);
+    
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid character";
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData)
+    });
+
+    const result = await getCompletedBoosts(null);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/boost/get_completed_boosts?addr=null`);
+    expect(result).toEqual(mockData);
+  });
+})
