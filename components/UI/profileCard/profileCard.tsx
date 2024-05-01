@@ -116,6 +116,21 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
               </p>
             </div>
+            <div className="flex sm:hidden h-full justify-center py-4">
+              <SocialMediaActions identity={identity} />
+              <Link href={shareLink} target="_blank" rel="noreferrer">
+                <div className={styles.right_share_button}>
+                  <CDNImage
+                    src={shareSrc}
+                    width={20}
+                    height={20}
+                    alt={"share-icon"}
+                  />
+                  <p>Share</p>
+                </div>
+              </Link>
+            </div>
+
             <p className={styles.percentileText}>
               {userPercentile.length > 0 && userPercentile !== "NA" ? (
                 <>
@@ -130,20 +145,22 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.right_top}>
-            <div className={styles.right_socials}>
-              <SocialMediaActions identity={identity} />
-              <Link href={shareLink} target="_blank" rel="noreferrer">
-                <div className={styles.right_share_button}>
-                  <CDNImage
-                    src={shareSrc}
-                    width={20}
-                    height={20}
-                    alt={"share-icon"}
-                  />
-                  <p>Share</p>
-                </div>
-              </Link>
+          <div className="hidden sm:flex">
+            <div className={styles.right_top}>
+              <div className={styles.right_socials}>
+                <SocialMediaActions identity={identity} />
+                <Link href={shareLink} target="_blank" rel="noreferrer">
+                  <div className={styles.right_share_button}>
+                    <CDNImage
+                      src={shareSrc}
+                      width={20}
+                      height={20}
+                      alt={"share-icon"}
+                    />
+                    <p>Share</p>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
 
