@@ -157,6 +157,8 @@ type Ranking = {
   achievements: number;
 };
 
+type CompletedQuests = number[]
+
 type QuestParticipantsDocument = {
   count: string | number;
   firstParticipants: string[];
