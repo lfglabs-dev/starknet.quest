@@ -353,7 +353,7 @@
     }
 
     .right_bottom {
-        justify-content: space-around;
+        justify-content: center;
         gap: 0.7rem;
     }
 
@@ -394,10 +394,6 @@
     .address_div {
         justify-content: center;
         gap: 0.5rem;
-    }
-
-    .right_bottom {
-        padding: 5px 80px;
     }
 
     .profile_picture_div {
