@@ -342,19 +342,17 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
-export async function getQuestById(id: string) {
-  const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-  if (!response.ok) {
-    throw new Error(`Error fetching quest data: ${response.status}`);
+  export async function getQuestById(id: string) {
+    try {
+      const response = await fetch(`${baseurl}/get_quest?id=${id}`);
+      const data: QuestDocument = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error parsing quest data:", error);
+      return error as QueryError;
+    }
   }
-  try {
-    const data: QuestDocument = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error parsing quest data:", error);
-    throw new Error();
-  }
-}
+
 export async function fetchQuestCategoryData(name: string) {
   const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
   const data: QuestCategoryDocument | QueryError = await response.json();
