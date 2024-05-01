@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
@@ -12,7 +13,6 @@ import { minifyAddress } from "@utils/stringService";
 import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
-import SharePopup from "../menus/sharePopup";
 import theme from "@styles/theme";
 import { Tooltip } from "@mui/material";
 import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
@@ -22,6 +22,7 @@ import SocialMediaActions from "../actions/socialmediaActions";
 import { getTweetLink, writeToClipboard } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
 import { calculatePercentile } from "@utils/numberService";
+import { Url } from "next/dist/shared/lib/router/router";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -33,7 +34,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const [copied, setCopied] = useState(false);
   const sinceDate = useCreationDate(identity);
   const { data: profileData } = useStarkProfile({ address: identity.owner });
-  const [showSharePopup, setShowSharePopup] = useState(false);
   const [userPercentile, setUserPercentile] = useState("");
   const [userXp, setUserXp] = useState<number>();
 
@@ -69,6 +69,14 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
     computeData();
   }, [rankingData, identity, leaderboardData]);
 
+  const shareLink: Url = useMemo(() => {
+    return `${getTweetLink(
+      `Check out${isOwner ? " my " : " "}Starknet Quest Profile at ${
+        window.location.href
+      } #Starknet #StarknetID`
+    )}`;
+  }, []);
+
   return (
     <>
       <div className={styles.dashboard_profile_card}>
@@ -77,7 +85,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             {profileData?.profilePicture ? (
               <img src={profileData?.profilePicture} className="rounded-full" />
             ) : (
-              <ProfilIcon width={"120"} color={theme.palette.secondary.main} />
+              <ProfilIcon width="120" color={theme.palette.secondary.main} />
             )}
           </div>
         </div>
@@ -91,16 +99,15 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               {!copied ? (
                 <Tooltip title="Copy" arrow>
                   <div onClick={() => copyToClipboard()}>
-                    <CopyIcon width={"20"} color="#F4FAFF" />
+                    <CopyIcon width="20" color="#F4FAFF" />
                   </div>
                 </Tooltip>
               ) : (
-                <VerifiedIcon width={"20"} />
+                <VerifiedIcon width="20" />
               )}
             </div>
             <p className={styles.addressText}>
-              {typeof addressOrDomain === "string" &&
-                minifyAddress(addressOrDomain ?? identity?.owner, 8)}
+              {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
             </p>
           </div>
           <p className={styles.percentileText}>
@@ -112,26 +119,14 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 </span>{" "}
                 of other players.
               </>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </p>
         </div>
         <div className={`${styles.right} ${styles.child}`}>
           <div className={styles.right_top}>
             <div className={styles.right_socials}>
               <SocialMediaActions identity={identity} />
-              <Link
-                href={`${getTweetLink(
-                  `Check out${
-                    isOwner ? " my " : " "
-                  }Starknet Quest Profile at ${
-                    window.location.href
-                  } #Starknet #StarknetID`
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link href={shareLink} target="_blank" rel="noreferrer">
                 <div className={styles.right_share_button}>
                   <CDNImage
                     src={shareSrc}
@@ -157,18 +152,24 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 />
                 <p className={styles.statsText}>{userXp ?? "Loading"}</p>
               </div>
-            ) : (
-              <></>
-            )}
+            ) : null}
+            {leaderboardData?.position ? (
+              <div className={styles.right_bottom_content}>
+                <CDNImage
+                  src={"/icons/trophy.svg"}
+                  priority
+                  width={30}
+                  height={30}
+                  alt="trophy icon"
+                />
+                <p className={styles.statsText}>
+                  {leaderboardData?.position ?? "Loading"}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
-      {showSharePopup ? (
-        <SharePopup
-          close={() => setShowSharePopup(false)}
-          toCopy={window.location.href}
-        />
-      ) : null}
     </>
   );
 };

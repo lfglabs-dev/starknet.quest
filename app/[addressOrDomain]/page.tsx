@@ -21,7 +21,7 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { QueryError, QuestDocument } from "../../types/backTypes";
+import { QuestDocument } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 
 type AddressOrDomainProps = {
@@ -30,7 +30,7 @@ type AddressOrDomainProps = {
   };
 };
 
-export default function DashboardPage({ params }: AddressOrDomainProps) {
+export default function Page({ params }: AddressOrDomainProps) {
   const router = useRouter();
   const addressOrDomain = params.addressOrDomain;
   const { address } = useAccount();

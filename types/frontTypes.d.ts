@@ -170,7 +170,7 @@ type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 
 type ProfileCard = {
   identity: Identity;
-  addressOrDomain: string | string[] | undefined;
+  addressOrDomain: string | undefined;
   rankingData?: RankingData;
   leaderboardData?: LeaderboardToppersData;
   isOwner?: boolean;

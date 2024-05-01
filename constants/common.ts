@@ -13,6 +13,7 @@ export const QuestDefault = {
   title_card: "",
   hidden: false,
   disabled: false,
+  start_timestamp: null,
   expiry_timestamp: "loading",
   mandatory_domain: null,
   expired: false,
