@@ -12,7 +12,6 @@ type QuestCardProps = {
 };
 
 const QuestCard: FunctionComponent<QuestCardProps> = ({
-  id,
   children,
   title,
   imgSrc,

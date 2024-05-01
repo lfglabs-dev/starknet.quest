@@ -1,4 +1,3 @@
-
 import {
   fetchQuestCategoryData,
   fetchLeaderboardToppers,
@@ -7,7 +6,6 @@ import {
   getBoostById,
   getBoosts,
   getQuizById,
-  fetchLeaderboardRankings,
   getTrendingQuests,
   getQuestsInBoost,
   getQuestActivityData,
@@ -22,7 +20,6 @@ import {
   getPendingBoostClaims,
   getQuestBoostClaimParams,
 } from "@services/apiService";
-
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -64,7 +61,6 @@ describe("fetchQuestCategoryData function", () => {
     expect(result).toEqual(mockResponse);
   });
 });
-
 
 describe("getBoostedQuests function", () => {
   beforeEach(() => {
@@ -201,7 +197,6 @@ describe("getQuestsParticipation", () => {
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -513,13 +508,11 @@ describe("fetchLeaderboardRankings function", () => {
   });
 });
 
-
 describe("getBoostById function", () => {
-  
   beforeEach(() => {
     fetch.mockClear();
   });
-  
+
   it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
@@ -696,7 +689,6 @@ describe("getCompletedQuests", () => {
     expect(result).toEqual(mockDataRes);
   });
 });
-
 
 describe("getQuestActivityData function", () => {
   beforeEach(() => {

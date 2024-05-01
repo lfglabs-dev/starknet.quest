@@ -1,8 +1,4 @@
-import {
-  LeaderboardRankingParams,
-  fetchLeaderboardRankings,
-} from "@services/apiService";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import styles from "@styles/leaderboard.module.css";
 import { useMediaQuery } from "@mui/material";
 import { decimalToHex } from "@utils/feltService";

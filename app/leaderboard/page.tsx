@@ -8,7 +8,6 @@ import React, {
   useState,
 } from "react";
 import ChipList from "@components/UI/ChipList";
-import RankCard from "@components/leaderboard/RankCard";
 import {
   LeaderboardRankingParams,
   LeaderboardTopperParams,
@@ -37,7 +36,7 @@ import { TOP_50_TAB_STRING } from "@constants/common";
 import { hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import RankingSkeleton from "@components/skeletons/rankingSkeleton";
-import { Button, useMediaQuery } from "@mui/material";
+import { Button } from "@mui/material";
 import Link from "next/link";
 import { timeFrameMap } from "@utils/timeService";
 
@@ -54,7 +53,7 @@ export default function Page() {
   const searchAddress = useDebounce<string>(searchQuery, 200);
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const rowsPerPage = useMemo(() => 10, []);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -63,7 +62,6 @@ export default function Page() {
   const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
   const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
-  const isMobile = useMediaQuery("(max-width:768px)");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
@@ -137,13 +135,6 @@ export default function Page() {
       page_size: 10,
       shift: 0,
       duration: timeFrameMap(duration),
-    };
-
-    const getTop50RequestBody: LeaderboardRankingParams = {
-      addr: "",
-      page_size: 50,
-      shift: 0,
-      duration: "all",
     };
 
     setRankingdataloading(true);
@@ -237,33 +228,6 @@ export default function Page() {
     if (e.key === "Enter") {
       setSearchQuery(searchQuery);
       setCurrentSearchedAddress(searchQuery);
-    }
-  };
-
-  // function to calculate time range based on duration
-  const getTimeRange = () => {
-    switch (duration) {
-      case "Last 7 Days":
-        return {
-          start_timestamp: new Date().setDate(new Date().getDate() - 7),
-          end_timestamp: new Date().getTime(),
-        };
-      case "Last 30 Days":
-        return {
-          start_timestamp: new Date().setDate(new Date().getDate() - 30),
-          end_timestamp: new Date().getTime(),
-        };
-      case "All time":
-        return {
-          start_timestamp: 0,
-          end_timestamp: new Date().getTime(),
-        };
-      default:
-        // be default return weekly data
-        return {
-          start_timestamp: new Date().setDate(new Date().getDate() - 7),
-          end_timestamp: new Date().getTime(),
-        };
     }
   };
 

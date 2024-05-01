@@ -36,9 +36,6 @@ const Navbar: FunctionComponent = () => {
   const { connectAsync } = useConnect();
   const { disconnect } = useDisconnect();
   const domainOrAddressMinified = useDisplayName(address ?? "");
-  const domain = useDomainFromAddress(address ?? "").domain;
-  const addressOrDomain =
-    domain && domain.endsWith(".stark") ? domain : address;
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
@@ -200,7 +197,11 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              {isConnected && <Link href={`/${address}`}><li className={styles.menuItem}>Dashboard</li></Link>}
+              {isConnected && (
+                <Link href={`/${address}`}>
+                  <li className={styles.menuItem}>Dashboard</li>
+                </Link>
+              )}
               {address ? (
                 <>
                   <li
@@ -288,7 +289,16 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  {isConnected && <Link href={`/${address}`}><li onClick={() => setNav(false)} className={styles.menuItemSmall}>Dashboard</li></Link>}
+                  {isConnected && (
+                    <Link href={`/${address}`}>
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        Dashboard
+                      </li>
+                    </Link>
+                  )}
                 </ul>
               </div>
             </div>

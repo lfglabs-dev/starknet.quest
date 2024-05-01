@@ -63,7 +63,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         const res = await getCompletedQuests(addr);
         if (!res || "error" in res) return;
         const updatedQuestsResults = await Promise.allSettled(
-          res.map ? res.map((id: number) => getQuestById(id)) : []
+          res.map ? res.map((id: number) => getQuestById(id.toString())) : []
         );
         const successfulCompletedQuests = updatedQuestsResults
           .filter(

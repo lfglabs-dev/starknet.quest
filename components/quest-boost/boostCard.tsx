@@ -10,7 +10,6 @@ import TokenSymbol from "./TokenSymbol";
 import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
-import { useRouter } from "next/navigation";
 import { CompletedQuests, QueryError } from "types/backTypes";
 
 type BoostCardProps = {
@@ -29,16 +28,21 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
     useState<boolean>(false);
   const [hasUserCompletedBoost, setHasUserCompletedBoost] =
     useState<boolean>(false);
-  const { getBoostClaimStatus, updateBoostClaimStatus } = useBoost();
+  const { getBoostClaimStatus } = useBoost();
   const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
     // return if boost does not exist or no quests are completed
-    if (!boost || !completedQuests || (completedQuests as CompletedQuests).length === 0) return;
+    if (
+      !boost ||
+      !completedQuests ||
+      (completedQuests as CompletedQuests).length === 0
+    )
+      return;
 
     // check if any of the quests are completed by user
-    const userParticipationCheck = (completedQuests as CompletedQuests).some((quest) =>
-      boost.quests.includes(quest)
+    const userParticipationCheck = (completedQuests as CompletedQuests).some(
+      (quest) => boost.quests.includes(quest)
     );
 
     // check if all quests are completed by the user
