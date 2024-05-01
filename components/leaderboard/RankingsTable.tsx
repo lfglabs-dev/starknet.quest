@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import RankingSkeleton from "@components/skeletons/rankingSkeleton";
 import { minifyAddress, minifyDomain } from "@utils/stringService";
 import { getDomainFromAddress } from "@utils/domainService";
@@ -28,18 +28,50 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
   searchedAddress,
 }) => {
   const { address: connectedUserAddress, isConnecting } = useAccount();
-  const isTop50RankedView =
-    !searchedAddress &&
-    (duration === TOP_50_TAB_STRING ||
-      (!isConnecting && !connectedUserAddress));
+  const isTop50RankedView = useMemo(
+    () =>
+      !searchedAddress &&
+      (duration === TOP_50_TAB_STRING ||
+        (!isConnecting && !connectedUserAddress)),
+    [searchedAddress, duration, isConnecting, connectedUserAddress]
+  );
+
   const isMobile = useMediaQuery("(max-width:768px)");
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
 
+  const rankFormatter = useCallback((rank: number) => {
+    if (rank > 10000) return "+10k";
+    if (rank > 5000) return "+5k";
+    return addNumberPadding(rank);
+  }, []);
+
   // used to format the data to be displayed
   const [displayData, setDisplayData] = useState<FormattedRankingProps>([]);
-  const slicedDisplayedData = isTop50RankedView
-    ? displayData.slice(3)
-    : displayData;
+  const slicedDisplayedData = useMemo(
+    () => (isTop50RankedView ? displayData.slice(3) : displayData),
+    [isTop50RankedView, displayData]
+  );
+
+  const processDisplayName = useCallback(
+    (item: {
+      address: string;
+      xp: number;
+      achievements: number;
+      completedQuests?: number;
+      displayName?: string;
+    }) => {
+      if (
+        isMobile &&
+        item &&
+        item.displayName &&
+        isStarkDomain(item.displayName)
+      ) {
+        return minifyDomain(item.displayName);
+      }
+      return item?.displayName;
+    },
+    [isMobile]
+  );
   // make single digit numbers to double digit
   const addNumberPadding = (num: number) => {
     return num > 9 ? num : `0${num}`;
@@ -57,7 +89,9 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
           const completedQuestsResponse = await getCompletedQuests(
             item?.address
           );
-          item.completedQuests = (completedQuestsResponse as CompletedQuests)?.length;
+          item.completedQuests = (
+            completedQuestsResponse as CompletedQuests
+          )?.length;
 
           // get the domain name from the address
           const hexAddress = decimalToHex(item.address);
@@ -106,11 +140,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                   <div className={styles.ranking_table_row_name_rank}>
                     <div className={styles.ranking_position_layout}>
                       <p className="text-white text-center">
-                        {itemRank > 10000
-                          ? "+10k"
-                          : itemRank > 5000
-                          ? "+5k"
-                          : addNumberPadding(itemRank)}
+                        {rankFormatter(itemRank)}
                       </p>
                     </div>
                     <div className={styles.ranking_profile_layout}>
@@ -123,12 +153,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                               : "#ffffff",
                         }}
                       >
-                        {isMobile &&
-                        item &&
-                        item.displayName &&
-                        isStarkDomain(item.displayName)
-                          ? minifyDomain(item.displayName)
-                          : item.displayName}
+                        {processDisplayName(item)}
                       </p>
                     </div>
                   </div>

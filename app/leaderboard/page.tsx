@@ -286,6 +286,41 @@ export default function Page() {
     return false;
   }, [leaderboardToppers, ranking, duration]);
 
+  const handleViewMore = useCallback(() => {
+    if (checkIfLastPage && !viewMore) {
+      setViewMore(true);
+      return;
+    }
+    if (!checkIfLastPage && viewMore) {
+      const requestBody = {
+        addr:
+          currentSearchedAddress.length > 0
+            ? currentSearchedAddress
+            : userAddress
+            ? hexToDecimal(userAddress)
+            : "",
+        page_size: rowsPerPage,
+        shift: currentPage,
+        duration: timeFrameMap(duration),
+      };
+
+      addRankingResults(requestBody);
+      setCurrentPage((prev) => prev + 1);
+      return;
+    }
+    if (checkIfLastPage && viewMore) {
+      setViewMore(false);
+    }
+  }, [
+    viewMore,
+    checkIfLastPage,
+    currentSearchedAddress,
+    userAddress,
+    rowsPerPage,
+    currentPage,
+    duration,
+  ]);
+
   /*
     fetch data whenever page size , page number changes, 
     duration  changes, search address changes
@@ -547,32 +582,7 @@ export default function Page() {
               (address || (!isNoSearchResults && currentSearchedAddress)) &&
               !isNoSearchResults && (
                 <Button
-                  onClick={() => {
-                    if (checkIfLastPage && !viewMore) {
-                      setViewMore(true);
-                      return;
-                    }
-                    if (!checkIfLastPage && viewMore) {
-                      const requestBody = {
-                        addr:
-                          currentSearchedAddress.length > 0
-                            ? currentSearchedAddress
-                            : userAddress
-                            ? hexToDecimal(userAddress)
-                            : "",
-                        page_size: rowsPerPage,
-                        shift: currentPage,
-                        duration: timeFrameMap(duration),
-                      };
-
-                      addRankingResults(requestBody);
-                      setCurrentPage((prev) => prev + 1);
-                      return;
-                    }
-                    if (checkIfLastPage && viewMore) {
-                      setViewMore(false);
-                    }
-                  }}
+                  onClick={handleViewMore}
                   variant="text"
                   disableRipple
                   className="w-fit text-white text self-center"
