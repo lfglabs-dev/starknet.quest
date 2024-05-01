@@ -45,6 +45,12 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
     }, 1500);
   };
 
+  const rankFormatter = useCallback((rank: number) => {
+    if (rank > 10000) return "+10k";
+    if (rank > 5000) return "+5k";
+    return rank;
+  }, []);
+
   const computeData = useCallback(() => {
     if (rankingData && identity.owner && leaderboardData) {
       const user = rankingData.ranking.find(
@@ -141,18 +147,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
           <div className={styles.right_middle}></div>
           <div className={styles.right_bottom}>
-            {userXp !== undefined ? (
-              <div className={styles.right_bottom_content}>
-                <CDNImage
-                  src={xpIcon}
-                  priority
-                  width={30}
-                  height={30}
-                  alt="xp badge"
-                />
-                <p className={styles.statsText}>{userXp ?? "Loading"}</p>
-              </div>
-            ) : null}
             {leaderboardData?.position ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
@@ -163,8 +157,20 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   alt="trophy icon"
                 />
                 <p className={styles.statsText}>
-                  {leaderboardData?.position ?? "Loading"}
+                  {rankFormatter(leaderboardData?.position) ?? "Loading"}
                 </p>
+              </div>
+            ) : null}
+            {userXp !== undefined ? (
+              <div className={styles.right_bottom_content}>
+                <CDNImage
+                  src={xpIcon}
+                  priority
+                  width={30}
+                  height={30}
+                  alt="xp badge"
+                />
+                <p className={styles.statsText}>{userXp ?? "Loading"}</p>
               </div>
             ) : null}
           </div>
