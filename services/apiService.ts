@@ -1,23 +1,8 @@
 import {
-  AchievementsDocument,
-  CompletedDocument,
-  DeployedTime,
-  QueryError,
-  UserTask,
-  QuestCategoryDocument,
-  QuestDocument,
-  BoostedQuests,
-  QuestParticipation,
-  QuizDocument,
-  QuestActivityData,
-  UniqueVisitorCount,
-  LeaderboardRankings,
-  LeaderboardToppersData,
-  CompletedQuests,
-  QuestParticipantsDocument,
-  UniquePageVisit,
-  PendingBoostClaim,
-  BoostClaimParams,
+  AchievementsDocument, BoostClaimParams, BoostedQuests, CompletedDocument, CompletedQuests, DeployedTime, LeaderboardRankings,
+  LeaderboardToppersData, PendingBoostClaim, QueryError, QuestActivityData, QuestCategoryDocument,
+  QuestDocument, QuestParticipantsDocument, QuestParticipation,
+  QuizDocument, UniquePageVisit, UniqueVisitorCount, UserTask
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -132,8 +117,7 @@ export const getCompletedBoosts = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/boost/get_completed_boosts?addr=${addr}`
     );
-    const data: number[] | QueryError = await response.json();
-    return data as number[]
+    return (await response.json()) as number[];
   } catch (err) {
     console.log("Error while fetching completed boosts", err);
     return err as QueryError

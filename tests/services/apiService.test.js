@@ -1797,10 +1797,12 @@ describe('getCompletedBoosts function', () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataResponse),
     });
+
     const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
     );
+
     expect(result).toEqual(mockDataResponse);
   });
 
@@ -1810,16 +1812,18 @@ describe('getCompletedBoosts function', () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataResponse),
     });
+
     const result = await getCompletedBoosts('string');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=string`
     );
+
     expect(result).toEqual(mockDataResponse);
   });
 
   it('should handle fetch with handle error gracefully', async () => {
 
-    const mockResponse = [];
+    const mockResponse = 'Boost with id 0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363 not found';
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
@@ -1827,29 +1831,34 @@ describe('getCompletedBoosts function', () => {
 
     const result = await getCompletedBoosts('');
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/boost/get_completed_boosts?addr=`
+      `${API_URL}/boost/get_completed_boosts?addr=undefined`
     );
 
     expect(result).toEqual(mockResponse);
+
   });
 
   it('should handle fetch with empty response', async () => {
     const mockResponse = [];
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
+
     const result = await getCompletedBoosts('0');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=0`
     );
     expect(result).toEqual(mockResponse);
   });
-  
+
   it('should handle fetch with undefined result', async () => {
     const mockResponse = undefined;
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
+
     const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
