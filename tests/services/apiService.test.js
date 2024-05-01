@@ -1,5 +1,5 @@
 import {
-  fetchLeaderboardRankings, fetchLeaderboardToppers, fetchQuestCategoryData, getBoostById, getBoostedQuests, getBoosts, getCompletedQuests, getDeployedTimeByAddress, getPendingBoostClaims, getQuestActivityData, getQuestBoostClaimParams, getQuestParticipants, getQuestsInBoost, getQuestsParticipation, getQuizById, getTasksByQuestId, getTrendingQuests, getUniqueVisitorCount, updateUniqueVisitors
+  fetchLeaderboardRankings, fetchLeaderboardToppers, fetchQuestCategoryData, getBoostById, getBoostedQuests, getBoosts, getCompletedQuests, getDeployedTimeByAddress, getPendingBoostClaims, getQuestActivityData, getQuestBoostClaimParams, getQuestParticipants, getQuestsInBoost, getQuestsParticipation, getQuizById, getTasksByQuestId, getTrendingQuests, getUniqueVisitorCount, updateUniqueVisitors,getCompletedBoosts
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
