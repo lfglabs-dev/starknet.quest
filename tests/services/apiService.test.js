@@ -1,24 +1,5 @@
 import {
-  fetchQuestCategoryData,
-  fetchLeaderboardToppers,
-  fetchLeaderboardRankings,
-  getBoostById,
-  getBoosts,
-  getQuizById,
-  fetchLeaderboardRankings,
-  getTrendingQuests,
-  getQuestsInBoost,
-  getQuestActivityData,
-  getUniqueVisitorCount,
-  getTasksByQuestId,
-  getDeployedTimeByAddress,
-  getCompletedQuests,
-  getQuestParticipants,
-  getBoostedQuests,
-  getQuestsParticipation,
-  updateUniqueVisitors,
-  getPendingBoostClaims,
-  getQuestBoostClaimParams,
+  fetchLeaderboardRankings, fetchLeaderboardToppers, fetchQuestCategoryData, getBoostById, getBoostedQuests, getBoosts, getCompletedQuests, getDeployedTimeByAddress, getPendingBoostClaims, getQuestActivityData, getQuestBoostClaimParams, getQuestParticipants, getQuestsInBoost, getQuestsParticipation, getQuizById, getTasksByQuestId, getTrendingQuests, getUniqueVisitorCount, updateUniqueVisitors
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -1676,5 +1657,85 @@ describe("getQuestBoostClaimParams function", () => {
 
     const result = await getQuestBoostClaimParams();
     expect(result).toEqual(mockResponse);
+  });
+});
+
+describe('getCompletedBoosts function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('should fetch and return data for a valid address', async () => {
+    const mockDataResponse = [23, 104, 24, 105];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataResponse),
+    });
+
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+
+    expect(result).toEqual(mockDataResponse);
+  });
+
+  it('should fetch and return data in an invalid format', async () => {
+    const mockDataResponse =
+      'Failed to deserialize query string: invalid character';
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockDataResponse),
+    });
+
+    const result = await getCompletedBoosts('string');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=string`
+    );
+
+    expect(result).toEqual(mockDataResponse);
+  });
+
+  it('should handle fetch with handle error gracefully', async () => {
+
+    const mockResponse = 'Boost with id 0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363 not found';
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getCompletedBoosts('');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=undefined`
+    );
+
+    expect(result).toEqual(mockResponse);
+
+  });
+
+  it('should handle fetch with empty response', async () => {
+    const mockResponse = [];
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getCompletedBoosts('0');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=0`
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it('should handle fetch with undefined result', async () => {
+    const mockResponse = undefined;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getCompletedBoosts('0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363');
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
+    );
+    expect(result).toBeUndefined();
   });
 });
