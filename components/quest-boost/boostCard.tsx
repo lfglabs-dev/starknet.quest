@@ -11,10 +11,11 @@ import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
 import { useRouter } from "next/navigation";
+import { CompletedQuests, QueryError } from "types/backTypes";
 
 type BoostCardProps = {
   boost: Boost;
-  completedQuests?: number[];
+  completedQuests?: CompletedQuests | QueryError;
 };
 
 const BoostCard: FunctionComponent<BoostCardProps> = ({
@@ -32,20 +33,21 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!boost || !completedQuests) return;
-    let userParticipationCheck = false;
-    let userBoostCompletionCheck = true;
-    boost.quests.forEach((quest) => {
-      // no quests are completed by user
-      if (!completedQuests) return false;
-      // if any of the quests are completed by user and is part of this boost
-      if (completedQuests.includes(quest)) userParticipationCheck = true;
+    // return if boost does not exist or no quests are completed
+    if (!boost || !completedQuests || (completedQuests as CompletedQuests).length === 0) return;
 
-      // check if all quests are completed by the user and if not then set this flag value to false
-      if (!completedQuests.includes(quest)) userBoostCompletionCheck = false;
-    });
+    // check if any of the quests are completed by user
+    const userParticipationCheck = (completedQuests as CompletedQuests).some((quest) =>
+      boost.quests.includes(quest)
+    );
+
+    // check if all quests are completed by the user
+    const userBoostCompletionCheck = boost.quests.every((quest) =>
+      (completedQuests as CompletedQuests).includes(quest)
+    );
+
     setHasUserCompletedBoost(userBoostCompletionCheck);
-    setUserParticipationStatus(userParticipationCheck ? true : false);
+    setUserParticipationStatus(userParticipationCheck);
   }, [completedQuests, boost]);
 
   useEffect(() => {
@@ -117,21 +119,21 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                           ) : (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="text-white mr-2">Boost ended</p>
+                              <p className="mr-2 text-white">Boost ended</p>
                             </>
                           )
                         ) : (
                           userBoostCheckStatus && (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="text-white mr-2">Boost ended</p>
+                              <p className="mr-2 text-white">Boost ended</p>
                             </>
                           )
                         )
                       ) : (
                         <>
                           <UnavailableIcon width="24" color="#D32F2F" />
-                          <p className="text-white mr-2">Boost ended</p>
+                          <p className="mr-2 text-white">Boost ended</p>
                         </>
                       )
                     ) : (
