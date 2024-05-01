@@ -1,7 +1,9 @@
+
 import {
   fetchQuestCategoryData,
   fetchLeaderboardToppers,
   fetchLeaderboardRankings,
+  getQuestById,
   getBoostById,
   getBoosts,
   getQuizById,
@@ -20,6 +22,7 @@ import {
   getPendingBoostClaims,
   getQuestBoostClaimParams,
 } from "@services/apiService";
+
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -62,6 +65,7 @@ describe("fetchQuestCategoryData function", () => {
   });
 });
 
+
 describe("getBoostedQuests function", () => {
   beforeEach(() => {
     fetch.mockClear();
@@ -95,7 +99,7 @@ describe("getBoostedQuests function", () => {
 
   it("should handle unexpected reesponse", async () => {
     const mockData = {
-      error: 000,
+      error: 0o0,
       message: "Error querying boosts",
       data: {},
     };
@@ -197,6 +201,7 @@ describe("getQuestsParticipation", () => {
     expect(result).toBeUndefined();
   });
 });
+
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -508,11 +513,13 @@ describe("fetchLeaderboardRankings function", () => {
   });
 });
 
+
 describe("getBoostById function", () => {
+  
   beforeEach(() => {
     fetch.mockClear();
   });
-
+  
   it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
@@ -689,6 +696,7 @@ describe("getCompletedQuests", () => {
     expect(result).toEqual(mockDataRes);
   });
 });
+
 
 describe("getQuestActivityData function", () => {
   beforeEach(() => {
@@ -1609,6 +1617,106 @@ describe("getPendingBoostClaims function", () => {
 
     const result = await getPendingBoostClaims();
     expect(result).toEqual(mockResponse);
+  });
+});
+
+describe("getQuestById function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should return the quest data for a valid quest id", async function () {
+    const mockData = {
+      id: 1,
+      name: "Create your Starknet profile",
+      desc: "Onboard on Starknet by registering your Stark Name and verifying your social medias.",
+      additional_desc: null,
+      issuer: "Starknet ID",
+      category: "onboarding",
+      rewards_endpoint: "quests/starknetid/claimable",
+      logo: "/starknetid/favicon.ico",
+      rewards_img: "/starknetid/favicon.ico",
+      rewards_title: "1 NFT",
+      rewards_description: null,
+      rewards_nfts: [{ img: "/starknetid/nft1.webp", level: 1 }],
+      img_card: "/starknetid/nft1.webp",
+      title_card: "Starknet Profile",
+      hidden: false,
+      disabled: false,
+      expiry: null,
+      expiry_timestamp: null,
+      mandatory_domain: "none",
+      expired: false,
+      experience: 50,
+    };
+
+    fetch.mockResolvedValueOnce(mockData);
+
+    let queryId = "1";
+
+    try {
+      await getQuestById(queryId);
+    } catch (error) {
+      expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quest?id=${queryId}`);
+      expect(error.message).toEqual("Error fetching quest data: undefined");
+    }
+  });
+
+  it("should handle when API returns no response", async () => {
+    const mockData = {
+      ok: false,
+      status: 500,
+    };
+    fetch.mockResolvedValueOnce(mockData);
+
+    try {
+      await getQuestById("boost-id");
+    } catch (error) {
+      expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quest?id=boost-id`);
+      expect(error.message).toEqual("Error fetching quest data: 500");
+    }
+  });
+
+  it("should handle when API returns response in unexpected format", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockData),
+    });
+
+    try {
+      await getQuestById("boost-id");
+    } catch (error) {
+      expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quest?id=boost-id`);
+      expect(error.message).toEqual("Failed to parse quest data");
+    }
+  });
+
+  it("should handle undefined cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce(mockData);
+
+    try {
+      await getQuestById(undefined);
+    } catch (error) {
+      expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quest?id=undefined`);
+      expect(error.message).toEqual("Error fetching quest data: undefined");
+    }
+  });
+
+  it("should handle null cases in parameters", async () => {
+    const mockData =
+      "Failed to deserialize query string: invalid digit found in string";
+    fetch.mockResolvedValueOnce(mockData);
+
+    try {
+      await getQuestById(null);
+    } catch (error) {
+      expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quest?id=null`);
+      expect(error.message).toEqual("Error fetching quest data: undefined");
+    }
   });
 });
 

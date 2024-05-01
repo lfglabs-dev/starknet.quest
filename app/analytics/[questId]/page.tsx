@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useCallback, useEffect, useState } from 'react';
-import styles from '@styles/questboost.module.css';
-import analyticsStyles from '@styles/analytics.module.css';
-import { useRouter } from 'next/navigation';
-import BackButton from '@components/UI/backButton';
+import React, { useCallback, useEffect, useState } from "react";
+import styles from "@styles/questboost.module.css";
+import analyticsStyles from "@styles/analytics.module.css";
+import { useRouter } from "next/navigation";
+import BackButton from "@components/UI/backButton";
 import {
   AreaChart,
   Area,
@@ -13,22 +13,26 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from 'recharts';
+} from "recharts";
 import {
   getQuestActivityData,
   getQuestParticipants,
   getQuestsParticipation,
   getUniqueVisitorCount,
   getQuestById,
-
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
-import { QuestDocument, QuestParticipation, QuestParticipantsDocument } from "../../../types/backTypes";
+import {
+  QuestDocument,
+  QuestParticipation,
+  QuestParticipantsDocument,
+} from "../../../types/backTypes";
 import { numberWithCommas } from "@utils/numberService";
 import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
+import { error } from "console";
 
 type BoostQuestPageProps = {
   params: {
@@ -41,12 +45,14 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const { questId } = params;
   const [loading, setLoading] = useState<boolean>(true);
-  const [graphData, setGraphData] = useState<{ _id: string; participants: number; }[]>([]);
+  const [graphData, setGraphData] = useState<
+    { _id: string; participants: number }[]
+  >([]);
   const [questParticipationData, setQuestParticipationData] =
     useState<QuestParticipation>();
   const [questParticipants, setQuestParticipants] = useState(0);
   const [uniqueVisitors, setUniqueVisitors] = useState<number | undefined>(0);
-  const isMobile = useMediaQuery('(max-width:768px)');
+  const isMobile = useMediaQuery("(max-width:768px)");
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
   const fetchGraphData = useCallback(async () => {
     try {
@@ -54,28 +60,32 @@ export default function Page({ params }: BoostQuestPageProps) {
       if (!res) return;
       const formattedData = res?.map(
         (data: { date: string; participants: number }) => {
-          const dateString = data.date.split(' ')[0];
-          const month = getMonthName(parseInt(dateString.split('-')[1]));
-          const day = dateString.split('-')[2];
+          const dateString = data.date.split(" ")[0];
+          const month = getMonthName(parseInt(dateString.split("-")[1]));
+          const day = dateString.split("-")[2];
           return {
-            _id: day + ' ' + month,
+            _id: day + " " + month,
             participants: data.participants,
           };
         }
       );
       setGraphData(formattedData);
     } catch (error) {
-      console.log('Error while fetching graph data', error);
+      console.log("Error while fetching graph data", error);
     }
   }, []);
 
   const fetchQuestById = useCallback(async () => {
     try {
       const res = await getQuestById(questId);
-      if (res) 
-      setQuestData(res);
+      if (!res || "error" in res) {
+        return;
+      } else {
+        setQuestData(res);
+      }
+
     } catch (error) {
-      console.log('Error while fetching quest data', error);
+      console.log("Error while fetching quest data", error);
     }
   }, []);
 
@@ -84,16 +94,18 @@ export default function Page({ params }: BoostQuestPageProps) {
       const res = await getQuestsParticipation(parseInt(questId));
       setQuestParticipationData(res);
     } catch (error) {
-      console.log('Error while fetching quest data', error);
+      console.log("Error while fetching quest data", error);
     }
   }, []);
 
   const fetchQuestParticipants = useCallback(async () => {
     try {
-      const res = (await getQuestParticipants(parseInt(questId))) as QuestParticipantsDocument;
+      const res = (await getQuestParticipants(
+        parseInt(questId)
+      )) as QuestParticipantsDocument;
       setQuestParticipants(Number(res.count));
     } catch (error) {
-      console.log('Error while fetching quest data', error);
+      console.log("Error while fetching quest data", error);
     }
   }, []);
 
@@ -102,13 +114,13 @@ export default function Page({ params }: BoostQuestPageProps) {
       const res = await getUniqueVisitorCount(parseInt(questId));
       setUniqueVisitors(res);
     } catch (error) {
-      console.log('Error while fetching unique visitor count', error);
+      console.log("Error while fetching unique visitor count", error);
     }
   }, []);
 
   const computePercentage = useCallback(
     (num: number) => {
-      if (uniqueVisitors === 0 || uniqueVisitors === undefined) return 'NA';
+      if (uniqueVisitors === 0 || uniqueVisitors === undefined) return "NA";
       return ((num / uniqueVisitors) * 100).toFixed(2);
     },
     [uniqueVisitors]
@@ -117,7 +129,7 @@ export default function Page({ params }: BoostQuestPageProps) {
   const formatYAxis = useCallback((tickItem: string) => {
     const num = parseInt(tickItem);
     if (num > 1000) {
-      return num / 1000 + 'k';
+      return num / 1000 + "k";
     }
     return tickItem;
   }, []);
@@ -164,7 +176,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     {questData?.name}
                   </h1>
                   <p className="text-white">
-                    {questData?.expired ? 'Finished' : 'Ongoing'}
+                    {questData?.expired ? "Finished" : "Ongoing"}
                   </p>
                 </>
               ) : null}
@@ -177,7 +189,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     <p className={analyticsStyles.counterText}>
                       {uniqueVisitors && uniqueVisitors > 0
                         ? numberWithCommas(uniqueVisitors)
-                        : 'NA'}
+                        : "NA"}
                     </p>
                   </div>
                 </div>
@@ -188,14 +200,14 @@ export default function Page({ params }: BoostQuestPageProps) {
                   <p className={analyticsStyles.counterText}>
                     {questParticipants > 0
                       ? numberWithCommas(questParticipants)
-                      : 'NA'}
+                      : "NA"}
                   </p>
                   {uniqueVisitors && uniqueVisitors > 0 ? (
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
                         {uniqueVisitors > 0
                           ? `${computePercentage(questParticipants)}%`
-                          : 'NA'}
+                          : "NA"}
                       </span>
                       <span className={analyticsStyles.normalText}>
                         of unique users
@@ -255,7 +267,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                         </linearGradient>
                       </defs>
                       <XAxis
-                        interval={'preserveEnd'}
+                        interval={"preserveEnd"}
                         type="category"
                         dataKey="_id"
                         allowDuplicatedCategory={false}
@@ -268,12 +280,12 @@ export default function Page({ params }: BoostQuestPageProps) {
                       />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: 'black',
-                          borderRadius: '10px',
+                          backgroundColor: "black",
+                          borderRadius: "10px",
                           opacity: 0.8,
-                          borderColor: 'grey',
+                          borderColor: "grey",
                         }}
-                        itemStyle={{ textTransform: 'capitalize' }}
+                        itemStyle={{ textTransform: "capitalize" }}
                       />
                       <Area
                         type="monotone"
@@ -296,7 +308,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   className="w-full flex justify-center items-center"
                   style={{
                     // we need to dynamically change graph height
-                    height: isMobile ? '200px' : '300px',
+                    height: isMobile ? "200px" : "300px",
                   }}
                 >
                   <p className={analyticsStyles.counterText}>NA</p>
@@ -337,7 +349,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                                   ? `${computePercentage(
                                       eachParticipation.count
                                     )}%`
-                                  : 'NA'}
+                                  : "NA"}
                               </span>
                               <span className={analyticsStyles.normalText}>
                                 of unique users
@@ -352,7 +364,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   <div
                     className="w-full flex justify-center items-center"
                     style={{
-                      height: isMobile ? '200px' : '300px',
+                      height: isMobile ? "200px" : "300px",
                     }}
                   >
                     <p className={analyticsStyles.counterText}>NA</p>

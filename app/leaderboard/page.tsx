@@ -33,20 +33,20 @@ import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
-import { rankOrder, rankOrderMobile } from "@constants/common";
-import ControlsDashboard from "@components/leaderboard/ControlsDashboard";
-import { decimalToHex, hexToDecimal } from "@utils/feltService";
+import { TOP_50_TAB_STRING } from "@constants/common";
+import { hexToDecimal } from "@utils/feltService";
 import Avatar from "@components/UI/avatar";
 import RankingSkeleton from "@components/skeletons/rankingSkeleton";
-import { useMediaQuery } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { timeFrameMap } from "@utils/timeService";
 
 export default function Page() {
   const router = useRouter();
-  const { status, address } = useAccount();
+  const { status, address, isConnecting } = useAccount();
   const { featuredQuest } = useContext(QuestsContext);
 
+  const [viewMore, setViewMore] = useState(true);
   const [duration, setDuration] = useState<string>("Last 7 Days");
   const [userPercentile, setUserPercentile] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -55,7 +55,7 @@ export default function Page() {
   const [currentSearchedAddress, setCurrentSearchedAddress] =
     useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
@@ -68,7 +68,19 @@ export default function Page() {
     first_elt_position: 0,
     ranking: [],
   });
+  const [inititalFetchTop50, setInititalFetchTop50] = useState(false);
 
+  const isTop50RankedView = useMemo(
+    () =>
+      !currentSearchedAddress &&
+      (duration === TOP_50_TAB_STRING || (!isConnecting && !address)),
+    [currentSearchedAddress, duration, isConnecting, address]
+  );
+  const isNoSearchResults = useMemo(
+    () =>
+      ranking.ranking.length === 0 && currentSearchedAddress ? true : false,
+    [ranking.ranking.length, currentSearchedAddress]
+  );
   // to check if current view is the default view or a user requested view(to prevent multiple api calls)
   const [isCustomResult, setCustomResult] = useState<boolean>(false);
 
@@ -90,22 +102,28 @@ export default function Page() {
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
-      if (!response) {
-        return;
-      }
-      setRanking(response);
+      if (response) setRanking(response);
+      if (response && !requestBody.addr) setInititalFetchTop50(true);
+      else setInititalFetchTop50(false);
+    },
+    [address]
+  );
+
+  const addRankingResults = useCallback(
+    async (requestBody: LeaderboardRankingParams) => {
+      const response = await fetchLeaderboardRankings(requestBody);
+      if (response)
+        setRanking((prev) => {
+          return { ...prev, ranking: [...prev.ranking, ...response.ranking] };
+        });
     },
     []
   );
 
   const fetchLeaderboardToppersResult = useCallback(
     async (requestBody: LeaderboardTopperParams) => {
-      const response = await fetchLeaderboardToppers(requestBody);
-      if (!response) {
-        return;
-      }
-      setLeaderboardToppers(response);
-
+      const topperData = await fetchLeaderboardToppers(requestBody);
+      if (topperData) setLeaderboardToppers(topperData);
     },
     []
   );
@@ -120,12 +138,19 @@ export default function Page() {
       shift: 0,
       duration: timeFrameMap(duration),
     };
+
+    const getTop50RequestBody: LeaderboardRankingParams = {
+      addr: "",
+      page_size: 50,
+      shift: 0,
+      duration: "all",
+    };
+
     setRankingdataloading(true);
     await fetchLeaderboardToppersResult({
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
     });
-    await fetchRankingResults(requestBody);
     setRankingdataloading(false);
   }, [
     fetchRankingResults,
@@ -168,7 +193,8 @@ export default function Page() {
 
   // to reset the page shift when duration is changes or new address is searched
   useEffect(() => {
-    setCurrentPage(0);
+    setCurrentPage(1);
+    setViewMore(true);
   }, [duration, currentSearchedAddress]);
 
   // on user selecting duration
@@ -241,56 +267,136 @@ export default function Page() {
     }
   };
 
+  const checkIfLastPage = useMemo(() => {
+    /*
+    check if the current page is the last page
+
+    first_elt_position is the index of the first element in the current page
+    and ranking.length is the number of elements in the current page
+
+    so if the sum of these two is greater than the number of players in the
+    leaderboard toppers api response, then we are on the last page
+    */
+
+    if (
+      ranking?.first_elt_position + ranking?.ranking?.length >=
+      leaderboardToppers?.total_users
+    )
+      return true;
+    return false;
+  }, [leaderboardToppers, ranking, duration]);
+
+  const handleViewMore = useCallback(() => {
+    if (checkIfLastPage && !viewMore) {
+      setViewMore(true);
+      return;
+    }
+    if (!checkIfLastPage && viewMore) {
+      const requestBody = {
+        addr:
+          currentSearchedAddress.length > 0
+            ? currentSearchedAddress
+            : userAddress
+            ? hexToDecimal(userAddress)
+            : "",
+        page_size: rowsPerPage,
+        shift: currentPage,
+        duration: timeFrameMap(duration),
+      };
+
+      addRankingResults(requestBody);
+      setCurrentPage((prev) => prev + 1);
+      return;
+    }
+    if (checkIfLastPage && viewMore) {
+      setViewMore(false);
+    }
+  }, [
+    viewMore,
+    checkIfLastPage,
+    currentSearchedAddress,
+    userAddress,
+    rowsPerPage,
+    currentPage,
+    duration,
+  ]);
+
   /*
     fetch data whenever page size , page number changes, 
     duration  changes, search address changes
   */
   useEffect(() => {
-    if (!isCustomResult) return;
     const requestBody = {
       addr:
         currentSearchedAddress.length > 0
           ? currentSearchedAddress
           : userAddress
           ? hexToDecimal(userAddress)
+          : address
+          ? address
           : "",
       page_size: rowsPerPage,
-      shift: currentPage,
+      shift: 0,
       duration: timeFrameMap(duration),
     };
 
+    const getTop50RequestBody: LeaderboardRankingParams = {
+      addr: "",
+      page_size: 50,
+      shift: 0,
+      duration: "all",
+    };
+
     setPaginationLoading(true);
-    fetchRankingResults(requestBody);
+    fetchRankingResults(isTop50RankedView ? getTop50RequestBody : requestBody);
+
     fetchLeaderboardToppersResult({
       addr: requestBody.addr,
       duration: timeFrameMap(duration),
     });
-  }, [
-    rowsPerPage,
-    currentPage,
-    currentSearchedAddress,
-    isCustomResult,
-    duration,
-  ]);
+  }, [rowsPerPage, currentSearchedAddress, isCustomResult, duration, address]);
 
-  // handle pagination with forward and backward direction as params
-  const handlePagination = (type: string) => {
-    setCustomResult(true);
-    if (type === "next") {
-      setCurrentPage((prev) => prev + 1);
-    } else {
-      // type==='prev' is this case
-      setCurrentPage((prev) => prev - 1);
+  useEffect(() => {
+    if (inititalFetchTop50 && address && duration !== TOP_50_TAB_STRING) {
+      const requestBody = {
+        addr:
+          currentSearchedAddress.length > 0
+            ? currentSearchedAddress
+            : userAddress
+            ? hexToDecimal(userAddress)
+            : address
+            ? address
+            : "",
+        page_size: rowsPerPage,
+        shift: 0,
+        duration: timeFrameMap(duration),
+      };
+
+      const getTop50RequestBody: LeaderboardRankingParams = {
+        addr: "",
+        page_size: 50,
+        shift: 0,
+        duration: "all",
+      };
+
+      setPaginationLoading(true);
+      fetchRankingResults(
+        isTop50RankedView ? getTop50RequestBody : requestBody
+      );
+
+      fetchLeaderboardToppersResult({
+        addr: requestBody.addr,
+        duration: timeFrameMap(duration),
+      });
     }
-  };
+  }, [ranking]);
 
   // used to calculate user percentile as soon as required data is fetched
   useEffect(() => {
     // check if the user has position on the leaderboard
     if (!leaderboardToppers?.position) {
       setUserPercentile(-1);
-      if (currentSearchedAddress.length > 0 && isCustomResult)
-        setShowNoresults(true);
+      if (currentSearchedAddress.length > 0) setShowNoresults(true);
       else {
         setShowNoresults(false);
       }
@@ -347,10 +453,15 @@ export default function Page() {
                 <ChipList
                   selected={duration}
                   handleChangeSelection={handleChangeSelection}
-                  tags={["Last 7 Days", "Last 30 Days", "All time"]}
+                  tags={[
+                    "Last 7 Days",
+                    "Last 30 Days",
+                    "All time",
+                    TOP_50_TAB_STRING,
+                  ]}
                 />
               </div>
-              <div style={{ flex: 0.4 }}>
+              <div style={{ flex: 0.4 }} className="w-full">
                 <Searchbar
                   value={searchQuery}
                   handleChange={handleChange}
@@ -370,13 +481,15 @@ export default function Page() {
               userPercentile >= 0 ? (
                 <div className={styles.percentile_container}>
                   {currentSearchedAddress.length > 0 || userAddress ? (
-                    <Avatar
-                      address={
-                        currentSearchedAddress.length > 0
-                          ? currentSearchedAddress
-                          : userAddress
-                      }
-                    />
+                    <div className="hidden md:block">
+                      <Avatar
+                        address={
+                          currentSearchedAddress.length > 0
+                            ? currentSearchedAddress
+                            : userAddress
+                        }
+                      />
+                    </div>
                   ) : null}
                   <div className={styles.percentile_text_container}>
                     <p className={styles.percentile_text_normal}>
@@ -390,7 +503,7 @@ export default function Page() {
                     </p>
                   </div>
                 </div>
-              ) : (
+              ) : address ? (
                 <div className={styles.percentile_container}>
                   <p className={styles.percentile_text_normal}>
                     You werent active this week. ready to jump back in?
@@ -401,7 +514,7 @@ export default function Page() {
                     </p>
                   </Link>
                 </div>
-              )
+              ) : null
             ) : null}
             <Divider
               orientation="horizontal"
@@ -414,7 +527,7 @@ export default function Page() {
             {rankingdataloading ? (
               <RankingSkeleton />
             ) : ranking ? (
-              showNoresults ? (
+              isNoSearchResults ? (
                 // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
                 <div className={styles.no_result_container}>
                   <img
@@ -435,28 +548,21 @@ export default function Page() {
               ) : (
                 <>
                   <RankingsTable
-                    data={ranking}
+                    duration={duration}
+                    data={
+                      checkIfLastPage && !viewMore
+                        ? { ...ranking, ranking: ranking.ranking.slice(0, 10) }
+                        : ranking
+                    }
                     selectedAddress={
                       currentSearchedAddress.length > 0
                         ? currentSearchedAddress
                         : hexToDecimal(userAddress)
                     }
+                    searchedAddress={currentSearchedAddress}
+                    leaderboardToppers={leaderboardToppers}
                     paginationLoading={paginationLoading}
                     setPaginationLoading={setPaginationLoading}
-                  />
-                  <ControlsDashboard
-                    ranking={ranking}
-                    handlePagination={handlePagination}
-                    leaderboardToppers={leaderboardToppers}
-                    rowsPerPage={rowsPerPage}
-                    setRowsPerPage={setRowsPerPage}
-                    duration={duration}
-                    setCustomResult={setCustomResult}
-                  />
-                  <Divider
-                    orientation="horizontal"
-                    variant="fullWidth"
-                    className={styles.divider}
                   />
                 </>
               )
@@ -472,50 +578,19 @@ export default function Page() {
                 />
               </div>
             )}
-
-            <div className={styles.leaderboard_topper_layout}>
-              {leaderboardToppers
-                ? isMobile
-                  ? rankOrderMobile.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <Link
-                          key={item?.address}
-                          href={`/${decimalToHex(item.address)}`}
-                        >
-                          <RankCard
-                            key={index}
-                            name={item?.address}
-                            experience={item?.xp}
-                            trophy={item?.achievements}
-                            position={position}
-                          />
-                        </Link>
-                      );
-                    })
-                  : rankOrder.map((position, index) => {
-                      const item =
-                        leaderboardToppers?.best_users?.[position - 1];
-                      if (!item) return null;
-                      return (
-                        <Link
-                          key={item?.address}
-                          href={`/${decimalToHex(item.address)}`}
-                        >
-                          <RankCard
-                            key={index}
-                            name={item?.address}
-                            experience={item?.xp}
-                            trophy={item?.achievements}
-                            position={position}
-                          />
-                        </Link>
-                      );
-                    })
-                : null}
-            </div>
+            {duration !== TOP_50_TAB_STRING &&
+              (address || (!isNoSearchResults && currentSearchedAddress)) &&
+              !isNoSearchResults && (
+                <Button
+                  onClick={handleViewMore}
+                  variant="text"
+                  disableRipple
+                  className="w-fit text-white text self-center"
+                  style={{ textTransform: "none" }}
+                >
+                  {checkIfLastPage && viewMore ? "View less" : "View more"}
+                </Button>
+              )}
           </div>
         </>
       )}

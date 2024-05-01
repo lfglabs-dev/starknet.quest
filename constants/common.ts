@@ -24,9 +24,10 @@ export const QuestDefault = {
 export const basicAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789-";
 export const bigAlphabet = "这来";
 export const totalAlphabet = basicAlphabet + bigAlphabet;
-export const PAGE_SIZE = [10, 15, 20];
+export const PAGE_SIZE = { less: 10, more: 50 };
+export const TOP_50_TAB_STRING = "Top 50";
 
-export const rankOrder = [2, 1, 3];
+export const rankOrder = [1, 2, 3];
 export const rankOrderMobile = [1, 2, 3];
 
 export const TOKEN_ADDRESS_MAP = {

@@ -258,18 +258,16 @@ type RankingProps = {
     first_elt_position: number;
     ranking: { address: string; xp: number; achievements: number }[];
   };
+  duration: string;
+  leaderboardToppers: LeaderboardToppersData;
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
   selectedAddress: string;
+  searchedAddress: string;
 };
 
 type ControlsDashboardProps = {
-  ranking: RankingData;
-  handlePagination: (_: string) => void;
-  rowsPerPage: number;
   setRowsPerPage: (_: number) => void;
-  leaderboardToppers: LeaderboardToppersData;
-  duration: string;
   setCustomResult: (_: boolean) => void;
 };
 
