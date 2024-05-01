@@ -86,7 +86,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   return (
     <>
       <div className={styles.dashboard_profile_card}>
-        <div className={`${styles.left} ${styles.child}`}>
+        <div className={styles.left}>
           <div className={styles.profile_picture_div}>
             {profileData?.profilePicture ? (
               <img src={profileData?.profilePicture} className="rounded-full" />
@@ -94,41 +94,42 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               <ProfilIcon width="120" color={theme.palette.secondary.main} />
             )}
           </div>
-        </div>
-        <div className={`${styles.center} ${styles.child}`}>
-          <p className={styles.accountCreationDate}>
-            {sinceDate ? `${sinceDate}` : ""}
-          </p>
-          <h2 className={styles.profile_name}>{identity.domain.domain}</h2>
-          <div className={styles.address_div}>
-            <div onClick={() => copyToClipboard()}>
-              {!copied ? (
-                <Tooltip title="Copy" arrow>
-                  <div onClick={() => copyToClipboard()}>
-                    <CopyIcon width="20" color="#F4FAFF" />
-                  </div>
-                </Tooltip>
-              ) : (
-                <VerifiedIcon width="20" />
-              )}
+
+          <div className="flex flex-col h-full justify-between">
+            <p className={styles.accountCreationDate}>
+              {sinceDate ? `${sinceDate}` : ""}
+            </p>
+            <h2 className={styles.profile_name}>{identity.domain.domain}</h2>
+            <div className={styles.address_div}>
+              <div onClick={() => copyToClipboard()}>
+                {!copied ? (
+                  <Tooltip title="Copy" arrow>
+                    <div onClick={() => copyToClipboard()}>
+                      <CopyIcon width="20" color="#F4FAFF" />
+                    </div>
+                  </Tooltip>
+                ) : (
+                  <VerifiedIcon width="20" />
+                )}
+              </div>
+              <p className={styles.addressText}>
+                {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
+              </p>
             </div>
-            <p className={styles.addressText}>
-              {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
+            <p className={styles.percentileText}>
+              {userPercentile.length > 0 && userPercentile !== "NA" ? (
+                <>
+                  {isOwner ? "You are " : "This user is "}
+                  <span className={styles.green_span}>
+                    better than {userPercentile}%
+                  </span>{" "}
+                  of other players.
+                </>
+              ) : null}
             </p>
           </div>
-          <p className={styles.percentileText}>
-            {userPercentile.length > 0 && userPercentile !== "NA" ? (
-              <>
-                {isOwner ? "You are " : "This user is "}
-                <span className={styles.green_span}>
-                  better than {userPercentile}%
-                </span>{" "}
-                of other players.
-              </>
-            ) : null}
-          </p>
         </div>
-        <div className={`${styles.right} ${styles.child}`}>
+        <div className={styles.right}>
           <div className={styles.right_top}>
             <div className={styles.right_socials}>
               <SocialMediaActions identity={identity} />
@@ -145,15 +146,15 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               </Link>
             </div>
           </div>
-          <div className={styles.right_middle}></div>
+
           <div className={styles.right_bottom}>
             {leaderboardData?.position ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
                   src={"/icons/trophy.svg"}
                   priority
-                  width={30}
-                  height={30}
+                  width={25}
+                  height={25}
                   alt="trophy icon"
                 />
                 <p className={styles.statsText}>

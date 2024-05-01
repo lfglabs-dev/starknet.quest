@@ -114,7 +114,11 @@
 }
 
 .left {
-    max-width: fit-content;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
 }
 
 .center {
@@ -140,7 +144,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    justify-content: space-between;
+    width: 20%;
 }
 
 .right_top {
@@ -431,5 +436,8 @@
         justify-content: center;
     }
 
+    .left {
+        flex-direction: column;
+    }
 
 }
