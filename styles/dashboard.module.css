@@ -327,6 +327,11 @@
         padding: 1rem;
     }
 
+    .right {
+        width: 100%;
+        justify-content: center;
+    }
+
     .dashboard_container {
         padding: 5px;
     }
