@@ -10,6 +10,7 @@ import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
 import { minifyAddress } from "@utils/stringService";
+import trophyIcon from "public/icons/trophy.svg";
 import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
@@ -168,7 +169,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             {leaderboardData?.position ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
-                  src={"/icons/trophy.svg"}
+                  src={trophyIcon}
                   priority
                   width={25}
                   height={25}
