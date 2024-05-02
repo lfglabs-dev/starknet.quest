@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import { QueryError, QuestDocument } from "../types/backTypes";
+import { BoostedQuests, QueryError, QuestDocument ,CompletedQuests} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -127,17 +127,17 @@ export const QuestsContextProvider = ({
   useMemo(() => {
     if (!address) return;
     getCompletedQuests(hexToDecimal(address)).then(
-      (data: number[] | QueryError) => {
+      (data: CompletedQuests | QueryError) => {
         if ((data as QueryError).error) return;
-        setCompletedQuestIds(data as number[]);
+        setCompletedQuestIds(data as CompletedQuests);
       }
     );
   }, [address]);
 
   useMemo(() => {
-    getBoostedQuests().then((data: number[] | QueryError) => {
+    getBoostedQuests().then((data: BoostedQuests | QueryError | undefined) => {
       if ((data as QueryError).error) return;
-      setBoostedQuests(data as number[]);
+      setBoostedQuests(data as BoostedQuests);
     });
   }, []);
 

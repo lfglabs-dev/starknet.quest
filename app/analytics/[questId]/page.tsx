@@ -22,12 +22,17 @@ import {
   getQuestById,
 } from "@services/apiService";
 import { getMonthName } from "@utils/stringService";
-import { QuestDocument } from "../../../types/backTypes";
+import {
+  QuestDocument,
+  QuestParticipation,
+  QuestParticipantsDocument,
+} from "../../../types/backTypes";
 import { numberWithCommas } from "@utils/numberService";
 import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
+import { error } from "console";
 
 type BoostQuestPageProps = {
   params: {
@@ -40,16 +45,20 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const { questId } = params;
   const [loading, setLoading] = useState<boolean>(true);
-  const [graphData, setGraphData] = useState([]);
-  const [questParticipationData, setQuestParticipationData] = useState([]);
+  const [graphData, setGraphData] = useState<
+    { _id: string; participants: number }[]
+  >([]);
+  const [questParticipationData, setQuestParticipationData] =
+    useState<QuestParticipation>();
   const [questParticipants, setQuestParticipants] = useState(0);
-  const [uniqueVisitors, setUniqueVisitors] = useState< number | undefined>(0);
+  const [uniqueVisitors, setUniqueVisitors] = useState<number | undefined>(0);
   const isMobile = useMediaQuery("(max-width:768px)");
   const [questData, setQuestData] = useState<QuestDocument>(QuestDefault);
   const fetchGraphData = useCallback(async () => {
     try {
       const res = await getQuestActivityData(parseInt(questId));
-      const formattedData = res.map(
+      if (!res) return;
+      const formattedData = res?.map(
         (data: { date: string; participants: number }) => {
           const dateString = data.date.split(" ")[0];
           const month = getMonthName(parseInt(dateString.split("-")[1]));
@@ -69,7 +78,11 @@ export default function Page({ params }: BoostQuestPageProps) {
   const fetchQuestById = useCallback(async () => {
     try {
       const res = await getQuestById(questId);
-      setQuestData(res);
+      if (!res || "error" in res) {
+        return;
+      } else {
+        setQuestData(res);
+      }
     } catch (error) {
       console.log("Error while fetching quest data", error);
     }
@@ -86,8 +99,10 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const fetchQuestParticipants = useCallback(async () => {
     try {
-      const res = await getQuestParticipants(parseInt(questId));
-      setQuestParticipants(res.count);
+      const res = (await getQuestParticipants(
+        parseInt(questId)
+      )) as QuestParticipantsDocument;
+      setQuestParticipants(Number(res.count));
     } catch (error) {
       console.log("Error while fetching quest data", error);
     }
@@ -311,16 +326,10 @@ export default function Page({ params }: BoostQuestPageProps) {
               </div>
 
               <div className="flex flex-wrap justify-center gap-6 w-full">
-                {questParticipationData?.length > 0 ? (
+                {questParticipationData &&
+                questParticipationData?.length > 0 ? (
                   questParticipationData?.map(
-                    (
-                      eachParticipation: {
-                        name: string;
-                        desc: string;
-                        participants: number;
-                      },
-                      index: number
-                    ) => (
+                    (eachParticipation, index: number) => (
                       <div
                         key={index}
                         className="flex w-full max-w-none sm:max-w-[245px]"
@@ -330,14 +339,14 @@ export default function Page({ params }: BoostQuestPageProps) {
                             {eachParticipation.name}
                           </p>
                           <p className={analyticsStyles.counterText}>
-                            {numberWithCommas(eachParticipation.participants)}
+                            {numberWithCommas(eachParticipation.count)}
                           </p>
                           {uniqueVisitors && uniqueVisitors > 0 ? (
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
                                 {uniqueVisitors > 0
                                   ? `${computePercentage(
-                                      eachParticipation.participants
+                                      eachParticipation.count
                                     )}%`
                                   : "NA"}
                               </span>
