@@ -1831,7 +1831,7 @@ describe('getCompletedBoosts function', () => {
 
     const result = await getCompletedBoosts('');
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/boost/get_completed_boosts?addr=undefined`
+      `${API_URL}/boost/get_completed_boosts?addr=`
     );
 
     expect(result).toEqual(mockResponse);
