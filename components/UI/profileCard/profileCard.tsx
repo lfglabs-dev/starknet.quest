@@ -117,7 +117,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
               </p>
             </div>
-            <div className="flex sm:hidden h-full justify-center py-4">
+            <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
               <Link href={shareLink} target="_blank" rel="noreferrer">
                 <div className={styles.right_share_button}>
