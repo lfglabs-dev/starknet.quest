@@ -48,7 +48,7 @@ export default function Page({ params }: AddressOrDomainProps) {
     ranking: [],
   });
   const dynamicRoute = usePathname();
-  const [loading, setLoading] = useState(true);
+  const [questsLoading, setQuestsLoading] = useState(true);
 
   useEffect(() => {
     if (!address) setIsOwner(false);
@@ -98,15 +98,19 @@ export default function Page({ params }: AddressOrDomainProps) {
   );
 
   const fetchPageData = useCallback(async (addr: string) => {
-    setLoading(true);
-    await fetchCompletedQuests(addr);
     await fetchRanking(addr);
     await fetchLeaderboardData(addr);
-    setLoading(false);
+  }, []);
+
+  const fetchQuestData = useCallback(async (addr: string) => {
+    setQuestsLoading(true);
+    await fetchCompletedQuests(addr);
+    setQuestsLoading(false);
   }, []);
 
   useEffect(() => {
     if (!identity) return;
+    fetchQuestData(identity.owner);
     fetchPageData(identity.owner);
   }, [identity]);
 
@@ -268,7 +272,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         </div>
 
         <div className={styles.quests_container}>
-          {loading ? (
+          {questsLoading ? (
             <QuestSkeleton />
           ) : quests?.length === 0 ? (
             <h2 className={styles.noBoosts}>
