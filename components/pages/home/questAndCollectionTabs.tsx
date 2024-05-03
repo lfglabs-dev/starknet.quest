@@ -67,13 +67,12 @@ const QuestAndCollectionTabs: FunctionComponent<
     []
   );
   const sortedAndFilteredQuests = useMemo(() => {
-    const filteredQuests = address
-      ? trendingQuests?.length > 0
-        ? trendingQuests
-        : quests
-      : quests;
-    return filteredQuests
-      .filter((quest) => !quest.expired)
+    const filteredQuests = quests
+      .filter((quest) => {
+        return (
+          !quest.expired && !trendingQuests.find((tq) => tq.id === quest.id)
+        );
+      })
       .sort((questA, questB) => {
         const aExpiry = questA.expiry_timestamp
           ? Number(questA.expiry_timestamp)
@@ -83,6 +82,7 @@ const QuestAndCollectionTabs: FunctionComponent<
           : Number.MAX_SAFE_INTEGER;
         return aExpiry - bExpiry; // Quests that expired soon will be first
       });
+    return [...trendingQuests, ...filteredQuests];
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
@@ -91,7 +91,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      setBoosts(res);
+      if (res) setBoosts(res);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
@@ -175,8 +175,8 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="space-y-6 flex flex-col items-center">
-              {boosts ? (
+            <div className="flex flex-col items-center space-y-6">
+              {boosts.length !== 0 ? (
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>

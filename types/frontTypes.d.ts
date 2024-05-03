@@ -42,7 +42,7 @@ type TaskError = {
 
 type Quiz = {
   name: string;
-  description: string;
+  desc: string;
   questions: QuizQuestion[];
 };
 
@@ -66,11 +66,12 @@ type Boost = {
   token: string;
   expiry: number;
   quests: number[];
-  claimed: boolean;
+  claimed?: boolean;
   winner: string[] | null;
   img_url: string;
   id: number;
   name: string;
+  hidden: boolean;
   num_of_winners: number;
   token_decimals: number;
 };
@@ -248,18 +249,16 @@ type RankingProps = {
     first_elt_position: number;
     ranking: { address: string; xp: number; achievements: number }[];
   };
+  duration: string;
+  leaderboardToppers: LeaderboardToppersData;
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
   selectedAddress: string;
+  searchedAddress: string;
 };
 
 type ControlsDashboardProps = {
-  ranking: RankingData;
-  handlePagination: (_: string) => void;
-  rowsPerPage: number;
   setRowsPerPage: (_: number) => void;
-  leaderboardToppers: LeaderboardToppersData;
-  duration: string;
   setCustomResult: (_: boolean) => void;
 };
 
