@@ -7,7 +7,7 @@ import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
-import { QuestDocument } from "../../types/backTypes";
+import { GetQuestsRes, QuestDocument } from "../../types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 
 export default function Page() {
@@ -15,12 +15,12 @@ export default function Page() {
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [quests, setQuests] = useState<Record<string, [QuestDocument]>>({});
+  const [quests, setQuests] = useState<GetQuestsRes>({} as GetQuestsRes);
 
   const fetchQuests = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await getQuests();
+      const res = await getQuests() || {};
       setQuests(res);
       setLoading(false);
     } catch (error) {
@@ -42,9 +42,10 @@ export default function Page() {
         {loading ? (
           <FeaturedQuestSkeleton />
         ) : (
-          Object.keys(quests).map((categoryName: string) => {
-            return quests[categoryName as keyof typeof quests].map(
-              (quest: QuestDocument) => {
+          (Object.keys(quests) as (keyof typeof quests)[]).map((categoryName: keyof typeof quests) => {
+            const categoryValue = quests[categoryName];
+            if (Array.isArray(categoryValue)) {
+              return categoryValue.map((quest: QuestDocument) => {
                 return (
                   <Quest
                     key={quest.id}
@@ -60,8 +61,9 @@ export default function Page() {
                     expired={false}
                   />
                 );
-              }
-            );
+              });
+            }
+            return null; 
           })
         )}
       </div>

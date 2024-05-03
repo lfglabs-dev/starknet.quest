@@ -6,6 +6,7 @@ import {
   UserTask,
   QuestCategoryDocument,
   QuestDocument,
+  GetQuestsRes,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -121,7 +122,7 @@ export const getCompletedBoosts = async (addr: string) => {
   }
 };
 
-export const getQuests = async (): Promise<QuestDocument | QueryError | undefined> => {
+export const getQuests = async (): Promise<GetQuestsRes | undefined> => {
   try {
     const response = await fetch(`${baseurl}/get_quests`);
     return await response.json();

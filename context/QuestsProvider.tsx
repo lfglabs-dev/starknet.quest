@@ -57,38 +57,40 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const data: GetQuestsRes = await getQuests();
+      const data: GetQuestsRes | undefined = await getQuests();
 
-      const q = Object.values(data).flat();
+      if (data) {
+        const q = Object.values(data).flat();
 
-      const categoriesWithImages = await Promise.all(
-        Object.keys(data).map(async (key) => {
-          const img = await (async () => {
-            try {
-              // If a category img is defined in quest_categories use it
-              const questData = await fetchQuestCategoryData(key);
-              return questData.img_url;
-            } catch (error) {
-              // else use img from first quest in the category
-              return q.filter((quest) => quest.category === key)[0].img_card;
-            }
-          })();
-          const questNumber = q.filter(
-            (quest) => quest.category === key
-          ).length;
-          const quests = q.filter((quest) => quest.category === key);
-
-          return {
-            name: key,
-            img,
-            questNumber,
-            quests,
-          };
-        })
-      );
-
-      setCategories(categoriesWithImages);
-      setQuests(q);
+        const categoriesWithImages = await Promise.all(
+          Object.keys(data).map(async (key) => {
+            const img = await (async () => {
+              try {
+                // If a category img is defined in quest_categories use it
+                const questData = await fetchQuestCategoryData(key);
+                return questData.img_url;
+              } catch (error) {
+                // else use img from first quest in the category
+                return q.filter((quest) => quest.category === key)[0].img_card;
+              }
+            })();
+            const questNumber = q.filter(
+              (quest) => quest.category === key
+            ).length;
+            const quests = q.filter((quest) => quest.category === key);
+  
+            return {
+              name: key,
+              img,
+              questNumber,
+              quests,
+            };
+          })
+        );
+  
+        setCategories(categoriesWithImages);
+        setQuests(q);
+      }
     })();
   }, []);
 

@@ -110,3 +110,9 @@ type QuestCategoryDocument = {
   desc: string;
   img_url: string;
 };
+
+type GetQuestsRes =
+  | {
+      [key: string]: QuestDocument[];
+    }
+  | QueryError;
