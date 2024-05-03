@@ -6,22 +6,21 @@ import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
   getCompletedQuests,
-  getQuestById,
 } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
-
 import Blur from "@components/shapes/blur";
 import { utils } from "starknetid.js";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { hexToDecimal } from "@utils/feltService";
 import { isHexString, minifyAddress } from "@utils/stringService";
-import CompletedQuests from "@components/dashboard/completedQuests";
 import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { QuestDocument } from "../../types/backTypes";
+import { CompletedQuests } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
+import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
+import QuestStyles from "@styles/Home.module.css";
 
 type AddressOrDomainProps = {
   params: {
@@ -43,7 +42,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const [quests, setQuests] = useState<QuestDocument[]>([]);
+  const [quests, setQuests] = useState<CompletedQuests>([]);
   const [userRanking, setUserRanking] = useState<RankingData>({
     first_elt_position: 0,
     ranking: [],
@@ -61,19 +60,8 @@ export default function Page({ params }: AddressOrDomainProps) {
         if (!addr) return;
         const res = await getCompletedQuests(addr);
         if (!res || "error" in res) return;
-        const updatedQuestsResults = await Promise.allSettled(
-          res.map ? res.map((id: number) => getQuestById(id.toString())) : []
-        );
-        const successfulCompletedQuests = updatedQuestsResults
-          .filter(
-            (result): result is PromiseFulfilledResult<QuestDocument> =>
-              result.status === "fulfilled"
-          )
-          .map((result) => result.value);
-
-        setQuests(() => [
-          ...successfulCompletedQuests.filter((quest) => quest !== null),
-        ]);
+        console.log({ res });
+        setQuests(res);
       } catch (err) {
         console.log("Error while fetching quests", err);
       }
@@ -289,7 +277,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 : "User has not completed any quests at the moment"}
             </h2>
           ) : (
-            <CompletedQuests completedQuests={quests} />
+            <section className={QuestStyles.section}>
+              <div className={QuestStyles.questContainer}>
+                {quests?.length > 0 &&
+                  quests?.map((quest) => (
+                    <QuestCardCustomised key={quest} id={quest} />
+                  ))}
+              </div>
+            </section>
           )}
         </div>
       </div>
