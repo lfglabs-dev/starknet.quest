@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
+import questStyles from "@styles/quests.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
@@ -15,7 +16,7 @@ import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
-import { Tooltip } from "@mui/material";
+import { Skeleton, Tooltip } from "@mui/material";
 import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
@@ -147,7 +148,13 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   </span>{" "}
                   of other players.
                 </>
-              ) : null}
+              ) : (
+                <Skeleton
+                  variant="text"
+                  className={questStyles.featuredQuestContentLoading}
+                  sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
+                />
+              )}
             </p>
           </div>
         </div>
