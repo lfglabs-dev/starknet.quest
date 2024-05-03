@@ -12,11 +12,11 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 import { CompletedQuests, QueryError } from "types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
+import { MILLISECONDS_PER_WEEK } from "@constants/common";
 
 export default function Page() {
   const router = useRouter();
   const { address } = useAccount();
-  const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const [completedQuests, setCompletedQuests] = useState<

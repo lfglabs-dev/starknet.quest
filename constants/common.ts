@@ -51,3 +51,5 @@ export const TOKEN_DECIMAL_MAP = {
   LORDS: 18,
   STRK: 18,
 };
+
+export const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
