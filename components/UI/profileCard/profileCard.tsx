@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
-import questStyles from "@styles/quests.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
@@ -16,7 +15,7 @@ import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
-import { Skeleton, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
@@ -76,8 +75,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
         setUserPercentile(computedUserPercentile);
         setUserXp(user.xp);
       }
-    } else {
-      setUserXp(-1);
     }
   }, [rankingData, identity, leaderboardData]);
 
@@ -175,7 +172,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
 
           <div className={styles.right_bottom}>
-            {leaderboardData ? (
+            {leaderboardData && leaderboardData?.total_users > 0 ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
                   src={trophyIcon}
@@ -190,18 +187,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                     : "NA"}
                 </p>
               </div>
-            ) : (
-              <div className={styles.right_bottom_content}>
-                <CDNImage
-                  src={trophyIcon}
-                  priority
-                  width={25}
-                  height={25}
-                  alt="trophy icon"
-                />
-                <p className={styles.statsText}>Loading</p>
-              </div>
-            )}
+            ) : null}
             {userXp !== -1 ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
@@ -213,18 +199,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 />
                 <p className={styles.statsText}>{userXp ?? "0"}</p>
               </div>
-            ) : (
-              <div className={styles.right_bottom_content}>
-                <CDNImage
-                  src={xpIcon}
-                  priority
-                  width={30}
-                  height={30}
-                  alt="xp badge"
-                />
-                <p className={styles.statsText}>NA</p>
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

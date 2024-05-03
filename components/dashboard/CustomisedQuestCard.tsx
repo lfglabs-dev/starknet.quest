@@ -48,7 +48,7 @@ const QuestCardCustomised: FunctionComponent<QuestProps> = ({ id }) => {
           data.expired ? "opacity-40" : null
         }`}
       >
-        <p className="text-gray-400">{data.name}</p>
+        <p className="text-gray-400">{data.issuer}</p>
       </div>
       <div className="flex gap-2 mt-3 justify-center md:justify-start">
         <div className={questCardStyles.issuer}>
