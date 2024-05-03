@@ -36,7 +36,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const sinceDate = useCreationDate(identity);
   const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [userPercentile, setUserPercentile] = useState("");
-  const [userXp, setUserXp] = useState<number>(0);
+  const [userXp, setUserXp] = useState<number>();
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -188,7 +188,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 </p>
               </div>
             ) : null}
-            {userXp !== -1 ? (
+            {userXp !== undefined ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
                   src={xpIcon}
