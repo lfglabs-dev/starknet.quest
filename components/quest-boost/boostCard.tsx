@@ -22,8 +22,6 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   completedQuests,
 }) => {
   const { address } = useAccount();
-  const [userParticipationStatus, setUserParticipationStatus] =
-    useState<boolean>(false);
   const [userBoostCheckStatus, setUserBoostCheckStatus] =
     useState<boolean>(false);
   const [hasUserCompletedBoost, setHasUserCompletedBoost] =
@@ -32,26 +30,16 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
   const [hovered, setHovered] = useState<boolean>(false);
 
   useEffect(() => {
-    // return if boost does not exist or no quests are completed
-    if (
-      !boost ||
-      !completedQuests ||
-      (completedQuests as CompletedQuests).length === 0
-    )
-      return;
-
-    // check if any of the quests are completed by user
-    const userParticipationCheck = (completedQuests as CompletedQuests).some(
-      (quest) => boost.quests.includes(quest)
-    );
-
-    // check if all quests are completed by the user
-    const userBoostCompletionCheck = boost.quests.every((quest) =>
-      (completedQuests as CompletedQuests).includes(quest)
-    );
-
+    if (!boost || !completedQuests) return;
+    let userBoostCompletionCheck = true;
+    boost.quests.forEach((quest) => {
+      // no quests are completed by user
+      if (!completedQuests) return false;
+      // check if all quests are completed by the user and if not then set this flag value to false
+      if (!(completedQuests as CompletedQuests).includes(quest))
+        userBoostCompletionCheck = false;
+    });
     setHasUserCompletedBoost(userBoostCompletionCheck);
-    setUserParticipationStatus(userParticipationCheck);
   }, [completedQuests, boost]);
 
   useEffect(() => {
@@ -123,21 +111,21 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                           ) : (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="mr-2 text-white">Boost ended</p>
+                              <p className="text-white mr-2">Boost ended</p>
                             </>
                           )
                         ) : (
                           userBoostCheckStatus && (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="mr-2 text-white">Boost ended</p>
+                              <p className="text-white mr-2">Boost ended</p>
                             </>
                           )
                         )
                       ) : (
                         <>
                           <UnavailableIcon width="24" color="#D32F2F" />
-                          <p className="mr-2 text-white">Boost ended</p>
+                          <p className="text-white mr-2">Boost ended</p>
                         </>
                       )
                     ) : (
