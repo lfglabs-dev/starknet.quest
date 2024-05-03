@@ -16,7 +16,6 @@ import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { hexToDecimal } from "@utils/feltService";
 import { isHexString, minifyAddress } from "@utils/stringService";
 import CompletedQuests from "@components/dashboard/completedQuests";
-
 import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
