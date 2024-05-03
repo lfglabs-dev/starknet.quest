@@ -37,14 +37,14 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [leaderboardData, setLeaderboardData] =
     useState<LeaderboardToppersData>({
       best_users: [],
-      total_users: 0,
+      total_users: -1,
     });
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [quests, setQuests] = useState<CompletedQuests>([]);
   const [userRanking, setUserRanking] = useState<RankingData>({
-    first_elt_position: 0,
+    first_elt_position: -1,
     ranking: [],
   });
   const dynamicRoute = usePathname();
@@ -60,7 +60,6 @@ export default function Page({ params }: AddressOrDomainProps) {
         if (!addr) return;
         const res = await getCompletedQuests(addr);
         if (!res || "error" in res) return;
-        console.log({ res });
         setQuests(res);
       } catch (err) {
         console.log("Error while fetching quests", err);

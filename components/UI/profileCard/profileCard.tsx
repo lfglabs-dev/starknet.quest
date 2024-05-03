@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
+import questStyles from "@styles/quests.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
@@ -15,7 +16,7 @@ import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
-import { Tooltip } from "@mui/material";
+import { Skeleton, Tooltip } from "@mui/material";
 import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
@@ -36,7 +37,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const sinceDate = useCreationDate(identity);
   const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [userPercentile, setUserPercentile] = useState("");
-  const [userXp, setUserXp] = useState<number>();
+  const [userXp, setUserXp] = useState<number>(0);
 
   const copyToClipboard = () => {
     setCopied(true);
@@ -53,7 +54,13 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   }, []);
 
   const computeData = useCallback(() => {
-    if (rankingData && identity.owner && leaderboardData) {
+    if (
+      rankingData &&
+      rankingData?.first_elt_position >= 0 &&
+      identity.owner &&
+      leaderboardData &&
+      leaderboardData?.total_users > 0
+    ) {
       const user = rankingData.ranking.find(
         (user) => user.address === hexToDecimal(identity.owner)
       );
@@ -69,6 +76,8 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
         setUserPercentile(computedUserPercentile);
         setUserXp(user.xp);
       }
+    } else {
+      setUserXp(-1);
     }
   }, [rankingData, identity, leaderboardData]);
 
@@ -166,7 +175,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
 
           <div className={styles.right_bottom}>
-            {leaderboardData?.position ? (
+            {leaderboardData ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
                   src={trophyIcon}
@@ -176,11 +185,24 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   alt="trophy icon"
                 />
                 <p className={styles.statsText}>
-                  {rankFormatter(leaderboardData?.position) ?? "Loading"}
+                  {leaderboardData?.position
+                    ? rankFormatter(leaderboardData?.position)
+                    : "NA"}
                 </p>
               </div>
-            ) : null}
-            {userXp !== undefined ? (
+            ) : (
+              <div className={styles.right_bottom_content}>
+                <CDNImage
+                  src={trophyIcon}
+                  priority
+                  width={25}
+                  height={25}
+                  alt="trophy icon"
+                />
+                <p className={styles.statsText}>Loading</p>
+              </div>
+            )}
+            {userXp !== -1 ? (
               <div className={styles.right_bottom_content}>
                 <CDNImage
                   src={xpIcon}
@@ -189,9 +211,20 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   height={30}
                   alt="xp badge"
                 />
-                <p className={styles.statsText}>{userXp ?? "Loading"}</p>
+                <p className={styles.statsText}>{userXp ?? "0"}</p>
               </div>
-            ) : null}
+            ) : (
+              <div className={styles.right_bottom_content}>
+                <CDNImage
+                  src={xpIcon}
+                  priority
+                  width={30}
+                  height={30}
+                  alt="xp badge"
+                />
+                <p className={styles.statsText}>NA</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
