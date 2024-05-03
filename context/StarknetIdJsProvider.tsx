@@ -32,7 +32,7 @@ export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
     return new StarknetIdNavigator(
       provider,
       isTestnet
-        ? constants.StarknetChainId.SN_GOERLI
+        ? constants.StarknetChainId.SN_SEPOLIA
         : constants.StarknetChainId.SN_MAIN
     );
   }, [provider]);
