@@ -18,7 +18,7 @@ import {
   UniquePageVisit,
   PendingBoostClaim,
   BoostClaimParams,
-  GetQuestsRes,
+  QuestList,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -139,7 +139,7 @@ export const getCompletedBoosts = async (addr: string) => {
   }
 };
 
-export const getQuests = async (): Promise<GetQuestsRes | undefined> => {
+export const getQuests = async (): Promise<QuestList | undefined > => {
   try {
     const response = await fetch(`${baseurl}/get_quests`);
     return await response.json();

@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import { BoostedQuests, QueryError, QuestDocument ,CompletedQuests} from "../types/backTypes";
+import { BoostedQuests, QueryError, QuestDocument ,CompletedQuests, QuestList} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -57,40 +57,41 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const data: GetQuestsRes | undefined = await getQuests();
+      const data: QuestList | undefined = await getQuests();
 
-      if (data) {
-        const q = Object.values(data).flat();
+      if (!data) return;
 
-        const categoriesWithImages = await Promise.all(
-          Object.keys(data).map(async (key) => {
-            const img = await (async () => {
-              try {
-                // If a category img is defined in quest_categories use it
-                const questData = await fetchQuestCategoryData(key);
-                return questData.img_url;
-              } catch (error) {
-                // else use img from first quest in the category
-                return q.filter((quest) => quest.category === key)[0].img_card;
-              }
-            })();
-            const questNumber = q.filter(
-              (quest) => quest.category === key
-            ).length;
-            const quests = q.filter((quest) => quest.category === key);
-  
-            return {
-              name: key,
-              img,
-              questNumber,
-              quests,
-            };
-          })
-        );
-  
-        setCategories(categoriesWithImages);
-        setQuests(q);
-      }
+      const q = Object.values(data).flat();
+
+      const categoriesWithImages = await Promise.all(
+        Object.keys(data).map(async (key) => {
+          const img = await (async () => {
+            try {
+              // If a category img is defined in quest_categories use it
+              const questData = await fetchQuestCategoryData(key);
+              return questData.img_url;
+            } catch (error) {
+              // else use img from first quest in the category
+              return q.filter((quest) => quest.category === key)[0].img_card;
+            }
+          })();
+          const questNumber = q.filter(
+            (quest) => quest.category === key
+          ).length;
+          const quests = q.filter((quest) => quest.category === key);
+
+          return {
+            name: key,
+            img,
+            questNumber,
+            quests,
+          };
+        })
+      );
+
+      setCategories(categoriesWithImages);
+      setQuests(q);
+      
     })();
   }, []);
 

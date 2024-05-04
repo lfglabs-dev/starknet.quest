@@ -7,7 +7,7 @@ import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
-import { GetQuestsRes, QuestDocument } from "../../types/backTypes";
+import { QuestDocument, QuestList } from "../../types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [quests, setQuests] = useState<GetQuestsRes>({} as GetQuestsRes);
+  const [quests, setQuests] = useState<QuestList> ({} as QuestList);
 
   const fetchQuests = useCallback(async () => {
     try {

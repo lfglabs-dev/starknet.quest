@@ -187,7 +187,7 @@ type BoostClaimParams = {
   s: string;
 };
 
-type GetQuestsRes =
+type QuestList =
   | {
       [key: string]: QuestDocument[];
     }
