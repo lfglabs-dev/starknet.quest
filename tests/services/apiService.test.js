@@ -6,7 +6,6 @@ import {
   getBoostById,
   getBoosts,
   getQuizById,
-  fetchLeaderboardRankings,
   getTrendingQuests,
   getQuestsInBoost,
   getQuestActivityData,
@@ -20,7 +19,7 @@ import {
   updateUniqueVisitors,
   getPendingBoostClaims,
   getQuestBoostClaimParams,
-  getQuests
+  getQuests,
   getCompletedBoosts,
 } from "@services/apiService";
 

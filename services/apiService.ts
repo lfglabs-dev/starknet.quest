@@ -19,12 +19,6 @@ import {
   PendingBoostClaim,
   BoostClaimParams,
   QuestList,
-  BoostClaimParams,
-  BoostedQuests,
-  CompletedQuests,
-  QueryError,
-  UniqueVisitorCount,
-  UserTask
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
