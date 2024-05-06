@@ -18,6 +18,7 @@ import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
 import { getBoosts } from "@services/apiService";
+import { MILLISECONDS_PER_WEEK } from "@constants/common";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -91,7 +92,12 @@ const QuestAndCollectionTabs: FunctionComponent<
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      if (res) setBoosts(res);
+      const filteredResponse = res?.filter(
+        (boost) =>
+          (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
+      );
+      if (filteredResponse && filteredResponse?.length > 0)
+        setBoosts(filteredResponse);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }

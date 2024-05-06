@@ -7,8 +7,8 @@ export default function useCreationDate(identity: Identity | undefined) {
   const [sinceDate, setSinceDate] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!identity || !identity.addr) return;
-      getDeployedTimeByAddress(identity.addr).then((data) => {
+    if (!identity || !identity.owner) return;
+      getDeployedTimeByAddress(identity.owner).then((data) => {
         if (data as DeployedTime) {
           const sinceData = memberSince((data as DeployedTime).timestamp);
           setSinceDate(sinceData);

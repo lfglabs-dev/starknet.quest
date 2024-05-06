@@ -83,6 +83,7 @@ export default function Page({ params }: BoostQuestPageProps) {
       } else {
         setQuestData(res);
       }
+
     } catch (error) {
       console.log("Error while fetching quest data", error);
     }

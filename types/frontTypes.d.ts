@@ -83,19 +83,29 @@ type Reward = {
   disabled: boolean;
 };
 
+type VerifierData = {
+  verifier: string;
+  field: string;
+  data: string;
+};
 type Identity = {
-  addr: string;
-  domain?: string;
-  domain_expiry?: number | null;
-  is_owner_main?: boolean;
-  owner_addr?: string;
-  old_discord?: string;
-  old_twitter?: string;
-  old_github?: string;
-  discord?: string;
-  twitter?: string;
-  github?: string;
-  starknet_id?: string;
+  id: string;
+  domain: {
+    domain: string;
+    migrated?: boolean;
+    root?: boolean;
+    creation_date?: number;
+    expiry?: number;
+    resolver?: string | null;
+    legacy_address?: string;
+    rev_address?: string;
+  };
+  creation_date?: number;
+  main: boolean;
+  owner: string;
+  user_data?: [];
+  extended_verifier_data?: [];
+  verifier_data?: VerifierData[];
   error?: string;
 };
 
@@ -159,12 +169,11 @@ type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 
 type ProfileCard = {
-  title: string;
   identity: Identity;
-  addressOrDomain: string | string[] | undefined;
-  sinceDate: string | null;
-  achievements: BuildingsInfo[];
-  soloBuildings: StarkscanNftProps[];
+  addressOrDomain: string | undefined;
+  rankingData?: RankingData;
+  leaderboardData?: LeaderboardToppersData;
+  isOwner?: boolean;
 };
 
 type Signature = [string, string];

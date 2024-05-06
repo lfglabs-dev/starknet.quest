@@ -5,16 +5,8 @@ import styles from "@styles/components/footer.module.css";
 import Link from "next/link";
 import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
 import DiscordIcon from "@components/UI/iconsComponents/icons/discordIcon";
-import { usePathname } from "next/navigation";
-import { isHexString } from "@utils/stringService";
 
 const Footer: FunctionComponent = () => {
-  const route = usePathname();
-  if (
-    route?.includes(".stark") ||
-    (isHexString(route?.slice(1, route.length) as string) && route !== "/")
-  )
-    return null;
   return (
     <div className="footer">
       <footer className={styles.footer}>
