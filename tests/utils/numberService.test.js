@@ -1,4 +1,8 @@
-import { calculatePercentile, numberWithCommas } from "@utils/numberService";
+import {
+  calculatePercentile,
+  numberWithCommas,
+  formatNumberThousandEqualsK,
+} from "@utils/numberService";
 
 describe("calculatePercentile function", () => {
   it("should return the correct percentile for valid input", () => {
@@ -46,5 +50,17 @@ describe("numberWithCommas function", () => {
 
   it("should return an empty string for undefined input", () => {
     expect(numberWithCommas(undefined)).toBe("");
+  });
+});
+
+describe("formatNumberThousandEqualsK function", () => {
+  it("should return a formatted string for numbers >= 1000", () => {
+    expect(formatNumberThousandEqualsK(1000)).toBe("+1k");
+    expect(formatNumberThousandEqualsK(1500)).toBe("+2k");
+  });
+
+  it("should return the input number as string for numbers < 1000", () => {
+    expect(formatNumberThousandEqualsK(999)).toBe("999");
+    expect(formatNumberThousandEqualsK(500)).toBe("500");
   });
 });

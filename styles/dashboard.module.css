@@ -1,0 +1,446 @@
+.dashboard_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.dashboard_wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 12vh;
+    max-width: 950px;
+    margin-bottom: 24px;
+}
+
+.dashboard_skeleton {
+    display: flex;
+    width: 100%;
+    margin-top: 12vh;
+    max-width: 950px;
+}
+
+.profileCardSkeleton {
+    height: 30vh;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+
+.profileCardLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.dashboardSkeleton {
+    height: 30vh;
+    width: 100%;
+    margin-top: 6vh;
+    max-width: 950px;
+}
+
+.dashboardLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.questsCompletedTitleSkeleton {
+    display: flex;
+    width: 100%;
+    margin-top: 6vh;
+    max-width: 950px;
+}
+
+.questsCompletedTitleLoading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2rem;
+}
+
+
+
+.blur1 {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.blur2 {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.dashboard_profile_card {
+    display: flex;
+    width: 100%;
+    max-width: 950px;
+    padding: 1.5rem 2.5rem;
+    background: linear-gradient(var(--background600), transparent);
+    align-items: center;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.profile_picture_div {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile_picture_img {
+    position: absolute;
+}
+
+.child {
+    flex: 1;
+}
+
+.left {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    gap: 2rem;
+}
+
+.center {
+    padding-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+}
+
+.divider {
+    height: 10px;
+    width: 100%;
+}
+
+
+.flexDiv {
+    display: flex;
+
+}
+
+.right {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20%;
+}
+
+.right_top {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+
+.right_socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.social_icon_wrap {
+    cursor: pointer;
+}
+
+.social_icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.right_share_button {
+    width: auto;
+    height: 32px;
+    border-radius: 12px;
+    background-color: rgb(13, 13, 13);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+
+
+.right_middle {
+    width: 100%;
+    height: 100%;
+}
+
+.right_bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    align-items: center;
+    width: 100%;
+}
+
+.right_bottom_content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.profile_name {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.accountCreationDate {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.addressText,
+.accountCreationDate {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.percentileText {
+    font-size: 14px;
+    margin-top: 10px;
+    color: var(--secondary);
+}
+
+.small_divider {
+    width: 20px;
+}
+
+.address_div {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.green_span {
+    font-size: 16px;
+    color: rgb(144, 246, 194);
+}
+
+.second_header_label {
+    margin-right: auto;
+}
+
+.second_header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.questContainer,
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.questContainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 950px;
+    margin-bottom: 3rem;
+    justify-content: space-between;
+}
+
+.dashboard_completed_tasks_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 6vh;
+    max-width: 950px;
+    margin-bottom: 24px;
+}
+
+.quests_container {
+    min-height: 350px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.leftAligned {
+    justify-content: flex-start;
+}
+
+.centerAligned {
+    justify-content: center;
+}
+
+.statsText {
+    font-family: 'Sora-Bold';
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .dashboard_profile_card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dashboard_container {
+        padding: 5px;
+    }
+
+    .second_header {
+        margin-bottom: 0;
+    }
+
+
+    .dashboard_wrapper {
+        padding: 20px;
+        padding-bottom: 30px;
+    }
+
+    .right_top {
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .right_bottom {
+        justify-content: center;
+        gap: 0.7rem;
+    }
+
+    .accountCreationDate {
+        padding-bottom: 10px;
+    }
+
+    .quests_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .questContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+        max-width: 950px;
+        margin-bottom: 3rem;
+        margin-top: 1rem;
+        margin-top: 3rem;
+        justify-content: center;
+    }
+
+    .profile_name {
+        margin-bottom: 10px;
+    }
+
+
+
+    .center {
+        gap: 0;
+        padding-left: unset;
+    }
+
+
+
+    .address_div {
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .profile_picture_div {
+        width: 120px;
+        height: 120px;
+    }
+
+    .addressText {
+        font-size: 10px;
+    }
+
+    .accountCreationDate {
+        padding-top: 10px;
+        font-size: 12px;
+    }
+
+    .percentileText {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: var(--secondary);
+    }
+
+    .second_header_label {
+        text-align: center;
+    }
+
+    .statsText {
+        font-family: 'Sora-ExtraBold';
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .second_header_label {
+        margin: auto;
+    }
+
+    .noBoosts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .left {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+}

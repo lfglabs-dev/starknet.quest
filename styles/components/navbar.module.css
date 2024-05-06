@@ -2,7 +2,6 @@
   margin-left: 2.5rem /* 40px */;
   font-size: 0.875rem /* 14px */;
   line-height: 1.25rem /* 20px */;
-  text-transform: uppercase;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
   font-weight: 600;
   color: var(--secondary);
