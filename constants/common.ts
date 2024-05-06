@@ -13,6 +13,7 @@ export const QuestDefault = {
   title_card: "",
   hidden: false,
   disabled: false,
+  start_timestamp: null,
   expiry_timestamp: "loading",
   mandatory_domain: null,
   expired: false,
@@ -50,3 +51,5 @@ export const TOKEN_DECIMAL_MAP = {
   LORDS: 18,
   STRK: 18,
 };
+
+export const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;

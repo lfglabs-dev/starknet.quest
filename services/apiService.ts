@@ -154,10 +154,10 @@ export const getCompletedQuests = async (addr: string) => {
       `${baseurl}/get_completed_quests?addr=${addr}`
     );
     const data: CompletedQuests | QueryError = await response.json();
-    return data as CompletedQuests
+    return data as CompletedQuests;
   } catch (err) {
     console.log("Error while fetching completed quests", err);
-    return err as QueryError
+    return err as QueryError;
   }
 };
 
@@ -331,6 +331,7 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
+
   export async function getQuestById(id: string) {
     try {
       const response = await fetch(`${baseurl}/get_quest?id=${id}`);
@@ -340,7 +341,8 @@ export const getUniqueVisitorCount = async (id: number) => {
       console.error("Error parsing quest data:", error);
       return error as QueryError;
     }
-  }
+
+}
 
 export async function fetchQuestCategoryData(name: string) {
   const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);

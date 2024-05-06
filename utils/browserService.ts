@@ -7,3 +7,13 @@ export function getBrowser(userAgent: string): string | undefined {
     return undefined;
   }
 }
+
+export const getTweetLink = (tweet: string): string => {
+  const encodedTweet = encodeURIComponent(tweet);
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodedTweet}`;
+  return tweetUrl;
+};
+
+export const writeToClipboard = (data: string) => {
+  navigator.clipboard.writeText(data);
+};

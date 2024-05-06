@@ -1,10 +1,3 @@
-export const hasVerifiedSocials = (identity: Identity) => {
-  if (identity.old_discord || identity.old_twitter || identity.old_github) {
-    return true;
-  }
-  return false;
-};
-
 export const memberSince = (timestamp: number): string | null => {
   const then = new Date(timestamp * 1000);
   const now = new Date();
