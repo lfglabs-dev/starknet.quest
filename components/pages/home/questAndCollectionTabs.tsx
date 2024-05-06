@@ -10,6 +10,7 @@ import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
+import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
@@ -19,14 +20,9 @@ import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
 import { getBoosts } from "@services/apiService";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
+import { getClaimableQuests } from "@utils/quest";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
+export function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -42,7 +38,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+export function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -67,6 +63,7 @@ const QuestAndCollectionTabs: FunctionComponent<
     },
     []
   );
+
   const sortedAndFilteredQuests = useMemo(() => {
     const filteredQuests = quests
       .filter((quest) => {
@@ -87,7 +84,9 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [allBoosts, setAllBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
+  const [claimableQuests, setClaimableQuests] = useState<QuestDocument[]>([]);
 
   const fetchBoosts = async () => {
     try {
@@ -106,6 +105,29 @@ const QuestAndCollectionTabs: FunctionComponent<
   useEffect(() => {
     fetchBoosts();
   }, []);
+
+  useEffect(() => {
+    const getAllBoosts = async () => {
+      try {
+        const allBoosts = await getBoosts();
+        if (allBoosts) {
+          setAllBoosts(allBoosts);
+        }
+      } catch (err) {
+        console.log("Error while fetching boosts", err);
+      }
+    }
+
+    getAllBoosts();
+  }, []);
+
+  useEffect(() => {
+    const data = getClaimableQuests(allBoosts, address, quests);
+    if (data) {
+      setClaimableQuests(data);
+    }
+  }, [address, allBoosts, quests]);
+
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
@@ -154,6 +176,22 @@ const QuestAndCollectionTabs: FunctionComponent<
                 }}
                 label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
                 {...a11yProps(1)}
+              />
+              <Tab
+                disableRipple
+                sx={{
+                  borderRadius: "10px",
+                  padding: "0px 12px 0px 12px",
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "12px",
+                  fontFamily: "Sora",
+                  minHeight: "32px",
+                }}
+                label={`To claim (${
+                  claimableQuests ? claimableQuests.length : 0
+                })`}
+                {...a11yProps(2)}
               />
             </Tabs>
           </div>
@@ -214,6 +252,26 @@ const QuestAndCollectionTabs: FunctionComponent<
                 <QuestsSkeleton />
               )}
             </div>
+          </CustomTabPanel>
+          <CustomTabPanel value={tabIndex} index={2}>
+            {isConnecting ? (
+              "Connecting to wallet..."
+            ) : (
+              <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+                {claimableQuests && claimableQuests.map((quest) => (
+                  <QuestClaim
+                    key={quest.id}
+                    title={quest.title_card}
+                    onClick={() => router.push(`/quest/${quest.id}`)}
+                    imgSrc={quest.img_card}
+                    name={quest.issuer}
+                    reward={quest.rewards_title}
+                    id={quest.id}
+                    expired={quest.expired}
+                  />
+                ))}
+              </div>
+            )}
           </CustomTabPanel>
         </div>
       </section>

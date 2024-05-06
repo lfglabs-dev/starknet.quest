@@ -18,3 +18,32 @@ export function pickRandomObjectsFn({
     return questArray;
   }
 }
+
+export const findQuestsByAddress = (
+  boosts: Boost[] | undefined,
+  address: string | undefined
+) => {
+  const questIds = [];
+  if (boosts) {
+    for (const boost of boosts) {
+      if (address && !boost.winner?.includes(address)) {
+        questIds.push(...boost.quests);
+      }
+    }
+    return questIds;
+  }
+};
+
+export const getClaimableQuests = (
+  allBoosts: Boost[],
+  address: string | undefined,
+  quests: QuestDocument[]
+) => {
+  const claimableQuestIds = findQuestsByAddress(allBoosts, address);
+  if (claimableQuestIds && claimableQuestIds.length) {
+    const questsToClaim = quests.filter((quest: QuestDocument) =>
+      claimableQuestIds.includes(quest.id)
+    );
+    return questsToClaim;
+  }
+};
