@@ -32,7 +32,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
 }) => {
   const currentNetwork = getCurrentNetwork();
   const { address, connector } = useAccount();
-  const { notifications } = useNotificationManager();
+  const { notifications, checkTransactionStatus } = useNotificationManager();
   const domainOrAddressMinified = useDisplayName(address ?? "");
   const [txLoading, setTxLoading] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false);
@@ -50,6 +50,18 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
         : "connect",
     [address, domainOrAddressMinified, txLoading]
   );
+
+  useEffect(() => {
+    if (notifications) {
+      const fileredNotifications = notifications.filter(
+        (notif: SQNotification<TransactionData>) =>
+          notif.data.status === "pending"
+      );
+      fileredNotifications.forEach((notif) => {
+        checkTransactionStatus(notif.data.hash);
+      });
+    }
+  }, [notifications, checkTransactionStatus]);
 
   useEffect(() => {
     if (notifications) {
