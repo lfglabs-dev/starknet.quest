@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { getPendingBoostClaims } from "@services/apiService";
 import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
@@ -14,13 +15,15 @@ import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
-import { QuestDocument } from "../../../types/backTypes";
+import { ClaimableQuestDocument, QuestDocument } from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
 import { getBoosts } from "@services/apiService";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import { getClaimableQuests } from "@utils/quest";
+import { hexToDecimal } from "@utils/feltService";
+import { PendingBoostClaim } from "types/backTypes";
 
 export function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -84,9 +87,11 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
-  const [allBoosts, setAllBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
-  const [claimableQuests, setClaimableQuests] = useState<QuestDocument[]>([]);
+  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [pendingBoostClaims, setpendingBoostClaims] = useState<
+    PendingBoostClaim[] | undefined
+  >([]);
 
   const fetchBoosts = async () => {
     try {
@@ -107,27 +112,24 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, []);
 
   useEffect(() => {
-    const getAllBoosts = async () => {
-      try {
-        const allBoosts = await getBoosts();
-        if (allBoosts) {
-          setAllBoosts(allBoosts);
-        }
-      } catch (err) {
-        console.log("Error while fetching boosts", err);
+    const getAllPendingBoostClaims = async () => {
+      const allPendingClaims = await getPendingBoostClaims(
+        hexToDecimal(address)
+      );
+      if (allPendingClaims) {
+        setpendingBoostClaims(allPendingClaims);
       }
-    }
+    };
 
-    getAllBoosts();
-  }, []);
+    getAllPendingBoostClaims();
+  }, [address]);
 
   useEffect(() => {
-    const data = getClaimableQuests(allBoosts, address, quests);
-    if (data) {
+    const data = getClaimableQuests(quests, pendingBoostClaims);
+    if (data && data.length) {
       setClaimableQuests(data);
     }
-  }, [address, allBoosts, quests]);
-
+  }, [quests, pendingBoostClaims]);
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
@@ -258,18 +260,21 @@ const QuestAndCollectionTabs: FunctionComponent<
               "Connecting to wallet..."
             ) : (
               <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
-                {claimableQuests && claimableQuests.map((quest) => (
-                  <QuestClaim
-                    key={quest.id}
-                    title={quest.title_card}
-                    onClick={() => router.push(`/quest/${quest.id}`)}
-                    imgSrc={quest.img_card}
-                    name={quest.issuer}
-                    reward={quest.rewards_title}
-                    id={quest.id}
-                    expired={quest.expired}
-                  />
-                ))}
+                {claimableQuests &&
+                  claimableQuests.map((quest) => (
+                    <QuestClaim
+                      key={quest.id}
+                      title={quest.title_card}
+                      onClick={() =>
+                        router.push(`/quest-boost/${quest.boostId}`)
+                      }
+                      imgSrc={quest.img_card}
+                      name={quest.issuer}
+                      reward={quest.rewards_title}
+                      id={quest.boostId}
+                      expired={quest.expired}
+                    />
+                  ))}
               </div>
             )}
           </CustomTabPanel>

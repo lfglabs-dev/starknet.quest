@@ -58,81 +58,254 @@ describe("pickRandomObjectsFn", () => {
   });
 });
 
-describe("findQuestsByAddress function", () => {
-  const objectsArray = [
-    [
+describe("getClaimableQuests function", () => {
+  it("should return undefined if pendingBoostClaims is undefined", () => {
+    const quests = [
       {
-        amount: 1500,
-        token:
-          "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-        expiry: 1705708740000,
-        quests: [23],
-        winner: [
-          "0x061b6c0a78f9edf13cea17b50719f3344533fadd470b8cb29c2b4318014f52d3",
-          "0x03a1647831175f2abd4acfbcbca2ce6b8eef6c568ddb1e1174d1640ac8574580",
-          "0x0664c36dc97e14d74fabfb5d1ad77258f8340fdf711b836734a0aa90e704ba8a",
-          "0x019d081186f939258032ab321be2cef29816374b0d782d4a782e2d834799abad",
-          "0x06862090fb4e5764650cf06653526bfb33fc8b3a8687dcf440d227fe28f927ad",
-          "0x0610febaa5e58043927c8758edfaa3525ef59bac1f0b60e7b52b022084536363",
+        id: 27,
+        name: "Element - Gemstone Quest",
+        desc: "Element, an NFT marketplace where the users save time and money with top liquidity and minimal costs.",
+        additional_desc: null,
+        issuer: "Element",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/element/claimable",
+        logo: "/element/favicon.ico",
+        rewards_img: "/element/elementGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/elementGem.webp",
+            level: 1,
+          },
         ],
-        id: 5,
-        img_url: "/rango/bridge.webp",
-        name: "The Rango Boost",
+        img_card: "/element/elementGem.webp",
+        title_card: "Element - Gemstone Quest",
         hidden: false,
-        num_of_winners: 6,
-        token_decimals: 6,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
       },
       {
-        amount: 900,
-        token:
-          "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-        expiry: 1705708799000,
-        quests: [104],
-        winner: [
-          "0x034f3c16e4a0b7f4557ed0f70f6c4e7599e5da72f5fd6836516efbf9b71de0a0",
-          "0x022c2dd075059467bac7452afee146ecb17384506cb80174ecf69d2430f9fb4a",
-          "0x07327df3c5215fb607d84fb72aab70b49050c8a438c3fccee4f681ef88d296c7",
-          "0x02f06e4e2c320fbfdcba4b94ebc6d5c30002c5400e138ff0eedcae3409dae791",
-          "0x04e56b7a9d280392aa64aa66b8c51748f2eb7bd5dface86a42fb156ed49bcec8",
-          "0x01291b5e9812b2adf6755eaab3037b0b72c67cbd6c189831fc6f52bcfc4fde51",
-          "0x00bfceb15cf13814aadf3337e73c7f9330c080a4507fcd1d00a8e152eea911bb",
-          "0x01b1b07e0e51b8f07c2b9ddabe3da194f512cdc026167a8972b829c30d62f3ec",
-          "0x012cf82361433496f77ccd8644c5498743ac11dad073d3012b793bde44357630",
+        id: 17,
+        name: "briq  - Gemstone Quest",
+        desc: "briq is an NFT construction protocol that allows you to build NFTs by assembling fundamental components known as briqs.",
+        additional_desc: null,
+        issuer: "briq",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/briq/claimable",
+        logo: "/briq/favicon.ico",
+        rewards_img: "/element/briqGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/briqGem.webp",
+            level: 1,
+          },
         ],
-        id: 6,
-        img_url: "/braavos/pyramid.webp",
-        name: "Starknet Pro Score by Braavos quests",
+        img_card: "/element/briqGem.webp",
+        title_card: "briq  - Gemstone Quest",
         hidden: false,
-        num_of_winners: 9,
-        token_decimals: 6,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
       },
+    ];
+    const pendingBoostClaims = undefined;
+
+    const result = getClaimableQuests(quests, pendingBoostClaims);
+
+    expect(result).toBeUndefined();
+  });
+
+  it("should return undefined if pendingBoostClaims is an empty array", () => {
+    const quests = [
+      {
+        id: 27,
+        name: "Element - Gemstone Quest",
+        desc: "Element, an NFT marketplace where the users save time and money with top liquidity and minimal costs.",
+        additional_desc: null,
+        issuer: "Element",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/element/claimable",
+        logo: "/element/favicon.ico",
+        rewards_img: "/element/elementGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/elementGem.webp",
+            level: 1,
+          },
+        ],
+        img_card: "/element/elementGem.webp",
+        title_card: "Element - Gemstone Quest",
+        hidden: false,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
+      },
+      {
+        id: 17,
+        name: "briq  - Gemstone Quest",
+        desc: "briq is an NFT construction protocol that allows you to build NFTs by assembling fundamental components known as briqs.",
+        additional_desc: null,
+        issuer: "briq",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/briq/claimable",
+        logo: "/briq/favicon.ico",
+        rewards_img: "/element/briqGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/briqGem.webp",
+            level: 1,
+          },
+        ],
+        img_card: "/element/briqGem.webp",
+        title_card: "briq  - Gemstone Quest",
+        hidden: false,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
+      },
+    ];
+    const pendingBoostClaims = [];
+
+    const result = getClaimableQuests(quests, pendingBoostClaims);
+
+    expect(result).toBeUndefined();
+  });
+
+  it("should return an array of quests with boostId appended if pendingBoostClaims contains valid quests", () => {
+    const quests = [
+      {
+        id: 27,
+        name: "Element - Gemstone Quest",
+        desc: "Element, an NFT marketplace where the users save time and money with top liquidity and minimal costs.",
+        additional_desc: null,
+        issuer: "Element",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/element/claimable",
+        logo: "/element/favicon.ico",
+        rewards_img: "/element/elementGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/elementGem.webp",
+            level: 1,
+          },
+        ],
+        img_card: "/element/elementGem.webp",
+        title_card: "Element - Gemstone Quest",
+        hidden: false,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
+      },
+      {
+        id: 17,
+        name: "briq  - Gemstone Quest",
+        desc: "briq is an NFT construction protocol that allows you to build NFTs by assembling fundamental components known as briqs.",
+        additional_desc: null,
+        issuer: "briq",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/briq/claimable",
+        logo: "/briq/favicon.ico",
+        rewards_img: "/element/briqGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/briqGem.webp",
+            level: 1,
+          },
+        ],
+        img_card: "/element/briqGem.webp",
+        title_card: "briq  - Gemstone Quest",
+        hidden: false,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
+      },
+    ];
+    const pendingBoostClaims = [
       {
         amount: 1000,
         token:
-          "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-        expiry: 1715299200000,
-        quests: [28],
-        winner: null,
-        id: 10,
-        img_url: "/hashstack/hashstackEmpire.webp",
-        name: "Hashstack Winquest",
-        hidden: false,
-        num_of_winners: 10,
-        token_decimals: 6,
+          "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        expiry: 1715252529000,
+        quests: [27],
+        winner:
+          "0x01bf5fad6815868d6fe067905548285596cf311641169544109a7a5394c2565f",
+        img_url: "/nostra/cigar.webp",
+        id: 9,
+        name: "Nostra - Stake and Win",
+        num_of_winners: 4,
+        token_decimals: 18,
       },
-    ],
-  ];
+    ];
 
-  test("should return quests when winner is found", () => {
-    const winnerValue =
-      "0x061b6c0a78f9edf13cea17b50719f3344533fadd470b8cb29c2b4318014f52d3";
-    const result = findQuestByWinner(objectsArray, winnerValue);
-    expect(result).toEqual([23]); // Adjust the expected value based on your actual data
-  });
+    const result = getClaimableQuests(quests, pendingBoostClaims);
 
-  test("should return empty array when winner is not found", () => {
-    const winnerValue = "0x1234567890123456789012345678901234567890";
-    const result = findQuestByWinner(objectsArray, winnerValue);
-    expect(result).toEqual([]);
+    expect(result).toEqual([
+      {
+        boostId: 9,
+        id: 27,
+        name: "Element - Gemstone Quest",
+        desc: "Element, an NFT marketplace where the users save time and money with top liquidity and minimal costs.",
+        additional_desc: null,
+        issuer: "Element",
+        category: "Hi, Starks",
+        rewards_endpoint: "quests/element/element/claimable",
+        logo: "/element/favicon.ico",
+        rewards_img: "/element/elementGem.webp",
+        rewards_title: "1 NFT",
+        rewards_description: null,
+        rewards_nfts: [
+          {
+            img: "/element/elementGem.webp",
+            level: 1,
+          },
+        ],
+        img_card: "/element/elementGem.webp",
+        title_card: "Element - Gemstone Quest",
+        hidden: false,
+        disabled: false,
+        expiry: 1699542000000,
+        expiry_timestamp: "1699542000000",
+        mandatory_domain: "none",
+        expired: true,
+        experience: 10,
+        start_time: 1640995100000,
+      },
+    ]);
   });
 });

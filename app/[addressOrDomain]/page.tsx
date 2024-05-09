@@ -5,8 +5,8 @@ import ProfileCard from "@components/UI/profileCard/profileCard";
 import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
-  getBoosts,
   getCompletedQuests,
+  getPendingBoostClaims,
 } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
 import Blur from "@components/shapes/blur";
@@ -18,7 +18,7 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { CompletedQuests, QuestDocument } from "../../types/backTypes";
+import { ClaimableQuestDocument, CompletedQuests, PendingBoostClaim, QuestDocument } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
@@ -48,8 +48,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const [quest, setQuests] = useState<CompletedQuests>([]);
-  const [allBoosts, setAllBoosts] = useState<Boost[]>([]);
+  const [completedQuests, setCompletedQuests] = useState<CompletedQuests>([]);
   const [userRanking, setUserRanking] = useState<RankingData>({
     first_elt_position: -1,
     ranking: [],
@@ -57,7 +56,10 @@ export default function Page({ params }: AddressOrDomainProps) {
   const dynamicRoute = usePathname();
   const [questsLoading, setQuestsLoading] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [claimableQuests, setClaimableQuests] = useState<QuestDocument[]>([]);
+  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [pendingBoostClaims, setPendingBoostClaims] = useState<
+    PendingBoostClaim[] | undefined
+  >([]);
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
@@ -78,7 +80,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         if (!addr) return;
         const res = await getCompletedQuests(addr);
         if (!res || "error" in res) return;
-        setQuests(res);
+        setCompletedQuests(res);
       } catch (err) {
         console.log("Error while fetching quests", err);
       }
@@ -86,28 +88,26 @@ export default function Page({ params }: AddressOrDomainProps) {
     [address, identity]
   );
 
+
   useEffect(() => {
-    const getAllBoosts = async () => {
-      try {
-        const allBoosts = await getBoosts();
-        if (allBoosts) {
-          setAllBoosts(allBoosts);
-        }
-      } catch (err) {
-        console.log("Error while fetching boosts", err);
+    const getAllPendingBoostClaims = async () => {
+      const allPendingClaims = await getPendingBoostClaims(
+        hexToDecimal(address)
+      );
+      if (allPendingClaims) {
+        setPendingBoostClaims(allPendingClaims);
       }
     };
 
-    getAllBoosts();
-  }, []);
+    getAllPendingBoostClaims();
+  }, [address]);
 
   useEffect(() => {
-    const data = getClaimableQuests(allBoosts, address, quests);
+    const data = getClaimableQuests(quests, pendingBoostClaims);
     if (data) {
-      console.log('claimable quests are => ', data);
       setClaimableQuests(data);
     }
-  }, [address, allBoosts, quests]);
+  }, [address, pendingBoostClaims, quests]);
 
   const fetchRanking = useCallback(
     async (addr: string) => {
@@ -329,7 +329,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 fontFamily: "Sora",
                 minHeight: "32px",
               }}
-              label={`Completed (${quests.length})`}
+              label={`Completed (${completedQuests.length})`}
               {...a11yProps(0)}
             />
             <Tab
@@ -354,7 +354,7 @@ export default function Page({ params }: AddressOrDomainProps) {
           <div className={styles.quests_container}>
             {questsLoading ? (
               <QuestSkeleton />
-            ) : quests?.length === 0 ? (
+            ) : completedQuests?.length === 0 ? (
               <h2 className={styles.noBoosts}>
                 {isOwner
                   ? "You have not completed any quests at the moment"
@@ -363,9 +363,9 @@ export default function Page({ params }: AddressOrDomainProps) {
             ) : (
               <section className={QuestStyles.section}>
                 <div className={QuestStyles.questContainer}>
-                  {quests?.length > 0 &&
-                    quests?.map((quest) => (
-                      <QuestCardCustomised key={quest.id} id={quest.id} />
+                  {completedQuests?.length > 0 &&
+                    completedQuests?.map((quest) => (
+                      <QuestCardCustomised key={quest} id={quest} />
                     ))}
                 </div>
               </section>
@@ -387,7 +387,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     imgSrc={quest.img_card}
                     name={quest.issuer}
                     reward={quest.rewards_title}
-                    id={quest.id}
+                    id={quest.boostId}
                     expired={quest.expired}
                   />
                 ))}

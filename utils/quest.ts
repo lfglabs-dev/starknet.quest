@@ -1,4 +1,4 @@
-import { QuestDocument } from "../types/backTypes";
+import { ClaimableQuestDocument, PendingBoostClaim, QuestDocument } from "../types/backTypes";
 
 export const getOrderedQuests = (quests: QuestDocument[]) => {
   // Place ongoing quests firsts and the expired ones last
@@ -19,31 +19,25 @@ export function pickRandomObjectsFn({
   }
 }
 
-export const findQuestsByAddress = (
-  boosts: Boost[] | undefined,
-  address: string | undefined
-) => {
-  const questIds = [];
-  if (boosts) {
-    for (const boost of boosts) {
-      if (address && !boost.winner?.includes(address)) {
-        questIds.push(...boost.quests);
-      }
-    }
-    return questIds;
-  }
-};
-
 export const getClaimableQuests = (
-  allBoosts: Boost[],
-  address: string | undefined,
-  quests: QuestDocument[]
-) => {
-  const claimableQuestIds = findQuestsByAddress(allBoosts, address);
-  if (claimableQuestIds && claimableQuestIds.length) {
-    const questsToClaim = quests.filter((quest: QuestDocument) =>
-      claimableQuestIds.includes(quest.id)
+  quests: QuestDocument[],
+  pendingBoostClaims: PendingBoostClaim[] | undefined
+) :ClaimableQuestDocument[] | undefined => {
+  if (pendingBoostClaims && pendingBoostClaims.length) {
+    const allQuestIds = pendingBoostClaims.reduce(
+      (acc, curr) => acc.concat(curr.quests),
+      [] as number[]
     );
-    return questsToClaim;
+
+    // Filter questIds that exist in the quest array and append boostId
+    const questIdsInBoostClaim = allQuestIds
+      .filter((questId) => quests.some((q) => q.id === questId))
+      .map((questId) => ({
+        ...quests.find((q) => q.id === questId),
+        boostId: pendingBoostClaims.find((boost) =>
+          boost.quests.includes(questId)
+        )?.id,
+      }));
+    return questIdsInBoostClaim as ClaimableQuestDocument[];
   }
 };

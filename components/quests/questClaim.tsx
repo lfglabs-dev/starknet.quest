@@ -1,9 +1,6 @@
-import React, { FunctionComponent, useMemo } from "react";
-import { useContext } from "react";
-import { QuestsContext } from "@context/QuestsProvider";
+import React, { FunctionComponent } from "react";
 import styles from "@styles/quests.module.css";
 import QuestCard from "./questCard";
-import BoostReward from "./boostReward";
 import RewardIcon from "@components/UI/iconsComponents/icons/reward";
 
 type QuestProps = {
