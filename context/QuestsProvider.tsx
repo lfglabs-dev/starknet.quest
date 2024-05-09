@@ -72,6 +72,7 @@ export const QuestsContextProvider = ({
             try {
               // If a category img is defined in quest_categories use it
               const questData = await fetchQuestCategoryData(key);
+              if (!questData || !questData.img_url) return;
               return questData.img_url;
             } catch (error) {
               // else use img from first quest in the category

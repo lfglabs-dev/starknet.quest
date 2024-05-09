@@ -365,12 +365,12 @@ export async function fetchQuestCategoryData(name: string) {
     const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
     const data: QuestCategoryDocument | QueryError = await response.json();
     if ((data as QueryError).error) {
-      throw Error((data as QueryError).error);
+      return null;
     }
     return data as QuestCategoryDocument;
   } catch (error) {
     console.log("Error parsing quest data:", error);
-    return error as QueryError;
+    return null;
   }
 }
 
