@@ -15,7 +15,10 @@ import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
-import { ClaimableQuestDocument, QuestDocument } from "../../../types/backTypes";
+import {
+  ClaimableQuestDocument,
+  QuestDocument,
+} from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
@@ -88,7 +91,9 @@ const QuestAndCollectionTabs: FunctionComponent<
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
-  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [claimableQuests, setClaimableQuests] = useState<
+    ClaimableQuestDocument[]
+  >([]);
   const [pendingBoostClaims, setpendingBoostClaims] = useState<
     PendingBoostClaim[] | undefined
   >([]);
@@ -179,22 +184,24 @@ const QuestAndCollectionTabs: FunctionComponent<
                 label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
                 {...a11yProps(1)}
               />
-              <Tab
-                disableRipple
-                sx={{
-                  borderRadius: "10px",
-                  padding: "0px 12px 0px 12px",
-                  textTransform: "none",
-                  fontWeight: "600",
-                  fontSize: "12px",
-                  fontFamily: "Sora",
-                  minHeight: "32px",
-                }}
-                label={`To claim (${
-                  claimableQuests ? claimableQuests.length : 0
-                })`}
-                {...a11yProps(2)}
-              />
+              {address && (
+                <Tab
+                  disableRipple
+                  sx={{
+                    borderRadius: "10px",
+                    padding: "0px 12px 0px 12px",
+                    textTransform: "none",
+                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontFamily: "Sora",
+                    minHeight: "32px",
+                  }}
+                  label={`To claim (${
+                    claimableQuests ? claimableQuests.length : 0
+                  })`}
+                  {...a11yProps(2)}
+                />
+              )}
             </Tabs>
           </div>
           <CustomTabPanel value={tabIndex} index={0}>

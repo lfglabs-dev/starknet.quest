@@ -383,7 +383,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                   <QuestClaim
                     key={quest.id}
                     title={quest.title_card}
-                    onClick={() => router.push(`/quest/${quest.id}`)}
+                    onClick={() => router.push(`/quest-boost/${quest.boostId}`)}
                     imgSrc={quest.img_card}
                     name={quest.issuer}
                     reward={quest.rewards_title}
