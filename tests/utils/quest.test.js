@@ -1,7 +1,7 @@
 import {
   getOrderedQuests,
   pickRandomObjectsFn,
-  findQuestsByAddress,
+  getClaimableQuests,
 } from "@utils/quest";
 
 describe("orderQuests function", () => {
