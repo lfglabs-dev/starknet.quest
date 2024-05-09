@@ -1,8 +1,23 @@
 import {
-  AchievementsDocument, BoostClaimParams, BoostedQuests, CompletedDocument, CompletedQuests, DeployedTime, LeaderboardRankings,
-  LeaderboardToppersData, PendingBoostClaim, QueryError, QuestActivityData, QuestCategoryDocument,
-  QuestDocument, QuestParticipantsDocument, QuestParticipation,
-  QuizDocument, UniquePageVisit, UniqueVisitorCount, UserTask
+  AchievementsDocument,
+  BoostClaimParams,
+  BoostedQuests,
+  CompletedDocument,
+  CompletedQuests,
+  DeployedTime,
+  LeaderboardRankings,
+  LeaderboardToppersData,
+  PendingBoostClaim,
+  QueryError,
+  QuestActivityData,
+  QuestCategoryDocument,
+  QuestDocument,
+  QuestParticipantsDocument,
+  QuestParticipation,
+  QuizDocument,
+  UniquePageVisit,
+  UniqueVisitorCount,
+  UserTask,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -120,7 +135,7 @@ export const getCompletedBoosts = async (addr: string) => {
     return (await response.json()) as number[];
   } catch (err) {
     console.log("Error while fetching completed boosts", err);
-    return err as QueryError
+    return err as QueryError;
   }
 };
 
@@ -331,23 +346,32 @@ export const getUniqueVisitorCount = async (id: number) => {
   }
 };
 
-
-  export async function getQuestById(id: string) {
-    try {
-      const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-      const data: QuestDocument | QueryError = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error parsing quest data:", error);
-      return error as QueryError;
+export async function getQuestById(id: string) {
+  try {
+    const response = await fetch(`${baseurl}/get_quest?id=${id}`);
+    const data: QuestDocument | QueryError = await response.json();
+    if ((data as QueryError).error) {
+      throw Error((data as QueryError).error);
     }
-
+    return data as QuestDocument;
+  } catch (error) {
+    console.log("Error parsing quest data:", error);
+    return error as QueryError;
+  }
 }
 
 export async function fetchQuestCategoryData(name: string) {
-  const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
-  const data: QuestCategoryDocument | QueryError = await response.json();
-  return data as QuestCategoryDocument;
+  try {
+    const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
+    const data: QuestCategoryDocument | QueryError = await response.json();
+    if ((data as QueryError).error) {
+      throw Error((data as QueryError).error);
+    }
+    return data as QuestCategoryDocument;
+  } catch (error) {
+    console.log("Error parsing quest data:", error);
+    return error as QueryError;
+  }
 }
 
 export const updateUniqueVisitors = async (id: string) => {
