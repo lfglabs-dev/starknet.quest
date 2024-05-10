@@ -57,7 +57,7 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const data: QuestList | undefined = await getQuests();
+      const data = await getQuests();
 
       if (!data) return;
 
