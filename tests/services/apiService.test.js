@@ -324,7 +324,6 @@ describe("getQuests", () => {
   });
 });
 
-
 describe("getBoostedQuests function", () => {
   beforeEach(() => {
     fetch.mockClear();
@@ -460,7 +459,6 @@ describe("getQuestsParticipation", () => {
     expect(result).toBeUndefined();
   });
 });
-
 
 describe("fetchLeaderboardToppers", () => {
   afterEach(() => {
@@ -772,13 +770,11 @@ describe("fetchLeaderboardRankings function", () => {
   });
 });
 
-
 describe("getBoostById function", () => {
-  
   beforeEach(() => {
     fetch.mockClear();
   });
-  
+
   it("should fetch and return data for a valid boost id", async () => {
     const mockData = {
       amount: 1000,
@@ -878,85 +874,83 @@ describe("getCompletedQuests", () => {
 
   it("should fetch and return completed quests", async () => {
     const mockDataRes = [12, 24, 36, 48, 69];
-    const address = "ksdjiewmcoew"
+    const address = "ksdjiewmcoew";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataRes),
     });
 
-    const result = await getCompletedQuests(address)
+    const result = await getCompletedQuests(address);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_completed_quests?addr=${address}`
     );
 
-    expect(result).toEqual(mockDataRes)
+    expect(result).toEqual(mockDataRes);
   });
 
   it("should handle fetch with no response", async () => {
     const mockDataRes = null;
-    const address = "ksdjiewmcoew"
+    const address = "ksdjiewmcoew";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataRes),
     });
 
-    const result = await getCompletedQuests(address)
+    const result = await getCompletedQuests(address);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_completed_quests?addr=${address}`
     );
 
-    expect(result).toEqual(mockDataRes)
-  })
+    expect(result).toEqual(mockDataRes);
+  });
 
   it("should handle fetch with invalid response", async () => {
     const mockDataRes = "Invalid response";
-    const address = "ksdjiewmcoew"
+    const address = "ksdjiewmcoew";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataRes),
     });
 
-    const result = await getCompletedQuests(address)
+    const result = await getCompletedQuests(address);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_completed_quests?addr=${address}`
     );
 
-    expect(result).toEqual(mockDataRes)
-  })
+    expect(result).toEqual(mockDataRes);
+  });
 
   it("should handle fetch with invalid address", async () => {
     const mockDataRes = "Invalid address";
-    const address = "2009cx-920.299z/w"
+    const address = "2009cx-920.299z/w";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataRes),
     });
 
-    const result = await getCompletedQuests(address)
+    const result = await getCompletedQuests(address);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_completed_quests?addr=${address}`
     );
 
-    expect(result).toEqual(mockDataRes)
-  })
+    expect(result).toEqual(mockDataRes);
+  });
 
   it("should handle fetch with empty address", async () => {
     const mockDataRes = "Empty address";
-    const address = ""
+    const address = "";
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockDataRes),
     });
 
-    const result = await getCompletedQuests(address)
+    const result = await getCompletedQuests(address);
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_completed_quests?addr=${address}`
     );
-        expect(result).toEqual(mockDataRes)
-  })
-})
-
-
+    expect(result).toEqual(mockDataRes);
+  });
+});
 
 describe("getQuestActivityData function", () => {
   beforeEach(() => {
@@ -1217,6 +1211,7 @@ describe("getTrendingQuests function", () => {
         hidden: false,
         disabled: false,
         expiry: null,
+        start_timestamp: null,
         expiry_timestamp: null,
         mandatory_domain: "root",
         expired: false,
@@ -1751,6 +1746,7 @@ describe("getQuestsInBoost function", () => {
         hidden: false,
         disabled: false,
         expiry: 1794553600000,
+        start_timestamp: null,
         expiry_timestamp: null,
         mandatory_domain: "ethereal",
         expired: false,

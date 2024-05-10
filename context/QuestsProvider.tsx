@@ -1,7 +1,12 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import { BoostedQuests, QueryError, QuestDocument ,CompletedQuests, QuestList} from "../types/backTypes";
+import { 
+  BoostedQuests,
+  QueryError,
+  QuestDocument,
+  CompletedQuests,
+  QuestList} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";

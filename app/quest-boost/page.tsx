@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "@styles/questboost.module.css";
 import BoostCard from "@components/quest-boost/boostCard";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
@@ -12,14 +12,16 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 import { CompletedQuests, QueryError } from "types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
+import { MILLISECONDS_PER_WEEK } from "@constants/common";
 
 export default function Page() {
   const router = useRouter();
   const { address } = useAccount();
-  const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
-  const [completedQuests, setCompletedQuests] = useState<CompletedQuests | QueryError>([]);
+  const [completedQuests, setCompletedQuests] = useState<
+    CompletedQuests | QueryError
+  >([]);
   const [loadingBoosts, setLoadingBoosts] = useState<boolean>(true);
   const [loadingCompletedQuests, setLoadingCompletedQuests] =
     useState<boolean>(true);
@@ -56,65 +58,37 @@ export default function Page() {
     fetchCompletedQuests();
   }, [address]);
 
+  const filteredBoosts = useMemo(() => {
+    return boosts?.filter(
+      (boost) =>
+        (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
+    );
+  }, [boosts]);
+
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
       <h1 className={styles.title}>Boosts Quest</h1>
+
       {!loadingBoosts && !loadingCompletedQuests ? (
         <div className={styles.card_container}>
-          {(() => {
-            // Filter unexpired boosts
-            const unexpiredBoosts = boosts?.filter(
-              (boost) =>
-                (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <=
-                3
-            );
-
-            // Filter expired boosts
-            const expiredBoosts = boosts?.filter(
-              (boost) =>
-                (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK >
-                  3 && boost.expiry !== null // Ensure expiry date exists
-            );
-
-            if (unexpiredBoosts.length !== 0) {
+          {filteredBoosts.length > 0 ? (
+            filteredBoosts?.map((boost) => {
               return (
-                <>
-                  {unexpiredBoosts.map((boost) => (
-                    <BoostCard
-                      key={boost.id}
-                      boost={boost}
-                      completedQuests={completedQuests}
-                    />
-                  ))}
-                  {expiredBoosts.length !== 0 &&
-                    expiredBoosts.map((boost) => (
-                      <BoostCard
-                        key={boost.id}
-                        boost={boost}
-                        completedQuests={completedQuests}
-                      />
-                    ))}
-                </>
-              );
-            } else if (expiredBoosts.length !== 0) {
-              return expiredBoosts.map((boost) => (
                 <BoostCard
                   key={boost.id}
                   boost={boost}
                   completedQuests={completedQuests}
                 />
-              ));
-            } else {
-              return (
-                <h2 className={styles.noBoosts}>
-                  No quests are being boosted at the moment.
-                </h2>
               );
-            }
-          })()}
+            })
+          ) : (
+            <h2 className={styles.noBoosts}>
+              No quests are being boosted at the moment.
+            </h2>
+          )}
         </div>
       ) : (
         <div className="flex justify-center items-center w-full">

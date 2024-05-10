@@ -7,20 +7,20 @@ const FeaturedQuestSkeleton: FunctionComponent = () => {
     <div className={styles.questContainer}>
       <Skeleton
         variant="rectangular"
-        width={250}
-        height={350}
+        width={290}
+        height={390}
         sx={{ bgcolor: "grey.900", borderRadius: "8px" }}
       />
       <Skeleton
         variant="rectangular"
-        width={250}
-        height={350}
+        width={290}
+        height={390}
         sx={{ bgcolor: "grey.900", borderRadius: "8px" }}
       />
       <Skeleton
         variant="rectangular"
-        width={250}
-        height={350}
+        width={290}
+        height={390}
         sx={{ bgcolor: "grey.900", borderRadius: "8px" }}
       />
     </div>

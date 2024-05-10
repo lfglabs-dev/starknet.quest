@@ -5,7 +5,6 @@ import Avatar from "@components/UI/avatar";
 import { decimalToHex } from "@utils/feltService";
 import { getDomainFromAddress } from "../../utils/domainService";
 import Divider from "@mui/material/Divider";
-import AchievementIcon from "@components/UI/iconsComponents/icons/achievementIcon";
 import { CDNImage } from "@components/cdn/image";
 import Rank1Icon from "@components/UI/iconsComponents/icons/rank1Icon";
 import Rank2Icon from "@components/UI/iconsComponents/icons/Rank2Icon";
@@ -16,12 +15,6 @@ type RankCardProps = {
   experience: number;
   trophy: number;
   position: number;
-};
-
-const iconMap = {
-  1: "#E6CD84",
-  2: "#D8D8D8",
-  3: "#E2943B",
 };
 
 const RankCard: FunctionComponent<RankCardProps> = ({

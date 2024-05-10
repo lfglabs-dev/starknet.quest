@@ -8,7 +8,6 @@ import {
   minifyDomain,
   generateString,
   numberToString,
-  minifyAddressFromStrings,
   getMonthName,
   // getDomainKind,
   shortenDomain,
@@ -283,23 +282,6 @@ describe("minifyAddressWithChars function", () => {
   it("should return minified address in lowercase", () => {
     const address = "ABCDEFGH";
     expect(minifyAddressWithChars(address, 3)).toBe("abc...fgh");
-  });
-});
-
-describe("minifyAddressFromStrings", () => {
-  it("Should returns an empty string if the string array is empty", () => {
-    const result = minifyAddressFromStrings([], 4);
-    expect(result).toEqual("");
-  });
-
-  it("Should returns the minified version of the first string corresponding to a valid address in the array", () => {
-    const result = minifyAddressFromStrings(["0x1234567890abcdef", "test"], 4);
-    expect(result).toEqual("0x12...cdef");
-  });
-
-  it("Should returns the minified version of the first string corresponding to a valid address in the array", () => {
-    const result = minifyAddressFromStrings(["test2", "0x1234567890abcdef"], 4);
-    expect(result).toEqual("0x12...cdef");
   });
 });
 

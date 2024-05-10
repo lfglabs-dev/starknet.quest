@@ -16,6 +16,7 @@ type QuestDocument = {
   hidden: boolean;
   disabled: boolean;
   expiry_timestamp: string | null;
+  start_timestamp: string | null;
   mandatory_domain: string | null;
   expired: boolean;
   rewards_description: string | null;
@@ -157,7 +158,7 @@ type Ranking = {
   achievements: number;
 };
 
-type CompletedQuests = number[]
+type CompletedQuests = number[];
 
 type QuestParticipantsDocument = {
   count: string | number;
