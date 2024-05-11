@@ -1,12 +1,12 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import {
+import { 
   BoostedQuests,
   QueryError,
   QuestDocument,
   CompletedQuests,
-} from "../types/backTypes";
+  QuestList} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -62,7 +62,9 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const data: GetQuestsRes = await getQuests();
+      const data = await getQuests();
+
+      if (!data) return;
 
       const q = Object.values(data).flat();
 
@@ -95,6 +97,7 @@ export const QuestsContextProvider = ({
 
       setCategories(categoriesWithImages);
       setQuests(q);
+      
     })();
   }, []);
 

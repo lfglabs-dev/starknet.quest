@@ -187,3 +187,9 @@ type BoostClaimParams = {
   r: string;
   s: string;
 };
+
+type QuestList =
+  | {
+      [key: string]: QuestDocument[];
+    }
+  | QueryError;
