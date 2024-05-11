@@ -127,7 +127,7 @@ describe("getClaimableQuests function", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return undefined if pendingBoostClaims is an empty array", () => {
+  it("should return empty array if pendingBoostClaims is an empty array", () => {
     const quests = [
       {
         id: 27,
@@ -192,7 +192,7 @@ describe("getClaimableQuests function", () => {
 
     const result = getClaimableQuests(quests, pendingBoostClaims);
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual([]);
   });
 
   it("should return an array of quests with boostId appended if pendingBoostClaims contains valid quests", () => {
