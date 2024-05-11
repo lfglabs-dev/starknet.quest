@@ -58,7 +58,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   useEffect(() => {
     getQuestById(questId)
       .then((data: QuestDocument | QueryError) => {
-        if ((data as QuestDocument).name) {
+        if ((data as QuestDocument).id) {
           if (
             (data as QuestDocument).rewards_nfts &&
             (data as QuestDocument).rewards_nfts.length > 0
@@ -66,6 +66,8 @@ const Quest: FunctionComponent<QuestPageProps> = ({
             setHasNftReward(true);
           }
           setQuest(data as QuestDocument);
+        } else {
+          setErrorPageDisplay(true);
         }
       })
       .catch((err) => {

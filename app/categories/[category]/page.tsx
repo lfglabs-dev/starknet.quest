@@ -16,6 +16,7 @@ export async function generateMetadata(
 
   try {
     const data = await fetchQuestCategoryData(categoryName);
+    if (!data) return defaultMetatags;
     if (data?.name)
       return {
         title: data.name,

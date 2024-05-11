@@ -1,4 +1,4 @@
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useProvider } from "@starknet-react/core";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { hexToDecimal } from "@utils/feltService";
@@ -14,6 +14,7 @@ const readStatusAtom = atomWithStorage<boolean>(
 
 export function useNotificationManager() {
   const { address } = useAccount();
+  const { provider } = useProvider();
   const [notifications, setNotifications] = useAtom(notificationsAtom);
   const [unreadNotifications, setUnread] = useAtom(readStatusAtom);
 
@@ -26,6 +27,23 @@ export function useNotificationManager() {
     );
     notifications[index].data.status = status;
     setNotifications(notifications);
+    console.log("notifications", notifications);
+  };
+
+  const checkTransactionStatus = async (txHash: string) => {
+    const data = await provider.getTransactionReceipt(txHash);
+    if (data?.status === "REJECTED" || data?.status === "REVERTED") {
+      updateNotificationStatus(txHash, "error");
+      setUnread(true);
+    } else if (
+      data?.status === "ACCEPTED_ON_L2" ||
+      data?.status === "ACCEPTED_ON_L1" ||
+      data?.finality_status === "ACCEPTED_ON_L2" ||
+      data?.finality_status === "ACCEPTED_ON_L1"
+    ) {
+      updateNotificationStatus(txHash, "success");
+      setUnread(true);
+    }
   };
 
   const filteredNotifications = address
@@ -54,5 +72,6 @@ export function useNotificationManager() {
     unreadNotifications,
     updateReadStatus,
     updateNotificationStatus,
+    checkTransactionStatus,
   };
 }
