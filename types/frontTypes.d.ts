@@ -286,3 +286,9 @@ type PickRandomObjects = {
   questArray: QuestDocument[];
   count?: number;
 };
+
+type TabPanelProps = {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
