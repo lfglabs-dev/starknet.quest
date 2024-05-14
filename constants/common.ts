@@ -13,6 +13,7 @@ export const QuestDefault = {
   title_card: "",
   hidden: false,
   disabled: false,
+  start_timestamp: null,
   expiry_timestamp: "loading",
   mandatory_domain: null,
   expired: false,
@@ -23,9 +24,10 @@ export const QuestDefault = {
 export const basicAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789-";
 export const bigAlphabet = "这来";
 export const totalAlphabet = basicAlphabet + bigAlphabet;
-export const PAGE_SIZE = [10, 15, 20];
+export const PAGE_SIZE = { less: 10, more: 50 };
+export const TOP_50_TAB_STRING = "Top 50";
 
-export const rankOrder = [2, 1, 3];
+export const rankOrder = [1, 2, 3];
 export const rankOrderMobile = [1, 2, 3];
 
 export const TOKEN_ADDRESS_MAP = {
@@ -49,3 +51,5 @@ export const TOKEN_DECIMAL_MAP = {
   LORDS: 18,
   STRK: 18,
 };
+
+export const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;

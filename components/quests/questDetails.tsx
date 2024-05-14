@@ -13,7 +13,13 @@ import Reward from "./reward";
 import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
-import { NFTItem, QuestDocument, UserTask } from "types/backTypes";
+import {
+  NFTItem,
+  QuestDocument,
+  QuestParticipantsDocument,
+  UserTask,
+  CompletedQuests,
+} from "types/backTypes";
 import { Call, Contract } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "@components/skeletons/tasksSkeleton";
@@ -64,8 +70,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
 
-  const questId = quest.id.toString();
-  const [participants, setParticipants] = useState({
+  const questId = quest?.id?.toString();
+  const [participants, setParticipants] = useState<QuestParticipantsDocument>({
     count: 0,
     firstParticipants: [] as string[],
   });
@@ -74,8 +80,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   useEffect(() => {
     if (questId && questId !== "0" && starknetIdNavigator) {
       getQuestParticipants(questId).then(async (data) => {
-        setParticipants(data);
-        const addrs = data.firstParticipants;
+        setParticipants(data as QuestParticipantsDocument);
+        const addrs = (data as QuestParticipantsDocument).firstParticipants;
         const identities = addrs.map(async (addr: string) => {
           const domain = await starknetIdNavigator
             ?.getStarkName(addr)
@@ -88,9 +94,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         });
         const identitiesResolved = await Promise.all(identities);
         setParticipants({
-          count: data.count,
+          count: (data as QuestParticipantsDocument).count,
           firstParticipants: identitiesResolved,
-        });
+        } as QuestParticipantsDocument);
       });
     }
   }, [questId, starknetIdNavigator]);
@@ -195,7 +201,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 
   const checkUserRewards = async () => {
     if (!address) return;
-    const res = await getCompletedQuests(address);
+    const res = (await getCompletedQuests(address)) as CompletedQuests;
     if (res.includes(parseInt(questId))) {
       setRewardsEnabled(true);
     }
@@ -293,7 +299,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   return (
     <>
       <NftImage
-        nfts={quest.rewards_nfts.map((nft: NFTItem) => {
+        nfts={quest?.rewards_nfts?.map((nft: NFTItem) => {
           return { imgSrc: nft.img, level: nft.level };
         })}
       />
@@ -382,6 +388,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                       ? taskError.error
                       : ""
                   }
+                  expired={quest.expired}
                   setShowQuiz={setShowQuiz}
                   quizName={task.quiz_name || undefined}
                   issuer={{
@@ -402,7 +409,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               onClick={() => {
                 setRewardsEnabled(false);
               }}
-              disabled={!rewardsEnabled}
+              disabled={
+                !rewardsEnabled && !tasks.every((task) => task.completed)
+              }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
               questName={quest.name}

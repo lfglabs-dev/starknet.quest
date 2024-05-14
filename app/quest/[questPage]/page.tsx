@@ -1,6 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 import Quest from "./quest";
+import { QuestDocument, QueryError } from "../../../types/backTypes";
 import { defaultMetatags } from "@constants/metatags";
 import { getQuestById } from "@services/apiService";
 
@@ -16,25 +17,28 @@ export async function generateMetadata(
   const questId = params.questPage;
 
   try {
-    const data = await getQuestById(questId);
-
-    if (data?.name) {
-      return {
-        title: data.name,
-        description: data.desc,
-        openGraph: {
+    const data: QuestDocument | QueryError = await getQuestById(questId);
+    if (!data || "error" in data) {
+      return defaultMetatags;
+    } else {
+      if (data?.name) {
+        return {
           title: data.name,
           description: data.desc,
-          images: [data.img_card],
-        },
-        twitter: {
-          card: "summary_large_image",
-          title: data.name,
-          description: data.desc,
-          images: [data.img_card],
-        },
-      };
-    } else return defaultMetatags;
+          openGraph: {
+            title: data.name,
+            description: data.desc,
+            images: [data.img_card],
+          },
+          twitter: {
+            card: "summary_large_image",
+            title: data.name,
+            description: data.desc,
+            images: [data.img_card],
+          },
+        };
+      } else return defaultMetatags;
+    }
   } catch (error) {
     return defaultMetatags;
   }

@@ -4,7 +4,7 @@ import React from "react";
 import { InjectedConnector } from "starknetkit/injected";
 import { WebWalletConnector } from "starknetkit/webwallet";
 import { ArgentMobileConnector } from "starknetkit/argentMobile";
-import { Chain, goerli, mainnet } from "@starknet-react/chains";
+import { Chain, mainnet, sepolia } from "@starknet-react/chains";
 import {
   Connector,
   StarknetConfig,
@@ -50,7 +50,7 @@ export const availableConnectors = [
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const network = getCurrentNetwork();
-  const chains = [network === "TESTNET" ? goerli : mainnet];
+  const chains = [network === "TESTNET" ? sepolia : mainnet];
   const provider = jsonRpcProvider({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     rpc: (_chain: Chain) => ({

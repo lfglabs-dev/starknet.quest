@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.VERCEL_ENV === "production";
+const { withAxiom } = require("next-axiom");
 
-module.exports = {
+module.exports = module.exports = withAxiom({
   reactStrictMode: true,
-  assetPrefix: isProd ? process.env.NEXT_PUBLIC_CDN_URL : undefined,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;
@@ -23,4 +22,4 @@ module.exports = {
       "sepolia.cdn.starknet.quest",
     ],
   },
-};
+});

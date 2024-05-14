@@ -322,13 +322,22 @@
   padding: 1.5rem 1rem;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(180deg, var(--background600) 0%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--background600) 0%,
+    var(--background) 100%
+  );
+}
+
+.rank_card_container:hover {
+  outline: 1px solid white;
 }
 
 .rank_card_badge {
   position: absolute;
   top: 0px;
-  transform: translateY(-1rem);
+
+  transform: translateY(-20px) translateX(10px);
 }
 
 .rank_card_naming {

@@ -29,6 +29,7 @@ type Task = {
   hasRootDomain: boolean;
   customError: string;
   checkUserRewards: () => void;
+  expired: boolean;
 };
 
 type TaskProps = Task & { id: number };
@@ -41,7 +42,7 @@ type TaskError = {
 
 type Quiz = {
   name: string;
-  description: string;
+  desc: string;
   questions: QuizQuestion[];
 };
 
@@ -65,11 +66,12 @@ type Boost = {
   token: string;
   expiry: number;
   quests: number[];
-  claimed: boolean;
+  claimed?: boolean;
   winner: string[] | null;
   img_url: string;
   id: number;
   name: string;
+  hidden: boolean;
   num_of_winners: number;
   token_decimals: number;
 };
@@ -81,19 +83,29 @@ type Reward = {
   disabled: boolean;
 };
 
+type VerifierData = {
+  verifier: string;
+  field: string;
+  data: string;
+};
 type Identity = {
-  addr: string;
-  domain?: string;
-  domain_expiry?: number | null;
-  is_owner_main?: boolean;
-  owner_addr?: string;
-  old_discord?: string;
-  old_twitter?: string;
-  old_github?: string;
-  discord?: string;
-  twitter?: string;
-  github?: string;
-  starknet_id?: string;
+  id: string;
+  domain: {
+    domain: string;
+    migrated?: boolean;
+    root?: boolean;
+    creation_date?: number;
+    expiry?: number;
+    resolver?: string | null;
+    legacy_address?: string;
+    rev_address?: string;
+  };
+  creation_date?: number;
+  main: boolean;
+  owner: string;
+  user_data?: [];
+  extended_verifier_data?: [];
+  verifier_data?: VerifierData[];
   error?: string;
 };
 
@@ -157,12 +169,11 @@ type CornerStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 type SquareStyle = "bottomRight" | "bottomLeft" | "topRight" | "topLeft";
 
 type ProfileCard = {
-  title: string;
   identity: Identity;
-  addressOrDomain: string | string[] | undefined;
-  sinceDate: string | null;
-  achievements: BuildingsInfo[];
-  soloBuildings: StarkscanNftProps[];
+  addressOrDomain: string | undefined;
+  rankingData?: RankingData;
+  leaderboardData?: LeaderboardToppersData;
+  isOwner?: boolean;
 };
 
 type Signature = [string, string];
@@ -247,18 +258,16 @@ type RankingProps = {
     first_elt_position: number;
     ranking: { address: string; xp: number; achievements: number }[];
   };
+  duration: string;
+  leaderboardToppers: LeaderboardToppersData;
   paginationLoading: boolean;
   setPaginationLoading: (_: boolean) => void;
   selectedAddress: string;
+  searchedAddress: string;
 };
 
 type ControlsDashboardProps = {
-  ranking: RankingData;
-  handlePagination: (_: string) => void;
-  rowsPerPage: number;
   setRowsPerPage: (_: number) => void;
-  leaderboardToppers: LeaderboardToppersData;
-  duration: string;
   setCustomResult: (_: boolean) => void;
 };
 
@@ -277,3 +286,9 @@ type PickRandomObjects = {
   questArray: QuestDocument[];
   count?: number;
 };
+
+type TabPanelProps = {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}

@@ -10,7 +10,10 @@ import {
 } from "@services/apiService";
 import Quest from "@components/quests/quest";
 import { useRouter } from "next/navigation";
-import { QuestDocument } from "../../../types/backTypes";
+import {
+  QuestDocument,
+  QuestParticipantsDocument,
+} from "../../../types/backTypes";
 import Timer from "@components/quests/timer";
 import { useAccount } from "@starknet-react/core";
 import Button from "@components/UI/button";
@@ -20,7 +23,6 @@ import BackButton from "@components/UI/backButton";
 import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";
 import BoostSkeleton from "@components/skeletons/boostSkeleton";
-import { TOKEN_DECIMAL_MAP } from "@constants/common";
 import ErrorScreen from "@components/UI/screens/errorScreen";
 
 type BoostQuestPageProps = {
@@ -45,8 +47,10 @@ export default function Page({ params }: BoostQuestPageProps) {
       let total = 0;
       await Promise.all(
         questIds?.map(async (questID) => {
-          const res = await getQuestParticipants(questID);
-          if (res?.count) total += res?.count;
+          const res = (await getQuestParticipants(
+            questID
+          )) as QuestParticipantsDocument;
+          if (res?.count) total += res?.count as number;
         })
       );
       return total;
@@ -80,7 +84,9 @@ export default function Page({ params }: BoostQuestPageProps) {
     }
 
     const totalParticipants = await getTotalParticipants(boostInfo.quests);
-    setQuests(questsList);
+    if (questsList) {
+      setQuests(questsList);
+    }
     setBoost(boostInfo);
     setParticipants(totalParticipants);
     setLoading(false);

@@ -6,26 +6,29 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { getPendingBoostClaims } from "@services/apiService";
 import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
+import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
-import { QuestDocument } from "../../../types/backTypes";
+import {
+  ClaimableQuestDocument,
+  QuestDocument,
+} from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
 import { getBoosts } from "@services/apiService";
+import { MILLISECONDS_PER_WEEK } from "@constants/common";
+import { getClaimableQuests } from "@utils/quest";
+import { hexToDecimal } from "@utils/feltService";
+import { PendingBoostClaim } from "types/backTypes";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
+export function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -41,7 +44,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+export function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -66,14 +69,14 @@ const QuestAndCollectionTabs: FunctionComponent<
     },
     []
   );
+
   const sortedAndFilteredQuests = useMemo(() => {
-    const filteredQuests = address
-      ? trendingQuests?.length > 0
-        ? trendingQuests
-        : quests
-      : quests;
-    return filteredQuests
-      .filter((quest) => !quest.expired)
+    const filteredQuests = quests
+      .filter((quest) => {
+        return (
+          !quest.expired && !trendingQuests.find((tq) => tq.id === quest.id)
+        );
+      })
       .sort((questA, questB) => {
         const aExpiry = questA.expiry_timestamp
           ? Number(questA.expiry_timestamp)
@@ -83,15 +86,27 @@ const QuestAndCollectionTabs: FunctionComponent<
           : Number.MAX_SAFE_INTEGER;
         return aExpiry - bExpiry; // Quests that expired soon will be first
       });
+    return [...trendingQuests, ...filteredQuests];
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
+  const [claimableQuests, setClaimableQuests] = useState<
+    ClaimableQuestDocument[]
+  >([]);
+  const [pendingBoostClaims, setpendingBoostClaims] = useState<
+    PendingBoostClaim[] | undefined
+  >([]);
 
   const fetchBoosts = async () => {
     try {
       const res = await getBoosts();
-      setBoosts(res);
+      const filteredResponse = res?.filter(
+        (boost) =>
+          (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
+      );
+      if (filteredResponse && filteredResponse?.length > 0)
+        setBoosts(filteredResponse);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
@@ -100,6 +115,26 @@ const QuestAndCollectionTabs: FunctionComponent<
   useEffect(() => {
     fetchBoosts();
   }, []);
+
+  useEffect(() => {
+    const getAllPendingBoostClaims = async () => {
+      const allPendingClaims = await getPendingBoostClaims(
+        hexToDecimal(address)
+      );
+      if (allPendingClaims) {
+        setpendingBoostClaims(allPendingClaims);
+      }
+    };
+
+    getAllPendingBoostClaims();
+  }, [address]);
+
+  useEffect(() => {
+    const data = getClaimableQuests(quests, pendingBoostClaims);
+    if (data && data.length) {
+      setClaimableQuests(data);
+    }
+  }, [quests, pendingBoostClaims]);
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
@@ -146,9 +181,27 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${categories.length + (boosts && 1)})`}
+                label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
                 {...a11yProps(1)}
               />
+              {address && (
+                <Tab
+                  disableRipple
+                  sx={{
+                    borderRadius: "10px",
+                    padding: "0px 12px 0px 12px",
+                    textTransform: "none",
+                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontFamily: "Sora",
+                    minHeight: "32px",
+                  }}
+                  label={`To claim (${
+                    claimableQuests ? claimableQuests.length : 0
+                  })`}
+                  {...a11yProps(2)}
+                />
+              )}
             </Tabs>
           </div>
           <CustomTabPanel value={tabIndex} index={0}>
@@ -175,8 +228,8 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="space-y-6 flex flex-col items-center">
-              {boosts ? (
+            <div className="flex flex-col items-center space-y-6">
+              {boosts.length !== 0 ? (
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>
@@ -208,6 +261,29 @@ const QuestAndCollectionTabs: FunctionComponent<
                 <QuestsSkeleton />
               )}
             </div>
+          </CustomTabPanel>
+          <CustomTabPanel value={tabIndex} index={2}>
+            {isConnecting ? (
+              "Connecting to wallet..."
+            ) : (
+              <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+                {claimableQuests &&
+                  claimableQuests.map((quest) => (
+                    <QuestClaim
+                      key={quest.id}
+                      title={quest.title_card}
+                      onClick={() =>
+                        router.push(`/quest-boost/${quest.boostId}`)
+                      }
+                      imgSrc={quest.img_card}
+                      name={quest.issuer}
+                      reward={quest.rewards_title}
+                      id={quest.boostId}
+                      expired={quest.expired}
+                    />
+                  ))}
+              </div>
+            )}
           </CustomTabPanel>
         </div>
       </section>

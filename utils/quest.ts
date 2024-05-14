@@ -1,4 +1,8 @@
-import { QuestDocument } from "../types/backTypes";
+import {
+  ClaimableQuestDocument,
+  PendingBoostClaim,
+  QuestDocument,
+} from "../types/backTypes";
 
 export const getOrderedQuests = (quests: QuestDocument[]) => {
   // Place ongoing quests firsts and the expired ones last
@@ -18,3 +22,25 @@ export function pickRandomObjectsFn({
     return questArray;
   }
 }
+
+export const getClaimableQuests = (
+  quests: QuestDocument[],
+  pendingBoostClaims: PendingBoostClaim[] | undefined
+): ClaimableQuestDocument[] | undefined => {
+  if (!pendingBoostClaims) return;
+  const allQuestIds = pendingBoostClaims.reduce(
+    (acc, curr) => acc.concat(curr.quests),
+    [] as number[]
+  );
+
+  // Filter questIds that exist in the quest array and append boostId
+  const questIdsInBoostClaim = allQuestIds
+    .filter((questId) => quests.some((q) => q.id === questId))
+    .map((questId) => ({
+      ...quests.find((q) => q.id === questId),
+      boostId: pendingBoostClaims.find((boost) =>
+        boost.quests.includes(questId)
+      )?.id,
+    }));
+  return questIdsInBoostClaim as ClaimableQuestDocument[];
+};

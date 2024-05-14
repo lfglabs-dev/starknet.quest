@@ -1,10 +1,13 @@
 import { BN } from "bn.js";
 
-export function minifyAddress(address: string | undefined): string {
+export function minifyAddress(address: string | undefined, length = 4): string {
   if (!address) return "";
 
-  const firstPart = address.substring(0, 4);
-  const secondPart = address.substring(address.length - 3, address.length);
+  const firstPart = address.substring(0, length);
+  const secondPart = address.substring(
+    address.length - length + 1,
+    address.length
+  );
 
   return (firstPart + "..." + secondPart).toLowerCase();
 }
@@ -89,19 +92,6 @@ export function numberToString(element: number | undefined): string {
 export function convertNumberToFixedLengthString(number: string): string {
   if (!number) return "000000000000";
   return number.padStart(12, "0");
-}
-
-export function minifyAddressFromStrings(
-  strings: string[],
-  chars: number
-): string {
-  for (let index = 0; index < strings.length; index++) {
-    const string = strings[index];
-    if (string && isHexString(string)) {
-      return minifyAddressWithChars(string, chars);
-    }
-  }
-  return "";
 }
 
 export const getMonthName = (index: number): string => {

@@ -3,18 +3,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "@styles/achievements.module.css";
 import { useAccount } from "@starknet-react/core";
-import {
-  AchievementsDocument,
-  CompletedDocument,
-  QueryError,
-} from "../../types/backTypes";
+import { AchievementsDocument } from "../../types/backTypes";
 import Achievement from "@components/achievements/achievement";
 import { hexToDecimal } from "@utils/feltService";
 import AchievementSkeleton from "@components/skeletons/achievementSkeleton";
 import { useLocation } from "react-use";
 import RefreshIcon from "@components/UI/iconsComponents/icons/refreshIcon";
 import theme from "@styles/theme";
-import { getUserAchievementByCategory, getUserAchievements, verifyUserAchievement } from "@services/apiService";
+import {
+  getUserAchievementByCategory,
+  getUserAchievements,
+  verifyUserAchievement,
+} from "@services/apiService";
 
 export default function Page() {
   const location = useLocation();
@@ -23,13 +23,13 @@ export default function Page() {
     AchievementsDocument[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
-  
-  const fetchAchievementsByAddress = async (address = '0') => {
-    const achievements = await getUserAchievements(address)
+
+  const fetchAchievementsByAddress = async (address = "0") => {
+    const achievements = await getUserAchievements(address);
     if (achievements as AchievementsDocument[]) {
-      setUserAchievements(achievements as AchievementsDocument[]); 
+      setUserAchievements(achievements as AchievementsDocument[]);
     }
-  }
+  };
 
   useEffect(() => {
     // If a call was made with an address in the first second, the call with 0 address should be cancelled
@@ -39,7 +39,7 @@ export default function Page() {
     const timer = setTimeout(async () => {
       // If address isn't loaded after 1 second, make the API call with the zero address
       if (shouldFetchWithZeroAddress) {
-        fetchAchievementsByAddress('0')
+        fetchAchievementsByAddress("0");
       }
     }, 1000);
 
@@ -47,7 +47,7 @@ export default function Page() {
     if (address) {
       shouldFetchWithZeroAddress = false;
       clearTimeout(timer);
-      fetchAchievementsByAddress(hexToDecimal(address))
+      fetchAchievementsByAddress(hexToDecimal(address));
     }
     // Clear the timer when component unmounts or dependencies change to prevent memory leaks
     return () => {
@@ -69,8 +69,8 @@ export default function Page() {
                 const data = await getUserAchievementByCategory({
                   category: achievementCategory.category_override_verified_type,
                   address: hexToDecimal(address),
-                  categoryId: achievementCategory.category_id
-                })
+                  categoryId: achievementCategory.category_id,
+                });
 
                 if (data?.achieved && data.achieved.length > 0) {
                   const newUserAchievements = [...userAchievements];
@@ -97,8 +97,8 @@ export default function Page() {
                     const data = await verifyUserAchievement({
                       verifyType: achievement.verify_type,
                       address: hexToDecimal(address),
-                      achievementId: achievement.id
-                    })
+                      achievementId: achievement.id,
+                    });
 
                     if (data?.achieved) {
                       const newUserAchievements = [...userAchievements];

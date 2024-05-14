@@ -272,6 +272,17 @@
   border-radius: 100px;
 }
 
+.claimer {
+  display: flex;
+  align-items: center;
+}
+
+.claimer p {
+  font-weight: 700;
+  font-family: "Sora-Bold";
+  font-size: 14px;
+}
+
 .featuredQuestHeading {
   margin-top: 0.5rem;
   text-align: start;

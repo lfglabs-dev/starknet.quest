@@ -25,6 +25,7 @@ import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
 import Image from "next/image";
+import { PendingBoostClaim } from "types/backTypes";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -35,9 +36,6 @@ const Navbar: FunctionComponent = () => {
   const { connectAsync } = useConnect();
   const { disconnect } = useDisconnect();
   const domainOrAddressMinified = useDisplayName(address ?? "");
-  const domain = useDomainFromAddress(address ?? "").domain;
-  const addressOrDomain =
-    domain && domain.endsWith(".stark") ? domain : address;
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
   const [navbarBg, setNavbarBg] = useState<boolean>(false);
   const [showWallet, setShowWallet] = useState<boolean>(false);
@@ -62,9 +60,9 @@ const Navbar: FunctionComponent = () => {
   const fetchAndUpdateNotifications = async () => {
     if (!address) return;
     const res = await getPendingBoostClaims(hexToDecimal(address));
-    if (!(res?.length > 0)) return;
+    if (!res) return;
     const finalNotificationsList: SQInfoData[] = [];
-    res.forEach((boost: Boost) => {
+    res.forEach((boost: PendingBoostClaim) => {
       const data = {
         title: "Congratulations! 🎉",
         subtext: `You have just won ${parseInt(
@@ -110,7 +108,7 @@ const Navbar: FunctionComponent = () => {
     if (!isConnected || !account) return;
     account.getChainId().then((chainId) => {
       const isWrongNetwork =
-        (chainId === constants.StarknetChainId.SN_GOERLI &&
+        (chainId === constants.StarknetChainId.SN_SEPOLIA &&
           network === "mainnet") ||
         (chainId === constants.StarknetChainId.SN_MAIN &&
           network === "testnet");
@@ -199,9 +197,11 @@ const Navbar: FunctionComponent = () => {
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
-              <Link href="/leaderboard">
-                <li className={styles.menuItem}>Leaderboard</li>
-              </Link>
+              {isConnected && (
+                <Link href={`/${address}`}>
+                  <li className={styles.menuItem}>Dashboard</li>
+                </Link>
+              )}
               {address ? (
                 <>
                   <li
@@ -289,14 +289,16 @@ const Navbar: FunctionComponent = () => {
                       Quests
                     </li>
                   </Link>
-                  <Link href="/leaderboard">
-                    <li
-                      onClick={() => setNav(false)}
-                      className={styles.menuItemSmall}
-                    >
-                      Leaderboard
-                    </li>
-                  </Link>
+                  {isConnected && (
+                    <Link href={`/${address}`}>
+                      <li
+                        onClick={() => setNav(false)}
+                        className={styles.menuItemSmall}
+                      >
+                        Dashboard
+                      </li>
+                    </Link>
+                  )}
                 </ul>
               </div>
             </div>
