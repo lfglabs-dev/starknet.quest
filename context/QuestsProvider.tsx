@@ -1,12 +1,12 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import {
+import { 
   BoostedQuests,
   QueryError,
   QuestDocument,
   CompletedQuests,
-} from "../types/backTypes";
+  QuestList} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -62,7 +62,9 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     (async () => {
-      const data: GetQuestsRes = await getQuests();
+      const data = await getQuests();
+
+      if (!data) return;
 
       const q = Object.values(data).flat();
 
@@ -72,6 +74,7 @@ export const QuestsContextProvider = ({
             try {
               // If a category img is defined in quest_categories use it
               const questData = await fetchQuestCategoryData(key);
+              if (!questData || !questData.img_url) return;
               return questData.img_url;
             } catch (error) {
               // else use img from first quest in the category
@@ -94,6 +97,7 @@ export const QuestsContextProvider = ({
 
       setCategories(categoriesWithImages);
       setQuests(q);
+      
     })();
   }, []);
 

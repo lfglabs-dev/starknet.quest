@@ -23,6 +23,10 @@ type QuestDocument = {
   additional_desc: string | null;
 };
 
+type ClaimableQuestDocument = QuestDocument & {
+  boostId: number;
+};
+
 type NFTItem = {
   img: string;
   level: number;
@@ -187,3 +191,9 @@ type BoostClaimParams = {
   r: string;
   s: string;
 };
+
+type QuestList =
+  | {
+      [key: string]: QuestDocument[];
+    }
+  | QueryError;

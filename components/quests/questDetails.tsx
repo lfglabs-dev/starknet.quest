@@ -70,7 +70,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
 
-  const questId = quest.id.toString();
+  const questId = quest?.id?.toString();
   const [participants, setParticipants] = useState<QuestParticipantsDocument>({
     count: 0,
     firstParticipants: [] as string[],
@@ -299,7 +299,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   return (
     <>
       <NftImage
-        nfts={quest.rewards_nfts.map((nft: NFTItem) => {
+        nfts={quest?.rewards_nfts?.map((nft: NFTItem) => {
           return { imgSrc: nft.img, level: nft.level };
         })}
       />

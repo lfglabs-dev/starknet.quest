@@ -5,7 +5,7 @@ type QuestCardProps = {
   id: number;
   children: React.ReactNode;
   imgSrc: string;
-  issuer: Issuer;
+  issuer?: Issuer;
   title: string;
   onClick: () => void;
   disabled?: boolean;

@@ -6,6 +6,7 @@ import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
   getCompletedQuests,
+  getPendingBoostClaims,
 } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
 import Blur from "@components/shapes/blur";
@@ -17,10 +18,15 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { CompletedQuests } from "../../types/backTypes";
+import { ClaimableQuestDocument, CompletedQuests, PendingBoostClaim, QuestDocument } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
+import { QuestsContext } from "@context/QuestsProvider";
+import { Tab, Tabs } from "@mui/material";
+import { CustomTabPanel, a11yProps } from "@components/pages/home/questAndCollectionTabs";
+import { getClaimableQuests } from "@utils/quest";
+import QuestClaim from "@components/quests/questClaim";
 
 type AddressOrDomainProps = {
   params: {
@@ -42,13 +48,27 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [identity, setIdentity] = useState<Identity>();
   const [notFound, setNotFound] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const [quests, setQuests] = useState<CompletedQuests>([]);
+  const [completedQuests, setCompletedQuests] = useState<CompletedQuests>([]);
   const [userRanking, setUserRanking] = useState<RankingData>({
     first_elt_position: -1,
     ranking: [],
   });
   const dynamicRoute = usePathname();
   const [questsLoading, setQuestsLoading] = useState(true);
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [pendingBoostClaims, setPendingBoostClaims] = useState<
+    PendingBoostClaim[] | undefined
+  >([]);
+
+  const handleChangeTab = useCallback(
+    (event: React.SyntheticEvent, newValue: number) => {
+      setTabIndex(newValue);
+    },
+    []
+  );
+
+  const { quests } = useContext(QuestsContext);
 
   useEffect(() => {
     if (!address) setIsOwner(false);
@@ -60,13 +80,34 @@ export default function Page({ params }: AddressOrDomainProps) {
         if (!addr) return;
         const res = await getCompletedQuests(addr);
         if (!res || "error" in res) return;
-        setQuests(res);
+        setCompletedQuests(res);
       } catch (err) {
         console.log("Error while fetching quests", err);
       }
     },
     [address, identity]
   );
+
+
+  useEffect(() => {
+    const getAllPendingBoostClaims = async () => {
+      const allPendingClaims = await getPendingBoostClaims(
+        hexToDecimal(address)
+      );
+      if (allPendingClaims) {
+        setPendingBoostClaims(allPendingClaims);
+      }
+    };
+
+    getAllPendingBoostClaims();
+  }, [address]);
+
+  useEffect(() => {
+    const data = getClaimableQuests(quests, pendingBoostClaims);
+    if (data) {
+      setClaimableQuests(data);
+    }
+  }, [address, pendingBoostClaims, quests]);
 
   const fetchRanking = useCallback(
     async (addr: string) => {
@@ -266,30 +307,93 @@ export default function Page({ params }: AddressOrDomainProps) {
 
       {/* Completed Quests */}
       <div className={styles.dashboard_completed_tasks_container}>
-        <div className={styles.second_header_label}>
-          <h2 className={styles.second_header}>Quests Completed</h2>
+        <div>
+          <Tabs
+            style={{
+              borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
+            }}
+            className="pb-6"
+            value={tabIndex}
+            onChange={handleChangeTab}
+            aria-label="quests and collectons tabs"
+            indicatorColor="secondary"
+          >
+            <Tab
+              disableRipple
+              sx={{
+                borderRadius: "10px",
+                padding: "0px 12px 0px 12px",
+                textTransform: "none",
+                fontWeight: "600",
+                fontSize: "12px",
+                fontFamily: "Sora",
+                minHeight: "32px",
+              }}
+              label={`Completed (${completedQuests.length})`}
+              {...a11yProps(0)}
+            />
+            <Tab
+              disableRipple
+              sx={{
+                borderRadius: "10px",
+                padding: "0px 12px 0px 12px",
+                textTransform: "none",
+                fontWeight: "600",
+                fontSize: "12px",
+                fontFamily: "Sora",
+                minHeight: "32px",
+              }}
+              label={`To claim (${
+                claimableQuests ? claimableQuests.length : 0
+              })`}
+              {...a11yProps(1)}
+            />
+          </Tabs>
         </div>
+        <CustomTabPanel value={tabIndex} index={0}>
+          <div className={styles.quests_container}>
+            {questsLoading ? (
+              <QuestSkeleton />
+            ) : completedQuests?.length === 0 ? (
+              <h2 className={styles.noBoosts}>
+                {isOwner
+                  ? "You have not completed any quests at the moment"
+                  : "User has not completed any quests at the moment"}
+              </h2>
+            ) : (
+              <section className={QuestStyles.section}>
+                <div className={QuestStyles.questContainer}>
+                  {completedQuests?.length > 0 &&
+                    completedQuests?.map((quest) => (
+                      <QuestCardCustomised key={quest} id={quest} />
+                    ))}
+                </div>
+              </section>
+            )}
+          </div>
+        </CustomTabPanel>
 
-        <div className={styles.quests_container}>
+        <CustomTabPanel value={tabIndex} index={1}>
           {questsLoading ? (
             <QuestSkeleton />
-          ) : quests?.length === 0 ? (
-            <h2 className={styles.noBoosts}>
-              {isOwner
-                ? "You have not completed any quests at the moment"
-                : "User has not completed any quests at the moment"}
-            </h2>
           ) : (
-            <section className={QuestStyles.section}>
-              <div className={QuestStyles.questContainer}>
-                {quests?.length > 0 &&
-                  quests?.map((quest) => (
-                    <QuestCardCustomised key={quest} id={quest} />
-                  ))}
-              </div>
-            </section>
+            <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+              {claimableQuests &&
+                claimableQuests.map((quest) => (
+                  <QuestClaim
+                    key={quest.id}
+                    title={quest.title_card}
+                    onClick={() => router.push(`/quest-boost/${quest.boostId}`)}
+                    imgSrc={quest.img_card}
+                    name={quest.issuer}
+                    reward={quest.rewards_title}
+                    id={quest.boostId}
+                    expired={quest.expired}
+                  />
+                ))}
+            </div>
           )}
-        </div>
+        </CustomTabPanel>
       </div>
     </div>
   );
