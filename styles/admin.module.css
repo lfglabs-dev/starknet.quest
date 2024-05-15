@@ -10,8 +10,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-width: 950px;
+    margin-inline: auto;
     width: 100%;
-    padding-top: 7rem;
     gap: 2rem;
 }
 
@@ -72,10 +73,11 @@
 
 .questsBanner {
     background: linear-gradient(180deg, #29282B 0%, #101012 100%);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 24px;
     display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
     max-width: 950px;
     width: 100%;
     border-radius: 8px;
@@ -87,5 +89,53 @@
     font-size: 30px;
     font-weight: 700;
     line-height: 48px;
+    text-align: left;
+}
+
+.input_card_container {
+    width: 100%;
+    height: auto;
+    padding: 24px 0px 24px;
+    gap: 48px;
+    border-radius: 30px;
+    border: 1px 0px 0px 0px;
+    background: linear-gradient(90.13deg, rgba(17, 16, 24, 0) -0.93%, rgba(17, 16, 24, 0.51) 99.93%);
+    background-blend-mode: overlay;
+}
+
+.screenHeadingText {
+    font-family: "Sora";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 58px;
+    text-align: left;
+}
+
+.cardHeading {
+    font-family: "Sora";
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align: center;
+}
+
+.layout_screen {
+    padding-top: 5rem;
+    max-width: 950px;
+    width: 100%;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.tagText {
+    font-family: "Sora";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
     text-align: left;
 }

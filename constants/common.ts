@@ -19,6 +19,7 @@ export const QuestDefault = {
   expired: false,
   rewards_description: null,
   additional_desc: null,
+  visible: false,
 };
 
 export const basicAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789-";
