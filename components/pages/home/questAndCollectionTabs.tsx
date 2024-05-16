@@ -98,27 +98,21 @@ const QuestAndCollectionTabs: FunctionComponent<
       if (res?.length === 0 || completedQuestIdsRes?.length === 0) return;
       setBoosts(res);
       setCompletedQuestIds(completedQuestIdsRes);
-      const filteredBoosts: Boost[] = [];
-      res?.forEach((boost) => {
-        let userBoostCompletionCheck = true;
-        boost.quests.forEach((quest) => {
-          if (!boost || !completedQuestIds) return;
-          // no quests are completed by user
-          if (!completedQuestIds) return false;
-          // check if all quests are completed by the user and if not then set this flag value to false
-          if (!(completedQuestIdsRes as CompletedQuests).includes(quest))
-            userBoostCompletionCheck = false;
-        });
-        const userBoostCheckStatus = getBoostClaimStatus(address, boost?.id);
-        if (
+      const filteredBoosts = boosts.filter((boost) => {
+        const userBoostCompletionCheck = boost.quests.every((quest) =>
+          completedQuestIdsRes.includes(quest)
+        );
+        const userBoostCheckStatus = getBoostClaimStatus(address, boost.id);
+        const isBoostExpired =
           (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
-          boost?.expiry < Date.now() &&
+          boost.expiry < Date.now();
+
+        return (
           userBoostCompletionCheck &&
           !userBoostCheckStatus &&
+          isBoostExpired &&
           boost.winner != null
-        ) {
-          filteredBoosts.push(boost);
-        }
+        );
       });
       if (!filteredBoosts || filteredBoosts.length === 0) return;
       setDisplayBoosts(filteredBoosts);

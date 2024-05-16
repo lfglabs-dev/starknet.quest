@@ -88,56 +88,38 @@ export default function Page({ params }: AddressOrDomainProps) {
     [address, identity]
   );
 
-  // useEffect(() => {
-  //   const getAllPendingBoostClaims = async () => {
-  //     const allPendingClaims = await getPendingBoostClaims(
-  //       hexToDecimal(address)
-  //     );
-  //     if (allPendingClaims) {
-  //       setPendingBoostClaims(allPendingClaims);
-  //     }
-  //   };
-
-  //   getAllPendingBoostClaims();
-  // }, [address]);
-
-  // useEffect(() => {
-  //   const data = getClaimableQuests(quests, pendingBoostClaims);
-  //   if (data) {
-  //     setClaimableQuests(data);
-  //   }
-  // }, [address, pendingBoostClaims, quests]);
-
   const fetchBoosts = useCallback(async () => {
     if (!address) return;
     try {
       const boosts = await getBoosts();
-      if (!boosts || !completedQuests) return;
-      if (boosts?.length === 0 || completedQuests?.length === 0) return;
-      const filteredBoosts: Boost[] = [];
-      boosts?.forEach((boost) => {
-        let userBoostCompletionCheck = true;
-        boost.quests.forEach((quest) => {
-          if (!boost || !completedQuests) return;
-          // no quests are completed by user
-          if (!completedQuests) return false;
-          // check if all quests are completed by the user and if not then set this flag value to false
-          if (!(completedQuests as CompletedQuests).includes(quest))
-            userBoostCompletionCheck = false;
-        });
-        const userBoostCheckStatus = getBoostClaimStatus(address, boost?.id);
-        if (
+      if (
+        !boosts ||
+        !completedQuests ||
+        boosts.length === 0 ||
+        completedQuests.length === 0
+      )
+        return;
+
+      const filteredBoosts = boosts.filter((boost) => {
+        const userBoostCompletionCheck = boost.quests.every((quest) =>
+          completedQuests.includes(quest)
+        );
+        const userBoostCheckStatus = getBoostClaimStatus(address, boost.id);
+        const isBoostExpired =
           (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
-          boost?.expiry < Date.now() &&
+          boost.expiry < Date.now();
+
+        return (
           userBoostCompletionCheck &&
           !userBoostCheckStatus &&
+          isBoostExpired &&
           boost.winner != null
-        ) {
-          filteredBoosts.push(boost);
-        }
+        );
       });
-      if (!filteredBoosts || filteredBoosts.length === 0) return;
-      setClaimableQuests(filteredBoosts);
+
+      if (filteredBoosts.length > 0) {
+        setClaimableQuests(filteredBoosts);
+      }
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
