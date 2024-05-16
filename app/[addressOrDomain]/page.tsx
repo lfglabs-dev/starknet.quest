@@ -5,8 +5,8 @@ import ProfileCard from "@components/UI/profileCard/profileCard";
 import {
   fetchLeaderboardRankings,
   fetchLeaderboardToppers,
+  getBoosts,
   getCompletedQuests,
-  getPendingBoostClaims,
 } from "@services/apiService";
 import { useAccount } from "@starknet-react/core";
 import Blur from "@components/shapes/blur";
@@ -18,15 +18,19 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { ClaimableQuestDocument, CompletedQuests, PendingBoostClaim, QuestDocument } from "../../types/backTypes";
+import { CompletedQuests } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
-import { QuestsContext } from "@context/QuestsProvider";
 import { Tab, Tabs } from "@mui/material";
-import { CustomTabPanel, a11yProps } from "@components/pages/home/questAndCollectionTabs";
-import { getClaimableQuests } from "@utils/quest";
+import {
+  CustomTabPanel,
+  a11yProps,
+} from "@components/pages/home/questAndCollectionTabs";
 import QuestClaim from "@components/quests/questClaim";
+import { MILLISECONDS_PER_WEEK } from "@constants/common";
+import useBoost from "@hooks/useBoost";
+import BoostCard from "@components/quest-boost/boostCard";
 
 type AddressOrDomainProps = {
   params: {
@@ -40,6 +44,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   const { address } = useAccount();
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [initProfile, setInitProfile] = useState(false);
+  const { getBoostClaimStatus } = useBoost();
   const [leaderboardData, setLeaderboardData] =
     useState<LeaderboardToppersData>({
       best_users: [],
@@ -56,10 +61,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   const dynamicRoute = usePathname();
   const [questsLoading, setQuestsLoading] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
-  const [pendingBoostClaims, setPendingBoostClaims] = useState<
-    PendingBoostClaim[] | undefined
-  >([]);
+  const [claimableQuests, setClaimableQuests] = useState<Boost[]>([]);
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
@@ -67,8 +69,6 @@ export default function Page({ params }: AddressOrDomainProps) {
     },
     []
   );
-
-  const { quests } = useContext(QuestsContext);
 
   useEffect(() => {
     if (!address) setIsOwner(false);
@@ -88,26 +88,64 @@ export default function Page({ params }: AddressOrDomainProps) {
     [address, identity]
   );
 
+  // useEffect(() => {
+  //   const getAllPendingBoostClaims = async () => {
+  //     const allPendingClaims = await getPendingBoostClaims(
+  //       hexToDecimal(address)
+  //     );
+  //     if (allPendingClaims) {
+  //       setPendingBoostClaims(allPendingClaims);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const getAllPendingBoostClaims = async () => {
-      const allPendingClaims = await getPendingBoostClaims(
-        hexToDecimal(address)
-      );
-      if (allPendingClaims) {
-        setPendingBoostClaims(allPendingClaims);
-      }
-    };
+  //   getAllPendingBoostClaims();
+  // }, [address]);
 
-    getAllPendingBoostClaims();
-  }, [address]);
+  // useEffect(() => {
+  //   const data = getClaimableQuests(quests, pendingBoostClaims);
+  //   if (data) {
+  //     setClaimableQuests(data);
+  //   }
+  // }, [address, pendingBoostClaims, quests]);
 
-  useEffect(() => {
-    const data = getClaimableQuests(quests, pendingBoostClaims);
-    if (data) {
-      setClaimableQuests(data);
+  const fetchBoosts = useCallback(async () => {
+    if (!address) return;
+    try {
+      const boosts = await getBoosts();
+      if (!boosts || !completedQuests) return;
+      if (boosts?.length === 0 || completedQuests?.length === 0) return;
+      const filteredBoosts: Boost[] = [];
+      boosts?.forEach((boost) => {
+        let userBoostCompletionCheck = true;
+        boost.quests.forEach((quest) => {
+          if (!boost || !completedQuests) return;
+          // no quests are completed by user
+          if (!completedQuests) return false;
+          // check if all quests are completed by the user and if not then set this flag value to false
+          if (!(completedQuests as CompletedQuests).includes(quest))
+            userBoostCompletionCheck = false;
+        });
+        const userBoostCheckStatus = getBoostClaimStatus(address, boost?.id);
+        if (
+          (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
+          boost?.expiry < Date.now() &&
+          userBoostCompletionCheck &&
+          !userBoostCheckStatus &&
+          boost.winner != null
+        ) {
+          filteredBoosts.push(boost);
+        }
+      });
+      if (!filteredBoosts || filteredBoosts.length === 0) return;
+      setClaimableQuests(filteredBoosts);
+    } catch (err) {
+      console.log("Error while fetching boosts", err);
     }
-  }, [address, pendingBoostClaims, quests]);
+  }, [address, completedQuests]);
+
+  useEffect(() => {
+    fetchBoosts();
+  }, [address, completedQuests]);
 
   const fetchRanking = useCallback(
     async (addr: string) => {
@@ -380,15 +418,10 @@ export default function Page({ params }: AddressOrDomainProps) {
             <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
               {claimableQuests &&
                 claimableQuests.map((quest) => (
-                  <QuestClaim
+                  <BoostCard
                     key={quest.id}
-                    title={quest.title_card}
-                    onClick={() => router.push(`/quest-boost/${quest.boostId}`)}
-                    imgSrc={quest.img_card}
-                    name={quest.issuer}
-                    reward={quest.rewards_title}
-                    id={quest.boostId}
-                    expired={quest.expired}
+                    boost={quest}
+                    completedQuests={completedQuests}
                   />
                 ))}
             </div>
