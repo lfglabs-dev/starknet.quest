@@ -17,7 +17,7 @@ import { CompletedQuests, QuestDocument } from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
-import { getBoosts } from "@services/apiService";
+import { getBoosts, getCompletedQuests } from "@services/apiService";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import useBoost from "@hooks/useBoost";
 import BoostCard from "@components/quest-boost/boostCard";
@@ -85,15 +85,19 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
   const [displayBoosts, setDisplayBoosts] = useState<Boost[]>([]);
-  const { completedBoostIds, completedQuestIds } = useContext(QuestsContext);
+  const { completedBoostIds } = useContext(QuestsContext);
 
   const fetchBoosts = useCallback(async () => {
     if (!address) return;
     try {
       const res = await getBoosts();
-      if (!res) return;
+      const completedQuestIdsRes = await getCompletedQuests(address);
+      if (!res || !completedQuestIdsRes) return;
+      if (res?.length === 0 || completedQuestIdsRes?.length === 0) return;
       setBoosts(res);
+      setCompletedQuestIds(completedQuestIdsRes);
       const filteredBoosts: Boost[] = [];
       res?.forEach((boost) => {
         let userBoostCompletionCheck = true;
@@ -102,7 +106,7 @@ const QuestAndCollectionTabs: FunctionComponent<
           // no quests are completed by user
           if (!completedQuestIds) return false;
           // check if all quests are completed by the user and if not then set this flag value to false
-          if (!(completedQuestIds as CompletedQuests).includes(quest))
+          if (!(completedQuestIdsRes as CompletedQuests).includes(quest))
             userBoostCompletionCheck = false;
         });
         const userBoostCheckStatus = getBoostClaimStatus(address, boost?.id);
@@ -121,7 +125,7 @@ const QuestAndCollectionTabs: FunctionComponent<
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
-  }, [address, completedQuestIds]);
+  }, [address]);
 
   useEffect(() => {
     fetchBoosts();
