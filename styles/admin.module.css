@@ -95,12 +95,14 @@
 .input_card_container {
     width: 100%;
     height: auto;
-    padding: 24px 0px 24px;
+    padding: 24px 24px;
     gap: 48px;
     border-radius: 30px;
     border: 1px 0px 0px 0px;
     background: linear-gradient(90.13deg, rgba(17, 16, 24, 0) -0.93%, rgba(17, 16, 24, 0.51) 99.93%);
     background-blend-mode: overlay;
+    display: flex;
+    flex-direction: column;
 }
 
 .screenHeadingText {
@@ -138,4 +140,25 @@
     font-weight: 600;
     line-height: 16px;
     text-align: left;
+}
+
+.input {
+    padding: 8px 16px 8px 16px;
+    gap: 16px;
+    border-radius: 10px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+    background-color: var(--background600);
+    outline: none;
+}
+
+.dateInput {
+    padding: 8px 16px 8px 16px;
+    gap: 16px;
+    border-radius: 10px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+    background-color: var(--background600);
+    outline: none;
+    width: 100%;
 }
