@@ -7,120 +7,96 @@ import { AdminService } from "@services/authService";
 import ProgressBar from "@components/quiz/progressBar";
 import InputCard from "@components/admin/InputCard";
 import { MenuItem, Select, SelectChangeEvent, Switch } from "@mui/material";
-import "react-datepicker/dist/react-datepicker.css";
 import Button from "@components/UI/button";
 import { TOKEN_ADDRESS_MAP, TOKEN_DECIMAL_MAP } from "@constants/common";
 import { getCurrentNetwork } from "@utils/network";
 import Textinput from "@components/admin/Textinput";
 import Dateinput from "@components/admin/DateInput";
+import QuizControls from "@components/quiz/quizControls";
+import {
+  CATEGORY_OPTIONS,
+  CustomInput,
+  DiscordInput,
+  QuizDefaultInput,
+  TASK_OPTIONS,
+  TWITTER_OPTIONS,
+  TwitterFwInput,
+  TwitterRwInput,
+  boostDefaultInput,
+  nft_uri,
+  questDefaultInput,
+  QuizQuestionDefaultInput,
+} from "@constants/admin";
+import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 
-const CATEGORY_OPTIONS = [
-  "Defi",
-  "Dapps",
-  "NFTs",
-  "Gaming",
-  "Starknet Pro Score by Braavos",
-];
+const getDefaultValues = (type: TaskType) => {
+  if (type === "Quiz") return QuizDefaultInput;
+  if (type === "TwitterFw") return TwitterFwInput;
+  if (type === "TwitterRw") return TwitterRwInput;
+  if (type === "Discord") return DiscordInput;
+  if (type === "Custom") return CustomInput;
+  if (type === "None") return {};
 
-const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom"];
-
-const TWITTER_OPTIONS = ["Follow on Twitter", "Retweet on Twitter"];
-
-const NUMBER_OF_QUESTIONS = 3;
-
-const questDefaultInput = {
-  name: "",
-  desc: "",
-  category: "Defi",
-  logo: "",
-  rewards_title: "loading",
-  rewards_nfts: "",
-  nft_image: "",
-  disabled: false,
-  start_time: parseInt(Date.now().toString()),
-  expiry: null,
+  return QuizDefaultInput;
 };
 
-const boostDefaultInput = {
-  amount: 0,
-  token: TOKEN_ADDRESS_MAP[getCurrentNetwork()].USDC,
-  num_of_winners: 0,
-  token_decimals: TOKEN_DECIMAL_MAP.USDC,
-  expiry: 0,
-  name: "",
-  img_url: "",
-  quest_id: 0,
-};
-
-const QuizQuestionDefaultInput = {
-  question: "",
-  options: ["", "", "", ""],
-  correct_option: "",
-};
-
-const QuizDefaultInput = {
-  help_url: "",
-  cta: "",
-  questions: [QuizQuestionDefaultInput],
-};
-
-const TwitterFwInput = {
-  title: "",
-  description: "",
-  username: "",
-};
-
-const TwitterRwInput = {
-  title: "",
-  description: "",
-  post_url: "",
-};
-
-const DiscordInput = {
-  title: "",
-  description: "",
-  discord_id: "",
-};
-
-const CustomInput = {
-  title: "",
-  description: "",
-  url: "",
-  endpoint: "",
-};
-
-type QuestInput = typeof questDefaultInput;
-type TaskType = "Quiz" | "Twitter" | "Discord" | "Custom";
-type TwitterTaskType = "Follow on Twitter" | "Retweet on Twitter";
+// Define discriminated union types
+type StepMap =
+  | { type: "Quiz"; data: QuizInputType }
+  | { type: "TwitterFw"; data: TwitterFwInputType }
+  | { type: "TwitterRw"; data: TwitterRwInputType }
+  | { type: "Discord"; data: DiscordInputType }
+  | { type: "Custom"; data: CustomInputType }
+  | { type: "None"; data: object };
 
 export default function Page() {
   const network = getCurrentNetwork();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [questInput, setQuestInput] = useState<QuestInput>(questDefaultInput);
+  const [currentPage, setCurrentPage] = useState(3);
+  const [questId, setQuestId] = useState<number>(134);
+  const [questInput, setQuestInput] = useState<CreateQuest>(questDefaultInput);
+  const [nfturi, setNftUri] = useState<NFTUri>(nft_uri);
   const [headingText, setHeadingText] = useState("Set up");
   const [showBoost, setShowBoost] = useState(false);
   const [boostInput, setBoostInput] = useState(boostDefaultInput);
-  const [steps, setSteps] = useState([]);
-  const [numberOfSteps, setNumberOfSteps] = useState(1);
-  const [currentTaskType, setCurrentTaskType] = useState<TaskType | "">("");
-  const [currentTwitterTaskType, setCurrentTwitterTaskType] =
-    useState<TwitterTaskType>("Follow on Twitter");
-
-  const [quiz, setQuiz] = useState(QuizDefaultInput);
-  const [twitterfw, setTwitterFw] = useState(TwitterFwInput);
-  const [twitterRw, setTwitterRw] = useState(TwitterRwInput);
-  const [discord, setDiscord] = useState(DiscordInput);
-  const [custom, setCustom] = useState(CustomInput);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [showTwitterOption, setShowTwitterOption] = useState(-1);
+  const [steps, setSteps] = useState<StepMap[]>([
+    {
+      type: "None",
+      data: {},
+    },
+  ]);
 
   const handleCreateQuest = useCallback(async () => {
     try {
       const response = await AdminService.createQuest(questInput);
-      router.push("/admin/quests");
+      if (!response) return;
+      setQuestId(Number(response.id));
+      return Number(response.id);
     } catch (error) {
       console.log("Error while creating quest", error);
     }
   }, [questInput]);
+
+  const handleCreateBoost = useCallback(
+    async (quest_id: number) => {
+      try {
+        if (!showBoost) return;
+        const response = await AdminService.createBoost({
+          ...boostInput,
+          quest_id: quest_id,
+          amount: Number(boostInput.amount),
+          num_of_winners: Number(boostInput.num_of_winners),
+        });
+        if (!response) return;
+      } catch (error) {
+        console.log("Error while creating quest", error);
+      }
+    },
+    [questId, boostInput]
+  );
 
   const handlePagination = useCallback((type: "Next" | "Back") => {
     if (type === "Next") {
@@ -158,6 +134,94 @@ export default function Page() {
     []
   );
 
+  const handleTasksInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+      const { name, value } = e.target;
+      setSteps((prev) => {
+        const newArr = [...prev];
+        const new_obj = { ...newArr[index] };
+        new_obj.data = { ...new_obj.data, [name]: value };
+        newArr[index] = new_obj;
+        return newArr;
+      });
+    },
+    []
+  );
+
+  useEffect(() => {
+    setQuestInput((prev) => ({
+      ...prev,
+      start_time: new Date(startTime).getTime(),
+    }));
+  }, [startTime]);
+
+  useEffect(() => {
+    setQuestInput((prev) => ({
+      ...prev,
+      expiry: new Date(endTime).getTime(),
+    }));
+    setBoostInput((prev) => ({
+      ...prev,
+      expiry: new Date(endTime).getTime(),
+    }));
+  }, [endTime]);
+
+  const handleCreateTask = useCallback(async () => {
+    steps.map(async (step) => {
+      if (step.type === "Quiz") {
+        const response = await AdminService.createQuiz({
+          quest_id: questId,
+          name: step.data.quiz_name,
+          desc: step.data.quiz_desc,
+          intro: step.data.quiz_intro,
+          cta: step.data.quiz_cta,
+          help_link: step.data.quiz_help_link,
+        });
+        await Promise.all(
+          step.data.questions.map(async (question) => {
+            await AdminService.createQuizQuestion({
+              quiz_id: response.id,
+              question: question.question,
+              options: question.options,
+              correct_answers: question.correct_answers,
+            });
+          })
+        );
+      }
+      if (step.type === "TwitterFw") {
+        await AdminService.createTwitterFw({
+          quest_id: questId,
+          name: step.data.twfw_name,
+          desc: step.data.twfw_desc,
+          username: step.data.twfw_username,
+        });
+      } else if (step.type === "TwitterRw") {
+        await AdminService.createTwitterRw({
+          quest_id: questId,
+          name: step.data.twrw_name,
+          desc: step.data.twrw_desc,
+          post_link: step.data.twrw_post_link,
+        });
+      } else if (step.type === "Discord") {
+        await AdminService.createDiscord({
+          quest_id: questId,
+          name: step.data.dc_name,
+          desc: step.data.dc_desc,
+          invite_link: step.data.dc_invite_link,
+          guild_id: step.data.dc_guild_id,
+        });
+      } else if (step.type === "Custom") {
+        await AdminService.createCustom({
+          quest_id: questId,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+          cta: step.data.custom_cta,
+          href: step.data.custom_href,
+        });
+      }
+    });
+  }, [steps]);
+
   return (
     <div className={styles.layout_screen}>
       <ProgressBar currentStep={currentPage} totalSteps={4} />
@@ -168,7 +232,16 @@ export default function Page() {
             <div className="flex flex-col gap-8 w-full">
               <p className={styles.cardHeading}>{headingText}</p>
               <Textinput
-                onChange={handleQuestInputChange}
+                onChange={(e) => {
+                  setQuestInput((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }));
+                  setBoostInput((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }));
+                }}
                 value={questInput.name}
                 name="name"
                 label="Quest Name"
@@ -186,12 +259,9 @@ export default function Page() {
                 <div className="flex-1 w-full">
                   <Dateinput
                     onChange={(e) => {
-                      setQuestInput((prev) => ({
-                        ...prev,
-                        start_time: parseInt(e.target.value),
-                      }));
+                      setStartTime(e.target.value);
                     }}
-                    value={questInput.start_time.toString()}
+                    value={startTime}
                     label="Start Date"
                     placeholder="Start Date"
                     name="start_time"
@@ -200,12 +270,9 @@ export default function Page() {
                 <div className="flex-1 w-full">
                   <Dateinput
                     onChange={(e) => {
-                      setQuestInput((prev) => ({
-                        ...prev,
-                        start_time: parseInt(e.target.value),
-                      }));
+                      setEndTime(e.target.value);
                     }}
-                    value={questInput.start_time.toString()}
+                    value={endTime}
                     label="End Date"
                     placeholder="End Date"
                     name="expiry"
@@ -253,18 +320,48 @@ export default function Page() {
             <div className="flex flex-col gap-8 w-full">
               <p className={styles.cardHeading}>{headingText}</p>
               <Textinput
-                onChange={handleQuestInputChange}
-                value={questInput.rewards_nfts}
+                onChange={(e) => {
+                  setNftUri((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }));
+                }}
+                value={nfturi.name}
                 name="rewards_nfts"
                 label="NFT Name"
                 placeholder="NFT Name"
               />
               <Textinput
-                onChange={handleQuestInputChange}
-                value={questInput.nft_image}
+                onChange={(e) => {
+                  setQuestInput((prev) => ({
+                    ...prev,
+                    rewards_img: e.target.value,
+                  }));
+                  setNftUri((prev) => ({
+                    ...prev,
+                    image: e.target.value,
+                  }));
+                  setBoostInput((prev) => ({
+                    ...prev,
+                    img_url: e.target.value,
+                  }));
+                }}
+                value={nfturi.image}
                 name="nft_image"
                 label="NFT Image Path"
                 placeholder="NFT Image Path"
+              />
+              <Textinput
+                onChange={(e) => {
+                  setNftUri((prev) => ({
+                    ...prev,
+                    desc: e.target.value,
+                  }));
+                }}
+                value={nfturi.desc}
+                name="nft_image"
+                label="NFT Description"
+                placeholder="NFT Description"
               />
               <Textinput
                 onChange={handleQuestInputChange}
@@ -335,157 +432,106 @@ export default function Page() {
 
           <div className="w-full items-center justify-center flex">
             <div className="w-fit">
-              <Button onClick={() => handlePagination("Next")}>
+              <Button
+                onClick={async () => {
+                  const id = await handleCreateQuest();
+                  if (!id) return;
+                  await handleCreateBoost(id);
+                  handlePagination("Next");
+                }}
+              >
                 <p>Confirm Next</p>
               </Button>
             </div>
           </div>
+          <QuizControls
+            step={currentPage}
+            setStep={setCurrentPage}
+            onCancel={() => router.push("/admin/quests")}
+          />
         </>
       ) : currentPage === 3 ? (
         <div className="flex flex-col gap-8 w-full">
           <p className={styles.cardHeading}>{headingText}</p>
           {steps.map((step, index) => (
-            <div key={index} className="flex flex-col gap-8">
-              <div>hey</div>
-            </div>
-          ))}
-
-          <InputCard>
-            <div className="flex gap-8">
-              <div className="flex flex-row w-full gap-2 bg-gray-300 p-2 rounded-xl">
-                {TASK_OPTIONS.map((category) => (
-                  <div
-                    onClick={() => {
-                      setCurrentTaskType(category as TaskType);
-                    }}
-                    key={category}
-                    className="py-3 px-5 rounded-xl w-fit"
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor:
-                        currentTaskType === category ? "#ffffff" : "#29282B",
-                      color:
-                        currentTaskType === category ? "#29282B" : "#ffffff",
-                    }}
-                  >
-                    <p className={styles.tagText}>{category}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {currentTaskType === "Quiz" ? (
-              <div className="flex flex-col gap-8 pt-2">
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={questInput.rewards_nfts}
-                  name="rewards_nfts"
-                  label="Quiz Name"
-                  placeholder="Quiz Name"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={questInput.nft_image}
-                  name="nft_image"
-                  label="Quiz Description"
-                  placeholder="Quiz Description"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={questInput.logo}
-                  name="logo"
-                  label="Call To Action"
-                  placeholder="Call To Action"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={questInput.logo}
-                  name="logo"
-                  label="Help URL"
-                  placeholder="Help URL"
-                />
-                {new Array(NUMBER_OF_QUESTIONS).fill(0).map((_, index) => (
-                  <div key={index} className="flex flex-col gap-8">
-                    {quiz.questions.map((eachQuestion) => (
-                      <>
-                        <Textinput
-                          onChange={handleQuestInputChange}
-                          value={eachQuestion.question}
-                          name="question"
-                          label={`Question ${index + 1}`}
-                          placeholder={`Question ${index + 1}`}
-                        />
-                        {eachQuestion.options.map((option, optionIndex) => (
-                          <div
-                            key={optionIndex}
-                            className="flex flex-row gap-4 justify-between w-full items-center"
-                          >
-                            <div className="w-full">
-                              <Textinput
-                                onChange={handleQuestInputChange}
-                                value={option}
-                                name="option"
-                                label={`Option ${optionIndex + 1}`}
-                                placeholder={`Option ${optionIndex + 1}`}
-                              />
-                            </div>
-                            <div className="flex flex-row gap-4 items-center justify-center">
-                              <input
-                                className="w-6 h-6 rounded-full"
-                                type="radio"
-                                name="correct_option"
-                                value={option}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </>
+            <InputCard key={index}>
+              <div className="flex gap-8">
+                <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
+                  <>
+                    {TASK_OPTIONS.map((category) => (
+                      <div
+                        onClick={() => {
+                          if (
+                            category === "Twitter" ||
+                            category === "Twitter"
+                          ) {
+                            setShowTwitterOption(index);
+                            return;
+                          }
+                          setShowTwitterOption(-1);
+                          setSteps((prev) => {
+                            const newArr = [...prev];
+                            newArr[index] = {
+                              type: category,
+                              data: getDefaultValues(category),
+                            };
+                            return newArr;
+                          });
+                        }}
+                        key={category}
+                        className="py-3 px-5 rounded-xl w-fit"
+                        style={{
+                          cursor: "pointer",
+                          backgroundColor: step?.type.includes(category)
+                            ? "#ffffff"
+                            : "#29282B",
+                          color: step?.type.includes(category)
+                            ? "#29282B"
+                            : "#ffffff",
+                        }}
+                      >
+                        <p className={styles.tagText}>{category}</p>
+                      </div>
                     ))}
-                  </div>
-                ))}
+                  </>
+                </div>
               </div>
-            ) : currentTaskType === "Discord" ? (
-              <div className="flex flex-col gap-8 pt-2">
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.title}
-                  name="title"
-                  label="Name"
-                  placeholder="Name"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.description}
-                  name="description"
-                  label="Description"
-                  placeholder="Description"
-                  multiline={4}
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.discord_id}
-                  name="discord_id"
-                  label="ID"
-                  placeholder="Discord ID"
-                />
-              </div>
-            ) : currentTaskType === "Twitter" ? (
-              <div className="flex flex-col gap-8 pt-8">
-                <div className="flex flex-row w-full gap-2 bg-gray-300 p-2 rounded-xl">
-                  {TWITTER_OPTIONS.map((category) => (
+              {showTwitterOption === index ? (
+                <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
+                  {Object.keys(TWITTER_OPTIONS).map((category) => (
                     <div
                       onClick={() => {
-                        setCurrentTwitterTaskType(category as TwitterTaskType);
+                        setSteps((prev) => {
+                          const newArr = [...prev];
+                          newArr[index] = {
+                            type: TWITTER_OPTIONS[
+                              category as keyof typeof TWITTER_OPTIONS
+                            ] as TaskType,
+                            data: getDefaultValues(
+                              TWITTER_OPTIONS[
+                                category as keyof typeof TWITTER_OPTIONS
+                              ] as TaskType
+                            ),
+                          };
+                          return newArr;
+                        });
                       }}
                       key={category}
                       className="py-3 px-5 rounded-xl w-fit"
                       style={{
                         cursor: "pointer",
                         backgroundColor:
-                          currentTwitterTaskType === category
+                          step?.type ===
+                          TWITTER_OPTIONS[
+                            category as keyof typeof TWITTER_OPTIONS
+                          ]
                             ? "#ffffff"
                             : "#29282B",
                         color:
-                          currentTwitterTaskType === category
+                          step?.type ===
+                          TWITTER_OPTIONS[
+                            category as keyof typeof TWITTER_OPTIONS
+                          ]
                             ? "#29282B"
                             : "#ffffff",
                       }}
@@ -494,103 +540,319 @@ export default function Page() {
                     </div>
                   ))}
                 </div>
-                {currentTwitterTaskType === "Follow on Twitter" ? (
-                  <>
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.title}
-                      name="title"
-                      label="Name"
-                      placeholder="Name"
-                    />
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.description}
-                      name="description"
-                      label="Description"
-                      placeholder="Description"
-                      multiline={4}
-                    />
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.discord_id}
-                      name="discord_id"
-                      label="ID"
-                      placeholder="Username"
-                    />
-                  </>
-                ) : currentTwitterTaskType === "Retweet on Twitter" ? (
-                  <>
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.title}
-                      name="title"
-                      label="Name"
-                      placeholder="Name"
-                    />
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.description}
-                      name="description"
-                      label="Description"
-                      placeholder="Description"
-                      multiline={4}
-                    />
-                    <Textinput
-                      onChange={handleQuestInputChange}
-                      value={discord.discord_id}
-                      name="discord_id"
-                      label="Post URL"
-                      placeholder="Post URL"
-                    />
-                  </>
-                ) : null}
-              </div>
-            ) : currentTaskType === "Custom" ? (
-              <div className="flex flex-col gap-8 pt-2">
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.title}
-                  name="title"
-                  label="Name"
-                  placeholder="Name"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.description}
-                  name="description"
-                  label="Description"
-                  placeholder="Description"
-                  multiline={4}
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.discord_id}
-                  name="discord_id"
-                  label="API Endpoint"
-                  placeholder="API Endpoint"
-                />
-                <Textinput
-                  onChange={handleQuestInputChange}
-                  value={discord.discord_id}
-                  name="discord_id"
-                  label="URL"
-                  placeholder="URL"
-                />
-              </div>
-            ) : null}
+              ) : null}
 
-            {currentTaskType !== "" ? (
-              <div className="w-full items-center justify-center flex">
-                <div className="w-fit">
-                  <Button onClick={() => setNumberOfSteps((prev) => prev + 1)}>
-                    <p>Add Task</p>
-                  </Button>
+              {step.type === "Quiz" ? (
+                <div className="flex flex-col gap-8 pt-2">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.quiz_name}
+                    name="quiz_name"
+                    label="Quiz Name"
+                    placeholder="Quiz Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.quiz_desc}
+                    name="quiz_desc"
+                    label="Quiz Description"
+                    placeholder="Quiz Description"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.quiz_intro}
+                    name="quiz_intro"
+                    label="Quiz Introduction"
+                    placeholder="Help URL"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.quiz_cta}
+                    name="quiz_cta"
+                    label="Call To Action"
+                    placeholder="Call To Action"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.quiz_help_link}
+                    name="quiz_help_link"
+                    label="Help URL"
+                    placeholder="Help URL"
+                  />
+
+                  <div className="flex flex-col gap-8">
+                    {step.data.questions?.map(
+                      (eachQuestion: QuizQuestion, index: number) => (
+                        <>
+                          <Textinput
+                            onChange={(e) => {
+                              setSteps((prev) => {
+                                const newArr = [...prev];
+                                const new_obj = {
+                                  ...step,
+                                };
+                                const new_questions = [
+                                  ...new_obj.data.questions,
+                                ];
+                                new_questions[index] = {
+                                  ...new_questions[index],
+                                  question: e.target.value,
+                                };
+                                new_obj.data.questions = new_questions;
+                                prev[index] = new_obj;
+                                return newArr;
+                              });
+                            }}
+                            value={eachQuestion.question}
+                            name="question"
+                            label={`Question ${index + 1}`}
+                            placeholder={`Question ${index + 1}`}
+                          />
+                          {eachQuestion.options.map((option, optionIndex) => (
+                            <div
+                              key={optionIndex}
+                              className="flex flex-row gap-4 justify-between w-full items-center"
+                            >
+                              <div className="flex flex-col w-full gap-2">
+                                <label htmlFor={"option"}>
+                                  Option {optionIndex + 1}
+                                </label>
+                                <div className="flex flex-row gap-2 items-center">
+                                  <div className="w-3/4">
+                                    <input
+                                      name={"option"}
+                                      value={eachQuestion.options[optionIndex]}
+                                      onChange={(e) => {
+                                        setSteps((prev) => {
+                                          const newArr = [...prev];
+                                          const new_obj = {
+                                            ...step,
+                                          };
+                                          const new_questions = [
+                                            ...new_obj.data.questions,
+                                          ];
+                                          const new_options = [
+                                            ...new_questions[index].options,
+                                          ];
+                                          new_options[optionIndex] =
+                                            e.target.value;
+                                          new_questions[index].options =
+                                            new_options;
+                                          new_obj.data.questions =
+                                            new_questions;
+                                          newArr[index] = new_obj;
+                                          return newArr;
+                                        });
+                                      }}
+                                      placeholder={`Option ${optionIndex + 1}`}
+                                      className={`${styles.input} w-full`}
+                                      type={"text"}
+                                    />
+                                  </div>
+                                  <div className="flex flex-row gap-2 justify-end">
+                                    <input
+                                      onChange={() => {
+                                        setQuizQuestions((prev) => {
+                                          const newArr = [...prev];
+                                          const new_obj = {
+                                            ...eachQuestion,
+                                          };
+                                          const new_options = [
+                                            ...new_obj.options,
+                                          ];
+                                          new_options.splice(optionIndex, 1);
+                                          new_obj.options = new_options;
+                                          newArr[index] = new_obj;
+                                          return newArr;
+                                        });
+                                      }}
+                                      className="w-6 h-6 rounded-full"
+                                      type="radio"
+                                      name="correct_option"
+                                      value={option}
+                                    />
+                                    <div>Correct Answer</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )
+                    )}
+                    <div
+                      onClick={() => {
+                        setSteps((prev) => {
+                          const newArr = [...prev];
+                          const new_obj = {
+                            ...step,
+                          };
+                          const new_questions = [
+                            ...new_obj.data.questions,
+                            QuizQuestionDefaultInput,
+                          ];
+                          new_obj.data.questions = new_questions;
+                          newArr[index] = new_obj;
+                          return newArr;
+                        });
+                      }}
+                      className="flex w-full justify-center modified-cursor-pointer"
+                    >
+                      + Add question
+                    </div>
+                  </div>
                 </div>
+              ) : step.type === "Discord" ? (
+                <div className="flex flex-col gap-8 pt-2">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.dc_name}
+                    name="dc_name"
+                    label="Name"
+                    placeholder="Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.dc_desc}
+                    name="dc_desc"
+                    label="Description"
+                    placeholder="Description"
+                    multiline={4}
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.dc_guild_id}
+                    name="dc_guild_id"
+                    label="Guild ID"
+                    placeholder="Discord ID"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.dc_invite_link}
+                    name="dc_invite_link"
+                    label="Discord invite link"
+                    placeholder="Invite Link"
+                  />
+                </div>
+              ) : step.type === "TwitterFw" ? (
+                <div className="flex flex-col gap-8 pt-8">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twfw_name}
+                    name="twfw_name"
+                    label="Name"
+                    placeholder="Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twfw_desc}
+                    name="twfw_desc"
+                    label="Description"
+                    placeholder="Description"
+                    multiline={4}
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twfw_username}
+                    name="twfw_username"
+                    label="Twitter Username"
+                    placeholder="Username"
+                  />
+                </div>
+              ) : step.type === "TwitterRw" ? (
+                <div className="flex flex-col gap-8 pt-8">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twrw_name}
+                    name="twrw_name"
+                    label="Name"
+                    placeholder="Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twrw_desc}
+                    name="twrw_desc"
+                    label="Description"
+                    placeholder="Description"
+                    multiline={4}
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.twrw_post_link}
+                    name="twrw_post_link"
+                    label="Post URL"
+                    placeholder="Post URL"
+                  />
+                </div>
+              ) : step.type === "Custom" ? (
+                <div className="flex flex-col gap-8 pt-2">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.custom_name}
+                    name="custom_name"
+                    label="Name"
+                    placeholder="Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.custom_desc}
+                    name="custom_desc"
+                    label="Description"
+                    placeholder="Description"
+                    multiline={4}
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.custom_href}
+                    name="custom_href"
+                    label="API Endpoint"
+                    placeholder="API Endpoint"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.custom_cta}
+                    name="custom_cta"
+                    label="URL"
+                    placeholder="URL"
+                  />
+                </div>
+              ) : null}
+            </InputCard>
+          ))}
+
+          <div
+            onClick={() => {
+              setSteps((prev) => {
+                const newArr = [...prev];
+                newArr.push({ type: "None", data: {} });
+                return newArr;
+              });
+            }}
+            className="flex w-full justify-center modified-cursor-pointer"
+          >
+            + Add Step
+          </div>
+          {steps.length > 1 ? (
+            <div className="w-full items-center justify-center flex">
+              <div className="w-fit">
+                <Button
+                  onClick={async () => {
+                    await handleCreateTask();
+                  }}
+                >
+                  <p>Save Tasks</p>
+                </Button>
               </div>
-            ) : null}
-          </InputCard>
+            </div>
+          ) : null}
+          <QuizControls
+            step={currentPage}
+            setStep={setCurrentPage}
+            onCancel={() => router.push("/admin/quests")}
+          />
         </div>
+      ) : currentPage === 4 ? (
+        <>hey</>
       ) : null}
     </div>
   );

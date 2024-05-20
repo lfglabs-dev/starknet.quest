@@ -8,10 +8,11 @@ type Props = {
   name: string;
   label: string;
   multiline?: number;
+  type?: string;
 };
 
 export default function Textinput(props: Props) {
-  const { value, placeholder, onChange, label, name, multiline } = props;
+  const { value, placeholder, onChange, label, name, multiline, type } = props;
 
   return (
     <div className="flex flex-col gap-2">
@@ -37,7 +38,7 @@ export default function Textinput(props: Props) {
           onChange={onChange}
           placeholder={placeholder}
           className={styles.input}
-          type="text"
+          type={type ?? "text"}
         />
       )}
     </div>

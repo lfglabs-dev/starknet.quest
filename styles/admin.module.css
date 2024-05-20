@@ -92,15 +92,36 @@
     text-align: left;
 }
 
+.input_card_container::before,
+.input_card_container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    z-index: -1;
+}
+
+.input_card_container::before {
+    top: -1px;
+    right: -1px;
+    left: 1px;
+    bottom: 1px;
+    background: linear-gradient(90deg, #437aba 0%, #1e74d6 45%, #00fbff 60%, #1e74d6 70%, #437aba50 100%);
+}
+
 .input_card_container {
+    position: relative;
+    background-blend-mode: overlay;
     width: 100%;
     height: auto;
     padding: 24px 24px;
     gap: 48px;
     border-radius: 30px;
     border: 1px 0px 0px 0px;
-    background: linear-gradient(90.13deg, rgba(17, 16, 24, 0) -0.93%, rgba(17, 16, 24, 0.51) 99.93%);
-    background-blend-mode: overlay;
+    background: linear-gradient(90deg, var(--background), #070708);
     display: flex;
     flex-direction: column;
 }

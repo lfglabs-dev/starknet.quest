@@ -93,7 +93,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
         },
         body: JSON.stringify({
           user_answers_list: answers.map((answer) =>
-            answer.map((value) => value.toString())
+            answer.map((value) => Number(value))
           ),
           quiz_name: quizId,
           addr: hexToDecimal(address),

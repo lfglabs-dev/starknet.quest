@@ -193,8 +193,84 @@ type BoostClaimParams = {
   s: string;
 };
 
-type QuestList =
-  | {
-      [key: string]: QuestDocument[];
-    }
-  | QueryError;
+type QuestList = {
+  [key: string]: QuestDocument[];
+};
+
+export type CreateQuest = {
+  name: string;
+  desc: string;
+  start_time: number;
+  expiry: number | null;
+  disabled: boolean;
+  category: string;
+  logo: string;
+  rewards_img: string;
+  rewards_title: string;
+  img_card: string;
+  title_card: string;
+};
+
+export type CreateBoost = {
+  amount: number;
+  token: string;
+  num_of_winners: number;
+  token_decimals: number;
+  name: string;
+  img_url: string;
+  expiry: number;
+  quest_id: number;
+  hidden: boolean;
+};
+
+export type CreateTwitterFw = {
+  name: string;
+  desc: string;
+  username: string;
+  quest_id: number;
+};
+
+export type CreateTwitterRw = {
+  name: string;
+  desc: string;
+  post_link: string;
+  quest_id: number;
+};
+
+export type CreateDiscord = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  invite_link: string;
+  guild_id: string;
+};
+
+export type CreateCustom = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  cta: string;
+  href: string;
+};
+
+export type CreateQuiz = {
+  name: string;
+  desc: string;
+  help_link: string;
+  cta: string;
+  intro: string;
+  quest_id: number;
+};
+
+export type CreateQuizQuestion = {
+  question: string;
+  options: string[];
+  correct_answers: number[];
+  quiz_id: number;
+};
+
+export type NFTUri = {
+  name: string;
+  desc: string;
+  image: string;
+};

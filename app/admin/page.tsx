@@ -8,11 +8,12 @@ import { AdminService } from "@services/authService";
 
 export default function Page() {
   const router = useRouter();
-  const password = useRef<string | null>(null);
+  const password = useRef<HTMLInputElement>(null);
 
   const handleAdminLogin = useCallback(async () => {
     try {
-      const passcode = password?.current?.value;
+      if (!password.current) return console.error("Password field not found");
+      const passcode = password?.current.value;
       const response = await AdminService.login({ passcode });
       localStorage.setItem("token", response.token);
       router.push("/admin/quests");

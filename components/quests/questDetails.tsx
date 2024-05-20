@@ -260,7 +260,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID as string,
         response_type: "code",
         scope: ["identify", "guilds"].join(" "),
-        state: hexToDecimal(address),
+        state: `${hexToDecimal(address)}+${task.quest_id}+${task.id}`,
       };
       const qs = new URLSearchParams(options).toString();
       return `${rootUrl}?${qs}`;

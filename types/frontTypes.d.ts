@@ -207,7 +207,7 @@ type BuildingsInfo = {
 
 type QuestCategory = {
   name: string;
-  img: string;
+  img: string | undefined;
   questNumber: number;
   quests: QuestDocument[];
 };
@@ -291,4 +291,17 @@ type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
+};
+
+type CustomInputType = typeof CustomInput;
+type DiscordInputType = typeof DiscordInput;
+type QuizInputType = typeof QuizDefaultInput;
+type TwitterFwInputType = typeof TwitterFwInput;
+type TwitterRwInputType = typeof TwitterRwInput;
+type TaskType =
+  | "Quiz"
+  | "TwitterFw"
+  | "Discord"
+  | "Custom"
+  | "TwitterRw"
+  | "None";

@@ -14,13 +14,13 @@ export default function Page() {
   const router = useRouter();
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
-
-  const [quests, setQuests] = useState<Record<string, [QuestDocument]>>({});
+  const [quests, setQuests] = useState<{ [key: string]: QuestDocument[] }>({});
 
   const fetchQuests = useCallback(async () => {
     try {
       setLoading(true);
       const res = await getQuests();
+      if (!res) return;
       setQuests(res);
       setLoading(false);
     } catch (error) {
