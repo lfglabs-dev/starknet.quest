@@ -8,37 +8,34 @@ import ProgressBar from "@components/quiz/progressBar";
 import InputCard from "@components/admin/InputCard";
 import { MenuItem, Select, SelectChangeEvent, Switch } from "@mui/material";
 import Button from "@components/UI/button";
-import { TOKEN_ADDRESS_MAP, TOKEN_DECIMAL_MAP } from "@constants/common";
+import {
+  QuestDefault,
+  TOKEN_ADDRESS_MAP,
+  TOKEN_DECIMAL_MAP,
+} from "@constants/common";
 import { getCurrentNetwork } from "@utils/network";
 import Textinput from "@components/admin/Textinput";
 import Dateinput from "@components/admin/DateInput";
 import QuizControls from "@components/quiz/quizControls";
 import {
   CATEGORY_OPTIONS,
-  CustomInput,
-  DiscordInput,
-  QuizDefaultInput,
   TASK_OPTIONS,
   TWITTER_OPTIONS,
-  TwitterFwInput,
-  TwitterRwInput,
   boostDefaultInput,
   nft_uri,
   questDefaultInput,
   QuizQuestionDefaultInput,
+  getDefaultValues,
 } from "@constants/admin";
-import { CreateQuest, NFTUri } from "../../../../types/backTypes";
-
-const getDefaultValues = (type: TaskType) => {
-  if (type === "Quiz") return QuizDefaultInput;
-  if (type === "TwitterFw") return TwitterFwInput;
-  if (type === "TwitterRw") return TwitterRwInput;
-  if (type === "Discord") return DiscordInput;
-  if (type === "Custom") return CustomInput;
-  if (type === "None") return {};
-
-  return QuizDefaultInput;
-};
+import {
+  CreateQuest,
+  NFTUri,
+  QuestDocument,
+} from "../../../../types/backTypes";
+import { useInfoBar } from "@context/useInfobar";
+import { getQuestById } from "@services/apiService";
+import QuestDetails from "@components/quests/questDetails";
+import AdminQuestDetails from "@components/admin/QuestDetails";
 
 // Define discriminated union types
 type StepMap =
@@ -52,7 +49,7 @@ type StepMap =
 export default function Page() {
   const network = getCurrentNetwork();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(4);
   const [questId, setQuestId] = useState<number>(134);
   const [questInput, setQuestInput] = useState<CreateQuest>(questDefaultInput);
   const [nfturi, setNftUri] = useState<NFTUri>(nft_uri);
@@ -68,6 +65,24 @@ export default function Page() {
       data: {},
     },
   ]);
+  const { showMessage } = useInfoBar();
+  const [finalQuestData, setFinalQuestData] =
+    useState<typeof QuestDefault>(QuestDefault);
+
+  const fetchQuestData = useCallback(async () => {
+    try {
+      const res = await AdminService.getQuestById(questId);
+      if (!res) return;
+      setFinalQuestData(res);
+    } catch (error) {
+      console.log("Error while fetching quests", error);
+    }
+  }, [questId]);
+
+  useEffect(() => {
+    if (currentPage !== 4) return;
+    fetchQuestData();
+  }, [currentPage]);
 
   const handleCreateQuest = useCallback(async () => {
     try {
@@ -149,6 +164,12 @@ export default function Page() {
   );
 
   useEffect(() => {
+    //check if start time is less than current time
+    if (new Date(startTime).getTime() < new Date().getTime()) {
+      showMessage("Start time cannot be less than current time");
+      return;
+    }
+
     setQuestInput((prev) => ({
       ...prev,
       start_time: new Date(startTime).getTime(),
@@ -156,6 +177,11 @@ export default function Page() {
   }, [startTime]);
 
   useEffect(() => {
+    // check if start_time is less than end_time
+    if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
+      showMessage("End time cannot be less than start time");
+      return;
+    }
     setQuestInput((prev) => ({
       ...prev,
       expiry: new Date(endTime).getTime(),
@@ -165,6 +191,17 @@ export default function Page() {
       expiry: new Date(endTime).getTime(),
     }));
   }, [endTime]);
+
+  const handlePublishQuest = useCallback(
+    async (value) => {
+      const response = await AdminService.updateQuest({
+        id: questId,
+        disabled: value,
+      });
+      await fetchQuestData();
+    },
+    [questId]
+  );
 
   const handleCreateTask = useCallback(async () => {
     steps.map(async (step) => {
@@ -332,6 +369,13 @@ export default function Page() {
                 placeholder="NFT Name"
               />
               <Textinput
+                onChange={handleQuestInputChange}
+                value={questInput.rewards_title}
+                name="rewards_title"
+                label="Rewards Titlen"
+                placeholder="NFT Name"
+              />
+              <Textinput
                 onChange={(e) => {
                   setQuestInput((prev) => ({
                     ...prev,
@@ -351,6 +395,7 @@ export default function Page() {
                 label="NFT Image Path"
                 placeholder="NFT Image Path"
               />
+
               <Textinput
                 onChange={(e) => {
                   setNftUri((prev) => ({
@@ -472,8 +517,8 @@ export default function Page() {
                           setSteps((prev) => {
                             const newArr = [...prev];
                             newArr[index] = {
-                              type: category,
-                              data: getDefaultValues(category),
+                              type: category as TaskType,
+                              data: getDefaultValues(category as TaskType),
                             };
                             return newArr;
                           });
@@ -852,7 +897,19 @@ export default function Page() {
           />
         </div>
       ) : currentPage === 4 ? (
-        <>hey</>
+        <>
+          <AdminQuestDetails
+            quest={finalQuestData}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            setShowDomainPopup={() => {}}
+            hasRootDomain={false}
+            rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
+            onRewardButtonClick={async () => {
+              await handlePublishQuest(!finalQuestData.disabled);
+            }}
+            overrideDisabledState={false}
+          />
+        </>
       ) : null}
     </div>
   );

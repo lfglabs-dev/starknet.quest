@@ -17,6 +17,7 @@ import { getCurrentNetwork } from "@utils/network";
 import { constants } from "starknet";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
+import { InfoBarProvider } from "@context/useInfobar";
 
 // Traffic measures
 if (typeof window !== "undefined") {
@@ -120,7 +121,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <StarknetIdJsProvider>
         <ThemeProvider theme={theme}>
           <PostHogProvider client={posthog}>
-            <QuestsContextProvider>{children}</QuestsContextProvider>
+            <QuestsContextProvider>
+              <InfoBarProvider>{children}</InfoBarProvider>
+            </QuestsContextProvider>
           </PostHogProvider>
         </ThemeProvider>
       </StarknetIdJsProvider>

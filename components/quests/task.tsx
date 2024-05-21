@@ -19,7 +19,6 @@ const Task: FunctionComponent<Task> = ({
   cta = "open app",
   verifyEndpoint,
   verifyRedirect,
-  refreshRewards,
   wasVerified,
   verifyEndpointType,
   hasError,
@@ -30,7 +29,6 @@ const Task: FunctionComponent<Task> = ({
   setShowDomainPopup,
   hasRootDomain,
   customError,
-  checkUserRewards,
   expired,
 }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -88,16 +86,12 @@ const Task: FunctionComponent<Task> = ({
           await new Promise((resolve) =>
             setTimeout(() => {
               setIsVerified(true);
-              checkUserRewards();
-              refreshRewards();
               setIsLoading(false);
               resolve(null);
             }, timeout)
           );
         } else {
           setIsVerified(true);
-          checkUserRewards();
-          refreshRewards();
           setIsLoading(false);
         }
       } catch (error) {
@@ -125,7 +119,6 @@ const Task: FunctionComponent<Task> = ({
   useEffect(() => {
     if (!wasVerified) return;
     setIsVerified(wasVerified);
-    checkUserRewards();
   }, [wasVerified]);
 
   const openTask = () => {
@@ -138,7 +131,6 @@ const Task: FunctionComponent<Task> = ({
           issuer={issuer}
           verifyEndpoint={verifyEndpoint}
           setIsVerified={setIsVerified}
-          refreshRewards={refreshRewards}
         />
       );
     window.open(href);

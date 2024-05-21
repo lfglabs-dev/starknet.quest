@@ -20,11 +20,13 @@ type RewardProps = {
   reward: string;
   imgSrc: string;
   disabled: boolean;
-  mintCalldata: Call[] | undefined;
+  mintCalldata?: Call[] | undefined;
   questName: string;
   hasNftReward?: boolean;
   claimed?: boolean;
   quest: QuestDocument;
+  overrideRewardClick?: () => void;
+  buttonText?: string;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -37,6 +39,8 @@ const Reward: FunctionComponent<RewardProps> = ({
   hasNftReward,
   claimed,
   quest,
+  overrideRewardClick,
+  buttonText,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
@@ -48,6 +52,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const router = useRouter();
 
   const submitTx = useCallback(async () => {
+    if (overrideRewardClick) return;
     if (!hasNftReward) {
       setShowSuccessModal(true);
       return;
@@ -65,7 +70,7 @@ const Reward: FunctionComponent<RewardProps> = ({
         status: "pending",
       },
     });
-    router.push('/quest/completed');
+    router.push("/quest/completed");
   }, [executeMint, address]);
 
   return (
@@ -80,8 +85,13 @@ const Reward: FunctionComponent<RewardProps> = ({
       </div>
       <div className="max-w-lg">
         {/* getReward */}
-        <Button onClick={submitTx} disabled={disabled || claimed}>
-          {claimed ? "Claimed" : "Get Reward"}
+        <Button
+          onClick={() =>
+            overrideRewardClick ? overrideRewardClick() : submitTx()
+          }
+          disabled={disabled || claimed}
+        >
+          {claimed ? "Claimed" : buttonText ? buttonText : "Get Reward"}
         </Button>
       </div>
 

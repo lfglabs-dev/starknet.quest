@@ -89,3 +89,14 @@ export const CustomInput = {
   custom_cta: "",
   custom_href: "",
 };
+
+export const getDefaultValues = (type: TaskType) => {
+  if (type === "Quiz") return QuizDefaultInput;
+  if (type === "TwitterFw") return TwitterFwInput;
+  if (type === "TwitterRw") return TwitterRwInput;
+  if (type === "Discord") return DiscordInput;
+  if (type === "Custom") return CustomInput;
+  if (type === "None") return {};
+
+  return QuizDefaultInput;
+};

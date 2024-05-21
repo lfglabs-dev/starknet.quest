@@ -18,7 +18,7 @@ type Task = {
   verifyEndpoint: string;
   verifyRedirect: string | null;
   verifyEndpointType: string;
-  refreshRewards: () => void;
+  refreshRewards?: () => void;
   setShowQuiz: (s: ReactNode) => void;
   wasVerified?: boolean;
   hasError?: boolean;
@@ -28,7 +28,7 @@ type Task = {
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
   customError: string;
-  checkUserRewards: () => void;
+  checkUserRewards?: () => void;
   expired: boolean;
 };
 

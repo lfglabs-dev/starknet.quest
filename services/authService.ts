@@ -7,6 +7,7 @@ import {
   CreateQuizQuestion,
   CreateTwitterFw,
   CreateTwitterRw,
+  UpdateQuest,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -21,9 +22,36 @@ const login = async (params: { passcode: string }) => {
   }
 };
 
+const getQuestById = async (id: number) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/quest/get_quest?id=${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while quests", err);
+  }
+};
+
+const getTasksByQuestId = async (id: number) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/quest/get_tasks?quest_id=${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while quests", err);
+  }
+};
 const getQuests = async () => {
   try {
-    const response = await fetch(`${baseurl}/admin/get_quests`, {
+    const response = await fetch(`${baseurl}/admin/quest/get_quests`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -38,6 +66,22 @@ const getQuests = async () => {
 const createQuest = async (params: CreateQuest) => {
   try {
     const response = await fetch(`${baseurl}/admin/quest/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while quests", err);
+  }
+};
+
+const updateQuest = async (params: UpdateQuest) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/quest/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -194,4 +238,7 @@ export const AdminService = {
   createQuiz,
   createQuizQuestion,
   deleteTask,
+  updateQuest,
+  getQuestById,
+  getTasksByQuestId,
 };

@@ -11,6 +11,7 @@ import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
+import { useInfoBar } from "@context/useInfobar";
 
 export default function Page() {
   const router = useRouter();

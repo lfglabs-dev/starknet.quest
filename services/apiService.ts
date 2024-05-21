@@ -18,7 +18,7 @@ import {
   UniquePageVisit,
   UniqueVisitorCount,
   UserTask,
-    QuestList,
+  QuestList,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -143,7 +143,7 @@ export const getCompletedBoosts = async (addr: string) => {
 export const getQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/get_quests`);
-    const quests: QuestList = await response.json()
+    const quests: QuestList = await response.json();
     return quests;
   } catch (err) {
     console.log("Error while fetching trending quests", err);
@@ -351,14 +351,11 @@ export const getUniqueVisitorCount = async (id: number) => {
 export async function getQuestById(id: string) {
   try {
     const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-    const data: QuestDocument | QueryError = await response.json();
-    if ((data as QueryError).error) {
-      throw Error((data as QueryError).error);
-    }
+    const data: QuestDocument = await response.json();
     return data as QuestDocument;
   } catch (error) {
     console.log("Error parsing quest data:", error);
-    return error as QueryError;
+    return null;
   }
 }
 

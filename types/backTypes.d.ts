@@ -211,6 +211,21 @@ export type CreateQuest = {
   title_card: string;
 };
 
+export type UpdateQuest = {
+  id: number;
+  name?: string;
+  desc?: string;
+  start_time?: number;
+  expiry?: number | null;
+  disabled?: boolean;
+  category?: string;
+  logo?: string;
+  rewards_img?: string;
+  rewards_title?: string;
+  img_card?: string;
+  title_card?: string;
+};
+
 export type CreateBoost = {
   amount: number;
   token: string;

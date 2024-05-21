@@ -43,6 +43,9 @@ type QuestDetailsProps = {
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
   hasNftReward?: boolean;
+  rewardButtonTitle?: string;
+  onRewardButtonClick?: () => void;
+  overrideDisabledState?: boolean;
 };
 
 const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -53,6 +56,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   setShowDomainPopup,
   hasRootDomain,
   hasNftReward,
+  rewardButtonTitle,
+  onRewardButtonClick,
+  overrideDisabledState,
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
@@ -402,6 +408,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               );
             })}
             <Reward
+              buttonText={rewardButtonTitle}
+              overrideRewardClick={onRewardButtonClick}
+              overrideDisabledState={overrideDisabledState}
               quest={quest}
               hasNftReward={hasNftReward}
               reward={quest.rewards_title}
