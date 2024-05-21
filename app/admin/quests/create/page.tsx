@@ -27,14 +27,8 @@ import {
   QuizQuestionDefaultInput,
   getDefaultValues,
 } from "@constants/admin";
-import {
-  CreateQuest,
-  NFTUri,
-  QuestDocument,
-} from "../../../../types/backTypes";
+import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 import { useInfoBar } from "@context/useInfobar";
-import { getQuestById } from "@services/apiService";
-import QuestDetails from "@components/quests/questDetails";
 import AdminQuestDetails from "@components/admin/QuestDetails";
 
 // Define discriminated union types
@@ -49,7 +43,7 @@ type StepMap =
 export default function Page() {
   const network = getCurrentNetwork();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(4);
+  const [currentPage, setCurrentPage] = useState(3);
   const [questId, setQuestId] = useState<number>(134);
   const [questInput, setQuestInput] = useState<CreateQuest>(questDefaultInput);
   const [nfturi, setNftUri] = useState<NFTUri>(nft_uri);
@@ -193,8 +187,8 @@ export default function Page() {
   }, [endTime]);
 
   const handlePublishQuest = useCallback(
-    async (value) => {
-      const response = await AdminService.updateQuest({
+    async (value: boolean) => {
+      await AdminService.updateQuest({
         id: questId,
         disabled: value,
       });
@@ -215,14 +209,16 @@ export default function Page() {
           help_link: step.data.quiz_help_link,
         });
         await Promise.all(
-          step.data.questions.map(async (question) => {
-            await AdminService.createQuizQuestion({
-              quiz_id: response.id,
-              question: question.question,
-              options: question.options,
-              correct_answers: question.correct_answers,
-            });
-          })
+          step.data.questions.map(
+            async (question: typeof QuizQuestionDefaultInput) => {
+              await AdminService.createQuizQuestion({
+                quiz_id: response.id,
+                question: question.question,
+                options: question.options,
+                correct_answers: question.correct_answers,
+              });
+            }
+          )
         );
       }
       if (step.type === "TwitterFw") {
@@ -627,31 +623,48 @@ export default function Page() {
 
                   <div className="flex flex-col gap-8">
                     {step.data.questions?.map(
-                      (eachQuestion: QuizQuestion, index: number) => (
+                      (
+                        eachQuestion: typeof QuizQuestionDefaultInput,
+                        questionIndex: number
+                      ) => (
                         <>
                           <Textinput
                             onChange={(e) => {
-                              setSteps((prev) => {
-                                const newArr = [...prev];
-                                const new_obj = {
-                                  ...step,
-                                };
-                                const new_questions = [
-                                  ...new_obj.data.questions,
-                                ];
-                                new_questions[index] = {
-                                  ...new_questions[index],
-                                  question: e.target.value,
-                                };
-                                new_obj.data.questions = new_questions;
-                                prev[index] = new_obj;
-                                return newArr;
+                              const updatedSteps = steps.map((step, i) => {
+                                if (i === index && step.type === "Quiz") {
+                                  const updatedQuestions =
+                                    step.data.questions.map(
+                                      (
+                                        questionObj: typeof QuizQuestionDefaultInput,
+                                        qIndex: number
+                                      ) => {
+                                        if (qIndex === questionIndex) {
+                                          return {
+                                            ...questionObj,
+                                            question: e.target.value,
+                                          };
+                                        }
+                                        return questionObj;
+                                      }
+                                    );
+
+                                  return {
+                                    ...step,
+                                    data: {
+                                      ...step.data,
+                                      questions: updatedQuestions,
+                                    },
+                                  };
+                                }
+                                return step;
                               });
+
+                              setSteps(updatedSteps);
                             }}
                             value={eachQuestion.question}
                             name="question"
-                            label={`Question ${index + 1}`}
-                            placeholder={`Question ${index + 1}`}
+                            label={`Question ${questionIndex + 1}`}
+                            placeholder={`Question ${questionIndex + 1}`}
                           />
                           {eachQuestion.options.map((option, optionIndex) => (
                             <div
@@ -666,28 +679,58 @@ export default function Page() {
                                   <div className="w-3/4">
                                     <input
                                       name={"option"}
-                                      value={eachQuestion.options[optionIndex]}
+                                      value={option}
                                       onChange={(e) => {
-                                        setSteps((prev) => {
-                                          const newArr = [...prev];
-                                          const new_obj = {
-                                            ...step,
-                                          };
-                                          const new_questions = [
-                                            ...new_obj.data.questions,
-                                          ];
-                                          const new_options = [
-                                            ...new_questions[index].options,
-                                          ];
-                                          new_options[optionIndex] =
-                                            e.target.value;
-                                          new_questions[index].options =
-                                            new_options;
-                                          new_obj.data.questions =
-                                            new_questions;
-                                          newArr[index] = new_obj;
-                                          return newArr;
-                                        });
+                                        const updatedSteps = steps.map(
+                                          (step, i) => {
+                                            if (
+                                              i === index &&
+                                              step.type === "Quiz"
+                                            ) {
+                                              const updatedQuestions =
+                                                step.data.questions.map(
+                                                  (
+                                                    questionObj: typeof QuizQuestionDefaultInput,
+                                                    qIndex: number
+                                                  ) => {
+                                                    if (
+                                                      qIndex === questionIndex
+                                                    ) {
+                                                      const updatedOptions =
+                                                        questionObj.options.map(
+                                                          (option, oIndex) => {
+                                                            if (
+                                                              oIndex ===
+                                                              optionIndex
+                                                            ) {
+                                                              return e.target
+                                                                .value;
+                                                            }
+                                                            return option;
+                                                          }
+                                                        );
+                                                      return {
+                                                        ...questionObj,
+                                                        options: updatedOptions,
+                                                      };
+                                                    }
+                                                    return questionObj;
+                                                  }
+                                                );
+
+                                              return {
+                                                ...step,
+                                                data: {
+                                                  ...step.data,
+                                                  questions: updatedQuestions,
+                                                },
+                                              };
+                                            }
+                                            return step;
+                                          }
+                                        );
+
+                                        setSteps(updatedSteps);
                                       }}
                                       placeholder={`Option ${optionIndex + 1}`}
                                       className={`${styles.input} w-full`}
@@ -696,25 +739,55 @@ export default function Page() {
                                   </div>
                                   <div className="flex flex-row gap-2 justify-end">
                                     <input
-                                      onChange={() => {
-                                        setQuizQuestions((prev) => {
-                                          const newArr = [...prev];
-                                          const new_obj = {
-                                            ...eachQuestion,
-                                          };
-                                          const new_options = [
-                                            ...new_obj.options,
-                                          ];
-                                          new_options.splice(optionIndex, 1);
-                                          new_obj.options = new_options;
-                                          newArr[index] = new_obj;
-                                          return newArr;
-                                        });
+                                      onChange={(e) => {
+                                        const updatedSteps = steps.map(
+                                          (step, i) => {
+                                            if (
+                                              i === index &&
+                                              step.type === "Quiz"
+                                            ) {
+                                              const updatedQuestions =
+                                                step.data.questions.map(
+                                                  (
+                                                    questionObj: typeof QuizQuestionDefaultInput,
+                                                    qIndex: number
+                                                  ) => {
+                                                    if (
+                                                      qIndex === questionIndex
+                                                    ) {
+                                                      return {
+                                                        ...questionObj,
+                                                        correct_answers: [
+                                                          optionIndex,
+                                                        ],
+                                                      };
+                                                    }
+                                                    return questionObj;
+                                                  }
+                                                );
+
+                                              return {
+                                                ...step,
+                                                data: {
+                                                  ...step.data,
+                                                  questions: updatedQuestions,
+                                                },
+                                              };
+                                            }
+                                            return step;
+                                          }
+                                        );
+                                        setSteps(updatedSteps);
                                       }}
                                       className="w-6 h-6 rounded-full"
                                       type="radio"
-                                      name="correct_option"
-                                      value={option}
+                                      name={`correct_option-${questionIndex}+${optionIndex}}`}
+                                      value={optionIndex}
+                                      checked={
+                                        optionIndex ===
+                                        step.data.questions[questionIndex]
+                                          .correct_answers[0]
+                                      }
                                     />
                                     <div>Correct Answer</div>
                                   </div>
@@ -727,19 +800,23 @@ export default function Page() {
                     )}
                     <div
                       onClick={() => {
-                        setSteps((prev) => {
-                          const newArr = [...prev];
-                          const new_obj = {
-                            ...step,
-                          };
-                          const new_questions = [
-                            ...new_obj.data.questions,
-                            QuizQuestionDefaultInput,
-                          ];
-                          new_obj.data.questions = new_questions;
-                          newArr[index] = new_obj;
-                          return newArr;
+                        const updatedSteps = steps.map((step, i) => {
+                          if (i === index && step.type === "Quiz") {
+                            return {
+                              ...step,
+                              data: {
+                                ...step.data,
+                                questions: [
+                                  ...step.data.questions,
+                                  QuizQuestionDefaultInput,
+                                ],
+                              },
+                            };
+                          }
+                          return step;
                         });
+
+                        setSteps(updatedSteps);
                       }}
                       className="flex w-full justify-center modified-cursor-pointer"
                     >
