@@ -9,7 +9,7 @@ export const CATEGORY_OPTIONS = [
   "Starknet Pro Score by Braavos",
 ];
 
-export const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom"];
+export const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom", "Domain"];
 
 export const TWITTER_OPTIONS = {
   "Follow on Twitter": "TwitterFw",
@@ -23,7 +23,7 @@ export const questDefaultInput = {
   desc: "",
   category: "Defi",
   logo: "",
-  rewards_title: "loading",
+  rewards_title: "",
   rewards_img: "",
   disabled: false,
   start_time: parseInt(Date.now().toString()),
@@ -34,7 +34,7 @@ export const questDefaultInput = {
 
 export const nft_uri = {
   name: "",
-  desc: "",
+  description: "",
   image: "",
 };
 
@@ -90,12 +90,19 @@ export const CustomInput = {
   custom_href: "",
 };
 
+export const DomainInput = {
+  domain: "",
+  name: "",
+  desc: "",
+};
+
 export const getDefaultValues = (type: TaskType) => {
   if (type === "Quiz") return QuizDefaultInput;
   if (type === "TwitterFw") return TwitterFwInput;
   if (type === "TwitterRw") return TwitterRwInput;
   if (type === "Discord") return DiscordInput;
   if (type === "Custom") return CustomInput;
+  if (type === "Domain") return DomainInput;
   if (type === "None") return {};
 
   return QuizDefaultInput;

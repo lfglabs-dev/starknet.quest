@@ -38,13 +38,14 @@ type StepMap =
   | { type: "TwitterRw"; data: TwitterRwInputType }
   | { type: "Discord"; data: DiscordInputType }
   | { type: "Custom"; data: CustomInputType }
-  | { type: "None"; data: object };
+  | { type: "None"; data: object }
+  | { type: "Domain"; data: DomainInputType };
 
 export default function Page() {
   const network = getCurrentNetwork();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(3);
-  const [questId, setQuestId] = useState<number>(134);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [questId, setQuestId] = useState<number>(0);
   const [questInput, setQuestInput] = useState<CreateQuest>(questDefaultInput);
   const [nfturi, setNftUri] = useState<NFTUri>(nft_uri);
   const [headingText, setHeadingText] = useState("Set up");
@@ -253,6 +254,7 @@ export default function Page() {
         });
       }
     });
+    setCurrentPage((prev) => prev + 1);
   }, [steps]);
 
   return (
@@ -341,7 +343,7 @@ export default function Page() {
 
           <div className="w-full items-center justify-center flex">
             <div className="w-fit">
-              <Button onClick={() => handlePagination("Next")}>
+              <Button loading={true} disabled={true} onClick={() => handlePagination("Next")}>
                 <p>Confirm Next</p>
               </Button>
             </div>
@@ -368,7 +370,7 @@ export default function Page() {
                 onChange={handleQuestInputChange}
                 value={questInput.rewards_title}
                 name="rewards_title"
-                label="Rewards Titlen"
+                label="Rewards Title"
                 placeholder="NFT Name"
               />
               <Textinput
@@ -399,7 +401,7 @@ export default function Page() {
                     desc: e.target.value,
                   }));
                 }}
-                value={nfturi.desc}
+                value={nfturi.description ?? ""}
                 name="nft_image"
                 label="NFT Description"
                 placeholder="NFT Description"
@@ -739,7 +741,7 @@ export default function Page() {
                                   </div>
                                   <div className="flex flex-row gap-2 justify-end">
                                     <input
-                                      onChange={(e) => {
+                                      onChange={() => {
                                         const updatedSteps = steps.map(
                                           (step, i) => {
                                             if (
@@ -879,6 +881,24 @@ export default function Page() {
                     name="twfw_username"
                     label="Twitter Username"
                     placeholder="Username"
+                  />
+                </div>
+              ) : step?.type === "Domain" ? (
+                <div className="flex flex-col gap-8 pt-8">
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.domain_name}
+                    name="twfw_name"
+                    label="Name"
+                    placeholder="Name"
+                  />
+                  <Textinput
+                    onChange={(e) => handleTasksInputChange(e, index)}
+                    value={step.data.domain_desc}
+                    name="twfw_desc"
+                    label="Description"
+                    placeholder="Description"
+                    multiline={4}
                   />
                 </div>
               ) : step.type === "TwitterRw" ? (

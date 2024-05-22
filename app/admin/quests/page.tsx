@@ -5,13 +5,14 @@ import styles from "@styles/admin.module.css";
 import BackButton from "@components/UI/backButton";
 import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
-import Quest from "@components/quests/quest";
+
 import { QuestDocument } from "../../../types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
 import { useInfoBar } from "@context/useInfobar";
+import Quest from "@components/admin/QuestCard";
 
 export default function Page() {
   const router = useRouter();
@@ -74,13 +75,8 @@ export default function Page() {
                     router.push(`/admin/quests/dashboard/${quest.id}`)
                   }
                   imgSrc={quest.img_card}
-                  issuer={{
-                    name: quest.issuer,
-                    logoFavicon: quest.logo,
-                  }}
-                  reward={quest.rewards_title}
+                  reward={quest.disabled ? "Disabled" : "Active"}
                   id={quest.id}
-                  expired={false}
                 />
               );
             })

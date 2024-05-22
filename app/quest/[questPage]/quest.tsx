@@ -57,7 +57,8 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   // this fetches quest data
   useEffect(() => {
     getQuestById(questId)
-      .then((data: QuestDocument | QueryError) => {
+      .then((data) => {
+        if (!data) return;
         if ((data as QuestDocument).id) {
           if (
             (data as QuestDocument).rewards_nfts &&

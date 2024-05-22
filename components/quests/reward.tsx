@@ -20,13 +20,14 @@ type RewardProps = {
   reward: string;
   imgSrc: string;
   disabled: boolean;
-  mintCalldata?: Call[] | undefined;
+  mintCalldata: Call[] | undefined;
   questName: string;
   hasNftReward?: boolean;
   claimed?: boolean;
   quest: QuestDocument;
   overrideRewardClick?: () => void;
   buttonText?: string;
+  overrideDisabledState?: boolean;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -41,6 +42,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   quest,
   overrideRewardClick,
   buttonText,
+  overrideDisabledState,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
@@ -89,7 +91,7 @@ const Reward: FunctionComponent<RewardProps> = ({
           onClick={() =>
             overrideRewardClick ? overrideRewardClick() : submitTx()
           }
-          disabled={disabled || claimed}
+          disabled={overrideDisabledState ?? (disabled || claimed)}
         >
           {claimed ? "Claimed" : buttonText ? buttonText : "Get Reward"}
         </Button>

@@ -44,7 +44,9 @@ type UserTask = {
   verify_endpoint_type: string;
   verify_redirect: string | null;
   completed: boolean;
-  quiz_name: string | null;
+  quiz_name: number | null;
+  task_type: string | null;
+  discord_guild_id: string | null;
 };
 
 type UserDocument = {
@@ -238,6 +240,19 @@ export type CreateBoost = {
   hidden: boolean;
 };
 
+export type UpdateBoost = {
+  id: number;
+  amount?: number;
+  token?: string;
+  num_of_winners?: number;
+  token_decimals?: number;
+  name?: string;
+  img_url?: string;
+  expiry?: number;
+  quest_id?: number;
+  hidden?: boolean;
+};
+
 export type CreateTwitterFw = {
   name: string;
   desc: string;
@@ -245,11 +260,25 @@ export type CreateTwitterFw = {
   quest_id: number;
 };
 
+export type UpdateTwitterFw = {
+  name?: string;
+  desc?: string;
+  username?: string;
+  id: number;
+};
+
 export type CreateTwitterRw = {
   name: string;
   desc: string;
   post_link: string;
   quest_id: number;
+};
+
+export type UpdateTwitterRw = {
+  name?: string;
+  desc?: string;
+  post_link?: string;
+  id: number;
 };
 
 export type CreateDiscord = {
@@ -260,12 +289,28 @@ export type CreateDiscord = {
   guild_id: string;
 };
 
+export type UpdateDiscord = {
+  id: number;
+  name?: string;
+  desc?: string;
+  invite_link?: string;
+  guild_id?: string;
+};
+
 export type CreateCustom = {
   quest_id: number;
   name: string;
   desc: string;
   cta: string;
   href: string;
+};
+
+export type UpdateCustom = {
+  id: number;
+  name?: string;
+  desc?: string;
+  cta?: string;
+  href?: string;
 };
 
 export type CreateQuiz = {
@@ -277,6 +322,15 @@ export type CreateQuiz = {
   quest_id: number;
 };
 
+export type UpdateQuiz = {
+  name?: string;
+  desc?: string;
+  help_link?: string;
+  cta?: string;
+  intro?: string;
+  id: number;
+};
+
 export type CreateQuizQuestion = {
   question: string;
   options: string[];
@@ -284,8 +338,15 @@ export type CreateQuizQuestion = {
   quiz_id: number;
 };
 
+export type UpdateQuizQuestion = {
+  question: string;
+  options: string[];
+  correct_answers: number[];
+  id: number;
+};
+
 export type NFTUri = {
   name: string;
-  desc: string;
+  description: string;
   image: string;
 };

@@ -23,7 +23,7 @@ type Task = {
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
-  quizName?: string;
+  quizName?: number;
   issuer?: Issuer;
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
@@ -295,6 +295,7 @@ type TabPanelProps = {
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
+type DomainInputType = typeof DomainInput;
 type QuizInputType = typeof QuizDefaultInput;
 type TwitterFwInputType = typeof TwitterFwInput;
 type TwitterRwInputType = typeof TwitterRwInput;
@@ -304,4 +305,5 @@ type TaskType =
   | "Discord"
   | "Custom"
   | "TwitterRw"
+  | "Domain"
   | "None";
