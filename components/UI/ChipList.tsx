@@ -13,15 +13,19 @@ const ChipList: FunctionComponent<ChipProps> = ({
   tags,
 }) => {
   return (
-    <div className={styles.chiplist_container}>
+    <div className={styles.chiplist_container} id="chipCollectionTab">
       {tags.map((tag, index) => (
         <div
           onClick={() => handleChangeSelection(tag)}
           key={index}
-          className={styles.each_chip}
+          className={`${styles.each_chip} chipTab ${
+            tag === selected ? "active" : ""
+          }`}
           style={{
-            backgroundColor: tag === selected ? "white" : "transparent",
+            marginRight: "10px",
+            transition: "900ms background-color ease-in-out",
           }}
+          aria-selected={tag === selected ? "true" : "false"}
         >
           <p
             style={{

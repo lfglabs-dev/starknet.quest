@@ -118,3 +118,23 @@ a,
 button {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }
+
+#questCollectionTab button {
+  padding: 5px;
+}
+
+#questCollectionTab button[aria-selected="false"]:hover {
+  background-color: var(--textGray);
+}
+
+.chipTab.active {
+  background-color: white;
+}
+
+.chipTab.inactive {
+  background-color: transparent;
+}
+
+#chipCollectionTab > .chipTab[aria-selected="false"]:hover{
+  background-color: var(--textGray);
+}
