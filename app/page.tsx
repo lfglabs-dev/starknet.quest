@@ -1,8 +1,6 @@
 "use client";
-
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styles from "@styles/Home.module.css";
-
 import { useRouter } from "next/navigation";
 import HowToParticipate from "@components/pages/home/howToParticipate";
 import Stats from "@components/UI/stats/stats";
@@ -11,11 +9,24 @@ import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
 import QuestAndCollectionTabs from "@components/pages/home/questAndCollectionTabs";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
+import Notification from "@components/feedback/feedback";
 
 export default function Page() {
   const router = useRouter();
-  const { featuredQuest, categories, trendingQuests, quests } =
-    useContext(QuestsContext);
+  const { featuredQuest, categories, trendingQuests, quests } = useContext(QuestsContext);
+  const [open, setOpen] = useState(false);
+  const [notificationType, setNotificationType] = useState<'success' | 'error' | 'info' | 'warning'>('success');
+  const [notificationMessage, setNotificationMessage] = useState('');
+
+  const handleOpenNotification = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
+    setNotificationType(type);
+    setNotificationMessage(message);
+    setOpen(true);
+  };
+
+  const handleCloseNotification = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={styles.screen}>
@@ -30,48 +41,33 @@ export default function Page() {
             title={featuredQuest?.title_card}
             onClick={() => router.push(`/quest/${featuredQuest?.id}`)}
             imgSrc={featuredQuest?.img_card}
-            issuer={{
-              name: featuredQuest?.issuer ?? "",
-              logoFavicon: featuredQuest?.logo ?? "",
-            }}
+            issuer={{ name: featuredQuest?.issuer ?? "", logoFavicon: featuredQuest?.logo ?? "" }}
             reward={featuredQuest?.rewards_title}
             desc={featuredQuest?.desc}
             expiry={featuredQuest?.expiry_timestamp}
             questId={featuredQuest?.id}
           />
         </div>
-
-        <QuestAndCollectionTabs
-          quests={quests}
-          categories={categories}
-          trendingQuests={trendingQuests}
-        />
-        <CategoryTitle
-          subtitle="Get access to our community"
-          title="About our quests"
-          corner="bottomLeft"
-          squares="bottomRight"
-        />
+        <QuestAndCollectionTabs quests={quests} categories={categories} trendingQuests={trendingQuests} />
+        <CategoryTitle subtitle="Get access to our community" title="About our quests" corner="bottomLeft" squares="bottomRight" />
         <Stats
           stats={[
-            {
-              name: "Quests NFT minted",
-              value: "+1M",
-            },
-            {
-              name: "Unique addresses",
-              value: "398K",
-            },
-            {
-              name: "Unique visitors",
-              value: "+200K",
-            },
+            { name: "Quests NFT minted", value: "+1M" },
+            { name: "Unique addresses", value: "398K" },
+            { name: "Unique visitors", value: "+200K" },
           ]}
         />
         <div className={styles.blur2}>
           <Blur green />
         </div>
         <HowToParticipate />
+        {/* <button onClick={() => handleOpenNotification('success', 'This is a success message')}>Open success snackbar</button> */}
+        <Notification
+          type={notificationType}
+          message={notificationMessage}
+          open={open}
+          onClose={handleCloseNotification}
+        />
       </div>
     </div>
   );
