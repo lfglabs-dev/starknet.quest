@@ -330,7 +330,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 fontFamily: "Sora",
                 minHeight: "32px",
                 marginRight: "10px",
-                transition: "900ms background-color ease-in-out",
+                transition: "900ms background-color, 900ms color ease-in-out",
               }}
               label={`Completed (${completedQuests.length ?? 0})`}
               {...a11yProps(0)}
@@ -345,7 +345,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 fontSize: "12px",
                 fontFamily: "Sora",
                 minHeight: "32px",
-                transition: "900ms background-color ease-in-out",
+                transition: "900ms background-color, 900ms color ease-in-out",
               }}
               label={`To claim (${
                 claimableQuests ? claimableQuests.length : 0
