@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+import type { SelectChangeEvent } from '@mui/material/Select'; 
 import { styled } from '@mui/system';
 
 // Define the props for the Dropdown component
@@ -11,7 +11,7 @@ type DropdownProps = {
   backgroundColor?: string;
   borderColor?: string;
   textColor?: string;
-  label: string;
+  label?: string;
   options: { value: string; label: string }[];
 };
 
@@ -24,26 +24,26 @@ const StyledFormControl = styled(FormControl, {
 })<DropdownProps>(({ theme, backgroundColor, borderColor, textColor }) => ({
   width: '100%',
   maxWidth: 300,
-  backgroundColor: backgroundColor || '#333',
-  color: textColor || '#ccc',
+  backgroundColor: backgroundColor || 'transparent',
+  color: textColor || 'inherit',
   borderRadius: 5,
   '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor || '#444',
+    borderColor: borderColor || 'inherit',
   },
   '&:hover .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor ? borderColor : '#666',
+    borderColor: borderColor ? borderColor : 'inherit',
   },
   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor ? borderColor : '#666',
+    borderColor: borderColor ? borderColor : 'inherit',
   },
   '& .MuiInputLabel-root': {
-    color: textColor || '#ccc',
+    color: textColor || 'inherit',
   },
   '& .MuiInputLabel-root.Mui-focused': {
-    color: textColor || '#ccc',
+    color: textColor || 'inherit',
   },
   '& .MuiSelect-select': {
-    color: textColor || '#fff',
+    color: textColor || 'inherit',
   },
 }));
 
@@ -82,7 +82,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               backgroundColor={backgroundColor}
               borderColor={borderColor}
               textColor={textColor}
-              label={''} options={[]}>
+              label={'label'} options={[]}>
         <InputLabel id="dropdown-label">{label}</InputLabel>
         <Select
           labelId="dropdown-label"
