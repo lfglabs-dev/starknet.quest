@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
-import ProgressBar from "@components/quiz/progressBar";
 import InputCard from "@components/admin/InputCard";
 import { MenuItem, Select, SelectChangeEvent, Switch } from "@mui/material";
 import Button from "@components/UI/button";
@@ -33,6 +32,7 @@ import {
 } from "../../../../../types/backTypes";
 import { useInfoBar } from "@context/useInfobar";
 import AdminQuestDetails from "@components/admin/QuestDetails";
+import ProgressBar from "@components/UI/progressBar";
 
 type AddressOrDomainProps = {
   params: {
@@ -40,14 +40,16 @@ type AddressOrDomainProps = {
   };
 };
 
+type WithNewField<T, K extends string, V> = T & { [P in K]: V };
+
 // Define discriminated union types
 type StepMap =
-  | { type: "Quiz"; data: QuizInputType }
-  | { type: "TwitterFw"; data: TwitterFwInputType }
-  | { type: "TwitterRw"; data: TwitterRwInputType }
-  | { type: "Discord"; data: DiscordInputType }
-  | { type: "Custom"; data: CustomInputType }
-  | { type: "Domain"; data: DomainInputType }
+  | { type: "Quiz"; data: WithNewField<QuizInputType, "id", number> }
+  | { type: "TwitterFw"; data: WithNewField<TwitterFwInputType, "id", number> }
+  | { type: "TwitterRw"; data: WithNewField<TwitterRwInputType, "id", number> }
+  | { type: "Discord"; data: WithNewField<DiscordInputType, "id", number> }
+  | { type: "Custom"; data: WithNewField<CustomInputType, "id", number> }
+  | { type: "Domain"; data: WithNewField<DomainInputType, "id", number> }
   | { type: "None"; data: object };
 
 export default function Page({ params }: AddressOrDomainProps) {
@@ -62,8 +64,11 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [headingText, setHeadingText] = useState("Set up");
   const [showBoost, setShowBoost] = useState(false);
   const [boostInput, setBoostInput] = useState<UpdateBoost>({
-    id: 0,
+    id: Number(params.questId),
   });
+  const [initialBoostDisplayStatus, setInitialBoostDisplayStatus] =
+    useState(false);
+  const [intialSteps, setInitialSteps] = useState<StepMap[]>([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [showTwitterOption, setShowTwitterOption] = useState(-1);
@@ -79,30 +84,28 @@ export default function Page({ params }: AddressOrDomainProps) {
   const fetchPageData = useCallback(async () => {
     try {
       const quest_details = await AdminService.getQuestById(questId.current);
-      const nft_uri_data = await AdminService.getNftUriByQuestId({
-        id: questId.current,
-      });
-      const quest_tasks = await AdminService.getTasksByQuestId(questId.current);
-      const formatted_steps = await tasksFormatter(quest_tasks);
-      setSteps(formatted_steps);
       if (!quest_details) return;
       setStartTime(
         new Date(quest_details.start_time).toISOString().split("T")[0]
       );
-      setNftUri(nft_uri_data);
       setBoostInput(quest_details.boosts[0]);
+      setShowBoost(quest_details.boosts[0] ? true : false);
+      setInitialBoostDisplayStatus(quest_details.boosts[0] ? true : false);
       setEndTime(new Date(quest_details.expiry).toISOString().split("T")[0]);
       setQuestInput(quest_details);
       setQuestData(quest_details);
-      // setSteps(res);
+      const nft_uri_data = await AdminService.getNftUriByQuestId({
+        id: questId.current,
+      });
+      setNftUri(nft_uri_data);
+      const quest_tasks = await AdminService.getTasksByQuestId(questId.current);
+      const formatted_steps = await tasksFormatter(quest_tasks);
+      setInitialSteps(formatted_steps);
+      setSteps(formatted_steps);
     } catch (error) {
       console.log("Error while fetching quests", error);
     }
   }, [questId.current]);
-
-  useEffect(() => {
-    console.log({ steps });
-  }, [steps]);
 
   const tasksFormatter = useCallback(async (tasks_details: UserTask[]) => {
     const taskPromises = tasks_details.map(async (task: UserTask) => {
@@ -114,6 +117,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         return {
           type: "Quiz",
           data: {
+            id: res.id,
             quiz_name: res.name,
             quiz_desc: res.desc,
             quiz_intro: res.intro,
@@ -134,6 +138,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         return {
           type: "TwitterFw",
           data: {
+            id: task.id,
             twfw_name: task.name,
             twfw_desc: task.desc,
             twfw_username: task?.verify_redirect?.split("=")[1] ?? "",
@@ -143,6 +148,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         return {
           type: "TwitterRw",
           data: {
+            id: task.id,
             twrw_name: task.name,
             twrw_desc: task.desc,
             twrw_post_link: task.verify_redirect,
@@ -152,16 +158,18 @@ export default function Page({ params }: AddressOrDomainProps) {
         return {
           type: "Discord",
           data: {
+            id: task.id,
             dc_name: task.name,
             dc_desc: task.desc,
             dc_guild_id: task.discord_guild_id,
             dc_invite_link: task.href,
           },
         };
-      } else if (task.task_type === "Custom") {
+      } else if (task.task_type === "custom") {
         return {
           type: "Custom",
           data: {
+            id: task.id,
             custom_name: task.name,
             custom_desc: task.desc,
             custom_href: task.href,
@@ -172,6 +180,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         return {
           type: "Domain",
           data: {
+            id: task.id,
             domain_name: task.name,
             domain_desc: task.desc,
           },
@@ -204,12 +213,31 @@ export default function Page({ params }: AddressOrDomainProps) {
       if (!showBoost) return;
       const response = await AdminService.updateBoost({
         ...boostInput,
+        amount: Number(boostInput.amount),
+        num_of_winners: Number(boostInput.num_of_winners),
       });
+
       if (!response) return;
     } catch (error) {
       console.log("Error while creating quest", error);
     }
   }, [questId, boostInput]);
+
+  const checkQuestChanges = useCallback(() => {
+    const updatedQuest = questData !== questInput;
+    return updatedQuest;
+  }, [questInput, questData]);
+
+  const checkBoostChanges = useCallback(() => {
+    let changeFlag = false;
+    if (showBoost && !initialBoostDisplayStatus) changeFlag = true;
+
+    if (!changeFlag) changeFlag = boostInput !== questData.boosts[0];
+
+    if (changeFlag) return boostInput;
+
+    return false;
+  }, [boostInput, questData]);
 
   const handlePagination = useCallback((type: "Next" | "Back") => {
     if (type === "Next") {
@@ -218,6 +246,31 @@ export default function Page({ params }: AddressOrDomainProps) {
       setCurrentPage((prev) => prev - 1);
     }
   }, []);
+
+  const checkStepChanges = useCallback(() => {
+    // check which task have been updated
+
+    const filteredSteps = steps.filter((step) => step.type !== "None");
+
+    const updatedTasks = filteredSteps.filter((step, index) => {
+      return (
+        step.type !== "None" &&
+        JSON.stringify(step) !== JSON.stringify(intialSteps[index])
+      );
+    });
+
+    // check which tasks have been removed
+    const removedTasks = intialSteps.filter((step, index) => {
+      return step.type !== "None" && !filteredSteps.includes(step);
+    });
+
+    // check which tasks have been added
+    const addedTasks = filteredSteps.filter((step, index) => {
+      return step.type !== "None" && !intialSteps.includes(step);
+    });
+
+    return { updatedTasks, removedTasks, addedTasks };
+  }, [steps, intialSteps]);
 
   useEffect(() => {
     if (currentPage === 1) {
@@ -300,9 +353,213 @@ export default function Page({ params }: AddressOrDomainProps) {
     [questId]
   );
 
+  const handleTaskChanges = useCallback(async () => {
+    const { updatedTasks, removedTasks, addedTasks } = checkStepChanges();
+
+    // update tasks
+    await handleUpdateTasks(updatedTasks);
+
+    //
+    await handleDeleteTasks(removedTasks);
+
+    // add tasks
+    await handleAddTasks(addedTasks);
+
+    setCurrentPage((prev) => prev + 1);
+  }, [steps, intialSteps]);
+
+  const handleCreateBoost = useCallback(async () => {
+    try {
+      if (!showBoost) return;
+      if (
+        !boostInput ||
+        !boostInput.token ||
+        !boostInput.amount ||
+        !boostInput.num_of_winners
+      )
+        return;
+      const response = await AdminService.createBoost({
+        name: questInput.name ?? questData.name,
+        quest_id: questId.current,
+        amount: Number(boostInput.amount),
+        num_of_winners: Number(boostInput.num_of_winners),
+        token_decimals:
+          TOKEN_DECIMAL_MAP[boostInput.token as keyof typeof TOKEN_DECIMAL_MAP],
+        token: boostInput.token,
+        img_url: boostInput.img_url ?? questData.img_card,
+        expiry: new Date(endTime).getTime(),
+        hidden: showBoost,
+      });
+      if (!response) return;
+    } catch (error) {
+      console.log("Error while creating quest", error);
+    }
+  }, [questId, boostInput]);
+
+  const handleQuestBoostNftChanges = useCallback(async () => {
+    if (checkQuestChanges()) {
+      await handleUpdateQuest();
+    }
+    if (checkBoostChanges()) {
+      if (boostInput.id) {
+        await handleUpdateBoost();
+      }
+      await handleCreateBoost();
+    }
+
+    setCurrentPage((prev) => prev + 1);
+  }, [
+    handleUpdateQuest,
+    handleUpdateBoost,
+    checkQuestChanges,
+    checkBoostChanges,
+  ]);
+
+  const handleAddTasks = useCallback(async (addedTasks: StepMap[]) => {
+    const taskPromises = addedTasks.map(async (step) => {
+      if (step.type === "Quiz") {
+        const response = await AdminService.createQuiz({
+          quest_id: questId.current,
+          name: step.data.quiz_name,
+          desc: step.data.quiz_desc,
+          intro: step.data.quiz_intro,
+          cta: step.data.quiz_cta,
+          help_link: step.data.quiz_help_link,
+        });
+        await Promise.all(
+          step.data.questions.map(
+            async (question: typeof QuizQuestionDefaultInput) => {
+              await AdminService.createQuizQuestion({
+                quiz_id: response.id,
+                question: question.question,
+                options: question.options,
+                correct_answers: question.correct_answers,
+              });
+            }
+          )
+        );
+      }
+      if (step.type === "TwitterFw") {
+        await AdminService.createTwitterFw({
+          quest_id: questId.current,
+          name: step.data.twfw_name,
+          desc: step.data.twfw_desc,
+          username: step.data.twfw_username,
+        });
+      } else if (step.type === "TwitterRw") {
+        await AdminService.createTwitterRw({
+          quest_id: questId.current,
+          name: step.data.twrw_name,
+          desc: step.data.twrw_desc,
+          post_link: step.data.twrw_post_link,
+        });
+      } else if (step.type === "Discord") {
+        await AdminService.createDiscord({
+          quest_id: questId.current,
+          name: step.data.dc_name,
+          desc: step.data.dc_desc,
+          invite_link: step.data.dc_invite_link,
+          guild_id: step.data.dc_guild_id,
+        });
+      } else if (step.type === "Custom") {
+        await AdminService.createCustom({
+          quest_id: questId.current,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+          cta: step.data.custom_cta,
+          href: step.data.custom_href,
+        });
+      } else if (step.type === "Domain") {
+        await AdminService.createDomain({
+          quest_id: questId.current,
+          name: step.data.domain_name,
+          desc: step.data.domain_desc,
+        });
+      }
+    });
+
+    await Promise.all(taskPromises);
+  }, []);
+
+  const handleDeleteTasks = useCallback(async (removedTasks: StepMap[]) => {
+    const taskPromises = removedTasks.map(async (step) => {
+      await AdminService.deleteTask({
+        id: step.data.id,
+      });
+    });
+
+    await Promise.all(taskPromises);
+  }, []);
+
+  const handleUpdateTasks = useCallback(async (updatedSteps: StepMap[]) => {
+    const taskPromises = updatedSteps.map(async (step) => {
+      if (step.type === "Quiz") {
+        const response = await AdminService.updateQuiz({
+          id: step.data.id,
+          name: step.data.quiz_name,
+          desc: step.data.quiz_desc,
+          intro: step.data.quiz_intro,
+          cta: step.data.quiz_cta,
+          help_link: step.data.quiz_help_link,
+        });
+        await Promise.all(
+          step.data.questions.map(
+            async (question: typeof QuizQuestionDefaultInput) => {
+              await AdminService.updateQuizQuestion({
+                id: response.id,
+                question: question.question,
+                options: question.options,
+                correct_answers: question.correct_answers,
+              });
+            }
+          )
+        );
+      }
+      if (step.type === "TwitterFw") {
+        await AdminService.updateTwitterFw({
+          id: step.data.id,
+          name: step.data.twfw_name,
+          desc: step.data.twfw_desc,
+          username: step.data.twfw_username,
+        });
+      } else if (step.type === "TwitterRw") {
+        await AdminService.updateTwitterRw({
+          id: step.data.id,
+          name: step.data.twrw_name,
+          desc: step.data.twrw_desc,
+          post_link: step.data.twrw_post_link,
+        });
+      } else if (step.type === "Discord") {
+        await AdminService.updateDiscord({
+          id: step.data.id,
+          name: step.data.dc_name,
+          desc: step.data.dc_desc,
+          invite_link: step.data.dc_invite_link,
+          guild_id: step.data.dc_guild_id,
+        });
+      } else if (step.type === "Custom") {
+        await AdminService.updateCustom({
+          id: step.data.id,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+          cta: step.data.custom_cta,
+          href: step.data.custom_href,
+        });
+      } else if (step.type === "Domain") {
+        await AdminService.updateDomain({
+          id: step.data.id,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+        });
+      }
+    });
+
+    await Promise.all(taskPromises);
+  }, []);
+
   return (
     <div className={styles.layout_screen}>
-      <ProgressBar currentStep={currentPage} totalSteps={4} />
+      <ProgressBar doneSteps={currentPage} totalSteps={4} />
       <p className={styles.screenHeadingText}>Create a new quest</p>
       {currentPage === 1 ? (
         <>
@@ -324,6 +581,13 @@ export default function Page({ params }: AddressOrDomainProps) {
                 name="name"
                 label="Quest Name"
                 placeholder="Quest Name"
+              />
+              <Textinput
+                onChange={handleQuestInputChange}
+                value={questInput.title_card ?? ""}
+                name="title_card"
+                label="Quest Title Card"
+                placeholder="Quest Title"
               />
               <Textinput
                 onChange={handleQuestInputChange}
@@ -357,7 +621,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                   />
                 </div>
               </div>
-              <div className="flex flex-row w-full gap-2 bg-gray-300 p-2 rounded-xl">
+              <div className="flex flex-row w-full gap-2 bg-gray-300 p-2 rounded-xl flex-wrap justify-center sm:justify-start">
                 {CATEGORY_OPTIONS.map((category) => (
                   <div
                     onClick={() => {
@@ -386,7 +650,11 @@ export default function Page({ params }: AddressOrDomainProps) {
 
           <div className="w-full items-center justify-center flex">
             <div className="w-fit">
-              <Button onClick={() => handlePagination("Next")}>
+              <Button
+                onClick={() => {
+                  handlePagination("Next");
+                }}
+              >
                 <p>Confirm Next</p>
               </Button>
             </div>
@@ -404,7 +672,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     name: e.target.value,
                   }));
                 }}
-                value={nfturi.name}
+                value={nfturi?.name}
                 name="rewards_nfts"
                 label="NFT Name"
                 placeholder="NFT Name"
@@ -431,7 +699,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     img_url: e.target.value,
                   }));
                 }}
-                value={nfturi.image}
+                value={nfturi?.image}
                 name="nft_image"
                 label="NFT Image Path"
                 placeholder="NFT Image Path"
@@ -441,10 +709,10 @@ export default function Page({ params }: AddressOrDomainProps) {
                 onChange={(e) => {
                   setNftUri((prev) => ({
                     ...prev,
-                    desc: e.target.value,
+                    description: e.target.value,
                   }));
                 }}
-                value={nfturi.description}
+                value={nfturi?.description}
                 name="nft_image"
                 label="NFT Description"
                 placeholder="NFT Description"
@@ -460,6 +728,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 <p>Boost this quest</p>
                 <Switch
                   name="Boost this Quest"
+                  checked={showBoost}
                   value={showBoost}
                   onChange={() => setShowBoost((prev) => !prev)}
                 />
@@ -520,7 +789,7 @@ export default function Page({ params }: AddressOrDomainProps) {
             <div className="w-fit">
               <Button
                 onClick={async () => {
-                  handlePagination("Next");
+                  await handleQuestBoostNftChanges();
                 }}
               >
                 <p>Confirm Next</p>
@@ -539,7 +808,7 @@ export default function Page({ params }: AddressOrDomainProps) {
           {steps?.map((step, index) => (
             <InputCard key={index}>
               <div className="flex gap-8">
-                <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
+                <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl flex-wrap justify-center sm:justify-start">
                   <>
                     {TASK_OPTIONS.map((category) => (
                       <div
@@ -928,14 +1197,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                   <Textinput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.domain_name}
-                    name="twfw_name"
+                    name="domain_name"
                     label="Name"
                     placeholder="Name"
                   />
                   <Textinput
                     onChange={(e) => handleTasksInputChange(e, index)}
-                    value={step.data.domain_desc}
-                    name="twfw_desc"
+                    value={step.data.domin_desc}
+                    name="domin_desc"
                     label="Description"
                     placeholder="Description"
                     multiline={4}
@@ -1019,8 +1288,7 @@ export default function Page({ params }: AddressOrDomainProps) {
               <div className="w-fit">
                 <Button
                   onClick={async () => {
-                    // await handleCreateTask();
-                    setCurrentPage((prev) => prev + 1);
+                    await handleTaskChanges();
                   }}
                 >
                   <p>Save Tasks</p>

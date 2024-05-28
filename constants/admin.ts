@@ -2,7 +2,7 @@ import { getCurrentNetwork } from "@utils/network";
 import { TOKEN_ADDRESS_MAP, TOKEN_DECIMAL_MAP } from "./common";
 
 export const CATEGORY_OPTIONS = [
-  "Defi",
+  "DeFi",
   "Dapps",
   "NFTs",
   "Gaming",
@@ -91,9 +91,8 @@ export const CustomInput = {
 };
 
 export const DomainInput = {
-  domain: "",
-  name: "",
-  desc: "",
+  domain_name: "",
+  domain_desc: "",
 };
 
 export const getDefaultValues = (type: TaskType) => {

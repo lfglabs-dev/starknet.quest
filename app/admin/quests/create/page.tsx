@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
@@ -63,6 +63,34 @@ export default function Page() {
   const { showMessage } = useInfoBar();
   const [finalQuestData, setFinalQuestData] =
     useState<typeof QuestDefault>(QuestDefault);
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const isButtonDisabled = useMemo(() => {
+    if (currentPage === 1) {
+      return (
+        !questInput.name ||
+        !questInput.desc ||
+        !questInput.start_time ||
+        !questInput.expiry ||
+        !questInput.category
+      );
+    } else if (currentPage === 2) {
+      return (
+        (showBoost &&
+          (!boostInput.amount ||
+            !boostInput.num_of_winners ||
+            !boostInput.token)) ||
+        !nfturi.name ||
+        !nfturi.image ||
+        !questInput.rewards_title ||
+        !questInput.logo
+      );
+    }
+    if (currentPage === 3) {
+      return steps.some((step) => step.type === "None");
+    }
+    return false;
+  }, [currentPage, questInput, nfturi, steps, showBoost, boostInput]);
 
   const fetchQuestData = useCallback(async () => {
     try {
@@ -343,7 +371,11 @@ export default function Page() {
 
           <div className="w-full items-center justify-center flex">
             <div className="w-fit">
-              <Button loading={true} disabled={true} onClick={() => handlePagination("Next")}>
+              <Button
+                loading={buttonLoading}
+                disabled={isButtonDisabled}
+                onClick={() => handlePagination("Next")}
+              >
                 <p>Confirm Next</p>
               </Button>
             </div>
@@ -398,7 +430,7 @@ export default function Page() {
                 onChange={(e) => {
                   setNftUri((prev) => ({
                     ...prev,
-                    desc: e.target.value,
+                    description: e.target.value,
                   }));
                 }}
                 value={nfturi.description ?? ""}
@@ -476,12 +508,14 @@ export default function Page() {
           <div className="w-full items-center justify-center flex">
             <div className="w-fit">
               <Button
+                loading={buttonLoading}
                 onClick={async () => {
                   const id = await handleCreateQuest();
                   if (!id) return;
                   await handleCreateBoost(id);
                   handlePagination("Next");
                 }}
+                disabled={isButtonDisabled}
               >
                 <p>Confirm Next</p>
               </Button>
@@ -978,9 +1012,11 @@ export default function Page() {
             <div className="w-full items-center justify-center flex">
               <div className="w-fit">
                 <Button
+                  loading={buttonLoading}
                   onClick={async () => {
                     await handleCreateTask();
                   }}
+                  disabled={isButtonDisabled}
                 >
                   <p>Save Tasks</p>
                 </Button>

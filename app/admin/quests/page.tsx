@@ -11,7 +11,6 @@ import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
-import { useInfoBar } from "@context/useInfobar";
 import Quest from "@components/admin/QuestCard";
 
 export default function Page() {
@@ -52,7 +51,7 @@ export default function Page() {
         <div className={styles.questsBanner}>
           <div>
             <p>Admin</p>
-            <p className={styles.questListHeading}>Braavos quests</p>
+            <p className={styles.questListHeading}>Your quests</p>
             <p>{quests?.length} quests</p>
           </div>
           <div>

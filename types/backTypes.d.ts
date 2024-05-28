@@ -274,6 +274,18 @@ export type CreateTwitterRw = {
   quest_id: number;
 };
 
+export type CreateDomain = {
+  name: string;
+  desc: string;
+  quest_id: number;
+};
+
+export type UpdateDomain = {
+  name: string;
+  desc: string;
+  id: number;
+};
+
 export type UpdateTwitterRw = {
   name?: string;
   desc?: string;

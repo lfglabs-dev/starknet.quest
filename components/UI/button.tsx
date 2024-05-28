@@ -29,7 +29,13 @@ const Button: FunctionComponent<ButtonProps> = ({
         (disabled ? styles.disabled_button : "")
       }
     >
-      {loading ? <CircularProgress size={20} /> : children}
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <CircularProgress size={20} />
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 };

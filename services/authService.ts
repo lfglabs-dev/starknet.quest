@@ -2,6 +2,7 @@ import {
   CreateBoost,
   CreateCustom,
   CreateDiscord,
+  CreateDomain,
   CreateQuest,
   CreateQuiz,
   CreateQuizQuestion,
@@ -10,6 +11,7 @@ import {
   UpdateBoost,
   UpdateCustom,
   UpdateDiscord,
+  UpdateDomain,
   UpdateQuest,
   UpdateQuiz,
   UpdateQuizQuestion,
@@ -189,6 +191,38 @@ const updateTwitterFw = async (params: UpdateTwitterFw) => {
 const createTwitterRw = async (params: CreateTwitterRw) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/twitter_rw/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while quests", err);
+  }
+};
+
+const createDomain = async (params: CreateDomain) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/domain/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while quests", err);
+  }
+};
+
+const updateDomain = async (params: UpdateDomain) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/domain/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -406,4 +440,6 @@ export const AdminService = {
   updateDiscord,
   getNftUriByQuestId,
   getQuizDetails,
+  updateDomain,
+  createDomain
 };
