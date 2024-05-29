@@ -1,44 +1,37 @@
-import React, { FunctionComponent } from "react";
+import React, { useState, FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
+import OdTab from "@components/navbar/Tab";
+import { moveHrSlider, handleMouseLeave } from "@utils/navTab";
 
 type ChipProps = {
-  selected: string;
-  handleChangeSelection: (title: string) => void;
   tags: string[];
 };
 
 const ChipList: FunctionComponent<ChipProps> = ({
-  selected,
-  handleChangeSelection,
   tags,
 }) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const handleChangeTab = (val: number) => {
+    setActiveTab(val);
+  };
   return (
-    <div className={styles.chiplist_container} id="chipCollectionTab">
-      {tags.map((tag, index) => (
-        <div
-          onClick={() => handleChangeSelection(tag)}
-          key={index}
-          className={`${styles.each_chip} chipTab ${
-            tag === selected ? "active" : ""
-          }`}
-          style={{
-            marginRight: "10px",
-            transition: "900ms background-color ease-in-out",
-          }}
-          aria-selected={tag === selected ? "true" : "false"}
-        >
-          <p
-            style={{
-              color: tag !== selected ? "white" : "black",
-              fontSize: 12,
-              fontWeight: 600,
-              opacity: tag !== selected ? 0.8 : 1,
-            }}
-          >
-            {tag}
-          </p>
-        </div>
-      ))}
+    <div className="pb-1 chip-tab-wrapper" id="chipTabWrapper">
+      <div className={`${styles.chiplist_container} md:h-[40px] items-center chip-box`}>
+        {tags.map((tag, index) => (
+          <OdTab 
+            title={tag}
+            names={`w-full text-center nav-item${index+1} ${
+              activeTab === index ? "active" : "text-white"
+            }`}
+            setActive={() => handleChangeTab(index)}
+            prep={0}
+            mouse={(event) => moveHrSlider(event, ".chip-box")}
+            mouseLeave={(event) => handleMouseLeave(event, ".chip-box")}
+          />
+        ))}
+        <span></span>
+        <hr />
+      </div>
     </div>
   );
 };

@@ -119,22 +119,217 @@ button {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }
 
-#questCollectionTab button {
+/* #questCollectionTab button {
   padding: 5px;
 }
 
+
 #questCollectionTab button[aria-selected="false"]:hover {
-  background-color: var(--textGray);
+  color: black;
+}
+
+#questCollectionTab button[aria-selected="true"] {
+  color: black;
 }
 
 .chipTab.active {
-  background-color: white;
+  background-color: #fff;
 }
 
 .chipTab.inactive {
   background-color: transparent;
 }
 
-#chipCollectionTab > .chipTab[aria-selected="false"]:hover{
+#chipCollectionTab > .chipTab[aria-selected="false"]:hover {
   background-color: var(--textGray);
+} */
+
+/* start nav tab styles */
+
+#navTabWrapper {
+  position: relative;
+  z-index: 100;
 }
+
+#chipTabWrapper {
+  position: relative;
+  z-index: 100;
+}
+
+#navTabWrapper .tab-box > hr,
+#navTabWrapper .dash-box > hr,
+#chipTabWrapper .chip-box > hr {
+  display: none;
+}
+
+.nav-tab {
+  cursor: url(../public/icons/pointer-cursor.png), pointer;
+}
+
+@media  screen and  (min-width: 768px) {
+#navTabWrapper .tab-box, .dash-box {
+  width: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 10px;
+  z-index: 100;
+}
+
+#navTabWrapper .dash-box {
+  padding-left: 10px;
+}
+
+#navTabWrapper .tab-box > span {
+  position: absolute;
+  inset: 0;
+  height: 40px;
+  width: 31%;
+  margin: 0;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  z-index: 11;
+  transition: .3s ease-in-out;
+}
+
+#navTabWrapper .tab-box > hr {
+  display: block;
+  position: absolute;
+  inset: 0;
+  height: 40px;
+  width: 30%;
+  margin: 0;
+  background: var(--textGray);
+  border-radius: 10px;
+  opacity: 0;
+  border: none;
+  z-index: 10;
+  transition: margin-left .3s ease-in-out;
+}
+
+#navTabWrapper .dash-box > span {
+  position: absolute;
+  inset: 0;
+  height: 40px;
+  width: 48%;
+  margin: 0;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  z-index: 11;
+  transition: .3s ease-in-out;
+}
+
+#navTabWrapper .dash-box > hr {
+  display: block;
+  position: absolute;
+  inset: 0;
+  height: 40px;
+  width: 48%;
+  margin-left: -50px;
+  background: var(--textGray);
+  border-radius: 10px;
+  opacity: 0;
+  border: none;
+  z-index: 10;
+  transition: margin-left .3s ease-in-out;
+}
+
+#chipTabWrapper .chip-box > span {
+  position: absolute;
+  inset: 0;
+  height: 95%;
+  width: 25%;
+  margin: 0;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  z-index: 11;
+  transition: .3s ease-in-out;
+}
+
+#chipTabWrapper .chip-box > hr {
+  display: block;
+  position: absolute;
+  inset: 0;
+  height: 95%;
+  width: 25%;
+  margin: 0;
+  background: var(--textGray);
+  border-radius: 10px;
+  opacity: 0;
+  border: none;
+  z-index: 10;
+  transition: margin-left .3s ease-in-out;
+}
+
+/* quest active tab styling */
+
+#navTabWrapper .tab-box .nav-item2.active ~ span {
+  margin-left: 33%;
+}
+
+#navTabWrapper .tab-box .nav-item3.active ~ span {
+  margin-left: 66%;
+}
+
+/* dashboard tabs active styling */
+#navTabWrapper .dash-box .nav-item2.active ~ span {
+  margin-left: 51%;
+}
+
+#navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
+  opacity: 0 !important;
+}
+
+/* quest active tab on hover styling */
+#navTabWrapper .tab-box .nav-item2.active:hover ~ hr {
+  opacity: 0;
+}
+
+#navTabWrapper .tab-box .nav-item3.active:hover ~ hr {
+  opacity: 0;
+}
+
+#navTabWrapper .tab-box .nav-item2:hover + .nav-item3.active ~ hr {
+  margin-left: 35%;
+}
+
+/* chip_list */
+#chipTabWrapper .chip-box .nav-item2.active ~ span {
+  margin-left: 25%;
+}
+
+#chipTabWrapper .chip-box .nav-item3.active ~ span {
+  margin-left: 50%;
+}
+
+#chipTabWrapper .chip-box .nav-item4.active ~ span {
+  margin-left: 75%;
+}
+
+/* chiplist active tab on hover styling */
+#chipTabWrapper .chip-box .nav-tab.active:hover ~ hr {
+  opacity: 0 !important;
+}
+
+
+
+@keyframes fadeIn {
+  0%, 14% {
+    opacity: 0;
+  }
+
+  15%, 100% {
+    opacity: 1;
+  }
+}
+
+/* active state */
+.tab-box, .dash-box, .chip-box > div.active {
+  color: #000;
+}
+}
+/* end of nav tab styles */

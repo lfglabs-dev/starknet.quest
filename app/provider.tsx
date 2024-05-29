@@ -95,11 +95,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         styleOverrides: {
           // Overrides the styles for unselected tabs
           root: {
-            color: "#E1DCEA", // Text color for unselected tabs
+            color: "#fff", // Text color for unselected tabs
             width: "100%",
             ["@media (min-width:768px)"]: {
               width: "fit-content",
             },
+            zIndex: '10',
             "&.Mui-selected": {
               color: "#000", // Text color for the selected tab
               backgroundColor: "#fff", // Background of the selected tab

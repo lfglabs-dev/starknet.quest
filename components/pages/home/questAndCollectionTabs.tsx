@@ -27,6 +27,8 @@ import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
+import OdTab from "@components/navbar/Tab";
+import { moveHrSlider, handleMouseLeave } from "@utils/navTab";
 
 export function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -63,12 +65,9 @@ const QuestAndCollectionTabs: FunctionComponent<
   const { address, isConnecting } = useAccount();
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  const handleChangeTab = useCallback(
-    (event: React.SyntheticEvent, newValue: number) => {
-      setTabIndex(newValue);
-    },
-    []
-  );
+  const handleChangeTab = (val: number) => {
+    setTabIndex(val);
+  };
 
   const sortedAndFilteredQuests = useMemo(() => {
     const filteredQuests = quests
@@ -146,69 +145,46 @@ const QuestAndCollectionTabs: FunctionComponent<
       <section className={styles.section}>
         <div className="w-full">
           <div>
-            <Tabs
-              style={{
-                borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
-              }}
-              className="pb-4"
-              value={tabIndex}
-              onChange={handleChangeTab}
-              aria-label="quests and collectons tabs"
-              indicatorColor="secondary"
-              id="questCollectionTab"
-            >
-              <Tab
-                disableRipple
-                sx={{
-                  borderRadius: "10px",
-                  padding: "0px 12px 0px 12px",
-                  textTransform: "none",
-                  fontWeight: "600",
-                  fontSize: "12px",
-                  fontFamily: "Sora",
-                  minHeight: "32px",
-                  marginRight: "10px",
-                  transition: "900ms background-color, 900ms color ease-in-out",
-                }}
-                label={`Quests (${sortedAndFilteredQuests.length})`}
-                {...a11yProps(0)}
-              />
-              <Tab
-                disableRipple
-                sx={{
-                  borderRadius: "10px",
-                  padding: "0px 12px 0px 12px",
-                  textTransform: "none",
-                  fontWeight: "600",
-                  fontSize: "12px",
-                  fontFamily: "Sora",
-                  minHeight: "32px",
-                  marginRight: "10px",
-                  transition: "900ms background-color, 900ms color ease-in-out",
-                }}
-                label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
-                {...a11yProps(1)}
-              />
-              {address && (
-                <Tab
-                  disableRipple
-                  sx={{
-                    borderRadius: "10px",
-                    padding: "0px 12px 0px 12px",
-                    textTransform: "none",
-                    fontWeight: "600",
-                    fontSize: "12px",
-                    fontFamily: "Sora",
-                    minHeight: "32px",
-                    transition: "900ms background-color, 900ms color ease-in-out",
-                  }}
-                  label={`To claim (${
-                    claimableQuests ? claimableQuests.length : 0
-                  })`}
-                  {...a11yProps(2)}
+          <nav className="border-b-2 pb-4" id="navTabWrapper">
+              <div className="tab-box">
+                <OdTab
+                  title={`Quests (${sortedAndFilteredQuests.length})`}
+                  names={`w-full py-2 nav-item1 ${
+                    tabIndex === 0 ? "active" : "text-white"
+                  }`}
+                  setActive={() => handleChangeTab(0)}
+                  prep={0}
+                  mouse={(event) => moveHrSlider(event, ".tab-box")}
+                  mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                 />
-              )}
-            </Tabs>
+                <OdTab
+                  title={`Collections (${
+                    categories.length + (boosts ? 1 : 0)
+                  })`}
+                  names={`w-full py-2 nav-item2 ${
+                    tabIndex === 1 ? "active" : "text-white"
+                  }`}
+                  setActive={() => handleChangeTab(1)}
+                  prep={1}
+                  mouse={(event) => moveHrSlider(event, ".tab-box")}
+                  mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
+                /> 
+                <OdTab
+                    title={`To claim (${
+                      claimableQuests ? claimableQuests.length : 0
+                    })`}
+                    names={`${address ?? "invisible"} w-full py-2 nav-item3 ${
+                      tabIndex === 2 ? "active" : "text-white"
+                    }`}
+                    setActive={() => handleChangeTab(2)}
+                    prep={2}
+                    mouse={(event) => moveHrSlider(event, ".tab-box")}
+                    mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
+                  />
+                <span></span>
+                <hr />
+              </div>
+            </nav>
           </div>
           <CustomTabPanel value={tabIndex} index={0}>
             {isConnecting ? (

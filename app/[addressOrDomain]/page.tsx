@@ -18,15 +18,25 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { ClaimableQuestDocument, CompletedQuests, PendingBoostClaim, QuestDocument } from "../../types/backTypes";
+import {
+  ClaimableQuestDocument,
+  CompletedQuests,
+  PendingBoostClaim,
+  QuestDocument,
+} from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { QuestsContext } from "@context/QuestsProvider";
 import { Tab, Tabs } from "@mui/material";
-import { CustomTabPanel, a11yProps } from "@components/pages/home/questAndCollectionTabs";
+import {
+  CustomTabPanel,
+  a11yProps,
+} from "@components/pages/home/questAndCollectionTabs";
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
+import OdTab from "@components/navbar/Tab";
+import { handleMouseLeave, moveHrSlider } from "@utils/navTab";
 
 type AddressOrDomainProps = {
   params: {
@@ -56,17 +66,16 @@ export default function Page({ params }: AddressOrDomainProps) {
   const dynamicRoute = usePathname();
   const [questsLoading, setQuestsLoading] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [claimableQuests, setClaimableQuests] = useState<
+    ClaimableQuestDocument[]
+  >([]);
   const [pendingBoostClaims, setPendingBoostClaims] = useState<
     PendingBoostClaim[] | undefined
   >([]);
 
-  const handleChangeTab = useCallback(
-    (event: React.SyntheticEvent, newValue: number) => {
-      setTabIndex(newValue);
-    },
-    []
-  );
+  const handleChangeTab = (val: number) => {
+    setTabIndex(val);
+  };
 
   const { quests } = useContext(QuestsContext);
 
@@ -87,7 +96,6 @@ export default function Page({ params }: AddressOrDomainProps) {
     },
     [address, identity]
   );
-
 
   useEffect(() => {
     const getAllPendingBoostClaims = async () => {
@@ -308,51 +316,34 @@ export default function Page({ params }: AddressOrDomainProps) {
       {/* Completed Quests */}
       <div className={styles.dashboard_completed_tasks_container}>
         <div>
-          <Tabs
-            style={{
-              borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
-            }}
-            className="pb-6"
-            value={tabIndex}
-            onChange={handleChangeTab}
-            aria-label="quests and collectons tabs"
-            indicatorColor="secondary"
-            id="questCollectionTab"
-          >
-            <Tab
-              disableRipple
-              sx={{
-                borderRadius: "10px",
-                padding: "0px 12px 0px 12px",
-                textTransform: "none",
-                fontWeight: "600",
-                fontSize: "12px",
-                fontFamily: "Sora",
-                minHeight: "32px",
-                marginRight: "10px",
-                transition: "900ms background-color, 900ms color ease-in-out",
-              }}
-              label={`Completed (${completedQuests.length ?? 0})`}
-              {...a11yProps(0)}
-            />
-            <Tab
-              disableRipple
-              sx={{
-                borderRadius: "10px",
-                padding: "0px 12px 0px 12px",
-                textTransform: "none",
-                fontWeight: "600",
-                fontSize: "12px",
-                fontFamily: "Sora",
-                minHeight: "32px",
-                transition: "900ms background-color, 900ms color ease-in-out",
-              }}
-              label={`To claim (${
-                claimableQuests ? claimableQuests.length : 0
-              })`}
-              {...a11yProps(1)}
-            />
-          </Tabs>
+          <nav className="border-b-2 pb-4" id="navTabWrapper">
+            <div className="dash-box">
+              <OdTab
+                title={`Completed (${completedQuests.length ?? 0})`}
+                names={`w-full py-2 px-2 text-center nav-item1 ${
+                  tabIndex === 0 ? "active" : "text-white"
+                }`}
+                setActive={() => handleChangeTab(0)}
+                prep={0}
+                mouse={(event) => moveHrSlider(event, ".dash-box")}
+                mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
+              />
+              <OdTab
+                title={`To claim (${
+                  claimableQuests ? claimableQuests.length : 0
+                })`}
+                names={`w-full py-2 px-2 text-center nav-item2 text-center ${
+                  tabIndex === 1 ? "active" : "text-white"
+                }`}
+                setActive={() => handleChangeTab(1)}
+                prep={1}
+                mouse={(event) => moveHrSlider(event, ".dash-box")}
+                mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
+              />
+              <span></span>
+              <hr />
+            </div>
+          </nav>
         </div>
         <CustomTabPanel value={tabIndex} index={0}>
           <div className={styles.quests_container}>
