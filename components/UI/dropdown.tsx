@@ -1,17 +1,16 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select'; 
 import { styled } from '@mui/system';
+import { IoIosArrowDown } from "react-icons/io";
 
 // Define the props for the Dropdown component
 type DropdownProps = {
   backgroundColor?: string;
   borderColor?: string;
   textColor?: string;
-  label?: string;
   options: { value: string; label: string }[];
 };
 
@@ -21,20 +20,32 @@ const StyledFormControl = styled(FormControl, {
     prop !== 'backgroundColor' &&
     prop !== 'borderColor' &&
     prop !== 'textColor'
-})<DropdownProps>(({ theme, backgroundColor, borderColor, textColor }) => ({
-  width: '100%',
-  maxWidth: 300,
+})<DropdownProps>(({ backgroundColor, borderColor, textColor }) => ({
+  width: 150,
   backgroundColor: backgroundColor || 'transparent',
   color: textColor || 'inherit',
-  borderRadius: 5,
+  borderRadius: 10,
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '10px 10px 0px 0px',
+    '& fieldset': {
+      borderColor: 'transparent',
+      borderWidth: '1px', 
+    },
+    '&:hover fieldset': {
+      borderColor: 'transparent',
+      borderWidth: '1px', 
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: borderColor || 'white', 
+      borderWidth: '1px', 
+    },
+  },
   '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor || 'inherit',
+    borderColor: 'transparent',
+    borderWidth: '1px', 
   },
-  '&:hover .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor ? borderColor : 'inherit',
-  },
-  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor ? borderColor : 'inherit',
+  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: borderColor || 'white', 
   },
   '& .MuiInputLabel-root': {
     color: textColor || 'inherit',
@@ -44,12 +55,23 @@ const StyledFormControl = styled(FormControl, {
   },
   '& .MuiSelect-select': {
     color: textColor || 'inherit',
+    display: 'flex', 
+    alignItems: 'center', 
+  },
+  '& .MuiSelect-icon': { 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingleft: '20px',
   },
 }));
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  '&.Mui-selected': {
+    backgroundColor: 'transparent', 
+  },
   '&:hover': {
-    backgroundColor: '#444',
+    backgroundColor: 'transparent',
   },
 }));
 
@@ -58,47 +80,61 @@ const StyledMenuProps = {
     sx: {
       bgcolor: '#333',
       color: '#ccc',
+      borderColor: 'white',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderRadius: '0px 0px 10px 10px', 
+      marginTop: '-3px', 
+      boxShadow: 'none', 
+      width: '140px',
     },
   },
 };
 
 const Dropdown: React.FC<DropdownProps> = ({
   backgroundColor,
-  borderColor,
   textColor,
-  label,
   options,
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>('');
+  const [selectedValue, setSelectedValue] = React.useState<string>(
+    options.length > 0 ? options[0].value : ''
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedValue(event.target.value as string);
   };
-  
+
   return (
-      <StyledFormControl
-              variant="outlined"
-              fullWidth
-              backgroundColor={backgroundColor}
-              borderColor={borderColor}
-              textColor={textColor}
-              label={'label'} options={[]}>
-        <InputLabel id="dropdown-label">{label}</InputLabel>
-        <Select
-          labelId="dropdown-label"
-          id="dropdown"
-          value={selectedValue}
-          label={label}
-          onChange={handleChange}
-          MenuProps={StyledMenuProps}
-        >
-          {options.map((option) => (
-            <StyledMenuItem key={option.value} value={option.value}>
-              {option.label}
-            </StyledMenuItem>
-          ))}
-        </Select>
-      </StyledFormControl>
+    <StyledFormControl
+      variant="outlined"
+      fullWidth
+      backgroundColor={backgroundColor}
+      textColor={textColor}
+      options={[]}
+    >
+      <Select
+        labelId="dropdown-label"
+        id="dropdown"
+        value={selectedValue}
+        onChange={handleChange}
+        MenuProps={StyledMenuProps}
+        IconComponent={() => (
+          <IoIosArrowDown style={{ color: 'white', fontSize: '50px' }} /> 
+        )}
+        inputProps={{
+          style: {
+            borderColor: 'transparent',
+            borderWidth: '1px',
+          },
+        }}
+      >
+        {options.map((option) => (
+          <StyledMenuItem key={option.value} value={option.value}>
+            {option.label}
+          </StyledMenuItem>
+        ))}
+      </Select>
+    </StyledFormControl>
   );
 };
 
