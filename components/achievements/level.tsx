@@ -4,6 +4,8 @@ import { AchievementDocument } from "../../types/backTypes";
 import { CustomTooltip } from "@components/UI/tooltip";
 import { CDNImg } from "@components/cdn/image";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;
@@ -31,7 +33,7 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
       >
         <div className={styles.levelInfo}>
           <p className={styles.levelDesc}>{achievement.short_desc}</p>
-          <h3 className={styles.levelTitle}>{achievement.name}</h3>
+          <Typography type={TEXT_TYPE.H3} className={styles.levelTitle}>{achievement.name}</Typography>
         </div>
         <div
           className={`${styles.levelImg} ${
