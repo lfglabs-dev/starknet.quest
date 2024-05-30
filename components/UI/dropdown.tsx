@@ -119,7 +119,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onChange={handleChange}
         MenuProps={StyledMenuProps}
         IconComponent={() => (
-          <IoIosArrowDown style={{ color: 'white', fontSize: '50px' }} /> 
+          <IoIosArrowDown style={{ color: 'white', fontSize: '50px', padding:'0 15px 0 0'}} /> 
         )}
         inputProps={{
           style: {
