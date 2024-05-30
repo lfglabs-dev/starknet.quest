@@ -7,6 +7,7 @@ import Timer from "@components/quests/timer";
 import { CDNImage } from "@components/cdn/image";
 import BoostReward from "@components/quests/boostReward";
 import { Skeleton } from "@mui/material";
+import QuestTag from "../questTag";
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -62,19 +63,10 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
           </>
           }
         <div className="flex items-center mb-4 mt-6 gap-2">
-          {issuer?.name || issuer?.logoFavicon ? (
-            <div className={styles.issuer}>
-              <CDNImage
-                alt={"Feature Quest Reward"}
-                height={20}
-                width={20}
-                src={issuer?.logoFavicon}
-                className={styles.featuredQuestRewardIcon}
-              />
-              <p className={styles.featuredQuestReward}>{reward}</p>
-            </div>
-          ) : null}
+          
+          <QuestTag label={reward ?? ''} icon={issuer?.logoFavicon}/>
           {questId ? <BoostReward questId={questId} /> : null}
+          
         </div>
         <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>

@@ -12,8 +12,8 @@ import { NotificationType, TransactionType } from "@constants/notifications";
 import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
 import rewardStyles from "@styles/components/quests/modal.module.css";
-import { CDNImg } from "@components/cdn/image";
 import BoostReward from "./boostReward";
+import QuestTag from "@components/UI/questTag";
 
 type RewardProps = {
   onClick: () => void;
@@ -72,10 +72,7 @@ const Reward: FunctionComponent<RewardProps> = ({
     <div className={styles.reward}>
       <div className="flex items-center gap-2">
         <p>Reward: </p>
-        <div className={styles.issuer}>
-          <p>{reward}</p>
-          <CDNImg width={25} src={imgSrc} />
-        </div>
+        <QuestTag label={reward ?? ''} icon={imgSrc}/>
         <BoostReward questId={quest.id} />
       </div>
       <div className="max-w-lg">
