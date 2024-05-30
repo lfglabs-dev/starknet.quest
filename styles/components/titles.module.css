@@ -14,14 +14,7 @@
   display: flex;
   width: 600px;
   flex-direction: column;
-  color: var(--secondary);
   text-align: left;
-  /* Title/H1 */
-  font-family: Sora;
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 58px;
 }
 
 .buttonContainer {
@@ -52,26 +45,10 @@
 }
 
 .categoryTitle {
-  color: var(--secondary);
-
-  /* Title/H2 */
-  font-family: Sora;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 38px;
   margin-top: 8px;
 }
 
 .newCategoryTitle {
-  color: var(--secondary);
-
-  /* Title/H2 */
-  font-family: Sora-Bold;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 38px;
   margin-top: 8px;
 }
 
@@ -113,7 +90,6 @@
     line-height: max(8vw, 25px);
     margin-top: 24px;
     text-align: center;
-    color: var(--secondary);
     text-align: center;
 
     /* Title/H3 */

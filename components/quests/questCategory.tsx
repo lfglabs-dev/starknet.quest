@@ -4,6 +4,8 @@ import Link from "next/link";
 import { CDNImg } from "@components/cdn/image";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestCategoryProps = {
   category: QuestCategory;
@@ -25,9 +27,9 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
         className={styles.questCategory}
       >
         <div className={styles.categoryInfos}>
-          <h2 className="text-gray-200">
+          <Typography type={TEXT_TYPE.H2} className="text-gray-200">
             {category.name} Quest{category.questNumber > 1 ? "s" : null}
-          </h2>
+          </Typography>
           <p className="text-gray-200 normal-case">
             {completedQuestNumber === category.questNumber ? (
               <div className="flex">

@@ -36,9 +36,9 @@ const StepElement: FunctionComponent<StepElementProps> = ({
               <Typography key={`step_${index}_title`} type={TEXT_TYPE.H1} color="secondary" className={styles.title} >
                 {step.title}
               </Typography>
-              <h2 key={`step_${index}_subtitle`} className={styles.subtitle}>
+              <Typography type={TEXT_TYPE.H2} color="primary" key={`step_${index}_subtitle`} className={styles.subtitle}>
                 {step.subtitle}
-              </h2>
+              </Typography>
             </div>
             <p className={styles.description}>{step.description}</p>
           </div>

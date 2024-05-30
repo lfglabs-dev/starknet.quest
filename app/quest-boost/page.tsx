@@ -87,9 +87,9 @@ export default function Page() {
               );
             })
           ) : (
-            <h2 className={styles.noBoosts}>
+            <Typography type={TEXT_TYPE.H2} className={styles.noBoosts}>
               No quests are being boosted at the moment.
-            </h2>
+            </Typography>
           )}
         </div>
       ) : (

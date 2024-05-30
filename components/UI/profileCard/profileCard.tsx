@@ -25,6 +25,8 @@ import { getTweetLink, writeToClipboard } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
 import { calculatePercentile } from "@utils/numberService";
 import { Url } from "next/dist/shared/lib/router/router";
+import { TEXT_TYPE } from "@constants/typography";
+import Typography from "../typography/typography";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -107,7 +109,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             <p className={styles.accountCreationDate}>
               {sinceDate ? `${sinceDate}` : ""}
             </p>
-            <h2 className={styles.profile_name}>{identity.domain.domain}</h2>
+            <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>{identity.domain.domain}</Typography>
             <div className={styles.address_div}>
               <div onClick={() => copyToClipboard()}>
                 {!copied ? (

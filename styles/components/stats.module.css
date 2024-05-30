@@ -2,12 +2,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: var(--secondary);
-  font-family: Sora;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
   letter-spacing: 0.2px;
 }
 

@@ -53,7 +53,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
             <div className={styles.questCategoryContainer}>
               <Link href={`/quest-boost`} className={styles.questCategory}>
                 <div className={styles.categoryInfos}>
-                  <h2 className="text-gray-200">Boosts Quest</h2>
+                  <Typography type={TEXT_TYPE.H2} className="text-gray-200">Boosts Quest</Typography>
                   <p className="text-gray-200 normal-case">
                     {completedBoostNumber === boosts.length ? (
                       <span className="flex">
