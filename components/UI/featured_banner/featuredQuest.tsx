@@ -62,12 +62,16 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
             }
           </>
           }
+
         <div className="flex items-center mb-4 mt-6 gap-2">
-          
-          <QuestTag label={reward ?? ''} icon={issuer?.logoFavicon}/>
+          {issuer?.name || issuer?.logoFavicon ? (
+            <QuestTag label={reward ?? ''} icon={issuer?.logoFavicon} />
+          ) : null}
+
           {questId ? <BoostReward questId={questId} /> : null}
           
         </div>
+
         <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>
         </div>
