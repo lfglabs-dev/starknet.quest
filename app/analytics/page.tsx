@@ -9,6 +9,8 @@ import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
 import { QuestDocument, QuestList } from "../../types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();
@@ -37,7 +39,7 @@ export default function Page() {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <h1 className={styles.title}>Quest Analytics</h1>
+      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Quest Analytics</Typography>
       <div className={styles.card_container}>
         {loading ? (
           <FeaturedQuestSkeleton />

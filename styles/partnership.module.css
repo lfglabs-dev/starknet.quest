@@ -96,17 +96,6 @@
   z-index: 6;
 }
 
-.title {
-  color: var(--secondary);
-
-  /* Title/H2 */
-  font-family: Sora;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 48px; /* 133.333% */
-}
-
 .blueBlur {
   position: absolute;
   border-radius: 488px;

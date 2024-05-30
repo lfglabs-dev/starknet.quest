@@ -34,6 +34,8 @@ import {
   getQuestParticipants,
   getTasksByQuestId,
 } from "@services/apiService";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -312,7 +314,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
           />
         ) : (
-          <h1 className="title extrabold mt-5 mw-90">{quest.name}</h1>
+          <Typography type={TEXT_TYPE.H1} className="title extrabold mt-5 mw-90">{quest.name}</Typography>
         )}
         {quest.desc === "loading" ? (
           <Skeleton

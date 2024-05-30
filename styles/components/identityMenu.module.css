@@ -55,16 +55,7 @@
 
 .clickableActionTitle {
   /* Button/16px */
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 24px;
   text-align: left;
-  /* identical to box height, or 150% */
-
-  /* Secondary/700 */
-  color: var(--secondary);
 
   /* Inside auto layout */
 

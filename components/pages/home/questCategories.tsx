@@ -12,6 +12,8 @@ import { getBoosts } from "@services/apiService";
 import Link from "next/link";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestCategoriesProps = {
   categories: QuestCategory[];
@@ -43,7 +45,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
+      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Accomplish your Starknet Quests</Typography>
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>

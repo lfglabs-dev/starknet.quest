@@ -4,7 +4,6 @@
   font-weight: 700;
   line-height: 58px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-h2 {
@@ -13,7 +12,6 @@
   font-weight: 700;
   line-height: 48px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-h3 {
@@ -22,7 +20,6 @@
   font-weight: 700;
   line-height: 32px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-h4 {
@@ -31,7 +28,6 @@
   font-weight: 700;
   line-height: 28px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-body-normal {
@@ -39,7 +35,6 @@
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-body-middle {
@@ -47,7 +42,6 @@
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-body-default {
@@ -55,7 +49,6 @@
   font-size: 16px;
   line-height: 32px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-body-small {
@@ -63,7 +56,6 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-body-micro {
@@ -71,7 +63,6 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0;
-  text-align: left;
 }
 
 .typography-button-large {

@@ -4,7 +4,8 @@ import styles from "@styles/components/typography.module.css";
 
 type TypographyProps = {
   type: typeof TEXT_TYPE[keyof typeof TEXT_TYPE];
-  color: string;
+  color?: string;
+  className?: string;
   children: React.ReactNode;
 };
 
@@ -31,11 +32,11 @@ type TypographyProps = {
  * @param {React.ReactNode} props.children - The text to be rendered.
  * @returns {React.ReactNode} The `Typography` component.
  */
-const Typography: FunctionComponent<TypographyProps> = ({ type, children, color, ...props }) => {
+const Typography: FunctionComponent<TypographyProps> = ({ type, children, color, className, ...props }) => {
 
   const CustomTypographyComponent = type.tag || "p";
-  const classes = styles[`typography-${type.className}`];
-  const style: CSSProperties = { color: `var(--${color})`};
+  const classes = `${className} ${styles[`typography-${type.className}`]}`;
+  const style: CSSProperties = color ? { color: `var(--${color})`} : {};
 
   return (
     <CustomTypographyComponent

@@ -33,6 +33,8 @@ import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
 import { error } from "console";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BoostQuestPageProps = {
   params: {
@@ -172,9 +174,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                       <p className="text-white">{questData?.issuer}</p>
                     </div>
                   </div>
-                  <h1 className={`${analyticsStyles.title}`}>
+                  <Typography type={TEXT_TYPE.H1} className={`${analyticsStyles.title}`} color="transparent">
                     {questData?.name}
-                  </h1>
+                  </Typography>
                   <p className="text-white">
                     {questData?.expired ? "Finished" : "Ongoing"}
                   </p>
