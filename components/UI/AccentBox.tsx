@@ -1,4 +1,5 @@
-import React, { FunctionComponent, ReactNode, useState } from "react";
+import React, { useState } from "react";
+import type { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/accentBox.module.css";
 
 type AccentBoxProps = {
@@ -12,7 +13,7 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
   children,
   className,
   style,
-  background = "#101012", 
+  background = "#000", 
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -20,7 +21,7 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
     setIsExpanded(!isExpanded);
   };
 
-  const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       handleToggle();
     }
@@ -28,15 +29,18 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
 
   return (
     <div 
-      className={`${styles.accentBox} ${className}`} 
-      style={{ ...style, backgroundColor: background, border: "2px solid #000" }}
-      onClick={handleToggle}
-      onKeyUp={handleKeyUp}
-      tabIndex={0} // Makes the div focusable
+      className={`${styles.accentBox} ${className} ${isExpanded ? styles.expanded : ''}`} 
+      style={{ ...style }}
     >
-      <div>
+      <button 
+        onClick={handleToggle} 
+        onKeyUp={handleKeyUp} 
+        tabIndex={0} 
+        className={styles.toggleButton}
+        style={{ backgroundColor: background }}
+      >
         {children}
-      </div>
+      </button>
       {isExpanded && (
         <div className={styles.miniCardsContainer}>
           {/* Render your mini cards here */}
