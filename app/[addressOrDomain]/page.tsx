@@ -22,16 +22,13 @@ import {
   ClaimableQuestDocument,
   CompletedQuests,
   PendingBoostClaim,
-  QuestDocument,
 } from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { QuestsContext } from "@context/QuestsProvider";
-import { Tab, Tabs } from "@mui/material";
 import {
   CustomTabPanel,
-  a11yProps,
 } from "@components/pages/home/questAndCollectionTabs";
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";

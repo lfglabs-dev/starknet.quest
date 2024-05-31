@@ -32,7 +32,7 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-import { error } from "console";
+// import { error } from "console";
 
 type BoostQuestPageProps = {
   params: {
