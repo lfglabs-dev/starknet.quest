@@ -11,7 +11,7 @@
 
 .card {
   display: flex;
-  padding: 40px 64px 40px 0px;
+  padding: 60px 84px 60px 20px; /* Increased padding */
   gap: 56px;
   border-radius: 30px;
   background: linear-gradient(90deg, var(--background), #070708);
