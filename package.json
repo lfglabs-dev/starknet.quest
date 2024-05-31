@@ -20,7 +20,7 @@
     "@react-three/drei": "^9.80.3",
     "@react-three/fiber": "^8.13.6",
     "@starknet-react/chains": "^0.1.6",
-    "@starknet-react/core": "^2.8.0",
+    "@starknet-react/core": "^2.8.2",
     "@use-gesture/react": "^10.2.27",
     "@vercel/analytics": "^0.1.5",
     "big.js": "^6.2.1",
