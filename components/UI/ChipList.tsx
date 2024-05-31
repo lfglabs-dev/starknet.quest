@@ -27,6 +27,7 @@ const ChipList: FunctionComponent<ChipProps> = ({
             prep={0}
             mouse={(event) => moveHrSlider(event, ".chip-box")}
             mouseLeave={(event) => handleMouseLeave(event, ".chip-box")}
+            key={index}
           />
         ))}
         <span></span>
