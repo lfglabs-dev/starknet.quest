@@ -12,7 +12,7 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
   children,
   className,
   style,
-  background = "#101012", // Default background color
+  background = "#101012", 
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -20,12 +20,21 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
     setIsExpanded(!isExpanded);
   };
 
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      handleToggle();
+    }
+  };
+
   return (
     <div 
       className={`${styles.accentBox} ${className}`} 
-      style={{ ...style, backgroundColor: background, border: "2px solid #0b0b0c" }}
+      style={{ ...style, backgroundColor: background, border: "2px solid #000" }}
+      onClick={handleToggle}
+      onKeyUp={handleKeyUp}
+      tabIndex={0} // Makes the div focusable
     >
-      <div onClick={handleToggle}>
+      <div>
         {children}
       </div>
       {isExpanded && (
