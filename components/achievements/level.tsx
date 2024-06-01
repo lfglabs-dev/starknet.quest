@@ -5,7 +5,7 @@ import { CustomTooltip } from "@components/UI/tooltip";
 import { CDNImg } from "@components/cdn/image";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type AchievementLevelProps = {
   achievement: AchievementDocument;

@@ -28,7 +28,7 @@ import { CustomTabPanel, a11yProps } from "@components/pages/home/questAndCollec
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type AddressOrDomainProps = {
   params: {

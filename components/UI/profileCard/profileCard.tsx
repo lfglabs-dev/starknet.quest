@@ -25,7 +25,7 @@ import { getTweetLink, writeToClipboard } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
 import { calculatePercentile } from "@utils/numberService";
 import { Url } from "next/dist/shared/lib/router/router";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({

@@ -27,7 +27,7 @@ import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 
 export function CustomTabPanel(props: TabPanelProps) {

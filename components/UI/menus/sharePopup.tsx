@@ -6,7 +6,7 @@ import iconsStyles from "@styles/components/icons.module.css";
 import Button from "../button";
 import styles from "@styles/components/popup.module.css";
 import Typography from "../typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type SharePopupProps = {
   close: () => void;

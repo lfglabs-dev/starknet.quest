@@ -4,7 +4,7 @@ import styles from "@styles/components/steps.module.css";
 import React, { FunctionComponent } from "react";
 import { CDNImg } from "@components/cdn/image";
 import Typography from "../typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type StepElementProps = {
   index: number;

@@ -10,7 +10,7 @@ import Quest from "@components/quests/quest";
 import { QuestDocument, QuestList } from "../../types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();

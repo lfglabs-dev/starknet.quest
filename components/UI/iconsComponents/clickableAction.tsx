@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/identityMenu.module.css";
 import Typography from "../typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ClickableActionProps = {
   icon: ReactNode;

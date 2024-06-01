@@ -5,7 +5,7 @@ import { CDNImg } from "@components/cdn/image";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestCategoryProps = {
   category: QuestCategory;

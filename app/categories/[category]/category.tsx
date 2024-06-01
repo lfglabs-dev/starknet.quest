@@ -15,7 +15,7 @@ import BackButton from "@components/UI/backButton";
 import Blur from "@components/shapes/blur";
 import { getOrderedQuests } from "@utils/quest";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type CategoryPageProps = {
   categoryName: string;

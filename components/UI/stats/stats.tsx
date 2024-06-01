@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "@styles/components/stats.module.css";
 import StatElement from "./statElement";
 import Typography from "../typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type StatsProps = {
   title?: string;

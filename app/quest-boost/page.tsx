@@ -14,7 +14,7 @@ import { CompletedQuests, QueryError } from "types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import Typography from "@components/UI/typography/typography";
-import type { TEXT_TYPE } from "@constants/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();
