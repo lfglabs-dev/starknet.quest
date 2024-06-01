@@ -17,7 +17,7 @@
   left: 0;
   width: 100%;
   height: 5px;
-  background: linear-gradient(90deg, #437aba, #00ff77);
+  background: linear-gradient;
   border-top-left-radius: 15px; 
   border-top-right-radius: 15px;
 }
