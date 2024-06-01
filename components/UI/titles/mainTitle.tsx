@@ -37,7 +37,7 @@ const MainTitle: FunctionComponent<MainTitleProps> = ({
       <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.mainTitle}>
         {title} <strong>{highlighted}</strong>
       </Typography>
-      <p className={styles.mainSubtitle}>{subtitle}</p>
+      <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.mainSubtitle}>{subtitle}</Typography>
       <div className={styles.buttonContainer}>
         <Button
           onClick={() => window.open("https://forms.gle/P2PUzet6KrKJQYZB8")}

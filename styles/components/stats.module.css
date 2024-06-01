@@ -44,14 +44,12 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
 }
 
 .statName {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: var(--secondary);
   text-align: center;
 
   /* Body/default/regular */

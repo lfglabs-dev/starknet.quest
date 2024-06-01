@@ -276,7 +276,7 @@
   align-items: center;
 }
 
-.claimer p {
+.claimerText {
   font-weight: 700;
   font-family: "Sora-Bold";
   font-size: 14px;
@@ -288,14 +288,12 @@
 }
 
 .featuredQuestReward {
-  color: white;
   margin-left: 0.5rem;
 }
 
 .featuredQuestDescription {
   text-align: start;
   margin-top: 1rem;
-  color: var(--secondary);
   font-size: 16px;
   font-family: Sora;
   font-style: normal;
@@ -373,7 +371,7 @@
     justify-content: center;
     margin: 4px 0 0 0;
   }
-  .issuer p {
+  .issuerText {
     width: fit-content;
     font-size: 16px;
     font-style: normal;

@@ -3,6 +3,8 @@ import QuizControls from "./quizControls";
 import ScreenLayout from "./screenLayout";
 import styles from "@styles/components/quests/quiz.module.css";
 import Button from "@components/UI/button";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type StartScreenProps = {
   setStep: (s: number) => void;
@@ -26,7 +28,7 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
             <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
           }
         >
-          <p>{description}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT}>{description}</Typography>
         </ScreenLayout>
       </div>
       <QuizControls step={step} setStep={setStep} />

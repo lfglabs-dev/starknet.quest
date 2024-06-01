@@ -175,17 +175,17 @@ export default function Page({ params }: BoostQuestPageProps) {
               </div>
               <div className={styles.claim_button_container}>
                 <div className={styles.claim_button_text_content}>
-                  <p>Reward:</p>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>Reward:</Typography>
                   <div className={questStyles.issuer}>
-                    <p>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT}>
                       {boost?.amount} {getTokenName(boost?.token ?? "")}
-                    </p>
+                    </Typography>
                     <TokenSymbol tokenAddress={boost?.token ?? ""} />
                   </div>
-                  <p>among</p>
-                  <p className={styles.claim_button_text_highlight}>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>among</Typography>
+                  <Typography type={TEXT_TYPE.BODY_NORMAL} className={styles.claim_button_text_highlight}>
                     {participants} players
-                  </p>
+                  </Typography>
                 </div>
                 {address ? (
                   <div>

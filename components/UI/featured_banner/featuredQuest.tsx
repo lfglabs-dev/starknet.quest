@@ -38,7 +38,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   return onClick ? (
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
-        <p className={styles.featuredQuestHeading}>{heading}</p>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.featuredQuestHeading}>{heading}</Typography>
         {title ? <Typography type={TEXT_TYPE.H3} color="transparent" className={styles.featuredQuestTitle}>{title}</Typography> : 
           <>
             {
@@ -51,7 +51,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
             }
           </>
           }
-        {desc ? <p className={styles.featuredQuestDescription}>{desc}</p> : 
+        {desc ? <Typography color="secondary" type={TEXT_TYPE.BODY_DEFAULT} className={styles.featuredQuestDescription}>{desc}</Typography> : 
           <>
           {
               [...Array(5)].map((_, index) => (<Skeleton
@@ -73,7 +73,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
                 src={issuer?.logoFavicon}
                 className={styles.featuredQuestRewardIcon}
               />
-              <p className={styles.featuredQuestReward}>{reward}</p>
+              <Typography color="white" type={TEXT_TYPE.BODY_DEFAULT} className={styles.featuredQuestReward}>{reward}</Typography>
             </div>
           ) : null}
           {questId ? <BoostReward questId={questId} /> : null}

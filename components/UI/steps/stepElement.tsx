@@ -40,7 +40,7 @@ const StepElement: FunctionComponent<StepElementProps> = ({
                 {step.subtitle}
               </Typography>
             </div>
-            <p className={styles.description}>{step.description}</p>
+            <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.description}>{step.description}</Typography>
           </div>
           {step.overlay ? (
             <div className={styles.overlay}>{step.overlay}</div>

@@ -50,7 +50,7 @@ const SharePopup: FunctionComponent<SharePopupProps> = ({ close, toCopy }) => {
             <div className={iconsStyles.clickableIconTwitter}>
               <TwitterIcon width="32" color={"white"} />
             </div>
-            <p>Twitter</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>Twitter</Typography>
           </a>
           <a
             href="https://discord.com/"
@@ -61,7 +61,7 @@ const SharePopup: FunctionComponent<SharePopupProps> = ({ close, toCopy }) => {
             <div className={iconsStyles.clickableIconDiscord}>
               <DiscordIcon width="32" color={"white"} />
             </div>
-            <p>Discord</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>Discord</Typography>
           </a>
         </div>
       </>

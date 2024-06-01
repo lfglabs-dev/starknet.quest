@@ -26,6 +26,8 @@ import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
 import Image from "next/image";
 import { PendingBoostClaim } from "types/backTypes";
+import Typography from "./typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -336,10 +338,10 @@ const Navbar: FunctionComponent = () => {
         closeModal={() => setIsWrongNetwork(false)}
         message={
           <div className="mt-3 flex flex-col items-center justify-center text-center">
-            <p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>
               This app only supports Starknet {network}, you have to change your
               network to be able use it.
-            </p>
+            </Typography>
             <div className="mt-3">
               <Button onClick={() => disconnectByClick()}>
                 {`Disconnect`}

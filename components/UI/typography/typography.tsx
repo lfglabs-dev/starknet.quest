@@ -7,7 +7,8 @@ type TypographyProps = {
   color?: string;
   className?: string;
   children: React.ReactNode;
-};
+  style?: CSSProperties;
+} & React.HTMLAttributes<HTMLElement>;
 
 /**
  * `Typography` is a component that renders text with a specific style.
@@ -32,16 +33,16 @@ type TypographyProps = {
  * @param {React.ReactNode} props.children - The text to be rendered.
  * @returns {React.ReactNode} The `Typography` component.
  */
-const Typography: FunctionComponent<TypographyProps> = ({ type, children, color, className, ...props }) => {
+const Typography: FunctionComponent<TypographyProps> = ({ type, children, color, className, style, ...props }) => {
 
   const CustomTypographyComponent = type.tag || "p";
-  const classes = `${className} ${styles[`typography-${type.className}`]}`;
-  const style: CSSProperties = color ? { color: `var(--${color})`} : {};
+  const classes = className || styles[`typography-${type.className}`];
+  const additionalStyle: CSSProperties = color ? { color: `var(--${color})`} : {};
 
   return (
     <CustomTypographyComponent
       className={classes}
-      style={style}
+      style={{...additionalStyle, ...style}}
       {...props}
     >
       {children}

@@ -187,7 +187,7 @@ export default function Page() {
                     <div className={styles.twitterIcon}>
                       <TwitterIcon width="20" color="black" />
                     </div>
-                    <p className="ml-2">{member.role}</p>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT} className="ml-2">{member.role}</Typography>
                   </div>
                 </Card>
               ))}

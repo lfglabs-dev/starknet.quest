@@ -68,7 +68,6 @@
 
 .description {
   margin: auto 0;
-  color: var(--secondary);
   text-align: center;
 
   /* Body/default/regular */
@@ -180,9 +179,6 @@
   .closeMobile {
     display: block;
     margin: 3rem auto 0;
-    color: var(--dark-content);
-
-    color: var(--secondary);
     /* Body/middle/bold */
     font-family: Sora;
     font-size: 18px;

@@ -235,8 +235,8 @@ const QuestAndCollectionTabs: FunctionComponent<
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>
-                      <Typography type={TEXT_TYPE.H2} className="text-gray-200">Boosts Quest</Typography>
-                      <p className="text-gray-200 normal-case">
+                      <Typography type={TEXT_TYPE.H2} className={`${styles.categoryInfosH2} text-gray-200`}>Boosts Quest</Typography>
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.categoryInfosText} text-gray-200 normal-case`}>
                         {completedBoostNumber === boosts.length ? (
                           <span className="flex">
                             <span className="mr-2">All boosts done</span>
@@ -247,7 +247,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                             boosts.length > 1 ? "s" : ""
                           } done`
                         )}
-                      </p>
+                      </Typography>
                     </div>
                     <img src="/visuals/boost/logo.webp" />
                   </Link>

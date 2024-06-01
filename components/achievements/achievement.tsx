@@ -32,7 +32,7 @@ const Achievement: FunctionComponent<AchievementProps> = ({
       <div className={styles.cardContainer}>
         <div>
           <Typography type={TEXT_TYPE.H2} className={styles.cardTitle}>{achievements.category_name}</Typography>
-          <p className={styles.cardSubtitle}>/{achievements.category_desc}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="tertiary" className={styles.cardSubtitle}>/{achievements.category_desc}</Typography>
         </div>
         <div className={styles.levels}>
           {achievements.achievements.map((achievement: AchievementDocument) => {

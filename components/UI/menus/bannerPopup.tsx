@@ -39,7 +39,7 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
         </div>
         <div className={styles.contentSide}>
           <button className={styles.close} onClick={onClose}></button>
-          <p className={styles.description}>{description}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.description}>{description}</Typography>
           <div className={styles.button}>
             <Button onClick={onClick}>{buttonName}</Button>
           </div>
@@ -49,9 +49,9 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
             <button onClick={onClose} className={styles.close}>
               <CloseIcon width="16" />
             </button>
-            <p className={styles.closeMobile} onClick={onClose}>
+            <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={styles.closeMobile} onClick={onClose}>
               Close
-            </p>
+            </Typography>
           </>
         )}
       </div>

@@ -32,7 +32,7 @@ const AchievementLevel: FunctionComponent<AchievementLevelProps> = ({
         }`}
       >
         <div className={styles.levelInfo}>
-          <p className={styles.levelDesc}>{achievement.short_desc}</p>
+          <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary" className={styles.levelDesc}>{achievement.short_desc}</Typography>
           <Typography type={TEXT_TYPE.H3} className={styles.levelTitle}>{achievement.name}</Typography>
         </div>
         <div

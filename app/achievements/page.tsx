@@ -146,9 +146,9 @@ export default function Page() {
                   <div>Refresh data</div>
                 </div>
               </div>
-              <p className={styles.subtitle}>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.subtitle}>
                 Complete achievements and grow your Starknet on-chain reputation
-              </p>
+              </Typography>
             </div>
             {!loading && userAchievements.length > 0 ? (
               userAchievements.map(

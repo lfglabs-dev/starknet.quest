@@ -27,10 +27,10 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
         className={styles.questCategory}
       >
         <div className={styles.categoryInfos}>
-          <Typography type={TEXT_TYPE.H2} className="text-gray-200">
+          <Typography type={TEXT_TYPE.H2} className={`text-gray-200 ${styles.categoryInfosH2}`}>
             {category.name} Quest{category.questNumber > 1 ? "s" : null}
           </Typography>
-          <p className="text-gray-200 normal-case">
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`text-gray-200 normal-case ${styles.categoryInfosText}`}>
             {completedQuestNumber === category.questNumber ? (
               <div className="flex">
                 <span className="mr-2">All quests done</span>
@@ -41,7 +41,7 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
                 category.questNumber > 1 ? "s" : ""
               } done`
             )}
-          </p>
+          </Typography>
         </div>
         <CDNImg src={category.img} loading="lazy" />
       </Link>

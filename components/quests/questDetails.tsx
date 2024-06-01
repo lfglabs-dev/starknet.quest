@@ -324,12 +324,12 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           />
         ) : (
           <>
-            <p className="text-center max-w-[50vw]">{quest.desc}</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center max-w-[50vw]">{quest.desc}</Typography>
             {quest?.additional_desc ? (
               <>
-                <p className="text-center max-w-[50vw]">
+                <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center max-w-[50vw]">
                   {quest.additional_desc}
-                </p>
+                </Typography>
               </>
             ) : null}
           </>
@@ -344,7 +344,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ) : (
           <>
             <div className={styles.questStats}>
-              <p>{tasks.length} steps</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT}>{tasks.length} steps</Typography>
               <div className="ml-auto flex">
                 <div className={styles.participantAvatars}>
                   {participants.firstParticipants.map((participant, index) => (
@@ -356,7 +356,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                     />
                   ))}
                 </div>
-                <p>{participants.count || 0} participants</p>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{participants.count || 0} participants</Typography>
               </div>
             </div>
             {tasks.map((task) => {

@@ -30,7 +30,7 @@ const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
           <Squares />
         </div>
       )}
-      <p className={styles.categorySubtitle}>{subtitle}</p>
+      <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={styles.categorySubtitle}>{subtitle}</Typography>
       <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.categoryTitle}>{title}</Typography>
     </div>
   );

@@ -42,7 +42,7 @@ const ClickableAction: FunctionComponent<ClickableActionProps> = ({
 
       <div className="ml-2">
         <Typography type={TEXT_TYPE.H1} color="secondary" className={styles.clickableActionTitle}>{title}</Typography>
-        <p className={styles.clickableActionDescription}>{description}</p>
+        <Typography type={TEXT_TYPE.BODY_MICRO} className={styles.clickableActionDescription}>{description}</Typography>
       </div>
     </div>
   );

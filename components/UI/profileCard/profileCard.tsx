@@ -106,9 +106,9 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           </div>
 
           <div className="flex flex-col h-full justify-between">
-            <p className={styles.accountCreationDate}>
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="secondary" className={styles.accountCreationDate}>
               {sinceDate ? `${sinceDate}` : ""}
-            </p>
+            </Typography>
             <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>{identity.domain.domain}</Typography>
             <div className={styles.address_div}>
               <div onClick={() => copyToClipboard()}>
@@ -122,9 +122,9 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   <VerifiedIcon width="20" />
                 )}
               </div>
-              <p className={styles.addressText}>
+              <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.addressText} color="secondary">
                 {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
-              </p>
+              </Typography>
             </div>
             <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
@@ -136,12 +136,12 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                     height={20}
                     alt={"share-icon"}
                   />
-                  <p>Share</p>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
                 </div>
               </Link>
             </div>
 
-            <p className={styles.percentileText}>
+            <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.percentileText} color="secondary">
               {userPercentile.length > 0 && userPercentile !== "NA" ? (
                 <>
                   {isOwner ? "You are " : "This user is "}
@@ -157,7 +157,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
                 />
               )}
-            </p>
+            </Typography>
           </div>
         </div>
         <div className={styles.right}>
@@ -173,7 +173,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                       height={20}
                       alt={"share-icon"}
                     />
-                    <p>Share</p>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
                   </div>
                 </Link>
               </div>
@@ -190,11 +190,11 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   height={25}
                   alt="trophy icon"
                 />
-                <p className={styles.statsText}>
+                <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.statsText}>
                   {leaderboardData?.position
                     ? rankFormatter(leaderboardData?.position)
                     : "NA"}
-                </p>
+                </Typography>
               </div>
             ) : null}
             {userXp !== undefined ? (
@@ -206,7 +206,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                   height={30}
                   alt="xp badge"
                 />
-                <p className={styles.statsText}>{userXp ?? "0"}</p>
+                <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.statsText}>{userXp ?? "0"}</Typography>
               </div>
             ) : null}
           </div>
