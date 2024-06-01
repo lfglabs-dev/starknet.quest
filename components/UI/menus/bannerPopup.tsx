@@ -5,7 +5,7 @@ import CloseIcon from "../iconsComponents/icons/closeIcon";
 import { Modal } from "@mui/material";
 import { CDNImg } from "@components/cdn/image";
 import Typography from "../typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type BannerPopupProps = {
   title: string;

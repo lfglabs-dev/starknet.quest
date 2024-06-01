@@ -7,7 +7,7 @@ import {
 import Level from "./level";
 import cdnize from "@utils/cdnize";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type AchievementProps = {
   achievements: AchievementsDocument;

@@ -32,6 +32,8 @@
 }
 
 .cardTitle {
+  font-size: 1.3rem;
+  font-family: "Sora-Bold";
   margin: 0px;
   text-align: left;
 }

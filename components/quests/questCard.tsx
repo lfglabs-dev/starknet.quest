@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import styles from "@styles/components/quests/card.module.css";
 import cdnize from "@utils/cdnize";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 type QuestCardProps = {
   id: number;
   children: React.ReactNode;

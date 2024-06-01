@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
 import Typography from "../typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 interface LoadingScreenProps {
   displayMessage?: boolean;

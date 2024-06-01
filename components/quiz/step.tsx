@@ -7,7 +7,7 @@ import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
 import NftIssuer from "@components/quests/nftIssuer";
 import { CDNImg } from "@components/cdn/image";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type StepProps = {
   setStep: (s: number) => void;

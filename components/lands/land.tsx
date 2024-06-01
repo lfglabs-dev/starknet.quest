@@ -15,7 +15,7 @@ import { getCurrentNetwork } from "@utils/network";
 import { getNfts } from "@utils/assets";
 import { fetchBuildings, getUserAchievements } from "@services/apiService";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type LandProps = {
   address: string;

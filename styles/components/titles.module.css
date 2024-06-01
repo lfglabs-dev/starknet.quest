@@ -15,6 +15,12 @@
   width: 600px;
   flex-direction: column;
   text-align: left;
+  /* Title/H1 */
+  font-family: Sora;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 58px;
 }
 
 .buttonContainer {
@@ -45,10 +51,22 @@
 }
 
 .categoryTitle {
+  /* Title/H2 */
+  font-family: Sora;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px;
   margin-top: 8px;
 }
 
 .newCategoryTitle {
+  /* Title/H2 */
+  font-family: Sora-Bold;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 38px;
   margin-top: 8px;
 }
 

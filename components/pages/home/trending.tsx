@@ -5,7 +5,7 @@ import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "types/backTypes";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type TrendingQuestsProps = {
   trendingQuests: QuestDocument[];

@@ -8,7 +8,7 @@ import { CDNImage } from "@components/cdn/image";
 import BoostReward from "@components/quests/boostReward";
 import { Skeleton } from "@mui/material";
 import Typography from "../typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type FeaturedQuestProps = {
   onClick?: () => void;

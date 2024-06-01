@@ -16,7 +16,7 @@ import {
   verifyUserAchievement,
 } from "@services/apiService";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const location = useLocation();

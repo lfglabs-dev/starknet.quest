@@ -219,6 +219,11 @@
     }
 }
 
+.profile_name {
+    font-size: 30px;
+    font-weight: bold;
+}
+
 .accountCreationDate {
     color: var(--secondary);
     font-size: 14px;

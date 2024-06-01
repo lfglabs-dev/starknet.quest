@@ -16,7 +16,7 @@ import team from "@public/starknetid/team.json";
 import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
 import { CDNImg } from "@components/cdn/image";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   useEffect(() => {

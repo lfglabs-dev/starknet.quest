@@ -21,6 +21,10 @@
 }
 
 .title {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px;
   background: linear-gradient(90deg, var(--primary) 0%, var(--tertiary) 100%);
   background-clip: text;
   -webkit-background-clip: text;

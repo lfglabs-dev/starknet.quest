@@ -2,7 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import Button from "../button";
 import Typography from "../typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type SuccessScreenProps = {
   buttonText: string;

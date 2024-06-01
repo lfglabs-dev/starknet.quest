@@ -33,6 +33,8 @@
 }
 
 .title {
+  font-family: "Sora-Bold";
+  font-size: 2.5rem;
   text-align: center;
   background: linear-gradient(45deg, var(--primary), var(--tertiary));
   -webkit-background-clip: text;

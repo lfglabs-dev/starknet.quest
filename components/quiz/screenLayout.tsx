@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/quests/quiz.module.css";
 import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 
 type ScreenLayoutProps = {
   title: string;

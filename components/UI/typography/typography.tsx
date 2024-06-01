@@ -1,4 +1,4 @@
-import { TEXT_TYPE } from "@constants/typography";
+import type { TEXT_TYPE } from "@constants/typography";
 import React, { CSSProperties, FunctionComponent } from "react";
 import styles from "@styles/components/typography.module.css";
 
