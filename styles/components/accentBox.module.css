@@ -2,12 +2,12 @@
   position: relative;
   padding: 20px;
   border-radius: 15px;
-  background: linear-gradient(90deg, var(--background), #070708);
+  background:  #000000; 
   background-blend-mode: overlay;
   color: #fff;
   margin-bottom: 40px;
   overflow: visible;
-  border: 2px solid #000;
+  border: 1px solid #0A0A0A; 
 }
 
 .gradientLine {
@@ -47,3 +47,29 @@
   border-radius: 15px;
   z-index: -1;
 }
+
+.childrenContainer {
+  margin-top: 20px;
+}
+
+.module {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-image: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  ) 1;
+}
+
+/*.expanded {
+   Here you can add additional styles when the component is expanded 
+}*/ 
+

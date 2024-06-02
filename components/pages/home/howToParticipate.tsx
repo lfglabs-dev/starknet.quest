@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
+import type { FunctionComponent } from "react";
 import AccentBox from "@components/UI/AccentBox";
 import Steps from "@components/UI/steps/steps";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
@@ -11,7 +12,7 @@ const HowToParticipate: FunctionComponent = () => {
         title="Amplify your rewards"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
       />
-      <div className={styles.separator}></div>
+      <div className={styles.separator} />
       <div className={styles.stepsContainer}>
         <AccentBox>
           <Steps
