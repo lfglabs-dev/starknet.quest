@@ -11,6 +11,7 @@ const HowToParticipate: FunctionComponent = () => {
         title="Amplify your rewards"
         subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
       />
+      <div className={styles.separator}></div>
       <div className={styles.stepsContainer}>
         <AccentBox>
           <Steps
@@ -23,7 +24,15 @@ const HowToParticipate: FunctionComponent = () => {
                   "Unlock the full potential of your Starknet journey. Complete Boost Quests to earn exclusive tokens and NFTs that enrich your digital experience.",
                 icon: "/icons/starknet.svg",
                 banner: "/visuals/boost-quests.svg",
-              },
+              }
+            ]}
+          />
+          {/* Add any additional children here if needed */}
+        </AccentBox>
+        <AccentBox>
+          <Steps
+            subTitleBefore={true}
+            steps={[
               {
                 title: "Reward Quests",
                 subtitle: "02",
@@ -34,6 +43,7 @@ const HowToParticipate: FunctionComponent = () => {
               }
             ]}
           />
+          {/* Add any additional children here if needed */}
         </AccentBox>
       </div>
     </section>
