@@ -5,6 +5,8 @@ import { Modal } from "@mui/material";
 import NotificationDetail from "./notificationDetail";
 import CloseIcon from "@components/UI/iconsComponents/icons/closeIcon";
 import InformativeNotification from "../infomativeNotifications";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ModalNotificationsProps = {
   closeModal: () => void;
@@ -31,7 +33,7 @@ const ModalNotifications: FunctionComponent<ModalNotificationsProps> = ({
         <button className={styles.menu_close} onClick={closeModal}>
           <CloseIcon width="24" />
         </button>
-        <p className={styles.menu_title}>Notifications</p>
+        <Typography type={TEXT_TYPE.BODY_NORMAL} color="secondary" className={styles.menu_title}>Notifications</Typography>
         <div className={styles.menu_line} />
         <div className={styles.notif_section}>
           {informationNotifications.length > 0
@@ -62,7 +64,7 @@ const ModalNotifications: FunctionComponent<ModalNotificationsProps> = ({
               );
             })
           ) : (
-            <p>You don&apos;t have any notifications yet. Start some quests!</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>You don&apos;t have any notifications yet. Start some quests!</Typography>
           )}
         </div>
       </div>

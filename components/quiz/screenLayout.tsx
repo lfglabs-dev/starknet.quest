@@ -1,5 +1,7 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/quests/quiz.module.css";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ScreenLayoutProps = {
   title: string;
@@ -16,9 +18,9 @@ const ScreenLayout: FunctionComponent<ScreenLayoutProps> = ({
 }) => {
   return (
     <div className={styles.menu}>
-      <h1 className={highlightTitle ? "title extrabold" : styles.menuTitle}>
+      <Typography type={TEXT_TYPE.H1} className={highlightTitle ? "title extrabold" : styles.menuTitle}>
         {title}
-      </h1>
+      </Typography>
       {children}
       <div className={styles.menuButtons}>{actionBar}</div>
     </div>

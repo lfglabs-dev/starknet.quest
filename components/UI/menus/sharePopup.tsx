@@ -5,6 +5,8 @@ import DiscordIcon from "@components/UI/iconsComponents/icons/discordIcon";
 import iconsStyles from "@styles/components/icons.module.css";
 import Button from "../button";
 import styles from "@styles/components/popup.module.css";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type SharePopupProps = {
   close: () => void;
@@ -36,7 +38,7 @@ const SharePopup: FunctionComponent<SharePopupProps> = ({ close, toCopy }) => {
       }
     >
       <>
-        <h3 className="text-center font-bold text-3xl">Share</h3>
+        <Typography type={TEXT_TYPE.H3} className="text-center font-bold text-3xl">Share</Typography>
         <div className="flex gap-8">
           <a
             href={`
@@ -48,7 +50,7 @@ const SharePopup: FunctionComponent<SharePopupProps> = ({ close, toCopy }) => {
             <div className={iconsStyles.clickableIconTwitter}>
               <TwitterIcon width="32" color={"white"} />
             </div>
-            <p>Twitter</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>Twitter</Typography>
           </a>
           <a
             href="https://discord.com/"
@@ -59,7 +61,7 @@ const SharePopup: FunctionComponent<SharePopupProps> = ({ close, toCopy }) => {
             <div className={iconsStyles.clickableIconDiscord}>
               <DiscordIcon width="32" color={"white"} />
             </div>
-            <p>Discord</p>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>Discord</Typography>
           </a>
         </div>
       </>

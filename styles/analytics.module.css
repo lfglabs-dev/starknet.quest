@@ -6,7 +6,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
   max-width: 950px;
   text-align: center;
 }
@@ -76,7 +75,6 @@
   line-height: 20px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: var(--textGray);
 }
 
 .highlightedText {

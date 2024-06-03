@@ -63,9 +63,6 @@
   text-align: left;
   /* identical to box height, or 150% */
 
-  /* Secondary/700 */
-  color: var(--secondary);
-
   /* Inside auto layout */
 
   flex: none;

@@ -4,6 +4,8 @@ import Button from "../button";
 import CloseIcon from "../iconsComponents/icons/closeIcon";
 import { Modal } from "@mui/material";
 import { CDNImg } from "@components/cdn/image";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BannerPopupProps = {
   title: string;
@@ -32,12 +34,12 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
     >
       <div className={styles.bannerPopup}>
         <div className={styles.titleSide}>
-          <h1 className={styles.title}>{title}</h1>
+          <Typography type={TEXT_TYPE.H1} color="secondary" className={styles.title}>{title}</Typography>
           <CDNImg className={styles.banner} src={banner} alt="banner" />
         </div>
         <div className={styles.contentSide}>
           <button className={styles.close} onClick={onClose}></button>
-          <p className={styles.description}>{description}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.description}>{description}</Typography>
           <div className={styles.button}>
             <Button onClick={onClick}>{buttonName}</Button>
           </div>
@@ -47,9 +49,9 @@ const BannerPopup: FunctionComponent<BannerPopupProps> = ({
             <button onClick={onClose} className={styles.close}>
               <CloseIcon width="16" />
             </button>
-            <p className={styles.closeMobile} onClick={onClose}>
+            <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={styles.closeMobile} onClick={onClose}>
               Close
-            </p>
+            </Typography>
           </>
         )}
       </div>

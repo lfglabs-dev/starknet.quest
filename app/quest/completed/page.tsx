@@ -12,6 +12,8 @@ import Lottie from "lottie-react";
 import verifiedLottie from "@public/visuals/verifiedLottie.json";
 import CompletedCategoryTitle from "@components/UI/titles/completedCategoryTitle";
 import Quest from "@components/quests/quest";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();
@@ -46,11 +48,11 @@ export default function Page() {
         <CompletedCategoryTitle title="Your NFT is on it's way !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
-            <p className="text-center mb-8 max-w-[690px]">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center mb-8 max-w-[690px]">
               Congratulations on your efforts and progress! Keep up the great
               work and continue to explore new challenges by completing another
               quest!
-            </p>
+            </Typography>
           </>
         </div>
         <div className={moduleStyles.questListContainer}>
@@ -81,10 +83,10 @@ export default function Page() {
         <CompletedCategoryTitle title="Congratulations !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
-            <p className="text-center mb-8 max-w-[690px]">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center mb-8 max-w-[690px]">
               You&apos;ve finished all quests. Stay focused! New quests are
               coming !
-            </p>
+            </Typography>
           </>
         </div>
         <div className="mt-7 flex flex-col items-center justify-center text-center">

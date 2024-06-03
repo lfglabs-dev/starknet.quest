@@ -15,6 +15,8 @@ import Card from "@components/UI/card";
 import team from "@public/starknetid/team.json";
 import TwitterIcon from "@components/UI/iconsComponents/icons/twitterIcon";
 import { CDNImg } from "@components/cdn/image";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   useEffect(() => {
@@ -170,7 +172,7 @@ export default function Page() {
             <div className={styles.blur1}>
               <Blur />
             </div>
-            <h1 className={styles.title}>Meet our team</h1>
+            <Typography type={TEXT_TYPE.H1} color="secondary" className={styles.title}>Meet our team</Typography>
             <div className={styles.teamContainer}>
               {team.map((member, index) => (
                 <Card
@@ -185,7 +187,7 @@ export default function Page() {
                     <div className={styles.twitterIcon}>
                       <TwitterIcon width="20" color="black" />
                     </div>
-                    <p className="ml-2">{member.role}</p>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT} className="ml-2">{member.role}</Typography>
                   </div>
                 </Card>
               ))}

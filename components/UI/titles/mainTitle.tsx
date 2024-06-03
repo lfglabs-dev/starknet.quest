@@ -3,6 +3,8 @@ import styles from "@styles/components/titles.module.css";
 import Corner from "@components/shapes/corner";
 import Squares from "@components/shapes/squares";
 import Button from "../button";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type MainTitleProps = {
   title: string;
@@ -32,10 +34,10 @@ const MainTitle: FunctionComponent<MainTitleProps> = ({
         </div>
       )}
 
-      <h2 className={styles.mainTitle}>
+      <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.mainTitle}>
         {title} <strong>{highlighted}</strong>
-      </h2>
-      <p className={styles.mainSubtitle}>{subtitle}</p>
+      </Typography>
+      <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.mainSubtitle}>{subtitle}</Typography>
       <div className={styles.buttonContainer}>
         <Button
           onClick={() => window.open("https://forms.gle/P2PUzet6KrKJQYZB8")}
