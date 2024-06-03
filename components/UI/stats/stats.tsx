@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/stats.module.css";
 import StatElement from "./statElement";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type StatsProps = {
   title?: string;
@@ -13,7 +15,7 @@ type StatsProps = {
 const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
   return (
     <div className={styles.container}>
-      {title && <h2 className={styles.title}>{title}</h2>}
+      {title && <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.title}>{title}</Typography>}
       <div className={styles.elementsContainer}>
         {stats.map((elt, index) => (
           <StatElement

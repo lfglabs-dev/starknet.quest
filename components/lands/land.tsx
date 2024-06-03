@@ -14,6 +14,8 @@ import Link from "next/link";
 import { getCurrentNetwork } from "@utils/network";
 import { getNfts } from "@utils/assets";
 import { fetchBuildings, getUserAchievements } from "@services/apiService";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type LandProps = {
   address: string;
@@ -149,10 +151,10 @@ export const Land = ({
           <Scene address={address} userNft={userNft} isMobile={isMobile} />
         ) : (
           <div className={landStyles.error}>
-            <h2 className={`${styles.notFound} ${styles.name} mb-5`}>
+            <Typography type={TEXT_TYPE.H2} color="transparent" className={`${styles.notFound} ${styles.name} mb-5`}>
               {isOwner ? "You have" : "User has"} not fulfilled any achievement
               yet
-            </h2>
+            </Typography>
             {isOwner ? (
               <div className="text-background ml-5 mr-5">
                 <Link href="/">
@@ -165,7 +167,7 @@ export const Land = ({
           </div>
         )
       ) : (
-        <h2 className={`${styles.name} ${styles.loading}`}>Loading</h2>
+        <Typography type={TEXT_TYPE.H2} color="transparent" className={`${styles.name} ${styles.loading}`}>Loading</Typography>
       )}
     </div>
   );

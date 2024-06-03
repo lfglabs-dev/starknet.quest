@@ -7,6 +7,8 @@ import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import BoostReward from "./boostReward";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestProps = {
   onClick: () => void;
@@ -47,24 +49,24 @@ const Quest: FunctionComponent<QuestProps> = ({
           expired ? "opacity-40" : null
         }`}
       >
-        <p className="text-gray-400">{issuer.name}</p>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{issuer.name}</Typography>
       </div>
       <div className="flex gap-2 mt-3 justify-center md:justify-start">
         <div className={styles.issuer}>
           {isCompleted ? (
             <>
-              <p className="text-white mr-2">Done</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} mr-2`}>Done</Typography>
               <CheckIcon width="24" color="#6AFFAF" />
             </>
           ) : expired ? (
             <>
-              <p className="text-white mr-2">Expired</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} mr-2`}>Expired</Typography>
               <UnavailableIcon width="24" color="#D32F2F" />
             </>
           ) : (
             <>
               <CDNImg width={20} src={issuer.logoFavicon} loading="lazy" />
-              <p className="text-white ml-2">{reward}</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} ml-2`}>{reward}</Typography>
             </>
           )}
         </div>

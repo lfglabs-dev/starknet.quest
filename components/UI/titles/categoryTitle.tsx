@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react";
 import styles from "@styles/components/titles.module.css";
 import Corner from "@components/shapes/corner";
 import Squares from "@components/shapes/squares";
+import { TEXT_TYPE } from "@constants/typography";
+import Typography from "../typography/typography";
 
 type CategoryTitleProps = {
   title: string;
@@ -28,8 +30,8 @@ const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
           <Squares />
         </div>
       )}
-      <p className={styles.categorySubtitle}>{subtitle}</p>
-      <h2 className={styles.categoryTitle}>{title}</h2>
+      <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={styles.categorySubtitle}>{subtitle}</Typography>
+      <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.categoryTitle}>{title}</Typography>
     </div>
   );
 };
