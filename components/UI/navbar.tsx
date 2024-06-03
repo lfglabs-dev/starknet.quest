@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useState, useEffect, FunctionComponent } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
 import styles from "@styles/components/navbar.module.css";
 import Button from "./button";
 import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
@@ -20,12 +19,12 @@ import { useNotificationManager } from "@hooks/useNotificationManager";
 import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notificationIconUnread";
 import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
-import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";
 import Image from "next/image";
 import { PendingBoostClaim } from "types/backTypes";
+import Hamburger from "./hamburger";
 
 const Navbar: FunctionComponent = () => {
   const currentNetwork = getCurrentNetwork();
@@ -232,12 +231,8 @@ const Navbar: FunctionComponent = () => {
                 disconnectByClick={disconnectByClick}
               />
             </ul>
-            <div onClick={handleNav} className="lg:hidden">
-              <AiOutlineMenu
-                color={theme.palette.secondary.main}
-                size={25}
-                className="mr-3"
-              />
+            <div className="lg:hidden">
+              <Hamburger active={nav} onClick={handleNav} />
             </div>
           </div>
         </div>
@@ -245,40 +240,16 @@ const Navbar: FunctionComponent = () => {
         <div
           className={
             nav
-              ? "lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10"
+              ? "mt-24 lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10"//extra margin so page doesnt cover forst navbar buttons
               : ""
           }
         >
           <div
-            className={`fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${
+            className={`mt-20 fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${//extra margin so page doesnt overlap the navbar
               nav ? styles.mobileNavbarShown : styles.mobileNavbarHidden
             }`}
           >
             <div className="h-full flex flex-col">
-              <div className={styles.mobileNavBarHeader}>
-                <div>
-                  <Link href="/">
-                    <Image
-                      src="/visuals/starknetquestLogo.svg"
-                      alt="Starknet Quest Logo"
-                      width={70}
-                      height={70}
-                      className={styles.logo}
-                      priority
-                    />
-                  </Link>
-                </div>
-
-                <div
-                  onClick={handleNav}
-                  className="rounded-lg modified-cursor-pointer p-1"
-                >
-                  <CloseFilledIcon
-                    width="32"
-                    color={theme.palette.background.default}
-                  />
-                </div>
-              </div>
               <div className="py-4 my-auto text-center font-extrabold">
                 <ul className="uppercase text-babe-blue">
                   <Link href="/">
