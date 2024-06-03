@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext} from "react";
 import styles from "@styles/Home.module.css";
 import { useRouter } from "next/navigation";
 import HowToParticipate from "@components/pages/home/howToParticipate";
@@ -9,25 +9,11 @@ import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
 import QuestAndCollectionTabs from "@components/pages/home/questAndCollectionTabs";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
-import Notification from "@components/feedback/feedback";
 
 export default function Page() {
   const router = useRouter();
   const { featuredQuest, categories, trendingQuests, quests } = useContext(QuestsContext);
-  const [open, setOpen] = useState(false);
-  const [notificationType, setNotificationType] = useState<'success' | 'error' | 'info' | 'warning'>('success');
-  const [notificationMessage, setNotificationMessage] = useState('');
-
-  const handleOpenNotification = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
-    setNotificationType(type);
-    setNotificationMessage(message);
-    setOpen(true);
-  };
-
-  const handleCloseNotification = () => {
-    setOpen(false);
-  };
-
+  
   return (
     <div className={styles.screen}>
       <div className={styles.container}>
@@ -61,13 +47,6 @@ export default function Page() {
           <Blur green />
         </div>
         <HowToParticipate />
-        {/* <button onClick={() => handleOpenNotification('success', 'This is a success message')}>Open success snackbar</button> */}
-        <Notification
-          type={notificationType}
-          message={notificationMessage}
-          open={open}
-          onClose={handleCloseNotification}
-        />
       </div>
     </div>
   );
