@@ -8,6 +8,8 @@ import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import BoostReward from "./boostReward";
 import QuestTag from "@components/UI/questTag";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestProps = {
   onClick: () => void;
@@ -48,7 +50,7 @@ const Quest: FunctionComponent<QuestProps> = ({
           expired ? "opacity-40" : null
         }`}
       >
-        <p className="text-gray-400">{issuer.name}</p>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{issuer.name}</Typography>
       </div>
       <div className="grid grid-cols-2 gap-2 mt-3 md:grid-cols-2 lg:grid-cols-2 justify-center md:justify-start">
 

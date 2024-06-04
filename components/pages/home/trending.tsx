@@ -4,6 +4,8 @@ import Quest from "@components/quests/quest";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import { useRouter } from "next/navigation";
 import { QuestDocument } from "types/backTypes";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type TrendingQuestsProps = {
   trendingQuests: QuestDocument[];
@@ -15,7 +17,7 @@ const TrendingQuests: FunctionComponent<TrendingQuestsProps> = ({
   const router = useRouter();
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>Trending quests</h1>
+      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Trending quests</Typography>
       <div className={styles.questContainer}>
         {trendingQuests ? (
           trendingQuests.map((quest) => {
