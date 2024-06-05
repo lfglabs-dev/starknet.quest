@@ -119,31 +119,6 @@ button {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }
 
-/* #questCollectionTab button {
-  padding: 5px;
-}
-
-
-#questCollectionTab button[aria-selected="false"]:hover {
-  color: black;
-}
-
-#questCollectionTab button[aria-selected="true"] {
-  color: black;
-}
-
-.chipTab.active {
-  background-color: #fff;
-}
-
-.chipTab.inactive {
-  background-color: transparent;
-}
-
-#chipCollectionTab > .chipTab[aria-selected="false"]:hover {
-  background-color: var(--textGray);
-} */
-
 /* start nav tab styles */
 
 #navTabWrapper {
@@ -178,7 +153,11 @@ button {
 }
 
 #navTabWrapper .dash-box {
-  padding-left: 10px;
+  padding: 0;
+  gap: 20px;
+  align-items: start;
+  justify-content: start;
+  color: #fff;
 }
 
 #navTabWrapper .tab-box > span {
@@ -187,7 +166,7 @@ button {
   height: 40px;
   width: 31%;
   margin: 0;
-  background: #fff;
+  background: #292929f9;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -201,7 +180,7 @@ button {
   height: 40px;
   width: 30%;
   margin: 0;
-  background: var(--textGray);
+  background-color: #41414198;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -213,9 +192,9 @@ button {
   position: absolute;
   inset: 0;
   height: 40px;
-  width: 48%;
+  width: 30%;
   margin: 0;
-  background: #fff;
+  background: #45454545;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -227,9 +206,9 @@ button {
   position: absolute;
   inset: 0;
   height: 40px;
-  width: 48%;
-  margin-left: -50px;
-  background: var(--textGray);
+  width: 25%;
+  margin: 0%;
+  background-color: #41414198;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -241,9 +220,9 @@ button {
   position: absolute;
   inset: 0;
   height: 95%;
-  width: 25%;
+  width: 23%;
   margin: 0;
-  background: #fff;
+  background: #292929f9;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -255,9 +234,9 @@ button {
   position: absolute;
   inset: 0;
   height: 95%;
-  width: 25%;
+  width: 23%;
   margin: 0;
-  background: var(--textGray);
+  background-color: #41414198;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -277,11 +256,19 @@ button {
 
 /* dashboard tabs active styling */
 #navTabWrapper .dash-box .nav-item2.active ~ span {
-  margin-left: 51%;
+  margin-left: 29%;
+}
+
+#navTabWrapper .dash-box .nav-item1.active ~ span {
+  background: #292929f9;
 }
 
 #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
+}
+
+#navTabWrapper .dash-box .nav-item1:hover ~ hr {
+  width: 28%;
 }
 
 /* quest active tab on hover styling */
@@ -299,15 +286,15 @@ button {
 
 /* chip_list */
 #chipTabWrapper .chip-box .nav-item2.active ~ span {
-  margin-left: 25%;
+  margin-left: 27%;
 }
 
 #chipTabWrapper .chip-box .nav-item3.active ~ span {
-  margin-left: 50%;
+  margin-left: 54%;
 }
 
 #chipTabWrapper .chip-box .nav-item4.active ~ span {
-  margin-left: 75%;
+  margin-left: 79%;
 }
 
 /* chiplist active tab on hover styling */
@@ -315,6 +302,9 @@ button {
   opacity: 0 !important;
 }
 
+#chipTabWrapper .chip-box .nav-item4:hover ~ hr {
+  width: 20%;
+}
 
 
 @keyframes fadeIn {
@@ -329,7 +319,7 @@ button {
 
 /* active state */
 .tab-box, .dash-box, .chip-box > div.active {
-  color: #000;
+  color: #fff;
 }
 }
 /* end of nav tab styles */

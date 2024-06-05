@@ -1,7 +1,7 @@
 .chiplist_container {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  background-color: rgba(16, 16, 18, 0.3);
+  background-color: rgba(16, 16, 18, 0.3);  
   gap: 0.5rem;
 
   border-radius: 10px;

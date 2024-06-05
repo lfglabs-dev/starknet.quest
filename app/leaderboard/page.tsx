@@ -415,8 +415,6 @@ export default function Page() {
               </div>
               <div className={styles.leaderboard_chiplist} style={{ flex: 1 }}>
                 <ChipList
-                  // selected={duration}
-                  // handleChangeSelection={handleChangeSelection}
                   tags={[
                     "Last 7 Days",
                     "Last 30 Days",

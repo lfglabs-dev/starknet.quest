@@ -317,7 +317,7 @@ export default function Page({ params }: AddressOrDomainProps) {
             <div className="dash-box">
               <OdTab
                 title={`Completed (${completedQuests.length ?? 0})`}
-                names={`w-full py-2 px-2 text-center nav-item1 ${
+                names={`w-fit py-2 px-2 text-center nav-item1 ${
                   tabIndex === 0 ? "active" : "text-white"
                 }`}
                 setActive={() => handleChangeTab(0)}
@@ -329,7 +329,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 title={`To claim (${
                   claimableQuests ? claimableQuests.length : 0
                 })`}
-                names={`w-full py-2 px-2 text-center nav-item2 text-center ${
+                names={`w-fit py-2 px-2 nav-item2 text-center ${
                   tabIndex === 1 ? "active" : "text-white"
                 }`}
                 setActive={() => handleChangeTab(1)}
