@@ -12,8 +12,8 @@ import { NotificationType, TransactionType } from "@constants/notifications";
 import { QuestDocument } from "types/backTypes";
 import RewardModal from "./rewardModal";
 import rewardStyles from "@styles/components/quests/modal.module.css";
-import { CDNImg } from "@components/cdn/image";
 import BoostReward from "./boostReward";
+import QuestTag from "@components/UI/questTag";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
@@ -73,11 +73,8 @@ const Reward: FunctionComponent<RewardProps> = ({
   return (
     <div className={styles.reward}>
       <div className="flex items-center gap-2">
-        <Typography type={TEXT_TYPE.BODY_DEFAULT}>Reward: </Typography>
-        <div className={styles.issuer}>
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.issuerText}>{reward}</Typography>
-          <CDNImg width={25} src={imgSrc} />
-        </div>
+        <p>Reward: </p>
+        <QuestTag label={reward ?? ''} icon={imgSrc}/>
         <BoostReward questId={quest.id} />
       </div>
       <div className="max-w-lg">

@@ -7,6 +7,7 @@ import styles from "@styles/quests.module.css";
 import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import BoostReward from "./boostReward";
+import QuestTag from "@components/UI/questTag";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
@@ -51,25 +52,22 @@ const Quest: FunctionComponent<QuestProps> = ({
       >
         <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{issuer.name}</Typography>
       </div>
-      <div className="flex gap-2 mt-3 justify-center md:justify-start">
-        <div className={styles.issuer}>
+      <div className="grid grid-cols-2 gap-2 mt-3 md:grid-cols-2 lg:grid-cols-2 justify-center md:justify-start">
+
           {isCompleted ? (
-            <>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} mr-2`}>Done</Typography>
-              <CheckIcon width="24" color="#6AFFAF" />
+            <>  
+              <QuestTag label={"Done"} icon={<CheckIcon width="24" color="#6AFFAF" backgroundColor="#29282B" />} backgroundColor="#29282B" />
             </>
           ) : expired ? (
             <>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} mr-2`}>Expired</Typography>
-              <UnavailableIcon width="24" color="#D32F2F" />
+              <QuestTag label={"Expired"} icon={<UnavailableIcon width="24" color="#D32F2F" backgroundColor="#29282B" />} backgroundColor="#29282B" />
             </>
           ) : (
             <>
-              <CDNImg width={20} src={issuer.logoFavicon} loading="lazy" />
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.issuerText} ml-2`}>{reward}</Typography>
+              <QuestTag label={reward} icon={issuer.logoFavicon} />
             </>
           )}
-        </div>
+
         <BoostReward questId={id} />
       </div>
     </QuestCard>
