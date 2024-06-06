@@ -157,7 +157,6 @@ button {
   gap: 20px;
   align-items: start;
   justify-content: start;
-  color: #fff;
 }
 
 #navTabWrapper .tab-box > span {
@@ -166,7 +165,7 @@ button {
   height: 40px;
   width: 31%;
   margin: 0;
-  background: #292929f9;
+  background: #fff;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -180,7 +179,7 @@ button {
   height: 40px;
   width: 30%;
   margin: 0;
-  background-color: #41414198;
+  background-color: #3f3f3f98;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -194,7 +193,7 @@ button {
   height: 40px;
   width: 30%;
   margin: 0;
-  background: #45454545;
+  background: #fff;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -208,7 +207,7 @@ button {
   height: 40px;
   width: 25%;
   margin: 0%;
-  background-color: #41414198;
+  background-color: #3f3f3f98;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -222,7 +221,7 @@ button {
   height: 95%;
   width: 23%;
   margin: 0;
-  background: #292929f9;
+  background: #fff;
   border-radius: 10px;
   border: none;
   z-index: 11;
@@ -236,7 +235,7 @@ button {
   height: 95%;
   width: 23%;
   margin: 0;
-  background-color: #41414198;
+  background-color: #3f3f3f98;
   border-radius: 10px;
   opacity: 0;
   border: none;
@@ -259,9 +258,8 @@ button {
   margin-left: 29%;
 }
 
-#navTabWrapper .dash-box .nav-item1.active ~ span {
-  background: #292929f9;
-}
+/* #navTabWrapper .dash-box .nav-item1.active ~ span {
+} */
 
 #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
@@ -319,7 +317,7 @@ button {
 
 /* active state */
 .tab-box, .dash-box, .chip-box > div.active {
-  color: #fff;
+  color: #292929f9;
 }
 }
 /* end of nav tab styles */
