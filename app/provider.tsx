@@ -17,7 +17,6 @@ import { getCurrentNetwork } from "@utils/network";
 import { constants } from "starknet";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
-import { InfoBarProvider } from "@context/useInfobar";
 import { NotificationProvider } from "@context/NotificationProvider";
 
 // Traffic measures

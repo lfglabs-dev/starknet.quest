@@ -30,6 +30,7 @@ import {
 import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 import { useInfoBar } from "@context/useInfobar";
 import AdminQuestDetails from "@components/admin/QuestDetails";
+import { useNotification } from "@context/NotificationProvider";
 
 // Define discriminated union types
 type StepMap =
@@ -60,7 +61,7 @@ export default function Page() {
       data: {},
     },
   ]);
-  const { showMessage } = useInfoBar();
+  const { showNotification } = useNotification();
   const [finalQuestData, setFinalQuestData] =
     useState<typeof QuestDefault>(QuestDefault);
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -189,7 +190,7 @@ export default function Page() {
   useEffect(() => {
     //check if start time is less than current time
     if (new Date(startTime).getTime() < new Date().getTime()) {
-      showMessage("Start time cannot be less than current time");
+      showNotification("Start time cannot be less than current time");
       return;
     }
 
@@ -202,7 +203,7 @@ export default function Page() {
   useEffect(() => {
     // check if start_time is less than end_time
     if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
-      showMessage("End time cannot be less than start time");
+      showNotification("End time cannot be less than start time");
       return;
     }
     setQuestInput((prev) => ({

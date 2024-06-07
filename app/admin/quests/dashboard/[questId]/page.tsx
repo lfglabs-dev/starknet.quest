@@ -33,6 +33,7 @@ import {
 import { useInfoBar } from "@context/useInfobar";
 import AdminQuestDetails from "@components/admin/QuestDetails";
 import ProgressBar from "@components/UI/progressBar";
+import { useNotification } from "@context/NotificationProvider";
 
 type AddressOrDomainProps = {
   params: {
@@ -78,7 +79,7 @@ export default function Page({ params }: AddressOrDomainProps) {
       data: {},
     },
   ]);
-  const { showMessage } = useInfoBar();
+  const { showNotification } = useNotification();
   const [questData, setQuestData] = useState<typeof QuestDefault>(QuestDefault);
 
   const fetchPageData = useCallback(async () => {
@@ -317,7 +318,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     //check if start time is less than current time
     if (new Date(startTime).getTime() < new Date().getTime()) {
-      showMessage("Start time cannot be less than current time");
+      showNotification("Start time cannot be less than current time");
       return;
     }
 
@@ -330,7 +331,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     // check if start_time is less than end_time
     if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
-      showMessage("End time cannot be less than start time");
+      showNotification("End time cannot be less than start time");
       return;
     }
     setQuestInput((prev) => ({

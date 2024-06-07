@@ -45,7 +45,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
-  const { showMessage } = useInfoBar();
+  const { showNotification } = useNotification();
   const questId = quest?.id?.toString();
 
   // this fetches all tasks of this quest from db
@@ -59,7 +59,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
 
   const generateOAuthUrl = (task: UserTask): string => {
     if (!address) {
-      showMessage("Please connect wallet to test");
+      showNotification("Please connect wallet to test");
       return "";
     }
     if (task.verify_endpoint_type === "oauth_discord") {
