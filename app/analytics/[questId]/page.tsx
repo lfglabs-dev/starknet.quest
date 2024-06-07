@@ -33,6 +33,8 @@ import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
 import { error } from "console";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BoostQuestPageProps = {
   params: {
@@ -169,15 +171,15 @@ export default function Page({ params }: BoostQuestPageProps) {
                   <div>
                     <div className={analyticsStyles.tag}>
                       <CDNImg width={20} src={questData?.logo} />
-                      <p className="text-white">{questData?.issuer}</p>
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">{questData?.issuer}</Typography>
                     </div>
                   </div>
-                  <h1 className={`${analyticsStyles.title}`}>
+                  <Typography type={TEXT_TYPE.H1} className={`${analyticsStyles.title}`} color="transparent">
                     {questData?.name}
-                  </h1>
-                  <p className="text-white">
+                  </Typography>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
                     {questData?.expired ? "Finished" : "Ongoing"}
-                  </p>
+                  </Typography>
                 </>
               ) : null}
             </div>
@@ -185,23 +187,23 @@ export default function Page({ params }: BoostQuestPageProps) {
               <div className="flex flex-col sm:flex-row gap-8 w-full">
                 <div className={analyticsStyles.dataCard}>
                   <div className="flex w-full items-center flex-col h-full justify-center">
-                    <p className={analyticsStyles.metricName}>Unique users</p>
-                    <p className={analyticsStyles.counterText}>
+                    <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray" className={analyticsStyles.metricName}>Unique users</Typography>
+                    <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>
                       {uniqueVisitors && uniqueVisitors > 0
                         ? numberWithCommas(uniqueVisitors)
                         : "NA"}
-                    </p>
+                    </Typography>
                   </div>
                 </div>
                 <div className={analyticsStyles.dataCard}>
-                  <p className={analyticsStyles.metricName}>
+                  <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray" className={analyticsStyles.metricName}>
                     Users that finished the quest
-                  </p>
-                  <p className={analyticsStyles.counterText}>
+                  </Typography>
+                  <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>
                     {questParticipants > 0
                       ? numberWithCommas(questParticipants)
                       : "NA"}
-                  </p>
+                  </Typography>
                   {uniqueVisitors && uniqueVisitors > 0 ? (
                     <div className="flex flex-wrap gap-2 items-baseline">
                       <span className={analyticsStyles.highlightedText}>
@@ -224,12 +226,12 @@ export default function Page({ params }: BoostQuestPageProps) {
               {graphData?.length > 0 ? (
                 <>
                   <div className="flex flex-col gap-1 w-full mb-6">
-                    <p className={analyticsStyles.metricName}>
+                    <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray" className={analyticsStyles.metricName}>
                       User Progress Visualization
-                    </p>
-                    <p className={analyticsStyles.counterText}>
+                    </Typography>
+                    <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>
                       Quests Completion over time
-                    </p>
+                    </Typography>
                   </div>
                   <ResponsiveContainer
                     width="100%"
@@ -311,7 +313,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                     height: isMobile ? "200px" : "300px",
                   }}
                 >
-                  <p className={analyticsStyles.counterText}>NA</p>
+                  <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>NA</Typography>
                 </div>
               )}
             </div>
@@ -320,10 +322,10 @@ export default function Page({ params }: BoostQuestPageProps) {
           <div className="flex justify-center">
             <div className={analyticsStyles.tasksContainer}>
               <div className="flex flex-col gap-1 w-full">
-                <p className={analyticsStyles.metricName}>
+                <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray" className={analyticsStyles.metricName}>
                   People who completed
-                </p>
-                <p className={analyticsStyles.counterText}>Tasks</p>
+                </Typography>
+                <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>Tasks</Typography>
               </div>
 
               <div className="flex flex-wrap justify-center gap-6 w-full">
@@ -336,12 +338,12 @@ export default function Page({ params }: BoostQuestPageProps) {
                         className="flex w-full max-w-none sm:max-w-[245px]"
                       >
                         <div className={analyticsStyles.dataCard}>
-                          <p className={analyticsStyles.metricName}>
+                          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray" className={analyticsStyles.metricName}>
                             {eachParticipation.name}
-                          </p>
-                          <p className={analyticsStyles.counterText}>
+                          </Typography>
+                          <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>
                             {numberWithCommas(eachParticipation.count)}
-                          </p>
+                          </Typography>
                           {uniqueVisitors && uniqueVisitors > 0 ? (
                             <div className="flex flex-wrap gap-2 items-baseline">
                               <span className={analyticsStyles.highlightedText}>
@@ -367,7 +369,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       height: isMobile ? "200px" : "300px",
                     }}
                   >
-                    <p className={analyticsStyles.counterText}>NA</p>
+                    <Typography type={TEXT_TYPE.BODY_NORMAL} className={analyticsStyles.counterText}>NA</Typography>
                   </div>
                 )}
               </div>

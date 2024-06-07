@@ -19,9 +19,9 @@ import { useAccount } from "@starknet-react/core";
 import { starknetIdAppLink } from "@utils/links";
 import BannerPopup from "@components/UI/menus/bannerPopup";
 import { useDomainFromAddress } from "@hooks/naming";
-import NftIssuerTag from "@components/quests/nftIssuerTag";
 import { QuestDefault } from "@constants/common";
 import { updateUniqueVisitors, getQuestById } from "@services/apiService";
+import QuestTag from "@components/UI/questTag";
 
 type QuestPageProps = {
   questId: string;
@@ -130,20 +130,15 @@ const Quest: FunctionComponent<QuestPageProps> = ({
         <div className={homeStyles.backButton}>
           <BackButton onClick={() => router.back()} />
         </div>
+
         <div className={styles.imageContainer}>
           {quest.issuer === "loading" ? (
             <RewardSkeleton />
           ) : (
-            <div className="mb-4">
-              <NftIssuerTag
-                issuer={{
-                  name: quest.issuer,
-                  logoFavicon: quest.logo,
-                }}
-              />
-            </div>
+            <QuestTag label={quest.issuer ?? ''} icon={quest.logo}/>
           )}
         </div>
+
         <QuestDetails
           quest={quest}
           taskId={taskId as string | undefined}

@@ -39,7 +39,6 @@
 }
 
 .menu_title {
-  color: var(--secondary);
   font-size: 21px;
   font-weight: bold;
   text-align: center;
@@ -66,9 +65,6 @@
   .closeMobile {
     display: block;
     margin: 3rem auto 0;
-    color: var(--dark-content);
-
-    color: var(--secondary);
     /* Body/middle/bold */
     font-family: Sora;
     font-size: 18px;

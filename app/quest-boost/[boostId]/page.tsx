@@ -24,6 +24,8 @@ import useBoost from "@hooks/useBoost";
 import { getTokenName } from "@utils/tokenService";
 import BoostSkeleton from "@components/skeletons/boostSkeleton";
 import ErrorScreen from "@components/UI/screens/errorScreen";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BoostQuestPageProps = {
   params: {
@@ -145,7 +147,7 @@ export default function Page({ params }: BoostQuestPageProps) {
           {boost ? (
             <>
               <div className="flex flex-col">
-                <h1 className={styles.title}>{boost?.name}</h1>
+                <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>{boost?.name}</Typography>
                 {boost?.expiry && boost.expiry > Date.now() ? (
                   <Timer fixed={false} expiry={Number(boost?.expiry)} />
                 ) : null}
@@ -173,17 +175,17 @@ export default function Page({ params }: BoostQuestPageProps) {
               </div>
               <div className={styles.claim_button_container}>
                 <div className={styles.claim_button_text_content}>
-                  <p>Reward:</p>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>Reward:</Typography>
                   <div className={questStyles.issuer}>
-                    <p>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT}>
                       {boost?.amount} {getTokenName(boost?.token ?? "")}
-                    </p>
+                    </Typography>
                     <TokenSymbol tokenAddress={boost?.token ?? ""} />
                   </div>
-                  <p>among</p>
-                  <p className={styles.claim_button_text_highlight}>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>among</Typography>
+                  <Typography type={TEXT_TYPE.BODY_NORMAL} className={styles.claim_button_text_highlight}>
                     {participants} players
-                  </p>
+                  </Typography>
                 </div>
                 {address ? (
                   <div>
