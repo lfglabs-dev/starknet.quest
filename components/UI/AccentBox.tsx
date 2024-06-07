@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import type { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/accentBox.module.css";
 
 type AccentBoxProps = {
@@ -13,30 +12,13 @@ const AccentBox: FunctionComponent<AccentBoxProps> = ({
   className,
   style,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      handleToggle();
-    }
-  };
-
   return (
     <div
-      className={`${styles.accentBox} ${className} ${isExpanded ? styles.expanded : ''}`}
+      className={`${styles.accentBox} ${className}`}
       style={{ ...style }}
-      onClick={handleToggle}
-      onKeyUp={handleKeyUp}
-      tabIndex={0} 
     >
       <div className={styles.gradientLine}></div>
-      <div>
-        {children}
-      </div>
+      {children}
     </div>
   );
 };
