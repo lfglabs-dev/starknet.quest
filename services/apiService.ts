@@ -252,7 +252,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
 };
 
 export const getQuizById = async (
-  quizId: string,
+  quizId: number,
   address = "0"
 ): Promise<Quiz | undefined> => {
   try {

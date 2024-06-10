@@ -99,7 +99,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   handleChange,
   value,
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(value);
+  const [selectedValue, setSelectedValue] = React.useState<string>(value ?? "");
 
   const handleMenuChange = (event: SelectChangeEvent) => {
     if (handleChange) handleChange(event);

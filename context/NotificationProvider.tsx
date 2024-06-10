@@ -22,7 +22,7 @@ interface NotificationProps {
 }
 
 interface NotificationContextProps {
-  showNotification: (message: string, type?: NotificationProps["type"]) => void;
+  showNotification: (message: string, type: NotificationProps["type"]) => void;
   hideNotification: () => void;
 }
 

@@ -129,7 +129,7 @@ const Task: FunctionComponent<Task> = ({
       return setShowQuiz(
         <Quiz
           setShowQuiz={setShowQuiz}
-          quizId={quizName as string}
+          quizId={quizName ? quizName : 0}
           issuer={issuer}
           verifyEndpoint={verifyEndpoint}
           setIsVerified={setIsVerified}
@@ -153,7 +153,9 @@ const Task: FunctionComponent<Task> = ({
           <div className={isClicked ? "rotate-90" : undefined}>
             <ArrowRightIcon width={"16"} color="white" />
           </div>
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="ml-2 mr-2">{name}</Typography>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="ml-2 mr-2">
+            {name}
+          </Typography>
         </div>
         {isVerified ? (
           <div className="flex">
@@ -183,7 +185,9 @@ const Task: FunctionComponent<Task> = ({
             }}
             className={styles.verifyButton}
           >
-            <Typography type={TEXT_TYPE.BODY_DEFAULT}>{getButtonName()}</Typography>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+              {getButtonName()}
+            </Typography>
           </div>
         )}
       </div>
@@ -192,7 +196,9 @@ const Task: FunctionComponent<Task> = ({
           isClicked ? styles.visible : null
         }`}
       >
-        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="mb-3">{description}</Typography>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="mb-3">
+          {description}
+        </Typography>
         <div className="flex w-full justify-center items-center">
           <div className="w-2/3">
             <Button onClick={() => window.open(href)}>{cta}</Button>

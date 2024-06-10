@@ -30,7 +30,6 @@ import {
   UpdateQuest,
   UserTask,
 } from "../../../../../types/backTypes";
-import { useInfoBar } from "@context/useInfobar";
 import AdminQuestDetails from "@components/admin/QuestDetails";
 import ProgressBar from "@components/UI/progressBar";
 import { useNotification } from "@context/NotificationProvider";
@@ -233,7 +232,7 @@ export default function Page({ params }: AddressOrDomainProps) {
     let changeFlag = false;
     if (showBoost && !initialBoostDisplayStatus) changeFlag = true;
 
-    if (!changeFlag) changeFlag = boostInput !== questData.boosts[0];
+    if (!changeFlag) changeFlag = boostInput !== questData?.boosts[0];
 
     if (changeFlag) return boostInput;
 
@@ -318,7 +317,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     //check if start time is less than current time
     if (new Date(startTime).getTime() < new Date().getTime()) {
-      showNotification("Start time cannot be less than current time");
+      showNotification("Start time cannot be less than current time","info");
       return;
     }
 
@@ -331,7 +330,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     // check if start_time is less than end_time
     if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
-      showNotification("End time cannot be less than start time");
+      showNotification("End time cannot be less than start time","info");
       return;
     }
     setQuestInput((prev) => ({

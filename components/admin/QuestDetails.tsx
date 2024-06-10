@@ -18,7 +18,7 @@ import NftImage from "@components/quests/nftImage";
 import Task from "@components/quests/task";
 import Reward from "@components/quests/reward";
 import { AdminService } from "@services/authService";
-import { useInfoBar } from "@context/useInfobar";
+import { useNotification } from "@context/NotificationProvider";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -59,7 +59,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
 
   const generateOAuthUrl = (task: UserTask): string => {
     if (!address) {
-      showNotification("Please connect wallet to test");
+      showNotification("Please connect wallet to test","info");
       return "";
     }
     if (task.verify_endpoint_type === "oauth_discord") {
@@ -199,6 +199,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
               questName={quest.name}
               disabled={false}
               claimed={false}
+              mintCalldata={undefined}
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               onClick={() => {}}
             />
