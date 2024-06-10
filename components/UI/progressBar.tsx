@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styles from "@styles/components/progressbar.module.css";
+import styles from "@styles/components/progressBar.module.css";
 import DoneFilledIcon from "@public/icons/doneFilledIcon.svg";
 import theme from "@styles/theme";
 
