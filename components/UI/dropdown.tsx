@@ -1,9 +1,9 @@
-import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import type { SelectChangeEvent } from '@mui/material/Select'; 
-import { styled } from '@mui/system';
+import * as React from "react";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import type { SelectChangeEvent } from "@mui/material/Select";
+import { styled } from "@mui/system";
 import { IoIosArrowDown } from "react-icons/io";
 
 // Define the props for the Dropdown component
@@ -12,81 +12,82 @@ type DropdownProps = {
   borderColor?: string;
   textColor?: string;
   options: { value: string; label: string }[];
+  handleChange?: (event: SelectChangeEvent) => void;
+  value?: string;
 };
 
 // Styled component using styled-system
 const StyledFormControl = styled(FormControl, {
   shouldForwardProp: (prop) =>
-    prop !== 'backgroundColor' &&
-    prop !== 'borderColor' &&
-    prop !== 'textColor'
+    prop !== "backgroundColor" &&
+    prop !== "borderColor" &&
+    prop !== "textColor",
 })<DropdownProps>(({ backgroundColor, borderColor, textColor }) => ({
-  width: 150,
-  backgroundColor: backgroundColor || 'transparent',
-  color: textColor || 'inherit',
+  backgroundColor: backgroundColor || "transparent",
+  color: textColor || "inherit",
   borderRadius: 10,
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '10px 10px 0px 0px',
-    '& fieldset': {
-      borderColor: 'transparent',
-      borderWidth: '1px', 
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "10px 10px 0px 0px",
+    "& fieldset": {
+      borderColor: "transparent",
+      borderWidth: "1px",
     },
-    '&:hover fieldset': {
-      borderColor: 'transparent',
-      borderWidth: '1px', 
+    "&:hover fieldset": {
+      borderColor: "transparent",
+      borderWidth: "1px",
     },
-    '&.Mui-focused fieldset': {
-      borderColor: borderColor || 'white', 
-      borderWidth: '1px', 
+    "&.Mui-focused fieldset": {
+      borderColor: borderColor || "white",
+      borderWidth: "1px",
     },
   },
-  '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: 'transparent',
-    borderWidth: '1px', 
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: "transparent",
+    borderWidth: "1px",
   },
-  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: borderColor || 'white', 
+  "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: borderColor || "white",
   },
-  '& .MuiInputLabel-root': {
-    color: textColor || 'inherit',
+  "& .MuiInputLabel-root": {
+    color: textColor || "inherit",
   },
-  '& .MuiInputLabel-root.Mui-focused': {
-    color: textColor || 'inherit',
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: textColor || "inherit",
   },
-  '& .MuiSelect-select': {
-    color: textColor || 'inherit',
-    display: 'flex', 
-    alignItems: 'center', 
+  "& .MuiSelect-select": {
+    color: textColor || "inherit",
+    display: "flex",
+    alignItems: "center",
   },
-  '& .MuiSelect-icon': { 
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingleft: '20px',
+  "& .MuiSelect-icon": {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingleft: "20px",
   },
 }));
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-  '&.Mui-selected': {
-    backgroundColor: 'transparent', 
+  "&.Mui-selected": {
+    backgroundColor: "transparent",
   },
-  '&:hover': {
-    backgroundColor: 'transparent',
+  "&:hover": {
+    backgroundColor: "transparent",
   },
 }));
 
 const StyledMenuProps = {
   PaperProps: {
     sx: {
-      bgcolor: '#333',
-      color: '#ccc',
-      borderColor: 'white',
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderRadius: '0px 0px 10px 10px', 
-      marginTop: '-3px', 
-      boxShadow: 'none', 
-      width: '140px',
+      bgcolor: "#333",
+      color: "#ccc",
+      borderColor: "white",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderRadius: "0px 0px 10px 10px",
+      marginTop: "-3px",
+      boxShadow: "none",
+      width: "140px",
     },
   },
 };
@@ -95,12 +96,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   backgroundColor,
   textColor,
   options,
+  handleChange,
+  value,
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(
-    options.length > 0 ? options[0].value : ''
-  );
+  const [selectedValue, setSelectedValue] = React.useState<string>(value);
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleMenuChange = (event: SelectChangeEvent) => {
+    if (handleChange) handleChange(event);
     setSelectedValue(event.target.value as string);
   };
 
@@ -116,15 +118,17 @@ const Dropdown: React.FC<DropdownProps> = ({
         labelId="dropdown-label"
         id="dropdown"
         value={selectedValue}
-        onChange={handleChange}
+        onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
         IconComponent={() => (
-          <IoIosArrowDown style={{ color: 'white', fontSize: '50px', padding:'0 15px 0 0'}} /> 
+          <IoIosArrowDown
+            style={{ color: "white", fontSize: "50px", padding: "0 15px 0 0" }}
+          />
         )}
         inputProps={{
           style: {
-            borderColor: 'transparent',
-            borderWidth: '1px',
+            borderColor: "transparent",
+            borderWidth: "1px",
           },
         }}
       >

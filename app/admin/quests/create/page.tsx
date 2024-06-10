@@ -31,6 +31,7 @@ import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 import { useInfoBar } from "@context/useInfobar";
 import AdminQuestDetails from "@components/admin/QuestDetails";
 import { useNotification } from "@context/NotificationProvider";
+import Dropdown from "@components/UI/dropdown";
 
 // Define discriminated union types
 type StepMap =
@@ -464,15 +465,18 @@ export default function Page() {
                   label="Number of winners"
                   placeholder="Number of winners"
                 />
-                <Select
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#1F1F25",
-                    borderRadius: "8px",
-                  }}
+                <Dropdown
                   value={boostInput.token}
-                  label="Token"
-                  onChange={(event: SelectChangeEvent) => {
+                  backgroundColor="#29282B"
+                  textColor="#fff"
+                  // fullWidth
+                  // sx={{
+                  //   backgroundColor: "#1F1F25",
+                  //   borderRadius: "8px",
+                  // }}
+                  // value={boostInput.token}
+                  // label="Token"
+                  handleChange={(event: SelectChangeEvent) => {
                     setBoostInput((prev) => ({
                       ...prev,
                       token: event.target.value,
@@ -482,19 +486,15 @@ export default function Page() {
                         ],
                     }));
                   }}
-                >
-                  {Object.keys(TOKEN_ADDRESS_MAP[network]).map(
-                    (token, index) => (
-                      <MenuItem
-                        sx={{ backgroundColor: "#1F1F25" }}
-                        key={index}
-                        value={token}
-                      >
-                        {token}
-                      </MenuItem>
-                    )
+                  options={Object.keys(TOKEN_ADDRESS_MAP[network]).map(
+                    (eachItem) => {
+                      return {
+                        value: eachItem,
+                        label: eachItem,
+                      };
+                    }
                   )}
-                </Select>
+                />
                 <Textinput
                   onChange={handleBoostInputChange}
                   value={boostInput.amount}
