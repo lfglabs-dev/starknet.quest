@@ -89,8 +89,8 @@ export default function Page({ params }: AddressOrDomainProps) {
         new Date(quest_details.start_time).toISOString().split("T")[0]
       );
       setBoostInput(quest_details.boosts[0]);
-      setShowBoost(quest_details.boosts[0] ? true : false);
-      setInitialBoostDisplayStatus(quest_details.boosts[0] ? true : false);
+      setShowBoost(!!quest_details.boosts[0]);
+      setInitialBoostDisplayStatus(!!quest_details.boosts[0]);
       setEndTime(new Date(quest_details.expiry).toISOString().split("T")[0]);
       setQuestInput(quest_details);
       setQuestData(quest_details);
@@ -317,7 +317,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     //check if start time is less than current time
     if (new Date(startTime).getTime() < new Date().getTime()) {
-      showNotification("Start time cannot be less than current time","info");
+      showNotification("Start time cannot be less than current time", "info");
       return;
     }
 
@@ -330,7 +330,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   useEffect(() => {
     // check if start_time is less than end_time
     if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
-      showNotification("End time cannot be less than start time","info");
+      showNotification("End time cannot be less than start time", "info");
       return;
     }
     setQuestInput((prev) => ({

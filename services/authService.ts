@@ -28,6 +28,7 @@ const login = async (params: { passcode: string }) => {
     return await response.json();
   } catch (err) {
     console.log("Error while logging in", err);
+    return null;
   }
 };
 
@@ -441,5 +442,5 @@ export const AdminService = {
   getNftUriByQuestId,
   getQuizDetails,
   updateDomain,
-  createDomain
+  createDomain,
 };

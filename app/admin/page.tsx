@@ -5,16 +5,19 @@ import styles from "@styles/admin.module.css";
 import Button from "@components/UI/button";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
+import { useNotification } from "@context/NotificationProvider";
 
 export default function Page() {
   const router = useRouter();
   const password = useRef<HTMLInputElement>(null);
+  const { showNotification } = useNotification();
 
   const handleAdminLogin = useCallback(async () => {
     try {
       if (!password.current) return console.error("Password field not found");
       const passcode = password?.current.value;
       const response = await AdminService.login({ passcode });
+      if (!response) showNotification("Invalid passcode", "error");
       localStorage.setItem("token", response.token);
       router.push("/admin/quests");
     } catch (error) {

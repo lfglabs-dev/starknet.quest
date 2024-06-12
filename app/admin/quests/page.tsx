@@ -12,11 +12,13 @@ import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
 import Quest from "@components/admin/QuestCard";
+import { useNotification } from "@context/NotificationProvider";
 
 export default function Page() {
   const router = useRouter();
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
+  const { showNotification } = useNotification();
 
   const [quests, setQuests] = useState<[QuestDocument]>([QuestDefault]);
 
@@ -27,6 +29,7 @@ export default function Page() {
       setQuests(res);
       setLoading(false);
     } catch (error) {
+      showNotification("Error while fetching quests", "error");
       console.log("Error while fetching quests", error);
     }
   }, []);
