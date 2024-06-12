@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "@styles/components/timer.module.css";
+import AccentBox from "@components/UI/AccentBox";
 
 type TimerProps = {
   expiry: number;
@@ -27,27 +28,29 @@ const Timer: FunctionComponent<TimerProps> = ({ expiry, fixed = true }) => {
   return (
     <>
       {fixed ? <div className={styles.timerBackground} /> : null}
-      <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
-        <div className={styles.title}>Expires in</div>
-        <div className={styles.categories}>
-          <div>days</div>
-          <div>hours</div>
-          <div>minutes</div>
-          <div>seconds</div>
+      <AccentBox>
+        <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
+          <div className={styles.title}>Expires in</div>
+          <div className={styles.categories}>
+            <div>days</div>
+            <div>hours</div>
+            <div>minutes</div>
+            <div>seconds</div>
+          </div>
+          <div className={styles.dates}>
+            <div>
+              <span className={styles.day}>{days}</span>:
+            </div>
+            <div>
+              <span className={styles.hour}>{hours}</span>:
+            </div>
+            <div>
+              <span className={styles.minute}>{minutes}</span>:
+            </div>
+            <div className={styles.second}>{seconds}</div>
+          </div>
         </div>
-        <div className={styles.dates}>
-          <div>
-            <span className={styles.day}>{days}</span>:
-          </div>
-          <div>
-            <span className={styles.hour}>{hours}</span>:
-          </div>
-          <div>
-            <span className={styles.minute}>{minutes}</span>:
-          </div>
-          <div className={styles.second}>{seconds}</div>
-        </div>
-      </div>
+      </AccentBox>
     </>
   );
 };
