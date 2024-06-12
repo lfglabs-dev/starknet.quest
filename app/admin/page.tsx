@@ -37,7 +37,7 @@ export default function Page() {
             <label htmlFor="fname">Passcode:</label>
             <input
               ref={password}
-              className={styles.passwordField}
+              className={styles.input}
               id="fname"
               type="password"
             />
