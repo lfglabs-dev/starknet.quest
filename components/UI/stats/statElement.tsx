@@ -4,6 +4,7 @@ import Box from "../box";
 import Typography from "../typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
+
 type StatElementProps = {
   name: string;
   value: string;
@@ -17,6 +18,7 @@ const StatElement: FunctionComponent<StatElementProps> = ({ name, value }) => {
         <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.statName}>{name}</Typography>
       </Box>
     </div>
+    
   );
 };
 
