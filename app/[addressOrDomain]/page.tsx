@@ -313,7 +313,7 @@ export default function Page({ params }: AddressOrDomainProps) {
       {/* Completed Quests */}
       <div className={styles.dashboard_completed_tasks_container}>
         <div>
-          <nav className="border-b-2 pb-4" id="navTabWrapper">
+          <nav className="pb-4" id="navTabWrapper" style={{borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)"}}>
             <div className="dash-box">
               <OdTab
                 title={`Completed (${completedQuests.length ?? 0})`}

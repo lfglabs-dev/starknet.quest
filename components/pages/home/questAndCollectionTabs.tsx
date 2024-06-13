@@ -144,7 +144,7 @@ const QuestAndCollectionTabs: FunctionComponent<
       <section className={styles.section}>
         <div className="w-full">
           <div>
-          <nav className="border-b-2 pb-4" id="navTabWrapper">
+          <nav className="pb-4" id="navTabWrapper" style={{borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)"}}>
               <div className="tab-box">
                 <OdTab
                   title={`Quests (${sortedAndFilteredQuests.length})`}

@@ -162,8 +162,8 @@ button {
 #navTabWrapper .tab-box > span {
   position: absolute;
   inset: 0;
-  height: 40px;
-  width: 100px;
+  height: 33px;
+  width: 80px;
   margin: 0;
   background: #fff;
   border-radius: 10px;
@@ -176,7 +176,7 @@ button {
   display: block;
   position: absolute;
   inset: 0;
-  height: 40px;
+  height: 33px;
   width: 30%;
   margin: 0;
   background-color: #3f3f3f98;
@@ -190,9 +190,9 @@ button {
 #navTabWrapper .dash-box > span {
   position: absolute;
   inset: 0;
-  height: 40px;
+  height: 33px;
   width: 30%;
-  max-width: 137px;
+  max-width: 105px;
   margin: 0%;
   background: #fff;
   border-radius: 10px;
@@ -205,7 +205,7 @@ button {
   display: block;
   position: absolute;
   inset: 0;
-  height: 40px;
+  height: 33px;
   /* width: 25%; */
   margin: 0%;
   background-color: #3f3f3f98;
@@ -272,5 +272,9 @@ button {
 
 .tab-box, .dash-box, .chip-box > div.active {
   color: #292929f9;
+}
+.tab-box, .dash-box > div {
+  font-size: 12px;
+  font-weight: bold;
 }
 }
