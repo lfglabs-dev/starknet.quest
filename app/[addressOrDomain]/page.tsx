@@ -33,7 +33,7 @@ import {
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import OdTab from "@components/navbar/Tab";
-import { handleMouseLeave, moveHrSlider } from "@utils/navTab";
+import { handleMouseLeave, moveHrSlider, moveSpanActive } from "@utils/navTab";
 
 type AddressOrDomainProps = {
   params: {
@@ -320,7 +320,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 names={`w-fit py-2 px-2 text-center nav-item1 ${
                   tabIndex === 0 ? "active" : "text-white"
                 }`}
-                setActive={() => handleChangeTab(0)}
+                setActive={(event) => {handleChangeTab(0); moveSpanActive(event, ".dash-box")}}
                 prep={0}
                 mouse={(event) => moveHrSlider(event, ".dash-box")}
                 mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
@@ -332,12 +332,12 @@ export default function Page({ params }: AddressOrDomainProps) {
                 names={`w-fit py-2 px-2 nav-item2 text-center ${
                   tabIndex === 1 ? "active" : "text-white"
                 }`}
-                setActive={() => handleChangeTab(1)}
+                setActive={(event) => {handleChangeTab(1); moveSpanActive(event, ".dash-box")}}
                 prep={1}
                 mouse={(event) => moveHrSlider(event, ".dash-box")}
                 mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
               />
-              <span></span>
+              <span/>
               <hr />
             </div>
           </nav>

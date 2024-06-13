@@ -192,7 +192,8 @@ button {
   inset: 0;
   height: 40px;
   width: 30%;
-  margin: 0;
+  max-width: 137px;
+  margin: 0%;
   background: #fff;
   border-radius: 10px;
   border: none;
@@ -205,7 +206,7 @@ button {
   position: absolute;
   inset: 0;
   height: 40px;
-  width: 25%;
+  /* width: 25%; */
   margin: 0%;
   background-color: #3f3f3f98;
   border-radius: 10px;
@@ -243,33 +244,10 @@ button {
   transition: margin-left .3s ease-in-out;
 }
 
-/* quest active tab styling */
-
-#navTabWrapper .tab-box .nav-item2.active ~ span {
-  margin-left: 33%;
-}
-
-#navTabWrapper .tab-box .nav-item3.active ~ span {
-  margin-left: 66%;
-}
-
-/* dashboard tabs active styling */
-#navTabWrapper .dash-box .nav-item2.active ~ span {
-  margin-left: 29%;
-}
-
-/* #navTabWrapper .dash-box .nav-item1.active ~ span {
-} */
-
 #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
 }
 
-#navTabWrapper .dash-box .nav-item1:hover ~ hr {
-  width: 28%;
-}
-
-/* quest active tab on hover styling */
 #navTabWrapper .tab-box .nav-item2.active:hover ~ hr {
   opacity: 0;
 }
@@ -278,32 +256,9 @@ button {
   opacity: 0;
 }
 
-#navTabWrapper .tab-box .nav-item2:hover + .nav-item3.active ~ hr {
-  margin-left: 35%;
-}
-
-/* chip_list */
-#chipTabWrapper .chip-box .nav-item2.active ~ span {
-  margin-left: 27%;
-}
-
-#chipTabWrapper .chip-box .nav-item3.active ~ span {
-  margin-left: 54%;
-}
-
-#chipTabWrapper .chip-box .nav-item4.active ~ span {
-  margin-left: 79%;
-}
-
-/* chiplist active tab on hover styling */
 #chipTabWrapper .chip-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
 }
-
-#chipTabWrapper .chip-box .nav-item4:hover ~ hr {
-  width: 20%;
-}
-
 
 @keyframes fadeIn {
   0%, 14% {
@@ -315,9 +270,7 @@ button {
   }
 }
 
-/* active state */
 .tab-box, .dash-box, .chip-box > div.active {
   color: #292929f9;
 }
 }
-/* end of nav tab styles */

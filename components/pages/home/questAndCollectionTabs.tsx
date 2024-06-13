@@ -27,7 +27,7 @@ import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
 import OdTab from "@components/navbar/Tab";
-import { moveHrSlider, handleMouseLeave } from "@utils/navTab";
+import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
 
 export function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -151,7 +151,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   names={`w-full py-2 nav-item1 ${
                     tabIndex === 0 ? "active" : "text-white"
                   }`}
-                  setActive={() => handleChangeTab(0)}
+                  setActive={(event) => {handleChangeTab(0); moveSpanActive(event, ".tab-box")}}
                   prep={0}
                   mouse={(event) => moveHrSlider(event, ".tab-box")}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
@@ -163,7 +163,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   names={`w-full py-2 nav-item2 ${
                     tabIndex === 1 ? "active" : "text-white"
                   }`}
-                  setActive={() => handleChangeTab(1)}
+                  setActive={(event) => {handleChangeTab(1); moveSpanActive(event, ".tab-box")}}
                   prep={1}
                   mouse={(event) => moveHrSlider(event, ".tab-box")}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
@@ -175,7 +175,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     names={`${address ?? "invisible"} w-full py-2 nav-item3 ${
                       tabIndex === 2 ? "active" : "text-white"
                     }`}
-                    setActive={() => handleChangeTab(2)}
+                    setActive={(event) => {handleChangeTab(2); moveSpanActive(event, ".tab-box")}}
                     prep={2}
                     mouse={(event) => moveHrSlider(event, ".tab-box")}
                     mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}

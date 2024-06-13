@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
 import OdTab from "@components/navbar/Tab";
-import { moveHrSlider, handleMouseLeave } from "@utils/navTab";
+import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
 
 type ChipProps = {
   tags: string[];
@@ -23,7 +23,7 @@ const ChipList: FunctionComponent<ChipProps> = ({
             names={`w-fit lg:w-[110px] text-center nav-item${index+1} ${
               activeTab === index ? "active" : "text-white"
             }`}
-            setActive={() => handleChangeTab(index)}
+            setActive={(event) => {handleChangeTab(index); moveSpanActive(event, ".chip-box")}}
             prep={0}
             mouse={(event) => moveHrSlider(event, ".chip-box")}
             mouseLeave={(event) => handleMouseLeave(event, ".chip-box")}

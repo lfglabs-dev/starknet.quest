@@ -4,7 +4,7 @@ interface TabProps {
   title: string;
   names: string;
   prep: number;
-  setActive: () => void;
+  setActive: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   mouse: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   mouseLeave: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
