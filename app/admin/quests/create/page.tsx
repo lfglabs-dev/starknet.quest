@@ -130,7 +130,7 @@ export default function Page() {
         });
         if (!response) return;
       } catch (error) {
-        console.log("Error while creating quest", error);
+        console.log("Error while creating boost", error);
       }
     },
     [questId, boostInput]
