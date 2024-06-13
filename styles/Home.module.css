@@ -40,7 +40,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
 }
 
 .questCategories {
@@ -92,7 +91,7 @@
   text-align: left;
 }
 
-.categoryInfos h2 {
+.categoryInfosH2 {
   font-family: "Sora-Bold";
   font-size: 1.8rem;
   color: var(--secondary);
@@ -257,12 +256,12 @@
     text-align: center;
   }
 
-  .categoryInfos h2 {
+  .categoryInfosH2 {
     margin-bottom: 1rem;
     font-size: 18px;
   }
 
-  .categoryInfos p {
+  .categoryInfosText {
     font-size: 16px;
   }
 

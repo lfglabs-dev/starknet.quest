@@ -34,6 +34,8 @@ import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import OdTab from "@components/navbar/Tab";
 import { handleMouseLeave, moveHrSlider, moveSpanActive } from "@utils/navTab";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type AddressOrDomainProps = {
   params: {
@@ -347,11 +349,11 @@ export default function Page({ params }: AddressOrDomainProps) {
             {questsLoading ? (
               <QuestSkeleton />
             ) : completedQuests?.length === 0 ? (
-              <h2 className={styles.noBoosts}>
+              <Typography type={TEXT_TYPE.H2} className={styles.noBoosts}>
                 {isOwner
                   ? "You have not completed any quests at the moment"
                   : "User has not completed any quests at the moment"}
-              </h2>
+              </Typography>
             ) : (
               <section className={QuestStyles.section}>
                 <div className={QuestStyles.questContainer}>

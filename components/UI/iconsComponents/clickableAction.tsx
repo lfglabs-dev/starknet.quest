@@ -1,5 +1,7 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/identityMenu.module.css";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ClickableActionProps = {
   icon: ReactNode;
@@ -39,8 +41,8 @@ const ClickableAction: FunctionComponent<ClickableActionProps> = ({
       </div>
 
       <div className="ml-2">
-        <h1 className={styles.clickableActionTitle}>{title}</h1>
-        <p className={styles.clickableActionDescription}>{description}</p>
+        <Typography type={TEXT_TYPE.H1} color="secondary" className={styles.clickableActionTitle}>{title}</Typography>
+        <Typography type={TEXT_TYPE.BODY_MICRO} className={styles.clickableActionDescription}>{description}</Typography>
       </div>
     </div>
   );

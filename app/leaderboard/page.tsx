@@ -39,6 +39,8 @@ import RankingSkeleton from "@components/skeletons/rankingSkeleton";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { timeFrameMap } from "@utils/timeService";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();
@@ -411,7 +413,7 @@ export default function Page() {
           <div className={styles.leaderboard_layout}>
             <div className={styles.leaderboard_topbar}>
               <div style={{ flex: 0.4 }}>
-                <p className={styles.leaderboard_heading}>Leaderboard</p>
+                <Typography type={TEXT_TYPE.BODY_MIDDLE} className={styles.leaderboard_heading}>Leaderboard</Typography>
               </div>
               <div className={styles.leaderboard_chiplist} style={{ flex: 1 }}>
                 <ChipList
@@ -454,26 +456,26 @@ export default function Page() {
                     </div>
                   ) : null}
                   <div className={styles.percentile_text_container}>
-                    <p className={styles.percentile_text_normal}>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray" className={styles.percentile_text_normal}>
                       {currentSearchedAddress.length > 0 ? "He is" : "You are "}
-                    </p>
+                    </Typography>
                     <span className={styles.percentile_text_green}>
                       &nbsp;better than {userPercentile}%&nbsp;
                     </span>
-                    <p className={styles.percentile_text_normal}>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray" className={styles.percentile_text_normal}>
                       of the other players
-                    </p>
+                    </Typography>
                   </div>
                 </div>
               ) : address ? (
                 <div className={styles.percentile_container}>
-                  <p className={styles.percentile_text_normal}>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray" className={styles.percentile_text_normal}>
                     You werent active this week. ready to jump back in?
-                  </p>
+                  </Typography>
                   <Link href="/">
-                    <p className={styles.percentile_text_link}>
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white" className={styles.percentile_text_link}>
                       Start your quest
-                    </p>
+                    </Typography>
                   </Link>
                 </div>
               ) : null
@@ -498,9 +500,9 @@ export default function Page() {
                     width={254}
                     alt="error image"
                   />
-                  <p className="pb-[1.5rem]">
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT} className="pb-[1.5rem]">
                     No Results Found! Try a new search
-                  </p>
+                  </Typography>
                   <Divider
                     orientation="horizontal"
                     variant="fullWidth"
@@ -530,9 +532,9 @@ export default function Page() {
               )
             ) : (
               <div className={styles.no_result_container}>
-                <p className="pb-[1.5rem] text-[1.5rem]">
+                <Typography type={TEXT_TYPE.BODY_DEFAULT} className="pb-[1.5rem] text-[1.5rem]">
                   Something went wrong! Try again...
-                </p>
+                </Typography>
                 <Divider
                   orientation="horizontal"
                   variant="fullWidth"

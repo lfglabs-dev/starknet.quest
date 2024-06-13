@@ -9,6 +9,8 @@ import { getBoosts } from "@services/apiService";
 import TokenSymbol from "@components/quest-boost/TokenSymbol";
 import { QuestsContext } from "@context/QuestsProvider";
 import styles from "../../styles/quests.module.css";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BoostRewardProps = {
   questId: number;
@@ -51,7 +53,7 @@ const BoostReward: FunctionComponent<BoostRewardProps> = ({ questId }) => {
       {boost && isQuestBoosted ? (
         <div className={styles.issuer} style={{ gap: 0, padding: "8px 16px" }}>
           <TokenSymbol tokenAddress={boost?.token} />
-          <p className="text-white ml-2">{boost?.amount}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white ml-2 issuerText">{boost?.amount}</Typography>
         </div>
       ) : null}
     </>

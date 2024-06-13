@@ -1,4 +1,4 @@
-type IconProps = { width: string; color?: string; secondColor?: string };
+type IconProps = { width: string; color?: string; secondColor?: string, backgroundColor?: string  };
 
 type Issuer = {
   name: string;

@@ -2,6 +2,8 @@ import React from "react";
 import styles from "@styles/components/wallets.module.css";
 import { FunctionComponent, ReactNode } from "react";
 import { Modal } from "@mui/material";
+import Typography from "./typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ModalMessageProps = {
   title: string;
@@ -35,7 +37,7 @@ const ModalMessage: FunctionComponent<ModalMessageProps> = ({
             ></path>
           </svg>
         </button>
-        <p className={styles.menu_title}>{title}</p>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.menu_title}>{title}</Typography>
         {message}
       </div>
     </Modal>

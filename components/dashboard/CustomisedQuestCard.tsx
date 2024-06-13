@@ -14,6 +14,8 @@ import { QuestDocument } from "../../types/backTypes";
 import { QuestDefault } from "@constants/common";
 import { useRouter } from "next/navigation";
 import QuestCardSkeleton from "@components/skeletons/QuestCardSkeleton";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestProps = {
   id: number;
@@ -48,19 +50,19 @@ const QuestCardCustomised: FunctionComponent<QuestProps> = ({ id }) => {
           data.expired ? "opacity-40" : null
         }`}
       >
-        <p className="text-gray-400">{data.issuer}</p>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{data.issuer}</Typography>
       </div>
       <div className="flex gap-2 mt-3 justify-center md:justify-start">
         <div className={questCardStyles.issuer}>
           {data.expired ? (
             <>
-              <p className="text-white mr-2">Expired</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white mr-2 issuerText">Expired</Typography>
               <UnavailableIcon width="24" color="#D32F2F" />
             </>
           ) : (
             <>
               <CDNImg width={20} src={data.logo} loading="lazy" />
-              <p className="text-white ml-2">{data.rewards_title}</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white ml-2 issuerText">{data.rewards_title}</Typography>
             </>
           )}
         </div>

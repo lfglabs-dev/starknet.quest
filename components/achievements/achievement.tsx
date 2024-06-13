@@ -6,6 +6,8 @@ import {
 } from "../../types/backTypes";
 import Level from "./level";
 import cdnize from "@utils/cdnize";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type AchievementProps = {
   achievements: AchievementsDocument;
@@ -29,8 +31,8 @@ const Achievement: FunctionComponent<AchievementProps> = ({
       <div className={styles.backgroundFilter} />
       <div className={styles.cardContainer}>
         <div>
-          <h2 className={styles.cardTitle}>{achievements.category_name}</h2>
-          <p className={styles.cardSubtitle}>/{achievements.category_desc}</p>
+          <Typography type={TEXT_TYPE.H2} className={styles.cardTitle}>{achievements.category_name}</Typography>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="tertiary" className={styles.cardSubtitle}>/{achievements.category_desc}</Typography>
         </div>
         <div className={styles.levels}>
           {achievements.achievements.map((achievement: AchievementDocument) => {

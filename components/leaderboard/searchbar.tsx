@@ -8,6 +8,8 @@ import Image from "next/image";
 import styles from "@styles/leaderboard.module.css";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { hexToDecimal } from "@utils/feltService";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type SearchbarProps = {
   handleChange: (_: string) => void;
@@ -106,7 +108,7 @@ const Searchbar: FunctionComponent<SearchbarProps> = ({
               key={index}
               onClick={() => handleOptionClick(suggestion)}
             >
-              <p>{suggestion}</p>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT}>{suggestion}</Typography>
             </div>
           ))}
         </div>
