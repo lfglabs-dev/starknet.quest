@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
-import InputCard from "@components/admin/InputCard";
+import InputCard from "@components/admin/inputCard";
 import { MenuItem, Select, SelectChangeEvent, Switch } from "@mui/material";
 import Button from "@components/UI/button";
 import {
@@ -13,8 +13,8 @@ import {
   TOKEN_DECIMAL_MAP,
 } from "@constants/common";
 import { getCurrentNetwork } from "@utils/network";
-import Textinput from "@components/admin/Textinput";
-import Dateinput from "@components/admin/DateInput";
+import TextInput from "@components/admin/textInput";
+import DateInput from "@components/admin/dateInput";
 import QuizControls from "@components/quiz/quizControls";
 import {
   CATEGORY_OPTIONS,
@@ -30,7 +30,7 @@ import {
   UpdateQuest,
   UserTask,
 } from "../../../../../types/backTypes";
-import AdminQuestDetails from "@components/admin/QuestDetails";
+import AdminQuestDetails from "@components/admin/questDetails";
 import ProgressBar from "@components/UI/progressBar";
 import { useNotification } from "@context/NotificationProvider";
 
@@ -566,7 +566,7 @@ export default function Page({ params }: AddressOrDomainProps) {
           <InputCard>
             <div className="flex flex-col gap-8 w-full">
               <p className={styles.cardHeading}>{headingText}</p>
-              <Textinput
+              <TextInput
                 onChange={(e) => {
                   setQuestInput((prev) => ({
                     ...prev,
@@ -582,14 +582,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 label="Quest Name"
                 placeholder="Quest Name"
               />
-              <Textinput
+              <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.title_card ?? ""}
                 name="title_card"
                 label="Quest Title Card"
                 placeholder="Quest Title"
               />
-              <Textinput
+              <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.desc ?? ""}
                 name="desc"
@@ -599,7 +599,7 @@ export default function Page({ params }: AddressOrDomainProps) {
               />
               <div className="w-full flex justify-between gap-4">
                 <div className="flex-1 w-full">
-                  <Dateinput
+                  <DateInput
                     onChange={(e) => {
                       setStartTime(e.target.value);
                     }}
@@ -610,7 +610,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                   />
                 </div>
                 <div className="flex-1 w-full">
-                  <Dateinput
+                  <DateInput
                     onChange={(e) => {
                       setEndTime(e.target.value);
                     }}
@@ -665,7 +665,7 @@ export default function Page({ params }: AddressOrDomainProps) {
           <InputCard>
             <div className="flex flex-col gap-8 w-full">
               <p className={styles.cardHeading}>{headingText}</p>
-              <Textinput
+              <TextInput
                 onChange={(e) => {
                   setNftUri((prev) => ({
                     ...prev,
@@ -677,14 +677,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 label="NFT Name"
                 placeholder="NFT Name"
               />
-              <Textinput
+              <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.rewards_title ?? ""}
                 name="rewards_title"
                 label="Rewards Title"
                 placeholder="NFT Name"
               />
-              <Textinput
+              <TextInput
                 onChange={(e) => {
                   setQuestInput((prev) => ({
                     ...prev,
@@ -705,7 +705,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 placeholder="NFT Image Path"
               />
 
-              <Textinput
+              <TextInput
                 onChange={(e) => {
                   setNftUri((prev) => ({
                     ...prev,
@@ -717,7 +717,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 label="NFT Description"
                 placeholder="NFT Description"
               />
-              <Textinput
+              <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.logo ?? ""}
                 name="logo"
@@ -736,7 +736,7 @@ export default function Page({ params }: AddressOrDomainProps) {
             </div>
             {showBoost ? (
               <div className="flex flex-col w-full gap-8">
-                <Textinput
+                <TextInput
                   onChange={handleBoostInputChange}
                   value={boostInput?.num_of_winners ?? ""}
                   name="num_of_winners"
@@ -774,7 +774,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     )
                   )}
                 </Select>
-                <Textinput
+                <TextInput
                   onChange={handleBoostInputChange}
                   value={boostInput?.amount ?? ""}
                   name="amount"
@@ -896,35 +896,35 @@ export default function Page({ params }: AddressOrDomainProps) {
 
               {step?.type === "Quiz" ? (
                 <div className="flex flex-col gap-8 pt-2">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.quiz_name}
                     name="quiz_name"
                     label="Quiz Name"
                     placeholder="Quiz Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.quiz_desc}
                     name="quiz_desc"
                     label="Quiz Description"
                     placeholder="Quiz Description"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.quiz_intro}
                     name="quiz_intro"
                     label="Quiz Introduction"
                     placeholder="Help URL"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.quiz_cta}
                     name="quiz_cta"
                     label="Call To Action"
                     placeholder="Call To Action"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.quiz_help_link}
                     name="quiz_help_link"
@@ -939,7 +939,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                         questionIndex: number
                       ) => (
                         <>
-                          <Textinput
+                          <TextInput
                             onChange={(e) => {
                               const updatedSteps = steps.map((step, i) => {
                                 if (i === index && step.type === "Quiz") {
@@ -1137,14 +1137,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
               ) : step?.type === "Discord" ? (
                 <div className="flex flex-col gap-8 pt-2">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.dc_name}
                     name="dc_name"
                     label="Name"
                     placeholder="Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.dc_desc}
                     name="dc_desc"
@@ -1152,14 +1152,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                     placeholder="Description"
                     multiline={4}
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.dc_guild_id}
                     name="dc_guild_id"
                     label="Guild ID"
                     placeholder="Discord ID"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.dc_invite_link}
                     name="dc_invite_link"
@@ -1169,14 +1169,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
               ) : step?.type === "TwitterFw" ? (
                 <div className="flex flex-col gap-8 pt-8">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twfw_name}
                     name="twfw_name"
                     label="Name"
                     placeholder="Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twfw_desc}
                     name="twfw_desc"
@@ -1184,7 +1184,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     placeholder="Description"
                     multiline={4}
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twfw_username}
                     name="twfw_username"
@@ -1194,14 +1194,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
               ) : step?.type === "Domain" ? (
                 <div className="flex flex-col gap-8 pt-8">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.domain_name}
                     name="domain_name"
                     label="Name"
                     placeholder="Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.domin_desc}
                     name="domin_desc"
@@ -1212,14 +1212,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
               ) : step?.type === "TwitterRw" ? (
                 <div className="flex flex-col gap-8 pt-8">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twrw_name}
                     name="twrw_name"
                     label="Name"
                     placeholder="Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twrw_desc}
                     name="twrw_desc"
@@ -1227,7 +1227,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                     placeholder="Description"
                     multiline={4}
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.twrw_post_link}
                     name="twrw_post_link"
@@ -1237,14 +1237,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
               ) : step?.type === "Custom" ? (
                 <div className="flex flex-col gap-8 pt-2">
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.custom_name}
                     name="custom_name"
                     label="Name"
                     placeholder="Name"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.custom_desc}
                     name="custom_desc"
@@ -1252,14 +1252,14 @@ export default function Page({ params }: AddressOrDomainProps) {
                     placeholder="Description"
                     multiline={4}
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.custom_href}
                     name="custom_href"
                     label="API Endpoint"
                     placeholder="API Endpoint"
                   />
-                  <Textinput
+                  <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.custom_cta}
                     name="custom_cta"

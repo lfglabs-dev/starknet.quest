@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@styles/admin.module.css";
 
-type Props = {
+type TextInputProps = {
   value: string | number;
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -11,7 +11,7 @@ type Props = {
   type?: string;
 };
 
-export default function Textinput(props: Props) {
+export default function TextInput(props: TextInputProps) {
   const { value, placeholder, onChange, label, name, multiline, type } = props;
 
   return (

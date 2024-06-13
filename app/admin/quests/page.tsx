@@ -11,7 +11,7 @@ import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
-import Quest from "@components/admin/QuestCard";
+import Quest from "@components/admin/questCard";
 import { useNotification } from "@context/NotificationProvider";
 
 export default function Page() {

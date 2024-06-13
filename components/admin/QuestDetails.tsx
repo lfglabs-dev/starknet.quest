@@ -138,7 +138,13 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   {quest.additional_desc}
                 </p>
               </>
-            ) : null}
+            ) : (
+              <Skeleton
+                variant="text"
+                width={400}
+                sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
+              />
+            )}
           </>
         )}
       </div>

@@ -9,7 +9,7 @@ type Props = {
   label: string;
 };
 
-export default function Dateinput(props: Props) {
+export default function DateInput(props: Props) {
   const { value, placeholder, onChange, label, name } = props;
 
   return (
