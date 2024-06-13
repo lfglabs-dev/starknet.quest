@@ -1,15 +1,12 @@
 import React, { useState, FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
-import OdTab from "@components/navbar/Tab";
 import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
 
 type ChipProps = {
   tags: string[];
 };
 
-const ChipList: FunctionComponent<ChipProps> = ({
-  tags,
-}) => {
+const ChipList: FunctionComponent<ChipProps> = ({ tags }) => {
   const [activeTab, setActiveTab] = useState(0);
   const handleChangeTab = (val: number) => {
     setActiveTab(val);
@@ -18,17 +15,20 @@ const ChipList: FunctionComponent<ChipProps> = ({
     <div className="pb-1 chip-tab-wrapper" id="chipTabWrapper">
       <div className={`chip-box ${styles.chiplist_container}`}>
         {tags.map((tag, index) => (
-          <OdTab 
-            title={tag}
-            names={`${
-              activeTab === index ? "active" : "text-white"
-            } ${styles.each_chip}`}
-            setActive={(event) => {handleChangeTab(index); moveSpanActive(event, ".chip-box")}}
-            prep={0}
-            mouse={(event) => moveHrSlider(event, ".chip-box")}
-            mouseLeave={(event) => handleMouseLeave(event, ".chip-box")}
+          <div
+            className={`${activeTab === index ? "active" : "text-white"} ${
+              styles.each_chip
+            } nav-tab z-50`}
+            onClick={(event) => {
+              handleChangeTab(index);
+              moveSpanActive(event, ".chip-box");
+            }}
+            onMouseEnter={(event) => moveHrSlider(event, ".chip-box")}
+            onMouseLeave={(event) => handleMouseLeave(event, ".chip-box")}
             key={index}
-          />
+          >
+            <p style={{ fontSize: 12 }}>{tag}</p>
+          </div>
         ))}
         <span></span>
         <hr />

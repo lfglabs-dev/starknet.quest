@@ -219,7 +219,7 @@ button {
 #chipTabWrapper .chip-box > span {
   position: absolute;
   inset: 0;
-  height: 95%;
+  height: 85%;
   width: 23%;
   margin: 0;
   background: #fff;
@@ -233,7 +233,7 @@ button {
   display: block;
   position: absolute;
   inset: 0;
-  height: 95%;
+  height: 85%;
   /* width: 23%; */
   margin: 0;
   background-color: #3f3f3f98;
