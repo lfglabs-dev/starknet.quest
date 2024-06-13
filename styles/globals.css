@@ -163,7 +163,7 @@ button {
   position: absolute;
   inset: 0;
   height: 40px;
-  width: 31%;
+  width: 100px;
   margin: 0;
   background: #fff;
   border-radius: 10px;
@@ -234,7 +234,7 @@ button {
   position: absolute;
   inset: 0;
   height: 95%;
-  width: 23%;
+  /* width: 23%; */
   margin: 0;
   background-color: #3f3f3f98;
   border-radius: 10px;

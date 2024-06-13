@@ -148,7 +148,7 @@ const QuestAndCollectionTabs: FunctionComponent<
               <div className="tab-box">
                 <OdTab
                   title={`Quests (${sortedAndFilteredQuests.length})`}
-                  names={`w-full py-2 nav-item1 ${
+                  names={`px-2 py-2 nav-item1 ${
                     tabIndex === 0 ? "active" : "text-white"
                   }`}
                   setActive={(event) => {handleChangeTab(0); moveSpanActive(event, ".tab-box")}}
@@ -160,19 +160,20 @@ const QuestAndCollectionTabs: FunctionComponent<
                   title={`Collections (${
                     categories.length + (boosts ? 1 : 0)
                   })`}
-                  names={`w-full py-2 nav-item2 ${
+                  names={`px-2 py-2 nav-item2 ${
                     tabIndex === 1 ? "active" : "text-white"
                   }`}
                   setActive={(event) => {handleChangeTab(1); moveSpanActive(event, ".tab-box")}}
                   prep={1}
                   mouse={(event) => moveHrSlider(event, ".tab-box")}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
-                /> 
+                />
+                {address && ( 
                 <OdTab
                     title={`To claim (${
                       claimableQuests ? claimableQuests.length : 0
                     })`}
-                    names={`${address ?? "invisible"} w-full py-2 nav-item3 ${
+                    names={`px-2 py-2 nav-item3 ${
                       tabIndex === 2 ? "active" : "text-white"
                     }`}
                     setActive={(event) => {handleChangeTab(2); moveSpanActive(event, ".tab-box")}}
@@ -180,6 +181,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     mouse={(event) => moveHrSlider(event, ".tab-box")}
                     mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                   />
+                )}
                 <span></span>
                 <hr />
               </div>

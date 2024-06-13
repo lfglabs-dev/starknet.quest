@@ -16,13 +16,13 @@ const ChipList: FunctionComponent<ChipProps> = ({
   };
   return (
     <div className="pb-1 chip-tab-wrapper" id="chipTabWrapper">
-      <div className="md:h-[40px] bg-[#1010124c] grid grid-cols-4 w-full gap-8 items-center rounded-[10px] chip-box">
+      <div className={`chip-box ${styles.chiplist_container}`}>
         {tags.map((tag, index) => (
           <OdTab 
             title={tag}
-            names={`w-fit lg:w-[110px] text-center nav-item${index+1} ${
+            names={`${
               activeTab === index ? "active" : "text-white"
-            }`}
+            } ${styles.each_chip}`}
             setActive={(event) => {handleChangeTab(index); moveSpanActive(event, ".chip-box")}}
             prep={0}
             mouse={(event) => moveHrSlider(event, ".chip-box")}
