@@ -28,29 +28,28 @@ const Timer: FunctionComponent<TimerProps> = ({ expiry, fixed = true }) => {
   return (
     <>
       {fixed ? <div className={styles.timerBackground} /> : null}
-      <AccentBox>
-        <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
-          <div className={styles.title}>Expires in</div>
-          <div className={styles.categories}>
-            <div>days</div>
-            <div>hours</div>
-            <div>minutes</div>
-            <div>seconds</div>
-          </div>
-          <div className={styles.dates}>
-            <div>
-              <span className={styles.day}>{days}</span>:
-            </div>
-            <div>
-              <span className={styles.hour}>{hours}</span>:
-            </div>
-            <div>
-              <span className={styles.minute}>{minutes}</span>:
-            </div>
-            <div className={styles.second}>{seconds}</div>
-          </div>
+
+      <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
+        <div className={styles.title}>Expires in</div>
+        <div className={styles.categories}>
+          <div>days</div>
+          <div>hours</div>
+          <div>minutes</div>
+          <div>seconds</div>
         </div>
-      </AccentBox>
+        <div className={styles.dates}>
+          <div>
+            <span className={styles.day}>{days}</span>:
+          </div>
+          <div>
+            <span className={styles.hour}>{hours}</span>:
+          </div>
+          <div>
+            <span className={styles.minute}>{minutes}</span>:
+          </div>
+          <div className={styles.second}>{seconds}</div>
+        </div>
+      </div>
     </>
   );
 };
