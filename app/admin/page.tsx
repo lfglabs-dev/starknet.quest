@@ -1,16 +1,23 @@
 "use client";
 
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styles from "@styles/admin.module.css";
 import Button from "@components/UI/button";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
+import { getUserFromJwt } from "@utils/jwt";
 
 export default function Page() {
   const router = useRouter();
   const password = useRef<HTMLInputElement>(null);
   const { showNotification } = useNotification();
+
+  useEffect(() => {
+    const user = getUserFromJwt();
+    if (!user) return;
+    router.push("/admin/quests");
+  }, []);
 
   const handleAdminLogin = useCallback(async () => {
     try {
