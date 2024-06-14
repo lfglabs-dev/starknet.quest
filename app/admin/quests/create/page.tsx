@@ -109,6 +109,7 @@ export default function Page() {
 
   const handleCreateQuest = useCallback(async () => {
     try {
+      console.log({ questInput });
       const response = await AdminService.createQuest(questInput);
       if (!response) return;
       setQuestId(Number(response.id));
@@ -116,6 +117,10 @@ export default function Page() {
     } catch (error) {
       console.log("Error while creating quest", error);
     }
+  }, [questInput]);
+
+  useEffect(() => {
+    console.log({ questInput });
   }, [questInput]);
 
   const handleCreateBoost = useCallback(
@@ -249,11 +254,21 @@ export default function Page() {
     if (!id) return;
     await handleCreateBoost(id);
     handlePagination("Next");
-  }, []);
+  }, [questInput, boostInput]);
 
   const handleCreateTask = useCallback(async () => {
     steps.map(async (step) => {
       if (step.type === "Quiz") {
+        if (
+          step.data.quiz_name?.length === 0 ||
+          step.data.quiz_desc?.length === 0 ||
+          step.data.quiz_intro?.length === 0 ||
+          step.data.quiz_cta?.length === 0 ||
+          step.data.quiz_help_link?.length === 0
+        ) {
+          showNotification("Please fill all fields for Quiz", "info");
+          return;
+        }
         const response = await AdminService.createQuiz({
           quest_id: questId,
           name: step.data.quiz_name,
@@ -276,6 +291,14 @@ export default function Page() {
         );
       }
       if (step.type === "TwitterFw") {
+        if (
+          step.data.twfw_name?.length === 0 ||
+          step.data.twfw_desc?.length === 0 ||
+          step.data.twfw_username?.length === 0
+        ) {
+          showNotification("Please fill all fields for Twitter Follow", "info");
+          return;
+        }
         await AdminService.createTwitterFw({
           quest_id: questId,
           name: step.data.twfw_name,
@@ -283,6 +306,17 @@ export default function Page() {
           username: step.data.twfw_username,
         });
       } else if (step.type === "TwitterRw") {
+        if (
+          step.data.twrw_name?.length === 0 ||
+          step.data.twrw_desc?.length === 0 ||
+          step.data.twrw_post_link?.length === 0
+        ) {
+          showNotification(
+            "Please fill all fields for Twitter Retweet",
+            "info"
+          );
+          return;
+        }
         await AdminService.createTwitterRw({
           quest_id: questId,
           name: step.data.twrw_name,
@@ -290,6 +324,15 @@ export default function Page() {
           post_link: step.data.twrw_post_link,
         });
       } else if (step.type === "Discord") {
+        if (
+          step.data.dc_name?.length === 0 ||
+          step.data.dc_desc?.length === 0 ||
+          step.data.dc_invite_link?.length === 0 ||
+          step.data.dc_guild_id?.length === 0
+        ) {
+          showNotification("Please fill all fields for Discord", "info");
+          return;
+        }
         await AdminService.createDiscord({
           quest_id: questId,
           name: step.data.dc_name,
@@ -298,6 +341,15 @@ export default function Page() {
           guild_id: step.data.dc_guild_id,
         });
       } else if (step.type === "Custom") {
+        if (
+          step.data.custom_name?.length === 0 ||
+          step.data.custom_desc?.length === 0 ||
+          step.data.custom_cta?.length === 0 ||
+          step.data.custom_href?.length === 0
+        ) {
+          showNotification("Please fill all fields for Discord", "info");
+          return;
+        }
         await AdminService.createCustom({
           quest_id: questId,
           name: step.data.custom_name,
@@ -373,7 +425,7 @@ export default function Page() {
                     onClick={() => {
                       setQuestInput((prev) => ({ ...prev, category }));
                     }}
-                    key={category}
+                    key={"category" + category}
                     className="py-3 px-5 rounded-xl w-fit"
                     style={{
                       cursor: "pointer",
@@ -540,7 +592,7 @@ export default function Page() {
         <div className="flex flex-col gap-8 w-full">
           <p className={styles.cardHeading}>{headingText}</p>
           {steps.map((step, index) => (
-            <InputCard key={index}>
+            <InputCard key={"input-" + index}>
               <div className="flex gap-8">
                 <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
                   <>
@@ -564,7 +616,7 @@ export default function Page() {
                             return newArr;
                           });
                         }}
-                        key={category}
+                        key={"taskcategory-" + category}
                         className="py-3 px-5 rounded-xl w-fit"
                         style={{
                           cursor: "pointer",
@@ -602,7 +654,7 @@ export default function Page() {
                           return newArr;
                         });
                       }}
-                      key={category}
+                      key={"twitteroption+" + category}
                       className="py-3 px-5 rounded-xl w-fit"
                       style={{
                         cursor: "pointer",
@@ -713,7 +765,7 @@ export default function Page() {
                           />
                           {eachQuestion.options.map((option, optionIndex) => (
                             <div
-                              key={optionIndex}
+                              key={"option-" + optionIndex}
                               className="flex flex-row gap-4 justify-between w-full items-center"
                             >
                               <div className="flex flex-col w-full gap-2">
