@@ -174,9 +174,10 @@ button {
     transition: 0.3s ease-in-out;
   }
 
-  #navTabWrapper .tab-box > div:hover {
+  #navTabWrapper .tab-box > div:not(.active):hover {
     background-color: #1f1f25;
     transition: 0.5s ease-out;
+    z-index: 1;
   }
 
   #navTabWrapper .tab-box > div.active:hover {
@@ -196,9 +197,10 @@ button {
     transition: 0.3s ease-in-out;
   }
 
-  #navTabWrapper .dash-box > div:hover {
+  #navTabWrapper .dash-box > div:not(.active):hover {
     background-color: #1f1f25;
     transition: 0.5s ease-out;
+    z-index: 1;
   }
 
   #navTabWrapper .dash-box > div.active:hover {
@@ -218,9 +220,10 @@ button {
     transition: 0.3s ease-in-out;
   }
 
-  #chipTabWrapper .chip-box > div:hover {
+  #chipTabWrapper .chip-box > div:not(.active):hover {
     background-color: #1f1f25;
     transition: 0.5s ease-out;
+    z-index: 1;
   }
 
   #chipTabWrapper .chip-box > div.active:hover {
