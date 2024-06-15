@@ -185,7 +185,7 @@ button {
   opacity: 0;
   border: none;
   z-index: 10;
-  transition: margin-left .3s ease-in-out;
+  /* transition: margin-left .3s ease-in-out; */
 }
 
 #navTabWrapper .dash-box > span {
@@ -214,7 +214,7 @@ button {
   opacity: 0;
   border: none;
   z-index: 10;
-  transition: margin-left .3s ease-in-out;
+  /* transition: margin-left .3s ease-in-out; */
 }
 
 #chipTabWrapper .chip-box > span {
@@ -242,7 +242,7 @@ button {
   opacity: 0;
   border: none;
   z-index: 10;
-  transition: margin-left .3s ease-in-out;
+  /* transition: margin-left .3s ease-in-out; */
 }
 
 #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
