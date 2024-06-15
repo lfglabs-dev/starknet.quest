@@ -16,10 +16,10 @@ const Crosses: FunctionComponent<CrossesProps> = ({
   rightSide = true,
 }) => {
   const computeStyle = (i: number) => {
-    const mutliplier = i % 2 ? 1 : -1;
+    const multiplier = i % 2 ? 1 : -1;
     return {
-      transform: `translateX(${Math.cos(i) * 30 * mutliplier}px) translateY(${
-        Math.sin(i) * 30 * mutliplier
+      transform: `translateX(${Math.cos(i) * 30 * multiplier}px) translateY(${
+        Math.sin(i) * 30 * multiplier
       }px)`,
     };
   };
