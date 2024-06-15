@@ -155,7 +155,6 @@ const QuestAndCollectionTabs: FunctionComponent<
                   }`}
                   setActive={(event) => {handleChangeTab(0); moveSpanActive(event, ".tab-box")}}
                   prep={0}
-                  mouse={(event) => moveHrSlider(event, ".tab-box")}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                 />
                 <OdTab
@@ -167,7 +166,6 @@ const QuestAndCollectionTabs: FunctionComponent<
                   }`}
                   setActive={(event) => {handleChangeTab(1); moveSpanActive(event, ".tab-box")}}
                   prep={1}
-                  mouse={(event) => moveHrSlider(event, ".tab-box")}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                 />
                 {address && ( 
@@ -180,7 +178,6 @@ const QuestAndCollectionTabs: FunctionComponent<
                     }`}
                     setActive={(event) => {handleChangeTab(2); moveSpanActive(event, ".tab-box")}}
                     prep={2}
-                    mouse={(event) => moveHrSlider(event, ".tab-box")}
                     mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                   />
                 )}

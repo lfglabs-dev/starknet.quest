@@ -324,7 +324,6 @@ export default function Page({ params }: AddressOrDomainProps) {
                 }`}
                 setActive={(event) => {handleChangeTab(0); moveSpanActive(event, ".dash-box")}}
                 prep={0}
-                mouse={(event) => moveHrSlider(event, ".dash-box")}
                 mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
               />
               <OdTab
@@ -336,11 +335,9 @@ export default function Page({ params }: AddressOrDomainProps) {
                 }`}
                 setActive={(event) => {handleChangeTab(1); moveSpanActive(event, ".dash-box")}}
                 prep={1}
-                mouse={(event) => moveHrSlider(event, ".dash-box")}
                 mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
               />
               <span/>
-              <hr />
             </div>
           </nav>
         </div>

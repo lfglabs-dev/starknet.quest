@@ -170,10 +170,10 @@ button {
   border-radius: 10px;
   border: none;
   z-index: 11;
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
-#navTabWrapper .tab-box > hr {
+/* #navTabWrapper .tab-box > hr {
   display: block;
   position: absolute;
   inset: 0;
@@ -185,9 +185,17 @@ button {
   opacity: 0;
   border: none;
   z-index: 10;
-  /* transition: margin-left .3s ease-in-out; */
+  transition: 0.3s ease-in-out;
+} */
+
+#navTabWrapper .tab-box > div:hover{
+  background-color: #1f1f25;
+  transition: 0.5s ease-out;
 }
 
+#navTabWrapper .tab-box > div.active:hover{
+  background-color: transparent !important;
+}
 #navTabWrapper .dash-box > span {
   position: absolute;
   inset: 0;
@@ -199,22 +207,30 @@ button {
   border-radius: 10px;
   border: none;
   z-index: 11;
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
-#navTabWrapper .dash-box > hr {
+/* #navTabWrapper .dash-box > hr {
   display: block;
   position: absolute;
   inset: 0;
   height: 33px;
-  /* width: 25%; */
   margin: 0%;
   background-color: #3f3f3f98;
   border-radius: 10px;
   opacity: 0;
   border: none;
   z-index: 10;
-  /* transition: margin-left .3s ease-in-out; */
+  transition: 0.3s ease-in-out;
+} */
+
+#navTabWrapper .dash-box > div:hover{
+  background-color: #1f1f25;
+  transition: 0.5s ease-out;
+}
+
+#navTabWrapper .dash-box > div.active:hover{
+  background-color: transparent !important;
 }
 
 #chipTabWrapper .chip-box > span {
@@ -227,25 +243,34 @@ button {
   border-radius: 10px;
   border: none;
   z-index: 11;
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
-#chipTabWrapper .chip-box > hr {
+#chipTabWrapper .chip-box > div:hover{
+  background-color: #1f1f25;
+  transition: 0.5s ease-out;
+}
+
+#chipTabWrapper .chip-box > div.active:hover{
+  background-color: transparent !important;
+}
+
+/* #chipTabWrapper .chip-box > hr {
   display: block;
   position: absolute;
   inset: 0;
   height: 85%;
-  /* width: 23%; */
+  width: 23%;
   margin: 0;
   background-color: #3f3f3f98;
   border-radius: 10px;
   opacity: 0;
   border: none;
   z-index: 10;
-  /* transition: margin-left .3s ease-in-out; */
-}
+  transition: 0.3s ease-in-out;
+} */
 
-#navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
+/* #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
 }
 
@@ -259,17 +284,9 @@ button {
 
 #chipTabWrapper .chip-box .nav-tab.active:hover ~ hr {
   opacity: 0 !important;
-}
+} */
 
-@keyframes fadeIn {
-  0%, 14% {
-    opacity: 0;
-  }
 
-  15%, 100% {
-    opacity: 1;
-  }
-}
 
 .tab-box, .dash-box, .chip-box > div.active {
   color: #292929f9;
