@@ -109,7 +109,6 @@ export default function Page() {
 
   const handleCreateQuest = useCallback(async () => {
     try {
-      console.log({ questInput });
       const response = await AdminService.createQuest(questInput);
       if (!response) return;
       setQuestId(Number(response.id));
@@ -250,13 +249,16 @@ export default function Page() {
   );
 
   const handleQuestAndBoostCreate = useCallback(async () => {
+    setButtonLoading(true);
     const id = await handleCreateQuest();
     if (!id) return;
     await handleCreateBoost(id);
+    setButtonLoading(false);
     handlePagination("Next");
   }, [questInput, boostInput]);
 
   const handleCreateTask = useCallback(async () => {
+    setButtonLoading(true);
     steps.map(async (step) => {
       if (step.type === "Quiz") {
         if (
@@ -359,6 +361,7 @@ export default function Page() {
         });
       }
     });
+    setButtonLoading(false);
     setCurrentPage((prev) => prev + 1);
   }, [steps]);
 
