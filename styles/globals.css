@@ -226,4 +226,12 @@ button {
   #chipTabWrapper .chip-box > div.active:hover {
     background-color: transparent !important;
   }
+
+  .tab-box, .dash-box, .chip-box > div.active {
+    color: #292929f9;
+  }
+  .tab-box, .dash-box > div {
+    font-size: 12px;
+    font-weight: bold;
+  }
 }
