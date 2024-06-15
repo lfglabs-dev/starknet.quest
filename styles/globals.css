@@ -142,157 +142,88 @@ button {
   cursor: url(../public/icons/pointer-cursor.png), pointer;
 }
 
-@media  screen and  (min-width: 768px) {
-#navTabWrapper .tab-box, .dash-box {
-  width: 50%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-right: 10px;
-  z-index: 100;
-}
+@media screen and (min-width: 768px) {
+  #navTabWrapper .tab-box,
+  .dash-box {
+    width: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 10px;
+    z-index: 100;
+  }
 
-#navTabWrapper .dash-box {
-  padding: 0;
-  gap: 20px;
-  align-items: start;
-  justify-content: start;
-}
+  #navTabWrapper .dash-box {
+    padding: 0;
+    gap: 20px;
+    align-items: start;
+    justify-content: start;
+  }
 
-#navTabWrapper .tab-box > span {
-  position: absolute;
-  inset: 0;
-  height: 33px;
-  width: 80px;
-  margin: 0;
-  background: #fff;
-  border-radius: 10px;
-  border: none;
-  z-index: 11;
-  transition: 0.3s ease-in-out;
-}
+  #navTabWrapper .tab-box > span {
+    position: absolute;
+    inset: 0;
+    height: 33px;
+    width: 80px;
+    margin: 0;
+    background: #fff;
+    border-radius: 10px;
+    border: none;
+    z-index: 11;
+    transition: 0.3s ease-in-out;
+  }
 
-/* #navTabWrapper .tab-box > hr {
-  display: block;
-  position: absolute;
-  inset: 0;
-  height: 33px;
-  width: 30%;
-  margin: 0;
-  background-color: #3f3f3f98;
-  border-radius: 10px;
-  opacity: 0;
-  border: none;
-  z-index: 10;
-  transition: 0.3s ease-in-out;
-} */
+  #navTabWrapper .tab-box > div:hover {
+    background-color: #1f1f25;
+    transition: 0.5s ease-out;
+  }
 
-#navTabWrapper .tab-box > div:hover{
-  background-color: #1f1f25;
-  transition: 0.5s ease-out;
-}
+  #navTabWrapper .tab-box > div.active:hover {
+    background-color: transparent !important;
+  }
+  #navTabWrapper .dash-box > span {
+    position: absolute;
+    inset: 0;
+    height: 33px;
+    width: 30%;
+    max-width: 105px;
+    margin: 0%;
+    background: #fff;
+    border-radius: 10px;
+    border: none;
+    z-index: 11;
+    transition: 0.3s ease-in-out;
+  }
 
-#navTabWrapper .tab-box > div.active:hover{
-  background-color: transparent !important;
-}
-#navTabWrapper .dash-box > span {
-  position: absolute;
-  inset: 0;
-  height: 33px;
-  width: 30%;
-  max-width: 105px;
-  margin: 0%;
-  background: #fff;
-  border-radius: 10px;
-  border: none;
-  z-index: 11;
-  transition: 0.3s ease-in-out;
-}
+  #navTabWrapper .dash-box > div:hover {
+    background-color: #1f1f25;
+    transition: 0.5s ease-out;
+  }
 
-/* #navTabWrapper .dash-box > hr {
-  display: block;
-  position: absolute;
-  inset: 0;
-  height: 33px;
-  margin: 0%;
-  background-color: #3f3f3f98;
-  border-radius: 10px;
-  opacity: 0;
-  border: none;
-  z-index: 10;
-  transition: 0.3s ease-in-out;
-} */
+  #navTabWrapper .dash-box > div.active:hover {
+    background-color: transparent !important;
+  }
 
-#navTabWrapper .dash-box > div:hover{
-  background-color: #1f1f25;
-  transition: 0.5s ease-out;
-}
+  #chipTabWrapper .chip-box > span {
+    position: absolute;
+    inset: 0;
+    height: 85%;
+    width: 23%;
+    margin: 0;
+    background: #fff;
+    border-radius: 10px;
+    border: none;
+    z-index: 11;
+    transition: 0.3s ease-in-out;
+  }
 
-#navTabWrapper .dash-box > div.active:hover{
-  background-color: transparent !important;
-}
+  #chipTabWrapper .chip-box > div:hover {
+    background-color: #1f1f25;
+    transition: 0.5s ease-out;
+  }
 
-#chipTabWrapper .chip-box > span {
-  position: absolute;
-  inset: 0;
-  height: 85%;
-  width: 23%;
-  margin: 0;
-  background: #fff;
-  border-radius: 10px;
-  border: none;
-  z-index: 11;
-  transition: 0.3s ease-in-out;
-}
-
-#chipTabWrapper .chip-box > div:hover{
-  background-color: #1f1f25;
-  transition: 0.5s ease-out;
-}
-
-#chipTabWrapper .chip-box > div.active:hover{
-  background-color: transparent !important;
-}
-
-/* #chipTabWrapper .chip-box > hr {
-  display: block;
-  position: absolute;
-  inset: 0;
-  height: 85%;
-  width: 23%;
-  margin: 0;
-  background-color: #3f3f3f98;
-  border-radius: 10px;
-  opacity: 0;
-  border: none;
-  z-index: 10;
-  transition: 0.3s ease-in-out;
-} */
-
-/* #navTabWrapper .dash-box .nav-tab.active:hover ~ hr {
-  opacity: 0 !important;
-}
-
-#navTabWrapper .tab-box .nav-item2.active:hover ~ hr {
-  opacity: 0;
-}
-
-#navTabWrapper .tab-box .nav-item3.active:hover ~ hr {
-  opacity: 0;
-}
-
-#chipTabWrapper .chip-box .nav-tab.active:hover ~ hr {
-  opacity: 0 !important;
-} */
-
-
-
-.tab-box, .dash-box, .chip-box > div.active {
-  color: #292929f9;
-}
-.tab-box, .dash-box > div {
-  font-size: 12px;
-  font-weight: bold;
-}
+  #chipTabWrapper .chip-box > div.active:hover {
+    background-color: transparent !important;
+  }
 }
