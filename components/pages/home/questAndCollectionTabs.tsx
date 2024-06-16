@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { getPendingBoostClaims } from "@services/apiService";
 import styles from "@styles/Home.module.css";
-// import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
 import QuestClaim from "@components/quests/questClaim";
