@@ -24,7 +24,7 @@ export default function TextInput(props: TextInputProps) {
           cols={40}
           rows={5}
           id={name}
-          value={value}
+          value={value ?? ""}
           onChange={(e) =>
             onChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
           }
@@ -34,7 +34,7 @@ export default function TextInput(props: TextInputProps) {
         <input
           id={name}
           name={name}
-          value={value}
+          value={value ?? ""}
           onChange={onChange}
           placeholder={placeholder}
           className={styles.input}

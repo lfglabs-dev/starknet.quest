@@ -211,6 +211,7 @@ export type CreateQuest = {
   rewards_title: string;
   img_card: string;
   title_card: string;
+  issuer: string;
 };
 
 export type UpdateQuest = {
@@ -226,6 +227,7 @@ export type UpdateQuest = {
   rewards_title?: string;
   img_card?: string;
   title_card?: string;
+  issuer?: string;
 };
 
 export type CreateBoost = {

@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/progressBar.module.css";
-import DoneFilledIcon from "@public/icons/doneFilledIcon.svg";
-import theme from "@styles/theme";
+import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
 
 type ProgressBarProps = {
   doneSteps: number;
@@ -15,17 +14,19 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
   return (
     <div className={styles.container}>
       {Array.from(Array(totalSteps).keys()).map((_, index) => {
-        return (
-          <div key={index} className={styles.milestone}>
-            {index + 1 <= doneSteps ? (
-              <DoneFilledIcon
-                width="32"
-                secondColor={theme.palette.primary.main}
-                color="#FFF"
-              />
-            ) : (
-              <div className={styles.empty_milestone}>{index + 1}</div>
-            )}
+        return index + 1 <= doneSteps ? (
+          <div
+            key={"progressbar-" + index}
+            className={`${styles.checked_milestone} relative`}
+          >
+            <CheckMarkIcon width="20" />
+          </div>
+        ) : (
+          <div
+            key={"progressbar-empty-" + index}
+            className={styles.empty_milestone}
+          >
+            {index + 1}
           </div>
         );
       })}

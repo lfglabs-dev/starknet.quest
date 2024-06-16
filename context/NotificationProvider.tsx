@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useCallback,
+} from "react";
 import { Snackbar, SnackbarContent, IconButton, styled } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
@@ -41,25 +47,25 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
     autoHideDuration: 6000,
   });
 
-  const showNotification = (
-    message: string,
-    type: NotificationProps["type"]
-  ) => {
-    setNotification({
-      message,
-      type,
-      open: true,
-      onClose: () => hideNotification(),
-      autoHideDuration: 6000,
-    });
-  };
-
-  const hideNotification = () => {
+  const hideNotification = useCallback(() => {
     setNotification((prevNotification) => ({
       ...prevNotification,
       open: false,
     }));
-  };
+  }, []);
+
+  const showNotification = useCallback(
+    (message: string, type: NotificationProps["type"]) => {
+      setNotification({
+        message,
+        type,
+        open: true,
+        onClose: () => hideNotification(),
+        autoHideDuration: 6000,
+      });
+    },
+    [hideNotification]
+  );
 
   const renderIcon = () => {
     switch (notification.type) {
@@ -121,11 +127,3 @@ export const useNotification = (): NotificationContextProps => {
   }
   return context;
 };
-
-// Sample function for the notification context
-// const { showNotification} = useNotification();
-
-// const handleClick = () => {
-//   showNotification('This is a success message!', 'success');
-//   console.log('Notification opened')
-// };

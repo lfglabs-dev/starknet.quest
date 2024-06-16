@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
-import ProgressBar from "@components/quiz/progressBar";
+import ProgressBar from "@components/UI/progressBar";
 import InputCard from "@components/admin/inputCard";
 import { SelectChangeEvent, Switch } from "@mui/material";
 import Button from "@components/UI/button";
@@ -31,6 +31,8 @@ import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 import AdminQuestDetails from "@components/admin/questDetails";
 import { useNotification } from "@context/NotificationProvider";
 import Dropdown from "@components/UI/dropdown";
+import { getTokenName } from "@utils/tokenService";
+import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
 
 // Define discriminated union types
 type StepMap =
@@ -44,6 +46,7 @@ type StepMap =
 
 export default function Page() {
   const network = getCurrentNetwork();
+  const getCurrentUser = getUserFromJwt();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [questId, setQuestId] = useState<number>(0);
@@ -65,6 +68,12 @@ export default function Page() {
   const [finalQuestData, setFinalQuestData] =
     useState<typeof QuestDefault>(QuestDefault);
   const [buttonLoading, setButtonLoading] = useState(false);
+
+  useEffect(() => {
+    const tokenExpiryTime = getExpireTimeFromJwt();
+    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) return;
+    router.push("/admin/quests");
+  }, []);
 
   const isButtonDisabled = useMemo(() => {
     const boostInputValid =
@@ -116,10 +125,6 @@ export default function Page() {
     } catch (error) {
       console.log("Error while creating quest", error);
     }
-  }, [questInput]);
-
-  useEffect(() => {
-    console.log({ questInput });
   }, [questInput]);
 
   const handleCreateBoost = useCallback(
@@ -359,6 +364,12 @@ export default function Page() {
           cta: step.data.custom_cta,
           href: step.data.custom_href,
         });
+      } else if (step.type === "Domain") {
+        await AdminService.createDomain({
+          quest_id: questId,
+          name: step.data.domain_name,
+          desc: step.data.domain_desc,
+        });
       }
     });
     setButtonLoading(false);
@@ -367,7 +378,9 @@ export default function Page() {
 
   return (
     <div className={styles.layout_screen}>
-      <ProgressBar currentStep={currentPage} totalSteps={4} />
+      <div className=" w-full max-w-[985px] relative">
+        <ProgressBar doneSteps={currentPage - 1} totalSteps={4} />
+      </div>
       <p className={styles.screenHeadingText}>Create a new quest</p>
       {currentPage === 1 ? (
         <>
@@ -390,6 +403,23 @@ export default function Page() {
                 label="Quest Name"
                 placeholder="Quest Name"
               />
+              <TextInput
+                onChange={handleQuestInputChange}
+                value={questInput.title_card ?? ""}
+                name="title_card"
+                label="Quest Title Card"
+                placeholder="Quest Title"
+              />
+              {getCurrentUser === "super_user" ? (
+                <TextInput
+                  onChange={handleQuestInputChange}
+                  value={questInput.issuer ?? ""}
+                  name="issuer"
+                  label="Quest Issuer"
+                  placeholder="Issuer name"
+                />
+              ) : null}
+
               <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.desc}
@@ -531,16 +561,9 @@ export default function Page() {
                   placeholder="Number of winners"
                 />
                 <Dropdown
-                  value={boostInput.token}
+                  value={getTokenName(boostInput.token)}
                   backgroundColor="#29282B"
                   textColor="#fff"
-                  // fullWidth
-                  // sx={{
-                  //   backgroundColor: "#1F1F25",
-                  //   borderRadius: "8px",
-                  // }}
-                  // value={boostInput.token}
-                  // label="Token"
                   handleChange={(event: SelectChangeEvent) => {
                     setBoostInput((prev) => ({
                       ...prev,
@@ -986,14 +1009,14 @@ export default function Page() {
                   <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.domain_name}
-                    name="twfw_name"
+                    name="domain_name"
                     label="Name"
                     placeholder="Name"
                   />
                   <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
                     value={step.data.domain_desc}
-                    name="twfw_desc"
+                    name="domain_desc"
                     label="Description"
                     placeholder="Description"
                     multiline={4}

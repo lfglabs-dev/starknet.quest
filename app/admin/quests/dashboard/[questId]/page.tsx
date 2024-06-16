@@ -5,7 +5,7 @@ import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
 import InputCard from "@components/admin/inputCard";
-import { MenuItem, Select, SelectChangeEvent, Switch } from "@mui/material";
+import { SelectChangeEvent, Switch } from "@mui/material";
 import Button from "@components/UI/button";
 import {
   QuestDefault,
@@ -33,6 +33,9 @@ import {
 import AdminQuestDetails from "@components/admin/questDetails";
 import ProgressBar from "@components/UI/progressBar";
 import { useNotification } from "@context/NotificationProvider";
+import Dropdown from "@components/UI/dropdown";
+import { getTokenAddress, getTokenName } from "@utils/tokenService";
+import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
 
 type AddressOrDomainProps = {
   params: {
@@ -54,6 +57,7 @@ type StepMap =
 
 export default function Page({ params }: AddressOrDomainProps) {
   const network = getCurrentNetwork();
+  const getCurrentUser = getUserFromJwt();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const questId = useRef(parseInt(params.questId));
@@ -78,11 +82,17 @@ export default function Page({ params }: AddressOrDomainProps) {
       data: {},
     },
   ]);
+
   const { showNotification } = useNotification();
   const [questData, setQuestData] = useState<typeof QuestDefault>(QuestDefault);
 
   const fetchPageData = useCallback(async () => {
     try {
+      const tokenExpiryTime = getExpireTimeFromJwt();
+      if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) {
+        router.push("/admin");
+        return;
+      }
       const quest_details = await AdminService.getQuestById(questId.current);
       if (!quest_details) return;
       setStartTime(
@@ -210,11 +220,20 @@ export default function Page({ params }: AddressOrDomainProps) {
 
   const handleUpdateBoost = useCallback(async () => {
     try {
-      if (!showBoost) return;
+      if (!showBoost) {
+        await AdminService.updateBoost({
+          ...boostInput,
+          hidden: true,
+        });
+
+        return;
+      }
       const response = await AdminService.updateBoost({
         ...boostInput,
         amount: Number(boostInput.amount),
         num_of_winners: Number(boostInput.num_of_winners),
+        token_decimals: Number(boostInput.token_decimals),
+        token: boostInput.token,
       });
 
       if (!response) return;
@@ -375,16 +394,17 @@ export default function Page({ params }: AddressOrDomainProps) {
         !boostInput ||
         !boostInput.token ||
         !boostInput.amount ||
-        !boostInput.num_of_winners
+        !boostInput.num_of_winners ||
+        !boostInput.token_decimals
       )
         return;
+
       const response = await AdminService.createBoost({
         name: questInput.name ?? questData.name,
         quest_id: questId.current,
         amount: Number(boostInput.amount),
         num_of_winners: Number(boostInput.num_of_winners),
-        token_decimals:
-          TOKEN_DECIMAL_MAP[boostInput.token as keyof typeof TOKEN_DECIMAL_MAP],
+        token_decimals: boostInput.token_decimals,
         token: boostInput.token,
         img_url: boostInput.img_url ?? questData.img_card,
         expiry: new Date(endTime).getTime(),
@@ -559,7 +579,9 @@ export default function Page({ params }: AddressOrDomainProps) {
 
   return (
     <div className={styles.layout_screen}>
-      <ProgressBar doneSteps={currentPage} totalSteps={4} />
+      <div className=" w-full max-w-[985px] relative">
+        <ProgressBar doneSteps={currentPage} totalSteps={4} />
+      </div>
       <p className={styles.screenHeadingText}>Create a new quest</p>
       {currentPage === 1 ? (
         <>
@@ -589,6 +611,15 @@ export default function Page({ params }: AddressOrDomainProps) {
                 label="Quest Title Card"
                 placeholder="Quest Title"
               />
+              {getCurrentUser === "super_user" ? (
+                <TextInput
+                  onChange={handleQuestInputChange}
+                  value={questInput.issuer ?? ""}
+                  name="issuer"
+                  label="Quest Issuer"
+                  placeholder="Issuer name"
+                />
+              ) : null}
               <TextInput
                 onChange={handleQuestInputChange}
                 value={questInput.desc ?? ""}
@@ -689,6 +720,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                   setQuestInput((prev) => ({
                     ...prev,
                     rewards_img: e.target.value,
+                    img_card: e.target.value,
                   }));
                   setNftUri((prev) => ({
                     ...prev,
@@ -700,7 +732,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                   }));
                 }}
                 value={nfturi?.image}
-                name="nft_image"
+                name="rewards_img"
                 label="NFT Image Path"
                 placeholder="NFT Image Path"
               />
@@ -743,37 +775,36 @@ export default function Page({ params }: AddressOrDomainProps) {
                   label="Number of winners"
                   placeholder="Number of winners"
                 />
-                <Select
-                  fullWidth
-                  sx={{
-                    backgroundColor: "#1F1F25",
-                    borderRadius: "8px",
-                  }}
-                  value={boostInput?.token}
-                  label="Token"
-                  onChange={(event: SelectChangeEvent) => {
+                <Dropdown
+                  value={getTokenName(boostInput?.token ?? "")}
+                  backgroundColor="#29282B"
+                  textColor="#fff"
+                  handleChange={(event: SelectChangeEvent) => {
+                    console.log(
+                      event.target.value,
+                      TOKEN_DECIMAL_MAP[
+                        event.target.value as keyof typeof TOKEN_DECIMAL_MAP
+                      ]
+                    );
                     setBoostInput((prev) => ({
                       ...prev,
-                      token: event.target.value,
+                      token: getTokenAddress(event.target.value),
+                      // token decimals is a value which has different tokens which we support and use their decimals here
                       token_decimals:
                         TOKEN_DECIMAL_MAP[
                           event.target.value as keyof typeof TOKEN_DECIMAL_MAP
                         ],
                     }));
                   }}
-                >
-                  {Object.keys(TOKEN_ADDRESS_MAP[network]).map(
-                    (token, index) => (
-                      <MenuItem
-                        sx={{ backgroundColor: "#1F1F25" }}
-                        key={index}
-                        value={token}
-                      >
-                        {token}
-                      </MenuItem>
-                    )
+                  options={Object.keys(TOKEN_ADDRESS_MAP[network]).map(
+                    (eachItem) => {
+                      return {
+                        value: eachItem,
+                        label: eachItem,
+                      };
+                    }
                   )}
-                </Select>
+                />
                 <TextInput
                   onChange={handleBoostInputChange}
                   value={boostInput?.amount ?? ""}
@@ -1203,8 +1234,8 @@ export default function Page({ params }: AddressOrDomainProps) {
                   />
                   <TextInput
                     onChange={(e) => handleTasksInputChange(e, index)}
-                    value={step.data.domin_desc}
-                    name="domin_desc"
+                    value={step.data.domain_desc}
+                    name="domain_desc"
                     label="Description"
                     placeholder="Description"
                     multiline={4}

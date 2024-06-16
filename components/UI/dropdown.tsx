@@ -5,15 +5,17 @@ import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/system";
 import { IoIosArrowDown } from "react-icons/io";
+import { getTokenName } from "@utils/tokenService";
 
 // Define the props for the Dropdown component
 type DropdownProps = {
   backgroundColor?: string;
   borderColor?: string;
   textColor?: string;
-  options: { value: string; label: string }[];
+  options?: { value: string; label: string }[];
   handleChange?: (event: SelectChangeEvent) => void;
   value?: string;
+  placeholder?: string;
 };
 
 // Styled component using styled-system
@@ -27,7 +29,7 @@ const StyledFormControl = styled(FormControl, {
   color: textColor || "inherit",
   borderRadius: 10,
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px 10px 0px 0px",
+    borderRadius: "10px",
     "& fieldset": {
       borderColor: "transparent",
       borderWidth: "1px",
@@ -69,10 +71,13 @@ const StyledFormControl = styled(FormControl, {
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   "&.Mui-selected": {
-    backgroundColor: "transparent",
+    backgroundColor: "#66666f",
+  },
+  "&.Mui-selected:hover": {
+    backgroundColor: "#29282b",
   },
   "&:hover": {
-    backgroundColor: "transparent",
+    backgroundColor: "#29282b",
   },
 }));
 
@@ -84,8 +89,7 @@ const StyledMenuProps = {
       borderColor: "white",
       borderWidth: "1px",
       borderStyle: "solid",
-      borderRadius: "0px 0px 10px 10px",
-      marginTop: "-3px",
+      borderRadius: "10px",
       boxShadow: "none",
       width: "140px",
     },
@@ -98,8 +102,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   options,
   handleChange,
   value,
+  placeholder = "Select a value",
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(value ?? "");
+  const [selectedValue, setSelectedValue] = React.useState<string>(
+    value ?? placeholder
+  );
 
   const handleMenuChange = (event: SelectChangeEvent) => {
     if (handleChange) handleChange(event);
@@ -112,7 +119,6 @@ const Dropdown: React.FC<DropdownProps> = ({
       fullWidth
       backgroundColor={backgroundColor}
       textColor={textColor}
-      options={[]}
     >
       <Select
         labelId="dropdown-label"
@@ -132,7 +138,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           },
         }}
       >
-        {options.map((option) => (
+        {options?.map((option) => (
           <StyledMenuItem key={option.value} value={option.value}>
             {option.label}
           </StyledMenuItem>

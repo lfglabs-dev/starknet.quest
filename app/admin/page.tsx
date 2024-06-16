@@ -6,7 +6,7 @@ import Button from "@components/UI/button";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
-import { getUserFromJwt } from "@utils/jwt";
+import { getExpireTimeFromJwt } from "@utils/jwt";
 
 export default function Page() {
   const router = useRouter();
@@ -14,8 +14,8 @@ export default function Page() {
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    const user = getUserFromJwt();
-    if (!user) return;
+    const tokenExpiryTime = getExpireTimeFromJwt();
+    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) return;
     router.push("/admin/quests");
   }, []);
 

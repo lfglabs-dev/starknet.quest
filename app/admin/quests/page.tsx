@@ -13,6 +13,7 @@ import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
 import Quest from "@components/admin/questCard";
 import { useNotification } from "@context/NotificationProvider";
+import { getExpireTimeFromJwt } from "@utils/jwt";
 
 export default function Page() {
   const router = useRouter();
@@ -21,6 +22,12 @@ export default function Page() {
   const { showNotification } = useNotification();
 
   const [quests, setQuests] = useState<[QuestDocument]>([QuestDefault]);
+
+  useEffect(() => {
+    const tokenExpiryTime = getExpireTimeFromJwt();
+    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) return;
+    router.push("/admin/quests");
+  }, []);
 
   const fetchQuests = useCallback(async () => {
     try {

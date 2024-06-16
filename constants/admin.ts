@@ -30,6 +30,7 @@ export const questDefaultInput = {
   expiry: null,
   img_card: "",
   title_card: "",
+  issuer: "",
 };
 
 export const nft_uri = {

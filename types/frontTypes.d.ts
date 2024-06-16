@@ -1,4 +1,9 @@
-type IconProps = { width: string; color?: string; secondColor?: string, backgroundColor?: string  };
+type IconProps = {
+  width: string;
+  color?: string;
+  secondColor?: string;
+  backgroundColor?: string;
+};
 
 type Issuer = {
   name: string;
@@ -307,3 +312,5 @@ type TaskType =
   | "TwitterRw"
   | "Domain"
   | "None";
+
+type networks = "MAINNET" | "TESTNET";
