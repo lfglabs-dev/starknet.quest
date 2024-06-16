@@ -8,7 +8,7 @@ import Button from "./button";
 import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "@hooks/displayName.tsx";
-// import { useDomainFromAddress } from "../../hooks/naming";
+import { useDomainFromAddress } from "../../hooks/naming";
 import { constants } from "starknet";
 import { usePathname } from "next/navigation";
 import theme from "@styles/theme";

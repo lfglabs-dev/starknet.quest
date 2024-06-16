@@ -26,7 +26,7 @@ import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
-import OdTab from "@components/navbar/Tab";
+import SlidingTab from "@components/navbar/slidingTab";
 import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
@@ -148,7 +148,7 @@ const QuestAndCollectionTabs: FunctionComponent<
           <div>
           <nav className="pb-4" id="navTabWrapper" style={{borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)"}}>
               <div className="tab-box">
-                <OdTab
+                <SlidingTab
                   title={`Quests (${sortedAndFilteredQuests.length})`}
                   names={`px-2 py-2 nav-item1 ${
                     tabIndex === 0 ? "active" : "text-white"
@@ -157,7 +157,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   prep={0}
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                 />
-                <OdTab
+                <SlidingTab
                   title={`Collections (${
                     categories.length + (boosts ? 1 : 0)
                   })`}
@@ -169,7 +169,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                   mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                 />
                 {address && ( 
-                <OdTab
+                <SlidingTab
                     title={`To claim (${
                       claimableQuests ? claimableQuests.length : 0
                     })`}
@@ -181,7 +181,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     mouseLeave={(event) => handleMouseLeave(event, ".tab-box")}
                   />
                 )}
-                <span></span>
+                <span/>
                 <hr />
               </div>
             </nav>

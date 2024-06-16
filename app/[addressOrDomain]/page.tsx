@@ -32,7 +32,7 @@ import {
 } from "@components/pages/home/questAndCollectionTabs";
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
-import OdTab from "@components/navbar/Tab";
+import SlidingTab from "@components/navbar/slidingTab";
 import { handleMouseLeave, moveHrSlider, moveSpanActive } from "@utils/navTab";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
@@ -317,7 +317,7 @@ export default function Page({ params }: AddressOrDomainProps) {
         <div>
           <nav className="pb-4" id="navTabWrapper" style={{borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)"}}>
             <div className="dash-box">
-              <OdTab
+              <SlidingTab
                 title={`Completed (${completedQuests.length ?? 0})`}
                 names={`w-fit py-2 px-2 text-center nav-item1 ${
                   tabIndex === 0 ? "active" : "text-white"
@@ -326,7 +326,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 prep={0}
                 mouseLeave={(event) => handleMouseLeave(event, ".dash-box")}
               />
-              <OdTab
+              <SlidingTab
                 title={`To claim (${
                   claimableQuests ? claimableQuests.length : 0
                 })`}

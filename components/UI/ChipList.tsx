@@ -32,7 +32,7 @@ const ChipList: FunctionComponent<ChipProps> = ({ tags }) => {
             <p style={{ fontSize: 12 }}>{tag}</p>
           </div>
         ))}
-        <span></span>
+        <span/>
         <hr />
       </div>
     </div>

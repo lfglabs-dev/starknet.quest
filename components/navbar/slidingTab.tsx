@@ -8,7 +8,7 @@ interface TabProps {
   mouseLeave: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const OdTab: React.FC<TabProps> = ({
+const SlidingTab: React.FC<TabProps> = ({
   title,
   names,
   setActive,
@@ -27,4 +27,4 @@ const OdTab: React.FC<TabProps> = ({
   );
 };
 
-export default OdTab;
+export default SlidingTab;
