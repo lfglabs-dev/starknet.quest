@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
-import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
-import Typography from "./typography/typography";
+import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
+import Typography from "./typography/typography"; 
 import { TEXT_TYPE } from "@constants/typography";
 
 type ChipProps = {
@@ -25,7 +25,6 @@ const ChipList: FunctionComponent<ChipProps> = ({ tags }) => {
               handleChangeTab(index);
               moveSpanActive(event, ".chip-box");
             }}
-            onMouseEnter={(event) => moveHrSlider(event, ".chip-box")}
             onMouseLeave={(event) => handleMouseLeave(event, ".chip-box")}
             key={index}
           >
@@ -33,7 +32,6 @@ const ChipList: FunctionComponent<ChipProps> = ({ tags }) => {
           </div>
         ))}
         <span/>
-        <hr />
       </div>
     </div>
   );

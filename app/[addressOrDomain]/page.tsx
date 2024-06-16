@@ -33,7 +33,7 @@ import {
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import SlidingTab from "@components/navbar/slidingTab";
-import { handleMouseLeave, moveHrSlider, moveSpanActive } from "@utils/navTab";
+import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 

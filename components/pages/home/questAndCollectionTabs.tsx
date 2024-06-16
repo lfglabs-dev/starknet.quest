@@ -26,7 +26,7 @@ import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
 import SlidingTab from "@components/navbar/slidingTab";
-import { moveHrSlider, handleMouseLeave, moveSpanActive } from "@utils/navTab";
+import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 
@@ -181,7 +181,6 @@ const QuestAndCollectionTabs: FunctionComponent<
                   />
                 )}
                 <span/>
-                <hr />
               </div>
             </nav>
           </div>
