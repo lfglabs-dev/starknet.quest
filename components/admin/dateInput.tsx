@@ -18,8 +18,8 @@ export default function DateInput(props: Props) {
   );
 
   useEffect(() => {
-    console.log({ value, dateValue });
-  }, [dateValue, value]);
+    setDateValue(value ? dayjs.unix(Number(value) / 1000) : null);
+  }, [value]);
 
   return (
     <div className="flex flex-col gap-2">
