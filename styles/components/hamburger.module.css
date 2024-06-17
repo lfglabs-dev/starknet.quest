@@ -1,0 +1,48 @@
+#menu-icon {
+    display: inline-block;
+    padding: 10px;
+}
+
+#menu-icon .bar {
+    margin: 3px;
+    width: 25px;
+    height: 3px;
+    background: #fff;
+    border-radius: 1.5px;
+}
+#menu-icon:not(.close):hover {
+    padding: 6px 10px;
+}
+
+#menu-icon:not(.close):hover .bar {
+    margin: 5px 3px;
+
+    transition: margin 0.2s, transform 0.2s;
+    
+        /* same as above but with prefixes added */
+        -webkit-transition: margin 0.2s, -webkit-transform 0.2s;
+        transition: margin 0.2s, -webkit-transform 0.2s;
+        -o-transition: margin 0.2s, transform 0.2s;
+        transition: margin 0.2s, transform 0.2s;
+        transition: margin 0.2s, transform 0.2s, -webkit-transform 0.2s;
+}
+
+#menu-icon .bar {
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+#menu-icon.close .bar:first-child {
+    -webkit-transform: translateY(6px) rotate(45deg);
+    -ms-transform: translateY(6px) rotate(45deg);
+    transform: translateY(6px) rotate(45deg);
+}
+
+#menu-icon.close .bar:nth-child(2) {
+    opacity: 0;
+}
+
+#menu-icon.close .bar:last-child {
+    -webkit-transform: translateY(-6px) rotate(-45deg);
+    -ms-transform: translateY(-6px) rotate(-45deg);
+    transform: translateY(-6px) rotate(-45deg);
+}

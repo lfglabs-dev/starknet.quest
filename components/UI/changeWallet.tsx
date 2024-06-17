@@ -7,6 +7,8 @@ import { Modal } from "@mui/material";
 import WalletIcons from "@components/UI/iconsComponents/icons/walletIcons";
 import getDiscoveryWallets from "get-starknet-core";
 import useGetDiscoveryWallets from "@hooks/useGetDiscoveryWallets";
+import Typography from "./typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ChangeWalletProps = {
   closeWallet: () => void;
@@ -51,7 +53,7 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
             ></path>
           </svg>
         </button>
-        <p className={styles.menu_title}>Change wallet</p>
+        <Typography type={TEXT_TYPE.BODY_NORMAL} color="secondary" className={styles.menu_title}>Change wallet</Typography>
         {connectors.map((connector) => {
           if (connector.available()) {
             return (
@@ -93,9 +95,9 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
             }
           }
         })}
-        <p onClick={() => closeWallet()} className={styles.closeMobile}>
+        <Typography color="secondary" type={TEXT_TYPE.BODY_MIDDLE} onClick={() => closeWallet()} className={styles.closeMobile}>
           Close
-        </p>
+        </Typography>
       </div>
     </Modal>
   );

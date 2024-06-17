@@ -14,6 +14,8 @@ import Quest from "@components/quests/quest";
 import BackButton from "@components/UI/backButton";
 import Blur from "@components/shapes/blur";
 import { getOrderedQuests } from "@utils/quest";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type CategoryPageProps = {
   categoryName: string;
@@ -38,11 +40,11 @@ const Category: FunctionComponent<CategoryPageProps> = ({ categoryName }) => {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <h1 className={homeStyles.title}>
+      <Typography type={TEXT_TYPE.H1} className={homeStyles.title} color="transparent">
         {(categoryName as string)?.charAt(0)?.toUpperCase() +
           categoryName?.slice(1)}{" "}
         quests
-      </h1>
+      </Typography>
       <div className={styles.questListContainer}>
         <div className={styles.questList}>
           {category &&

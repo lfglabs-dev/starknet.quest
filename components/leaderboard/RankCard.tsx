@@ -9,6 +9,8 @@ import { CDNImage } from "@components/cdn/image";
 import Rank1Icon from "@components/UI/iconsComponents/icons/rank1Icon";
 import Rank2Icon from "@components/UI/iconsComponents/icons/Rank2Icon";
 import Rank3Icon from "@components/UI/iconsComponents/icons/Rank3Icon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type RankCardProps = {
   name: string;
@@ -73,7 +75,7 @@ const RankCard: FunctionComponent<RankCardProps> = ({
             height={30}
             alt="xp badge"
           />
-          <p>{experience}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT}>{experience}</Typography>
         </div>
         <div className={styles.rank_card_number_layout}>
           <CDNImage
@@ -83,7 +85,7 @@ const RankCard: FunctionComponent<RankCardProps> = ({
             height={30}
             alt="trophy icon"
           />
-          <p>{trophy}</p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT}>{trophy}</Typography>
         </div>
       </div>
     </div>

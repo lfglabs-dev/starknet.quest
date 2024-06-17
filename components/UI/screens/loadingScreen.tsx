@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useState } from "react";
 import { MutatingDots } from "react-loader-spinner";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 interface LoadingScreenProps {
   displayMessage?: boolean;
@@ -23,9 +25,9 @@ const LoadingScreen: FunctionComponent<LoadingScreenProps> = (props) => {
   return (
     <div className="max-w-3xl">
       {props.displayMessage && (
-        <h1 className="mr-3 ml-3 text-5xl sm:text-5xl">
+        <Typography type={TEXT_TYPE.H1} className="mr-3 ml-3 text-5xl sm:text-5xl">
           {loadingMessages[loadingMessageNumber]}
-        </h1>
+        </Typography>
       )}
       <div className="flex justify-center m-5">
         <MutatingDots

@@ -13,6 +13,8 @@ import { useAccount } from "@starknet-react/core";
 import { CompletedQuests, QueryError } from "types/backTypes";
 import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const router = useRouter();
@@ -70,7 +72,7 @@ export default function Page() {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <h1 className={styles.title}>Boosts Quest</h1>
+      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Boosts Quest</Typography>
 
       {!loadingBoosts && !loadingCompletedQuests ? (
         <div className={styles.card_container}>
@@ -85,9 +87,9 @@ export default function Page() {
               );
             })
           ) : (
-            <h2 className={styles.noBoosts}>
+            <Typography type={TEXT_TYPE.H2} className={styles.noBoosts}>
               No quests are being boosted at the moment.
-            </h2>
+            </Typography>
           )}
         </div>
       ) : (

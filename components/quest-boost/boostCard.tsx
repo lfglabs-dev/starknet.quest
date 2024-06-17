@@ -11,6 +11,8 @@ import useBoost from "@hooks/useBoost";
 import theme from "@styles/theme";
 import { useAccount } from "@starknet-react/core";
 import { CompletedQuests, QueryError } from "types/backTypes";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type BoostCardProps = {
   boost: Boost;
@@ -84,14 +86,14 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
           alt="boost"
         />
         <div className={styles.boost_card_content}>
-          <p className={styles.card_title}>{boost?.name}</p>
-          <p>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.card_title}>{boost?.name}</Typography>
+          <Typography type={TEXT_TYPE.BODY_DEFAULT}>
             {boost?.quests.length} quest{boost.quests.length > 1 ? "s" : ""}
-          </p>
+          </Typography>
           {!hasUserCompletedBoost && boost.expiry > Date.now() ? (
             <>
               <div className={questStyles.issuer}>
-                <p>{boost?.amount}</p>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.issuerText}>{boost?.amount}</Typography>
                 <TokenSymbol tokenAddress={boost.token} />
               </div>
             </>
@@ -105,33 +107,33 @@ const BoostCard: FunctionComponent<BoostCardProps> = ({
                         !userBoostCheckStatus ? (
                           boost.winner != null ? (
                             <>
-                              <p className="text-white">See my reward</p>
+                              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">See my reward</Typography>
                               <TrophyIcon width="24" color="#8BEED9" />
                             </>
                           ) : (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="text-white mr-2">Boost ended</p>
+                              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white" className="mr-2">Boost ended</Typography>
                             </>
                           )
                         ) : (
                           userBoostCheckStatus && (
                             <>
                               <UnavailableIcon width="24" color="#D32F2F" />
-                              <p className="text-white mr-2">Boost ended</p>
+                              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white" className="mr-2">Boost ended</Typography>
                             </>
                           )
                         )
                       ) : (
                         <>
                           <UnavailableIcon width="24" color="#D32F2F" />
-                          <p className="text-white mr-2">Boost ended</p>
+                          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white" className="mr-2">Boost ended</Typography>
                         </>
                       )
                     ) : (
                       hasUserCompletedBoost && (
                         <>
-                          <p className="text-white">Done</p>
+                          <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">Done</Typography>
                           <CheckIcon width="24" color="#6AFFAF" />
                         </>
                       )

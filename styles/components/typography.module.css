@@ -1,0 +1,84 @@
+.typography-h1 {
+  font-family: "Sora", sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 58px;
+  letter-spacing: 0;
+}
+
+.typography-h2 {
+  font-family: "Sora", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0;
+}
+
+.typography-h3 {
+  font-family: "Sora", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0;
+}
+
+.typography-h4 {
+  font-family: "Sora", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+
+.typography-body-normal {
+  font-family: "Sora", sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.typography-body-middle {
+  font-family: "Sora", sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.typography-body-default {
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  line-height: 32px;
+  letter-spacing: 0;
+}
+
+.typography-body-small {
+  font-family: "Sora", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+.typography-body-micro {
+  font-family: "Sora", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+}
+
+.typography-button-large {
+  font-family: "Sora", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.typography-button-small {
+  font-family: "Sora", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: center;
+}

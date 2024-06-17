@@ -225,7 +225,6 @@
 }
 
 .accountCreationDate {
-    color: var(--secondary);
     font-size: 14px;
     font-weight: 400;
     line-height: 16px;
@@ -233,7 +232,6 @@
 
 .addressText,
 .accountCreationDate {
-    color: var(--secondary);
     font-size: 14px;
     font-weight: 400;
     line-height: 16px;
@@ -242,7 +240,6 @@
 .percentileText {
     font-size: 14px;
     margin-top: 10px;
-    color: var(--secondary);
 }
 
 .small_divider {

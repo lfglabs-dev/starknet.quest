@@ -7,6 +7,10 @@ import Timer from "@components/quests/timer";
 import { CDNImage } from "@components/cdn/image";
 import BoostReward from "@components/quests/boostReward";
 import { Skeleton } from "@mui/material";
+import QuestTag from "../questTag";
+import Typography from "../typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
+
 
 type FeaturedQuestProps = {
   onClick?: () => void;
@@ -36,8 +40,8 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
   return onClick ? (
     <div className={styles.featuredQuest}>
       <div className={styles.featuredQuestInfos}>
-        <p className={styles.featuredQuestHeading}>{heading}</p>
-        {title ? <h3 className={styles.featuredQuestTitle}>{title}</h3> : 
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.featuredQuestHeading}>{heading}</Typography>
+        {title ? <Typography type={TEXT_TYPE.H3} color="transparent" className={styles.featuredQuestTitle}>{title}</Typography> : 
           <>
             {
               [...Array(2)].map((_, index) => (<Skeleton
@@ -49,7 +53,7 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
             }
           </>
           }
-        {desc ? <p className={styles.featuredQuestDescription}>{desc}</p> : 
+        {desc ? <Typography color="secondary" type={TEXT_TYPE.BODY_DEFAULT} className={styles.featuredQuestDescription}>{desc}</Typography> : 
           <>
           {
               [...Array(5)].map((_, index) => (<Skeleton
@@ -61,21 +65,16 @@ const FeaturedQuest: FunctionComponent<FeaturedQuestProps> = ({
             }
           </>
           }
+
         <div className="flex items-center mb-4 mt-6 gap-2">
           {issuer?.name || issuer?.logoFavicon ? (
-            <div className={styles.issuer}>
-              <CDNImage
-                alt={"Feature Quest Reward"}
-                height={20}
-                width={20}
-                src={issuer?.logoFavicon}
-                className={styles.featuredQuestRewardIcon}
-              />
-              <p className={styles.featuredQuestReward}>{reward}</p>
-            </div>
+            <QuestTag label={reward ?? ''} icon={issuer?.logoFavicon} />
           ) : null}
+
           {questId ? <BoostReward questId={questId} /> : null}
+          
         </div>
+
         <div className={styles.featuredQuestButtonContainer}>
           <Button onClick={onClick}>Begin</Button>
         </div>
