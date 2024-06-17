@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import dayjs, { Dayjs } from "dayjs";
+import styles from "@styles/admin.module.css";
+import { DateTimeField } from "@mui/x-date-pickers/DateTimeField";
+import { Dayjs } from "dayjs";
 
 type Props = {
   value: string;
@@ -11,64 +12,46 @@ type Props = {
 };
 
 export default function DateInput(props: Props) {
-  const { value, onChange, label, name } = props;
+  const { value, placeholder, onChange, label, name } = props;
 
-  const [dateValue, setDateValue] = React.useState<Dayjs | null>(
-    value ? dayjs.unix(Number(value) / 1000) : null
-  );
-
-  useEffect(() => {
-    setDateValue(value ? dayjs.unix(Number(value) / 1000) : null);
-  }, [value]);
+  const [dateValue, setDateValue] = React.useState<Dayjs | null>(null);
 
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name}>{label}</label>
-      <DateTimePicker
+      <DateTimeField
+        variant="outlined"
+        color="secondary"
         onChange={(newValue) => {
           setDateValue(newValue);
           if (!newValue) return;
           onChange(newValue.unix());
         }}
-        slotProps={{
-          popper: {
-            sx: {
-              ".MuiPaper-root": {
-                backgroundColor: "#29282b",
-                color: "white",
-              },
-              ".MuiButtonBase-root": {
-                color: "#fff",
-              },
-              ".MuiTypography-root": {
-                color: "#fff",
-              },
-            },
-          },
-        }}
         sx={{
-          backgroundColor: "#29282b",
-          color: "#fff",
-          borderRadius: "10px",
-          borderWidth: "0px",
+          borderColor: "#f4faff4d",
           ":focus": {
             color: "#fff",
-            borderWidth: "0px",
             outline: "none",
+            borderColor: "#f4faff4d",
           },
           ".MuiInputBase-input": {
             color: "#fff",
             padding: "8px 16px",
+            borderColor: "#f4faff4d",
           },
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderWidth: "0px",
+              borderWidth: "1px",
+              borderRadius: "10px",
+              borderColor: "#f4faff4d",
             },
             "&:hover fieldset": {
-              borderWidth: "0px",
+              borderWidth: "1px",
+              borderColor: "#f4faff4d",
             },
             "&.Mui-focused fieldset": {
               borderWidth: "0px",
+              borderColor: "#f4faff4d",
             },
           },
         }}

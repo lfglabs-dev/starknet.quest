@@ -16,7 +16,7 @@ import { getQuizById } from "@services/apiService";
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
   setIsVerified: (isVerified: boolean) => void;
-  quizId: number ;
+  quizId: number;
   issuer: Issuer;
   verifyEndpoint: string;
   refreshRewards?: () => void;

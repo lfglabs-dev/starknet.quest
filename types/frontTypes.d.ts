@@ -298,6 +298,16 @@ type TabPanelProps = {
   value: number;
 };
 
+// Define discriminated union types
+type StepMap =
+  | { type: "Quiz"; data: QuizInputType }
+  | { type: "TwitterFw"; data: TwitterFwInputType }
+  | { type: "TwitterRw"; data: TwitterRwInputType }
+  | { type: "Discord"; data: DiscordInputType }
+  | { type: "Custom"; data: CustomInputType }
+  | { type: "None"; data: object }
+  | { type: "Domain"; data: DomainInputType };
+
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
 type DomainInputType = typeof DomainInput;

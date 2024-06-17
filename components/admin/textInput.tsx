@@ -15,7 +15,7 @@ export default function TextInput(props: TextInputProps) {
   const { value, placeholder, onChange, label, name, multiline, type } = props;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <label htmlFor={name}>{label}</label>
       {multiline && multiline > 1 ? (
         <textarea

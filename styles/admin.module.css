@@ -16,6 +16,40 @@
   gap: 2rem;
 }
 
+.formContainerBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+  border: 1px solid #f4faff4d;
+  background-color: var(--background);
+  border-radius: 8px;
+  flex-direction: column;
+}
+
+.formContainerTitle {
+  border-bottom: 0.5px solid #f4faff4d;
+  padding: 24px;
+  gap: 4px;
+}
+
+.formContainerSideBar {
+  display: flex;
+  flex-direction: column;
+  border-right: 0.5px solid #f4faff4d;
+  padding: 24px;
+  gap: 16px;
+}
+
+.formContainerChildren {
+  padding: 24px;
+}
+
+.sidebarOptions {
+  padding: 4px 16px;
+  gap: 2px;
+  border-radius: 10px;
+}
+
 .banner {
   width: 100%;
   max-width: 950px;
@@ -174,8 +208,8 @@
   padding: 8px 16px 8px 16px;
   gap: 16px;
   border-radius: 10px;
-  border: 1px 0px 0px 0px;
-  background-color: var(--background600);
+  border: 1px solid #f4faff4d;
+  background-color: inherit;
   outline: none;
 }
 
