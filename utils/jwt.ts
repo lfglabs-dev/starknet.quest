@@ -1,6 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 
 export const getUserFromJwt = () => {
+  if (typeof window === "undefined") return;
+
   const token = localStorage.getItem("token");
   if (!token) return null;
   const decoded = jwtDecode(token);
@@ -8,6 +10,7 @@ export const getUserFromJwt = () => {
 };
 
 export const getExpireTimeFromJwt = () => {
+  if (typeof window === "undefined") return;
   const token = localStorage.getItem("token");
   if (!token) return null;
   const decoded = jwtDecode(token);
