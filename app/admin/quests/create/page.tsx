@@ -127,6 +127,24 @@ export default function Page() {
     }
   }, [questInput]);
 
+  const handleCreateNftUri = useCallback(
+    async (questId: number) => {
+      try {
+        const response = await AdminService.createNftUri({
+          questId,
+          name: nfturi.name,
+          description: nfturi.description,
+          image: nfturi.image,
+        });
+        if (!response) return;
+        return Number(response.id);
+      } catch (error) {
+        console.log("Error while creating quest", error);
+      }
+    },
+    [questInput, nfturi]
+  );
+
   const handleCreateBoost = useCallback(
     async (quest_id: number) => {
       try {
@@ -258,7 +276,8 @@ export default function Page() {
     const id = await handleCreateQuest();
     if (!id) return;
     await handleCreateBoost(id);
-    setButtonLoading(false);
+    await handleCreateNftUri(id);
+    await setButtonLoading(false);
     handlePagination("Next");
   }, [questInput, boostInput]);
 
@@ -431,8 +450,8 @@ export default function Page() {
               <div className="w-full flex justify-between gap-4">
                 <div className="flex-1 w-full">
                   <DateInput
-                    onChange={(e) => {
-                      setStartTime(e.target.value);
+                    onChange={(value) => {
+                      setStartTime(value.toString());
                     }}
                     value={startTime}
                     label="Start Date"
@@ -442,8 +461,8 @@ export default function Page() {
                 </div>
                 <div className="flex-1 w-full">
                   <DateInput
-                    onChange={(e) => {
-                      setEndTime(e.target.value);
+                    onChange={(value) => {
+                      setEndTime(value.toString());
                     }}
                     value={endTime}
                     label="End Date"

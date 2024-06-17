@@ -95,13 +95,11 @@ export default function Page({ params }: AddressOrDomainProps) {
       }
       const quest_details = await AdminService.getQuestById(questId.current);
       if (!quest_details) return;
-      setStartTime(
-        new Date(quest_details.start_time).toISOString().split("T")[0]
-      );
+      setStartTime(quest_details.start_time);
       setBoostInput(quest_details.boosts[0]);
       setShowBoost(!!quest_details.boosts[0]);
       setInitialBoostDisplayStatus(!!quest_details.boosts[0]);
-      setEndTime(new Date(quest_details.expiry).toISOString().split("T")[0]);
+      setEndTime(quest_details.expiry);
       setQuestInput(quest_details);
       setQuestData(quest_details);
       const nft_uri_data = await AdminService.getNftUriByQuestId({
@@ -165,6 +163,13 @@ export default function Page({ params }: AddressOrDomainProps) {
           },
         };
       } else if (task.task_type === "discord") {
+        console.log({
+          id: task.id,
+          dc_name: task.name,
+          dc_desc: task.desc,
+          dc_guild_id: task.discord_guild_id,
+          dc_invite_link: task.href,
+        });
         return {
           type: "Discord",
           data: {
@@ -631,8 +636,8 @@ export default function Page({ params }: AddressOrDomainProps) {
               <div className="w-full flex justify-between gap-4">
                 <div className="flex-1 w-full">
                   <DateInput
-                    onChange={(e) => {
-                      setStartTime(e.target.value);
+                    onChange={(value) => {
+                      setStartTime(value.toString());
                     }}
                     value={startTime}
                     label="Start Date"
@@ -642,8 +647,8 @@ export default function Page({ params }: AddressOrDomainProps) {
                 </div>
                 <div className="flex-1 w-full">
                   <DateInput
-                    onChange={(e) => {
-                      setEndTime(e.target.value);
+                    onChange={(value) => {
+                      setEndTime(value.toString());
                     }}
                     value={endTime}
                     label="End Date"

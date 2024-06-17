@@ -13,10 +13,11 @@ import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
 import Quest from "@components/admin/questCard";
 import { useNotification } from "@context/NotificationProvider";
-import { getExpireTimeFromJwt } from "@utils/jwt";
+import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
 
 export default function Page() {
   const router = useRouter();
+  const [user, setUser] = useState("");
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
   const { showNotification } = useNotification();
@@ -45,10 +46,16 @@ export default function Page() {
     router.push("/admin/quests/create");
   }, []);
 
-  const handleEditQuest = useCallback(() => {
-    router.push("/admin/quests/edit");
-  }, []);
   useEffect(() => {
+    const currentUser = getUserFromJwt();
+    if (!currentUser) return;
+
+    if (currentUser === "super_user") {
+      setUser("Admin");
+    } else {
+      setUser(currentUser);
+    }
+
     fetchQuests();
   }, [address]);
 
@@ -60,7 +67,7 @@ export default function Page() {
       <div className={styles.screenContainer}>
         <div className={styles.questsBanner}>
           <div>
-            <p>Admin</p>
+            <p>{user}</p>
             <p className={styles.questListHeading}>Your quests</p>
             <p>{quests?.length} quests</p>
           </div>

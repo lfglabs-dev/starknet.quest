@@ -17,6 +17,8 @@ import {
   UpdateQuizQuestion,
   UpdateTwitterFw,
   UpdateTwitterRw,
+  CreateNftUri,
+  UpdateNftUri,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -45,7 +47,7 @@ const getNftUriByQuestId = async (params: { id: number }) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while getting nft uri by quest id", err);
   }
 };
 
@@ -59,7 +61,7 @@ const getQuestById = async (id: number) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while getting quests by id", err);
   }
 };
 
@@ -76,7 +78,7 @@ const getTasksByQuestId = async (id: number) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while getting tasks by id", err);
   }
 };
 const getQuests = async () => {
@@ -89,7 +91,7 @@ const getQuests = async () => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while getting quests", err);
   }
 };
 
@@ -105,7 +107,7 @@ const createQuest = async (params: CreateQuest) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating quest", err);
   }
 };
 
@@ -121,7 +123,7 @@ const updateQuest = async (params: UpdateQuest) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating quest", err);
   }
 };
 
@@ -137,7 +139,7 @@ const createBoost = async (params: CreateBoost) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating boost", err);
   }
 };
 
@@ -153,7 +155,7 @@ const updateBoost = async (params: UpdateBoost) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating boost", err);
   }
 };
 
@@ -169,7 +171,7 @@ const createTwitterFw = async (params: CreateTwitterFw) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating twitter fw task", err);
   }
 };
 
@@ -185,7 +187,7 @@ const updateTwitterFw = async (params: UpdateTwitterFw) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating twitter fw task", err);
   }
 };
 
@@ -201,7 +203,7 @@ const createTwitterRw = async (params: CreateTwitterRw) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating twitter rw task", err);
   }
 };
 
@@ -217,7 +219,7 @@ const createDomain = async (params: CreateDomain) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating domain task", err);
   }
 };
 
@@ -233,7 +235,7 @@ const updateDomain = async (params: UpdateDomain) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating domain task", err);
   }
 };
 
@@ -249,7 +251,7 @@ const updateTwitterRw = async (params: UpdateTwitterRw) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating twitter rw task", err);
   }
 };
 
@@ -265,7 +267,7 @@ const createDiscord = async (params: CreateDiscord) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating discord task", err);
   }
 };
 
@@ -281,7 +283,7 @@ const updateDiscord = async (params: UpdateDiscord) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating discord task", err);
   }
 };
 
@@ -297,7 +299,7 @@ const createCustom = async (params: CreateCustom) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating custom task", err);
   }
 };
 
@@ -313,7 +315,7 @@ const updateCustom = async (params: UpdateCustom) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating custom task", err);
   }
 };
 
@@ -329,7 +331,7 @@ const createQuiz = async (params: CreateQuiz) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating quiz", err);
   }
 };
 
@@ -345,7 +347,7 @@ const updateQuiz = async (params: UpdateQuiz) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating quiz", err);
   }
 };
 
@@ -364,7 +366,7 @@ const createQuizQuestion = async (params: CreateQuizQuestion) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while creating quiz question", err);
   }
 };
 
@@ -383,7 +385,7 @@ const updateQuizQuestion = async (params: UpdateQuizQuestion) => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating quiz question", err);
   }
 };
 
@@ -399,24 +401,56 @@ const deleteTask = async (params: { id: number }) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while deleting tasks", err);
   }
 };
 
 const getQuizDetails = async (params: { id: number }) => {
   try {
-    const response = await fetch(`${baseurl}/admin/tasks/quiz/get_quiz`, {
+    const response = await fetch(
+      `${baseurl}/admin/tasks/quiz/get_quiz?id=${params.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while getting quiz details", err);
+  }
+};
+
+const createNftUri = async (params: CreateNftUri) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/nft_uri/create`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while creating nft uri", err);
+  }
+};
+
+const updateNftUri = async (params: UpdateNftUri) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/nft_uri/update`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
     });
     return await response.json();
   } catch (err) {
     console.log("Error while quests", err);
   }
 };
-
 export const AdminService = {
   login,
   getQuests,
@@ -443,4 +477,6 @@ export const AdminService = {
   getQuizDetails,
   updateDomain,
   createDomain,
+  createNftUri,
+  updateNftUri,
 };

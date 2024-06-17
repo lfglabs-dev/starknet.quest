@@ -364,3 +364,23 @@ export type NFTUri = {
   description: string;
   image: string;
 };
+
+export type NFTUri = {
+  name: string;
+  description: string;
+  image: string;
+};
+
+export type CreateNftUri = {
+  name: string;
+  description: string;
+  image: string;
+  questId: number;
+};
+
+export type UpdateNftUri = {
+  name: string;
+  description: string;
+  image: string;
+  id: number;
+};
