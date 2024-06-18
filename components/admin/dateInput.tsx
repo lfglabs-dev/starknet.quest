@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "@styles/admin.module.css";
 import { DateTimeField } from "@mui/x-date-pickers/DateTimeField";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 type Props = {
   value: string;
@@ -14,7 +14,13 @@ type Props = {
 export default function DateInput(props: Props) {
   const { value, placeholder, onChange, label, name } = props;
 
-  const [dateValue, setDateValue] = React.useState<Dayjs | null>(null);
+  const [dateValue, setDateValue] = React.useState<Dayjs | null>(
+    value ? dayjs(value) : null
+  );
+
+  useEffect(() => {
+    setDateValue;
+  }, [value]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -25,6 +31,7 @@ export default function DateInput(props: Props) {
         onChange={(newValue) => {
           setDateValue(newValue);
           if (!newValue) return;
+          console.log(newValue, newValue.unix());
           onChange(newValue.unix());
         }}
         sx={{

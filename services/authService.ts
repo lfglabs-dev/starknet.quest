@@ -408,7 +408,7 @@ const deleteTask = async (params: { id: number }) => {
 const getQuizDetails = async (params: { id: number }) => {
   try {
     const response = await fetch(
-      `${baseurl}/admin/tasks/quiz/get_quiz?id=${params.id}`,
+      `${baseurl}/admin/quiz/get_quiz?id=${params.id}`,
       {
         method: "GET",
         headers: {
@@ -425,8 +425,9 @@ const getQuizDetails = async (params: { id: number }) => {
 const createNftUri = async (params: CreateNftUri) => {
   try {
     const response = await fetch(`${baseurl}/admin/nft_uri/create`, {
-      method: "GET",
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(params),
@@ -440,8 +441,9 @@ const createNftUri = async (params: CreateNftUri) => {
 const updateNftUri = async (params: UpdateNftUri) => {
   try {
     const response = await fetch(`${baseurl}/admin/nft_uri/update`, {
-      method: "GET",
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(params),

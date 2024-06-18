@@ -36,15 +36,22 @@ const CustomStep: FunctionComponent<CustomStepProps> = ({
         onChange={(e) => handleTasksInputChange(e, index)}
         value={step.data.custom_href}
         name="custom_href"
-        label="API Endpoint"
-        placeholder="API Endpoint"
+        label="URL"
+        placeholder="URL"
       />
       <TextInput
         onChange={(e) => handleTasksInputChange(e, index)}
         value={step.data.custom_cta}
         name="custom_cta"
-        label="URL"
+        label="CTA"
         placeholder="URL"
+      />
+      <TextInput
+        onChange={(e) => handleTasksInputChange(e, index)}
+        value={step.data.custom_api}
+        name="custom_api"
+        label="API Endpoint"
+        placeholder="API Endpoint"
       />
     </div>
   );

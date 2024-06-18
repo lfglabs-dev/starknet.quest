@@ -40,7 +40,6 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
   isButtonDisabled,
 }) => {
   const [currentTask, setCurrenTask] = useState(0);
-
   const renderTask = () => {
     const step = steps[currentTask];
 
@@ -223,7 +222,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
       <div className="w-fit pt-4">
         <Button
           loading={buttonLoading}
-          onClick={onSubmit}
+          onClick={async () => await onSubmit()}
           disabled={isButtonDisabled}
         >
           <p>Save Task</p>

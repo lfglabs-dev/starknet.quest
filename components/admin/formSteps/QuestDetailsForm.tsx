@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import TextInput from "../textInput";
 import { CATEGORY_OPTIONS } from "@constants/admin";
-import { CreateQuest } from "../../../types/backTypes";
+import { CreateQuest, UpdateQuest } from "../../../types/backTypes";
 import DateInput from "../dateInput";
 import { getUserFromJwt } from "@utils/jwt";
 import styles from "@styles/admin.module.css";
@@ -11,12 +11,14 @@ import Button from "@components/UI/button";
 
 type QuestDetailsFormProps = {
   handleQuestInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  questInput: CreateQuest;
+  questInput: CreateQuest | UpdateQuest;
   startTime: string;
   endTime: string;
   setStartTime: React.Dispatch<React.SetStateAction<string>>;
   setEndTime: React.Dispatch<React.SetStateAction<string>>;
-  setQuestInput: React.Dispatch<React.SetStateAction<CreateQuest>>;
+  setQuestInput:
+    | React.Dispatch<React.SetStateAction<CreateQuest>>
+    | React.Dispatch<React.SetStateAction<UpdateQuest>>;
   onSubmit: () => void;
   submitButtonDisabled: boolean;
 };
@@ -38,13 +40,25 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
       <div className="flex flex-col gap-1">
         <TextInput
           onChange={handleQuestInputChange}
+          value={questInput.name ?? ""}
+          name="name"
+          label="Name"
+          placeholder="Enter a name"
+        />
+        <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">
+          Provide a brief, descriptive name for the quest.
+        </Typography>
+      </div>
+      <div className="flex flex-col gap-1">
+        <TextInput
+          onChange={handleQuestInputChange}
           value={questInput.title_card ?? ""}
           name="title_card"
           label="Title"
           placeholder="Enter a title"
         />
         <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">
-          Provide a brief, descriptive name for the quest.
+          Provide a title which will be displayed in the card.
         </Typography>
       </div>
 
@@ -82,7 +96,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           <div className="flex flex-col gap-1">
             <DateInput
               onChange={(value) => {
-                setStartTime(value.toString());
+                setStartTime((value * 1000).toString());
               }}
               value={startTime}
               label="Start Date"
@@ -98,7 +112,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           <div className="flex flex-col gap-1">
             <DateInput
               onChange={(value) => {
-                setEndTime(value.toString());
+                setEndTime((value * 1000).toString());
               }}
               value={endTime}
               label="End Date"

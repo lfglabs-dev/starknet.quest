@@ -1,7 +1,12 @@
 import React, { FunctionComponent } from "react";
 import TextInput from "../textInput";
 import { SelectChangeEvent, Switch } from "@mui/material";
-import { CreateQuest, NFTUri } from "../../../types/backTypes";
+import {
+  CreateQuest,
+  NFTUri,
+  UpdateBoost,
+  UpdateQuest,
+} from "../../../types/backTypes";
 import Button from "@components/UI/button";
 import { boostDefaultInput } from "@constants/admin";
 import { getTokenName } from "@utils/tokenService";
@@ -13,12 +18,16 @@ type RewardDetailsFormProps = {
   handleQuestInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBoostInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleQuestImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  questInput: CreateQuest;
-  boostInput: typeof boostDefaultInput;
+  questInput: CreateQuest | UpdateQuest;
+  boostInput: typeof boostDefaultInput | UpdateBoost;
   nfturi: NFTUri;
   setNftUri: React.Dispatch<React.SetStateAction<NFTUri>>;
-  setQuestInput: React.Dispatch<React.SetStateAction<CreateQuest>>;
-  setBoostInput: React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>;
+  setQuestInput:
+    | React.Dispatch<React.SetStateAction<CreateQuest>>
+    | React.Dispatch<React.SetStateAction<UpdateQuest>>;
+  setBoostInput:
+    | React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>
+    | React.Dispatch<React.SetStateAction<UpdateBoost>>;
   setShowBoost: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: () => void;
   submitButtonDisabled: boolean;
@@ -53,21 +62,21 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
               name: e.target.value,
             }));
           }}
-          value={nfturi.name}
+          value={nfturi?.name}
           name="rewards_nfts"
           label="NFT Name"
           placeholder="NFT Name"
         />
         <TextInput
           onChange={handleQuestInputChange}
-          value={questInput.rewards_title}
+          value={questInput.rewards_title ?? ""}
           name="rewards_title"
           label="Rewards Title"
           placeholder="NFT Name"
         />
         <TextInput
           onChange={handleQuestImageChange}
-          value={nfturi.image}
+          value={nfturi?.image}
           name="nft_image"
           label="NFT Image Path"
           placeholder="NFT Image Path"
@@ -80,14 +89,14 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
               description: e.target.value,
             }));
           }}
-          value={nfturi.description ?? ""}
+          value={nfturi?.description ?? ""}
           name="nft_image"
           label="NFT Description"
           placeholder="NFT Description"
         />
         <TextInput
           onChange={handleQuestInputChange}
-          value={questInput.logo}
+          value={questInput?.logo ?? ""}
           name="logo"
           label="Issuer Logo"
           placeholder="Issuer logo"
@@ -105,13 +114,13 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
         <div className="flex flex-col w-full gap-8">
           <TextInput
             onChange={handleBoostInputChange}
-            value={boostInput.num_of_winners}
+            value={boostInput.num_of_winners ?? ""}
             name="num_of_winners"
             label="Number of winners"
             placeholder="Number of winners"
           />
           <Dropdown
-            value={getTokenName(boostInput.token)}
+            value={boostInput.token ? getTokenName(boostInput.token) : ""}
             backgroundColor="#101012"
             textColor="#fff"
             handleChange={(event: SelectChangeEvent) => {
@@ -134,7 +143,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           />
           <TextInput
             onChange={handleBoostInputChange}
-            value={boostInput.amount}
+            value={boostInput?.amount ?? ""}
             name="amount"
             label="Amount"
             placeholder="Amount"

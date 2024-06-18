@@ -317,6 +317,7 @@ export type CreateCustom = {
   desc: string;
   cta: string;
   href: string;
+  api: string;
 };
 
 export type UpdateCustom = {
@@ -325,6 +326,7 @@ export type UpdateCustom = {
   desc?: string;
   cta?: string;
   href?: string;
+  api?: string;
 };
 
 export type CreateQuiz = {
@@ -343,6 +345,7 @@ export type UpdateQuiz = {
   cta?: string;
   intro?: string;
   id: number;
+  quiz_id: number;
 };
 
 export type CreateQuizQuestion = {
@@ -357,6 +360,7 @@ export type UpdateQuizQuestion = {
   options: string[];
   correct_answers: number[];
   id: number;
+  quiz_id: number;
 };
 
 export type NFTUri = {
@@ -373,14 +377,14 @@ export type NFTUri = {
 
 export type CreateNftUri = {
   name: string;
-  description: string;
+  desc: string;
   image: string;
-  questId: number;
+  quest_id: number;
 };
 
 export type UpdateNftUri = {
   name: string;
-  description: string;
+  desc: string;
   image: string;
   id: number;
 };

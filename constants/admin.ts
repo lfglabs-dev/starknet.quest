@@ -9,6 +9,8 @@ export const CATEGORY_OPTIONS = [
   "Starknet Pro Score by Braavos",
 ];
 
+export const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
+
 export const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom", "Domain"];
 
 export const TWITTER_OPTIONS = {
@@ -51,9 +53,10 @@ export const boostDefaultInput = {
 };
 
 export const QuizQuestionDefaultInput = {
+  id: 0,
   question: "",
   options: ["", "", "", ""],
-  correct_answers: [0],
+  correct_answers: [1],
 };
 
 export const QuizDefaultInput = {
@@ -89,6 +92,7 @@ export const CustomInput = {
   custom_desc: "",
   custom_cta: "",
   custom_href: "",
+  custom_api: "",
 };
 
 export const DomainInput = {

@@ -7,6 +7,7 @@ import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import {
   boostDefaultInput,
+  formSteps,
   nft_uri,
   questDefaultInput,
   QuizQuestionDefaultInput,
@@ -19,8 +20,8 @@ import FormContainer from "@components/admin/FormContainer";
 import QuestDetailsForm from "@components/admin/formSteps/QuestDetailsForm";
 import RewardDetailsForm from "@components/admin/formSteps/RewardDetailsForm";
 import TaskDetailsForm from "@components/admin/formSteps/TaskDetailsForm";
-
-const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const getCurrentUser = getUserFromJwt();
@@ -66,12 +67,12 @@ export default function Page() {
 
     const questRewardValid = !questInput.rewards_title || !questInput.logo;
 
-    if (currentPage === 1) {
+    if (currentPage === 0) {
       return questInputValid;
-    } else if (currentPage === 2) {
+    } else if (currentPage === 1) {
       return (showBoost && boostInputValid) || nftUriValid || questRewardValid;
     }
-    if (currentPage === 3) {
+    if (currentPage === 2) {
       return steps.some((step) => step.type === "None");
     }
     return false;
@@ -107,9 +108,9 @@ export default function Page() {
     async (questId: number) => {
       try {
         const response = await AdminService.createNftUri({
-          questId,
+          quest_id: questId,
           name: nfturi.name,
-          description: nfturi.description,
+          desc: nfturi.description,
           image: nfturi.image,
         });
         if (!response) return;
@@ -179,30 +180,30 @@ export default function Page() {
 
   useEffect(() => {
     //check if start time is less than current time
-    if (new Date(startTime).getTime() < new Date().getTime()) {
+    if (new Date(parseInt(startTime)).getTime() < new Date().getTime()) {
       showNotification("Start time cannot be less than current time", "info");
       return;
     }
 
     setQuestInput((prev) => ({
       ...prev,
-      start_time: new Date(startTime).getTime(),
+      start_time: new Date(parseInt(startTime)).getTime(),
     }));
   }, [startTime]);
 
   useEffect(() => {
     // check if start_time is less than end_time
-    if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
+    if (new Date(parseInt(endTime)).getTime() < new Date(startTime).getTime()) {
       showNotification("End time cannot be less than start time", "info");
       return;
     }
     setQuestInput((prev) => ({
       ...prev,
-      expiry: new Date(endTime).getTime(),
+      expiry: new Date(parseInt(endTime)).getTime(),
     }));
     setBoostInput((prev) => ({
       ...prev,
-      expiry: new Date(endTime).getTime(),
+      expiry: new Date(parseInt(endTime)).getTime(),
     }));
   }, [endTime]);
 
@@ -222,6 +223,7 @@ export default function Page() {
       setQuestInput((prev) => ({
         ...prev,
         rewards_img: e.target.value,
+        img_card: e.target.value,
       }));
       setNftUri((prev) => ({
         ...prev,
@@ -267,18 +269,18 @@ export default function Page() {
           cta: step.data.quiz_cta,
           help_link: step.data.quiz_help_link,
         });
-        await Promise.all(
-          step.data.questions.map(
-            async (question: typeof QuizQuestionDefaultInput) => {
-              await AdminService.createQuizQuestion({
-                quiz_id: response.id,
-                question: question.question,
-                options: question.options,
-                correct_answers: question.correct_answers,
-              });
-            }
-          )
-        );
+        for (const question of step.data.questions) {
+          try {
+            await AdminService.createQuizQuestion({
+              quiz_id: response.quiz_id,
+              question: question.question,
+              options: question.options,
+              correct_answers: question.correct_answers,
+            });
+          } catch (error) {
+            console.error("Error executing promise:", error);
+          }
+        }
       }
       if (step.type === "TwitterFw") {
         if (
@@ -335,7 +337,8 @@ export default function Page() {
           step.data.custom_name?.length === 0 ||
           step.data.custom_desc?.length === 0 ||
           step.data.custom_cta?.length === 0 ||
-          step.data.custom_href?.length === 0
+          step.data.custom_href?.length === 0 ||
+          step.data.custom_api?.length === 0
         ) {
           showNotification("Please fill all fields for Discord", "info");
           return;
@@ -346,6 +349,7 @@ export default function Page() {
           desc: step.data.custom_desc,
           cta: step.data.custom_cta,
           href: step.data.custom_href,
+          api: step.data.custom_api,
         });
       } else if (step.type === "Domain") {
         await AdminService.createDomain({
@@ -409,6 +413,15 @@ export default function Page() {
         />
       );
     } else if (currentPage === 3) {
+      if (finalQuestData.id === 0) {
+        return (
+          <div>
+            <Typography type={TEXT_TYPE.BODY_MIDDLE}>
+              Please submit all the details of the quest
+            </Typography>
+          </div>
+        );
+      }
       return (
         <AdminQuestDetails
           quest={finalQuestData}
