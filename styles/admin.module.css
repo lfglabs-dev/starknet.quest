@@ -63,14 +63,23 @@
   border-radius: 10px;
 }
 
+.image {
+  display: flex;
+  width: 40%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-image: url("/visuals/admin/human.png");
+}
+
 .banner {
   width: 100%;
   max-width: 950px;
-  background: linear-gradient(180deg, #29282b 0%, #101012 100%);
+  background-image: linear-gradient(180deg, #29282b 0%, #101012 100%);
   display: flex;
   height: 448px;
   border-radius: 8px;
-  padding: 24px;
+  flex: 1 1 0;
 }
 
 .card_container:has(.noBoosts) {
@@ -234,4 +243,43 @@
   background-color: var(--background600);
   outline: none;
   width: 100%;
+}
+
+@media (max-width: 928px) {
+  .banner {
+    flex-direction: column-reverse;
+    gap: 24px;
+    height: unset;
+  }
+
+  .image {
+    background-position: center;
+    height: 200px;
+    width: 200px;
+    margin-inline: auto;
+  }
+
+  .subtitleText {
+    text-align: center;
+  }
+  .headingText {
+    text-align: center;
+  }
+
+  .questsBanner {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .questListHeading {
+    text-align: center;
+  }
+
+  .sidebarOptions {
+    text-align: center;
+  }
+
+  .tagText {
+    text-align: center;
+  }
 }

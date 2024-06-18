@@ -35,26 +35,29 @@ export default function Page() {
   return (
     <div className={styles.screen}>
       <div className={styles.banner}>
-        <div className="flex flex-col justify-evenly">
-          <div className="flex flex-col gap-4">
-            <p className={styles.subtitleText}>Quest Overview</p>
-            <h1 className={styles.headingText}>Admin quest control</h1>
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fname">Passcode:</label>
-            <input
-              ref={password}
-              className={styles.input}
-              id="fname"
-              type="password"
-            />
-          </div>
-          <div className="w-fit">
-            <Button onClick={handleAdminLogin}>
-              Access the admin dashboard
-            </Button>
+        <div className="flex flex-1 w-full p-6">
+          <div className="flex flex-col justify-evenly gap-4">
+            <div className="flex flex-col gap-4">
+              <p className={styles.subtitleText}>Quest Overview</p>
+              <h1 className={styles.headingText}>Admin quest control</h1>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="fname">Passcode:</label>
+              <input
+                ref={password}
+                className={styles.input}
+                id="fname"
+                type="password"
+              />
+            </div>
+            <div className="w-fit">
+              <Button onClick={handleAdminLogin}>
+                Access the admin dashboard
+              </Button>
+            </div>
           </div>
         </div>
+        <div className={styles.image}></div>
       </div>
     </div>
   );

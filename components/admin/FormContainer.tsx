@@ -27,8 +27,8 @@ const FormContainer: FunctionComponent<FormContainerProps> = ({
           covering setup, rewards, tasks, and preview before publishing.
         </Typography>
       </div>
-      <div className="w-100 flex flex-row">
-        <div className={`w-1/4 flex ${styles.formContainerSideBar}`}>
+      <div className="w-100 flex flex-col sm:flex-row">
+        <div className={`w-full sm:w-1/4 flex ${styles.formContainerSideBar}`}>
           {steps.map((eachOption, index) => {
             return (
               <div

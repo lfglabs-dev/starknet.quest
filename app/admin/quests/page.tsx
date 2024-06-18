@@ -78,7 +78,7 @@ export default function Page() {
       </div>
       <div className={styles.screenContainer}>
         <div className={styles.questsBanner}>
-          <div>
+          <div className=" text-center sm:text-left">
             <p>{user}</p>
             <p className={styles.questListHeading}>Your quests</p>
             <p>{quests?.length} quests</p>

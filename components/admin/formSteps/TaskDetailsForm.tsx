@@ -97,15 +97,15 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
   };
   return (
     <div>
-      <div className="flex flex-row w-full gap-2 py-3 justify-between">
-        <div className="flex gap-4 items-center w-full">
+      <div className="flex w-full gap-2 py-3 justify-between flex-col-reverse sm:flex-row">
+        <div className="flex gap-4 items-center w-full flex-col sm:flex-row">
           {Object.keys(steps).map((_, index) => (
             <div
               onClick={() => {
                 setCurrenTask(index);
               }}
               key={"twitteroption+" + index}
-              className="py-3 px-5 rounded-xl w-fit"
+              className="py-3 px-5 rounded-xl sm:w-fit w-full"
               style={{
                 cursor: "pointer",
                 backgroundColor: index === currentTask ? "#ffffff" : "#29282B",
@@ -116,7 +116,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
             </div>
           ))}
         </div>
-        <div className="w-1/3">
+        <div className="sm:w-1/3 w-full">
           <Button
             onClick={() => {
               setSteps((prev) => {
@@ -133,7 +133,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
 
       <div key={"tasks-" + currentTask} className="flex gap-4 flex-col">
         <div className="flex gap-2 flex-col">
-          <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
+          <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d] flex-wrap">
             <>
               {TASK_OPTIONS.map((category) => (
                 <div

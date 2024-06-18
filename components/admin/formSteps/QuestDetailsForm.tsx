@@ -91,7 +91,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
         </Typography>
       </div>
 
-      <div className="w-full flex justify-between gap-4">
+      <div className="w-full flex justify-between gap-4 flex-col sm:flex-row">
         <div className="flex-1 w-full">
           <div className="flex flex-col gap-1">
             <DateInput
@@ -128,14 +128,14 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
 
       <div className="flex flex-col gap-1">
         <p>Category</p>
-        <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
+        <div className="flex flex-col sm:flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
           {CATEGORY_OPTIONS.map((category) => (
             <div
               onClick={() => {
                 setQuestInput((prev: any) => ({ ...prev, category }));
               }}
               key={"category" + category}
-              className="py-3 px-5 rounded-xl w-fit"
+              className="py-3 px-5 rounded-xl w-full sm:w-fit"
               style={{
                 cursor: "pointer",
                 backgroundColor:
@@ -151,7 +151,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           Choose a category that best fits the quest.
         </Typography>
       </div>
-      <div className="w-fit">
+      <div className="w-full sm:w-fit">
         <Button onClick={onSubmit} disabled={submitButtonDisabled}>
           <p>Save Changes</p>
         </Button>

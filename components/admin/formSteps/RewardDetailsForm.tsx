@@ -150,7 +150,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           />
         </div>
       ) : null}
-      <div className="w-fit">
+      <div className="w-full sm:w-fit">
         <Button
           loading={buttonLoading}
           onClick={async () => await onSubmit()}
