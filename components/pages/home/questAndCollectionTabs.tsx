@@ -29,29 +29,9 @@ import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
+import { CustomTabPanel } from "@components/UI/tabs/customTab";
+import { a11yProps } from "@components/UI/tabs/a11y";
 
-export function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <div className="pt-6">{children}</div>}
-    </div>
-  );
-}
-
-export function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
 type QuestAndCollectionTabsProps = {
   categories: QuestCategory[];
   quests: QuestDocument[];
@@ -235,8 +215,16 @@ const QuestAndCollectionTabs: FunctionComponent<
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>
-                      <Typography type={TEXT_TYPE.H2} className={`${styles.categoryInfosH2} text-gray-200`}>Boosts Quest</Typography>
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.categoryInfosText} text-gray-200 normal-case`}>
+                      <Typography
+                        type={TEXT_TYPE.H2}
+                        className={`${styles.categoryInfosH2} text-gray-200`}
+                      >
+                        Boosts Quest
+                      </Typography>
+                      <Typography
+                        type={TEXT_TYPE.BODY_DEFAULT}
+                        className={`${styles.categoryInfosText} text-gray-200 normal-case`}
+                      >
                         {completedBoostNumber === boosts.length ? (
                           <span className="flex">
                             <span className="mr-2">All boosts done</span>

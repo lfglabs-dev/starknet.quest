@@ -7,13 +7,17 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "@starknet-react/core";
 
 import { QuestDocument } from "../../../types/backTypes";
-import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
 import Button from "@components/UI/button";
 import Quest from "@components/admin/questCard";
 import { useNotification } from "@context/NotificationProvider";
 import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
+import homePagestyles from "@styles/Home.module.css";
+import { a11yProps } from "@components/UI/tabs/a11y";
+import { CustomTabPanel } from "@components/UI/tabs/customTab";
+import { Tab, Tabs } from "@mui/material";
+import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
 
 export default function Page() {
   const router = useRouter();
@@ -21,6 +25,7 @@ export default function Page() {
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
   const { showNotification } = useNotification();
+  const [tabIndex, setTabIndex] = React.useState(0);
 
   const [quests, setQuests] = useState<[QuestDocument]>([QuestDefault]);
 
@@ -59,6 +64,13 @@ export default function Page() {
     fetchQuests();
   }, [address]);
 
+  const handleChangeTab = useCallback(
+    (event: React.SyntheticEvent, newValue: number) => {
+      setTabIndex(newValue);
+    },
+    []
+  );
+
   return (
     <div className="flex flex-col w-full pt-28 g-8">
       <div className={styles.backButton}>
@@ -77,27 +89,96 @@ export default function Page() {
             </Button>
           </div>
         </div>
-        <div className={styles.card_container}>
-          {loading ? (
-            <FeaturedQuestSkeleton />
-          ) : (
-            quests &&
-            quests.map((quest: QuestDocument) => {
-              return (
-                <Quest
-                  key={quest.id}
-                  title={quest.title_card}
-                  onClick={() =>
-                    router.push(`/admin/quests/dashboard/${quest.id}`)
-                  }
-                  imgSrc={quest.img_card}
-                  reward={quest.disabled ? "Disabled" : "Active"}
-                  id={quest.id}
-                />
-              );
-            })
-          )}
-        </div>
+        {loading ? (
+          <FeaturedQuestSkeleton />
+        ) : (
+          <section className={homePagestyles.section}>
+            <div className="w-full">
+              <div>
+                <Tabs
+                  style={{
+                    borderBottom: "0.5px solid rgba(224, 224, 224, 0.3)",
+                  }}
+                  className="pb-4"
+                  value={tabIndex}
+                  onChange={handleChangeTab}
+                  aria-label="quests and collectons tabs"
+                  indicatorColor="secondary"
+                >
+                  <Tab
+                    disableRipple
+                    sx={{
+                      borderRadius: "10px",
+                      padding: "0px 12px 0px 12px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      fontSize: "12px",
+                      fontFamily: "Sora",
+                      minHeight: "32px",
+                    }}
+                    label={`Enable`}
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    disableRipple
+                    sx={{
+                      borderRadius: "10px",
+                      padding: "0px 12px 0px 12px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      fontSize: "12px",
+                      fontFamily: "Sora",
+                      minHeight: "32px",
+                    }}
+                    label={`Disable`}
+                    {...a11yProps(1)}
+                  />
+                </Tabs>
+              </div>
+              <CustomTabPanel value={tabIndex} index={0}>
+                <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+                  {quests.map((quest) => {
+                    if (!quest.disabled) {
+                      return (
+                        <Quest
+                          key={quest.id}
+                          title={quest.title_card}
+                          onClick={() =>
+                            router.push(`/admin/quests/dashboard/${quest.id}`)
+                          }
+                          imgSrc={quest.img_card}
+                          reward={quest.disabled ? "Disabled" : "Active"}
+                          id={quest.id}
+                        />
+                      );
+                    }
+                  })}
+                </div>
+              </CustomTabPanel>
+              <CustomTabPanel value={tabIndex} index={1}>
+                <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+                  {quests.map((quest) => {
+                    if (quest.disabled) {
+                      return (
+                        <Quest
+                          key={quest.id}
+                          title={quest.title_card}
+                          onClick={() =>
+                            router.push(`/admin/quests/dashboard/${quest.id}`)
+                          }
+                          imgSrc={quest.img_card}
+                          reward={quest.disabled ? "Disabled" : "Active"}
+                          id={quest.id}
+                        />
+                      );
+                    }
+                  })}
+                </div>
+              </CustomTabPanel>
+              <CustomTabPanel value={tabIndex} index={2}></CustomTabPanel>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

@@ -18,17 +18,23 @@ import ProfileCardSkeleton from "@components/skeletons/profileCardSkeleton";
 import { getDataFromId } from "@services/starknetIdService";
 import { usePathname, useRouter } from "next/navigation";
 import ErrorScreen from "@components/UI/screens/errorScreen";
-import { ClaimableQuestDocument, CompletedQuests, PendingBoostClaim, QuestDocument } from "../../types/backTypes";
+import {
+  ClaimableQuestDocument,
+  CompletedQuests,
+  PendingBoostClaim,
+} from "../../types/backTypes";
 import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { QuestsContext } from "@context/QuestsProvider";
 import { Tab, Tabs } from "@mui/material";
-import { CustomTabPanel, a11yProps } from "@components/pages/home/questAndCollectionTabs";
+
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import { a11yProps } from "@components/UI/tabs/a11y";
+import { CustomTabPanel } from "@components/UI/tabs/customTab";
 
 type AddressOrDomainProps = {
   params: {
@@ -58,7 +64,9 @@ export default function Page({ params }: AddressOrDomainProps) {
   const dynamicRoute = usePathname();
   const [questsLoading, setQuestsLoading] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [claimableQuests, setClaimableQuests] = useState<ClaimableQuestDocument[]>([]);
+  const [claimableQuests, setClaimableQuests] = useState<
+    ClaimableQuestDocument[]
+  >([]);
   const [pendingBoostClaims, setPendingBoostClaims] = useState<
     PendingBoostClaim[] | undefined
   >([]);
@@ -89,7 +97,6 @@ export default function Page({ params }: AddressOrDomainProps) {
     },
     [address, identity]
   );
-
 
   useEffect(() => {
     const getAllPendingBoostClaims = async () => {
