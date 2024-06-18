@@ -43,12 +43,12 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
       {steps.map((step, index) => (
         <InputCard key={"input-" + index}>
           <div className="flex gap-8">
-            <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
+            <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
               <>
                 {TASK_OPTIONS.map((category) => (
                   <div
                     onClick={() => {
-                      if (category === "Twitter" || category === "Twitter") {
+                      if (category === "Twitter") {
                         setShowTwitterOption(index);
                         return;
                       }
@@ -81,7 +81,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
             </div>
           </div>
           {showTwitterOption === index ? (
-            <div className="flex flex-row w-full gap-2 bg-gray-300 p-4 rounded-xl">
+            <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
               {Object.keys(TWITTER_OPTIONS).map((category) => (
                 <div
                   onClick={() => {

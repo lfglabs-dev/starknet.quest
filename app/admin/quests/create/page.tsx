@@ -5,7 +5,6 @@ import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
-import { getCurrentNetwork } from "@utils/network";
 import {
   boostDefaultInput,
   nft_uri,
@@ -24,7 +23,6 @@ import TaskDetailsForm from "@components/admin/formSteps/TaskDetailsForm";
 const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
 
 export default function Page() {
-  const network = getCurrentNetwork();
   const getCurrentUser = getUserFromJwt();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
