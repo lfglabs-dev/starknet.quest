@@ -30,6 +30,9 @@ const StyledFormControl = styled(FormControl, {
   borderRadius: 10,
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
+    borderWidth: "0.5px",
+    borderColor: "#f4faff4d",
+
     "& fieldset": {
       borderColor: "transparent",
       borderWidth: "1px",
@@ -71,7 +74,7 @@ const StyledFormControl = styled(FormControl, {
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   "&.Mui-selected": {
-    backgroundColor: "#66666f",
+    backgroundColor: "#29282b",
   },
   "&.Mui-selected:hover": {
     backgroundColor: "#29282b",
@@ -84,7 +87,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 const StyledMenuProps = {
   PaperProps: {
     sx: {
-      bgcolor: "#333",
+      bgcolor: "#101012",
       color: "#ccc",
       borderColor: "white",
       borderWidth: "1px",

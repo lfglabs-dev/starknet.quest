@@ -50,7 +50,7 @@ const FormContainer: FunctionComponent<FormContainerProps> = ({
             );
           })}
         </div>
-        <div className={`flex-1 ${styles.formContainerChildren}`}>
+        <div className={`flex-1  ${styles.formContainerChildren}`}>
           {children}
         </div>
       </div>

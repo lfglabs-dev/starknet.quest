@@ -17,6 +17,7 @@
 }
 
 .formContainerBox {
+  margin: 4rem 0rem;
   width: 100%;
   height: auto;
   display: flex;
@@ -24,6 +25,18 @@
   background-color: var(--background);
   border-radius: 8px;
   flex-direction: column;
+}
+
+.addQuestion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-inline: auto;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: var(--secondary);
+  color: var(--background);
 }
 
 .formContainerTitle {
@@ -158,7 +171,7 @@
   width: 100%;
   height: auto;
   padding: 24px 24px;
-  gap: 48px;
+  gap: 24px;
   border-radius: 30px;
   border: 1px 0px 0px 0px;
   background: linear-gradient(90deg, var(--background), #070708);

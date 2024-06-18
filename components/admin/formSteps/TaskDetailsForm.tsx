@@ -3,9 +3,8 @@ import {
   TWITTER_OPTIONS,
   getDefaultValues,
 } from "@constants/admin";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import styles from "@styles/admin.module.css";
-import InputCard from "../inputCard";
 import Button from "@components/UI/button";
 import QuizStep from "../taskSteps/quizStep";
 import DiscordStep from "../taskSteps/discordStep";
@@ -13,6 +12,8 @@ import TwitterFwStep from "../taskSteps/twitterFwStep";
 import CustomStep from "../taskSteps/customStep";
 import TwitterRwStep from "../taskSteps/twitterRwStep";
 import DomainStep from "../taskSteps/domainStep";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type TaskDetailsFormProps = {
   steps: StepMap[];
@@ -38,157 +39,196 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
   onSubmit,
   isButtonDisabled,
 }) => {
+  const [currentTask, setCurrenTask] = useState(0);
+
+  const renderTask = () => {
+    const step = steps[currentTask];
+
+    if (step.type === "Quiz") {
+      return (
+        <QuizStep
+          handleTasksInputChange={handleTasksInputChange}
+          step={step}
+          steps={steps}
+          setSteps={setSteps}
+          index={currentTask}
+        />
+      );
+    } else if (step.type === "Discord") {
+      return (
+        <DiscordStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step.type === "TwitterFw") {
+      return (
+        <TwitterFwStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step.type === "Domain") {
+      return (
+        <DomainStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step.type === "TwitterRw") {
+      return (
+        <TwitterRwStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step.type === "Custom") {
+      return (
+        <CustomStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    }
+  };
   return (
     <div>
-      {steps.map((step, index) => (
-        <InputCard key={"input-" + index}>
-          <div className="flex gap-8">
-            <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
-              <>
-                {TASK_OPTIONS.map((category) => (
-                  <div
-                    onClick={() => {
-                      if (category === "Twitter") {
-                        setShowTwitterOption(index);
-                        return;
-                      }
-                      setShowTwitterOption(-1);
-                      setSteps((prev) => {
-                        const newArr = [...prev];
-                        newArr[index] = {
-                          type: category as TaskType,
-                          data: getDefaultValues(category as TaskType),
-                        };
-                        return newArr;
-                      });
-                    }}
-                    key={"taskcategory-" + category}
-                    className="py-3 px-5 rounded-xl w-fit"
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor: step?.type.includes(category)
-                        ? "#ffffff"
-                        : "#29282B",
-                      color: step?.type.includes(category)
-                        ? "#29282B"
-                        : "#ffffff",
-                    }}
-                  >
-                    <p className={styles.tagText}>{category}</p>
-                  </div>
-                ))}
-              </>
+      <div className="flex flex-row w-full gap-2 py-3 justify-between">
+        <div className="flex gap-4 items-center w-full">
+          {Object.keys(steps).map((_, index) => (
+            <div
+              onClick={() => {
+                setCurrenTask(index);
+              }}
+              key={"twitteroption+" + index}
+              className="py-3 px-5 rounded-xl w-fit"
+              style={{
+                cursor: "pointer",
+                backgroundColor: index === currentTask ? "#ffffff" : "#29282B",
+                color: index === currentTask ? "#29282B" : "#ffffff",
+              }}
+            >
+              <p className={styles.tagText}>Task {index + 1}</p>
             </div>
-          </div>
-          {showTwitterOption === index ? (
-            <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
-              {Object.keys(TWITTER_OPTIONS).map((category) => (
+          ))}
+        </div>
+        <div className="w-1/3">
+          <Button
+            onClick={() => {
+              setSteps((prev) => {
+                const newArr = [...prev];
+                newArr.push({ type: "None", data: {} });
+                return newArr;
+              });
+            }}
+          >
+            Add Step
+          </Button>
+        </div>
+      </div>
+
+      <div key={"tasks-" + currentTask} className="flex gap-4 flex-col">
+        <div className="flex gap-2 flex-col">
+          <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
+            <>
+              {TASK_OPTIONS.map((category) => (
                 <div
                   onClick={() => {
+                    if (category === "Twitter") {
+                      setShowTwitterOption(currentTask);
+                      return;
+                    }
+                    setShowTwitterOption(-1);
                     setSteps((prev) => {
                       const newArr = [...prev];
-                      newArr[index] = {
-                        type: TWITTER_OPTIONS[
-                          category as keyof typeof TWITTER_OPTIONS
-                        ] as TaskType,
-                        data: getDefaultValues(
-                          TWITTER_OPTIONS[
-                            category as keyof typeof TWITTER_OPTIONS
-                          ] as TaskType
-                        ),
+                      newArr[currentTask] = {
+                        type: category as TaskType,
+                        data: getDefaultValues(category as TaskType),
                       };
                       return newArr;
                     });
                   }}
-                  key={"twitteroption+" + category}
+                  key={"taskcategory-" + category}
                   className="py-3 px-5 rounded-xl w-fit"
                   style={{
                     cursor: "pointer",
-                    backgroundColor:
-                      step?.type ===
-                      TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
-                        ? "#ffffff"
-                        : "#29282B",
-                    color:
-                      step?.type ===
-                      TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
-                        ? "#29282B"
-                        : "#ffffff",
+                    backgroundColor: steps[currentTask]?.type.includes(category)
+                      ? "#ffffff"
+                      : "#29282B",
+                    color: steps[currentTask]?.type.includes(category)
+                      ? "#29282B"
+                      : "#ffffff",
                   }}
                 >
                   <p className={styles.tagText}>{category}</p>
                 </div>
               ))}
-            </div>
-          ) : null}
-
-          {step.type === "Quiz" ? (
-            <QuizStep
-              handleTasksInputChange={handleTasksInputChange}
-              step={step}
-              steps={steps}
-              setSteps={setSteps}
-              index={index}
-            />
-          ) : step.type === "Discord" ? (
-            <DiscordStep
-              handleTasksInputChange={handleTasksInputChange}
-              index={index}
-              step={step}
-            />
-          ) : step.type === "TwitterFw" ? (
-            <TwitterFwStep
-              handleTasksInputChange={handleTasksInputChange}
-              index={index}
-              step={step}
-            />
-          ) : step?.type === "Domain" ? (
-            <DomainStep
-              handleTasksInputChange={handleTasksInputChange}
-              index={index}
-              step={step}
-            />
-          ) : step.type === "TwitterRw" ? (
-            <TwitterRwStep
-              handleTasksInputChange={handleTasksInputChange}
-              index={index}
-              step={step}
-            />
-          ) : step.type === "Custom" ? (
-            <CustomStep
-              handleTasksInputChange={handleTasksInputChange}
-              index={index}
-              step={step}
-            />
-          ) : null}
-        </InputCard>
-      ))}
-
-      <div
-        onClick={() => {
-          setSteps((prev) => {
-            const newArr = [...prev];
-            newArr.push({ type: "None", data: {} });
-            return newArr;
-          });
-        }}
-        className="flex w-full justify-center modified-cursor-pointer"
-      >
-        + Add Step
-      </div>
-      {steps.length > 1 ? (
-        <div className="w-full items-center justify-center flex">
-          <div className="w-fit">
-            <Button
-              loading={buttonLoading}
-              onClick={onSubmit}
-              disabled={isButtonDisabled}
-            >
-              <p>Save Tasks</p>
-            </Button>
+            </>
           </div>
+          <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">
+            Select a template to guide you in structuring your personalized
+            quest tasks.
+          </Typography>
         </div>
-      ) : null}
+        {showTwitterOption === currentTask ? (
+          <div className="flex flex-row w-full gap-2 px-4 py-3 rounded-xl border-[1px] border-[#f4faff4d]">
+            {Object.keys(TWITTER_OPTIONS).map((category) => (
+              <div
+                onClick={() => {
+                  setSteps((prev) => {
+                    const newArr = [...prev];
+                    newArr[currentTask] = {
+                      type: TWITTER_OPTIONS[
+                        category as keyof typeof TWITTER_OPTIONS
+                      ] as TaskType,
+                      data: getDefaultValues(
+                        TWITTER_OPTIONS[
+                          category as keyof typeof TWITTER_OPTIONS
+                        ] as TaskType
+                      ),
+                    };
+                    return newArr;
+                  });
+                }}
+                key={"twitteroption+" + category}
+                className="py-3 px-5 rounded-xl w-fit"
+                style={{
+                  cursor: "pointer",
+                  backgroundColor:
+                    steps[currentTask]?.type ===
+                    TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
+                      ? "#ffffff"
+                      : "#29282B",
+                  color:
+                    steps[currentTask]?.type ===
+                    TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
+                      ? "#29282B"
+                      : "#ffffff",
+                }}
+              >
+                <p className={styles.tagText}>{category}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {renderTask()}
+      </div>
+
+      <div className="w-fit pt-4">
+        <Button
+          loading={buttonLoading}
+          onClick={onSubmit}
+          disabled={isButtonDisabled}
+        >
+          <p>Save Task</p>
+        </Button>
+      </div>
     </div>
   );
 };

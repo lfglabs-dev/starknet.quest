@@ -112,7 +112,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           />
           <Dropdown
             value={getTokenName(boostInput.token)}
-            backgroundColor="#29282B"
+            backgroundColor="#101012"
             textColor="#fff"
             handleChange={(event: SelectChangeEvent) => {
               setBoostInput((prev) => ({

@@ -16,7 +16,7 @@ const DomainStep: FunctionComponent<DomainStepProps> = ({
   index,
 }) => {
   return (
-    <div className="flex flex-col gap-8 pt-8">
+    <div className="flex flex-col gap-4 pt-2">
       <TextInput
         onChange={(e) => handleTasksInputChange(e, index)}
         value={step.data.domain_name}
