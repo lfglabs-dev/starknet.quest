@@ -124,7 +124,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             backgroundColor="#101012"
             textColor="#fff"
             handleChange={(event: SelectChangeEvent) => {
-              setBoostInput((prev) => ({
+              setBoostInput((prev: any) => ({
                 ...prev,
                 token: event.target.value,
                 // token decimals is a value which has different tokens which we support and use their decimals here

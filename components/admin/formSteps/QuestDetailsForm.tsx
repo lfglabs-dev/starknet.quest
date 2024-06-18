@@ -80,7 +80,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
       <div className="flex flex-col gap-1">
         <TextInput
           onChange={handleQuestInputChange}
-          value={questInput.desc}
+          value={questInput?.desc ?? ""}
           name="desc"
           label="Description"
           placeholder="Quest Description"
@@ -132,7 +132,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           {CATEGORY_OPTIONS.map((category) => (
             <div
               onClick={() => {
-                setQuestInput((prev) => ({ ...prev, category }));
+                setQuestInput((prev: any) => ({ ...prev, category }));
               }}
               key={"category" + category}
               className="py-3 px-5 rounded-xl w-fit"
