@@ -34,6 +34,7 @@ type QuestIdProps = {
   };
 };
 
+// This utility in TypeScript extends a type by adding a new field with key K and value type V.
 type WithNewField<T, K extends string, V> = T & { [P in K]: V };
 
 // Define discriminated union types
@@ -329,26 +330,26 @@ export default function Page({ params }: QuestIdProps) {
 
   useEffect(() => {
     //check if start time is less than current time
-    if (new Date(startTime).getTime() < new Date().getTime()) {
+    if (new Date(parseInt(startTime)).getTime() < new Date().getTime()) {
       showNotification("Start time cannot be less than current time", "info");
       return;
     }
 
     setQuestInput((prev) => ({
       ...prev,
-      start_time: new Date(startTime).getTime(),
+      start_time: new Date(parseInt(startTime)).getTime(),
     }));
   }, [startTime]);
 
   useEffect(() => {
     // check if start_time is less than end_time
-    if (new Date(endTime).getTime() < new Date(startTime).getTime()) {
+    if (new Date(parseInt(endTime)).getTime() < new Date(startTime).getTime()) {
       showNotification("End time cannot be less than start time", "info");
       return;
     }
     setQuestInput((prev) => ({
       ...prev,
-      expiry: new Date(endTime).getTime(),
+      expiry: new Date(parseInt(endTime)).getTime(),
     }));
     setBoostInput((prev) => ({
       ...prev,
@@ -594,6 +595,14 @@ export default function Page({ params }: QuestIdProps) {
       !questInput.expiry ||
       !questInput.category;
 
+    console.log(
+      questInputValid,
+      nftUriValid,
+      boostInputValid,
+      steps,
+      questInput
+    );
+
     const questRewardValid = !questInput.rewards_title || !questInput.logo;
 
     if (currentPage === 0) {
@@ -605,7 +614,16 @@ export default function Page({ params }: QuestIdProps) {
       return steps.some((step) => step.type === "None");
     }
     return false;
-  }, [currentPage, questInput, nfturi, steps, showBoost, boostInput]);
+  }, [
+    currentPage,
+    questInput,
+    nfturi,
+    steps,
+    showBoost,
+    boostInput,
+    startTime,
+    endTime,
+  ]);
 
   const handleQuestImageChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -711,6 +729,11 @@ export default function Page({ params }: QuestIdProps) {
           rewardButtonTitle={questData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
             await handlePublishQuest(!questData.disabled);
+            if (!questData.disabled) {
+              showNotification("Quest is disabled from launch", "success");
+            } else {
+              showNotification("Quest is enabled for launch", "success");
+            }
             await fetchPageData();
           }}
           overrideDisabledState={false}

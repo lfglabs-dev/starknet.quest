@@ -28,7 +28,6 @@ import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { QuestsContext } from "@context/QuestsProvider";
 import { Tab, Tabs } from "@mui/material";
-
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
 import Typography from "@components/UI/typography/typography";

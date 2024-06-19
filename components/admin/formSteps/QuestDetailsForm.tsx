@@ -100,7 +100,6 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
               }}
               value={startTime}
               label="Start Date"
-              placeholder="Start Date"
               name="start_time"
             />
             <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">
@@ -116,7 +115,6 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
               }}
               value={endTime}
               label="End Date"
-              placeholder="End Date"
               name="expiry"
             />
             <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">

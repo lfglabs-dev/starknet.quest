@@ -426,6 +426,7 @@ export default function Page() {
           buttonLoading={buttonLoading}
           onSubmit={async () => {
             await handleCreateTask();
+            showNotification("Quest created successfully", "success");
           }}
           isButtonDisabled={isButtonDisabled}
           showTwitterOption={showTwitterOption}
@@ -457,6 +458,11 @@ export default function Page() {
           rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
             await handlePublishQuest(!finalQuestData.disabled);
+            if (finalQuestData.disabled) {
+              showNotification("Quest is disabled from launch", "success");
+            } else {
+              showNotification("Quest is enabled for launch", "success");
+            }
             await fetchQuestData();
           }}
           overrideDisabledState={false}

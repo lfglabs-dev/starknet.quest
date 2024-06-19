@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import styles from "@styles/components/progressBar.module.css";
 import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
 
@@ -11,6 +11,14 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
   doneSteps,
   totalSteps,
 }) => {
+  const calculateRightDistance = useCallback(
+    (doneSteps: number, totalSteps: number) => {
+      return doneSteps >= totalSteps
+        ? 8
+        : `${((totalSteps - doneSteps - 1) / (totalSteps - 1)) * 100}%`;
+    },
+    []
+  );
   return (
     <div className={styles.container}>
       {Array.from(Array(totalSteps).keys()).map((_, index) => {
@@ -35,10 +43,7 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
         <div
           className={styles.colored_line}
           style={{
-            right:
-              doneSteps >= totalSteps
-                ? 8
-                : `${((totalSteps - doneSteps - 1) / (totalSteps - 1)) * 100}%`,
+            right: calculateRightDistance(doneSteps, totalSteps),
           }}
         />
       ) : null}

@@ -1,37 +1,50 @@
-import React, { useEffect } from "react";
-import styles from "@styles/admin.module.css";
-import { DateTimeField } from "@mui/x-date-pickers/DateTimeField";
+import React from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 type Props = {
   value: string;
-  placeholder: string;
   onChange: (datetime: number) => void;
   name: string;
   label: string;
 };
 
 export default function DateInput(props: Props) {
-  const { value, placeholder, onChange, label, name } = props;
+  const { value, onChange, label, name } = props;
 
   const [dateValue, setDateValue] = React.useState<Dayjs | null>(
-    value ? dayjs(value) : null
+    value ? dayjs.unix(Number(value) / 1000) : null
   );
-
-  useEffect(() => {
-    setDateValue;
-  }, [value]);
 
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name}>{label}</label>
-      <DateTimeField
-        variant="outlined"
-        color="secondary"
+      <DateTimePicker
         onChange={(newValue) => {
           setDateValue(newValue);
-          if (!newValue) return;
+          if (newValue === null) return;
           onChange(newValue.unix());
+        }}
+        timezone="UTC"
+        format="DD/MM/YYYY HH:mm"
+        slotProps={{
+          popper: {
+            sx: {
+              ".MuiPaper-root": {
+                backgroundColor: "#29282b",
+                color: "white",
+              },
+              ".MuiButtonBase-root": {
+                color: "#fff",
+              },
+              ".MuiTypography-root": {
+                color: "#fff",
+              },
+            },
+          },
         }}
         sx={{
           borderColor: "#f4faff4d",
@@ -59,6 +72,9 @@ export default function DateInput(props: Props) {
               borderWidth: "0px",
               borderColor: "#f4faff4d",
             },
+          },
+          ".MuiSvgIcon-root": {
+            color: "#f4faff4d",
           },
         }}
         value={dateValue}

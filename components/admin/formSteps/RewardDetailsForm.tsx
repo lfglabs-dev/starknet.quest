@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useCallback } from "react";
 import TextInput from "../textInput";
 import { SelectChangeEvent, Switch } from "@mui/material";
 import {
@@ -51,6 +51,21 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
   buttonLoading,
 }) => {
   const network = getCurrentNetwork();
+
+  const handleBoostTokenChange = useCallback(
+    (event: SelectChangeEvent) => {
+      setBoostInput((prev: any) => ({
+        ...prev,
+        token: event.target.value,
+        // token decimals is a value which has different tokens which we support and use their decimals here
+        token_decimals:
+          TOKEN_DECIMAL_MAP[
+            event.target.value as keyof typeof TOKEN_DECIMAL_MAP
+          ],
+      }));
+    },
+    [setBoostInput]
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -123,17 +138,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             value={boostInput?.token ? getTokenName(boostInput.token) : ""}
             backgroundColor="#101012"
             textColor="#fff"
-            handleChange={(event: SelectChangeEvent) => {
-              setBoostInput((prev: any) => ({
-                ...prev,
-                token: event.target.value,
-                // token decimals is a value which has different tokens which we support and use their decimals here
-                token_decimals:
-                  TOKEN_DECIMAL_MAP[
-                    event.target.value as keyof typeof TOKEN_DECIMAL_MAP
-                  ],
-              }));
-            }}
+            handleChange={handleBoostTokenChange}
             options={Object.keys(TOKEN_ADDRESS_MAP[network]).map((eachItem) => {
               return {
                 value: eachItem,

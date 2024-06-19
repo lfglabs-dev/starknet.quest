@@ -20,6 +20,8 @@ import Task from "@components/quests/task";
 import Reward from "@components/quests/reward";
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
+import Button from "@components/UI/button";
+import { useRouter } from "next/navigation";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -43,6 +45,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   onRewardButtonClick,
 }) => {
   const { address } = useAccount();
+  const router = useRouter();
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
@@ -103,6 +106,10 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
       }
     }
   }, []);
+
+  const handleNavigate = useCallback(() => {
+    router.push("/admin/quests");
+  }, [router]);
 
   return (
     <>
@@ -206,7 +213,14 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
           </>
         )}
       </div>
-      {showQuiz}
+
+      <div className="w-full flex justify-center">
+        <div className="w-fit">
+          <Button onClick={handleNavigate}>
+            <p>Done</p>
+          </Button>
+        </div>
+      </div>
     </>
   );
 };
