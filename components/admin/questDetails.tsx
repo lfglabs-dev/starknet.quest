@@ -61,6 +61,14 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
     });
   }, [questId]);
 
+  const handleQuestLinkRedirect = useCallback(() => {
+    if (quest.disabled) {
+      showNotification("Quest is disabled", "error");
+      return;
+    }
+    router.push(`/quest/${questId}`);
+  }, [router, questId, quest]);
+
   const generateOAuthUrl = useCallback(
     (task: UserTask): string => {
       if (task.verify_endpoint_type === "oauth_discord") {
@@ -214,10 +222,15 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
         )}
       </div>
 
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center gap-8">
         <div className="w-fit">
           <Button onClick={handleNavigate}>
             <p>Done</p>
+          </Button>
+        </div>
+        <div className="w-fit">
+          <Button onClick={handleQuestLinkRedirect}>
+            <p>Go To Quest</p>
           </Button>
         </div>
       </div>
