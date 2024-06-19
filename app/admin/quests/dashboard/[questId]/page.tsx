@@ -28,7 +28,7 @@ import TaskDetailsForm from "@components/admin/formSteps/TaskDetailsForm";
 import { TEXT_TYPE } from "@constants/typography";
 import FormContainer from "@components/admin/FormContainer";
 
-type AddressOrDomainProps = {
+type QuestIdProps = {
   params: {
     questId: string;
   };
@@ -46,7 +46,7 @@ type StepMap =
   | { type: "Domain"; data: WithNewField<DomainInputType, "id", number> }
   | { type: "None"; data: object };
 
-export default function Page({ params }: AddressOrDomainProps) {
+export default function Page({ params }: QuestIdProps) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const questId = useRef(parseInt(params.questId));
@@ -76,6 +76,10 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   useEffect(() => {
+    if (!params || !params.questId) {
+      showNotification("Invalid or missing quest ID.", "error");
+      return;
+    }
     const tokenExpiryTime = getExpireTimeFromJwt();
     if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) {
       router.push("/admin");
@@ -111,6 +115,7 @@ export default function Page({ params }: AddressOrDomainProps) {
       setInitialSteps(formatted_steps);
       setSteps(formatted_steps);
     } catch (error) {
+      showNotification("Failed to update quest. Please try again.", "error");
       console.log("Error while fetching quests", error);
     }
   }, [questId.current]);
