@@ -117,7 +117,7 @@ export default function Page() {
                       fontFamily: "Sora",
                       minHeight: "32px",
                     }}
-                    label={`Enable`}
+                    label={`Enabled`}
                     {...a11yProps(0)}
                   />
                   <Tab
@@ -131,7 +131,7 @@ export default function Page() {
                       fontFamily: "Sora",
                       minHeight: "32px",
                     }}
-                    label={`Disable`}
+                    label={`Disabled`}
                     {...a11yProps(1)}
                   />
                 </Tabs>
