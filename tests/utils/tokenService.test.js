@@ -35,11 +35,11 @@ describe("getTokenName function", () => {
 
 describe("Should test token address service file", () => {
   it("Test getTokenAddress function with different tokens", () => {
-    expect(getTokenAddress("USDC")).toEqual(TOKEN_ADDRESS_MAP["TESTNET"].USDC);
-    expect(getTokenAddress("ETH")).toEqual(TOKEN_ADDRESS_MAP["TESTNET"].ETH);
+    expect(getTokenAddress("USDC")).toEqual(TOKEN_ADDRESS_MAP["MAINNET"].USDC);
+    expect(getTokenAddress("ETH")).toEqual(TOKEN_ADDRESS_MAP["MAINNET"].ETH);
     expect(getTokenAddress("LORDS")).toEqual(
-      TOKEN_ADDRESS_MAP["TESTNET"].LORDS
+      TOKEN_ADDRESS_MAP["MAINNET"].LORDS
     );
-    expect(getTokenAddress("STRK")).toEqual(TOKEN_ADDRESS_MAP["TESTNET"].STRK);
+    expect(getTokenAddress("STRK")).toEqual(TOKEN_ADDRESS_MAP["MAINNET"].STRK);
   });
 });
