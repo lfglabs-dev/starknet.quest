@@ -1,6 +1,6 @@
 import React, { useState, FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
-import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
+import {handleMouseLeave, moveSpanActive} from "@components/navbar/slidingTab";
 import Typography from "./typography/typography"; 
 import { TEXT_TYPE } from "@constants/typography";
 

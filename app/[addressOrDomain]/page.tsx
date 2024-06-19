@@ -32,8 +32,7 @@ import {
 } from "@components/pages/home/questAndCollectionTabs";
 import { getClaimableQuests } from "@utils/quest";
 import QuestClaim from "@components/quests/questClaim";
-import SlidingTab from "@components/navbar/slidingTab";
-import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
+import {SlidingTab, handleMouseLeave, moveSpanActive} from "@components/navbar/slidingTab";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 

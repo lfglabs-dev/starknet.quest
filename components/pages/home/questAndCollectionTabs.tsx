@@ -25,8 +25,7 @@ import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import { getClaimableQuests } from "@utils/quest";
 import { hexToDecimal } from "@utils/feltService";
 import { PendingBoostClaim } from "types/backTypes";
-import SlidingTab from "@components/navbar/slidingTab";
-import { handleMouseLeave, moveSpanActive } from "@components/navbar/navTab";
+import {SlidingTab, handleMouseLeave, moveSpanActive} from "@components/navbar/slidingTab";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 
