@@ -19,6 +19,7 @@ import {
   UpdateTwitterRw,
   CreateNftUri,
   UpdateNftUri,
+  AddUser,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -450,7 +451,23 @@ const updateNftUri = async (params: UpdateNftUri) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while quests", err);
+    console.log("Error while updating nft uri", err);
+  }
+};
+
+const addUser = async (params: AddUser) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/user/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while adding user", err);
   }
 };
 export const AdminService = {
@@ -481,4 +498,5 @@ export const AdminService = {
   createDomain,
   createNftUri,
   updateNftUri,
+  addUser,
 };

@@ -388,3 +388,8 @@ export type UpdateNftUri = {
   image: string;
   id: number;
 };
+
+export type AddUser = {
+  user: string;
+  password: string;
+};
