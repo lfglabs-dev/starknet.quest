@@ -314,7 +314,12 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             sx={{ fontSize: "2rem", bgcolor: "grey.900" }}
           />
         ) : (
-          <Typography type={TEXT_TYPE.H1} className="title extrabold mt-5 mw-90">{quest.name}</Typography>
+          <Typography
+            type={TEXT_TYPE.H1}
+            className="title extrabold mt-5 mw-90"
+          >
+            {quest.name}
+          </Typography>
         )}
         {quest.desc === "loading" ? (
           <Skeleton
@@ -324,10 +329,18 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           />
         ) : (
           <>
-            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center max-w-[50vw]">{quest.desc}</Typography>
+            <Typography
+              type={TEXT_TYPE.BODY_DEFAULT}
+              className="text-center max-w-[50vw]"
+            >
+              {quest.desc}
+            </Typography>
             {quest?.additional_desc ? (
               <>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center max-w-[50vw]">
+                <Typography
+                  type={TEXT_TYPE.BODY_DEFAULT}
+                  className="text-center max-w-[50vw]"
+                >
                   {quest.additional_desc}
                 </Typography>
               </>
@@ -344,7 +357,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ) : (
           <>
             <div className={styles.questStats}>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT}>{tasks.length} steps</Typography>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                {tasks.length} steps
+              </Typography>
               <div className="ml-auto flex">
                 <div className={styles.participantAvatars}>
                   {participants.firstParticipants.map((participant, index) => (
@@ -356,7 +371,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                     />
                   ))}
                 </div>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{participants.count || 0} participants</Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  {participants.count || 0} participants
+                </Typography>
               </div>
             </div>
             {tasks.map((task) => {

@@ -44,6 +44,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
   const [hasNftReward, setHasNftReward] = useState<boolean>(false);
   const { domain } = useDomainFromAddress(address);
+  console.log({ quest });
 
   const updatePageViews = useCallback(async (quest_id: string) => {
     try {
@@ -58,7 +59,9 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   useEffect(() => {
     getQuestById(questId)
       .then((data) => {
-        if (!data) return;
+        if (!data) {
+          setErrorPageDisplay(true);
+        }
         if ((data as QuestDocument).id) {
           if (
             (data as QuestDocument).rewards_nfts &&
@@ -67,8 +70,6 @@ const Quest: FunctionComponent<QuestPageProps> = ({
             setHasNftReward(true);
           }
           setQuest(data as QuestDocument);
-        } else {
-          setErrorPageDisplay(true);
         }
       })
       .catch((err) => {
@@ -135,7 +136,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
           {quest.issuer === "loading" ? (
             <RewardSkeleton />
           ) : (
-            <QuestTag label={quest.issuer ?? ''} icon={quest.logo}/>
+            <QuestTag label={quest.issuer ?? ""} icon={quest.logo} />
           )}
         </div>
 
