@@ -44,7 +44,7 @@ const CustomStep: FunctionComponent<CustomStepProps> = ({
         value={step.data.custom_cta}
         name="custom_cta"
         label="CTA"
-        placeholder="URL"
+        placeholder="CTA"
       />
       <TextInput
         onChange={(e) => handleTasksInputChange(e, index)}

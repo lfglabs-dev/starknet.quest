@@ -362,6 +362,27 @@ export default function Page() {
     setCurrentPage((prev) => prev + 1);
   }, [steps]);
 
+  const handleRemoveStep = useCallback(
+    (index: number) => {
+      setSteps((prev) => {
+        const newArr = [...prev];
+        newArr.splice(index, 1);
+        return newArr;
+      });
+    },
+    [steps]
+  );
+
+  const handleDeleteTasks = useCallback(async (removedTasks: StepMap[]) => {
+    const taskPromises = removedTasks.map(async (step) => {
+      await AdminService.deleteTask({
+        id: step.data.id,
+      });
+    });
+
+    await Promise.all(taskPromises);
+  }, []);
+
   const renderFormStep = () => {
     if (currentPage === 0) {
       return (
@@ -409,6 +430,12 @@ export default function Page() {
           isButtonDisabled={isButtonDisabled}
           showTwitterOption={showTwitterOption}
           setShowTwitterOption={setShowTwitterOption}
+          deleteTasks={async (index) => {
+            setButtonLoading(true);
+            handleRemoveStep(index);
+            await handleDeleteTasks([steps[index]]);
+            setButtonLoading(false);
+          }}
         />
       );
     } else if (currentPage === 3) {

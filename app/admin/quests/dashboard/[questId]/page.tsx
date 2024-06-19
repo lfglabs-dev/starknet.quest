@@ -410,7 +410,6 @@ export default function Page({ params }: AddressOrDomainProps) {
     if (checkQuestChanges()) {
       await handleUpdateQuest();
     }
-    console.log("checkBoostChanges", checkBoostChanges());
     if (checkBoostChanges()) {
       if (boostInput.id) {
         await handleUpdateBoost();
@@ -622,6 +621,17 @@ export default function Page({ params }: AddressOrDomainProps) {
     []
   );
 
+  const handleRemoveStep = useCallback(
+    (index: number) => {
+      setSteps((prev) => {
+        const newArr = [...prev];
+        newArr.splice(index, 1);
+        return newArr;
+      });
+    },
+    [steps]
+  );
+
   const renderFormStep = () => {
     if (currentPage === 0) {
       return (
@@ -669,6 +679,12 @@ export default function Page({ params }: AddressOrDomainProps) {
           isButtonDisabled={isButtonDisabled}
           showTwitterOption={showTwitterOption}
           setShowTwitterOption={setShowTwitterOption}
+          deleteTasks={async (index) => {
+            setButtonLoading(true);
+            handleRemoveStep(index);
+            await handleDeleteTasks([steps[index]]);
+            setButtonLoading(false);
+          }}
         />
       );
     } else if (currentPage === 3) {

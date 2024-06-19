@@ -27,6 +27,7 @@ type TaskDetailsFormProps = {
   buttonLoading: boolean;
   onSubmit: () => void;
   isButtonDisabled: boolean;
+  deleteTasks: (index: number) => void;
 };
 
 const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
@@ -38,12 +39,13 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
   buttonLoading,
   onSubmit,
   isButtonDisabled,
+  deleteTasks,
 }) => {
   const [currentTask, setCurrenTask] = useState(0);
   const renderTask = () => {
     const step = steps[currentTask];
 
-    if (step.type === "Quiz") {
+    if (step?.type === "Quiz") {
       return (
         <QuizStep
           handleTasksInputChange={handleTasksInputChange}
@@ -53,7 +55,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           index={currentTask}
         />
       );
-    } else if (step.type === "Discord") {
+    } else if (step?.type === "Discord") {
       return (
         <DiscordStep
           handleTasksInputChange={handleTasksInputChange}
@@ -61,7 +63,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
-    } else if (step.type === "TwitterFw") {
+    } else if (step?.type === "TwitterFw") {
       return (
         <TwitterFwStep
           handleTasksInputChange={handleTasksInputChange}
@@ -69,7 +71,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
-    } else if (step.type === "Domain") {
+    } else if (step?.type === "Domain") {
       return (
         <DomainStep
           handleTasksInputChange={handleTasksInputChange}
@@ -77,7 +79,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
-    } else if (step.type === "TwitterRw") {
+    } else if (step?.type === "TwitterRw") {
       return (
         <TwitterRwStep
           handleTasksInputChange={handleTasksInputChange}
@@ -85,7 +87,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
-    } else if (step.type === "Custom") {
+    } else if (step?.type === "Custom") {
       return (
         <CustomStep
           handleTasksInputChange={handleTasksInputChange}
@@ -219,14 +221,28 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
         {renderTask()}
       </div>
 
-      <div className="w-fit pt-4">
-        <Button
-          loading={buttonLoading}
-          onClick={async () => await onSubmit()}
-          disabled={isButtonDisabled}
-        >
-          <p>Save Task</p>
-        </Button>
+      <div className="flex flex-row gap-4">
+        <div className="w-fit pt-4">
+          <Button
+            loading={buttonLoading}
+            onClick={async () => await onSubmit()}
+            disabled={isButtonDisabled}
+          >
+            <p>Save Task</p>
+          </Button>
+        </div>
+        <div className="w-fit pt-4">
+          <Button
+            loading={buttonLoading}
+            onClick={async () => {
+              await deleteTasks(currentTask);
+              setCurrenTask(0);
+            }}
+            disabled={isButtonDisabled}
+          >
+            <p>Delete Task</p>
+          </Button>
+        </div>
       </div>
     </div>
   );
