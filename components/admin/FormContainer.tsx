@@ -4,6 +4,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
 type FormContainerProps = {
+  headingText: string;
   children: React.ReactNode;
   steps: string[];
   currentPage: number;
@@ -15,12 +16,13 @@ const FormContainer: FunctionComponent<FormContainerProps> = ({
   steps,
   currentPage,
   setCurrentPage,
+  headingText,
 }) => {
   return (
     <div className={styles.formContainerBox}>
       <div className={`flex w-100 flex-col ${styles.formContainerTitle}`}>
         <Typography type={TEXT_TYPE.H4} color="secondary">
-          Admin quest control
+          {headingText}
         </Typography>
         <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
           This form guides you through creating a new quest for your company,

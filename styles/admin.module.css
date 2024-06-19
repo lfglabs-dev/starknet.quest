@@ -61,6 +61,9 @@
   padding: 4px 16px;
   gap: 2px;
   border-radius: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .image {

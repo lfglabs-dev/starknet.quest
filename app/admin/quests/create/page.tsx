@@ -10,12 +10,11 @@ import {
   formSteps,
   nft_uri,
   questDefaultInput,
-  QuizQuestionDefaultInput,
 } from "@constants/admin";
 import { CreateQuest, NFTUri } from "../../../../types/backTypes";
 import AdminQuestDetails from "@components/admin/questDetails";
 import { useNotification } from "@context/NotificationProvider";
-import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
+import { getExpireTimeFromJwt } from "@utils/jwt";
 import FormContainer from "@components/admin/FormContainer";
 import QuestDetailsForm from "@components/admin/formSteps/QuestDetailsForm";
 import RewardDetailsForm from "@components/admin/formSteps/RewardDetailsForm";
@@ -24,7 +23,6 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
-  const getCurrentUser = getUserFromJwt();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const [questId, setQuestId] = useState<number>(0);
@@ -46,11 +44,12 @@ export default function Page() {
     useState<typeof QuestDefault>(QuestDefault);
   const [buttonLoading, setButtonLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const tokenExpiryTime = getExpireTimeFromJwt();
-  //   if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) return;
-  //   router.push("/admin/quests");
-  // }, []);
+  useEffect(() => {
+    const tokenExpiryTime = getExpireTimeFromJwt();
+    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) {
+      router.push("/admin");
+    }
+  }, []);
 
   const isButtonDisabled = useMemo(() => {
     const boostInputValid =
@@ -89,7 +88,7 @@ export default function Page() {
   }, [questId]);
 
   useEffect(() => {
-    if (currentPage !== 4) return;
+    if (currentPage !== 3) return;
     fetchQuestData();
   }, [currentPage]);
 
@@ -431,6 +430,7 @@ export default function Page() {
           rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
             await handlePublishQuest(!finalQuestData.disabled);
+            await fetchQuestData();
           }}
           overrideDisabledState={false}
         />
@@ -441,6 +441,7 @@ export default function Page() {
   return (
     <div className={styles.layout_screen}>
       <FormContainer
+        headingText="Create Quest"
         steps={formSteps}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

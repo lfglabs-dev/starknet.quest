@@ -31,7 +31,6 @@ export default function DateInput(props: Props) {
         onChange={(newValue) => {
           setDateValue(newValue);
           if (!newValue) return;
-          console.log(newValue, newValue.unix());
           onChange(newValue.unix());
         }}
         sx={{

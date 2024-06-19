@@ -105,7 +105,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           <p>Boost this quest</p>
           <Switch
             name="Boost this Quest"
-            value={showBoost}
+            checked={showBoost}
             onChange={() => setShowBoost((prev) => !prev)}
           />
         </div>
@@ -114,13 +114,13 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
         <div className="flex flex-col w-full gap-8">
           <TextInput
             onChange={handleBoostInputChange}
-            value={boostInput.num_of_winners ?? ""}
+            value={boostInput?.num_of_winners ?? ""}
             name="num_of_winners"
             label="Number of winners"
             placeholder="Number of winners"
           />
           <Dropdown
-            value={boostInput.token ? getTokenName(boostInput.token) : ""}
+            value={boostInput?.token ? getTokenName(boostInput.token) : ""}
             backgroundColor="#101012"
             textColor="#fff"
             handleChange={(event: SelectChangeEvent) => {

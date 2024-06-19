@@ -81,14 +81,13 @@ const Reward: FunctionComponent<RewardProps> = ({
     <div className={styles.reward}>
       <div className="flex items-center gap-2">
         <p>Reward: </p>
-        <QuestTag label={reward ?? ''} icon={imgSrc}/>
+        <QuestTag label={reward ?? ""} icon={imgSrc} />
         <BoostReward questId={quest.id} />
       </div>
       <div className="max-w-lg">
-        {/* getReward */}
         <Button
-          onClick={() =>
-            overrideRewardClick ? overrideRewardClick() : submitTx()
+          onClick={async () =>
+            overrideRewardClick ? await overrideRewardClick() : submitTx()
           }
           disabled={overrideDisabledState ?? (disabled || claimed)}
         >
@@ -122,7 +121,13 @@ const Reward: FunctionComponent<RewardProps> = ({
         message={
           <div className="flex flex-col items-center justify-center text-center">
             <div className="bg-[#1F1F25] w-full flex p-8 justify-center items-center flex-col gap-8 rounded-tr-3xl rounded-tl-3xl">
-              <Typography type={TEXT_TYPE.BODY_NORMAL} color="secondary" className={rewardStyles.menu_title}>Unlock Your Gift!</Typography>
+              <Typography
+                type={TEXT_TYPE.BODY_NORMAL}
+                color="secondary"
+                className={rewardStyles.menu_title}
+              >
+                Unlock Your Gift!
+              </Typography>
               <img
                 src="/icons/gift.svg"
                 width={183}
@@ -134,10 +139,19 @@ const Reward: FunctionComponent<RewardProps> = ({
               <div className="flex flex-col justify-center gap-2 px-8 pt-6">
                 <div className="flex flex-row justify-center items-center gap-2 pb-4">
                   <img width={40} src={quest.logo} />
-                  <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-2xl font-bold">{quest.issuer}</Typography>
+                  <Typography
+                    type={TEXT_TYPE.BODY_DEFAULT}
+                    className="text-2xl font-bold"
+                  >
+                    {quest.issuer}
+                  </Typography>
                 </div>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>Congratulations on completing the quest! 🎉 </Typography>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{quest.rewards_description}</Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  Congratulations on completing the quest! 🎉{" "}
+                </Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  {quest.rewards_description}
+                </Typography>
               </div>
               <div className="p-6 w-max self-center">
                 <Button

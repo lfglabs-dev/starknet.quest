@@ -191,7 +191,9 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
             })}
             <Reward
               buttonText={rewardButtonTitle}
-              overrideRewardClick={onRewardButtonClick}
+              overrideRewardClick={async () =>
+                onRewardButtonClick ? await onRewardButtonClick() : null
+              }
               quest={quest}
               hasNftReward={hasNftReward}
               reward={quest.rewards_title}

@@ -15,8 +15,9 @@ export default function Page() {
 
   useEffect(() => {
     const tokenExpiryTime = getExpireTimeFromJwt();
-    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) return;
-    router.push("/admin/quests");
+    if (tokenExpiryTime && tokenExpiryTime > new Date().getTime()) {
+      router.push("/admin/quests");
+    }
   }, []);
 
   const handleAdminLogin = useCallback(async () => {

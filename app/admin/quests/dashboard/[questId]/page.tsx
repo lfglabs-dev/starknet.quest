@@ -11,7 +11,6 @@ import styles from "@styles/admin.module.css";
 import { useRouter } from "next/navigation";
 import { AdminService } from "@services/authService";
 import { QuestDefault } from "@constants/common";
-import { getCurrentNetwork } from "@utils/network";
 import { nft_uri, QuizQuestionDefaultInput, formSteps } from "@constants/admin";
 import {
   NFTUri,
@@ -21,7 +20,7 @@ import {
 } from "../../../../../types/backTypes";
 import AdminQuestDetails from "@components/admin/questDetails";
 import { useNotification } from "@context/NotificationProvider";
-import { getExpireTimeFromJwt, getUserFromJwt } from "@utils/jwt";
+import { getExpireTimeFromJwt } from "@utils/jwt";
 import Typography from "@components/UI/typography/typography";
 import QuestDetailsForm from "@components/admin/formSteps/QuestDetailsForm";
 import RewardDetailsForm from "@components/admin/formSteps/RewardDetailsForm";
@@ -48,8 +47,6 @@ type StepMap =
   | { type: "None"; data: object };
 
 export default function Page({ params }: AddressOrDomainProps) {
-  const network = getCurrentNetwork();
-  const getCurrentUser = getUserFromJwt();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const questId = useRef(parseInt(params.questId));
@@ -57,7 +54,6 @@ export default function Page({ params }: AddressOrDomainProps) {
     id: Number(params.questId),
   });
   const [nfturi, setNftUri] = useState<NFTUri>(nft_uri);
-  const [headingText, setHeadingText] = useState("Set up");
   const [showBoost, setShowBoost] = useState(false);
   const [boostInput, setBoostInput] = useState<UpdateBoost>({
     id: Number(params.questId),
@@ -79,6 +75,13 @@ export default function Page({ params }: AddressOrDomainProps) {
   const [questData, setQuestData] = useState<typeof QuestDefault>(QuestDefault);
   const [buttonLoading, setButtonLoading] = useState(false);
 
+  useEffect(() => {
+    const tokenExpiryTime = getExpireTimeFromJwt();
+    if (!tokenExpiryTime || tokenExpiryTime < new Date().getTime()) {
+      router.push("/admin");
+    }
+  }, []);
+
   const fetchPageData = useCallback(async () => {
     try {
       const tokenExpiryTime = getExpireTimeFromJwt();
@@ -90,8 +93,12 @@ export default function Page({ params }: AddressOrDomainProps) {
       if (!quest_details) return;
       setStartTime(quest_details.start_time);
       setBoostInput(quest_details.boosts[0]);
-      setShowBoost(!!quest_details.boosts[0]);
-      setInitialBoostDisplayStatus(!!quest_details.boosts[0]);
+      setShowBoost(
+        quest_details.boosts[0] ? !quest_details.boosts[0].hidden : false
+      );
+      setInitialBoostDisplayStatus(
+        quest_details.boosts[0] ? !quest_details.boosts[0].hidden : false
+      );
       setEndTime(quest_details.expiry);
       setQuestInput(quest_details);
       setQuestData(quest_details);
@@ -212,10 +219,10 @@ export default function Page({ params }: AddressOrDomainProps) {
 
   const handleUpdateBoost = useCallback(async () => {
     try {
-      if (!showBoost) {
+      if (showBoost !== initialBoostDisplayStatus) {
         await AdminService.updateBoost({
           ...boostInput,
-          hidden: true,
+          hidden: !showBoost,
         });
 
         return;
@@ -232,7 +239,7 @@ export default function Page({ params }: AddressOrDomainProps) {
     } catch (error) {
       console.log("Error while creating quest", error);
     }
-  }, [questId, boostInput]);
+  }, [boostInput, showBoost]);
 
   const checkQuestChanges = useCallback(() => {
     const updatedQuest = questData !== questInput;
@@ -240,15 +247,14 @@ export default function Page({ params }: AddressOrDomainProps) {
   }, [questInput, questData]);
 
   const checkBoostChanges = useCallback(() => {
-    let changeFlag = false;
-    if (showBoost && !initialBoostDisplayStatus) changeFlag = true;
-
-    if (!changeFlag) changeFlag = boostInput !== questData?.boosts[0];
-
-    if (changeFlag) return boostInput;
-
+    if (showBoost !== initialBoostDisplayStatus) {
+      return true;
+    }
+    if (JSON.stringify(boostInput) !== JSON.stringify(questData?.boosts[0])) {
+      return true;
+    }
     return false;
-  }, [boostInput, questData]);
+  }, [boostInput, questData, initialBoostDisplayStatus, showBoost]);
 
   const checkStepChanges = useCallback(() => {
     // check which task have been updated
@@ -283,21 +289,8 @@ export default function Page({ params }: AddressOrDomainProps) {
       );
     });
 
-    console.log({ addedTasks, removedTasks, updatedTasks });
     return { updatedTasks, removedTasks, addedTasks };
   }, [steps, intialSteps]);
-
-  useEffect(() => {
-    if (currentPage === 1) {
-      setHeadingText("Set up");
-    } else if (currentPage === 2) {
-      setHeadingText("Set up rewards");
-    } else if (currentPage === 3) {
-      setHeadingText("Create Tasks");
-    } else if (currentPage === 4) {
-      setHeadingText("Set up rewards");
-    }
-  }, [currentPage]);
 
   const handleQuestInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -412,25 +405,22 @@ export default function Page({ params }: AddressOrDomainProps) {
     }
   }, [questId, boostInput]);
 
-  const handleQuestBoostNftChanges = useCallback(async () => {
+  const handleQuestBoostNftChanges = async () => {
     setButtonLoading(true);
     if (checkQuestChanges()) {
       await handleUpdateQuest();
     }
+    console.log("checkBoostChanges", checkBoostChanges());
     if (checkBoostChanges()) {
       if (boostInput.id) {
         await handleUpdateBoost();
+      } else {
+        await handleCreateBoost();
       }
-      await handleCreateBoost();
     }
     setButtonLoading(false);
     setCurrentPage((prev) => prev + 1);
-  }, [
-    handleUpdateQuest,
-    handleUpdateBoost,
-    checkQuestChanges,
-    checkBoostChanges,
-  ]);
+  };
 
   const handleAddTasks = useCallback(async (addedTasks: StepMap[]) => {
     const taskPromises = addedTasks.map(async (step) => {
@@ -700,6 +690,7 @@ export default function Page({ params }: AddressOrDomainProps) {
           rewardButtonTitle={questData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
             await handlePublishQuest(!questData.disabled);
+            await fetchPageData();
           }}
           overrideDisabledState={false}
         />
@@ -710,6 +701,7 @@ export default function Page({ params }: AddressOrDomainProps) {
   return (
     <div className={styles.layout_screen}>
       <FormContainer
+        headingText="Edit Quest"
         steps={formSteps}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
