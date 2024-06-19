@@ -369,12 +369,6 @@ export type NFTUri = {
   image: string;
 };
 
-export type NFTUri = {
-  name: string;
-  description: string;
-  image: string;
-};
-
 export type CreateNftUri = {
   name: string;
   desc: string;

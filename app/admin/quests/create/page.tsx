@@ -191,7 +191,7 @@ export default function Page() {
   }, [startTime]);
 
   useEffect(() => {
-    // check if start_time is less than end_time
+    // check if start_time is greater than end_time
     if (new Date(parseInt(endTime)).getTime() < new Date(startTime).getTime()) {
       showNotification("End time cannot be less than start time", "info");
       return;

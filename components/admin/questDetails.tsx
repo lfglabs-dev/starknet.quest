@@ -71,23 +71,22 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
         };
         const qs = new URLSearchParams(options).toString();
         return `${rootUrl}?${qs}`;
-      } else {
-        const codeChallenge = generateCodeChallenge(
-          process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
-        );
-        const rootUrl = "https://twitter.com/i/oauth2/authorize";
-        const options = {
-          redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
-          client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
-          state: "state",
-          response_type: "code",
-          code_challenge: codeChallenge,
-          code_challenge_method: "S256",
-          scope: ["follows.read", "tweet.read", "users.read"].join(" "),
-        };
-        const qs = new URLSearchParams(options).toString();
-        return `${rootUrl}?${qs}`;
       }
+      const codeChallenge = generateCodeChallenge(
+        process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+      );
+      const rootUrl = "https://twitter.com/i/oauth2/authorize";
+      const options = {
+        redirect_uri: `${task.verify_endpoint}?addr=${hexToDecimal(address)}`,
+        client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+        state: "state",
+        response_type: "code",
+        code_challenge: codeChallenge,
+        code_challenge_method: "S256",
+        scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+      };
+      const qs = new URLSearchParams(options).toString();
+      return `${rootUrl}?${qs}`;
     },
     [showNotification, address]
   );
