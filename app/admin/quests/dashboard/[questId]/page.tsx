@@ -592,16 +592,7 @@ export default function Page({ params }: QuestIdProps) {
       !questInput.name ||
       !questInput.desc ||
       !questInput.start_time ||
-      !questInput.expiry ||
       !questInput.category;
-
-    console.log(
-      questInputValid,
-      nftUriValid,
-      boostInputValid,
-      steps,
-      questInput
-    );
 
     const questRewardValid = !questInput.rewards_title || !questInput.logo;
 

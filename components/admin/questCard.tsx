@@ -1,15 +1,10 @@
-import React, { FunctionComponent, useMemo } from "react";
-import { useContext } from "react";
-import { QuestsContext } from "@context/QuestsProvider";
-import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import React, { FunctionComponent, useCallback } from "react";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
 import styles from "@styles/quests.module.css";
-import { CDNImg } from "@components/cdn/image";
-import {
-  CheckCircle as CheckCircleIcon,
-  ErrorRounded as ErrorRoundedIcon,
-} from "@mui/icons-material";
+import { CheckCircle as CheckCircleIcon } from "@mui/icons-material";
 import QuestCard from "@components/quests/questCard";
+import { CDNImage } from "@components/cdn/image";
+import { useRouter } from "next/navigation";
 
 type QuestProps = {
   onClick: () => void;
@@ -26,17 +21,32 @@ const Quest: FunctionComponent<QuestProps> = ({
   id,
   reward,
 }) => {
+  const router = useRouter();
+  const handleAnalyticsNavigate = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      event.stopPropagation();
+      router.push(`/analytics/${id}`);
+    },
+    [router, id]
+  );
   return (
     <QuestCard id={id} imgSrc={imgSrc} title={title} onClick={() => onClick()}>
-      <div className="flex gap-2 mt-3 justify-center md:justify-start">
+      <div className="flex w-full gap-2 mt-3 justify-between md:justify-between items-center">
         <div className={styles.issuer}>
           {reward === "Disabled" ? (
             <UnavailableIcon width="24" color="#D32F2F" />
           ) : (
             <CheckCircleIcon className="ml-2" width={25} color="primary" />
           )}
-
           <p className="text-white ml-2">{reward}</p>
+        </div>
+        <div onClick={handleAnalyticsNavigate}>
+          <CDNImage
+            src={"/icons/stats.svg"}
+            alt="stats icon"
+            width={20}
+            height={20}
+          />
         </div>
       </div>
     </QuestCard>
