@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/card.module.css";
 import cdnize from "@utils/cdnize";
+import Typography from "./typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 type CardProps = {
   children: React.ReactNode;
   imgSrc: string;
@@ -23,7 +25,7 @@ const Card: FunctionComponent<CardProps> = ({
         className={styles.cardImage}
       />
       <div className={styles.cardInfos}>
-        <h3 className={styles.cardTitle}>{title}</h3>
+        <Typography type={TEXT_TYPE.H3} color="secondary" className={styles.cardTitle}>{title}</Typography>
         {children}
       </div>
     </div>

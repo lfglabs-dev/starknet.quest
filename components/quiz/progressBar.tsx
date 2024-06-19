@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/quests/progressBar.module.css";
 import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ProgressBarProps = {
   currentStep: number;
@@ -25,7 +27,7 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
               {index < currentStep ? (
                 <CheckMarkIcon width="20" />
               ) : (
-                <p>{index + 1}</p>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{index + 1}</Typography>
               )}
             </div>
           </div>

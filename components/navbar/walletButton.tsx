@@ -16,6 +16,8 @@ import { CircularProgress } from "@mui/material";
 import { getCurrentNetwork } from "@utils/network";
 import Link from "next/link";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -128,7 +130,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
           <>
             <div className="flex items-center justify-between">
               <div className={styles.buttonTextSection}>
-                <p className={styles.buttonText}>{buttonName}</p>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.buttonText}>{buttonName}</Typography>
                 {txLoading ? (
                   <CircularProgress color="secondary" size={24} />
                 ) : null}
@@ -150,7 +152,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                 <Link href="/leaderboard">
                   <button>
                     <TrophyIcon width="24" />
-                    <p>Leaderboard</p>
+                    <Typography type={TEXT_TYPE.BUTTON_SMALL} color="secondary500">Leaderboard</Typography>
                   </button>
                 </Link>
                 <button onClick={copyAddress}>
@@ -159,21 +161,21 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                   ) : (
                     <CopyIcon width="24" />
                   )}
-                  <p>Copy Address</p>
+                  <Typography color="secondary500" type={TEXT_TYPE.BUTTON_SMALL}>Copy Address</Typography>
                 </button>
                 {isWebWallet && (
                   <button onClick={handleOpenWebWallet}>
                     <ArgentIcon width="24" />
-                    <p>Web wallet Dashboard</p>
+                    <Typography type={TEXT_TYPE.BUTTON_SMALL} color="secondary500">Web wallet Dashboard</Typography>
                   </button>
                 )}
                 <button onClick={handleWalletChange}>
                   <WalletIcon width="24" />
-                  <p>Change Wallet</p>
+                  <Typography type={TEXT_TYPE.BUTTON_SMALL} color="secondary500">Change Wallet</Typography>
                 </button>
                 <button onClick={handleDisconnect}>
                   <LogoutIcon width="24" />
-                  <p>Disconnect</p>
+                  <Typography type={TEXT_TYPE.BUTTON_SMALL} color="secondary500">Disconnect</Typography>
                 </button>
               </div>
             ) : null}

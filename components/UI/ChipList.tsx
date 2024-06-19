@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/chiplist.module.css";
+import Typography from "./typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type ChipProps = {
   selected: string;
@@ -23,7 +25,8 @@ const ChipList: FunctionComponent<ChipProps> = ({
             backgroundColor: tag === selected ? "white" : "transparent",
           }}
         >
-          <p
+          <Typography
+            type={TEXT_TYPE.BODY_MICRO}
             style={{
               color: tag !== selected ? "white" : "black",
               fontSize: 12,
@@ -32,7 +35,7 @@ const ChipList: FunctionComponent<ChipProps> = ({
             }}
           >
             {tag}
-          </p>
+          </Typography>
         </div>
       ))}
     </div>

@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "@styles/components/timer.module.css";
+import AccentBox from "@components/UI/AccentBox";
 
 type TimerProps = {
   expiry: number;
@@ -27,6 +28,7 @@ const Timer: FunctionComponent<TimerProps> = ({ expiry, fixed = true }) => {
   return (
     <>
       {fixed ? <div className={styles.timerBackground} /> : null}
+
       <div className={`${fixed ? `${styles.timerFixed}` : `${styles.timer}`}`}>
         <div className={styles.title}>Expires in</div>
         <div className={styles.categories}>

@@ -16,6 +16,8 @@ import { useAccount } from "@starknet-react/core";
 import { TOP_50_TAB_STRING } from "@constants/common";
 import Top3RankedUsers from "./Top3RankedUsers";
 import { CompletedQuests } from "types/backTypes";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
@@ -139,13 +141,13 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                 >
                   <div className={styles.ranking_table_row_name_rank}>
                     <div className={styles.ranking_position_layout}>
-                      <p className="text-white text-center">
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white text-center">
                         {rankFormatter(itemRank)}
-                      </p>
+                      </Typography>
                     </div>
                     <div className={styles.ranking_profile_layout}>
                       <Avatar address={item.address} width="32" />
-                      <p
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT}
                         style={{
                           color:
                             selectedAddress === item.address || isMyRank
@@ -154,7 +156,7 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                         }}
                       >
                         {processDisplayName(item)}
-                      </p>
+                      </Typography>
                     </div>
                   </div>
                   <div className={styles.ranking_table_row_xp_quest}>
@@ -166,11 +168,11 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                         height={35}
                         alt="xp badge"
                       />
-                      <p className="text-white text-center">{item.xp}</p>
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white text-center">{item.xp}</Typography>
                     </div>
-                    <p className={styles.quests_text}>
+                    <Typography type={TEXT_TYPE.BODY_MICRO} className={styles.quests_text}>
                       {item.completedQuests} Quests
-                    </p>
+                    </Typography>
                   </div>
                 </div>
               </Link>

@@ -15,6 +15,8 @@ import {
   getUserAchievements,
   verifyUserAchievement,
 } from "@services/apiService";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 export default function Page() {
   const location = useLocation();
@@ -132,7 +134,7 @@ export default function Page() {
           <div className={styles.cards}>
             <div className={styles.headerContent}>
               <div className={styles.titleContent}>
-                <h1 className={styles.title}>Achievements</h1>
+                <Typography className={styles.title} type={TEXT_TYPE.H1}>Achievements</Typography>
                 <div
                   className={styles.refreshButton}
                   onClick={() => validateAchievements()}
@@ -144,9 +146,9 @@ export default function Page() {
                   <div>Refresh data</div>
                 </div>
               </div>
-              <p className={styles.subtitle}>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.subtitle}>
                 Complete achievements and grow your Starknet on-chain reputation
-              </p>
+              </Typography>
             </div>
             {!loading && userAchievements.length > 0 ? (
               userAchievements.map(

@@ -12,6 +12,8 @@ import { getBoosts } from "@services/apiService";
 import Link from "next/link";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestCategoriesProps = {
   categories: QuestCategory[];
@@ -43,7 +45,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>Accomplish your Starknet Quests</h1>
+      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Accomplish your Starknet Quests</Typography>
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
@@ -51,8 +53,8 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
             <div className={styles.questCategoryContainer}>
               <Link href={`/quest-boost`} className={styles.questCategory}>
                 <div className={styles.categoryInfos}>
-                  <h2 className="text-gray-200">Boosts Quest</h2>
-                  <p className="text-gray-200 normal-case">
+                  <Typography type={TEXT_TYPE.H2} className={`text-gray-200 ${styles.categoryInfosH2}`}>Boosts Quest</Typography>
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`text-gray-200 normal-case ${styles.categoryInfosText}`}>
                     {completedBoostNumber === boosts.length ? (
                       <span className="flex">
                         <span className="mr-2">All boosts done</span>
@@ -63,7 +65,7 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
                         boosts.length > 1 ? "s" : ""
                       } done`
                     )}
-                  </p>
+                  </Typography>
                 </div>
                 <img src="/visuals/boost/logo.webp" />
               </Link>

@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: center;
+  
 }
 
 .cards {
@@ -77,7 +78,6 @@
 }
 
 .title {
-  color: var(--secondary);
   font-family: Sora;
   font-size: 20px;
   font-style: normal;
@@ -88,7 +88,6 @@
 }
 
 .subtitle {
-  color: var(--primary);
   font-family: Sora;
   font-size: 16px;
   font-style: normal;

@@ -561,7 +561,7 @@ export class LdtkReader {
         }
 
         counter++;
-        if (counter === 1000) return null; // avoid inifinite loop for debugging
+        if (counter === 1000) return null; // avoid infinite loop for debugging
       }
     }
     return null;

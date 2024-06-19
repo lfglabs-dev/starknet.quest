@@ -32,7 +32,6 @@
 }
 
 .subtitle {
-  color: var(--secondary);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -148,7 +147,6 @@
 }
 
 .cardSubtitle {
-  color: var(--tertiary);
   font-family: Sora;
   font-size: 16px;
   font-style: normal;
@@ -209,7 +207,6 @@
 }
 
 .levelDesc {
-  color: var(--secondary);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
