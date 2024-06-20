@@ -15,6 +15,7 @@ import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
+import statStyles from "@styles/components/stats.module.css";
 import {
   ClaimableQuestDocument,
   QuestDocument,
@@ -235,8 +236,16 @@ const QuestAndCollectionTabs: FunctionComponent<
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
                     <div className={styles.categoryInfos}>
-                      <Typography type={TEXT_TYPE.H2} className={`${styles.categoryInfosH2} text-gray-200`}>Boosts Quest</Typography>
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`${styles.categoryInfosText} text-gray-200 normal-case`}>
+                      <Typography
+                        type={TEXT_TYPE.H2}
+                        className={`${styles.categoryInfosH2} text-gray-200`}
+                      >
+                        Boosts Quest
+                      </Typography>
+                      <Typography
+                        type={TEXT_TYPE.BODY_DEFAULT}
+                        className={`${styles.categoryInfosText} text-gray-200 normal-case`}
+                      >
                         {completedBoostNumber === boosts.length ? (
                           <span className="flex">
                             <span className="mr-2">All boosts done</span>
@@ -269,7 +278,7 @@ const QuestAndCollectionTabs: FunctionComponent<
               "Connecting to wallet..."
             ) : (
               <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
-                {claimableQuests &&
+                {claimableQuests.length ? (
                   claimableQuests.map((quest) => (
                     <QuestClaim
                       key={quest.id}
@@ -283,7 +292,27 @@ const QuestAndCollectionTabs: FunctionComponent<
                       id={quest.boostId}
                       expired={quest.expired}
                     />
-                  ))}
+                  ))
+                ) : (
+                  <div className="!text-center w-full flex flex-col items-center pt-8">
+                    <Typography
+                      type={TEXT_TYPE.H1}
+                      color="transparent"
+                      className={statStyles.statValue}
+                    >
+                      Claimed All Rewards!
+                    </Typography>
+                    <p className="mt-2">
+                      Make a new quest to unlock more, or check back soon for
+                      exciting challenges!
+                    </p>
+                    <img
+                      src="/visuals/neonPlanet.png"
+                      className="mt-6"
+                      alt=""
+                    />
+                  </div>
+                )}
               </div>
             )}
           </CustomTabPanel>
