@@ -100,7 +100,7 @@ const QuestAndCollectionTabs: FunctionComponent<
       if (res?.length === 0 || completedQuestIdsRes?.length === 0) return;
       setBoosts(res);
       setCompletedQuestIds(completedQuestIdsRes);
-      const filteredBoosts = boosts.filter((boost) => {
+      const filteredBoosts = res.filter((boost) => {
         const userBoostCompletionCheck = boost.quests.every((quest) =>
           completedQuestIdsRes.includes(quest)
         );
