@@ -230,7 +230,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
             onClick={async () => await onSubmit()}
             disabled={isButtonDisabled}
           >
-            <p>Save Task</p>
+            <p>Save All Tasks</p>
           </Button>
         </div>
         <div className="w-fit pt-4">
