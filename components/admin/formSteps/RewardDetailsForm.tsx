@@ -105,7 +105,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             }));
           }}
           value={nfturi?.description ?? ""}
-          name="nft_image"
+          name="description"
           label="NFT Description"
           placeholder="NFT Description"
         />

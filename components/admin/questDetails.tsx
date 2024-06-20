@@ -173,7 +173,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   key={task.id}
                   name={task.name}
                   customError={
-                    task.name.includes("Discord" || "discord")
+                    task?.name?.includes("Discord" || "discord")
                       ? customError
                       : ""
                   }

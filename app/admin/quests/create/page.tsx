@@ -118,7 +118,7 @@ export default function Page() {
         console.log("Error while creating quest", error);
       }
     },
-    [questInput, nfturi]
+    [questInput, nfturi, questId]
   );
 
   const handleCreateBoost = useCallback(
@@ -136,7 +136,7 @@ export default function Page() {
         console.log("Error while creating boost", error);
       }
     },
-    [questId, boostInput]
+    [boostInput]
   );
 
   const handlePagination = useCallback((type: "Next" | "Back") => {
@@ -244,7 +244,7 @@ export default function Page() {
     await handleCreateNftUri(id);
     await setButtonLoading(false);
     handlePagination("Next");
-  }, [questInput, boostInput]);
+  }, [questInput, boostInput, nfturi]);
 
   const handleCreateTask = useCallback(async () => {
     setButtonLoading(true);
