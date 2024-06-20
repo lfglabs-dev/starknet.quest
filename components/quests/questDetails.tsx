@@ -178,8 +178,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         const contract = new Contract(quests_nft_abi, contractAddr, provider);
 
         const response = await contract.call("get_tasks_status", [calldata]);
-
-        console.log({ response });
         if (
           typeof response === "object" &&
           response !== null &&
@@ -207,7 +205,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const checkUserRewards = async () => {
     if (!address) return;
     const res = (await getCompletedQuests(address)) as CompletedQuests;
-    console.log({ res });
     if (res.includes(parseInt(questId))) {
       setRewardsEnabled(true);
     }
@@ -226,8 +223,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       unclaimedRewards === undefined
         ? ([] as EligibleReward[]).concat(...Object.values(eligibleRewards))
         : unclaimedRewards;
-
-    console.log({ eligibleRewards, unclaimedRewards });
 
     to_claim.forEach((reward) => {
       calldata.push({
