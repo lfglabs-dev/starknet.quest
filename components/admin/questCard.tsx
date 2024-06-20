@@ -5,6 +5,9 @@ import { CheckCircle as CheckCircleIcon } from "@mui/icons-material";
 import QuestCard from "@components/quests/questCard";
 import { CDNImage } from "@components/cdn/image";
 import { useRouter } from "next/navigation";
+import { CustomTooltip } from "@components/UI/tooltip";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
 
 type QuestProps = {
   onClick: () => void;
@@ -40,14 +43,24 @@ const Quest: FunctionComponent<QuestProps> = ({
           )}
           <p className="text-white ml-2">{reward}</p>
         </div>
-        <div onClick={handleAnalyticsNavigate}>
-          <CDNImage
-            src={"/icons/stats.svg"}
-            alt="stats icon"
-            width={20}
-            height={20}
-          />
-        </div>
+
+        <CustomTooltip
+          placement="bottom"
+          title={
+            <Typography type={TEXT_TYPE.BODY_SMALL}>
+              See quest analytics
+            </Typography>
+          }
+        >
+          <div onClick={handleAnalyticsNavigate}>
+            <CDNImage
+              src={"/icons/stats.svg"}
+              alt="stats icon"
+              width={20}
+              height={20}
+            />
+          </div>
+        </CustomTooltip>
       </div>
     </QuestCard>
   );
