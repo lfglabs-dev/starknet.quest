@@ -44,7 +44,6 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   const hasRootDomain = useHasRootDomain(quest.mandatory_domain, address);
   const [hasNftReward, setHasNftReward] = useState<boolean>(false);
   const { domain } = useDomainFromAddress(address);
-  console.log({ quest });
 
   const updatePageViews = useCallback(async (quest_id: string) => {
     try {

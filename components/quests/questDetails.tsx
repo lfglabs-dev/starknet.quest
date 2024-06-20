@@ -416,7 +416,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                     name: quest.issuer,
                     logoFavicon: quest.logo,
                   }}
-                  hasRootDomain={hasRootDomain}
+                  hasRootDomain={quest.id === 127 ? true : hasRootDomain}
                   setShowDomainPopup={setShowDomainPopup}
                   checkUserRewards={checkUserRewards}
                 />
