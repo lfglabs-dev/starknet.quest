@@ -393,7 +393,9 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   verifyEndpoint={
                     task.verify_endpoint_type &&
                     task.verify_endpoint_type.startsWith("default")
-                      ? `${task.verify_endpoint}?addr=${hexToDecimal(address)}`
+                      ? `${task.verify_endpoint}?addr=${hexToDecimal(
+                          address
+                        )}&quest_id=${quest.id}&task_id=${task.id}`
                       : task.verify_endpoint_type === "quiz"
                       ? task.verify_endpoint
                       : generateOAuthUrl(task)
