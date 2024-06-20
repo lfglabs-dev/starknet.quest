@@ -307,7 +307,7 @@ export const getEligibleRewards = async ({
 }) => {
   try {
     const response = await fetch(
-      `${baseurl}/${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+      `${baseurl}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
     );
     return await response.json();
   } catch (err) {
