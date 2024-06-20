@@ -205,7 +205,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const checkUserRewards = async () => {
     if (!address) return;
     const res = (await getCompletedQuests(address)) as CompletedQuests;
-    if (res.includes(parseInt(questId))) {
+    if (res?.includes(parseInt(questId))) {
       setRewardsEnabled(true);
     }
   };
@@ -383,7 +383,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                   key={task.id}
                   name={task.name}
                   customError={
-                    task.name.includes("Discord" || "discord")
+                    task.name?.includes("Discord" || "discord")
                       ? customError
                       : ""
                   }
