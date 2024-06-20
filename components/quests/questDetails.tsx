@@ -146,6 +146,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       getEligibleRewards({
         rewardEndpoint: quest.rewards_endpoint,
         address: hexToDecimal(address),
+        quest_id: quest.id,
       }).then((data) => {
         if (data.rewards) {
           setEligibleRewards(splitByNftContract(data.rewards));

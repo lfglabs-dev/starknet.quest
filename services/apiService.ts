@@ -299,13 +299,15 @@ export const getDeployedTimeByAddress = async (address: string) => {
 export const getEligibleRewards = async ({
   rewardEndpoint,
   address,
+  quest_id,
 }: {
   rewardEndpoint: string;
   address: string;
+  quest_id: number;
 }) => {
   try {
     const response = await fetch(
-      `${baseurl}/${rewardEndpoint}?addr=${address}`
+      `${baseurl}/${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
     );
     return await response.json();
   } catch (err) {
