@@ -138,7 +138,7 @@ export default function Page() {
               </div>
               <CustomTabPanel value={tabIndex} index={0}>
                 <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
-                  {quests.map((quest) => {
+                  {quests?.map((quest) => {
                     if (!quest.disabled) {
                       return (
                         <Quest
@@ -158,7 +158,7 @@ export default function Page() {
               </CustomTabPanel>
               <CustomTabPanel value={tabIndex} index={1}>
                 <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
-                  {quests.map((quest) => {
+                  {quests?.map((quest) => {
                     if (quest.disabled) {
                       return (
                         <Quest

@@ -179,7 +179,7 @@ const createTwitterFw = async (params: CreateTwitterFw) => {
 const updateTwitterFw = async (params: UpdateTwitterFw) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/twitter_fw/update`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -243,7 +243,7 @@ const updateDomain = async (params: UpdateDomain) => {
 const updateTwitterRw = async (params: UpdateTwitterRw) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/twitter_rw/update`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
