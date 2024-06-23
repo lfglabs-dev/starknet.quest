@@ -6,28 +6,22 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { getPendingBoostClaims } from "@services/apiService";
 import styles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quest from "@components/quests/quest";
-import QuestClaim from "@components/quests/questClaim";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
 import statStyles from "@styles/components/stats.module.css";
-import {
-  ClaimableQuestDocument,
-  QuestDocument,
-} from "../../../types/backTypes";
+import { CompletedQuests, QuestDocument } from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import { QuestsContext } from "@context/QuestsProvider";
-import { getBoosts } from "@services/apiService";
+import { getBoosts, getCompletedQuests } from "@services/apiService";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
-import { getClaimableQuests } from "@utils/quest";
-import { hexToDecimal } from "@utils/feltService";
-import { PendingBoostClaim } from "types/backTypes";
+import useBoost from "@hooks/useBoost";
+import BoostCard from "@components/quest-boost/boostCard";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 
@@ -65,6 +59,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   const router = useRouter();
   const { address, isConnecting } = useAccount();
   const [tabIndex, setTabIndex] = React.useState(0);
+  const { getBoostClaimStatus } = useBoost();
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
@@ -93,51 +88,45 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address, quests, trendingQuests]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
+  const [displayBoosts, setDisplayBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
-  const [claimableQuests, setClaimableQuests] = useState<
-    ClaimableQuestDocument[]
-  >([]);
-  const [pendingBoostClaims, setpendingBoostClaims] = useState<
-    PendingBoostClaim[] | undefined
-  >([]);
 
-  const fetchBoosts = async () => {
+  const fetchBoosts = useCallback(async () => {
+    if (!address) return;
     try {
       const res = await getBoosts();
-      const filteredResponse = res?.filter(
-        (boost) =>
-          (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3
-      );
-      if (filteredResponse && filteredResponse?.length > 0)
-        setBoosts(filteredResponse);
+      const completedQuestIdsRes = await getCompletedQuests(address);
+      if (!res || !completedQuestIdsRes) return;
+      if (res?.length === 0 || completedQuestIdsRes?.length === 0) return;
+      setBoosts(res);
+      setCompletedQuestIds(completedQuestIdsRes);
+      const filteredBoosts = res.filter((boost) => {
+        const userBoostCompletionCheck = boost.quests.every((quest) =>
+          completedQuestIdsRes.includes(quest)
+        );
+        const userBoostCheckStatus = getBoostClaimStatus(address, boost.id);
+        const isBoostExpired =
+          (new Date().getTime() - boost.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
+          boost.expiry < Date.now();
+
+        return (
+          userBoostCompletionCheck &&
+          !userBoostCheckStatus &&
+          isBoostExpired &&
+          boost.winner != null
+        );
+      });
+      if (!filteredBoosts || filteredBoosts.length === 0) return;
+      setDisplayBoosts(filteredBoosts);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
-  };
-
-  useEffect(() => {
-    fetchBoosts();
-  }, []);
-
-  useEffect(() => {
-    const getAllPendingBoostClaims = async () => {
-      const allPendingClaims = await getPendingBoostClaims(
-        hexToDecimal(address)
-      );
-      if (allPendingClaims) {
-        setpendingBoostClaims(allPendingClaims);
-      }
-    };
-
-    getAllPendingBoostClaims();
   }, [address]);
 
   useEffect(() => {
-    const data = getClaimableQuests(quests, pendingBoostClaims);
-    if (data && data.length) {
-      setClaimableQuests(data);
-    }
-  }, [quests, pendingBoostClaims]);
+    fetchBoosts();
+  }, [address]);
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
@@ -200,7 +189,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     minHeight: "32px",
                   }}
                   label={`To claim (${
-                    claimableQuests ? claimableQuests.length : 0
+                    displayBoosts ? displayBoosts.length : 0
                   })`}
                   {...a11yProps(2)}
                 />
@@ -278,19 +267,12 @@ const QuestAndCollectionTabs: FunctionComponent<
               "Connecting to wallet..."
             ) : (
               <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
-                {claimableQuests.length ? (
-                  claimableQuests.map((quest) => (
-                    <QuestClaim
-                      key={quest.id}
-                      title={quest.title_card}
-                      onClick={() =>
-                        router.push(`/quest-boost/${quest.boostId}`)
-                      }
-                      imgSrc={quest.img_card}
-                      name={quest.issuer}
-                      reward={quest.rewards_title}
-                      id={quest.boostId}
-                      expired={quest.expired}
+                {displayBoosts.length ? (
+                  displayBoosts.map((boost) => (
+                    <BoostCard
+                      key={boost?.id}
+                      boost={boost}
+                      completedQuests={completedQuestIds}
                     />
                   ))
                 ) : (
