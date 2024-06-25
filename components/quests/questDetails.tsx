@@ -10,7 +10,6 @@ import React, {
 import styles from "@styles/quests.module.css";
 import Task from "./task";
 import Reward from "./reward";
-import quests_nft_abi from "@abi/quests_nft_abi.json";
 import { useAccount, useProvider } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import {
@@ -36,6 +35,7 @@ import {
 } from "@services/apiService";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import { useNotification } from "@context/NotificationProvider";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -58,6 +58,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
+  const { showNotification } = useNotification();
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
@@ -166,6 +167,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
       if (hasNftReward === false) return;
       let unclaimed: EligibleReward[] = [];
       for (const contractAddr in eligibleRewards) {
+        const { abi: quests_nft_abi } = await provider.getClassAt(contractAddr);
         const perContractRewards = eligibleRewards[contractAddr];
         const calldata = [];
         for (const reward of perContractRewards) {
@@ -174,28 +176,26 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             task_id: reward.task_id.toString(),
             user_addr: address as string,
           });
+          calldata.push({
+            quest_id: questId as string,
+            task_id: 180,
+            user_addr: address as string,
+          });
         }
         const contract = new Contract(quests_nft_abi, contractAddr, provider);
-
         const response = await contract.call("get_tasks_status", [calldata]);
-        if (
-          typeof response === "object" &&
-          response !== null &&
-          !Array.isArray(response)
-        ) {
-          const status = (response as any)["status"];
+        if (response !== null && Array.isArray(response)) {
+          const result = response.map((x: any) => {
+            if (x === true) {
+              return 1;
+            }
+            return 0;
+          });
 
-          if (Array.isArray(status)) {
-            const result = status.map((x: any) => {
-              if (typeof x === "bigint") {
-                return Number(x);
-              }
-            });
-            const unclaimedPerContractRewards = perContractRewards.filter(
-              (_, index) => result[index] === 0
-            );
-            unclaimed = unclaimed.concat(unclaimedPerContractRewards);
-          }
+          const unclaimedPerContractRewards = perContractRewards.filter(
+            (_, index) => result[index] === 0
+          );
+          unclaimed = unclaimed.concat(unclaimedPerContractRewards);
         }
       }
       setUnclaimedRewards(unclaimed);
@@ -238,10 +238,13 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ],
       });
     });
+
     if (to_claim?.length > 0) {
       setRewardsEnabled(true);
-    } else setRewardsEnabled(false);
-    setMintCalldata(calldata);
+      setMintCalldata(calldata);
+    } else {
+      setRewardsEnabled(false);
+    }
   }, [questId, unclaimedRewards, eligibleRewards]);
 
   useEffect(() => {
@@ -432,7 +435,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 setRewardsEnabled(false);
               }}
               disabled={
-                !rewardsEnabled && !tasks.every((task) => task.completed)
+                !rewardsEnabled || !tasks.every((task) => task.completed)
               }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
@@ -441,7 +444,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           </>
         )}
       </div>
-      {showQuiz}
     </>
   );
 };

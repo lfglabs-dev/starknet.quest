@@ -161,7 +161,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
               <div className={styles.card_container}>
                 {quests?.map((quest, index) => {
-                  if (!quest?.visible || quest?.disabled) return null;
+                  if (quest?.disabled) return null;
                   return (
                     <Quest
                       key={index}
