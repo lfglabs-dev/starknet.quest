@@ -435,7 +435,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 setRewardsEnabled(false);
               }}
               disabled={
-                !rewardsEnabled || !tasks.every((task) => task.completed)
+                !rewardsEnabled && tasks.every((task) => task.completed)
               }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
