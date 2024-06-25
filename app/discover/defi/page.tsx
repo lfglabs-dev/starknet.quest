@@ -1,9 +1,25 @@
 "use client";
 
 import DataTable from "@components/discover/defiTable";
-import * as React from "react";
+import {
+  getAltProtocolStats,
+  getDerivatesStats,
+  getLendingStats,
+  getPairingStats,
+} from "@services/apiService";
+import React, { useEffect, useCallback } from "react";
 
 export default function Page() {
+  const fetchPageData = useCallback(async () => {
+    const derivatesStats = await getDerivatesStats();
+    const lendingStats = await getLendingStats();
+    const pairingStats = await getPairingStats();
+    const altProtocolStats = await getAltProtocolStats();
+  }, []);
+
+  useEffect(() => {
+    fetchPageData();
+  }, []);
   return (
     <div className="flex w-full flex-col mt-24 gap-8 items-center">
       <div className="w-full h-[400px] bg-primary"></div>

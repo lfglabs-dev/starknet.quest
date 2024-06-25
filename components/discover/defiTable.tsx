@@ -77,7 +77,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "APR",
-    header: () => <div className="text-right flex-1">APR</div>,
+    header: () => <div className="flex-1">APR</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
 
@@ -87,12 +87,12 @@ export const columns: ColumnDef<Payment>[] = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "TVL",
-    header: () => <div className="text-right">TVL</div>,
+    header: () => <div className="">TVL</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
 
@@ -102,12 +102,12 @@ export const columns: ColumnDef<Payment>[] = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "Daily rewards",
-    header: () => <div className="text-right">Daily Rewards</div>,
+    header: () => <div className="">Daily Rewards</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
 
@@ -117,7 +117,7 @@ export const columns: ColumnDef<Payment>[] = [
         currency: "USD",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>;
     },
   },
 ];

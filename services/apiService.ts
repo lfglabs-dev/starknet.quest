@@ -18,7 +18,7 @@ import {
   UniquePageVisit,
   UniqueVisitorCount,
   UserTask,
-    QuestList,
+  QuestList,
 } from "types/backTypes";
 
 export type LeaderboardTopperParams = {
@@ -143,7 +143,7 @@ export const getCompletedBoosts = async (addr: string) => {
 export const getQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/get_quests`);
-    const quests: QuestList = await response.json()
+    const quests: QuestList = await response.json();
     return quests;
   } catch (err) {
     console.log("Error while fetching trending quests", err);
@@ -382,5 +382,49 @@ export const updateUniqueVisitors = async (id: string) => {
     return (await response.json()) as UniquePageVisit;
   } catch (err) {
     console.log("Error while fetching unique visitor count", err);
+  }
+};
+
+export const getDerivatesStats = async () => {
+  try {
+    const response = await fetch(
+      `${baseurl}/discover/defi/get_derivatives_stats`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+    return null;
+  }
+};
+
+export const getLendingStats = async () => {
+  try {
+    const response = await fetch(`${baseurl}/discover/defi/get_lend_stats`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+    return null;
+  }
+};
+
+export const getPairingStats = async () => {
+  try {
+    const response = await fetch(`${baseurl}/discover/defi/get_pair_stats`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+    return null;
+  }
+};
+
+export const getAltProtocolStats = async () => {
+  try {
+    const response = await fetch(
+      `${baseurl}/discover/defi/get_alt_protocol_stats`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching unique visitor count", err);
+    return null;
   }
 };
