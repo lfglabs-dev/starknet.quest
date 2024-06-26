@@ -170,11 +170,10 @@ export const getCompletedQuests = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/get_completed_quests?addr=${addr}`
     );
-    const data: CompletedQuests | QueryError = await response.json();
+    const data: CompletedQuests = await response.json();
     return data as CompletedQuests;
   } catch (err) {
     console.log("Error while fetching completed quests", err);
-    return err as QueryError;
   }
 };
 
