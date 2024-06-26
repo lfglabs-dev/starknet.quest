@@ -23,10 +23,6 @@ import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
-import {
-  CustomTabPanel,
-  a11yProps,
-} from "@components/pages/home/questAndCollectionTabs";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import useBoost from "@hooks/useBoost";
 import BoostCard from "@components/quest-boost/boostCard";

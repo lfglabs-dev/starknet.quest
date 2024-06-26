@@ -58,7 +58,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
 }) => {
   const { address } = useAccount();
   const { provider } = useProvider();
-  const { showNotification } = useNotification();
   const [tasks, setTasks] = useState<UserTask[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = useState<boolean>(false);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
@@ -426,6 +425,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 />
               );
             })}
+
             <Reward
               quest={quest}
               hasNftReward={hasNftReward}
@@ -435,7 +435,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 setRewardsEnabled(false);
               }}
               disabled={
-                !rewardsEnabled && tasks.every((task) => task.completed)
+                !tasks.every((task) => task.completed) && !rewardsEnabled
               }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
