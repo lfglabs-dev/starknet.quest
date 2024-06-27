@@ -175,11 +175,6 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
             task_id: reward.task_id.toString(),
             user_addr: address as string,
           });
-          calldata.push({
-            quest_id: questId as string,
-            task_id: 180,
-            user_addr: address as string,
-          });
         }
         const contract = new Contract(quests_nft_abi, contractAddr, provider);
         const response = await contract.call("get_tasks_status", [calldata]);
@@ -435,7 +430,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 setRewardsEnabled(false);
               }}
               disabled={
-                !tasks.every((task) => task.completed) && !rewardsEnabled
+                !(tasks.every((task) => task.completed) && rewardsEnabled)
               }
               mintCalldata={mintCalldata}
               claimed={rewardsEnabled && unclaimedRewards?.length === 0}
