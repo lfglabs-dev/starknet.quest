@@ -110,7 +110,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
   const handleButtonClick = useCallback(() => {
     if (!boost || !address) return;
-    if (!winnerList.includes(hexToDecimal(address)))
+    if (!winnerList?.includes(hexToDecimal(address)))
       updateBoostClaimStatus(address, boost?.id, true);
 
     router.push(`/quest-boost/claim/${boost?.id}`);
@@ -147,7 +147,13 @@ export default function Page({ params }: BoostQuestPageProps) {
           {boost ? (
             <>
               <div className="flex flex-col">
-                <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>{boost?.name}</Typography>
+                <Typography
+                  type={TEXT_TYPE.H1}
+                  color="transparent"
+                  className={styles.title}
+                >
+                  {boost?.name}
+                </Typography>
                 {boost?.expiry && boost.expiry > Date.now() ? (
                   <Timer fixed={false} expiry={Number(boost?.expiry)} />
                 ) : null}
@@ -155,7 +161,7 @@ export default function Page({ params }: BoostQuestPageProps) {
 
               <div className={styles.card_container}>
                 {quests?.map((quest, index) => {
-                  if (quest?.hidden || quest?.disabled) return null;
+                  if (quest?.disabled) return null;
                   return (
                     <Quest
                       key={index}
@@ -183,7 +189,10 @@ export default function Page({ params }: BoostQuestPageProps) {
                     <TokenSymbol tokenAddress={boost?.token ?? ""} />
                   </div>
                   <Typography type={TEXT_TYPE.BODY_DEFAULT}>among</Typography>
-                  <Typography type={TEXT_TYPE.BODY_NORMAL} className={styles.claim_button_text_highlight}>
+                  <Typography
+                    type={TEXT_TYPE.BODY_NORMAL}
+                    className={styles.claim_button_text_highlight}
+                  >
                     {participants} players
                   </Typography>
                 </div>

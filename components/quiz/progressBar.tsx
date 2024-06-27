@@ -27,7 +27,9 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
               {index < currentStep ? (
                 <CheckMarkIcon width="20" />
               ) : (
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{index + 1}</Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  {index + 1}
+                </Typography>
               )}
             </div>
           </div>

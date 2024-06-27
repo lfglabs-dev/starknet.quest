@@ -39,7 +39,7 @@ export const getClaimableQuests = (
     .map((questId) => ({
       ...quests.find((q) => q.id === questId),
       boostId: pendingBoostClaims.find((boost) =>
-        boost.quests.includes(questId)
+        boost.quests?.includes(questId)
       )?.id,
     }));
   return questIdsInBoostClaim as ClaimableQuestDocument[];

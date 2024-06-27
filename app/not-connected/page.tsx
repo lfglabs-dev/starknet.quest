@@ -13,6 +13,7 @@ export default function Page() {
   const { push } = useRouter();
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
     connectors: availableConnectors,
+    modalTheme: "dark",
   });
 
   useEffect(() => {

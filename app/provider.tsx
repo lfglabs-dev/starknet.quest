@@ -18,6 +18,8 @@ import { constants } from "starknet";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 import { NotificationProvider } from "@context/NotificationProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 // Traffic measures
 if (typeof window !== "undefined") {
@@ -119,13 +121,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
       autoConnect
     >
       <StarknetIdJsProvider>
-        <NotificationProvider>
-          <ThemeProvider theme={theme}>
-            <PostHogProvider client={posthog}>
-              <QuestsContextProvider>{children}</QuestsContextProvider>
-            </PostHogProvider>
-          </ThemeProvider>
-        </NotificationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <NotificationProvider>
+            <ThemeProvider theme={theme}>
+              <PostHogProvider client={posthog}>
+                <QuestsContextProvider>{children}</QuestsContextProvider>
+              </PostHogProvider>
+            </ThemeProvider>
+          </NotificationProvider>
+        </LocalizationProvider>
       </StarknetIdJsProvider>
     </StarknetConfig>
   );
