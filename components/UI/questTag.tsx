@@ -59,7 +59,6 @@ const QuestTag: FunctionComponent<TagProps> = ({
           label === "Done" || label === "Expired" ? "row-reverse" : "row", // Adjust direction based on label
         paddingRight: label === "Done" || label === "Expired" ? "15px" : "0", // Adjust padding for label
         fontFamily: "Sora", // Apply the correct font
-        marginBottom: "16px",
       }}
       avatar={avatarContent}
       label={label}
