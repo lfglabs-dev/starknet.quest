@@ -19,19 +19,13 @@ import {
   UniqueVisitorCount,
   UserTask,
   QuestList,
+  LeaderboardTopperParams,
+  LeaderboardRankingParams,
+  derivateStats,
+  altProtocolStats,
+  pairStats,
+  lendStats,
 } from "types/backTypes";
-
-export type LeaderboardTopperParams = {
-  addr: string;
-  duration: "week" | "month" | "all";
-};
-
-export type LeaderboardRankingParams = {
-  addr: string;
-  page_size: number;
-  shift: number;
-  duration: "week" | "month" | "all";
-};
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -385,7 +379,7 @@ export const updateUniqueVisitors = async (id: string) => {
   }
 };
 
-export const getDerivatesStats = async () => {
+export const getDerivatesStats = async (): Promise<derivateStats | null> => {
   try {
     const response = await fetch(
       `${baseurl}/discover/defi/get_derivatives_stats`
@@ -397,7 +391,7 @@ export const getDerivatesStats = async () => {
   }
 };
 
-export const getLendingStats = async () => {
+export const getLendingStats = async (): Promise<lendStats | null> => {
   try {
     const response = await fetch(`${baseurl}/discover/defi/get_lend_stats`);
     return await response.json();
@@ -407,7 +401,7 @@ export const getLendingStats = async () => {
   }
 };
 
-export const getPairingStats = async () => {
+export const getPairingStats = async (): Promise<pairStats | null> => {
   try {
     const response = await fetch(`${baseurl}/discover/defi/get_pair_stats`);
     return await response.json();
@@ -417,14 +411,15 @@ export const getPairingStats = async () => {
   }
 };
 
-export const getAltProtocolStats = async () => {
-  try {
-    const response = await fetch(
-      `${baseurl}/discover/defi/get_alt_protocol_stats`
-    );
-    return await response.json();
-  } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
-    return null;
-  }
-};
+export const getAltProtocolStats =
+  async (): Promise<altProtocolStats | null> => {
+    try {
+      const response = await fetch(
+        `${baseurl}/discover/defi/get_alt_protocol_stats`
+      );
+      return await response.json();
+    } catch (err) {
+      console.log("Error while fetching unique visitor count", err);
+      return null;
+    }
+  };

@@ -16,7 +16,7 @@ const TableHeader = React.forwardRef<
 >(({ ...props }, ref) => (
   <thead
     ref={ref}
-    className="[&_tr]:border-[1px] [&_tr]:border-[#f4faff4d] [&_tr]:border-t-0 [&_tr]:border-l-0 [&_tr]:border-r-0 "
+    className="[&_tr]:border-[1px] [&_tr]:border-[#f4faff4d] [&_tr]:border-t-0 [&_tr]:border-l-0 [&_tr]:border-r-0"
     {...props}
   />
 ));
@@ -51,7 +51,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={
-      "border-[1px] border-[#f4faff4d] transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-r-0 border-l-0"
+      "border-[1px] border-[#f4faff4d] transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-r-0 border-l-0 grid grid-cols-[minmax(min-content,1fr)_minmax(min-content,3fr)_minmax(min-content,2fr)_minmax(min-content,1fr)_minmax(min-content,1fr)_minmax(min-content,1fr)] items-center"
     }
     {...props}
   />
@@ -65,7 +65,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={
-      "h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+      "h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] flex items-center"
     }
     {...props}
   />

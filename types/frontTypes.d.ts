@@ -1,4 +1,9 @@
-type IconProps = { width: string; color?: string; secondColor?: string, backgroundColor?: string  };
+type IconProps = {
+  width: string;
+  color?: string;
+  secondColor?: string;
+  backgroundColor?: string;
+};
 
 type Issuer = {
   name: string;
@@ -291,4 +296,13 @@ type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
+};
+
+type TableInfo = {
+  title: string;
+  action: string;
+  apr: number;
+  volume: number;
+  daily_rewards: number;
+  app: string;
+};
