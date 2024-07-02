@@ -1,12 +1,12 @@
 "use client";
 
 import { ReactNode, createContext, useMemo, useState } from "react";
-import { 
+import {
   BoostedQuests,
   QueryError,
   QuestDocument,
   CompletedQuests,
-  QuestList} from "../types/backTypes";
+} from "../types/backTypes";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -97,7 +97,6 @@ export const QuestsContextProvider = ({
 
       setCategories(categoriesWithImages);
       setQuests(q);
-      
     })();
   }, []);
 
@@ -135,12 +134,10 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     if (!address) return;
-    getCompletedQuests(hexToDecimal(address)).then(
-      (data: CompletedQuests | QueryError) => {
-        if ((data as QueryError).error) return;
-        setCompletedQuestIds(data as CompletedQuests);
-      }
-    );
+    getCompletedQuests(hexToDecimal(address)).then((data) => {
+      if (!data) return;
+      setCompletedQuestIds(data as CompletedQuests);
+    });
   }, [address]);
 
   useMemo(() => {

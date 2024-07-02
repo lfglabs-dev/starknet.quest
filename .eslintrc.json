@@ -6,7 +6,8 @@
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "@next/next/no-document-import-in-page": "off"
   },
   "overrides": [
     {

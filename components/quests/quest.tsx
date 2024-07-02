@@ -32,7 +32,7 @@ const Quest: FunctionComponent<QuestProps> = ({
 }) => {
   const { completedQuestIds } = useContext(QuestsContext);
   const isCompleted = useMemo(
-    () => completedQuestIds.includes(id),
+    () => completedQuestIds?.includes(id),
     [id, completedQuestIds]
   );
 
@@ -50,23 +50,44 @@ const Quest: FunctionComponent<QuestProps> = ({
           expired ? "opacity-40" : null
         }`}
       >
-        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{issuer.name}</Typography>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">
+          {issuer.name}
+        </Typography>
       </div>
       <div className="grid grid-cols-2 gap-2 mt-3 md:grid-cols-2 lg:grid-cols-2 justify-center md:justify-start">
-
-          {isCompleted ? (
-            <>  
-              <QuestTag label={"Done"} icon={<CheckIcon width="24" color="#6AFFAF" backgroundColor="#29282B" />} backgroundColor="#29282B" />
-            </>
-          ) : expired ? (
-            <>
-              <QuestTag label={"Expired"} icon={<UnavailableIcon width="24" color="#D32F2F" backgroundColor="#29282B" />} backgroundColor="#29282B" />
-            </>
-          ) : (
-            <>
-              <QuestTag label={reward} icon={issuer.logoFavicon} />
-            </>
-          )}
+        {isCompleted ? (
+          <>
+            <QuestTag
+              label={"Done"}
+              icon={
+                <CheckIcon
+                  width="24"
+                  color="#6AFFAF"
+                  backgroundColor="#29282B"
+                />
+              }
+              backgroundColor="#29282B"
+            />
+          </>
+        ) : expired ? (
+          <>
+            <QuestTag
+              label={"Expired"}
+              icon={
+                <UnavailableIcon
+                  width="24"
+                  color="#D32F2F"
+                  backgroundColor="#29282B"
+                />
+              }
+              backgroundColor="#29282B"
+            />
+          </>
+        ) : (
+          <>
+            <QuestTag label={reward} icon={issuer.logoFavicon} />
+          </>
+        )}
 
         <BoostReward questId={id} />
       </div>

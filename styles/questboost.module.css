@@ -10,6 +10,7 @@
 
 .container {
   padding: 12vh 1.5rem;
+  width: 100%;
 }
 
 .boost_card_container {
@@ -263,7 +264,11 @@
   padding: 16px;
   border-radius: 12px;
   gap: 13px;
-  background: linear-gradient(90deg, var(--primary) -0.12%, var(--tertiary) 99.88%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) -0.12%,
+    var(--tertiary) 99.88%
+  );
   padding: 1px;
   position: absolute;
   bottom: 0px;

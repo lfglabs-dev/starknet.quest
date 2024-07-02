@@ -49,6 +49,7 @@ export default function Page() {
 
       try {
         const res = await getCompletedQuests(address);
+        if (!res) return;
         setCompletedQuests(res);
       } catch (err) {
         console.log("Error while fetching completed quests", err);

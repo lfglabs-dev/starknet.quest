@@ -1,4 +1,9 @@
-type IconProps = { width: string; color?: string; secondColor?: string, backgroundColor?: string  };
+type IconProps = {
+  width: string;
+  color?: string;
+  secondColor?: string;
+  backgroundColor?: string;
+};
 
 type Issuer = {
   name: string;
@@ -18,17 +23,17 @@ type Task = {
   verifyEndpoint: string;
   verifyRedirect: string | null;
   verifyEndpointType: string;
-  refreshRewards: () => void;
+  refreshRewards?: () => void;
   setShowQuiz: (s: ReactNode) => void;
   wasVerified?: boolean;
   hasError?: boolean;
   verifyError?: string;
-  quizName?: string;
+  quizName?: number;
   issuer?: Issuer;
   setShowDomainPopup: (show: boolean) => void;
   hasRootDomain: boolean;
   customError: string;
-  checkUserRewards: () => void;
+  checkUserRewards?: () => void;
   expired: boolean;
 };
 
@@ -207,7 +212,7 @@ type BuildingsInfo = {
 
 type QuestCategory = {
   name: string;
-  img: string;
+  img: string | undefined;
   questNumber: number;
   quests: QuestDocument[];
 };
@@ -291,4 +296,31 @@ type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
+};
+
+// Define discriminated union types
+type StepMap =
+  | { type: "Quiz"; data: QuizInputType }
+  | { type: "TwitterFw"; data: TwitterFwInputType }
+  | { type: "TwitterRw"; data: TwitterRwInputType }
+  | { type: "Discord"; data: DiscordInputType }
+  | { type: "Custom"; data: CustomInputType }
+  | { type: "None"; data: object }
+  | { type: "Domain"; data: DomainInputType };
+
+type CustomInputType = typeof CustomInput;
+type DiscordInputType = typeof DiscordInput;
+type DomainInputType = typeof DomainInput;
+type QuizInputType = typeof QuizDefaultInput;
+type TwitterFwInputType = typeof TwitterFwInput;
+type TwitterRwInputType = typeof TwitterRwInput;
+type TaskType =
+  | "Quiz"
+  | "TwitterFw"
+  | "Discord"
+  | "Custom"
+  | "TwitterRw"
+  | "Domain"
+  | "None";
+
+type networks = "MAINNET" | "TESTNET";

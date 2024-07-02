@@ -39,13 +39,19 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
   }, []);
 
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
+    () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
     [boosts, completedBoostIds]
   );
 
   return (
     <section className={styles.section}>
-      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Accomplish your Starknet Quests</Typography>
+      <Typography
+        type={TEXT_TYPE.H1}
+        color="transparent"
+        className={styles.title}
+      >
+        Accomplish your Starknet Quests
+      </Typography>
 
       <div className={`${styles.container} my-12`}>
         <div className={styles.questCategories}>
@@ -53,8 +59,16 @@ const QuestCategories: FunctionComponent<QuestCategoriesProps> = ({
             <div className={styles.questCategoryContainer}>
               <Link href={`/quest-boost`} className={styles.questCategory}>
                 <div className={styles.categoryInfos}>
-                  <Typography type={TEXT_TYPE.H2} className={`text-gray-200 ${styles.categoryInfosH2}`}>Boosts Quest</Typography>
-                  <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`text-gray-200 normal-case ${styles.categoryInfosText}`}>
+                  <Typography
+                    type={TEXT_TYPE.H2}
+                    className={`text-gray-200 ${styles.categoryInfosH2}`}
+                  >
+                    Boosts Quest
+                  </Typography>
+                  <Typography
+                    type={TEXT_TYPE.BODY_DEFAULT}
+                    className={`text-gray-200 normal-case ${styles.categoryInfosText}`}
+                  >
                     {completedBoostNumber === boosts.length ? (
                       <span className="flex">
                         <span className="mr-2">All boosts done</span>

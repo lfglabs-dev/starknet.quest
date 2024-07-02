@@ -27,6 +27,9 @@ type RewardProps = {
   hasNftReward?: boolean;
   claimed?: boolean;
   quest: QuestDocument;
+  overrideRewardClick?: () => void;
+  buttonText?: string;
+  overrideDisabledState?: boolean;
 };
 
 const Reward: FunctionComponent<RewardProps> = ({
@@ -39,6 +42,9 @@ const Reward: FunctionComponent<RewardProps> = ({
   hasNftReward,
   claimed,
   quest,
+  overrideRewardClick,
+  buttonText,
+  overrideDisabledState,
 }) => {
   const [modalTxOpen, setModalTxOpen] = useState(false);
   const { address } = useAccount();
@@ -50,6 +56,7 @@ const Reward: FunctionComponent<RewardProps> = ({
   const router = useRouter();
 
   const submitTx = useCallback(async () => {
+    if (overrideRewardClick) return;
     if (!hasNftReward) {
       setShowSuccessModal(true);
       return;
@@ -67,20 +74,24 @@ const Reward: FunctionComponent<RewardProps> = ({
         status: "pending",
       },
     });
-    router.push('/quest/completed');
+    router.push("/quest/completed");
   }, [executeMint, address]);
 
   return (
     <div className={styles.reward}>
       <div className="flex items-center gap-2">
         <p>Reward: </p>
-        <QuestTag label={reward ?? ''} icon={imgSrc}/>
+        <QuestTag label={reward ?? ""} icon={imgSrc} />
         <BoostReward questId={quest.id} />
       </div>
       <div className="max-w-lg">
-        {/* getReward */}
-        <Button onClick={submitTx} disabled={disabled || claimed}>
-          {claimed ? "Claimed" : "Get Reward"}
+        <Button
+          onClick={async () =>
+            overrideRewardClick ? await overrideRewardClick() : submitTx()
+          }
+          disabled={overrideDisabledState ?? (disabled || claimed)}
+        >
+          {claimed ? "Claimed" : buttonText ? buttonText : "Get Reward"}
         </Button>
       </div>
 
@@ -110,7 +121,13 @@ const Reward: FunctionComponent<RewardProps> = ({
         message={
           <div className="flex flex-col items-center justify-center text-center">
             <div className="bg-[#1F1F25] w-full flex p-8 justify-center items-center flex-col gap-8 rounded-tr-3xl rounded-tl-3xl">
-              <Typography type={TEXT_TYPE.BODY_NORMAL} color="secondary" className={rewardStyles.menu_title}>Unlock Your Gift!</Typography>
+              <Typography
+                type={TEXT_TYPE.BODY_NORMAL}
+                color="secondary"
+                className={rewardStyles.menu_title}
+              >
+                Unlock Your Gift!
+              </Typography>
               <img
                 src="/icons/gift.svg"
                 width={183}
@@ -122,10 +139,19 @@ const Reward: FunctionComponent<RewardProps> = ({
               <div className="flex flex-col justify-center gap-2 px-8 pt-6">
                 <div className="flex flex-row justify-center items-center gap-2 pb-4">
                   <img width={40} src={quest.logo} />
-                  <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-2xl font-bold">{quest.issuer}</Typography>
+                  <Typography
+                    type={TEXT_TYPE.BODY_DEFAULT}
+                    className="text-2xl font-bold"
+                  >
+                    {quest.issuer}
+                  </Typography>
                 </div>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>Congratulations on completing the quest! 🎉 </Typography>
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>{quest.rewards_description}</Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  Congratulations on completing the quest! 🎉{" "}
+                </Typography>
+                <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                  {quest.rewards_description}
+                </Typography>
               </div>
               <div className="p-6 w-max self-center">
                 <Button
