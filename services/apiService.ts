@@ -164,11 +164,10 @@ export const getCompletedQuests = async (addr: string) => {
     const response = await fetch(
       `${baseurl}/get_completed_quests?addr=${addr}`
     );
-    const data: CompletedQuests | QueryError = await response.json();
+    const data: CompletedQuests = await response.json();
     return data as CompletedQuests;
   } catch (err) {
     console.log("Error while fetching completed quests", err);
-    return err as QueryError;
   }
 };
 
@@ -246,7 +245,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
 };
 
 export const getQuizById = async (
-  quizId: string,
+  quizId: number,
   address = "0"
 ): Promise<Quiz | undefined> => {
   try {
@@ -293,13 +292,15 @@ export const getDeployedTimeByAddress = async (address: string) => {
 export const getEligibleRewards = async ({
   rewardEndpoint,
   address,
+  quest_id,
 }: {
   rewardEndpoint: string;
   address: string;
+  quest_id: number;
 }) => {
   try {
     const response = await fetch(
-      `${baseurl}/${rewardEndpoint}?addr=${address}`
+      `${baseurl}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
     );
     return await response.json();
   } catch (err) {
@@ -345,14 +346,11 @@ export const getUniqueVisitorCount = async (id: number) => {
 export async function getQuestById(id: string) {
   try {
     const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-    const data: QuestDocument | QueryError = await response.json();
-    if ((data as QueryError).error) {
-      throw Error((data as QueryError).error);
-    }
+    const data: QuestDocument = await response.json();
     return data as QuestDocument;
   } catch (error) {
     console.log("Error parsing quest data:", error);
-    return error as QueryError;
+    return null;
   }
 }
 

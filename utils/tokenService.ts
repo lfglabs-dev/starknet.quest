@@ -18,3 +18,19 @@ export const getTokenName = (token: string) => {
       return "USDC";
   }
 };
+
+export const getTokenAddress = (token: string) => {
+  const network = getCurrentNetwork();
+  switch (token) {
+    case "USDC":
+      return TOKEN_ADDRESS_MAP[network].USDC;
+    case "ETH":
+      return TOKEN_ADDRESS_MAP[network].ETH;
+    case "LORDS":
+      return TOKEN_ADDRESS_MAP[network].LORDS;
+    case "STRK":
+      return TOKEN_ADDRESS_MAP[network].STRK;
+    default:
+      return TOKEN_ADDRESS_MAP[network].USDC;
+  }
+};

@@ -17,8 +17,8 @@ export async function generateMetadata(
   const questId = params.questPage;
 
   try {
-    const data: QuestDocument | QueryError = await getQuestById(questId);
-    if (!data || "error" in data) {
+    const data = await getQuestById(questId);
+    if (!data) {
       return defaultMetatags;
     } else {
       if (data?.name) {

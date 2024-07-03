@@ -104,7 +104,7 @@ export default function Page({ params }: BoostQuestPageProps) {
     if (!boost.winner) return false;
 
     setDisplayAmount(parseInt(String(boost?.amount / boost?.num_of_winners)));
-    return winnerList.includes(hexToDecimal(address));
+    return winnerList?.includes(hexToDecimal(address));
   }, [boost, address, winnerList]);
 
   const handleClaimClick = async () => {
@@ -194,7 +194,10 @@ export default function Page({ params }: BoostQuestPageProps) {
                     )}
                   </div>
                   <div className={styles.claim_button_text}>
-                    <Typography type={TEXT_TYPE.BODY_NORMAL} className={styles.claim_amount}>
+                    <Typography
+                      type={TEXT_TYPE.BODY_NORMAL}
+                      className={styles.claim_amount}
+                    >
                       {boost ? displayAmount : 0}
                     </Typography>
                   </div>
@@ -215,7 +218,8 @@ export default function Page({ params }: BoostQuestPageProps) {
                     />
                   </div>
                   <div className={styles.claim_button_text}>
-                    <Typography type={TEXT_TYPE.BODY_DEFAULT}
+                    <Typography
+                      type={TEXT_TYPE.BODY_DEFAULT}
                       className="pb-[1.5rem] text-center"
                       style={{ fontSize: 24 }}
                     >
