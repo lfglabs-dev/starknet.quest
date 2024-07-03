@@ -22,17 +22,7 @@ import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
 import { SelectChangeEvent } from "@mui/material";
-
-const TOKEN_OPTIONS = [
-  { value: "STRK", label: "STRK" },
-  { value: "USDC", label: "USDC" },
-  { value: "ETH", label: "ETH" },
-  { value: "USDT", label: "USDT" },
-  { value: "DAI", label: "DAI" },
-];
-
-const AUDITED_APPS = ["MySwap"];
-const AIRDROP_APPS = ["MySwap"];
+import { AIRDROP_APPS, AUDITED_APPS, TOKEN_OPTIONS } from "@constants/defi";
 
 export const columns: ColumnDef<TableInfo>[] = [
   {
