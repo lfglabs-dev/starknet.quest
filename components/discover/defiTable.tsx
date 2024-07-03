@@ -280,8 +280,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </Typography>
         </div>
         <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
-          <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center">
-            <div className="w-full">
+          <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center lg:justify-start">
+            <div className="w-full lg:w-fit">
               <Dropdown
                 value={liquidityFilter}
                 backgroundColor="#101012"
@@ -296,7 +296,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full lg:w-fit">
               <Dropdown
                 value={tokenFilter}
                 backgroundColor="#101012"
@@ -306,7 +306,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 options={TOKEN_OPTIONS}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full lg:w-fit">
               <Dropdown
                 value={securityFilter}
                 backgroundColor="#101012"
@@ -319,7 +319,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="w-full">
+            <div className="w-full lg:w-fit">
               <Dropdown
                 value={airdropFilter}
                 backgroundColor="#101012"
@@ -334,10 +334,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
           <div
-            className="flex w-full xl:justify-end justify-center items-center cursor-pointer"
+            className="flex w-full xl:justify-end flex-grow-0 justify-center items-center cursor-pointer"
             onClick={resetFilters}
           >
-            <p>Clear All</p>
+            <div className="w-fit border-[1px] border-[#f4faff4d] px-4 rounded-md">
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+                Clear All
+              </Typography>
+            </div>
           </div>
         </div>
 
