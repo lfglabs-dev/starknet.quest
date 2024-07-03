@@ -5,7 +5,6 @@ import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/system";
 import { IoIosArrowDown } from "react-icons/io";
-import { getTokenName } from "@utils/tokenService";
 
 // Define the props for the Dropdown component
 type DropdownProps = {
