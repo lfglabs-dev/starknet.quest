@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -106,14 +106,16 @@ const Dropdown: React.FC<DropdownProps> = ({
   value,
   placeholder = "Select a value",
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(
-    value ?? placeholder
-  );
+  const [selectedValue, setSelectedValue] = React.useState<string>(placeholder);
 
   const handleMenuChange = (event: SelectChangeEvent) => {
     if (handleChange) handleChange(event);
     setSelectedValue(event.target.value as string);
   };
+
+  useEffect(() => {
+    if (value) setSelectedValue(value);
+  }, [value]);
 
   return (
     <StyledFormControl
@@ -128,6 +130,12 @@ const Dropdown: React.FC<DropdownProps> = ({
         value={selectedValue}
         onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
+        renderValue={() =>
+          !selectedValue || selectedValue.length === 0
+            ? placeholder
+            : selectedValue
+        }
+        displayEmpty={true}
         IconComponent={() => (
           <IoIosArrowDown
             style={{ color: "white", fontSize: "50px", padding: "0 15px 0 0" }}

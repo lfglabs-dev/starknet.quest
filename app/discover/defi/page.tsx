@@ -25,7 +25,7 @@ export default function Page() {
     Object.keys(derivatesStats).map((eachKey) => {
       const item: TableInfo = {
         title: derivatesStats[eachKey].protocol,
-        action: "yay",
+        action: "Derivates",
         apr: derivatesStats[eachKey].apr * 100,
         volume: derivatesStats[eachKey].volumes,
         daily_rewards: derivatesStats[eachKey].allocation,
@@ -55,7 +55,7 @@ export default function Page() {
         if (eachSubKey.toLocaleLowerCase() === "discretionary") return;
         const item: TableInfo = {
           title: eachSubKey,
-          action: "Pair",
+          action: "Pairing",
           apr: pairingStats[eachKey][eachSubKey].apr * 100,
           volume: pairingStats[eachKey][eachSubKey].tvl_usd,
           daily_rewards: pairingStats[eachKey][eachSubKey].allocation,

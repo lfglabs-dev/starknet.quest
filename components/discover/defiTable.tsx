@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { FunctionComponent, useCallback, useState } from "react";
 import {
   Table,
   TableBody,
@@ -23,6 +23,12 @@ import { CDNImage } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
 import { SelectChangeEvent } from "@mui/material";
 import { AIRDROP_APPS, AUDITED_APPS, TOKEN_OPTIONS } from "@constants/defi";
+import AppIcon from "./appIcon";
+
+type DataTableProps = {
+  data: TableInfo[];
+  loading: boolean;
+};
 
 export const columns: ColumnDef<TableInfo>[] = [
   {
@@ -35,7 +41,9 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     cell: ({ row }) => (
-      <div className="capitalize text-left">{row.getValue("app")}</div>
+      <div className="capitalize text-left">
+        <AppIcon app={row.getValue("app")} />
+      </div>
     ),
     enableSorting: false, // disable sorting for this column
 
@@ -143,13 +151,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
 ];
 
-export function DataTable({
-  data,
-  loading,
-}: {
-  data: TableInfo[];
-  loading: boolean;
-}) {
+const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "apr",
@@ -157,10 +159,10 @@ export function DataTable({
     },
   ]);
 
-  const [tokenFilter, setTokenFilter] = useState("None");
-  const [liquidityFilter, setLiquidityFilter] = useState("None");
-  const [securityFilter, setSecurityFilter] = useState("None");
-  const [airdropFilter, setAirdropFilter] = useState("None");
+  const [tokenFilter, setTokenFilter] = useState<string>();
+  const [liquidityFilter, setLiquidityFilter] = useState<string>();
+  const [securityFilter, setSecurityFilter] = useState<string>();
+  const [airdropFilter, setAirdropFilter] = useState<string>();
 
   const table = useReactTable({
     data,
@@ -205,12 +207,12 @@ export function DataTable({
     column?.setFilterValue(e.target.value);
   }, []);
   const resetFilters = useCallback(() => {
+    setLiquidityFilter("");
+    setTokenFilter("");
+    setAirdropFilter("");
+    setSecurityFilter("");
     table.resetColumnFilters();
-    setLiquidityFilter("None");
-    setTokenFilter("None");
-    setAirdropFilter("None");
-    setSecurityFilter("None");
-  }, []);
+  }, [table, setLiquidityFilter, setTokenFilter, setAirdropFilter, setSecurityFilter]);
 
   return (
     <div className="w-full">
@@ -222,19 +224,19 @@ export function DataTable({
           Find the best opportunities, and earn tokens
         </Typography>
       </div>
-      <div className="flex flex-row justify-between gap-4">
-        <div className="w-full gap-4 flex flex-row py-4">
+      <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
+        <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap">
           <div>
             <Dropdown
               value={liquidityFilter}
               backgroundColor="#101012"
               textColor="#fff"
               handleChange={handleLiquidityFiltering}
+              placeholder="Type of liquidity"
               options={[
-                { value: "None", label: "Type of liquidity" },
-                { value: "yay", label: "Derivates" },
+                { value: "Derivates", label: "Derivates" },
                 { value: "Lend", label: "Lend" },
-                { value: "Pair", label: "Pairing" },
+                { value: "Pairing", label: "Pairing" },
                 { value: "Alt", label: "Alt" },
               ]}
             />
@@ -245,10 +247,8 @@ export function DataTable({
               backgroundColor="#101012"
               textColor="#fff"
               handleChange={handleTokenFiltering}
-              options={[
-                { value: "None", label: "Type of token" },
-                ...TOKEN_OPTIONS,
-              ]}
+              placeholder="Type of token"
+              options={TOKEN_OPTIONS}
             />
           </div>
           <div>
@@ -257,8 +257,8 @@ export function DataTable({
               backgroundColor="#101012"
               textColor="#fff"
               handleChange={handleSecurityFilter}
+              placeholder="Type of Security"
               options={[
-                { value: "None", label: "Type of Security" },
                 { value: "Audited", label: "Audited" },
                 { value: "Not Audited", label: "Not Audited" },
               ]}
@@ -270,8 +270,8 @@ export function DataTable({
               backgroundColor="#101012"
               textColor="#fff"
               handleChange={handleAirdropFilter}
+              placeholder="Airdrop"
               options={[
-                { value: "None", label: "Airdrop" },
                 { value: "Airdrop", label: "Airdrop" },
                 { value: "No Airdrop", label: "No Airdrop" },
               ]}
@@ -279,7 +279,7 @@ export function DataTable({
           </div>
         </div>
         <div
-          className="flex w-full justify-end items-center cursor-pointer"
+          className="flex w-full xl:justify-end justify-center items-center cursor-pointer"
           onClick={resetFilters}
         >
           <p>Clear All</p>
@@ -370,6 +370,6 @@ export function DataTable({
       </div>
     </div>
   );
-}
+};
 
 export default DataTable;
