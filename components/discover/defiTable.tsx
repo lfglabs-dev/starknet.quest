@@ -260,13 +260,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     setAirdropFilter("");
     setSecurityFilter("");
     table.resetColumnFilters();
-  }, [
-    table,
-    setLiquidityFilter,
-    setTokenFilter,
-    setAirdropFilter,
-    setSecurityFilter,
-  ]);
+  }, [table]);
 
   return (
     <div className="w-full overflow-x-auto">

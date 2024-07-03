@@ -384,7 +384,7 @@ export const getDerivatesStats = async (): Promise<derivateStats | null> => {
     );
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
+    console.log("Error while fetching derivatives stats", err);
     return null;
   }
 };
@@ -394,7 +394,7 @@ export const getLendingStats = async (): Promise<lendStats | null> => {
     const response = await fetch(`${baseurl}/discover/defi/get_lend_stats`);
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
+    console.log("Error while fetching lending stats", err);
     return null;
   }
 };
@@ -404,7 +404,7 @@ export const getPairingStats = async (): Promise<pairStats | null> => {
     const response = await fetch(`${baseurl}/discover/defi/get_pair_stats`);
     return await response.json();
   } catch (err) {
-    console.log("Error while fetching unique visitor count", err);
+    console.log("Error while fetching pairing stats", err);
     return null;
   }
 };
@@ -417,7 +417,7 @@ export const getAltProtocolStats =
       );
       return await response.json();
     } catch (err) {
-      console.log("Error while fetching unique visitor count", err);
+      console.log("Error while fetching alt protocol stats", err);
       return null;
     }
   };
