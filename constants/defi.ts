@@ -6,5 +6,5 @@ export const TOKEN_OPTIONS = [
   { value: "DAI", label: "DAI" },
 ];
 
-export const AUDITED_APPS = ["MySwap"];
-export const AIRDROP_APPS = ["MySwap"];
+export const AIRDROP_APPS = ["ekubo", "nostra", "zklend", "sithswap"];
+export const AUDITED_APPS = ["ekubo", "zklend", "nimbora", "sithswap"];

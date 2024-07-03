@@ -114,7 +114,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   useEffect(() => {
-    if (value) setSelectedValue(value);
+    setSelectedValue(value ?? "");
   }, [value]);
 
   return (

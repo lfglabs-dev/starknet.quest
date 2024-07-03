@@ -55,7 +55,7 @@ export default function Page() {
         if (eachSubKey.toLocaleLowerCase() === "discretionary") return;
         const item: TableInfo = {
           title: eachSubKey,
-          action: "Pairing",
+          action: "Provide Liquidity",
           apr: pairingStats[eachKey][eachSubKey].apr * 100,
           volume: pairingStats[eachKey][eachSubKey].tvl_usd,
           daily_rewards: pairingStats[eachKey][eachSubKey].allocation,
@@ -71,7 +71,7 @@ export default function Page() {
       Object.keys(altProtocolStats[eachKey]).map((eachSubKey) => {
         const item: TableInfo = {
           title: eachSubKey,
-          action: "Alt",
+          action: "Enter Strategy",
           apr: altProtocolStats[eachKey][eachSubKey].apr * 100,
           volume: altProtocolStats[eachKey][eachSubKey].tvl_usd,
           daily_rewards: altProtocolStats[eachKey][eachSubKey].allocation,
@@ -91,7 +91,7 @@ export default function Page() {
   return (
     <div className="flex w-full flex-col mt-24 gap-8 items-center">
       <div className="w-full h-[400px] bg-primary"></div>
-      <div className="mx-4 p-6 border-[1px] border-[#f4faff4d] rounded-xl lg:w-3/4">
+      <div className="mx-4 p-6 border-[1px] border-[#f4faff4d] rounded-xl w-full lg:w-3/4">
         <DataTable loading={loading} data={data} />
       </div>
     </div>

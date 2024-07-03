@@ -24,6 +24,9 @@ import Dropdown from "@components/UI/dropdown";
 import { SelectChangeEvent } from "@mui/material";
 import { AIRDROP_APPS, AUDITED_APPS, TOKEN_OPTIONS } from "@constants/defi";
 import AppIcon from "./appIcon";
+import ActionText from "./actionText";
+import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
+import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -50,13 +53,13 @@ export const columns: ColumnDef<TableInfo>[] = [
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
       if (filterValue === "Audited") {
-        return AUDITED_APPS.includes(rowValue);
+        return AUDITED_APPS.includes(rowValue.toLowerCase());
       } else if (filterValue === "Not Audited") {
-        return !AUDITED_APPS.includes(rowValue);
-      } else if (filterValue === "Airdrop") {
-        return AIRDROP_APPS.includes(rowValue);
-      } else if (filterValue === "No Airdrop") {
-        return !AIRDROP_APPS.includes(rowValue);
+        return !AUDITED_APPS.includes(rowValue.toLowerCase());
+      } else if (filterValue === "Has Airdropped") {
+        return AIRDROP_APPS.includes(rowValue.toLowerCase());
+      } else if (filterValue === "No Airdrop Yet") {
+        return !AIRDROP_APPS.includes(rowValue.toLowerCase());
       }
       return true;
     },
@@ -71,7 +74,34 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      return <div>{row.getValue("title")}</div>;
+      return (
+        <div className="flex flex-row items-center gap-4 h-10">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
+            {row.getValue("title")}
+          </Typography>
+          <div className="flex flex-row items-center gap-2">
+            {AIRDROP_APPS.includes(
+              String(row.getValue("app")).toLowerCase()
+            ) ? (
+              <div className="flex px-2 justify-center items-center border-[1px] border-[#f4faff4d] rounded-sm">
+                <Typography type={TEXT_TYPE.BODY_EXTRA_SMALL} color="textGray">
+                  POINTS
+                </Typography>
+              </div>
+            ) : null}
+
+            {AUDITED_APPS.includes(
+              String(row.getValue("app")).toLowerCase()
+            ) ? (
+              <div className="flex  px-2 justify-center items-center border-[1px] border-[#f4faff4d] rounded-sm">
+                <Typography type={TEXT_TYPE.BODY_EXTRA_SMALL} color="textGray">
+                  AUDIT
+                </Typography>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      );
     },
     enableSorting: false, // disable sorting for this column
   },
@@ -85,17 +115,23 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     cell: ({ row }) => (
-      <div className="capitalize text-left">{row.getValue("action")}</div>
+      <div className="capitalize text-left">
+        <ActionText type={row.getValue("action")} />
+      </div>
     ),
     enableSorting: false, // disable sorting for this column
   },
   {
     accessorKey: "apr",
     header: () => (
-      <div>
+      <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           APR
         </Typography>
+        <div className="flex flex-col gap-0">
+          <DownIcon width="10" color="#a6a5a7" />
+          <UpIcon width="10" color="#a6a5a7" />
+        </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -106,10 +142,18 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "volume",
     header: () => (
-      <div>
+      <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           TVL
         </Typography>
+        <div className="flex flex-col gap-0">
+          <div>
+            <DownIcon width="10" color="#a6a5a7" />
+          </div>
+          <div>
+            <UpIcon width="10" color="#a6a5a7" />
+          </div>
+        </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -129,10 +173,14 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "daily_rewards",
     header: () => (
-      <div className="w-full text-right">
+      <div className="flex flex-row gap-2 items-center justify-end">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Daily Rewards
         </Typography>
+        <div className="flex flex-col gap-0">
+          <DownIcon width="10" color="#a6a5a7" />
+          <UpIcon width="10" color="#a6a5a7" />
+        </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -212,159 +260,178 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     setAirdropFilter("");
     setSecurityFilter("");
     table.resetColumnFilters();
-  }, [table, setLiquidityFilter, setTokenFilter, setAirdropFilter, setSecurityFilter]);
+  }, [
+    table,
+    setLiquidityFilter,
+    setTokenFilter,
+    setAirdropFilter,
+    setSecurityFilter,
+  ]);
 
   return (
-    <div className="w-full">
-      <div className={`flex w-100 flex-col gap-2`}>
-        <Typography type={TEXT_TYPE.H4} color="secondary">
-          Explore reward opportunities
-        </Typography>
-        <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
-          Find the best opportunities, and earn tokens
-        </Typography>
-      </div>
-      <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
-        <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap">
-          <div>
-            <Dropdown
-              value={liquidityFilter}
-              backgroundColor="#101012"
-              textColor="#fff"
-              handleChange={handleLiquidityFiltering}
-              placeholder="Type of liquidity"
-              options={[
-                { value: "Derivates", label: "Derivates" },
-                { value: "Lend", label: "Lend" },
-                { value: "Pairing", label: "Pairing" },
-                { value: "Alt", label: "Alt" },
-              ]}
-            />
+    <div className="w-full overflow-x-auto">
+      <div className="">
+        <div className={`flex w-100 flex-col gap-2`}>
+          <Typography type={TEXT_TYPE.H4} color="secondary">
+            Explore reward opportunities
+          </Typography>
+          <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
+            Find the best opportunities, and earn tokens
+          </Typography>
+        </div>
+        <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
+          <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center">
+            <div className="w-full">
+              <Dropdown
+                value={liquidityFilter}
+                backgroundColor="#101012"
+                textColor="#fff"
+                handleChange={handleLiquidityFiltering}
+                placeholder="Type of liquidity"
+                options={[
+                  { value: "Derivates", label: "Derivates" },
+                  { value: "Lend", label: "Lend" },
+                  { value: "Provide liquidity", label: "Provide liquidity" },
+                  { value: "Enter Strategy", label: "Enter Strategy" },
+                ]}
+              />
+            </div>
+            <div className="w-full">
+              <Dropdown
+                value={tokenFilter}
+                backgroundColor="#101012"
+                textColor="#fff"
+                handleChange={handleTokenFiltering}
+                placeholder="Type of token"
+                options={TOKEN_OPTIONS}
+              />
+            </div>
+            <div className="w-full">
+              <Dropdown
+                value={securityFilter}
+                backgroundColor="#101012"
+                textColor="#fff"
+                handleChange={handleSecurityFilter}
+                placeholder="Type of Security"
+                options={[
+                  { value: "Audited", label: "Audited" },
+                  { value: "Not Audited", label: "Not Audited" },
+                ]}
+              />
+            </div>
+            <div className="w-full">
+              <Dropdown
+                value={airdropFilter}
+                backgroundColor="#101012"
+                textColor="#fff"
+                handleChange={handleAirdropFilter}
+                placeholder="Airdrop"
+                options={[
+                  { value: "Has Airdropped", label: "Has Airdropped" },
+                  { value: "No Airdrop Yet", label: "No Airdrop Yet" },
+                ]}
+              />
+            </div>
           </div>
-          <div>
-            <Dropdown
-              value={tokenFilter}
-              backgroundColor="#101012"
-              textColor="#fff"
-              handleChange={handleTokenFiltering}
-              placeholder="Type of token"
-              options={TOKEN_OPTIONS}
-            />
-          </div>
-          <div>
-            <Dropdown
-              value={securityFilter}
-              backgroundColor="#101012"
-              textColor="#fff"
-              handleChange={handleSecurityFilter}
-              placeholder="Type of Security"
-              options={[
-                { value: "Audited", label: "Audited" },
-                { value: "Not Audited", label: "Not Audited" },
-              ]}
-            />
-          </div>
-          <div>
-            <Dropdown
-              value={airdropFilter}
-              backgroundColor="#101012"
-              textColor="#fff"
-              handleChange={handleAirdropFilter}
-              placeholder="Airdrop"
-              options={[
-                { value: "Airdrop", label: "Airdrop" },
-                { value: "No Airdrop", label: "No Airdrop" },
-              ]}
-            />
+          <div
+            className="flex w-full xl:justify-end justify-center items-center cursor-pointer"
+            onClick={resetFilters}
+          >
+            <p>Clear All</p>
           </div>
         </div>
-        <div
-          className="flex w-full xl:justify-end justify-center items-center cursor-pointer"
-          onClick={resetFilters}
-        >
-          <p>Clear All</p>
-        </div>
-      </div>
 
-      <div className="rounded-xl border-[1px] border-[#f4faff4d]">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        onClick={header.column.getToggleSortingHandler()}
+                        style={{
+                          cursor:
+                            header.id === "app" ||
+                            header.id === "title" ||
+                            header.id === "action"
+                              ? "initial"
+                              : "pointer",
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                {loading ? "Loading..." : "No results"}
-              </TableCell>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-center space-x-2 pt-4">
-        <div className="text-sm text-muted-foreground flex gap-8">
-          <div
-            className="flex"
-            onClick={() =>
-              table.getCanPreviousPage() ? table.previousPage() : null
-            }
-            style={{
-              cursor: table.getCanPreviousPage() ? "pointer" : "not-allowed",
-            }}
-          >
-            <CDNImage
-              src="/icons/chevronLeft.svg"
-              alt="chevron left"
-              width={8}
-              height={8}
-            />
-          </div>
-          <div
-            className="flex"
-            onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-            style={{
-              cursor: table.getCanNextPage() ? "pointer" : "not-allowed",
-            }}
-          >
-            <CDNImage
-              src="/icons/chevronRight.svg"
-              alt="chevron right"
-              width={16}
-              height={16}
-            />
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  {loading ? "Loading..." : "No results"}
+                </TableCell>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-center space-x-2 pt-4">
+          <div className="text-sm text-muted-foreground flex gap-8">
+            <div
+              className="flex"
+              onClick={() =>
+                table.getCanPreviousPage() ? table.previousPage() : null
+              }
+              style={{
+                cursor: table.getCanPreviousPage() ? "pointer" : "not-allowed",
+              }}
+            >
+              <CDNImage
+                src="/icons/chevronLeft.svg"
+                alt="chevron left"
+                width={8}
+                height={8}
+              />
+            </div>
+            <div
+              className="flex"
+              onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
+              style={{
+                cursor: table.getCanNextPage() ? "pointer" : "not-allowed",
+              }}
+            >
+              <CDNImage
+                src="/icons/chevronRight.svg"
+                alt="chevron right"
+                width={16}
+                height={16}
+              />
+            </div>
           </div>
         </div>
       </div>
