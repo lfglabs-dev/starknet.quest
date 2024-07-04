@@ -13,7 +13,7 @@ import Quest from "@components/quests/quest";
 import { useRouter } from "next/navigation";
 import QuestCategory from "@components/quests/questCategory";
 import QuestsSkeleton from "@components/skeletons/questsSkeleton";
-import statStyles from "@styles/components/stats.module.css";
+import homeStyles from "@styles/Home.module.css";
 import { CompletedQuests, QuestDocument } from "../../../types/backTypes";
 import Link from "next/link";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
@@ -280,7 +280,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     <Typography
                       type={TEXT_TYPE.H1}
                       color="transparent"
-                      className={statStyles.statValue}
+                      className={homeStyles.title}
                     >
                       Claimed All Rewards!
                     </Typography>
