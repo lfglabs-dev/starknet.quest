@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
-import { CDNImage } from "@components/cdn/image";
+import { CDNImage, CDNImg } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
 import { SelectChangeEvent } from "@mui/material";
 import {
@@ -82,9 +82,20 @@ export const columns: ColumnDef<TableInfo>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-row items-center gap-4 h-10">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
-            {row.getValue("title")}
-          </Typography>
+          <div
+            className="flex flex-row gap-2 items-center justify-center"
+            onClick={() =>
+              window.open(
+                getRedirectLink(row.getValue("app"), row.getValue("action")),
+                "_blank"
+              )
+            }
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
+              {row.getValue("title")}
+            </Typography>
+            <CDNImg src="/icons/linkIcon.svg" width={16} />
+          </div>
           <div className="flex flex-row items-center gap-2">
             {!AIRDROP_APPS.includes(
               String(row.getValue("app")).toLowerCase()
@@ -397,15 +408,6 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() =>
-                      window.open(
-                        getRedirectLink(
-                          row.getValue("app"),
-                          row.getValue("action")
-                        ),
-                        "_blank"
-                      )
-                    }
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
