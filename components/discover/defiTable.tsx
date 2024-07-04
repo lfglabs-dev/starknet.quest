@@ -22,11 +22,17 @@ import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
 import { SelectChangeEvent } from "@mui/material";
-import { AIRDROP_APPS, AUDITED_APPS, TOKEN_OPTIONS } from "@constants/defi";
+import {
+  AIRDROP_APPS,
+  AUDITED_APPS,
+  STABLES,
+  TOKEN_OPTIONS,
+} from "@constants/defi";
 import AppIcon from "./appIcon";
 import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
+import { getRedirectLink } from "@utils/defiRedirects";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -52,13 +58,13 @@ export const columns: ColumnDef<TableInfo>[] = [
 
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
-      if (filterValue === "Audited") {
+      if (filterValue === "Audit") {
         return AUDITED_APPS.includes(rowValue.toLowerCase());
-      } else if (filterValue === "Not Audited") {
+      } else if (filterValue === "No Audit") {
         return !AUDITED_APPS.includes(rowValue.toLowerCase());
-      } else if (filterValue === "Has Airdropped") {
+      } else if (filterValue === "Airdropped") {
         return AIRDROP_APPS.includes(rowValue.toLowerCase());
-      } else if (filterValue === "No Airdrop Yet") {
+      } else if (filterValue === "Hasn't Airdropped") {
         return !AIRDROP_APPS.includes(rowValue.toLowerCase());
       }
       return true;
@@ -85,7 +91,7 @@ export const columns: ColumnDef<TableInfo>[] = [
             ) ? (
               <div className="flex px-2 justify-center items-center border-[1px] border-[#f4faff4d] rounded-sm">
                 <Typography type={TEXT_TYPE.BODY_EXTRA_SMALL} color="textGray">
-                  POINTS
+                  AIRDROP
                 </Typography>
               </div>
             ) : null}
@@ -104,6 +110,19 @@ export const columns: ColumnDef<TableInfo>[] = [
       );
     },
     enableSorting: false, // disable sorting for this column
+    filterFn: (row, columnId, filterValue) => {
+      const rowValue: string = row.getValue(columnId);
+      if (filterValue === "Stables") {
+        let res = false;
+        STABLES.forEach((stable) => {
+          if (rowValue.toLowerCase().includes(stable.toLowerCase())) {
+            res = true;
+          }
+        });
+        return res;
+      }
+      return rowValue.toLowerCase().includes(filterValue.toLowerCase());
+    },
   },
   {
     accessorKey: "action",
@@ -283,10 +302,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 handleChange={handleLiquidityFiltering}
                 placeholder="Type of liquidity"
                 options={[
-                  { value: "Derivates", label: "Derivates" },
+                  { value: "Derivatives", label: "Derivatives" },
                   { value: "Lend", label: "Lend" },
                   { value: "Provide liquidity", label: "Provide liquidity" },
-                  { value: "Enter Strategy", label: "Enter Strategy" },
+                  { value: "Strategies", label: "Strategies" },
                 ]}
               />
             </div>
@@ -308,8 +327,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 handleChange={handleSecurityFilter}
                 placeholder="Type of Security"
                 options={[
-                  { value: "Audited", label: "Audited" },
-                  { value: "Not Audited", label: "Not Audited" },
+                  { value: "Audit", label: "Audit" },
+                  { value: "No Audit", label: "No Audit" },
                 ]}
               />
             </div>
@@ -319,10 +338,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 backgroundColor="#101012"
                 textColor="#fff"
                 handleChange={handleAirdropFilter}
-                placeholder="Airdrop"
+                placeholder="Airdrop Status"
                 options={[
-                  { value: "Has Airdropped", label: "Has Airdropped" },
-                  { value: "No Airdrop Yet", label: "No Airdrop Yet" },
+                  { value: "Airdropped", label: "Airdropped" },
+                  { value: "Hasn't Airdropped", label: "Hasn't Airdropped" },
                 ]}
               />
             </div>
@@ -376,6 +395,15 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() =>
+                      window.open(
+                        getRedirectLink(
+                          row.getValue("app"),
+                          row.getValue("action")
+                        ),
+                        "_blank"
+                      )
+                    }
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>

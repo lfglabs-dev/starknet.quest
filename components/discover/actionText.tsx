@@ -10,9 +10,9 @@ const ActionText = ({ type }: { type: string }) => {
         return "/icons/waterIcon.svg";
       case "Lend":
         return "/icons/lendIcon.svg";
-      case "Enter Strategy":
+      case "Strategies":
         return "/icons/strategyIcon.svg";
-      case "Derivates":
+      case "Derivatives":
         return "/icons/strategyIcon.svg";
     }
   }, []);
