@@ -32,7 +32,7 @@ import AppIcon from "./appIcon";
 import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
-import { getRedirectLink } from "@utils/defiRedirects";
+import { getRedirectLink } from "@utils/defi";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -267,10 +267,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
 
   const handleSecurityFilter = useCallback((e: SelectChangeEvent) => {
     const column = table.getColumn("app");
+    setSecurityFilter(e.target.value);
     column?.setFilterValue(e.target.value);
   }, []);
   const handleAirdropFilter = useCallback((e: SelectChangeEvent) => {
     const column = table.getColumn("app");
+    setAirdropFilter(e.target.value);
     column?.setFilterValue(e.target.value);
   }, []);
   const resetFilters = useCallback(() => {
