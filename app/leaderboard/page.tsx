@@ -290,7 +290,7 @@ export default function Page() {
   ]);
 
   /*
-    fetch data whenever page size , page number changes, 
+    fetch data whenever page size , page number changes,
     duration  changes, search address changes
   */
   useEffect(() => {

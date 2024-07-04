@@ -86,7 +86,7 @@ export const columns: ColumnDef<TableInfo>[] = [
             {row.getValue("title")}
           </Typography>
           <div className="flex flex-row items-center gap-2">
-            {AIRDROP_APPS.includes(
+            {!AIRDROP_APPS.includes(
               String(row.getValue("app")).toLowerCase()
             ) ? (
               <div className="flex px-2 justify-center items-center border-[1px] border-[#f4faff4d] rounded-sm">
