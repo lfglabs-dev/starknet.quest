@@ -196,9 +196,12 @@ const Navbar: FunctionComponent = () => {
             </Link>
           </div>
           <div>
-            <ul className="hidden lg:flex uppercase items-center">
+            <ul className="hidden lg:flex uppercase items-center ">
               <Link href="/">
                 <li className={styles.menuItem}>Quests</li>
+              </Link>
+              <Link href={`/discover/defi`}>
+                <li className={styles.menuItem}>Earn</li>
               </Link>
               {isConnected && (
                 <Link href={`/${address}`}>
@@ -244,17 +247,18 @@ const Navbar: FunctionComponent = () => {
         <div
           className={
             nav
-              ? "mt-24 lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10"//extra margin so page doesnt cover forst navbar buttons
+              ? "mt-24 lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10" //extra margin so page doesnt cover forst navbar buttons
               : ""
           }
         >
           <div
-            className={`mt-20 fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${//extra margin so page doesnt overlap the navbar
+            className={`mt-20 fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${
+              //extra margin so page doesnt overlap the navbar
               nav ? styles.mobileNavbarShown : styles.mobileNavbarHidden
             }`}
           >
             <div className="h-full flex flex-col">
-             <div className="py-4 my-auto text-center font-extrabold">
+              <div className="py-4 my-auto text-center font-extrabold">
                 <ul className="uppercase text-babe-blue">
                   <Link href="/">
                     <li
@@ -262,6 +266,14 @@ const Navbar: FunctionComponent = () => {
                       className={styles.menuItemSmall}
                     >
                       Quests
+                    </li>
+                  </Link>
+                  <Link href="/discover/defi">
+                    <li
+                      onClick={() => setNav(false)}
+                      className={styles.menuItemSmall}
+                    >
+                      Earn
                     </li>
                   </Link>
                   {isConnected && (
