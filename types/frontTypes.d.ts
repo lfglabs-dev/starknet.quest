@@ -298,6 +298,14 @@ type TabPanelProps = {
   value: number;
 };
 
+type TableInfo = {
+  title: string;
+  action: string;
+  apr: number;
+  volume: number;
+  daily_rewards: number;
+  app: string;
+};
 // Define discriminated union types
 type StepMap =
   | { type: "Quiz"; data: QuizInputType }

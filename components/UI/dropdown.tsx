@@ -1,11 +1,10 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/system";
 import { IoIosArrowDown } from "react-icons/io";
-import { getTokenName } from "@utils/tokenService";
 
 // Define the props for the Dropdown component
 type DropdownProps = {
@@ -107,14 +106,16 @@ const Dropdown: React.FC<DropdownProps> = ({
   value,
   placeholder = "Select a value",
 }) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(
-    value ?? placeholder
-  );
+  const [selectedValue, setSelectedValue] = React.useState<string>(value ?? "");
 
   const handleMenuChange = (event: SelectChangeEvent) => {
     if (handleChange) handleChange(event);
     setSelectedValue(event.target.value as string);
   };
+
+  useEffect(() => {
+    setSelectedValue(value ?? "");
+  }, [value]);
 
   return (
     <StyledFormControl
@@ -129,6 +130,12 @@ const Dropdown: React.FC<DropdownProps> = ({
         value={selectedValue}
         onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
+        renderValue={() =>
+          !selectedValue || selectedValue.length === 0
+            ? placeholder
+            : selectedValue
+        }
+        displayEmpty={true}
         IconComponent={() => (
           <IoIosArrowDown
             style={{ color: "white", fontSize: "50px", padding: "0 15px 0 0" }}

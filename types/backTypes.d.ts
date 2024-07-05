@@ -195,6 +195,69 @@ type BoostClaimParams = {
   s: string;
 };
 
+type LeaderboardTopperParams = {
+  addr: string;
+  duration: "week" | "month" | "all";
+};
+
+type LeaderboardRankingParams = {
+  addr: string;
+  page_size: number;
+  shift: number;
+  duration: "week" | "month" | "all";
+};
+
+type derivateStats = {
+  [key: string]: {
+    date: string;
+    protocol: string;
+    allocation: number;
+    tvl: number;
+    volumes: number;
+    beta_fees: number;
+    apr: number;
+  };
+};
+
+type altProtocolStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      tvl_usd: number;
+      apr: number;
+    };
+  };
+};
+
+type pairStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      token0_allocation: number;
+      token1_allocation: number;
+      thirty_day_realized_volatility: number;
+      tvl_usd: number;
+      apr: number;
+    };
+  };
+};
+
+type lendStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      supply_usd: number;
+      non_recursive_supply_usd: number;
+      non_recursive_revenue_usd: number;
+      strk_grant_apr_ts: number;
+      strk_grant_apr_nrs: number;
+    };
+  };
+};
+
 type QuestList = {
   [key: string]: QuestDocument[];
 };
