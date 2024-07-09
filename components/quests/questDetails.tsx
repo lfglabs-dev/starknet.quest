@@ -35,7 +35,6 @@ import {
 } from "@services/apiService";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
-import { useNotification } from "@context/NotificationProvider";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -439,6 +438,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           </>
         )}
       </div>
+      {showQuiz}
     </>
   );
 };
