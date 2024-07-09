@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, createContext, useMemo, useState } from "react";
+import React, { ReactNode, createContext, useMemo, useState } from "react";
 import {
   BoostedQuests,
   QueryError,
@@ -27,12 +27,6 @@ interface QuestsConfig {
   completedBoostIds: number[];
   boostedQuests: number[];
 }
-
-type GetQuestsRes =
-  | {
-      [key: string]: QuestDocument[];
-    }
-  | QueryError;
 
 export const QuestsContext = createContext<QuestsConfig>({
   quests: [],
