@@ -15,7 +15,7 @@ const ErrorScreen: FunctionComponent<ErrorScreenProps> = ({
   errorMessage,
 }) => {
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen w-full">
       <img
         src="/visuals/animals/tiger.webp"
         height={300}

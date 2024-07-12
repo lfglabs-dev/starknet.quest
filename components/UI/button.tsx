@@ -1,11 +1,13 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import styles from "@styles/components/button.module.css";
+import { CircularProgress } from "@mui/material";
 
 type ButtonProps = {
   onClick: () => void;
   children: string | ReactNode;
   disabled?: boolean;
   color?: string;
+  loading?: boolean;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -13,6 +15,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   onClick,
   disabled = false,
   color = "primary",
+  loading = false,
 }) => {
   return (
     <button
@@ -26,7 +29,13 @@ const Button: FunctionComponent<ButtonProps> = ({
         (disabled ? styles.disabled_button : "")
       }
     >
-      {children}
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <CircularProgress size={20} />
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 };

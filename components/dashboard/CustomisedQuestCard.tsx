@@ -50,19 +50,31 @@ const QuestCardCustomised: FunctionComponent<QuestProps> = ({ id }) => {
           data.expired ? "opacity-40" : null
         }`}
       >
-        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">{data.issuer}</Typography>
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-gray-400">
+          {data.issuer}
+        </Typography>
       </div>
       <div className="flex gap-2 mt-3 justify-center md:justify-start">
         <div className={questCardStyles.issuer}>
           {data.expired ? (
             <>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white mr-2 issuerText">Expired</Typography>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                className="text-white mr-2 issuerText"
+              >
+                Expired
+              </Typography>
               <UnavailableIcon width="24" color="#D32F2F" />
             </>
           ) : (
             <>
               <CDNImg width={20} src={data.logo} loading="lazy" />
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white ml-2 issuerText">{data.rewards_title}</Typography>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                className="text-white ml-2 issuerText"
+              >
+                {data.rewards_title}
+              </Typography>
             </>
           )}
         </div>

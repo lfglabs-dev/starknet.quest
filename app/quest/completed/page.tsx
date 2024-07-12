@@ -23,7 +23,7 @@ export default function Page() {
     return categories.map((item) => {
       return item.quests.filter(
         (quest: { id: number; expired: boolean }) =>
-          !completedQuestIds.includes(quest.id) && !quest.expired
+          !completedQuestIds?.includes(quest.id) && !quest.expired
       );
     });
   }, [categories, completedQuestIds]);
@@ -37,7 +37,7 @@ export default function Page() {
       questArray: incompleteQuests,
     });
   }, [incompleteQuests]);
-  
+
   const textQuery = encodeURIComponent(
     "🏆 Achievement Unlocked! 🎉 I've completed all the quests and I'm ready for more. Always pushing forward!\nKeep an eye out for what's next. 🚀"
   );
@@ -48,7 +48,10 @@ export default function Page() {
         <CompletedCategoryTitle title="Your NFT is on it's way !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
-            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center mb-8 max-w-[690px]">
+            <Typography
+              type={TEXT_TYPE.BODY_DEFAULT}
+              className="text-center mb-8 max-w-[690px]"
+            >
               Congratulations on your efforts and progress! Keep up the great
               work and continue to explore new challenges by completing another
               quest!
@@ -83,7 +86,10 @@ export default function Page() {
         <CompletedCategoryTitle title="Congratulations !" subtitle="" />
         <div className={styles.descriptionContainer}>
           <>
-            <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-center mb-8 max-w-[690px]">
+            <Typography
+              type={TEXT_TYPE.BODY_DEFAULT}
+              className="text-center mb-8 max-w-[690px]"
+            >
               You&apos;ve finished all quests. Stay focused! New quests are
               coming !
             </Typography>

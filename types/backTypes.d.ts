@@ -19,6 +19,7 @@ type QuestDocument = {
   start_timestamp: string | null;
   mandatory_domain: string | null;
   expired: boolean;
+  visible: boolean;
   rewards_description: string | null;
   additional_desc: string | null;
 };
@@ -43,7 +44,9 @@ type UserTask = {
   verify_endpoint_type: string;
   verify_redirect: string | null;
   completed: boolean;
-  quiz_name: string | null;
+  quiz_name: number | null;
+  task_type: string | null;
+  discord_guild_id: string | null;
 };
 
 type UserDocument = {
@@ -192,8 +195,258 @@ type BoostClaimParams = {
   s: string;
 };
 
-type QuestList =
-  | {
-      [key: string]: QuestDocument[];
-    }
-  | QueryError;
+type LeaderboardTopperParams = {
+  addr: string;
+  duration: "week" | "month" | "all";
+};
+
+type LeaderboardRankingParams = {
+  addr: string;
+  page_size: number;
+  shift: number;
+  duration: "week" | "month" | "all";
+};
+
+type derivateStats = {
+  [key: string]: {
+    date: string;
+    protocol: string;
+    allocation: number;
+    tvl: number;
+    volumes: number;
+    beta_fees: number;
+    apr: number;
+  };
+};
+
+type altProtocolStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      tvl_usd: number;
+      apr: number;
+    };
+  };
+};
+
+type pairStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      token0_allocation: number;
+      token1_allocation: number;
+      thirty_day_realized_volatility: number;
+      tvl_usd: number;
+      apr: number;
+    };
+  };
+};
+
+type lendStats = {
+  [key: string]: {
+    [sub_key: string]: {
+      date: string;
+      allocation: number;
+      supply_usd: number;
+      non_recursive_supply_usd: number;
+      non_recursive_revenue_usd: number;
+      strk_grant_apr_ts: number;
+      strk_grant_apr_nrs: number;
+    };
+  };
+};
+
+type QuestList = {
+  [key: string]: QuestDocument[];
+};
+
+export type CreateQuest = {
+  name: string;
+  desc: string;
+  start_time: number;
+  expiry: number | null;
+  disabled: boolean;
+  category: string;
+  logo: string;
+  rewards_img: string;
+  rewards_title: string;
+  img_card: string;
+  title_card: string;
+  issuer: string;
+};
+
+export type UpdateQuest = {
+  id: number;
+  name?: string;
+  desc?: string;
+  start_time?: number;
+  expiry?: number | null;
+  disabled?: boolean;
+  category?: string;
+  logo?: string;
+  rewards_img?: string;
+  rewards_title?: string;
+  img_card?: string;
+  title_card?: string;
+  issuer?: string;
+};
+
+export type CreateBoost = {
+  amount: number;
+  token: string;
+  num_of_winners: number;
+  token_decimals: number;
+  name: string;
+  img_url: string;
+  expiry: number;
+  quest_id: number;
+  hidden: boolean;
+};
+
+export type UpdateBoost = {
+  id: number;
+  amount?: number;
+  token?: string;
+  num_of_winners?: number;
+  token_decimals?: number;
+  name?: string;
+  img_url?: string;
+  expiry?: number;
+  quest_id?: number;
+  hidden?: boolean;
+};
+
+export type CreateTwitterFw = {
+  name: string;
+  desc: string;
+  username: string;
+  quest_id: number;
+};
+
+export type UpdateTwitterFw = {
+  name?: string;
+  desc?: string;
+  username?: string;
+  id: number;
+};
+
+export type CreateTwitterRw = {
+  name: string;
+  desc: string;
+  post_link: string;
+  quest_id: number;
+};
+
+export type CreateDomain = {
+  name: string;
+  desc: string;
+  quest_id: number;
+};
+
+export type UpdateDomain = {
+  name: string;
+  desc: string;
+  id: number;
+};
+
+export type UpdateTwitterRw = {
+  name?: string;
+  desc?: string;
+  post_link?: string;
+  id: number;
+};
+
+export type CreateDiscord = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  invite_link: string;
+  guild_id: string;
+};
+
+export type UpdateDiscord = {
+  id: number;
+  name?: string;
+  desc?: string;
+  invite_link?: string;
+  guild_id?: string;
+};
+
+export type CreateCustom = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  cta: string;
+  href: string;
+  api: string;
+};
+
+export type UpdateCustom = {
+  id: number;
+  name?: string;
+  desc?: string;
+  cta?: string;
+  href?: string;
+  api?: string;
+};
+
+export type CreateQuiz = {
+  name: string;
+  desc: string;
+  help_link: string;
+  cta: string;
+  intro: string;
+  quest_id: number;
+};
+
+export type UpdateQuiz = {
+  name?: string;
+  desc?: string;
+  help_link?: string;
+  cta?: string;
+  intro?: string;
+  id: number;
+  quiz_id: number;
+};
+
+export type CreateQuizQuestion = {
+  question: string;
+  options: string[];
+  correct_answers: number[];
+  quiz_id: number;
+};
+
+export type UpdateQuizQuestion = {
+  question: string;
+  options: string[];
+  correct_answers: number[];
+  id: number;
+  quiz_id: number;
+};
+
+export type NFTUri = {
+  name: string;
+  description: string;
+  image: string;
+};
+
+export type CreateNftUri = {
+  name: string;
+  desc: string;
+  image: string;
+  quest_id: number;
+};
+
+export type UpdateNftUri = {
+  name: string;
+  desc: string;
+  image: string;
+  id: number;
+};
+
+export type AddUser = {
+  user: string;
+  password: string;
+};

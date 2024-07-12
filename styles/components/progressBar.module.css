@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+}
+
+.base_line {
+  position: absolute;
+  height: 3px;
+  background-color: var(--background600);
+  left: 16px;
+  right: 16px;
+}
+
+.colored_line {
+  position: absolute;
+  height: 3px;
+  background-color: var(--primary);
+  left: 16px;
+  right: 16px;
+  transition: all 0.5s ease-out;
+}
+
+.empty_milestone {
+  width: 32px;
+  height: 32px;
+  background-color: var(--background600);
+  border: 1px solid var(--secondary500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: var(--small-shadow);
+  z-index: 2;
+}
+
+.milestone {
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+.checked_milestone {
+  z-index: 2;
+  background-color: var(--primary);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7em;
+  color: var(--background600);
+}

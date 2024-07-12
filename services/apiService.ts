@@ -19,19 +19,13 @@ import {
   UniqueVisitorCount,
   UserTask,
   QuestList,
+  LeaderboardTopperParams,
+  LeaderboardRankingParams,
+  derivateStats,
+  altProtocolStats,
+  pairStats,
+  lendStats,
 } from "types/backTypes";
-
-export type LeaderboardTopperParams = {
-  addr: string;
-  duration: "week" | "month" | "all";
-};
-
-export type LeaderboardRankingParams = {
-  addr: string;
-  page_size: number;
-  shift: number;
-  duration: "week" | "month" | "all";
-};
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -251,7 +245,7 @@ export const fetchBuildings = async (filteredAssets: number[]) => {
 };
 
 export const getQuizById = async (
-  quizId: string,
+  quizId: number,
   address = "0"
 ): Promise<Quiz | undefined> => {
   try {
@@ -298,13 +292,15 @@ export const getDeployedTimeByAddress = async (address: string) => {
 export const getEligibleRewards = async ({
   rewardEndpoint,
   address,
+  quest_id,
 }: {
   rewardEndpoint: string;
   address: string;
+  quest_id: number;
 }) => {
   try {
     const response = await fetch(
-      `${baseurl}/${rewardEndpoint}?addr=${address}`
+      `${baseurl}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
     );
     return await response.json();
   } catch (err) {
@@ -350,14 +346,11 @@ export const getUniqueVisitorCount = async (id: number) => {
 export async function getQuestById(id: string) {
   try {
     const response = await fetch(`${baseurl}/get_quest?id=${id}`);
-    const data: QuestDocument | QueryError = await response.json();
-    if ((data as QueryError).error) {
-      throw Error((data as QueryError).error);
-    }
+    const data: QuestDocument = await response.json();
     return data as QuestDocument;
   } catch (error) {
     console.log("Error parsing quest data:", error);
-    return error as QueryError;
+    return null;
   }
 }
 
@@ -383,3 +376,48 @@ export const updateUniqueVisitors = async (id: string) => {
     console.log("Error while fetching unique visitor count", err);
   }
 };
+
+export const getDerivatesStats = async (): Promise<derivateStats | null> => {
+  try {
+    const response = await fetch(
+      `${baseurl}/discover/defi/get_derivatives_stats`
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching derivatives stats", err);
+    return null;
+  }
+};
+
+export const getLendingStats = async (): Promise<lendStats | null> => {
+  try {
+    const response = await fetch(`${baseurl}/discover/defi/get_lend_stats`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching lending stats", err);
+    return null;
+  }
+};
+
+export const getPairingStats = async (): Promise<pairStats | null> => {
+  try {
+    const response = await fetch(`${baseurl}/discover/defi/get_pair_stats`);
+    return await response.json();
+  } catch (err) {
+    console.log("Error while fetching pairing stats", err);
+    return null;
+  }
+};
+
+export const getAltProtocolStats =
+  async (): Promise<altProtocolStats | null> => {
+    try {
+      const response = await fetch(
+        `${baseurl}/discover/defi/get_alt_protocol_stats`
+      );
+      return await response.json();
+    } catch (err) {
+      console.log("Error while fetching alt protocol stats", err);
+      return null;
+    }
+  };

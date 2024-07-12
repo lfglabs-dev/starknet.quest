@@ -30,6 +30,13 @@
   letter-spacing: 0;
 }
 
+.typography-body-extra-small {
+  font-family: "Sora", sans-serif;
+  font-size: 8px;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
 .typography-body-normal {
   font-family: "Sora", sans-serif;
   font-size: 20px;

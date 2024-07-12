@@ -130,6 +130,7 @@
   background-color: var(--background600);
   border-radius: 0px 0px 10px 10px;
   border: 1px solid var(--secondary500);
+  gap: 16px;
 }
 
 .walletMenu button {
@@ -224,14 +225,26 @@
 
 @keyframes mobileNavbarIn {
   0% {
-    mask: linear-gradient(180deg, transparent 0%, black 0%, black 50%, transparent 50%);
+    mask: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 0%,
+      black 50%,
+      transparent 50%
+    );
     mask-repeat: no-repeat;
     mask-size: 100% 0%;
     mask-position: 0 0;
   }
 
   100% {
-    mask: linear-gradient(180deg, transparent 0%, black 0%, black 50%, transparent 50%);
+    mask: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 0%,
+      black 50%,
+      transparent 50%
+    );
     mask-size: 100% 200%;
     mask-position: 0 0;
   }
@@ -240,14 +253,26 @@
 @keyframes mobileNavbarOut {
   0% {
     display: flex;
-    mask: linear-gradient(180deg, transparent 0%, black 0%, black 50%, transparent 50%);
+    mask: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 0%,
+      black 50%,
+      transparent 50%
+    );
     mask-size: 100% 200%;
     mask-position: 0 0;
   }
 
   100% {
     display: flex;
-    mask: linear-gradient(180deg, transparent 0%, black 0%, black 50%, transparent 50%);
+    mask: linear-gradient(
+      180deg,
+      transparent 0%,
+      black 0%,
+      black 50%,
+      transparent 50%
+    );
     mask-repeat: no-repeat;
     mask-size: 100% 0%;
     mask-position: 0 0;

@@ -22,7 +22,7 @@ const BoostReward: FunctionComponent<BoostRewardProps> = ({ questId }) => {
   const [isQuestBoosted, setIsQuestBoosted] = useState<boolean>(false);
   const checkIfBoostedQuest = useCallback(async () => {
     if (!boostedQuests) return;
-    if (boostedQuests.length > 0 && boostedQuests.includes(questId))
+    if (boostedQuests.length > 0 && boostedQuests?.includes(questId))
       setIsQuestBoosted(true);
   }, []);
 
@@ -53,7 +53,12 @@ const BoostReward: FunctionComponent<BoostRewardProps> = ({ questId }) => {
       {boost && isQuestBoosted ? (
         <div className={styles.issuer} style={{ gap: 0, padding: "8px 16px" }}>
           <TokenSymbol tokenAddress={boost?.token} />
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white ml-2 issuerText">{boost?.amount}</Typography>
+          <Typography
+            type={TEXT_TYPE.BODY_DEFAULT}
+            className="text-white ml-2 issuerText"
+          >
+            {boost?.amount}
+          </Typography>
         </div>
       ) : null}
     </>

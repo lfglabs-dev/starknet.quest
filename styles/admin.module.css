@@ -1,0 +1,289 @@
+.screen {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.screenContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 950px;
+  margin-inline: auto;
+  width: 100%;
+  gap: 2rem;
+}
+
+.formContainerBox {
+  margin: 4rem 0rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  border: 1px solid #f4faff4d;
+  background-color: var(--background);
+  border-radius: 8px;
+  flex-direction: column;
+}
+
+.addQuestion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-inline: auto;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: var(--secondary);
+  color: var(--background);
+}
+
+.formContainerTitle {
+  border-bottom: 0.5px solid #f4faff4d;
+  padding: 24px;
+  gap: 4px;
+}
+
+.formContainerSideBar {
+  display: flex;
+  flex-direction: column;
+  border-right: 0.5px solid #f4faff4d;
+  padding: 24px;
+  gap: 16px;
+}
+
+.formContainerChildren {
+  padding: 24px;
+}
+
+.sidebarOptions {
+  padding: 4px 16px;
+  gap: 2px;
+  border-radius: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.image {
+  display: flex;
+  width: 40%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-image: url("/visuals/admin/human.png");
+}
+
+.banner {
+  width: 100%;
+  max-width: 950px;
+  background-image: linear-gradient(180deg, #29282b 0%, #101012 100%);
+  display: flex;
+  height: 448px;
+  border-radius: 8px;
+  flex: 1 1 0;
+}
+
+.card_container:has(.noBoosts) {
+  min-height: fit-content;
+}
+
+.card_container {
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.passwordField {
+  padding: 8px 16px 8px 16px;
+  gap: 16px;
+  border-radius: 10px;
+  border: 1px 0px 0px 0px;
+  background-color: var(--background600);
+  outline: none;
+}
+
+.headingText {
+  font-family: "Sora";
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 58px;
+  text-align: left;
+}
+
+.subtitleText {
+  font-family: "Sora";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: left;
+}
+
+.backButton {
+  margin-left: 63px;
+  z-index: 10;
+}
+
+.questsBanner {
+  background: linear-gradient(180deg, #29282b 0%, #101012 100%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px;
+  display: flex;
+  max-width: 950px;
+  width: 100%;
+  border-radius: 8px;
+  margin-inline: auto;
+}
+
+.questListHeading {
+  font-family: "Sora";
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: left;
+}
+
+.input_card_container::before,
+.input_card_container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  z-index: -1;
+}
+
+.input_card_container::before {
+  top: -1px;
+  right: -1px;
+  left: 1px;
+  bottom: 1px;
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 45%,
+    #00fbff 60%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
+}
+
+.input_card_container {
+  position: relative;
+  background-blend-mode: overlay;
+  width: 100%;
+  height: auto;
+  padding: 24px 24px;
+  gap: 24px;
+  border-radius: 30px;
+  border: 1px 0px 0px 0px;
+  background: linear-gradient(90deg, var(--background), #070708);
+  display: flex;
+  flex-direction: column;
+}
+
+.screenHeadingText {
+  font-family: "Sora";
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 58px;
+  text-align: left;
+}
+
+.cardHeading {
+  font-family: "Sora";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.layout_screen {
+  padding-top: 5rem;
+  max-width: 950px;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 0;
+}
+
+.tagText {
+  font-family: "Sora";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: left;
+}
+
+.input {
+  padding: 8px 16px 8px 16px;
+  gap: 16px;
+  border-radius: 10px;
+  border: 1px solid #f4faff4d;
+  background-color: inherit;
+  outline: none;
+}
+
+.dateInput {
+  padding: 8px 16px 8px 16px;
+  gap: 16px;
+  border-radius: 10px;
+  border: 1px 0px 0px 0px;
+  background-color: var(--background600);
+  outline: none;
+  width: 100%;
+}
+
+@media (max-width: 928px) {
+  .banner {
+    flex-direction: column-reverse;
+    gap: 24px;
+    height: unset;
+  }
+
+  .image {
+    background-position: center;
+    height: 200px;
+    width: 200px;
+    margin-inline: auto;
+  }
+
+  .subtitleText {
+    text-align: center;
+  }
+  .headingText {
+    text-align: center;
+  }
+
+  .questsBanner {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .questListHeading {
+    text-align: center;
+  }
+
+  .sidebarOptions {
+    text-align: center;
+  }
+
+  .tagText {
+    text-align: center;
+  }
+}

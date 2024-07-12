@@ -23,29 +23,9 @@ import useBoost from "@hooks/useBoost";
 import BoostCard from "@components/quest-boost/boostCard";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
+import { CustomTabPanel } from "@components/UI/tabs/customTab";
+import { a11yProps } from "@components/UI/tabs/a11y";
 
-export function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <div className="pt-6">{children}</div>}
-    </div>
-  );
-}
-
-export function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
 type QuestAndCollectionTabsProps = {
   categories: QuestCategory[];
   quests: QuestDocument[];
@@ -128,7 +108,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address]);
 
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds.includes(b.id)).length,
+    () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
     [boosts, completedBoostIds]
   );
 

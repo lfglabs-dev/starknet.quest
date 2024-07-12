@@ -16,10 +16,10 @@ import { getQuizById } from "@services/apiService";
 type QuizProps = {
   setShowQuiz: (menu: ReactNode) => void;
   setIsVerified: (isVerified: boolean) => void;
-  quizId: string;
+  quizId: number;
   issuer: Issuer;
   verifyEndpoint: string;
-  refreshRewards: () => void;
+  refreshRewards?: () => void;
 };
 
 const Quiz: FunctionComponent<QuizProps> = ({
@@ -28,7 +28,6 @@ const Quiz: FunctionComponent<QuizProps> = ({
   quizId,
   issuer,
   verifyEndpoint,
-  refreshRewards,
 }) => {
   const { address } = useAccount();
   const [step, setStep] = useState<number>(-1);
@@ -60,7 +59,6 @@ const Quiz: FunctionComponent<QuizProps> = ({
 
   useEffect(() => {
     setIsVerified(passed === true);
-    refreshRewards();
   }, [passed]);
 
   useEffect(() => {
@@ -93,7 +91,7 @@ const Quiz: FunctionComponent<QuizProps> = ({
         },
         body: JSON.stringify({
           user_answers_list: answers.map((answer) =>
-            answer.map((value) => value.toString())
+            answer.map((value) => Number(value))
           ),
           quiz_name: quizId,
           addr: hexToDecimal(address),

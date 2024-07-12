@@ -23,15 +23,13 @@ import QuestSkeleton from "@components/skeletons/questsSkeleton";
 import QuestCardCustomised from "@components/dashboard/CustomisedQuestCard";
 import QuestStyles from "@styles/Home.module.css";
 import { Tab, Tabs } from "@mui/material";
-import {
-  CustomTabPanel,
-  a11yProps,
-} from "@components/pages/home/questAndCollectionTabs";
 import { MILLISECONDS_PER_WEEK } from "@constants/common";
 import useBoost from "@hooks/useBoost";
 import BoostCard from "@components/quest-boost/boostCard";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import { a11yProps } from "@components/UI/tabs/a11y";
+import { CustomTabPanel } from "@components/UI/tabs/customTab";
 
 type AddressOrDomainProps = {
   params: {

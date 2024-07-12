@@ -57,7 +57,10 @@ const Quest: FunctionComponent<QuestPageProps> = ({
   // this fetches quest data
   useEffect(() => {
     getQuestById(questId)
-      .then((data: QuestDocument | QueryError) => {
+      .then((data) => {
+        if (!data) {
+          setErrorPageDisplay(true);
+        }
         if ((data as QuestDocument).id) {
           if (
             (data as QuestDocument).rewards_nfts &&
@@ -66,8 +69,6 @@ const Quest: FunctionComponent<QuestPageProps> = ({
             setHasNftReward(true);
           }
           setQuest(data as QuestDocument);
-        } else {
-          setErrorPageDisplay(true);
         }
       })
       .catch((err) => {
@@ -134,7 +135,7 @@ const Quest: FunctionComponent<QuestPageProps> = ({
           {quest.issuer === "loading" ? (
             <RewardSkeleton />
           ) : (
-            <QuestTag label={quest.issuer ?? ''} icon={quest.logo}/>
+            <QuestTag label={quest.issuer ?? ""} icon={quest.logo} />
           )}
         </div>
 

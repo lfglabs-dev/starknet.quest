@@ -6,6 +6,7 @@
   flex-wrap: wrap;
   gap: 2rem;
   margin-top: 2rem;
+  margin-bottom: 16px;
 }
 
 .nftStyle {
@@ -263,7 +264,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 4px 1rem;
+  padding: 4px 12px 4px 0px;
   gap: 10px;
   height: 36px;
   /* Background/600 */

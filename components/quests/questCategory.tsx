@@ -16,7 +16,7 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
 
   const completedQuestNumber = useMemo(
     () =>
-      category.quests.filter((q) => completedQuestIds.includes(q.id)).length,
+      category.quests.filter((q) => completedQuestIds?.includes(q.id)).length,
     [category, completedQuestIds]
   );
 
@@ -27,10 +27,16 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
         className={styles.questCategory}
       >
         <div className={styles.categoryInfos}>
-          <Typography type={TEXT_TYPE.H2} className={`text-gray-200 ${styles.categoryInfosH2}`}>
+          <Typography
+            type={TEXT_TYPE.H2}
+            className={`text-gray-200 ${styles.categoryInfosH2}`}
+          >
             {category.name} Quest{category.questNumber > 1 ? "s" : null}
           </Typography>
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className={`text-gray-200 normal-case ${styles.categoryInfosText}`}>
+          <Typography
+            type={TEXT_TYPE.BODY_DEFAULT}
+            className={`text-gray-200 normal-case ${styles.categoryInfosText}`}
+          >
             {completedQuestNumber === category.questNumber ? (
               <div className="flex">
                 <span className="mr-2">All quests done</span>
