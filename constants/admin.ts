@@ -11,7 +11,14 @@ export const CATEGORY_OPTIONS = [
 
 export const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
 
-export const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom", "Domain"];
+export const TASK_OPTIONS = [
+  "Quiz",
+  "Twitter",
+  "Discord",
+  "Custom",
+  "Domain",
+  "Balance",
+];
 
 export const TWITTER_OPTIONS = {
   "Follow on Twitter": "TwitterFw",
