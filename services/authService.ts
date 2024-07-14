@@ -20,6 +20,8 @@ import {
   CreateNftUri,
   UpdateNftUri,
   AddUser,
+  CreateBalance,
+  UpdateBalance,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -320,6 +322,38 @@ const updateCustom = async (params: UpdateCustom) => {
   }
 };
 
+const createBalance = async (params: CreateBalance) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/balance/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while creating balance task", err);
+  }
+};
+
+const updateBalance = async (params: UpdateBalance) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/balance/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while updating balance task", err);
+  }
+};
+
 const createQuiz = async (params: CreateQuiz) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/quiz/create`, {
@@ -479,6 +513,8 @@ export const AdminService = {
   createTwitterRw,
   createDiscord,
   createCustom,
+  createBalance,
+  updateBalance,
   createQuiz,
   createQuizQuestion,
   deleteTask,

@@ -314,7 +314,8 @@ type StepMap =
   | { type: "Discord"; data: DiscordInputType }
   | { type: "Custom"; data: CustomInputType }
   | { type: "None"; data: object }
-  | { type: "Domain"; data: DomainInputType };
+  | { type: "Domain"; data: DomainInputType }
+  | { type: "Balance"; data: BalanceInputType };
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
@@ -322,6 +323,7 @@ type DomainInputType = typeof DomainInput;
 type QuizInputType = typeof QuizDefaultInput;
 type TwitterFwInputType = typeof TwitterFwInput;
 type TwitterRwInputType = typeof TwitterRwInput;
+type BalanceInputType = typeof BalanceInput;
 type TaskType =
   | "Quiz"
   | "TwitterFw"
@@ -329,6 +331,7 @@ type TaskType =
   | "Custom"
   | "TwitterRw"
   | "Domain"
+  | "Balance"
   | "None";
 
 type networks = "MAINNET" | "TESTNET";
