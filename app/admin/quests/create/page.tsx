@@ -356,6 +356,15 @@ export default function Page() {
           name: step.data.domain_name,
           desc: step.data.domain_desc,
         });
+      } else if (step.type === "Balance") {
+        await AdminService.createBalance({
+          quest_id: questId,
+          name: step.data.balance_name,
+          desc: step.data.balance_desc,
+          contracts: step.data.balance_contracts,
+          cta: step.data.balance_cta,
+          href: step.data.balance_href,
+        });
       }
     });
     setButtonLoading(false);

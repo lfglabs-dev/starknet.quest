@@ -100,6 +100,14 @@ export const DomainInput = {
   domain_desc: "",
 };
 
+export const BalanceInput = {
+  balance_name: "",
+  balance_desc: "",
+  balance_contracts: [],
+  balance_cta: "",
+  balance_href: "",
+};
+
 export const getDefaultValues = (type: TaskType) => {
   if (type === "Quiz") return QuizDefaultInput;
   if (type === "TwitterFw") return TwitterFwInput;

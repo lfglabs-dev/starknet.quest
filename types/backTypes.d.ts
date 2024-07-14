@@ -383,6 +383,24 @@ export type CreateCustom = {
   api: string;
 };
 
+export type CreateBalance = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  contracts: string[];
+  cta: string;
+  href: string;
+};
+
+export type UpdateBalance = {
+  id: number;
+  name?: string;
+  desc?: string;
+  contracts?: string[];
+  cta?: string;
+  href?: string;
+};
+
 export type UpdateCustom = {
   id: number;
   name?: string;
