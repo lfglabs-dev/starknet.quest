@@ -45,6 +45,7 @@ type StepMap =
   | { type: "Discord"; data: WithNewField<DiscordInputType, "id", number> }
   | { type: "Custom"; data: WithNewField<CustomInputType, "id", number> }
   | { type: "Domain"; data: WithNewField<DomainInputType, "id", number> }
+  | { type: "Balance"; data: WithNewField<BalanceInputType, "id", number> }
   | { type: "None"; data: object };
 
 export default function Page({ params }: QuestIdProps) {

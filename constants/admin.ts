@@ -11,7 +11,14 @@ export const CATEGORY_OPTIONS = [
 
 export const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
 
-export const TASK_OPTIONS = ["Quiz", "Twitter", "Discord", "Custom", "Domain"];
+export const TASK_OPTIONS = [
+  "Quiz",
+  "Twitter",
+  "Discord",
+  "Custom",
+  "Domain",
+  "Balance",
+];
 
 export const TWITTER_OPTIONS = {
   "Follow on Twitter": "TwitterFw",
@@ -98,6 +105,14 @@ export const CustomInput = {
 export const DomainInput = {
   domain_name: "",
   domain_desc: "",
+};
+
+export const BalanceInput = {
+  balance_name: "",
+  balance_desc: "",
+  balance_contracts: [],
+  balance_cta: "",
+  balance_href: "",
 };
 
 export const getDefaultValues = (type: TaskType) => {
