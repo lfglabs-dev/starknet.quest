@@ -193,19 +193,6 @@
     width: 100%;
     margin-top: 3rem;
   }
-  .button button {
-    width: 100%;
-    color: var(--Background-700, --background);
-    text-align: center;
-
-    /* Button/18px */
-    font-family: Sora;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px; /* 133.333% */
-    text-transform: none;
-  }
 }
 
 .popupContent {
