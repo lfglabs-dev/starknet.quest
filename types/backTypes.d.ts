@@ -47,6 +47,7 @@ type UserTask = {
   quiz_name: number | null;
   task_type: string | null;
   discord_guild_id: string | null;
+  contracts: string[] | null;
 };
 
 type UserDocument = {

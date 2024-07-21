@@ -203,6 +203,18 @@ export default function Page({ params }: QuestIdProps) {
             domain_desc: task.desc,
           },
         };
+      } else if (task.task_type === "balance") {
+        return {
+          type: "Balance",
+          data: {
+            id: task.id,
+            balance_name: task.name,
+            balance_desc: task.desc,
+            balance_contracts: task.contracts,
+            balance_cta: task.cta,
+            balance_href: task.href,
+          },
+        };
       }
     });
 
@@ -489,6 +501,15 @@ export default function Page({ params }: QuestIdProps) {
           name: step.data.domain_name,
           desc: step.data.domain_desc,
         });
+      } else if (step.type === "Balance") {
+        await AdminService.createBalance({
+          quest_id: questId.current,
+          name: step.data.balance_name,
+          desc: step.data.balance_desc,
+          contracts: step.data.balance_contracts,
+          cta: step.data.balance_cta,
+          href: step.data.balance_href,
+        });
       }
     });
 
@@ -576,6 +597,15 @@ export default function Page({ params }: QuestIdProps) {
           id: step.data.id,
           name: step.data.custom_name,
           desc: step.data.custom_desc,
+        });
+      } else if (step.type === "Balance") {
+        await AdminService.updateBalance({
+          id: step.data.id,
+          name: step.data.balance_name,
+          desc: step.data.balance_desc,
+          contracts: step.data.balance_contracts,
+          cta: step.data.balance_cta,
+          href: step.data.balance_href,
         });
       }
     });
