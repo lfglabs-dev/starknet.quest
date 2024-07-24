@@ -411,7 +411,25 @@
     margin-top: 25px;
     justify-content: baseline;
   }
-
+  
+  .desktop-text {
+    display: block;
+  }
+  
+  .mobile-text {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .desktop-text {
+      display: none;
+    }
+  
+    .mobile-text {
+      display: block;
+    }
+  }
+  
   .checkBoxContainer {
     width: 100%;
   }

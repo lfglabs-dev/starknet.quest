@@ -25,7 +25,10 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
         <ScreenLayout
           title={name}
           actionBar={
-            <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
+            <Button onClick={() => setStep(step + 1)}>
+              <span className="desktop-text">Start Quiz</span>
+              <span className="mobile-text">Quiz</span>
+            </Button>
           }
         >
           <Typography type={TEXT_TYPE.BODY_DEFAULT}>{description}</Typography>
