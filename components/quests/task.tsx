@@ -7,7 +7,7 @@ import {
   ErrorRounded as ErrorRoundedIcon,
 } from "@mui/icons-material";
 import Button from "@components/UI/button";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { useAccount } from "@starknet-react/core";
 import Quiz from "@components/quiz/quiz";
 import ArrowRightIcon from "@components/UI/iconsComponents/icons/arrowRightIcon";
@@ -40,6 +40,7 @@ const Task: FunctionComponent<Task> = ({
     customError.length > 0 ? customError : ""
   );
   const { address } = useAccount();
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     if (hasError) {
@@ -139,7 +140,7 @@ const Task: FunctionComponent<Task> = ({
   };
 
   const getButtonName = () => {
-    if (verifyEndpointType === "quiz") return "Start quiz";
+    if (verifyEndpointType === "quiz") return isMobile ? "Quiz" : "Start quiz";
     return "Verify";
   };
 
