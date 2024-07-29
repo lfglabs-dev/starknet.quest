@@ -74,7 +74,7 @@ const Reward: FunctionComponent<RewardProps> = ({
         status: "pending",
       },
     });
-    router.push("/quest/completed");
+    router.push(`/quest/completed/${quest.id}`);
   }, [executeMint, address]);
 
   return (
