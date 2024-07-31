@@ -46,9 +46,8 @@ export const getClaimableQuests = (
 };
 
 export const filterQuestCategories = (categories: QuestCategory[]): QuestCategory[] => {
-  return categories.map((category) => ({
-    ...category,
-    quests: category.quests.filter((quest) => !quest.expired),
-  }))
-  .filter((category) => category.quests.length > 0)
+  return categories.filter((category) => {
+    category.quests = category.quests.filter((quest) => !quest.expired);
+    return category.quests.length > 0;
+  })
 }
