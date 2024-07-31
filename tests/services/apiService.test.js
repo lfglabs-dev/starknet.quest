@@ -21,6 +21,8 @@ import {
   getQuestBoostClaimParams,
   getQuests,
   getCompletedBoosts,
+  fetchBuildings,
+  verifyUserAchievement,
 } from "@services/apiService";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -2118,5 +2120,170 @@ describe('getCompletedBoosts function', () => {
       `${API_URL}/boost/get_completed_boosts?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363`
     );
     expect(result).toBeUndefined();
+  });
+});
+describe("verifyUserAchievement function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return data for a valid verifyType, address, and achievementId", async () => {
+    const mockData = {
+      id: 1,
+      name: "Achievement Name",
+      status: "verified",
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await verifyUserAchievement({
+      verifyType: "category",
+      address: "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363",
+      achievementId: 1,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/verify_category?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363&id=1`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    fetch.mockRejectedValueOnce(new Error("Network Error"));
+
+    const result = await verifyUserAchievement({
+      verifyType: "category",
+      address: "0x123",
+      achievementId: 1,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/verify_category?addr=0x123&id=1`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle invalid verifyType gracefully", async () => {
+    fetch.mockRejectedValueOnce(new Error("Invalid verifyType"));
+
+    const result = await verifyUserAchievement({
+      verifyType: "invalidType",
+      address: "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363",
+      achievementId: 1,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/verify_invalidType?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363&id=1`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle invalid address gracefully", async () => {
+    fetch.mockRejectedValueOnce(new Error("Invalid address"));
+
+    const result = await verifyUserAchievement({
+      verifyType: "category",
+      address: "invalidAddress",
+      achievementId: 1,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/verify_category?addr=invalidAddress&id=1`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle invalid achievementId gracefully", async () => {
+    fetch.mockRejectedValueOnce(new Error("Invalid achievementId"));
+
+    const result = await verifyUserAchievement({
+      verifyType: "category",
+      address: "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363",
+      achievementId: -1,
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/verify_category?addr=0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363&id=-1`
+    );
+    expect(result).toBeUndefined();
+  });
+});
+
+describe("fetchBuildings function", () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it("should fetch and return buildings data for valid filteredAssets", async () => {
+    const mockData = [
+      { id: 1, name: "Xplorer Tower", description: "Argent building level 1", entity: "NFT_ArgentMain_4x3_H3_1", level: "1", img_url: "achievements/argent/argent_1.webp" },
+      { id: 2, name: "Xplorer Tower", description: "Argent building level 2", entity: "NFT_ArgentMain_4x3_H4_2", level: "2", img_url: "achievements/argent/argent_2.webp" },
+    ];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await fetchBuildings([1, 2]);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch_buildings?ids=1,2`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle fetch errors gracefully", async () => {
+    fetch.mockRejectedValueOnce(new Error("Network Error"));
+
+    const result = await fetchBuildings([1, 2]);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch_buildings?ids=1,2`
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it("should handle empty filteredAssets array gracefully", async () => {
+    const mockData = [];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await fetchBuildings([]);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch_buildings?ids=`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle non-existent asset IDs gracefully", async () => {
+    const mockData = [];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await fetchBuildings([999, 1000]);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch_buildings?ids=999,1000`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it("should handle partial success gracefully", async () => {
+    const mockData = [
+      { id: 1, name: "Xplorer Tower", description: "Argent building level 1", entity: "NFT_ArgentMain_4x3_H3_1", level: "1", img_url: "achievements/argent/argent_1.webp" }
+    ];
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await fetchBuildings([1, 999]);
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch_buildings?ids=1,999`
+    );
+    expect(result).toEqual(mockData);
   });
 });

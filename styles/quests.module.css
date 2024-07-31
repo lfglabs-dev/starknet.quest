@@ -264,7 +264,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 4px 12px 4px 0px;
+  padding: 4px 12px;
   gap: 10px;
   height: 36px;
   /* Background/600 */

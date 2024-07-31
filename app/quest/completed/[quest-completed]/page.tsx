@@ -15,7 +15,13 @@ import Quest from "@components/quests/quest";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
-export default function Page() {
+type Props = {
+  params: {
+    questId: string;
+  }
+}
+
+export default function Page({params} : Props) {
   const router = useRouter();
   const { completedQuestIds, categories } = useContext(QuestsContext);
 
@@ -23,10 +29,10 @@ export default function Page() {
     return categories.map((item) => {
       return item.quests.filter(
         (quest: { id: number; expired: boolean }) =>
-          !completedQuestIds?.includes(quest.id) && !quest.expired
+          !completedQuestIds?.includes(quest.id) && !quest.expired && quest.id !== Number(params.questId)
       );
     });
-  }, [categories, completedQuestIds]);
+  }, [categories, completedQuestIds, params.questId]);
 
   const incompleteQuests = useMemo(() => {
     return computeIncompleteQuests.flat();

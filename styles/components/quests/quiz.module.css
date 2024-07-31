@@ -56,6 +56,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .menuButtons {
@@ -67,7 +68,7 @@
   justify-content: center;
 }
 
-.menuButtons div+div {
+.menuButtons div + div {
   margin-left: auto;
 }
 
@@ -80,7 +81,7 @@
     flex-direction: column;
   }
 
-  .menuButtons div+div {
+  .menuButtons div + div {
     margin: 1em;
   }
 
@@ -213,12 +214,14 @@
   right: -1px;
   left: 1px;
   bottom: 1px;
-  background: linear-gradient(90deg,
-      #437aba 0%,
-      #59c2e885 35%,
-      #00ff77ad 50%,
-      #59c2e861 70%,
-      #437aba30 100%);
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e885 35%,
+    #00ff77ad 50%,
+    #59c2e861 70%,
+    #437aba30 100%
+  );
   border-radius: 20px;
   z-index: -1;
   mask: linear-gradient(8deg, transparent 85%, black);
@@ -323,27 +326,29 @@
   right: -1px;
   left: 1px;
   bottom: 1px;
-  background: linear-gradient(90deg,
-      #437aba 0%,
-      #1e74d6 40%,
-      #00fbff 50%,
-      #1e74d6 70%,
-      #437aba50 100%);
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #1e74d6 40%,
+    #00fbff 50%,
+    #1e74d6 70%,
+    #437aba50 100%
+  );
   border-radius: 10px;
   z-index: -1;
 }
 
-.checkbox:checked+.checkboxLabel {
+.checkbox:checked + .checkboxLabel {
   background-color: var(--secondary);
   color: var(--background);
 }
-.checkboxchecked{
+.checkboxchecked {
   background-color: var(--secondary);
   color: var(--background);
 }
 
-.checkbox:checked+.checkboxLabel::after,
-.checkbox:checked+.checkboxLabel::before {
+.checkbox:checked + .checkboxLabel::after,
+.checkbox:checked + .checkboxLabel::before {
   display: none;
 }
 
@@ -373,7 +378,7 @@
   margin-right: auto;
 }
 
-.labelNumberIcon+* {
+.labelNumberIcon + * {
   margin-right: auto;
 }
 @media (max-width: 600px) {
@@ -418,7 +423,11 @@
 
   .tableLayout {
     width: 100%;
-   grid-template-columns: 100%;
+    grid-template-columns: 100%;
+    max-height: unset;
+  }
+  .okButtonContainer {
+    margin-top: 1rem;
   }
 
   .listLayout {
@@ -427,7 +436,7 @@
 }
 
 .contentContainer:has(.leftIllustration) .issuer,
-.contentContainer:has(.leftIllustration) .issuer>div {
+.contentContainer:has(.leftIllustration) .issuer > div {
   margin-top: 0;
 }
 
