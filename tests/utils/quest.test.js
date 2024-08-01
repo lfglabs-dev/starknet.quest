@@ -2,6 +2,7 @@ import {
   getOrderedQuests,
   pickRandomObjectsFn,
   getClaimableQuests,
+  filterQuestCategories
 } from "@utils/quest";
 
 describe("orderQuests function", () => {
@@ -309,3 +310,370 @@ describe("getClaimableQuests function", () => {
     ]);
   });
 });
+
+describe("filterQuestCategories function", () => {
+  it("should return an array of quest categories that has at least one quest is ongoing and exclude expired quests", () => {
+    const questCategories = [
+      {
+        name: "Nfts",
+        questNumber: 1,
+        quests: [
+          {
+            id: 15,
+            name: "Attentiveness Tree Quest.",
+            desc: "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
+            additional_desc: null,
+            issuer: "Focus Tree",
+            category: "Nfts",
+            rewards_endpoint: "quests/focustree/claimable",
+            logo: "/focustree/favicon.ico",
+            rewards_img: "/focustree/focustree.webp",
+            rewards_title: "1 NFT",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "/focustree/focustree.webp",
+                level: 1,
+              },
+            ],
+            img_card: "/focustree/focustree.webp",
+            title_card: "Focus Tree - Attentiveness Tree Quest.",
+            hidden: false,
+            disabled: false,
+            expiry: null,
+            expiry_timestamp: null,
+            mandatory_domain: null,
+            expired: false,
+            experience: 10,
+            start_time: 1640995100000,
+          },
+        ],
+      },
+      {
+        name: "Defi",
+        questNumber: 1,
+        quests: [
+          {
+            id: 134,
+            name: "test",
+            desc: "t",
+            additional_desc: null,
+            issuer: "StarknetID",
+            category: "Defi",
+            rewards_endpoint: "/quests/claimable",
+            logo: "tt",
+            rewards_img: "ttt",
+            rewards_title: "ttt",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "ttt",
+                level: 1,
+              },
+            ],
+            img_card: "ttt",
+            title_card: "t",
+            hidden: null,
+            disabled: false,
+            expiry: 1722384000000,
+            expiry_timestamp: "1722384000000",
+            mandatory_domain: null,
+            expired: true,
+            experience: 10,
+            start_time: 1721260800000,
+          },
+          {
+            id: 134,
+            name: "test",
+            desc: "t",
+            additional_desc: null,
+            issuer: "StarknetID",
+            category: "Defi",
+            rewards_endpoint: "/quests/claimable",
+            logo: "tt",
+            rewards_img: "ttt",
+            rewards_title: "ttt",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "ttt",
+                level: 1,
+              },
+            ],
+            img_card: "ttt",
+            title_card: "t",
+            hidden: null,
+            disabled: false,
+            expiry: 1722384000000,
+            expiry_timestamp: "1722384000000",
+            mandatory_domain: null,
+            expired: false,
+            experience: 10,
+            start_time: 1721260800000,
+          },
+        ],
+      },
+      {
+        name: "gaming",
+        questNumber: 1,
+        quests: [
+          {
+            id: 32,
+            name: "Influence's Launch Campaign",
+            desc: "Influence is a space strategy MMO game challenging players to survive in a hostile asteroid belt, with true player ownership, and realistic orbital mechanics.",
+            additional_desc: null,
+            issuer: "Influence",
+            category: "gaming",
+            rewards_endpoint: "quests/influence/claimable",
+            logo: "/influence/favicon.ico",
+            rewards_img: "/influence/influence_ship.webp",
+            rewards_title: "1 NFT",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "/influence/influence_ship.webp",
+                level: 1,
+              },
+            ],
+            img_card: "/influence/influence_ship.webp",
+            title_card: "Influence's Launch Campaign",
+            hidden: null,
+            disabled: false,
+            expiry: 1720791000000,
+            expiry_timestamp: "1720791000000",
+            mandatory_domain: "root",
+            expired: true,
+            experience: 10,
+            start_time: 1719495000000,
+          },
+        ],
+      },
+    ];
+
+    const result = filterQuestCategories(questCategories);
+
+    expect(result).toEqual([
+      {
+        name: "Nfts",
+        questNumber: 1,
+        quests: [
+          {
+            id: 15,
+            name: "Attentiveness Tree Quest.",
+            desc: "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
+            additional_desc: null,
+            issuer: "Focus Tree",
+            category: "Nfts",
+            rewards_endpoint: "quests/focustree/claimable",
+            logo: "/focustree/favicon.ico",
+            rewards_img: "/focustree/focustree.webp",
+            rewards_title: "1 NFT",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "/focustree/focustree.webp",
+                level: 1,
+              },
+            ],
+            img_card: "/focustree/focustree.webp",
+            title_card: "Focus Tree - Attentiveness Tree Quest.",
+            hidden: false,
+            disabled: false,
+            expiry: null,
+            expiry_timestamp: null,
+            mandatory_domain: null,
+            expired: false,
+            experience: 10,
+            start_time: 1640995100000,
+          },
+        ],
+      },
+      {
+        name: "Defi",
+        questNumber: 1,
+        quests: [
+          {
+            id: 134,
+            name: "test",
+            desc: "t",
+            additional_desc: null,
+            issuer: "StarknetID",
+            category: "Defi",
+            rewards_endpoint: "/quests/claimable",
+            logo: "tt",
+            rewards_img: "ttt",
+            rewards_title: "ttt",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "ttt",
+                level: 1,
+              },
+            ],
+            img_card: "ttt",
+            title_card: "t",
+            hidden: null,
+            disabled: false,
+            expiry: 1722384000000,
+            expiry_timestamp: "1722384000000",
+            mandatory_domain: null,
+            expired: false,
+            experience: 10,
+            start_time: 1721260800000,
+          },
+        ],
+      },
+    ])
+  })
+
+  it("should return an empty array when no categories have ongoing quests", () => {
+    const questCategories = [
+      {
+        name: "Nfts",
+        questNumber: 1,
+        quests: [
+          {
+            id: 15,
+            name: "Attentiveness Tree Quest.",
+            desc: "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
+            additional_desc: null,
+            issuer: "Focus Tree",
+            category: "Nfts",
+            rewards_endpoint: "quests/focustree/claimable",
+            logo: "/focustree/favicon.ico",
+            rewards_img: "/focustree/focustree.webp",
+            rewards_title: "1 NFT",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "/focustree/focustree.webp",
+                level: 1,
+              },
+            ],
+            img_card: "/focustree/focustree.webp",
+            title_card: "Focus Tree - Attentiveness Tree Quest.",
+            hidden: false,
+            disabled: false,
+            expiry: null,
+            expiry_timestamp: null,
+            mandatory_domain: null,
+            expired: true,
+            experience: 10,
+            start_time: 1640995100000,
+          },
+        ],
+      },
+      {
+        name: "Defi",
+        questNumber: 1,
+        quests: [
+          {
+            id: 134,
+            name: "test",
+            desc: "t",
+            additional_desc: null,
+            issuer: "StarknetID",
+            category: "Defi",
+            rewards_endpoint: "/quests/claimable",
+            logo: "tt",
+            rewards_img: "ttt",
+            rewards_title: "ttt",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "ttt",
+                level: 1,
+              },
+            ],
+            img_card: "ttt",
+            title_card: "t",
+            hidden: null,
+            disabled: false,
+            expiry: 1722384000000,
+            expiry_timestamp: "1722384000000",
+            mandatory_domain: null,
+            expired: true,
+            experience: 10,
+            start_time: 1721260800000,
+          },
+          {
+            id: 134,
+            name: "test",
+            desc: "t",
+            additional_desc: null,
+            issuer: "StarknetID",
+            category: "Defi",
+            rewards_endpoint: "/quests/claimable",
+            logo: "tt",
+            rewards_img: "ttt",
+            rewards_title: "ttt",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "ttt",
+                level: 1,
+              },
+            ],
+            img_card: "ttt",
+            title_card: "t",
+            hidden: null,
+            disabled: false,
+            expiry: 1722384000000,
+            expiry_timestamp: "1722384000000",
+            mandatory_domain: null,
+            expired: true,
+            experience: 10,
+            start_time: 1721260800000,
+          },
+        ],
+      },
+      {
+        name: "gaming",
+        questNumber: 1,
+        quests: [
+          {
+            id: 32,
+            name: "Influence's Launch Campaign",
+            desc: "Influence is a space strategy MMO game challenging players to survive in a hostile asteroid belt, with true player ownership, and realistic orbital mechanics.",
+            additional_desc: null,
+            issuer: "Influence",
+            category: "gaming",
+            rewards_endpoint: "quests/influence/claimable",
+            logo: "/influence/favicon.ico",
+            rewards_img: "/influence/influence_ship.webp",
+            rewards_title: "1 NFT",
+            rewards_description: null,
+            rewards_nfts: [
+              {
+                img: "/influence/influence_ship.webp",
+                level: 1,
+              },
+            ],
+            img_card: "/influence/influence_ship.webp",
+            title_card: "Influence's Launch Campaign",
+            hidden: null,
+            disabled: false,
+            expiry: 1720791000000,
+            expiry_timestamp: "1720791000000",
+            mandatory_domain: "root",
+            expired: true,
+            experience: 10,
+            start_time: 1719495000000,
+          },
+        ],
+      },
+    ];
+
+    const result = filterQuestCategories(questCategories);
+
+    expect(result).toEqual([]);
+  })
+
+  it("should handle empty input", () => {
+    const questCategories = [];
+    
+    const result = filterQuestCategories(questCategories);
+
+    expect(result).toEqual([]);
+  });
+})

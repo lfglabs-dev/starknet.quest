@@ -44,3 +44,10 @@ export const getClaimableQuests = (
     }));
   return questIdsInBoostClaim as ClaimableQuestDocument[];
 };
+
+export const filterQuestCategories = (categories: QuestCategory[]): QuestCategory[] => {
+  return categories.filter((category) => {
+    category.quests = category.quests.filter((quest) => !quest.expired);
+    return category.quests.length > 0;
+  })
+}

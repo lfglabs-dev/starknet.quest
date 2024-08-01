@@ -25,6 +25,7 @@ import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 import { CustomTabPanel } from "@components/UI/tabs/customTab";
 import { a11yProps } from "@components/UI/tabs/a11y";
+import { filterQuestCategories } from "@utils/quest";
 
 type QuestAndCollectionTabsProps = {
   categories: QuestCategory[];
@@ -65,6 +66,10 @@ const QuestAndCollectionTabs: FunctionComponent<
       });
     return [...trendingQuests, ...filteredQuests];
   }, [address, quests, trendingQuests]);
+
+  const filteredCategories = useMemo(() => {
+    return filterQuestCategories(categories);
+  }, [categories]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
@@ -152,7 +157,9 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${categories.length + (boosts ? 1 : 0)})`}
+                label={`Collections (${
+                  filteredCategories.length + (boosts ? 1 : 0)
+                })`}
                 {...a11yProps(1)}
               />
               {address && (
@@ -230,8 +237,8 @@ const QuestAndCollectionTabs: FunctionComponent<
                   </Link>
                 </div>
               ) : null}
-              {categories ? (
-                categories.map((category) => {
+              {filteredCategories ? (
+                filteredCategories.map((category) => {
                   return (
                     <QuestCategory key={category.name} category={category} />
                   );
