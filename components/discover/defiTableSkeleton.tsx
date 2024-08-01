@@ -10,16 +10,13 @@ import {
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
-// Number of rows for the skeleton
-const numberOfRows = 10;
-
 const DefiTableSkeleton: React.FC = () => {
   return (
     <div className="w-full overflow-x-auto">
       <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
         <Table>
           <TableBody>
-            {Array.from({ length: numberOfRows }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <TableRow key={index} className="animate-pulse">
                 <TableCell>
                   <div className="h-8 w-full bg-gray-300 rounded-md" />

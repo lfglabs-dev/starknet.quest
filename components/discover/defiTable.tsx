@@ -421,13 +421,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   </TableRow>
                 ))
               ) : (
-                // <TableCell
-                //   colSpan={columns.length}
-                //   className="h-24 text-center"
-                // >
-                //   {loading ? "Loading..." : "No results"}
-                  // </TableCell>
-                  <DefiTableSkeleton />
+                <DefiTableSkeleton />
               )}
             </TableBody>
           </Table>
