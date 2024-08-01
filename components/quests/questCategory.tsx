@@ -43,7 +43,7 @@ const QuestCategory: FunctionComponent<QuestCategoryProps> = ({ category }) => {
                 <CheckIcon width="24" color="#6AFFAF" />
               </div>
             ) : (
-              `${completedQuestNumber}/${category.questNumber} Quest${
+              `${completedQuestNumber}/${category.quests.length} Quest${
                 category.questNumber > 1 ? "s" : ""
               } done`
             )}
