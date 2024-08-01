@@ -328,7 +328,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           <>
             <Typography
               type={TEXT_TYPE.BODY_DEFAULT}
-              className="text-center max-w-[50vw]"
+              className="text-center max-w-[90%] md:max-w-[50vw]"
             >
               {quest.desc}
             </Typography>
@@ -336,7 +336,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               <>
                 <Typography
                   type={TEXT_TYPE.BODY_DEFAULT}
-                  className="text-center max-w-[50vw]"
+                  className="text-center max-w-[90%] md:max-w-[50vw]"
                 >
                   {quest.additional_desc}
                 </Typography>
