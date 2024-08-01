@@ -11,6 +11,10 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
   doneSteps,
   totalSteps,
 }) => {
+    const container =
+      [...Array(totalSteps)].length === 1
+        ? `${styles.container} ${styles.single_step}`
+        : styles.container;
   const calculateRightDistance = useCallback(
     (doneSteps: number, totalSteps: number) => {
       return doneSteps >= totalSteps
@@ -20,7 +24,7 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
     []
   );
   return (
-    <div className={styles.container}>
+    <div className={container}>
       {Array.from(Array(totalSteps).keys()).map((_, index) => {
         return index + 1 <= doneSteps ? (
           <div
