@@ -26,7 +26,10 @@ import {
   getAltProtocolStats,
   fetchBuildings,
   verifyUserAchievement,
+  getUserAchievements,
+  getUserAchievementByCategory,
 } from "@services/apiService";
+import { describe, it } from "node:test";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -3243,4 +3246,581 @@ describe('getAltProtocolStats function', () => {
     expect(result).toBeNull();
   });
 });
+
+describe('getUserAchievements function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('should fetch and retun user achievement data', async() => {
+    const test_address = 1;
+    const mockData = [
+      {
+        "category_id": 1,
+        "category_name": "Argent Explorer NFT",
+        "category_desc": "Collect Argent Explorer NFTs to reveal the stunning Argent Building.",
+        "category_img_url": "achievements/argent/argent_3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 1,
+            "name": "Argent Building",
+            "short_desc": "Get one Argent Explorer NFT",
+            "title": "Get to level 1",
+            "desc": "Get one Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_1.webp"
+          },
+          {
+            "id": 2,
+            "name": "Level 2",
+            "short_desc": "Get 4 Argent Explorer NFT",
+            "title": "Get to level 2",
+            "desc": "Get 4 Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_2.webp"
+          },
+          {
+            "id": 3,
+            "name": "Level 3",
+            "short_desc": "Get 8 Argent Explorer NFT",
+            "title": "Get to level 3",
+            "desc": "Get 8 Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_3.webp"
+          }
+        ]
+      },
+      {
+        "category_id": 2,
+        "category_name": "Braavos Journey NFT",
+        "category_desc": "Earn the Braavos Journey NFT",
+        "category_img_url": "achievements/braavos/braavos_3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 4,
+            "name": "Braavos building",
+            "short_desc": "Get one Braavos Journey NFT",
+            "title": "Get to level 1",
+            "desc": "Get one Braavos Journey NFT to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_1.webp"
+          },
+          {
+            "id": 5,
+            "name": "Level 2",
+            "short_desc": "Get 3 Braavos Journey NFT",
+            "title": "Get to level 2",
+            "desc": "Get 3 Braavos Journey NFTs to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_2.webp"
+          },
+          {
+            "id": 6,
+            "name": "Level 3",
+            "short_desc": "Get 5 Braavos Journey NFT",
+            "title": "Get to level 3",
+            "desc": "Get 5 Braavos Journey NFTs to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_3.webp"
+          }
+        ]
+      },
+      {
+        "category_id": 3,
+        "category_name": "Starknet NFT Achievoor",
+        "category_desc": "Finish each achievement task in order to collect Buildings and grow your Starknet Land",
+        "category_img_url": "achievements/starknetnfts/starknetid.png",
+        "category_type": "solo",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 7,
+            "name": "Carbonable Building",
+            "short_desc": "Own a Carbonable NFT",
+            "title": "Own a Carbonable NFT",
+            "desc": "Own one Carbonable NFT to validate, if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/starknetnfts/carbonable.png"
+          },
+          {
+            "id": 8,
+            "name": "Fabriq",
+            "short_desc": "Own a Briq NFT",
+            "title": "Own or get one Briq NFT",
+            "desc": "Own one Briq NFT to validate and unlock the Fabriq if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "briq",
+            "img_url": "achievements/starknetnfts/briq.png"
+          },
+          {
+            "id": 9,
+            "name": "Starknet ID Tower",
+            "short_desc": "Own a Starknet ID domain",
+            "title": "Own or get one Starknet ID Domain",
+            "desc": "Own one Starknet ID Domain to validate and get your Starknet ID Tower, if not you also have the option to mint one from app.starknet.id or acquire from a marketplace!",
+            "completed": false,
+            "verify_type": "has_domain",
+            "img_url": "achievements/starknetnfts/starknetid.png"
+          },
+          {
+            "id": 10,
+            "name": "Duck Quack HQ Building",
+            "short_desc": "Get a Ducks Everywhere NFT",
+            "title": "Own or get one Ducks Everywhere NFT",
+            "desc": "Own one Ducks Everywhere NFT, if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "briq",
+            "img_url": "achievements/starknetnfts/duck.png"
+          }
+        ]
+      },
+      {
+        "category_id": 4,
+        "category_name": "Starkendefi TVL specialist",
+        "category_desc": "Do the achievements in order to gather Starkendefi Bank Building NFTs and grow your Land.",
+        "category_img_url": "achievements/tvl/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": "batched/verify_tvl_batched",
+        "achievements": [
+          {
+            "id": 11,
+            "name": "Starkendefi Yield Bank Level 1",
+            "short_desc": "Have $100 or more in TVL",
+            "title": "Get to level 1",
+            "desc": "Allocate or have more than $100 TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level1.png"
+          },
+          {
+            "id": 12,
+            "name": "Starkendefi Yield Bank Level 2",
+            "short_desc": "Have $1000 or more in TVL",
+            "title": "Get to level 2",
+            "desc": "Allocate or have more then $1000 TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level2.png"
+          },
+          {
+            "id": 13,
+            "name": "Starkendefi Yield Bank Level 3",
+            "short_desc": "Have $10k or more in TVL",
+            "title": "Get to level 3",
+            "desc": "Allocate or have more then $10k TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level3.png"
+          }
+        ]
+      },
+      {
+        "category_id": 5,
+        "category_name": "Starknet Ecosystem OG Achiever",
+        "category_desc": "Do the achievements in order to gather Starknet OG Buildings NFTs and grow your Land.",
+        "category_img_url": "achievements/seniority/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 14,
+            "name": "Starknet OG Building Level 1",
+            "short_desc": "Have a Starknet account older than 3 months",
+            "title": "Get to Level 1",
+            "desc": "In order to achieve a Starknet OG Building Level 1, your Starknet account should have an age of more than 3 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level1.png"
+          },
+          {
+            "id": 15,
+            "name": "Starknet OG Building Level 2",
+            "short_desc": "Have a Starknet account older than 6 months",
+            "title": "Get to Level 2",
+            "desc": "In order to achieve a Starknet OG Building Level 2, your Starknet account should have an age of more than 6 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level2.png"
+          },
+          {
+            "id": 16,
+            "name": "Starknet OG Building Level 3",
+            "short_desc": "Have a Starknet account older than a year",
+            "title": "Get to Level 3",
+            "desc": "In order to achieve a Starknet OG Building Level 3, your Starknet account should have an age of more than 12 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level3.png"
+          }
+        ]
+      },
+      {
+        "category_id": 6,
+        "category_name": "AVNU Volume Achiever",
+        "category_desc": "Do the achievements in order to gather Starknet Buildings NFTs and grow your Land.",
+        "category_img_url": "achievements/avnu/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 17,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $500 on AVNU",
+            "title": "Get to Level 1",
+            "desc": "By achieving a trading volume exceeding $500 on AVNU, you've effectively unlocked AVNU Building Level 1 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level1.png"
+          },
+          {
+            "id": 18,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $5k on AVNU",
+            "title": "Get to Level 2",
+            "desc": "By achieving a trading volume exceeding $5000 on AVNU, you've effectively unlocked AVNU Building Level 2 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level2.png"
+          },
+          {
+            "id": 19,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $50k on AVNU",
+            "title": "Get to Level 3",
+            "desc": "By achieving a trading volume exceeding $50k on AVNU, you've effectively unlocked AVNU Building Level 3 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level3.png"
+          }
+        ]
+      }
+    ];
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getUserAchievements(test_address);
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/achievements/fetch?addr=${test_address}`);
+
+    expect(result).toEqual(mockData);
+
+  });
+
+  it('should fetch and retun default user achievement data', async() => {
+    const mockData = [
+      {
+        "category_id": 1,
+        "category_name": "Argent Explorer NFT",
+        "category_desc": "Collect Argent Explorer NFTs to reveal the stunning Argent Building.",
+        "category_img_url": "achievements/argent/argent_3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 1,
+            "name": "Argent Building",
+            "short_desc": "Get one Argent Explorer NFT",
+            "title": "Get to level 1",
+            "desc": "Get one Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_1.webp"
+          },
+          {
+            "id": 2,
+            "name": "Level 2",
+            "short_desc": "Get 4 Argent Explorer NFT",
+            "title": "Get to level 2",
+            "desc": "Get 4 Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_2.webp"
+          },
+          {
+            "id": 3,
+            "name": "Level 3",
+            "short_desc": "Get 8 Argent Explorer NFT",
+            "title": "Get to level 3",
+            "desc": "Get 8 Argent Explorer NFT to validate this level",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/argent/argent_3.webp"
+          }
+        ]
+      },
+      {
+        "category_id": 2,
+        "category_name": "Braavos Journey NFT",
+        "category_desc": "Earn the Braavos Journey NFT",
+        "category_img_url": "achievements/braavos/braavos_3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 4,
+            "name": "Braavos building",
+            "short_desc": "Get one Braavos Journey NFT",
+            "title": "Get to level 1",
+            "desc": "Get one Braavos Journey NFT to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_1.webp"
+          },
+          {
+            "id": 5,
+            "name": "Level 2",
+            "short_desc": "Get 3 Braavos Journey NFT",
+            "title": "Get to level 2",
+            "desc": "Get 3 Braavos Journey NFTs to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_2.webp"
+          },
+          {
+            "id": 6,
+            "name": "Level 3",
+            "short_desc": "Get 5 Braavos Journey NFT",
+            "title": "Get to level 3",
+            "desc": "Get 5 Braavos Journey NFTs to validate this quest",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/braavos/braavos_3.webp"
+          }
+        ]
+      },
+      {
+        "category_id": 3,
+        "category_name": "Starknet NFT Achievoor",
+        "category_desc": "Finish each achievement task in order to collect Buildings and grow your Starknet Land",
+        "category_img_url": "achievements/starknetnfts/starknetid.png",
+        "category_type": "solo",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 7,
+            "name": "Carbonable Building",
+            "short_desc": "Own a Carbonable NFT",
+            "title": "Own a Carbonable NFT",
+            "desc": "Own one Carbonable NFT to validate, if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "default",
+            "img_url": "achievements/starknetnfts/carbonable.png"
+          },
+          {
+            "id": 8,
+            "name": "Fabriq",
+            "short_desc": "Own a Briq NFT",
+            "title": "Own or get one Briq NFT",
+            "desc": "Own one Briq NFT to validate and unlock the Fabriq if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "briq",
+            "img_url": "achievements/starknetnfts/briq.png"
+          },
+          {
+            "id": 9,
+            "name": "Starknet ID Tower",
+            "short_desc": "Own a Starknet ID domain",
+            "title": "Own or get one Starknet ID Domain",
+            "desc": "Own one Starknet ID Domain to validate and get your Starknet ID Tower, if not you also have the option to mint one from app.starknet.id or acquire from a marketplace!",
+            "completed": false,
+            "verify_type": "has_domain",
+            "img_url": "achievements/starknetnfts/starknetid.png"
+          },
+          {
+            "id": 10,
+            "name": "Duck Quack HQ Building",
+            "short_desc": "Get a Ducks Everywhere NFT",
+            "title": "Own or get one Ducks Everywhere NFT",
+            "desc": "Own one Ducks Everywhere NFT, if not you also have the option to acquire one from a marketplace!",
+            "completed": false,
+            "verify_type": "briq",
+            "img_url": "achievements/starknetnfts/duck.png"
+          }
+        ]
+      },
+      {
+        "category_id": 4,
+        "category_name": "Starkendefi TVL specialist",
+        "category_desc": "Do the achievements in order to gather Starkendefi Bank Building NFTs and grow your Land.",
+        "category_img_url": "achievements/tvl/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": "batched/verify_tvl_batched",
+        "achievements": [
+          {
+            "id": 11,
+            "name": "Starkendefi Yield Bank Level 1",
+            "short_desc": "Have $100 or more in TVL",
+            "title": "Get to level 1",
+            "desc": "Allocate or have more than $100 TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level1.png"
+          },
+          {
+            "id": 12,
+            "name": "Starkendefi Yield Bank Level 2",
+            "short_desc": "Have $1000 or more in TVL",
+            "title": "Get to level 2",
+            "desc": "Allocate or have more then $1000 TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level2.png"
+          },
+          {
+            "id": 13,
+            "name": "Starkendefi Yield Bank Level 3",
+            "short_desc": "Have $10k or more in TVL",
+            "title": "Get to level 3",
+            "desc": "Allocate or have more then $10k TVL in liquidity within the Starknet Ecosystem to validate. You can utilize Starkendefi to determine the total sum!",
+            "completed": false,
+            "verify_type": "tvl",
+            "img_url": "achievements/tvl/level3.png"
+          }
+        ]
+      },
+      {
+        "category_id": 5,
+        "category_name": "Starknet Ecosystem OG Achiever",
+        "category_desc": "Do the achievements in order to gather Starknet OG Buildings NFTs and grow your Land.",
+        "category_img_url": "achievements/seniority/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 14,
+            "name": "Starknet OG Building Level 1",
+            "short_desc": "Have a Starknet account older than 3 months",
+            "title": "Get to Level 1",
+            "desc": "In order to achieve a Starknet OG Building Level 1, your Starknet account should have an age of more than 3 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level1.png"
+          },
+          {
+            "id": 15,
+            "name": "Starknet OG Building Level 2",
+            "short_desc": "Have a Starknet account older than 6 months",
+            "title": "Get to Level 2",
+            "desc": "In order to achieve a Starknet OG Building Level 2, your Starknet account should have an age of more than 6 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level2.png"
+          },
+          {
+            "id": 16,
+            "name": "Starknet OG Building Level 3",
+            "short_desc": "Have a Starknet account older than a year",
+            "title": "Get to Level 3",
+            "desc": "In order to achieve a Starknet OG Building Level 3, your Starknet account should have an age of more than 12 months.",
+            "completed": false,
+            "verify_type": "seniority",
+            "img_url": "achievements/seniority/level3.png"
+          }
+        ]
+      },
+      {
+        "category_id": 6,
+        "category_name": "AVNU Volume Achiever",
+        "category_desc": "Do the achievements in order to gather Starknet Buildings NFTs and grow your Land.",
+        "category_img_url": "achievements/avnu/level3.png",
+        "category_type": "levels",
+        "category_disabled": false,
+        "category_override_verified_type": null,
+        "achievements": [
+          {
+            "id": 17,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $500 on AVNU",
+            "title": "Get to Level 1",
+            "desc": "By achieving a trading volume exceeding $500 on AVNU, you've effectively unlocked AVNU Building Level 1 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level1.png"
+          },
+          {
+            "id": 18,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $5k on AVNU",
+            "title": "Get to Level 2",
+            "desc": "By achieving a trading volume exceeding $5000 on AVNU, you've effectively unlocked AVNU Building Level 2 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level2.png"
+          },
+          {
+            "id": 19,
+            "name": "AVNU Volume Achiever",
+            "short_desc": "Have a trading volume exceeding $50k on AVNU",
+            "title": "Get to Level 3",
+            "desc": "By achieving a trading volume exceeding $50k on AVNU, you've effectively unlocked AVNU Building Level 3 in your Starkent Quest Land!",
+            "completed": false,
+            "verify_type": "avnu",
+            "img_url": "achievements/avnu/level3.png"
+          }
+        ]
+      }
+    ]
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getUserAchievements();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/achievements/fetch?addr=0`);
+
+    expect(result).toEqual(mockData);
+
+  });
+
+  it('should fetch and return data in an invalid format', async() => {
+    const mockData = 'Failed to deserialize query string: invalid character';
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getUserAchievements("string");
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/achievements/fetch?addr=string`);
+
+    expect(result).toEqual(mockData);
+
+  });
+
+  it('should handle null and undefined cases', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(null),
+    });
+
+    const result = await getUserAchievements();
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/achievements/fetch?addr=0`
+    );
+
+    expect(result).toBeUndefined();
+
+  });
+})
 
