@@ -148,7 +148,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             borderColor: "transparent",
             borderWidth: "1px",
             cursor: 'url("/icons/pointer-cursor.png"), pointer',
-          },f
+          },
         }}
         sx={{
           cursor: 'url("/icons/pointer-cursor.png"), pointer',
