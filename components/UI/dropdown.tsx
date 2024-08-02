@@ -6,7 +6,6 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/system";
 import { IoIosArrowDown } from "react-icons/io";
 
-// Define the props for the Dropdown component
 type DropdownProps = {
   backgroundColor?: string;
   borderColor?: string;
@@ -17,7 +16,6 @@ type DropdownProps = {
   placeholder?: string;
 };
 
-// Styled component using styled-system
 const StyledFormControl = styled(FormControl, {
   shouldForwardProp: (prop) =>
     prop !== "backgroundColor" &&
@@ -27,11 +25,12 @@ const StyledFormControl = styled(FormControl, {
   backgroundColor: backgroundColor || "transparent",
   color: textColor || "inherit",
   borderRadius: 10,
+  cursor: 'url("/icons/pointer-cursor.png"), pointer',
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",
     borderWidth: "0.5px",
     borderColor: "#f4faff4d",
-
+    cursor: 'url("/icons/pointer-cursor.png"), pointer',
     "& fieldset": {
       borderColor: "transparent",
       borderWidth: "1px",
@@ -62,12 +61,14 @@ const StyledFormControl = styled(FormControl, {
     color: textColor || "inherit",
     display: "flex",
     alignItems: "center",
+    cursor: 'url("/icons/pointer-cursor.png"), pointer',
   },
   "& .MuiSelect-icon": {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    paddingleft: "20px",
+    paddingLeft: "20px",
+    cursor: 'url("/icons/pointer-cursor.png"), pointer',
   },
 }));
 
@@ -81,6 +82,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   "&:hover": {
     backgroundColor: "#29282b",
   },
+  cursor: 'url("/icons/pointer-cursor.png"), pointer',
 }));
 
 const StyledMenuProps = {
@@ -145,7 +147,11 @@ const Dropdown: React.FC<DropdownProps> = ({
           style: {
             borderColor: "transparent",
             borderWidth: "1px",
-          },
+            cursor: 'url("/icons/pointer-cursor.png"), pointer',
+          },f
+        }}
+        sx={{
+          cursor: 'url("/icons/pointer-cursor.png"), pointer',
         }}
       >
         {options?.map((option) => (
