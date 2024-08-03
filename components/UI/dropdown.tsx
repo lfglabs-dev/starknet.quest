@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -108,6 +108,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   value,
   placeholder = "Select a value",
 }) => {
+  const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = React.useState<string>(value ?? "");
 
   const handleMenuChange = (event: SelectChangeEvent) => {
@@ -129,19 +130,23 @@ const Dropdown: React.FC<DropdownProps> = ({
       <Select
         labelId="dropdown-label"
         id="dropdown"
-        value={selectedValue}
+        value={value} // Use the provided value
         onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
         renderValue={() =>
-          !selectedValue || selectedValue.length === 0
-            ? placeholder
-            : selectedValue
+          !value || value.length === 0 ? placeholder : value
         }
         displayEmpty={true}
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
         IconComponent={() => (
-          <IoIosArrowDown
-            style={{ color: "white", fontSize: "50px", padding: "0 15px 0 0" }}
-          />
+          <span
+            style={{ padding: "0 15px 0 0", cursor: 'url("/icons/pointer-cursor.png"), pointer' }}
+            onClick={() => setOpen(!open)}
+          >
+            <IoIosArrowDown style={{ color: "white", fontSize: "20px" }} />
+          </span>
         )}
         inputProps={{
           style: {
