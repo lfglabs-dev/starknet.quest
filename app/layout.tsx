@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Starknet Quest",
   description:
     "Starknet Quest helps protocols attract and retain users by creating gamified quest experiences on Starknet.",
-  // metadataBase: new URL(process.env.NEXT_PUBLIC_APP_LINK as string),
+  metadataBase: process.env.NEXT_PUBLIC_APP_LINK ? new URL(process.env.NEXT_PUBLIC_APP_LINK) : undefined,
   openGraph: {
     title: "Starknet Quest - Accomplish quests to get unique NFTs.",
     description:
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/visuals/starknetquest.webp",
-        width: 680,
+        width: 680, 
         height: 680,
       },
     ],
