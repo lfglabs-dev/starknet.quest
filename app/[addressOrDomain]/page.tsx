@@ -362,9 +362,7 @@ export default function Page({ params }: AddressOrDomainProps) {
                 fontFamily: "Sora",
                 minHeight: "32px",
               }}
-              label={`To claim (${
-                claimableQuests ? claimableQuests.length : 0
-              })`}
+              label={claimableQuests && claimableQuests.length > 0 ? `To claim (${claimableQuests.length})` : ""}
               {...a11yProps(1)}
             />
           </Tabs>

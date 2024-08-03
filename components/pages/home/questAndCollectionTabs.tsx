@@ -174,9 +174,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                     fontFamily: "Sora",
                     minHeight: "32px",
                   }}
-                  label={`To claim (${
-                    displayBoosts ? displayBoosts.length : 0
-                  })`}
+                  label={displayBoosts && displayBoosts.length > 0 ? `To claim (${displayBoosts.length})` : ""}
                   {...a11yProps(2)}
                 />
               )}
