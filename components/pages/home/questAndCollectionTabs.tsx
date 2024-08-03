@@ -163,6 +163,8 @@ const QuestAndCollectionTabs: FunctionComponent<
                 {...a11yProps(1)}
               />
               {address && (
+                <>
+                {displayBoosts.length > 0 ? (    
                 <Tab
                   disableRipple
                   sx={{
@@ -174,9 +176,11 @@ const QuestAndCollectionTabs: FunctionComponent<
                     fontFamily: "Sora",
                     minHeight: "32px",
                   }}
-                  label={displayBoosts && displayBoosts.length > 0 ? `To claim (${displayBoosts.length})` : ""}
+                  label={`To claim (${displayBoosts.length})`}
                   {...a11yProps(2)}
-                />
+                /> 
+                ) : null }
+              </>
               )}
             </Tabs>
           </div>
