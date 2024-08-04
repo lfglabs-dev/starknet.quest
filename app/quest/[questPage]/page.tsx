@@ -10,7 +10,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params }: Props,
+  { params }: Props
 ): Promise<Metadata> {
   const questId = params.questPage;
 
