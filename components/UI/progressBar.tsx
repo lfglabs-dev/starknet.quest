@@ -11,10 +11,10 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
   doneSteps,
   totalSteps,
 }) => {
-    const container =
-      [...Array(totalSteps)].length === 1
-        ? `${styles.container} ${styles.single_step}`
-        : styles.container;
+  const container =
+    totalSteps === 1
+      ? `${styles.container} ${styles.single_step}`
+      : styles.container;
   const calculateRightDistance = useCallback(
     (doneSteps: number, totalSteps: number) => {
       return doneSteps >= totalSteps
