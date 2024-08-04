@@ -18,6 +18,7 @@ import Link from "next/link";
 import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import { Connector } from "starknetkit";
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -41,7 +42,7 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
   const [hovering, setHovering] = useState<boolean>(false);
   const [unfocus, setUnfocus] = useState<boolean>(false);
   const network = currentNetwork === "TESTNET" ? "testnet" : "mainnet";
-  const isWebWallet = (connector as any)?._wallet?.id === "argentWebWallet";
+  const isWebWallet = (connector as Connector)?.wallet?.id === "argentWebWallet";
 
   const buttonName = useMemo(
     () =>

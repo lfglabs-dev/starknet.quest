@@ -10,7 +10,7 @@ import React, {
 import homeStyles from "@styles/Home.module.css";
 import styles from "@styles/quests.module.css";
 import { useRouter } from "next/navigation";
-import { QueryError, QuestDocument } from "../../../types/backTypes";
+import { QuestDocument } from "../../../types/backTypes";
 import RewardSkeleton from "@components/skeletons/rewardSkeleton";
 import ErrorScreen from "@components/UI/screens/errorScreen";
 import BackButton from "@components/UI/backButton";

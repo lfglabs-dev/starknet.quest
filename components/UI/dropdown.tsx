@@ -71,6 +71,7 @@ const StyledFormControl = styled(FormControl, {
   },
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   "&.Mui-selected": {
     backgroundColor: "#29282b",
