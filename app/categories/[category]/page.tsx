@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import React from "react";
 import Category from "./category";
 import { fetchQuestCategoryData } from "@services/apiService";
@@ -9,8 +9,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const categoryName = params.category;
 

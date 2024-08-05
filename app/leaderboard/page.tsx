@@ -59,12 +59,11 @@ export default function Page() {
     useState<string>("");
   const rowsPerPage = useMemo(() => 10, []);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { starknetIdNavigator } = useContext(StarknetIdJsContext);
   const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
   const [rankingdataloading, setRankingdataloading] = useState<boolean>(false);
-  const [showNoresults, setShowNoresults] = useState(false);
   const [userAddress, setUserAddress] = useState<string>("");
   const [ranking, setRanking] = useState<RankingData>({
     first_elt_position: 0,
@@ -364,10 +363,6 @@ export default function Page() {
     // check if the user has position on the leaderboard
     if (!leaderboardToppers?.position) {
       setUserPercentile(-1);
-      if (currentSearchedAddress.length > 0) setShowNoresults(true);
-      else {
-        setShowNoresults(false);
-      }
       return;
     }
 
@@ -377,16 +372,16 @@ export default function Page() {
       leaderboardToppers?.total_users ?? 0
     );
     setUserPercentile(res);
-    setShowNoresults(false);
   }, [leaderboardToppers, currentSearchedAddress, duration]);
 
   return (
     <div className={styles.leaderboard_container}>
-      {loading ? (
+      {/**Proposing a removal because it seems unnecessary */}
+      {/* {loading ? (
         <div className={styles.leaderboard_skeleton}>
           <LeaderboardSkeleton />
         </div>
-      ) : (
+      // ) : ( */}
         <>
           <div className={styles.leaderboard_quest_banner}>
             <div className={styles.blur1}>
@@ -491,7 +486,7 @@ export default function Page() {
                     color="textGray"
                     className={styles.percentile_text_normal}
                   >
-                    You werent active this week. ready to jump back in?
+                    You were not active this week. ready to jump back in?
                   </Typography>
                   <Link href="/">
                     <Typography
@@ -588,7 +583,7 @@ export default function Page() {
               )}
           </div>
         </>
-      )}
+      {/* )} */}
     </div>
   );
 }
