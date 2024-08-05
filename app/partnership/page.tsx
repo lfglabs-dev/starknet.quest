@@ -78,7 +78,7 @@ export default function Page() {
                 subTitleBefore={false}
                 steps={[
                   {
-                    title: "Starknet native Quest",
+                    title: "Starknet native Quests",
                     subtitle: "Seamless onboarding",
                     description:
                       "Accelerate user onboarding and reward authenticity with on-chain quests that showcase the unique capabilities and benefits of your Starknet app.",
