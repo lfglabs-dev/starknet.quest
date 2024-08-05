@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import React, { useState, useEffect, FunctionComponent } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
 import styles from "@styles/components/navbar.module.css";
 import Button from "./button";
 import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
 import ModalMessage from "./modalMessage";
 import { useDisplayName } from "@hooks/displayName.tsx";
-import { useDomainFromAddress } from "../../hooks/naming";
 import { constants } from "starknet";
 import { usePathname } from "next/navigation";
 import theme from "@styles/theme";
@@ -20,7 +18,6 @@ import { useNotificationManager } from "@hooks/useNotificationManager";
 import NotificationUnreadIcon from "@components/UI/iconsComponents/icons/notificationIconUnread";
 import { getPendingBoostClaims } from "@services/apiService";
 import { hexToDecimal } from "@utils/feltService";
-import CloseFilledIcon from "./iconsComponents/icons/closeFilledIcon";
 import { getCurrentNetwork } from "@utils/network";
 import { availableConnectors } from "@app/provider";
 import { useStarknetkitConnectModal } from "starknetkit";

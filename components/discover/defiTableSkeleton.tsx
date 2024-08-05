@@ -3,8 +3,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@components/UI/table/table";
 import Typography from "@components/UI/typography/typography";

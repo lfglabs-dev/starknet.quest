@@ -230,6 +230,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [sorting, setSorting] = useState<SortingState>([
     {

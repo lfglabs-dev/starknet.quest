@@ -32,7 +32,6 @@ import { CDNImg } from "@components/cdn/image";
 import { useMediaQuery } from "@mui/material";
 import AnalyticsSkeleton from "@components/skeletons/analyticsSkeleton";
 import { QuestDefault } from "@constants/common";
-import { error } from "console";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
@@ -278,7 +277,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                       />
                       <YAxis
                         axisLine={false}
-                        tickFormatter={(value, _) => formatYAxis(value)}
+                        tickFormatter={(value) => formatYAxis(value)}
                       />
                       <Tooltip
                         contentStyle={{
