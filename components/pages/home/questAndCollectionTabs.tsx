@@ -38,12 +38,15 @@ const QuestAndCollectionTabs: FunctionComponent<
 > = ({ quests, trendingQuests, categories }) => {
   const router = useRouter();
   const { address, isConnecting } = useAccount();
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = useState(
+    parseInt(localStorage.getItem("activeTab") || "0", 10)
+  );
   const { getBoostClaimStatus } = useBoost();
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
       setTabIndex(newValue);
+      localStorage.setItem("activeTab", newValue.toString());
     },
     []
   );
