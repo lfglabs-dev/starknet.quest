@@ -9,7 +9,7 @@
   align-self: stretch;
   border: solid 1px transparent;
 }
-
+ 
 .card:hover {
   border: solid 1px var(--secondary500);
 }
