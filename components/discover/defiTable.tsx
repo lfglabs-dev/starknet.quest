@@ -33,6 +33,7 @@ import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
 import { getRedirectLink } from "@utils/defi";
+import DefiTableSkeleton from "./defiTableSkeleton";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -229,6 +230,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -420,12 +422,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   </TableRow>
                 ))
               ) : (
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {loading ? "Loading..." : "No results"}
-                </TableCell>
+                <DefiTableSkeleton />
               )}
             </TableBody>
           </Table>

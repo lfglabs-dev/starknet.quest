@@ -1,7 +1,6 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import React from "react";
 import Quest from "./quest";
-import { QuestDocument, QueryError } from "../../../types/backTypes";
 import { defaultMetatags } from "@constants/metatags";
 import { getQuestById } from "@services/apiService";
 
@@ -11,8 +10,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: Props
 ): Promise<Metadata> {
   const questId = params.questPage;
 

@@ -77,7 +77,7 @@ const Step: FunctionComponent<StepProps> = ({
 
   return (
     <>
-      <ProgressBar doneSteps={step - 1} totalSteps={questions.length} />
+      <ProgressBar doneSteps={step} totalSteps={questions.length} />
       {question ? (
         <section className={styles.contentContainer}>
           {layoutElements}

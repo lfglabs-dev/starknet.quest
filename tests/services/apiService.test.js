@@ -27,13 +27,16 @@ import {
   fetchBuildings,
   verifyUserAchievement,
   getUserAchievements,
-  getUserAchievementByCategory,
+  getDerivatesStats,
+  getEligibleRewards
 } from "@services/apiService";
-import { describe, it } from "node:test";
+import { describe } from "node:test";
+
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
 global.fetch = jest.fn();
+console.log = jest.fn();
 
 describe("fetchQuestCategoryData function", () => {
   beforeEach(() => {
@@ -79,228 +82,228 @@ describe("getQuests", () => {
 
   it("should fetch and return quests data", async () => {
     const mockData = {
-  "onboarding": [
-    {
-      "id": 1,
-      "name": "Create your Starknet profile",
-      "desc": "Onboard on Starknet by registering your Stark Name and verifying your social medias.",
-      "additional_desc": null,
-      "issuer": "Starknet ID",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknetid/claimable",
-      "logo": "/starknetid/favicon.ico",
-      "rewards_img": "/starknetid/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "onboarding": [
         {
-          "img": "/starknetid/nft1.webp",
-          "level": 1
+          "id": 1,
+          "name": "Create your Starknet profile",
+          "desc": "Onboard on Starknet by registering your Stark Name and verifying your social medias.",
+          "additional_desc": null,
+          "issuer": "Starknet ID",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknetid/claimable",
+          "logo": "/starknetid/favicon.ico",
+          "rewards_img": "/starknetid/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknetid/nft1.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknetid/nft1.webp",
+          "title_card": "Starknet Profile",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": "none",
+          "expired": false,
+          "experience": 50
+        },
+        {
+          "id": 13,
+          "name": "Starknet Giga Brain Quiz",
+          "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
+          "additional_desc": null,
+          "issuer": "Starknet Knowledge",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknet/gigabrain/claimable",
+          "logo": "/starknet/favicon.ico",
+          "rewards_img": "/starknet/gigabrain.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknet/gigabrain.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknet/gigabrain.webp",
+          "title_card": "Starknet Giga Brain Quiz",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
+        {
+          "id": 14,
+          "name": "Account Abstraction Mastery Quiz",
+          "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
+          "additional_desc": null,
+          "issuer": "Starknet Knowledge",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknet/aa_mastery/claimable",
+          "logo": "/starknet/favicon.ico",
+          "rewards_img": "/starknet/aa.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknet/aa.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknet/aa.webp",
+          "title_card": "Account Abstraction Mastery Quiz",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
         }
       ],
-      "img_card": "/starknetid/nft1.webp",
-      "title_card": "Starknet Profile",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": "none",
-      "expired": false,
-      "experience": 50
-    },
-    {
-      "id": 13,
-      "name": "Starknet Giga Brain Quiz",
-      "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
-      "additional_desc": null,
-      "issuer": "Starknet Knowledge",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknet/gigabrain/claimable",
-      "logo": "/starknet/favicon.ico",
-      "rewards_img": "/starknet/gigabrain.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "Nfts": [
         {
-          "img": "/starknet/gigabrain.webp",
-          "level": 1
+          "id": 15,
+          "name": "Attentiveness Tree Quest.",
+          "desc": "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
+          "additional_desc": null,
+          "issuer": "Focus Tree",
+          "category": "Nfts",
+          "rewards_endpoint": "quests/focustree/claimable",
+          "logo": "/focustree/favicon.ico",
+          "rewards_img": "/focustree/focustree.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/focustree/focustree.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/focustree/focustree.webp",
+          "title_card": "Focus Tree - Attentiveness Tree Quest.",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
         }
       ],
-      "img_card": "/starknet/gigabrain.webp",
-      "title_card": "Starknet Giga Brain Quiz",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 14,
-      "name": "Account Abstraction Mastery Quiz",
-      "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
-      "additional_desc": null,
-      "issuer": "Starknet Knowledge",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknet/aa_mastery/claimable",
-      "logo": "/starknet/favicon.ico",
-      "rewards_img": "/starknet/aa.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "deFi": [
         {
-          "img": "/starknet/aa.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/starknet/aa.webp",
-      "title_card": "Account Abstraction Mastery Quiz",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    }
-  ],
-  "Nfts": [
-    {
-      "id": 15,
-      "name": "Attentiveness Tree Quest.",
-      "desc": "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
-      "additional_desc": null,
-      "issuer": "Focus Tree",
-      "category": "Nfts",
-      "rewards_endpoint": "quests/focustree/claimable",
-      "logo": "/focustree/favicon.ico",
-      "rewards_img": "/focustree/focustree.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+          "id": 2,
+          "name": "Starknet Padawan",
+          "desc": "Become a Starknet Padawan by using the most popular decentralized exchange of Starknet.",
+          "additional_desc": null,
+          "issuer": "JediSwap",
+          "category": "deFi",
+          "rewards_endpoint": "quests/jediswap/claimable",
+          "logo": "/jediswap/favicon.ico",
+          "rewards_img": "/jediswap/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/jediswap/padawan.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/jediswap/padawan.webp",
+          "title_card": "Starknet Padawan",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
         {
-          "img": "/focustree/focustree.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/focustree/focustree.webp",
-      "title_card": "Focus Tree - Attentiveness Tree Quest.",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    }
-  ],
-  "deFi": [
-    {
-      "id": 2,
-      "name": "Starknet Padawan",
-      "desc": "Become a Starknet Padawan by using the most popular decentralized exchange of Starknet.",
-      "additional_desc": null,
-      "issuer": "JediSwap",
-      "category": "deFi",
-      "rewards_endpoint": "quests/jediswap/claimable",
-      "logo": "/jediswap/favicon.ico",
-      "rewards_img": "/jediswap/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+          "id": 9,
+          "name": "Ekubo Concentration",
+          "desc": "Ekubo, a next-gen AMM with concentrated liquidity on Starknet for great swapper execution and liquidity provider returns",
+          "additional_desc": null,
+          "issuer": "Ekubo",
+          "category": "deFi",
+          "rewards_endpoint": "quests/ekubo/claimable",
+          "logo": "/ekubo/favicon.ico",
+          "rewards_img": "/ekubo/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/ekubo/concentration.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/ekubo/concentration.webp",
+          "title_card": "Ekubo Concentration",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
         {
-          "img": "/jediswap/padawan.webp",
-          "level": 1
+          "id": 20,
+          "name": "Nostra - LaFamiglia Rose",
+          "desc": "Nostra, is a versatile liquidity protocol for lending and borrowing, built on Starknet",
+          "additional_desc": null,
+          "issuer": "Nostra",
+          "category": "deFi",
+          "rewards_endpoint": "quests/nostra/claimable",
+          "logo": "/nostra/favicon.ico",
+          "rewards_img": "/nostra/rose.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/nostra/rose.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/nostra/rose.webp",
+          "title_card": "Nostra - LaFamiglia Rose",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": "root",
+          "expired": false,
+          "experience": 10
         }
-      ],
-      "img_card": "/jediswap/padawan.webp",
-      "title_card": "Starknet Padawan",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 9,
-      "name": "Ekubo Concentration",
-      "desc": "Ekubo, a next-gen AMM with concentrated liquidity on Starknet for great swapper execution and liquidity provider returns",
-      "additional_desc": null,
-      "issuer": "Ekubo",
-      "category": "deFi",
-      "rewards_endpoint": "quests/ekubo/claimable",
-      "logo": "/ekubo/favicon.ico",
-      "rewards_img": "/ekubo/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
-        {
-          "img": "/ekubo/concentration.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/ekubo/concentration.webp",
-      "title_card": "Ekubo Concentration",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 20,
-      "name": "Nostra - LaFamiglia Rose",
-      "desc": "Nostra, is a versatile liquidity protocol for lending and borrowing, built on Starknet",
-      "additional_desc": null,
-      "issuer": "Nostra",
-      "category": "deFi",
-      "rewards_endpoint": "quests/nostra/claimable",
-      "logo": "/nostra/favicon.ico",
-      "rewards_img": "/nostra/rose.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
-        {
-          "img": "/nostra/rose.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/nostra/rose.webp",
-      "title_card": "Nostra - LaFamiglia Rose",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": "root",
-      "expired": false,
-      "experience": 10
-    }
-  ]
-};
-    
-     fetch.mockResolvedValueOnce({
+      ]
+    };
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getQuests();
+
+    const result = await getQuests();
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_quests` );
+      `${API_URL}/get_quests`);
     expect(result).toEqual(mockData);
   });
-  
-   it("should handle fetch errors", async () => {
+
+  it("should handle fetch errors", async () => {
     const mockResponse = "No quest found";
-     
-      fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
-     
-         const result = await getQuests();
+
+    const result = await getQuests();
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quests`
     );
@@ -1617,12 +1620,12 @@ describe("getQuizById function", () => {
         },
       ],
     };
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-      const result = await getQuizById("nostra");
+
+    const result = await getQuizById("nostra");
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
     expect(result).toEqual(mockData);
   });
@@ -1648,11 +1651,11 @@ describe("getQuizById function", () => {
 
     const result = await getQuizById(undefined);
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_quiz?id=undefined&addr=0` );
+      `${API_URL}/get_quiz?id=undefined&addr=0`);
     expect(result).toEqual(mockData);
   });
-  
-   it("should handle null cases in parameters", async () => {
+
+  it("should handle null cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
 
     fetch.mockResolvedValueOnce({
@@ -1684,12 +1687,12 @@ describe("getQuestsInBoost function", () => {
   it("should handle unexpected params format", async () => {
     const mockResponse =
       "Failed to deserialize query string: invalid digit found in string";
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
-    
-        const result = await getQuestsInBoost("my-test-id");
+
+    const result = await getQuestsInBoost("my-test-id");
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_quests?boost_id=my-test-id`
@@ -2134,17 +2137,17 @@ describe("verifyUserAchievement function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
-  
+
   it("should fetch and return data for a valid verifyType, address, and achievementId", async () => {
     const mockData = {
       id: 1,
       name: "Achievement Name",
       status: "verified",
-      };
+    };
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-     const result = await verifyUserAchievement({
+    const result = await verifyUserAchievement({
       verifyType: "category",
       address: "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363",
       achievementId: 1,
@@ -2221,17 +2224,17 @@ describe("fetchBuildings function", () => {
   beforeEach(() => {
     fetch.mockClear();
   });
-  
+
   it("should fetch and return buildings data for valid filteredAssets", async () => {
     const mockData = [
       { id: 1, name: "Xplorer Tower", description: "Argent building level 1", entity: "NFT_ArgentMain_4x3_H3_1", level: "1", img_url: "achievements/argent/argent_1.webp" },
       { id: 2, name: "Xplorer Tower", description: "Argent building level 2", entity: "NFT_ArgentMain_4x3_H4_2", level: "2", img_url: "achievements/argent/argent_2.webp" },
     ];
-    
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await fetchBuildings([1, 2]);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -2270,7 +2273,7 @@ describe("fetchBuildings function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
+
     const result = await fetchBuildings([999, 1000]);
 
     expect(fetch).toHaveBeenCalledWith(
@@ -2296,9 +2299,9 @@ describe("fetchBuildings function", () => {
   });
 });
 
-  
+
 describe('getLendingStats function', () => {
-    beforeEach(() => {
+  beforeEach(() => {
     fetch.mockClear();
   });
   it('should fetch and return lend stats', async () => {
@@ -2506,7 +2509,7 @@ describe('getLendingStats function', () => {
 
     expect(result).toEqual(mockData);
   });
-  it('should return null', async() =>{
+  it('should return null', async () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.reject(null),
     });
@@ -2514,7 +2517,7 @@ describe('getLendingStats function', () => {
     const result = await getLendingStats();
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_lend_stats`);
 
-    expect (result).toBeNull();
+    expect(result).toBeNull();
   });
 });
 
@@ -2525,7 +2528,7 @@ describe('getPairingStats function', () => {
   });
 
 
-  it('should fetch and return pairing stats', async() => {
+  it('should fetch and return pairing stats', async () => {
     const mockData = {
       "Jediswap_v1": {
         "USDC/USDT": {
@@ -3160,7 +3163,7 @@ describe('getPairingStats function', () => {
     expect(result).toEqual(mockData);
   });
 
-  it('should return null', async() => {
+  it('should return null', async () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.reject(null),
     });
@@ -3235,7 +3238,7 @@ describe('getAltProtocolStats function', () => {
     expect(result).toEqual(mockData);
   })
 
-  it('should return null', async() => {
+  it('should return null', async () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.reject(null),
     });
@@ -3247,11 +3250,136 @@ describe('getAltProtocolStats function', () => {
   });
 });
 
-describe('getUserAchievements function', () => {
+
+describe('getDerivatesStats function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+  it('should fetch and return derivatives stats for a successful response', async () => {
+    const mockData = {
+      protocol1: {
+        date: '2024-08-02',
+        protocol: 'Protocol 1',
+        allocation: 1000000,
+        tvl: 5000000,
+        volumes: 100000,
+        beta_fees: 5000,
+        apr: 0.05
+      }
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+    const result = await getDerivatesStats()
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_derivatives_stats`)
+    
+    expect(result).toEqual(mockData);
+  })
+
+  it('should return null and log error for a failed request', async () => {
+    const mockError = new Error('Network error');
+    fetch.mockRejectedValueOnce(mockError);
+
+    const result = await getDerivatesStats();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/discover/defi/get_derivatives_stats`
+    );
+    expect(result).toBeNull();
+    expect(console.log).toHaveBeenCalledWith('Error while fetching derivatives stats', mockError);
+  });
+
+  it('should handle empty response gracefully', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({})
+    });
+
+    const result = await getDerivatesStats();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/discover/defi/get_derivatives_stats`
+    );
+    expect(result).toEqual({});
+  });
+})
+
+describe('getEligibleRewards function', () => {
   beforeEach(() => {
     fetch.mockClear();
   });
 
+  it('should fetch and return eligible rewards for valid input', async () => {
+    const mockData = { rewards: [{ id: 1, amount: 100 }] };
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData)
+    });
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it('should handle fetch errors and log them', async () => {
+    const mockError = new Error('Network error');
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockRejectedValueOnce(mockError);
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toBeUndefined();
+    expect(console.log).toHaveBeenCalledWith('Error while fetching eligible rewards', mockError);
+  });
+
+  it('should handle empty response gracefully', async () => {
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({})
+    });
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toEqual({});
+  });
+
+  it('should handle invalid input gracefully', async () => {
+    const rewardEndpoint = '';
+    const address = '';
+    const quest_id = NaN;
+
+    console.log = jest.fn();
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}?addr=&quest_id=NaN`
+    );
+    expect(result).toBeUndefined();
+  });
+});
+
+describe('getUserAchievements function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
   it('should fetch and retun user achievement data', async() => {
     const test_address = 1;
     const mockData = [
@@ -3512,6 +3640,7 @@ describe('getUserAchievements function', () => {
         ]
       }
     ];
+
 
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
