@@ -282,7 +282,6 @@ export default function Page({ params }: QuestIdProps) {
 
     const updatedTasks = filteredSteps.filter((step, index) => {
       return (
-        step?.type !== "None" &&
         intialSteps[index]?.type !== "None" &&
         step?.data?.id &&
         step?.data?.id !== 0 &&
@@ -303,7 +302,6 @@ export default function Page({ params }: QuestIdProps) {
     // check which tasks have been added
     const addedTasks = filteredSteps.filter((step) => {
       return (
-        step.type !== "None" &&
         !intialSteps.some((intialStep) => intialStep.data.id === step.data.id)
       );
     });

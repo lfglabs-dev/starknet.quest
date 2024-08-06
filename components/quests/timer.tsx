@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "@styles/components/timer.module.css";
-import AccentBox from "@components/UI/AccentBox";
 
 type TimerProps = {
   expiry: number;

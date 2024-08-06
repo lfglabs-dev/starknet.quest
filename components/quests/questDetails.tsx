@@ -19,7 +19,7 @@ import {
   UserTask,
   CompletedQuests,
 } from "types/backTypes";
-import { Call, Contract } from "starknet";
+import { Call, Contract, Result } from "starknet";
 import { Skeleton } from "@mui/material";
 import TasksSkeleton from "@components/skeletons/tasksSkeleton";
 import { generateCodeChallenge } from "@utils/codeChallenge";
@@ -178,7 +178,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         const contract = new Contract(quests_nft_abi, contractAddr, provider);
         const response = await contract.call("get_tasks_status", [calldata]);
         if (response !== null && Array.isArray(response)) {
-          const result = response.map((x: any) => {
+          const result = response.map((x: Result) => {
             if (x === true) {
               return 1;
             }
@@ -328,7 +328,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           <>
             <Typography
               type={TEXT_TYPE.BODY_DEFAULT}
-              className="text-center max-w-[50vw]"
+              className="text-center max-w-[90%] md:max-w-[50vw]"
             >
               {quest.desc}
             </Typography>
@@ -336,7 +336,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
               <>
                 <Typography
                   type={TEXT_TYPE.BODY_DEFAULT}
-                  className="text-center max-w-[50vw]"
+                  className="text-center max-w-[90%] md:max-w-[50vw]"
                 >
                   {quest.additional_desc}
                 </Typography>

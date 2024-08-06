@@ -21,13 +21,20 @@ import {
   getQuestBoostClaimParams,
   getQuests,
   getCompletedBoosts,
+  getLendingStats,
+  getPairingStats,
+  getAltProtocolStats,
   fetchBuildings,
   verifyUserAchievement,
+  getDerivatesStats,
+  getEligibleRewards
 } from "@services/apiService";
+import { describe } from "node:test";
 
 const API_URL = process.env.NEXT_PUBLIC_API_LINK;
 
 global.fetch = jest.fn();
+console.log = jest.fn();
 
 describe("fetchQuestCategoryData function", () => {
   beforeEach(() => {
@@ -73,228 +80,228 @@ describe("getQuests", () => {
 
   it("should fetch and return quests data", async () => {
     const mockData = {
-  "onboarding": [
-    {
-      "id": 1,
-      "name": "Create your Starknet profile",
-      "desc": "Onboard on Starknet by registering your Stark Name and verifying your social medias.",
-      "additional_desc": null,
-      "issuer": "Starknet ID",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknetid/claimable",
-      "logo": "/starknetid/favicon.ico",
-      "rewards_img": "/starknetid/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "onboarding": [
         {
-          "img": "/starknetid/nft1.webp",
-          "level": 1
+          "id": 1,
+          "name": "Create your Starknet profile",
+          "desc": "Onboard on Starknet by registering your Stark Name and verifying your social medias.",
+          "additional_desc": null,
+          "issuer": "Starknet ID",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknetid/claimable",
+          "logo": "/starknetid/favicon.ico",
+          "rewards_img": "/starknetid/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknetid/nft1.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknetid/nft1.webp",
+          "title_card": "Starknet Profile",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": "none",
+          "expired": false,
+          "experience": 50
+        },
+        {
+          "id": 13,
+          "name": "Starknet Giga Brain Quiz",
+          "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
+          "additional_desc": null,
+          "issuer": "Starknet Knowledge",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknet/gigabrain/claimable",
+          "logo": "/starknet/favicon.ico",
+          "rewards_img": "/starknet/gigabrain.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknet/gigabrain.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknet/gigabrain.webp",
+          "title_card": "Starknet Giga Brain Quiz",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
+        {
+          "id": 14,
+          "name": "Account Abstraction Mastery Quiz",
+          "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
+          "additional_desc": null,
+          "issuer": "Starknet Knowledge",
+          "category": "onboarding",
+          "rewards_endpoint": "quests/starknet/aa_mastery/claimable",
+          "logo": "/starknet/favicon.ico",
+          "rewards_img": "/starknet/aa.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/starknet/aa.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/starknet/aa.webp",
+          "title_card": "Account Abstraction Mastery Quiz",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
         }
       ],
-      "img_card": "/starknetid/nft1.webp",
-      "title_card": "Starknet Profile",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": "none",
-      "expired": false,
-      "experience": 50
-    },
-    {
-      "id": 13,
-      "name": "Starknet Giga Brain Quiz",
-      "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
-      "additional_desc": null,
-      "issuer": "Starknet Knowledge",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknet/gigabrain/claimable",
-      "logo": "/starknet/favicon.ico",
-      "rewards_img": "/starknet/gigabrain.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "Nfts": [
         {
-          "img": "/starknet/gigabrain.webp",
-          "level": 1
+          "id": 15,
+          "name": "Attentiveness Tree Quest.",
+          "desc": "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
+          "additional_desc": null,
+          "issuer": "Focus Tree",
+          "category": "Nfts",
+          "rewards_endpoint": "quests/focustree/claimable",
+          "logo": "/focustree/favicon.ico",
+          "rewards_img": "/focustree/focustree.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/focustree/focustree.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/focustree/focustree.webp",
+          "title_card": "Focus Tree - Attentiveness Tree Quest.",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
         }
       ],
-      "img_card": "/starknet/gigabrain.webp",
-      "title_card": "Starknet Giga Brain Quiz",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 14,
-      "name": "Account Abstraction Mastery Quiz",
-      "desc": "Starknet Quest Quiz Rounds: Quizzes for Starknet ecosystem enthusiasts, offering educational quizzes on Starknet-related topics with a chance to win exclusive NFTs, catering to all knowledge levels.",
-      "additional_desc": null,
-      "issuer": "Starknet Knowledge",
-      "category": "onboarding",
-      "rewards_endpoint": "quests/starknet/aa_mastery/claimable",
-      "logo": "/starknet/favicon.ico",
-      "rewards_img": "/starknet/aa.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+      "deFi": [
         {
-          "img": "/starknet/aa.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/starknet/aa.webp",
-      "title_card": "Account Abstraction Mastery Quiz",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    }
-  ],
-  "Nfts": [
-    {
-      "id": 15,
-      "name": "Attentiveness Tree Quest.",
-      "desc": "Focus Tree is a Starknet DApp that shields against digital distractions, helping users control their attention for healthier relationships with tech",
-      "additional_desc": null,
-      "issuer": "Focus Tree",
-      "category": "Nfts",
-      "rewards_endpoint": "quests/focustree/claimable",
-      "logo": "/focustree/favicon.ico",
-      "rewards_img": "/focustree/focustree.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+          "id": 2,
+          "name": "Starknet Padawan",
+          "desc": "Become a Starknet Padawan by using the most popular decentralized exchange of Starknet.",
+          "additional_desc": null,
+          "issuer": "JediSwap",
+          "category": "deFi",
+          "rewards_endpoint": "quests/jediswap/claimable",
+          "logo": "/jediswap/favicon.ico",
+          "rewards_img": "/jediswap/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/jediswap/padawan.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/jediswap/padawan.webp",
+          "title_card": "Starknet Padawan",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
         {
-          "img": "/focustree/focustree.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/focustree/focustree.webp",
-      "title_card": "Focus Tree - Attentiveness Tree Quest.",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    }
-  ],
-  "deFi": [
-    {
-      "id": 2,
-      "name": "Starknet Padawan",
-      "desc": "Become a Starknet Padawan by using the most popular decentralized exchange of Starknet.",
-      "additional_desc": null,
-      "issuer": "JediSwap",
-      "category": "deFi",
-      "rewards_endpoint": "quests/jediswap/claimable",
-      "logo": "/jediswap/favicon.ico",
-      "rewards_img": "/jediswap/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
+          "id": 9,
+          "name": "Ekubo Concentration",
+          "desc": "Ekubo, a next-gen AMM with concentrated liquidity on Starknet for great swapper execution and liquidity provider returns",
+          "additional_desc": null,
+          "issuer": "Ekubo",
+          "category": "deFi",
+          "rewards_endpoint": "quests/ekubo/claimable",
+          "logo": "/ekubo/favicon.ico",
+          "rewards_img": "/ekubo/favicon.ico",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/ekubo/concentration.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/ekubo/concentration.webp",
+          "title_card": "Ekubo Concentration",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": null,
+          "expired": false,
+          "experience": 10
+        },
         {
-          "img": "/jediswap/padawan.webp",
-          "level": 1
+          "id": 20,
+          "name": "Nostra - LaFamiglia Rose",
+          "desc": "Nostra, is a versatile liquidity protocol for lending and borrowing, built on Starknet",
+          "additional_desc": null,
+          "issuer": "Nostra",
+          "category": "deFi",
+          "rewards_endpoint": "quests/nostra/claimable",
+          "logo": "/nostra/favicon.ico",
+          "rewards_img": "/nostra/rose.webp",
+          "rewards_title": "1 NFT",
+          "rewards_description": null,
+          "rewards_nfts": [
+            {
+              "img": "/nostra/rose.webp",
+              "level": 1
+            }
+          ],
+          "img_card": "/nostra/rose.webp",
+          "title_card": "Nostra - LaFamiglia Rose",
+          "hidden": false,
+          "disabled": false,
+          "expiry": null,
+          "expiry_timestamp": null,
+          "mandatory_domain": "root",
+          "expired": false,
+          "experience": 10
         }
-      ],
-      "img_card": "/jediswap/padawan.webp",
-      "title_card": "Starknet Padawan",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 9,
-      "name": "Ekubo Concentration",
-      "desc": "Ekubo, a next-gen AMM with concentrated liquidity on Starknet for great swapper execution and liquidity provider returns",
-      "additional_desc": null,
-      "issuer": "Ekubo",
-      "category": "deFi",
-      "rewards_endpoint": "quests/ekubo/claimable",
-      "logo": "/ekubo/favicon.ico",
-      "rewards_img": "/ekubo/favicon.ico",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
-        {
-          "img": "/ekubo/concentration.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/ekubo/concentration.webp",
-      "title_card": "Ekubo Concentration",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": null,
-      "expired": false,
-      "experience": 10
-    },
-    {
-      "id": 20,
-      "name": "Nostra - LaFamiglia Rose",
-      "desc": "Nostra, is a versatile liquidity protocol for lending and borrowing, built on Starknet",
-      "additional_desc": null,
-      "issuer": "Nostra",
-      "category": "deFi",
-      "rewards_endpoint": "quests/nostra/claimable",
-      "logo": "/nostra/favicon.ico",
-      "rewards_img": "/nostra/rose.webp",
-      "rewards_title": "1 NFT",
-      "rewards_description": null,
-      "rewards_nfts": [
-        {
-          "img": "/nostra/rose.webp",
-          "level": 1
-        }
-      ],
-      "img_card": "/nostra/rose.webp",
-      "title_card": "Nostra - LaFamiglia Rose",
-      "hidden": false,
-      "disabled": false,
-      "expiry": null,
-      "expiry_timestamp": null,
-      "mandatory_domain": "root",
-      "expired": false,
-      "experience": 10
-    }
-  ]
-};
-    
-     fetch.mockResolvedValueOnce({
+      ]
+    };
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-     const result = await getQuests();
+
+    const result = await getQuests();
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_quests` );
+      `${API_URL}/get_quests`);
     expect(result).toEqual(mockData);
   });
-  
-   it("should handle fetch errors", async () => {
+
+  it("should handle fetch errors", async () => {
     const mockResponse = "No quest found";
-     
-      fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
-     
-         const result = await getQuests();
+
+    const result = await getQuests();
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/get_quests`
     );
@@ -1611,12 +1618,12 @@ describe("getQuizById function", () => {
         },
       ],
     };
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-    
-      const result = await getQuizById("nostra");
+
+    const result = await getQuizById("nostra");
     expect(fetch).toHaveBeenCalledWith(`${API_URL}/get_quiz?id=nostra&addr=0`);
     expect(result).toEqual(mockData);
   });
@@ -1642,11 +1649,11 @@ describe("getQuizById function", () => {
 
     const result = await getQuizById(undefined);
     expect(fetch).toHaveBeenCalledWith(
-      `${API_URL}/get_quiz?id=undefined&addr=0` );
+      `${API_URL}/get_quiz?id=undefined&addr=0`);
     expect(result).toEqual(mockData);
   });
-  
-   it("should handle null cases in parameters", async () => {
+
+  it("should handle null cases in parameters", async () => {
     const mockData = "Failed to deserialize query string: invalid character";
 
     fetch.mockResolvedValueOnce({
@@ -1678,12 +1685,12 @@ describe("getQuestsInBoost function", () => {
   it("should handle unexpected params format", async () => {
     const mockResponse =
       "Failed to deserialize query string: invalid digit found in string";
-    
-     fetch.mockResolvedValueOnce({
+
+    fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockResponse),
     });
-    
-        const result = await getQuestsInBoost("my-test-id");
+
+    const result = await getQuestsInBoost("my-test-id");
 
     expect(fetch).toHaveBeenCalledWith(
       `${API_URL}/boost/get_quests?boost_id=my-test-id`
@@ -2122,7 +2129,9 @@ describe('getCompletedBoosts function', () => {
     expect(result).toBeUndefined();
   });
 });
+
 describe("verifyUserAchievement function", () => {
+
   beforeEach(() => {
     fetch.mockClear();
   });
@@ -2136,7 +2145,6 @@ describe("verifyUserAchievement function", () => {
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
-
     const result = await verifyUserAchievement({
       verifyType: "category",
       address: "0x0610FebaA5E58043927c8758EdFAa3525Ef59bAC1f0b60E7b52b022084536363",
@@ -2220,6 +2228,7 @@ describe("fetchBuildings function", () => {
       { id: 1, name: "Xplorer Tower", description: "Argent building level 1", entity: "NFT_ArgentMain_4x3_H3_1", level: "1", img_url: "achievements/argent/argent_1.webp" },
       { id: 2, name: "Xplorer Tower", description: "Argent building level 2", entity: "NFT_ArgentMain_4x3_H4_2", level: "2", img_url: "achievements/argent/argent_2.webp" },
     ];
+
     fetch.mockResolvedValueOnce({
       json: () => Promise.resolve(mockData),
     });
@@ -2285,5 +2294,1084 @@ describe("fetchBuildings function", () => {
       `${API_URL}/achievements/fetch_buildings?ids=1,999`
     );
     expect(result).toEqual(mockData);
+  });
+});
+
+
+describe('getLendingStats function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+  it('should fetch and return lend stats', async () => {
+    const mockData = {
+      "zkLend": {
+        "USDT": {
+          "date": "2024-07-30",
+          "allocation": 1155.78,
+          "supply_usd": 2134546.56596344,
+          "non_recursive_supply_usd": 2079341.78475195,
+          "non_recursive_revenue_usd": 171.512254173623,
+          "strk_grant_apr_ts": 0.0965119890775774,
+          "strk_grant_apr_nrs": 0.099074301478734
+        },
+        "ETH": {
+          "date": "2024-07-30",
+          "allocation": 8234.62,
+          "supply_usd": 16407571.9452803,
+          "non_recursive_supply_usd": 15868539.9473565,
+          "non_recursive_revenue_usd": 275.603062903866,
+          "strk_grant_apr_ts": 0.0894565684211301,
+          "strk_grant_apr_nrs": 0.0924952823143692
+        },
+        "STRK": {
+          "date": "2024-07-30",
+          "allocation": 8324.58,
+          "supply_usd": 12061271.8822505,
+          "non_recursive_supply_usd": 11830302.3454334,
+          "non_recursive_revenue_usd": 66.9754240945918,
+          "strk_grant_apr_ts": 0.123021812977996,
+          "strk_grant_apr_nrs": 0.125423635884314
+        },
+        "USDC": {
+          "date": "2024-07-30",
+          "allocation": 3124.45,
+          "supply_usd": 5756918.41280176,
+          "non_recursive_supply_usd": 5516540.65323769,
+          "non_recursive_revenue_usd": 672.870620705265,
+          "strk_grant_apr_ts": 0.096737759505561,
+          "strk_grant_apr_nrs": 0.10095301093882
+        },
+        "DAI": {
+          "date": "2024-07-30",
+          "allocation": 53.85,
+          "supply_usd": 107628.025448295,
+          "non_recursive_supply_usd": 97365.3927203476,
+          "non_recursive_revenue_usd": 7.01736123538275,
+          "strk_grant_apr_ts": 0.0891791942672291,
+          "strk_grant_apr_nrs": 0.0985789747453661
+        }
+      },
+      "Vesu": {
+        "USDC": {
+          "date": "2024-07-30",
+          "allocation": 456.2,
+          "supply_usd": 698680.693586811,
+          "non_recursive_supply_usd": 698680.693586811,
+          "non_recursive_revenue_usd": 85.878125891821,
+          "strk_grant_apr_ts": 0.116383397888171,
+          "strk_grant_apr_nrs": 0.116383397888171
+        },
+        "ETH": {
+          "date": "2024-07-30",
+          "allocation": 1109.42,
+          "supply_usd": 1906267.55539434,
+          "non_recursive_supply_usd": 1906267.55539434,
+          "non_recursive_revenue_usd": 0.320845514547291,
+          "strk_grant_apr_ts": 0.103734823621959,
+          "strk_grant_apr_nrs": 0.103734823621959
+        },
+        "USDT": {
+          "date": "2024-07-30",
+          "allocation": 109.03,
+          "supply_usd": 161625.245772552,
+          "non_recursive_supply_usd": 161625.245772552,
+          "non_recursive_revenue_usd": 31.2247470126082,
+          "strk_grant_apr_ts": 0.120236186665353,
+          "strk_grant_apr_nrs": 0.120236186665353
+        },
+        "STRK": {
+          "date": "2024-07-30",
+          "allocation": 1293.79,
+          "supply_usd": 1729495.09949268,
+          "non_recursive_supply_usd": 1729495.09949268,
+          "non_recursive_revenue_usd": 0.034281872593972,
+          "strk_grant_apr_ts": 0.133339389519562,
+          "strk_grant_apr_nrs": 0.133339389519562
+        }
+      },
+      "Hashstack": {
+        "ETH": {
+          "date": "2024-07-30",
+          "allocation": 261.07,
+          "supply_usd": 219327.686436547,
+          "non_recursive_supply_usd": 219327.686436547,
+          "non_recursive_revenue_usd": 16.6373237477505,
+          "strk_grant_apr_ts": 0.212165457401,
+          "strk_grant_apr_nrs": 0.212165457401
+        },
+        "STRK": {
+          "date": "2024-07-30",
+          "allocation": 289.43,
+          "supply_usd": 266264.087949218,
+          "non_recursive_supply_usd": 266264.087949218,
+          "non_recursive_revenue_usd": 31.0804644721856,
+          "strk_grant_apr_ts": 0.193749048928578,
+          "strk_grant_apr_nrs": 0.193749048928578
+        },
+        "USDC": {
+          "date": "2024-07-30",
+          "allocation": 97.61,
+          "supply_usd": 98957.2346780245,
+          "non_recursive_supply_usd": 98957.2346780245,
+          "non_recursive_revenue_usd": 23.7736671515834,
+          "strk_grant_apr_ts": 0.175819282273581,
+          "strk_grant_apr_nrs": 0.175819282273581
+        },
+        "USDT": {
+          "date": "2024-07-30",
+          "allocation": 83.19,
+          "supply_usd": 89193.5285063299,
+          "non_recursive_supply_usd": 89193.5285063299,
+          "non_recursive_revenue_usd": 10.5515436997449,
+          "strk_grant_apr_ts": 0.166248965029782,
+          "strk_grant_apr_nrs": 0.166248965029782
+        }
+      },
+      "Nostra": {
+        "DAI": {
+          "date": "2024-07-30",
+          "allocation": 21.9,
+          "supply_usd": 49753.9746624659,
+          "non_recursive_supply_usd": 49753.9746624659,
+          "non_recursive_revenue_usd": 4.60332991503369,
+          "strk_grant_apr_ts": 0.0784479305778864,
+          "strk_grant_apr_nrs": 0.0784479305778864
+        },
+        "USDT": {
+          "date": "2024-07-30",
+          "allocation": 10691.57,
+          "supply_usd": 24425628.607175,
+          "non_recursive_supply_usd": 24097329.2611507,
+          "non_recursive_revenue_usd": 2638.05043069004,
+          "strk_grant_apr_ts": 0.0780205476872565,
+          "strk_grant_apr_nrs": 0.0790834909912467
+        },
+        "STRK": {
+          "date": "2024-07-30",
+          "allocation": 27152.13,
+          "supply_usd": 40341135.2680199,
+          "non_recursive_supply_usd": 38869235.0787819,
+          "non_recursive_revenue_usd": 265.760952438547,
+          "strk_grant_apr_ts": 0.119968970764148,
+          "strk_grant_apr_nrs": 0.12451195573446
+        },
+        "ETH": {
+          "date": "2024-07-30",
+          "allocation": 48016.21,
+          "supply_usd": 97003083.6109643,
+          "non_recursive_supply_usd": 94623728.8471154,
+          "non_recursive_revenue_usd": 211.224891604615,
+          "strk_grant_apr_ts": 0.0882298391354435,
+          "strk_grant_apr_nrs": 0.0904484167651596
+        },
+        "USDC": {
+          "date": "2024-07-30",
+          "allocation": 10727.13,
+          "supply_usd": 25361631.1513156,
+          "non_recursive_supply_usd": 24159189.1014251,
+          "non_recursive_revenue_usd": 2683.38067990394,
+          "strk_grant_apr_ts": 0.0753909925721956,
+          "strk_grant_apr_nrs": 0.0791433246256933
+        }
+      },
+      "Nimbora": {
+        "DAI": {
+          "date": "2024-06-12",
+          "allocation": 288.87,
+          "supply_usd": 689602.713373783,
+          "non_recursive_supply_usd": 689602.713373783,
+          "non_recursive_revenue_usd": 199.355910889537,
+          "strk_grant_apr_ts": 0.163747447396196,
+          "strk_grant_apr_nrs": 0.163747447396196
+        },
+        "ETH": {
+          "date": "2024-06-12",
+          "allocation": 142.36,
+          "supply_usd": 208628.042990969,
+          "non_recursive_supply_usd": 208628.042990969,
+          "non_recursive_revenue_usd": 0,
+          "strk_grant_apr_ts": 0.266728930899078,
+          "strk_grant_apr_nrs": 0.266728930899078
+        }
+      }
+
+    };
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getLendingStats();
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/discover/defi/get_lend_stats`
+    );
+
+    expect(result).toEqual(mockData);
+  });
+  it('should return null', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(null),
+    });
+
+    const result = await getLendingStats();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_lend_stats`);
+
+    expect(result).toBeNull();
+  });
+});
+
+describe('getPairingStats function', () => {
+
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+
+  it('should fetch and return pairing stats', async () => {
+    const mockData = {
+      "Jediswap_v1": {
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 28.53,
+          "token0_allocation": 14.26,
+          "token1_allocation": 14.27,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 137635.594424658,
+          "apr": 0.0369477596492828
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 90.09,
+          "token0_allocation": 45.05,
+          "token1_allocation": 45.04,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 75892.5303911264,
+          "apr": 0.211589539956646
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 172.97,
+          "token0_allocation": 77.66,
+          "token1_allocation": 95.31,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 901238.662605129,
+          "apr": 0.0342091715051623
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 109.49,
+          "token0_allocation": 56.14,
+          "token1_allocation": 53.35,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 117595.028541368,
+          "apr": 0.165959651664632
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 52.57,
+          "token0_allocation": 26.31,
+          "token1_allocation": 26.26,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 34881.0354411652,
+          "apr": 0.268626509621525
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 33.94,
+          "token0_allocation": 17.01,
+          "token1_allocation": 16.93,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 83299.8000242122,
+          "apr": 0.0726262149053067
+        }
+      },
+      "StarkDefi": {
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 104.07,
+          "token0_allocation": 53.21,
+          "token1_allocation": 50.86,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 99300.5139866587,
+          "apr": 0.186804582295853
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 56.66,
+          "token0_allocation": 28.36,
+          "token1_allocation": 28.3,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 45294.9301189847,
+          "apr": 0.222971073030756
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 42.95,
+          "token0_allocation": 20.06,
+          "token1_allocation": 22.89,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 215734.938307865,
+          "apr": 0.0354864922371831
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 64.71,
+          "token0_allocation": 30.86,
+          "token1_allocation": 33.85,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 152926.403201045,
+          "apr": 0.0754278330413139
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 29.61,
+          "token0_allocation": 14.81,
+          "token1_allocation": 14.8,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 8017.42999162902,
+          "apr": 0.658384883466777
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 90.09,
+          "token0_allocation": 45.05,
+          "token1_allocation": 45.04,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 75498.8352072284,
+          "apr": 0.212692197394387
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        }
+      },
+      "Ekubo": {
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 3355.09,
+          "token0_allocation": 1408.34,
+          "token1_allocation": 1946.75,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 2276530.28544131,
+          "apr": 0.262690143185486
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 9367.62,
+          "token0_allocation": 4838.28,
+          "token1_allocation": 4529.34,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 6902120.21108474,
+          "apr": 0.241913324325029
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 31187.87,
+          "token0_allocation": 15569.84,
+          "token1_allocation": 15618.03,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 48315627.2322319,
+          "apr": 0.115056524163856
+        },
+        "USDC/DAI": {
+          "date": "2024-07-30",
+          "allocation": 864.56,
+          "token0_allocation": 464.71,
+          "token1_allocation": 399.85,
+          "thirty_day_realized_volatility": 0.0005949565407039,
+          "tvl_usd": 945554.419539945,
+          "apr": 0.162975420116551
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 1131.31,
+          "token0_allocation": 585.98,
+          "token1_allocation": 545.33,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 1595754.3837092,
+          "apr": 0.126365536191105
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 13871.3,
+          "token0_allocation": 5893.55,
+          "token1_allocation": 7977.75,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 7776216.79195961,
+          "apr": 0.317952275347974
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 9581.26,
+          "token0_allocation": 4854.36,
+          "token1_allocation": 4726.9,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 11450292.0512583,
+          "apr": 0.149148657406872
+        }
+      },
+      "Sithswap": {
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 90.04,
+          "token0_allocation": 45.02,
+          "token1_allocation": 45.02,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 6614.2732758411,
+          "apr": 2.42639496987274
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 79.8,
+          "token0_allocation": 40.1,
+          "token1_allocation": 39.69,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 17384.9632242172,
+          "apr": 0.818141383313582
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 85.96,
+          "token0_allocation": 40.05,
+          "token1_allocation": 45.92,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 299810.916095732,
+          "apr": 0.0511069463004212
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 29.68,
+          "token0_allocation": 14.85,
+          "token1_allocation": 14.84,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 9237.72475655836,
+          "apr": 0.572766084727652
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 42.87,
+          "token0_allocation": 21.44,
+          "token1_allocation": 21.43,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 10192.6286466523,
+          "apr": 0.749616209341733
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 42.17,
+          "token0_allocation": 22.4,
+          "token1_allocation": 19.76,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 199297.26508517,
+          "apr": 0.0377122529564746
+        }
+      },
+      "10kSwap": {
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 91.63,
+          "token0_allocation": 46.49,
+          "token1_allocation": 45.14,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 57314.5215299952,
+          "apr": 0.284958644561957
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 173.58,
+          "token0_allocation": 77.92,
+          "token1_allocation": 95.66,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 905462.913247784,
+          "apr": 0.0341698733185086
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 46.41,
+          "token0_allocation": 23.22,
+          "token1_allocation": 23.19,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 19219.7529185072,
+          "apr": 0.430437656821601
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 28.51,
+          "token0_allocation": 14.25,
+          "token1_allocation": 14.26,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 77485.619955483,
+          "apr": 0.0655807029071588
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 32.94,
+          "token0_allocation": 16.5,
+          "token1_allocation": 16.44,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 65957.0566607173,
+          "apr": 0.0890289831277682
+        },
+        "USDC/DAI": {
+          "date": "2024-07-30",
+          "allocation": 3.44,
+          "token0_allocation": 1.72,
+          "token1_allocation": 1.72,
+          "thirty_day_realized_volatility": 0.0005949565407039,
+          "tvl_usd": 24142.5768673609,
+          "apr": 0.02539048972624
+        }
+      },
+      "Haiko": {
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 468,
+          "token0_allocation": 360.89,
+          "token1_allocation": 107.12,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 184848.515465523,
+          "apr": 0.451281409905123
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 216.6,
+          "token0_allocation": 176.16,
+          "token1_allocation": 40.44,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 78191.4723915738,
+          "apr": 0.493751006095619
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 112.12,
+          "token0_allocation": 59.23,
+          "token1_allocation": 52.9,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 95599.4362232835,
+          "apr": 0.209052356151181
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 126.3,
+          "token0_allocation": 28.54,
+          "token1_allocation": 97.76,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 205049.521244907,
+          "apr": 0.10979237551452
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 169.35,
+          "token0_allocation": 81.44,
+          "token1_allocation": 87.91,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 119939.741876529,
+          "apr": 0.251674486076943
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 357.74,
+          "token0_allocation": 141.4,
+          "token1_allocation": 216.34,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 137384.25539356,
+          "apr": 0.464131348567974
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        }
+      },
+      "Jediswap_v2": {
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 62.05,
+          "token0_allocation": 36.58,
+          "token1_allocation": 25.47,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 16403.8661577339,
+          "apr": 0.67418934204284
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 107.63,
+          "token0_allocation": 61.47,
+          "token1_allocation": 46.16,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 52141.8103092148,
+          "apr": 0.367920298276295
+        },
+        "USDC/DAI": {
+          "date": "2024-07-30",
+          "allocation": 315.92,
+          "token0_allocation": 125.19,
+          "token1_allocation": 190.72,
+          "thirty_day_realized_volatility": 0.0005949565407039,
+          "tvl_usd": 213941.646776735,
+          "apr": 0.263202468510155
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 37.45,
+          "token0_allocation": 15.24,
+          "token1_allocation": 22.22,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 23956.9332579708,
+          "apr": 0.278661407761409
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 50.53,
+          "token0_allocation": 21.29,
+          "token1_allocation": 29.23,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 47356.531742389,
+          "apr": 0.190180052635965
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 64.63,
+          "token0_allocation": 38.17,
+          "token1_allocation": 26.46,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 31073.3765828083,
+          "apr": 0.370747820286243
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 148.94,
+          "token0_allocation": 94.4,
+          "token1_allocation": 54.54,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 127883.488342186,
+          "apr": 0.207590765167447
+        }
+      },
+      "Nostra": {
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 90.14,
+          "token0_allocation": 45.09,
+          "token1_allocation": 45.05,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 145997.600766264,
+          "apr": 0.110052506373483
+        },
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 9192.44,
+          "token0_allocation": 4590.44,
+          "token1_allocation": 4601.99,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 3196783.62389112,
+          "apr": 0.512543197820611
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 4115.84,
+          "token0_allocation": 1931.43,
+          "token1_allocation": 2184.41,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 1829513.33807167,
+          "apr": 0.400991887489722
+        },
+        "USDC/DAI": {
+          "date": "2024-07-30",
+          "allocation": 6.54,
+          "token0_allocation": 3.6,
+          "token1_allocation": 2.94,
+          "thirty_day_realized_volatility": 0.0005949565407039,
+          "tvl_usd": 27087.7836641315,
+          "apr": 0.0430502054228959
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 171.85,
+          "token0_allocation": 62.76,
+          "token1_allocation": 109.08,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 333879.785189916,
+          "apr": 0.0917406483899314
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 10993.74,
+          "token0_allocation": 6179.86,
+          "token1_allocation": 4813.87,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 4591742.75951101,
+          "apr": 0.426757297566124
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 8837.29,
+          "token0_allocation": 4409.35,
+          "token1_allocation": 4427.94,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 5850525.32234072,
+          "apr": 0.269238693314193
+        }
+      },
+      "MySwap": {
+        "STRK/USDC": {
+          "date": "2024-07-30",
+          "allocation": 786.02,
+          "token0_allocation": 594.5,
+          "token1_allocation": 191.52,
+          "thirty_day_realized_volatility": 0.307358894709532,
+          "tvl_usd": 559067.159768188,
+          "apr": 0.250601231165709
+        },
+        "STRK/ETH": {
+          "date": "2024-07-30",
+          "allocation": 703.13,
+          "token0_allocation": 572.68,
+          "token1_allocation": 130.45,
+          "thirty_day_realized_volatility": 0.266765746136404,
+          "tvl_usd": 478448.591032262,
+          "apr": 0.261946296169062
+        },
+        "WBTC/ETH": {
+          "date": "2024-07-30",
+          "allocation": 59.42,
+          "token0_allocation": 25.33,
+          "token1_allocation": 34.09,
+          "thirty_day_realized_volatility": 0.0692347282729821,
+          "tvl_usd": 48069.1600620097,
+          "apr": 0.220315191781113
+        },
+        "ETH/USDC": {
+          "date": "2024-07-30",
+          "allocation": 733.63,
+          "token0_allocation": 392.57,
+          "token1_allocation": 341.06,
+          "thirty_day_realized_volatility": 0.130739648151866,
+          "tvl_usd": 570267.119201716,
+          "apr": 0.229303922996291
+        },
+        "USDC/DAI": {
+          "date": "2024-07-30",
+          "allocation": 3.4,
+          "token0_allocation": 1.7,
+          "token1_allocation": 1.7,
+          "thirty_day_realized_volatility": 0.0005949565407039,
+          "tvl_usd": 0.0506172688952037,
+          "apr": 11963.8687755487
+        },
+        "Discretionary": {
+          "date": "2024-07-30",
+          "allocation": 0,
+          "token0_allocation": 0,
+          "token1_allocation": 0,
+          "thirty_day_realized_volatility": 0,
+          "tvl_usd": 0,
+          "apr": 0
+        },
+        "USDC/USDT": {
+          "date": "2024-07-30",
+          "allocation": 50.22,
+          "token0_allocation": 23.22,
+          "token1_allocation": 27,
+          "thirty_day_realized_volatility": 0.0006892979915869,
+          "tvl_usd": 93382.873844537,
+          "apr": 0.0958476498968394
+        },
+        "WSTETH/ETH": {
+          "date": "2024-07-30",
+          "allocation": 98.25,
+          "token0_allocation": 50.09,
+          "token1_allocation": 48.16,
+          "thirty_day_realized_volatility": 0.0019242246914148,
+          "tvl_usd": 168110.652989625,
+          "apr": 0.10417155701346
+        }
+      }
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getPairingStats();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_pair_stats`);
+
+    expect(result).toEqual(mockData);
+  });
+
+  it('should return null', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(null),
+    });
+
+    const result = await getPairingStats();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_pair_stats`);
+
+    expect(result).toBeNull();
+  });
+});
+
+describe('getAltProtocolStats function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('should fetch and return alt protocol stats', async () => {
+    const mockData = {
+      "Nimbora": {
+        "liquity": {
+          "date": "2024-07-30",
+          "allocation": 28.71,
+          "tvl_usd": 47056.8195847229,
+          "apr": 0.108748613895378
+        },
+        "pendle-flux-usdc": {
+          "date": "2024-07-30",
+          "allocation": 114.56,
+          "tvl_usd": 187804.148341292,
+          "apr": 0.108727883196851
+        },
+        "spark": {
+          "date": "2024-07-30",
+          "allocation": 1669.97,
+          "tvl_usd": 2737611.58791471,
+          "apr": 0.108730140154224
+        },
+        "pendle-puffer-eth": {
+          "date": "2024-07-30",
+          "allocation": 1180.2,
+          "tvl_usd": 1934728.66823559,
+          "apr": 0.108729815807306
+        },
+        "angle": {
+          "date": "2024-07-30",
+          "allocation": 338.59,
+          "tvl_usd": 555055.338310875,
+          "apr": 0.108730391676802
+        },
+        "pendle-etherfi-eth": {
+          "date": "2024-07-30",
+          "allocation": 2993.5,
+          "tvl_usd": 4907308.29916189,
+          "apr": 0.108729909932825
+        },
+        "pendle-staked-eth": {
+          "date": "2024-07-30",
+          "allocation": 473.33,
+          "tvl_usd": 775935.690078683,
+          "apr": 0.108730506720544
+        }
+      }
+    };
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getAltProtocolStats();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_alt_protocol_stats`);
+
+    expect(result).toEqual(mockData);
+  })
+
+  it('should return null', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.reject(null),
+    });
+
+    const result = await getAltProtocolStats();
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_alt_protocol_stats`);
+
+    expect(result).toBeNull();
+  });
+});
+
+describe('getDerivatesStats function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('should fetch and return derivatives stats for a successful response', async () => {
+    const mockData = {
+      protocol1: {
+        date: '2024-08-02',
+        protocol: 'Protocol 1',
+        allocation: 1000000,
+        tvl: 5000000,
+        volumes: 100000,
+        beta_fees: 5000,
+        apr: 0.05
+      }
+    };
+    
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData),
+    });
+
+    const result = await getDerivatesStats()
+    expect(fetch).toHaveBeenCalledWith(`${API_URL}/discover/defi/get_derivatives_stats`)
+    
+    expect(result).toEqual(mockData);
+  })
+
+  it('should return null and log error for a failed request', async () => {
+    const mockError = new Error('Network error');
+    fetch.mockRejectedValueOnce(mockError);
+
+    const result = await getDerivatesStats();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/discover/defi/get_derivatives_stats`
+    );
+    expect(result).toBeNull();
+    expect(console.log).toHaveBeenCalledWith('Error while fetching derivatives stats', mockError);
+  });
+
+  it('should handle empty response gracefully', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({})
+    });
+
+    const result = await getDerivatesStats();
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}/discover/defi/get_derivatives_stats`
+    );
+    expect(result).toEqual({});
+  });
+})
+
+describe('getEligibleRewards function', () => {
+  beforeEach(() => {
+    fetch.mockClear();
+  });
+
+  it('should fetch and return eligible rewards for valid input', async () => {
+    const mockData = { rewards: [{ id: 1, amount: 100 }] };
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve(mockData)
+    });
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toEqual(mockData);
+  });
+
+  it('should handle fetch errors and log them', async () => {
+    const mockError = new Error('Network error');
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockRejectedValueOnce(mockError);
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toBeUndefined();
+    expect(console.log).toHaveBeenCalledWith('Error while fetching eligible rewards', mockError);
+  });
+
+  it('should handle empty response gracefully', async () => {
+    const rewardEndpoint = '/rewards';
+    const address = '0x1234567890123456789012345678901234567890';
+    const quest_id = 1;
+
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({})
+    });
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}${rewardEndpoint}?addr=${address}&quest_id=${quest_id}`
+    );
+    expect(result).toEqual({});
+  });
+
+  it('should handle invalid input gracefully', async () => {
+    const rewardEndpoint = '';
+    const address = '';
+    const quest_id = NaN;
+
+    console.log = jest.fn();
+
+    const result = await getEligibleRewards({ rewardEndpoint, address, quest_id });
+
+    expect(fetch).toHaveBeenCalledWith(
+      `${API_URL}?addr=&quest_id=NaN`
+    );
+    expect(result).toBeUndefined();
   });
 });

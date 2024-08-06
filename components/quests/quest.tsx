@@ -3,8 +3,6 @@ import { useContext } from "react";
 import { QuestsContext } from "@context/QuestsProvider";
 import CheckIcon from "@components/UI/iconsComponents/icons/checkIcon";
 import UnavailableIcon from "@components/UI/iconsComponents/icons/unavailableIcon";
-import styles from "@styles/quests.module.css";
-import { CDNImg } from "@components/cdn/image";
 import QuestCard from "./questCard";
 import BoostReward from "./boostReward";
 import QuestTag from "@components/UI/questTag";
