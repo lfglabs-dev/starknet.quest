@@ -24,6 +24,7 @@ type CategoryPageProps = {
 const Category: FunctionComponent<CategoryPageProps> = ({ categoryName }) => {
   const router = useRouter();
   const { categories } = useContext(QuestsContext);
+
   const [category, setCategory] = useState<QuestCategory | undefined>();
 
   useEffect(() => {
@@ -31,29 +32,15 @@ const Category: FunctionComponent<CategoryPageProps> = ({ categoryName }) => {
     setCategory(categories.find((cat) => cat.name === categoryName));
   }, [categories, categoryName]);
 
-  const handleBack = () => {
-    const activeTab = localStorage.getItem("activeTab");
-    if (activeTab) {
-      const tabRoutes = ["/", "/", "/"];
-      router.push(tabRoutes[parseInt(activeTab, 10)]);
-    } else {
-      router.back();
-    }
-  };
-
   return (
     <div className={styles.screen}>
       <div className={homeStyles.blur1}>
         <Blur />
       </div>
       <div className={styles.backButton}>
-        <BackButton onClick={handleBack} />
+        <BackButton onClick={() => router.back()} />
       </div>
-      <Typography
-        type={TEXT_TYPE.H1}
-        className={homeStyles.title}
-        color="transparent"
-      >
+      <Typography type={TEXT_TYPE.H1} className={homeStyles.title} color="transparent">
         {(categoryName as string)?.charAt(0)?.toUpperCase() +
           categoryName?.slice(1)}{" "}
         quests
