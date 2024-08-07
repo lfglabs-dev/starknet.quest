@@ -193,25 +193,6 @@ export const getUserAchievements = async (address = "0") => {
   }
 };
 
-export const getUserAchievementByCategory = async ({
-  category,
-  address,
-  categoryId,
-}: {
-  category: string;
-  address: string;
-  categoryId: number;
-}) => {
-  try {
-    const response = await fetch(
-      `${baseurl}/achievements/${category}?addr=${address}&category_id=${categoryId}`
-    );
-    const data: CompletedDocument | QueryError = await response.json();
-    return data as CompletedDocument;
-  } catch (err) {
-    console.log("Error while fetching user achievement by category", err);
-  }
-};
 
 export const verifyUserAchievement = async ({
   verifyType,
