@@ -7,4 +7,4 @@ export const TOKEN_OPTIONS = [
 export const STABLES = ["USDC", "USDT", "DAI"];
 
 export const AIRDROP_APPS = ["ekubo", "nostra", "zklend", "sithswap"];
-export const AUDITED_APPS = ["ekubo", "zklend", "nimbora", "sithswap", "vesu"];
+export const AUDITED_APPS = ["ekubo", "zklend", "nimbora", "sithswap", "vesu", "jediswap"];
