@@ -32,6 +32,17 @@ const Category: FunctionComponent<CategoryPageProps> = ({ categoryName }) => {
     setCategory(categories.find((cat) => cat.name === categoryName));
   }, [categories, categoryName]);
 
+  const tabRoutes = ["/", "/", "/"];
+
+  const handleBack = () => {
+    const activeTab = localStorage.getItem("activeTab");
+    if (activeTab) {
+      router.push(tabRoutes[parseInt(activeTab, 10)]);
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <div className={styles.screen}>
       <div className={homeStyles.blur1}>
