@@ -132,10 +132,17 @@ export const QuestsContextProvider = ({
     if (!quests.length) return;
     const notExpired = quests.filter((quest) => !quest.expired);
     const lastBoostedQuest = boostedQuests.length
-      ? quests.find((quest) => quest.id === boostedQuests[boostedQuests.length - 1])
+      ? quests.find(
+          (quest) =>
+            quest.id === boostedQuests[boostedQuests.length - 1] &&
+            !quest.expired
+        )
       : undefined;
 
-    setFeaturedQuest(lastBoostedQuest || notExpired[Math.floor(Math.random() * notExpired.length)]);
+    setFeaturedQuest(
+      lastBoostedQuest ||
+        notExpired[Math.floor(Math.random() * notExpired.length)]
+    );
   }, [quests, boostedQuests]);
 
   const contextValues = useMemo(() => {

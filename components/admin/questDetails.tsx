@@ -47,6 +47,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   const { address } = useAccount();
   const router = useRouter();
   const [tasks, setTasks] = useState<UserTask[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showQuiz, setShowQuiz] = useState<ReactNode>();
   const [customError, setCustomError] = useState<string>("");
   const { showNotification } = useNotification();

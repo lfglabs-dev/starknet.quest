@@ -11,7 +11,7 @@ module.exports = module.exports = withAxiom({
   },
   images: {
     domains: [
-      "www.starknet.id",
+      "www.starknet.id", 
       "starknet.id",
       "app.starknet.id",
       "starknetid.netlify.app",
