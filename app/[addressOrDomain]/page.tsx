@@ -351,6 +351,7 @@ export default function Page({ params }: AddressOrDomainProps) {
               label={`Completed (${completedQuests.length})`}
               {...a11yProps(0)}
             />
+            {claimableQuests.length > 0 ? (
             <Tab
               disableRipple
               sx={{
@@ -362,11 +363,10 @@ export default function Page({ params }: AddressOrDomainProps) {
                 fontFamily: "Sora",
                 minHeight: "32px",
               }}
-              label={`To claim (${
-                claimableQuests ? claimableQuests.length : 0
-              })`}
+              label={`To claim (${claimableQuests})`}
               {...a11yProps(1)}
             />
+            ) : null}
           </Tabs>
         </div>
         <CustomTabPanel value={tabIndex} index={0}>

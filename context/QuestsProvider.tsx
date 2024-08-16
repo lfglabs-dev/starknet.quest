@@ -98,23 +98,10 @@ export const QuestsContextProvider = ({
     getTrendingQuests(hexToDecimal(address)).then(
       (data: QuestDocument[] | QueryError) => {
         if (!data || (data as QueryError).error) return;
-        const quests = data as QuestDocument[];
-        setTrendingQuests(quests);
-        const notExpired = quests.filter((quest) => !quest.expired);
-        setFeaturedQuest(
-          notExpired[Math.floor(Math.random() * notExpired.length)]
-        );
+        setTrendingQuests(data as QuestDocument[]);
       }
     );
   }, [address]);
-
-  useMemo(() => {
-    if (!quests || featuredQuest || !quests.length) return;
-    const notExpired = quests.filter((quest) => !quest.expired);
-    const randomQuest =
-      notExpired[Math.floor(Math.random() * notExpired.length)];
-    setFeaturedQuest(randomQuest);
-  }, [quests, address, featuredQuest]);
 
   useMemo(() => {
     if (!address) return;
@@ -140,6 +127,23 @@ export const QuestsContextProvider = ({
       setBoostedQuests(data as BoostedQuests);
     });
   }, []);
+
+  useMemo(() => {
+    if (!quests.length) return;
+    const notExpired = quests.filter((quest) => !quest.expired);
+    const lastBoostedQuest = boostedQuests.length
+      ? quests.find(
+          (quest) =>
+            quest.id === boostedQuests[boostedQuests.length - 1] &&
+            !quest.expired
+        )
+      : undefined;
+
+    setFeaturedQuest(
+      lastBoostedQuest ||
+        notExpired[Math.floor(Math.random() * notExpired.length)]
+    );
+  }, [quests, boostedQuests]);
 
   const contextValues = useMemo(() => {
     return {

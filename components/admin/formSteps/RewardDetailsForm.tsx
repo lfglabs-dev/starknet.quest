@@ -54,6 +54,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
 
   const handleBoostTokenChange = useCallback(
     (event: SelectChangeEvent) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setBoostInput((prev: any) => ({
         ...prev,
         token: event.target.value,
