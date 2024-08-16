@@ -193,7 +193,6 @@ export const getUserAchievements = async (address = "0") => {
   }
 };
 
-
 export const verifyUserAchievement = async ({
   verifyType,
   address,
@@ -338,13 +337,23 @@ export async function getQuestById(id: string) {
 export async function fetchQuestCategoryData(name: string) {
   try {
     const response = await fetch(`${baseurl}/get_quest_category?name=${name}`);
+
+    // Check if the response is in JSON format
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const textResponse = await response.text();
+      console.log(`Non-JSON response: ${textResponse}`);
+      return null; // or handle accordingly
+    }
+
     const data: QuestCategoryDocument | QueryError = await response.json();
+
     if ((data as QueryError).error) {
       return null;
     }
     return data as QuestCategoryDocument;
   } catch (error) {
-    console.log("Error parsing quest data:", error);
+    console.log("Error fetching or parsing quest data:", error);
     return null;
   }
 }
