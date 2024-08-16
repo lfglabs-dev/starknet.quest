@@ -38,12 +38,15 @@ const QuestAndCollectionTabs: FunctionComponent<
 > = ({ quests, trendingQuests, categories }) => {
   const router = useRouter();
   const { address, isConnecting } = useAccount();
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState(
+    parseInt(localStorage.getItem("activeTab") || "0", 10)
+  );
   const { getBoostClaimStatus } = useBoost();
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
       setTabIndex(newValue);
+      localStorage.setItem("activeTab", newValue.toString());
     },
     []
   );
@@ -164,23 +167,23 @@ const QuestAndCollectionTabs: FunctionComponent<
               />
               {address && (
                 <>
-                {displayBoosts.length > 0 ? (    
-                <Tab
-                  disableRipple
-                  sx={{
-                    borderRadius: "10px",
-                    padding: "0px 12px 0px 12px",
-                    textTransform: "none",
-                    fontWeight: "600",
-                    fontSize: "12px",
-                    fontFamily: "Sora",
-                    minHeight: "32px",
-                  }}
-                  label={`To claim (${displayBoosts.length})`}
-                  {...a11yProps(2)}
-                /> 
-                ) : null }
-              </>
+                  {displayBoosts.length > 0 ? (
+                    <Tab
+                      disableRipple
+                      sx={{
+                        borderRadius: "10px",
+                        padding: "0px 12px 0px 12px",
+                        textTransform: "none",
+                        fontWeight: "600",
+                        fontSize: "12px",
+                        fontFamily: "Sora",
+                        minHeight: "32px",
+                      }}
+                      label={`To claim (${displayBoosts.length})`}
+                      {...a11yProps(2)}
+                    />
+                  ) : null}
+                </>
               )}
             </Tabs>
           </div>
