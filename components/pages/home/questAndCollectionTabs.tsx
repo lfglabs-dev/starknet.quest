@@ -115,7 +115,7 @@ const QuestAndCollectionTabs: FunctionComponent<
 
   useEffect(() => {
     const tempInd = Number(localStorage.getItem('tabIndex'))
-    if(tempInd <= 2) {
+    if(tempInd >= 0 && tempInd <= 2) {
       setTabIndex(tempInd);
     }
   })
