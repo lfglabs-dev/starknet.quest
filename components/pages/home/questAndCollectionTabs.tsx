@@ -118,7 +118,7 @@ const QuestAndCollectionTabs: FunctionComponent<
     if(tempInd >= 0 && tempInd <= 2) {
       setTabIndex(tempInd);
     }
-  })
+  }, []);
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
