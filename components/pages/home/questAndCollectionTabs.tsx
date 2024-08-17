@@ -43,6 +43,7 @@ const QuestAndCollectionTabs: FunctionComponent<
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
+      localStorage.setItem('tabIndex', newValue.toString());
       setTabIndex(newValue);
     },
     []
@@ -111,6 +112,13 @@ const QuestAndCollectionTabs: FunctionComponent<
   useEffect(() => {
     fetchBoosts();
   }, [address]);
+
+  useEffect(() => {
+    const tempInd = Number(localStorage.getItem('tabIndex'))
+    if(tempInd <= 2) {
+      setTabIndex(tempInd);
+    }
+  })
 
   const completedBoostNumber = useMemo(
     () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
