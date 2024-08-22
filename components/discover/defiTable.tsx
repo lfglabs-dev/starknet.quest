@@ -410,6 +410,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() =>{
+                      window.open(
+                        getRedirectLink(row.getValue("app"), row.getValue("action")),
+                        "_blank"
+                      )
+                    }}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
