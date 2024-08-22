@@ -113,7 +113,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address]);
 
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds?.includes(b.id) && (b.expiry - new Date().getTime()) / MILLISECONDS_PER_WEEK <= 3).length,
+    () => boosts?.filter((b) => completedBoostIds?.includes(b.id) && ((new Date().getTime() - b.expiry) / MILLISECONDS_PER_WEEK <= 3 && !b.hidden)).length,
     [boosts, completedBoostIds]
   );
 
