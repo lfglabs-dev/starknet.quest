@@ -113,7 +113,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [address]);
 
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
+    () => boosts?.filter((b) => completedBoostIds?.includes(b.id) && (b.expiry - new Date().getTime()) / MILLISECONDS_PER_WEEK <= 3).length,
     [boosts, completedBoostIds]
   );
 
@@ -223,13 +223,13 @@ const QuestAndCollectionTabs: FunctionComponent<
                         type={TEXT_TYPE.BODY_DEFAULT}
                         className={`${styles.categoryInfosText} text-gray-200 normal-case`}
                       >
-                        {completedBoostNumber === boosts.length ? (
+                        {completedBoostNumber === displayBoosts.length ? (
                           <span className="flex">
                             <span className="mr-2">All boosts done</span>
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${boosts.length} Boost${
+                          `${completedBoostNumber}/${displayBoosts.length} Boost${
                             boosts.length > 1 ? "s" : ""
                           } done`
                         )}
