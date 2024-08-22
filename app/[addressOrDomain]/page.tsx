@@ -30,6 +30,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { a11yProps } from "@components/UI/tabs/a11y";
 import { CustomTabPanel } from "@components/UI/tabs/customTab";
+import SuggestedQuests from "@components/dashboard/SuggestedQuests";
 
 type AddressOrDomainProps = {
   params: {
@@ -352,20 +353,20 @@ export default function Page({ params }: AddressOrDomainProps) {
               {...a11yProps(0)}
             />
             {claimableQuests.length > 0 ? (
-            <Tab
-              disableRipple
-              sx={{
-                borderRadius: "10px",
-                padding: "0px 12px 0px 12px",
-                textTransform: "none",
-                fontWeight: "600",
-                fontSize: "12px",
-                fontFamily: "Sora",
-                minHeight: "32px",
-              }}
-              label={`To claim (${claimableQuests})`}
-              {...a11yProps(1)}
-            />
+              <Tab
+                disableRipple
+                sx={{
+                  borderRadius: "10px",
+                  padding: "0px 12px 0px 12px",
+                  textTransform: "none",
+                  fontWeight: "600",
+                  fontSize: "12px",
+                  fontFamily: "Sora",
+                  minHeight: "32px",
+                }}
+                label={`To claim (${claimableQuests})`}
+                {...a11yProps(1)}
+              />
             ) : null}
           </Tabs>
         </div>
@@ -374,11 +375,9 @@ export default function Page({ params }: AddressOrDomainProps) {
             {questsLoading ? (
               <QuestSkeleton />
             ) : completedQuests?.length === 0 ? (
-              <Typography type={TEXT_TYPE.H2} className={styles.noBoosts}>
-                {isOwner
-                  ? "You have not completed any quests at the moment"
-                  : "User has not completed any quests at the moment"}
-              </Typography>
+              isOwner
+                ? <SuggestedQuests />
+                : <Typography type={TEXT_TYPE.H2} className={styles.noBoosts}>User has not completed any quests at the moment</Typography>
             ) : (
               <section className={QuestStyles.section}>
                 <div className={QuestStyles.questContainer}>
