@@ -133,6 +133,7 @@ const QuestAndCollectionTabs: FunctionComponent<
               indicatorColor="secondary"
             >
               <Tab
+                className="modified-cursor-pointer"
                 disableRipple
                 sx={{
                   borderRadius: "10px",
@@ -147,6 +148,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                 {...a11yProps(0)}
               />
               <Tab
+                className="modified-cursor-pointer"
                 disableRipple
                 sx={{
                   borderRadius: "10px",
