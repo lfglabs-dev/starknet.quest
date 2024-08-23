@@ -27,7 +27,6 @@ export function useNotificationManager() {
     );
     notifications[index].data.status = status;
     setNotifications(notifications);
-    console.log("notifications", notifications);
   };
 
   const checkTransactionStatus = async (txHash: string) => {
