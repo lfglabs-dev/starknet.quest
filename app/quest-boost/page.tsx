@@ -71,7 +71,7 @@ export default function Page() {
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
-        <BackButton onClick={() => router.back()} />
+        <BackButton onClick={() => router.push("/")} />
       </div>
       <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Boosts Quest</Typography>
 
