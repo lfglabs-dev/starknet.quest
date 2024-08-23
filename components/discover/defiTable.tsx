@@ -155,7 +155,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "apr",
     header: () => (
-      <div className="flex irems-center modified-cursor-pointer w-full h-full">
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           APR
@@ -165,7 +165,7 @@ export const columns: ColumnDef<TableInfo>[] = [
           <UpIcon width="10" color="#a6a5a7" />
         </div>
       </div>
-    </div>
+      </div>
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("apr")).toFixed(2);
@@ -175,7 +175,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "volume",
     header: () => (
-      <div className="flex irems-center modified-cursor-pointer w-full h-full">
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           TVL
@@ -208,8 +208,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "daily_rewards",
     header: () => (
-      <div className="flex irems-center modified-cursor-pointer w-full h-full">
-
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center justify-end">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Daily Rewards
@@ -432,9 +431,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
-              style={{
-                cursor: table.getCanPreviousPage() ? "inherit" : "not-allowed",
-              }}
+              style= {table.getCanPreviousPage() ? {} : {cursor:'not-allowed' } }
             >
               <CDNImage
                 src="/icons/chevronLeft.svg"
@@ -446,9 +443,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             <div
               className="flex modified-cursor-pointer"
               onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-              style={{
-                cursor: table.getCanNextPage() ? "inherit" : "not-allowed",
-              }}
+              style= {table.getCanNextPage() ? {} : {cursor:'not-allowed' } }
             >
               <CDNImage
                 src="/icons/chevronRight.svg"
