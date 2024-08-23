@@ -79,7 +79,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
     if (status !== notification.data.status) {
       updateNotificationStatus(notification.data.hash, status);
     }
-  }, [notification, isLoading, error, isError, data, status]);
+  }, [ isLoading, error, isError, data, status]);
 
   return (
     <div className={styles.notif_detail}>
