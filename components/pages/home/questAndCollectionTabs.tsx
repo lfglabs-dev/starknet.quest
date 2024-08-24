@@ -115,21 +115,21 @@ const QuestAndCollectionTabs: FunctionComponent<
 
   useEffect(() => {
     const fetchRelevantBoosts = async () => {
-      if(!completedQuestIds) return
+      if (!completedQuestIds) return;
       const relevantBoosts = boosts.filter(
         (b) =>
-          !((new Date().getTime() - b.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
-            b.expiry < Date.now()) ||
+          b.expiry > Date.now() ||
           b.quests.some((quest) => completedQuestIds.includes(quest))
       );
       setRelevantBoosts(relevantBoosts);
     };
-  
+
     fetchRelevantBoosts();
   }, [completedQuestIds]);
-  
+
   const completedBoostNumber = useMemo(
-    () => relevantBoosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
+    () =>
+      relevantBoosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
     [relevantBoosts, completedBoostIds]
   );
 
@@ -180,23 +180,23 @@ const QuestAndCollectionTabs: FunctionComponent<
               />
               {address && (
                 <>
-                {displayBoosts.length > 0 ? (    
-                <Tab
-                  disableRipple
-                  sx={{
-                    borderRadius: "10px",
-                    padding: "0px 12px 0px 12px",
-                    textTransform: "none",
-                    fontWeight: "600",
-                    fontSize: "12px",
-                    fontFamily: "Sora",
-                    minHeight: "32px",
-                  }}
-                  label={`To claim (${displayBoosts.length})`}
-                  {...a11yProps(2)}
-                /> 
-                ) : null }
-              </>
+                  {displayBoosts.length > 0 ? (
+                    <Tab
+                      disableRipple
+                      sx={{
+                        borderRadius: "10px",
+                        padding: "0px 12px 0px 12px",
+                        textTransform: "none",
+                        fontWeight: "600",
+                        fontSize: "12px",
+                        fontFamily: "Sora",
+                        minHeight: "32px",
+                      }}
+                      label={`To claim (${displayBoosts.length})`}
+                      {...a11yProps(2)}
+                    />
+                  ) : null}
+                </>
               )}
             </Tabs>
           </div>
@@ -245,9 +245,9 @@ const QuestAndCollectionTabs: FunctionComponent<
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${relevantBoosts.length} Boost${
-                            boosts.length > 1 ? "s" : ""
-                          } done`
+                          `${completedBoostNumber}/${
+                            relevantBoosts.length
+                          } Boost${boosts.length > 1 ? "s" : ""} done`
                         )}
                       </Typography>
                     </div>
