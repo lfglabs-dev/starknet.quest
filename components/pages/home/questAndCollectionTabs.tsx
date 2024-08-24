@@ -72,6 +72,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [categories]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [relevantBoosts, setRelevantBoosts] = useState<Boost[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
   const [displayBoosts, setDisplayBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
@@ -112,9 +113,24 @@ const QuestAndCollectionTabs: FunctionComponent<
     fetchBoosts();
   }, [address]);
 
+  useEffect(() => {
+    const fetchRelevantBoosts = async () => {
+      if(!completedQuestIds) return
+      const relevantBoosts = boosts.filter(
+        (b) =>
+          !((new Date().getTime() - b.expiry) / MILLISECONDS_PER_WEEK <= 3 &&
+            b.expiry < Date.now()) ||
+          b.quests.some((quest) => completedQuestIds.includes(quest))
+      );
+      setRelevantBoosts(relevantBoosts);
+    };
+  
+    fetchRelevantBoosts();
+  }, [completedQuestIds]);
+  
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds?.includes(b.id) && ((new Date().getTime() - b.expiry) / MILLISECONDS_PER_WEEK <= 3 && !b.hidden)).length,
-    [boosts, completedBoostIds]
+    () => relevantBoosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
+    [relevantBoosts, completedBoostIds]
   );
 
   return (
@@ -223,13 +239,13 @@ const QuestAndCollectionTabs: FunctionComponent<
                         type={TEXT_TYPE.BODY_DEFAULT}
                         className={`${styles.categoryInfosText} text-gray-200 normal-case`}
                       >
-                        {completedBoostNumber === displayBoosts.length ? (
+                        {completedBoostNumber === boosts.length ? (
                           <span className="flex">
                             <span className="mr-2">All boosts done</span>
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${displayBoosts.length} Boost${
+                          `${completedBoostNumber}/${relevantBoosts.length} Boost${
                             boosts.length > 1 ? "s" : ""
                           } done`
                         )}
