@@ -80,6 +80,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [categories]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [relevantBoosts, setRelevantBoosts] = useState<Boost[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
   const [displayBoosts, setDisplayBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
@@ -120,9 +121,24 @@ const QuestAndCollectionTabs: FunctionComponent<
     fetchBoosts();
   }, [address]);
 
+  useEffect(() => {
+    const fetchRelevantBoosts = async () => {
+      if (!completedQuestIds) return;
+      const relevantBoosts = boosts.filter(
+        (b) =>
+          b.expiry > Date.now() ||
+          b.quests.some((quest) => completedQuestIds.includes(quest))
+      );
+      setRelevantBoosts(relevantBoosts);
+    };
+
+    fetchRelevantBoosts();
+  }, [completedQuestIds]);
+
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
-    [boosts, completedBoostIds]
+    () =>
+      relevantBoosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
+    [relevantBoosts, completedBoostIds]
   );
 
   return (
@@ -239,9 +255,9 @@ const QuestAndCollectionTabs: FunctionComponent<
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${boosts.length} Boost${
-                            boosts.length > 1 ? "s" : ""
-                          } done`
+                          `${completedBoostNumber}/${
+                            relevantBoosts.length
+                          } Boost${boosts.length > 1 ? "s" : ""} done`
                         )}
                       </Typography>
                     </div>
