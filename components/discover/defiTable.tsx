@@ -155,6 +155,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "apr",
     header: () => (
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           APR
@@ -163,6 +164,7 @@ export const columns: ColumnDef<TableInfo>[] = [
           <DownIcon width="10" color="#a6a5a7" />
           <UpIcon width="10" color="#a6a5a7" />
         </div>
+      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -173,6 +175,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "volume",
     header: () => (
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           TVL
@@ -185,6 +188,7 @@ export const columns: ColumnDef<TableInfo>[] = [
             <UpIcon width="10" color="#a6a5a7" />
           </div>
         </div>
+      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -204,6 +208,7 @@ export const columns: ColumnDef<TableInfo>[] = [
   {
     accessorKey: "daily_rewards",
     header: () => (
+      <div className="flex items-center modified-cursor-pointer w-full h-full">
       <div className="flex flex-row gap-2 items-center justify-end">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Daily Rewards
@@ -212,6 +217,7 @@ export const columns: ColumnDef<TableInfo>[] = [
           <DownIcon width="10" color="#a6a5a7" />
           <UpIcon width="10" color="#a6a5a7" />
         </div>
+      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -362,10 +368,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
           <div
-            className="flex w-full xl:justify-end flex-grow-0 justify-center items-center cursor-pointer"
+            className="flex w-full xl:justify-end flex-grow-0 justify-center items-center"
             onClick={resetFilters}
           >
-            <div className="w-fit border-[1px] border-[#f4faff4d] px-4 rounded-md">
+            <div className="w-fit  modified-cursor-pointer border-[1px] border-[#f4faff4d] px-4 rounded-md">
               <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
                 Clear All
               </Typography>
@@ -382,16 +388,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                     return (
                       <TableHead
                         key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                        style={{
-                          cursor:
-                            header.id === "app" ||
-                            header.id === "title" ||
-                            header.id === "action"
-                              ? "initial"
-                              : "pointer",
-                        }}
-                      >
+                        onClick={header.column.getToggleSortingHandler()}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -410,6 +407,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() =>{
+                      window.open(
+                        getRedirectLink(row.getValue("app"), row.getValue("action")),
+                        "_blank"
+                      )
+                    }}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -430,13 +433,11 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         <div className="flex items-center justify-center space-x-2 pt-4">
           <div className="text-sm text-muted-foreground flex gap-8">
             <div
-              className="flex"
+              className="flex modified-cursor-pointer"
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
-              style={{
-                cursor: table.getCanPreviousPage() ? "pointer" : "not-allowed",
-              }}
+              style= {table.getCanPreviousPage() ? {} : {cursor:'not-allowed' } }
             >
               <CDNImage
                 src="/icons/chevronLeft.svg"
@@ -446,11 +447,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               />
             </div>
             <div
-              className="flex"
+              className="flex modified-cursor-pointer"
               onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-              style={{
-                cursor: table.getCanNextPage() ? "pointer" : "not-allowed",
-              }}
+              style= {table.getCanNextPage() ? {} : {cursor:'not-allowed' } }
             >
               <CDNImage
                 src="/icons/chevronRight.svg"

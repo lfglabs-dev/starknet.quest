@@ -22,12 +22,20 @@ export function useNotificationManager() {
     txHash: string,
     status: "error" | "pending" | "success"
   ) => {
-    const index = notifications.findIndex(
-      (notification) => notification.data.hash === txHash
-    );
-    notifications[index].data.status = status;
-    setNotifications(notifications);
-    console.log("notifications", notifications);
+    const updatedNotifications = notifications.map((notification) => {
+      if (notification.data.hash === txHash) {
+        return {
+          ...notification,
+          data: {
+            ...notification.data,
+            status,
+          },
+        };
+      }
+      return notification;
+    });
+  
+    setNotifications(updatedNotifications);
   };
 
   const checkTransactionStatus = async (txHash: string) => {

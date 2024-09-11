@@ -38,12 +38,20 @@ const QuestAndCollectionTabs: FunctionComponent<
 > = ({ quests, trendingQuests, categories }) => {
   const router = useRouter();
   const { address, isConnecting } = useAccount();
-  const [tabIndex, setTabIndex] = React.useState(0);
+
+  const [tabIndex, setTabIndex] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return parseInt(localStorage.getItem("activeTab") || "0", 10);
+    }
+    return 0;
+  });
+
   const { getBoostClaimStatus } = useBoost();
 
   const handleChangeTab = useCallback(
     (event: React.SyntheticEvent, newValue: number) => {
       setTabIndex(newValue);
+      localStorage.setItem("activeTab", newValue.toString());
     },
     []
   );
@@ -72,6 +80,7 @@ const QuestAndCollectionTabs: FunctionComponent<
   }, [categories]);
 
   const [boosts, setBoosts] = useState<Boost[]>([]);
+  const [relevantBoosts, setRelevantBoosts] = useState<Boost[]>([]);
   const [completedQuestIds, setCompletedQuestIds] = useState<CompletedQuests>();
   const [displayBoosts, setDisplayBoosts] = useState<Boost[]>([]);
   const { completedBoostIds } = useContext(QuestsContext);
@@ -112,9 +121,24 @@ const QuestAndCollectionTabs: FunctionComponent<
     fetchBoosts();
   }, [address]);
 
+  useEffect(() => {
+    const fetchRelevantBoosts = async () => {
+      if (!completedQuestIds) return;
+      const relevantBoosts = boosts.filter(
+        (b) =>
+          b.expiry > Date.now() ||
+          b.quests.some((quest) => completedQuestIds.includes(quest))
+      );
+      setRelevantBoosts(relevantBoosts);
+    };
+
+    fetchRelevantBoosts();
+  }, [completedQuestIds]);
+
   const completedBoostNumber = useMemo(
-    () => boosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
-    [boosts, completedBoostIds]
+    () =>
+      relevantBoosts?.filter((b) => completedBoostIds?.includes(b.id)).length,
+    [relevantBoosts, completedBoostIds]
   );
 
   return (
@@ -133,6 +157,7 @@ const QuestAndCollectionTabs: FunctionComponent<
               indicatorColor="secondary"
             >
               <Tab
+                className="modified-cursor-pointer"
                 disableRipple
                 sx={{
                   borderRadius: "10px",
@@ -147,6 +172,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                 {...a11yProps(0)}
               />
               <Tab
+                className="modified-cursor-pointer"
                 disableRipple
                 sx={{
                   borderRadius: "10px",
@@ -157,14 +183,11 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${
-                  filteredCategories.length + (boosts ? 1 : 0)
-                })`}
+                label={`Collections (${filteredCategories.length + (boosts ? 1 : 0)
+                  })`}
                 {...a11yProps(1)}
               />
-              {address && (
-                <>
-                {displayBoosts.length > 0 ? (    
+              {address && (displayBoosts.length > 0 ? (
                 <Tab
                   disableRipple
                   sx={{
@@ -178,9 +201,8 @@ const QuestAndCollectionTabs: FunctionComponent<
                   }}
                   label={`To claim (${displayBoosts.length})`}
                   {...a11yProps(2)}
-                /> 
-                ) : null }
-              </>
+                />
+              ) : null
               )}
             </Tabs>
           </div>
@@ -229,9 +251,8 @@ const QuestAndCollectionTabs: FunctionComponent<
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${boosts.length} Boost${
-                            boosts.length > 1 ? "s" : ""
-                          } done`
+                          `${completedBoostNumber}/${relevantBoosts.length
+                          } Boost${boosts.length > 1 ? "s" : ""} done`
                         )}
                       </Typography>
                     </div>
