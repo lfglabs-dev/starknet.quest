@@ -301,8 +301,8 @@ export default function Page({ params }: QuestIdProps) {
 
     // check which tasks have been added
     const addedTasks = filteredSteps.filter((step) => {
-      return (
-        !intialSteps.some((intialStep) => intialStep.data.id === step.data.id)
+      return !intialSteps.some(
+        (intialStep) => intialStep.data.id === step.data.id
       );
     });
 
@@ -439,79 +439,81 @@ export default function Page({ params }: QuestIdProps) {
   };
 
   const handleAddTasks = useCallback(async (addedTasks: StepMap[]) => {
-    const taskPromises = addedTasks.map(async (step) => {
-      if (step.type === "Quiz") {
-        await AdminService.createQuiz({
-          quest_id: questId.current,
-          name: step.data.quiz_name,
-          desc: step.data.quiz_desc,
-          intro: step.data.quiz_intro,
-          cta: step.data.quiz_cta,
-          help_link: step.data.quiz_help_link,
-        });
-        for (const question of step.data.questions) {
-          try {
-            await AdminService.createQuizQuestion({
-              quiz_id: step.data.quiz_name,
-              question: question.question,
-              options: question.options,
-              correct_answers: question.correct_answers,
-            });
-          } catch (error) {
-            console.error("Error executing promise:", error);
+    for (const step of addedTasks) {
+      try {
+        if (step.type === "Quiz") {
+          await AdminService.createQuiz({
+            quest_id: questId.current,
+            name: step.data.quiz_name,
+            desc: step.data.quiz_desc,
+            intro: step.data.quiz_intro,
+            cta: step.data.quiz_cta,
+            help_link: step.data.quiz_help_link,
+          });
+          for (const question of step.data.questions) {
+            try {
+              await AdminService.createQuizQuestion({
+                quiz_id: step.data.quiz_name,
+                question: question.question,
+                options: question.options,
+                correct_answers: question.correct_answers,
+              });
+            } catch (error) {
+              console.error("Error executing promise:", error);
+            }
           }
         }
+        if (step.type === "TwitterFw") {
+          await AdminService.createTwitterFw({
+            quest_id: questId.current,
+            name: step.data.twfw_name,
+            desc: step.data.twfw_desc,
+            username: step.data.twfw_username,
+          });
+        } else if (step.type === "TwitterRw") {
+          await AdminService.createTwitterRw({
+            quest_id: questId.current,
+            name: step.data.twrw_name,
+            desc: step.data.twrw_desc,
+            post_link: step.data.twrw_post_link,
+          });
+        } else if (step.type === "Discord") {
+          await AdminService.createDiscord({
+            quest_id: questId.current,
+            name: step.data.dc_name,
+            desc: step.data.dc_desc,
+            invite_link: step.data.dc_invite_link,
+            guild_id: step.data.dc_guild_id,
+          });
+        } else if (step.type === "Custom") {
+          await AdminService.createCustom({
+            quest_id: questId.current,
+            name: step.data.custom_name,
+            desc: step.data.custom_desc,
+            cta: step.data.custom_cta,
+            href: step.data.custom_href,
+            api: step.data.custom_api,
+          });
+        } else if (step.type === "Domain") {
+          await AdminService.createDomain({
+            quest_id: questId.current,
+            name: step.data.domain_name,
+            desc: step.data.domain_desc,
+          });
+        } else if (step.type === "Balance") {
+          await AdminService.createBalance({
+            quest_id: questId.current,
+            name: step.data.balance_name,
+            desc: step.data.balance_desc,
+            contracts: step.data.balance_contracts,
+            cta: step.data.balance_cta,
+            href: step.data.balance_href,
+          });
+        }
+      } catch (error) {
+        console.error(`Error adding task of type ${step.type}:`, error);
       }
-      if (step.type === "TwitterFw") {
-        await AdminService.createTwitterFw({
-          quest_id: questId.current,
-          name: step.data.twfw_name,
-          desc: step.data.twfw_desc,
-          username: step.data.twfw_username,
-        });
-      } else if (step.type === "TwitterRw") {
-        await AdminService.createTwitterRw({
-          quest_id: questId.current,
-          name: step.data.twrw_name,
-          desc: step.data.twrw_desc,
-          post_link: step.data.twrw_post_link,
-        });
-      } else if (step.type === "Discord") {
-        await AdminService.createDiscord({
-          quest_id: questId.current,
-          name: step.data.dc_name,
-          desc: step.data.dc_desc,
-          invite_link: step.data.dc_invite_link,
-          guild_id: step.data.dc_guild_id,
-        });
-      } else if (step.type === "Custom") {
-        await AdminService.createCustom({
-          quest_id: questId.current,
-          name: step.data.custom_name,
-          desc: step.data.custom_desc,
-          cta: step.data.custom_cta,
-          href: step.data.custom_href,
-          api: step.data.custom_api,
-        });
-      } else if (step.type === "Domain") {
-        await AdminService.createDomain({
-          quest_id: questId.current,
-          name: step.data.domain_name,
-          desc: step.data.domain_desc,
-        });
-      } else if (step.type === "Balance") {
-        await AdminService.createBalance({
-          quest_id: questId.current,
-          name: step.data.balance_name,
-          desc: step.data.balance_desc,
-          contracts: step.data.balance_contracts,
-          cta: step.data.balance_cta,
-          href: step.data.balance_href,
-        });
-      }
-    });
-
-    await Promise.all(taskPromises);
+    }
   }, []);
 
   const handleDeleteTasks = useCallback(async (removedTasks: StepMap[]) => {
