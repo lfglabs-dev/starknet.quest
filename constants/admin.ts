@@ -18,6 +18,7 @@ export const TASK_OPTIONS = [
   "Custom",
   "Domain",
   "Balance",
+  "Contract",
 ];
 
 export const TWITTER_OPTIONS = {
@@ -115,6 +116,14 @@ export const BalanceInput = {
   balance_href: "",
 };
 
+export const ContractInput = {
+  contract_name: "",
+  contract_desc: "",
+  contract_href: "",
+  contract_cta: "",
+  calls: "",
+};
+
 export const getDefaultValues = (type: TaskType) => {
   if (type === "Quiz") return QuizDefaultInput;
   if (type === "TwitterFw") return TwitterFwInput;
@@ -122,6 +131,8 @@ export const getDefaultValues = (type: TaskType) => {
   if (type === "Discord") return DiscordInput;
   if (type === "Custom") return CustomInput;
   if (type === "Domain") return DomainInput;
+  if (type === "Balance") return BalanceInput;
+  if (type === "Contract") return ContractInput;
   if (type === "None") return {};
 
   return QuizDefaultInput;

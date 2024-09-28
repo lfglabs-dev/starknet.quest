@@ -15,6 +15,7 @@ import DomainStep from "../taskSteps/domainStep";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import BalanceStep from "../taskSteps/balanceStep";
+import ContractStep from "../taskSteps/contractStep";
 
 type TaskDetailsFormProps = {
   steps: StepMap[];
@@ -99,6 +100,14 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
     } else if (step?.type === "Custom") {
       return (
         <CustomStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step?.type === "Contract") {
+      return (
+        <ContractStep
           handleTasksInputChange={handleTasksInputChange}
           index={currentTask}
           step={step}

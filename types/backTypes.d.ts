@@ -402,6 +402,24 @@ export type UpdateBalance = {
   href?: string;
 };
 
+export type CreateContract = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  href: string;
+  cta: string;
+  calls: object; 
+};
+
+export type UpdateContract = {
+  id: number;
+  name?: string;
+  desc?: string;
+  href?: string;
+  cta?: string;
+  calls?: object;
+};
+
 export type UpdateCustom = {
   id: number;
   name?: string;
