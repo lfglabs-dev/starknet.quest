@@ -51,7 +51,7 @@ const ContractStep: FunctionComponent<ContractStepProps> = ({
         value={step.data.calls || ""}
         name="calls"
         label="Calls (JSON)"
-        placeholder='e.g., {"function": "transfer", "params": {"to": "0x...", "value": "1000"}}'
+        placeholder='e.g.: [{ "contract": "0x...", "entry_point": "transfer", "call_data": ["0x..."], "regex": "..." }]'
         multiline={4}
       />
     </div>

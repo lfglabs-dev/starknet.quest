@@ -22,6 +22,8 @@ import {
   AddUser,
   CreateBalance,
   UpdateBalance,
+  CreateContract,
+  UpdateContract,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -354,6 +356,38 @@ const updateBalance = async (params: UpdateBalance) => {
   }
 };
 
+const createContract = async (params: CreateContract) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/contract/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error creating contract task", err);
+  }
+};
+
+const updateContract = async (params: UpdateContract) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/contract/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (error) {
+    console.log("Error updating contract task", error);
+  }
+};
+
 const createQuiz = async (params: CreateQuiz) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/quiz/create`, {
@@ -515,6 +549,8 @@ export const AdminService = {
   createCustom,
   createBalance,
   updateBalance,
+  createContract,
+  updateContract,
   createQuiz,
   createQuizQuestion,
   deleteTask,

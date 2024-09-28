@@ -48,6 +48,7 @@ type UserTask = {
   task_type: string | null;
   discord_guild_id: string | null;
   contracts: string[] | null;
+  calls: object | null;
 };
 
 type UserDocument = {

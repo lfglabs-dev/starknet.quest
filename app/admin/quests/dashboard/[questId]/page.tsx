@@ -216,6 +216,18 @@ export default function Page({ params }: QuestIdProps) {
             balance_href: task.href,
           },
         };
+      } else if (task.task_type === "contract") {
+        return {
+          type: "Contract",
+          data: {
+            id: task.id,
+            contract_name: task.name,
+            contract_desc: task.desc,
+            contract_href: task.href,
+            contract_cta: task.cta,
+            contract_calls: task.calls,
+          },
+        };
       }
     });
 
@@ -510,6 +522,15 @@ export default function Page({ params }: QuestIdProps) {
             cta: step.data.balance_cta,
             href: step.data.balance_href,
           });
+        } else if (step.type === "Contract") {
+          await AdminService.createContract({
+            quest_id: questId.current,
+            name: step.data.contract_name,
+            desc: step.data.contract_desc,
+            href: step.data.contract_href,
+            cta: step.data.contract_cta,
+            calls: step.data.calls,
+          });
         }
       } catch (error) {
         console.error(`Error adding task of type ${step.type}:`, error);
@@ -607,6 +628,15 @@ export default function Page({ params }: QuestIdProps) {
           contracts: step.data.balance_contracts,
           cta: step.data.balance_cta,
           href: step.data.balance_href,
+        });
+      } else if (step.type === "Contract") {
+        await AdminService.updateContract({
+          id: step.data.id,
+          name: step.data.contract_name,
+          desc: step.data.contract_desc,
+          href: step.data.contract_href,
+          cta: step.data.contract_cta,
+          calls: step.data.calls,
         });
       }
     });
