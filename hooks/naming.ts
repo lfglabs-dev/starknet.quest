@@ -17,15 +17,22 @@ export function useDomainFromAddress(
 
   useEffect(() => {
     if (!address) return;
+    console.log("============================");
     const fetchStarkName = async () => {
       const domain = await starknetIdNavigator
         ?.getStarkName(address.toString())
         .catch((err) => {
+          console.log("err", err);
           setError(err);
         });
+      console.error("aaa", domain);
       setDomain(domain as string);
     };
     fetchStarkName();
+    const interval = setInterval(() => {
+      fetchStarkName();
+    }, 1000);
+    return () => clearInterval(interval);
   }, [starknetIdNavigator, address]);
 
   return { domain, error };
