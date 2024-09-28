@@ -517,32 +517,30 @@ export default function Page({ params }: QuestIdProps) {
   }, []);
 
   const handleDeleteTasks = useCallback(async (removedTasks: StepMap[]) => {
-    for (const step of removedTasks) {
-      try {
-        await AdminService.deleteTask({
-          id: step.data.id,
-        });
-      } catch (error) {
-        console.error("Error deleting task:", error);
-      }
-    }
+    const taskPromises = removedTasks.map(async (step) => {
+      await AdminService.deleteTask({
+        id: step.data.id,
+      });
+    });
+
+    await Promise.all(taskPromises);
   }, []);
 
   const handleUpdateTasks = useCallback(async (updatedSteps: StepMap[]) => {
-    for (const step of updatedSteps) {
+    const taskPromises = updatedSteps.map(async (step) => {
       if (step.type === "Quiz") {
-        try {
-          await AdminService.updateQuiz({
-            id: step.data.id,
-            name: step.data.quiz_name,
-            desc: step.data.quiz_desc,
-            intro: step.data.quiz_intro,
-            cta: step.data.quiz_cta,
-            help_link: step.data.quiz_help_link,
-            quiz_id: step.data.quiz_id,
-          });
+        await AdminService.updateQuiz({
+          id: step.data.id,
+          name: step.data.quiz_name,
+          desc: step.data.quiz_desc,
+          intro: step.data.quiz_intro,
+          cta: step.data.quiz_cta,
+          help_link: step.data.quiz_help_link,
+          quiz_id: step.data.quiz_id,
+        });
 
-          for (const question of step.data.questions) {
+        for (const question of step.data.questions) {
+          try {
             if (question.id === 0) {
               await AdminService.createQuizQuestion({
                 quiz_id: step.data.quiz_id,
@@ -550,73 +548,69 @@ export default function Page({ params }: QuestIdProps) {
                 options: question.options,
                 correct_answers: question.correct_answers,
               });
-            } else {
-              await AdminService.updateQuizQuestion({
-                id: question.id,
-                question: question.question,
-                options: question.options,
-                correct_answers: question.correct_answers,
-                quiz_id: step.data.quiz_id,
-              });
             }
+            await AdminService.updateQuizQuestion({
+              id: question.id,
+              question: question.question,
+              options: question.options,
+              correct_answers: question.correct_answers,
+              quiz_id: step.data.quiz_id,
+            });
+          } catch (error) {
+            console.error("Error executing promise:", error);
           }
-        } catch (error) {
-          console.error("Error updating quiz:", error);
         }
       }
+      if (step.type === "TwitterFw") {
+        await AdminService.updateTwitterFw({
+          id: step.data.id,
+          name: step.data.twfw_name,
+          desc: step.data.twfw_desc,
+          username: step.data.twfw_username,
+        });
+      } else if (step.type === "TwitterRw") {
+        await AdminService.updateTwitterRw({
+          id: step.data.id,
+          name: step.data.twrw_name,
+          desc: step.data.twrw_desc,
+          post_link: step.data.twrw_post_link,
+        });
+      } else if (step.type === "Discord") {
+        await AdminService.updateDiscord({
+          id: step.data.id,
+          name: step.data.dc_name,
+          desc: step.data.dc_desc,
+          invite_link: step.data.dc_invite_link,
+          guild_id: step.data.dc_guild_id,
+        });
+      } else if (step.type === "Custom") {
+        await AdminService.updateCustom({
+          id: step.data.id,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+          cta: step.data.custom_cta,
+          href: step.data.custom_href,
+          api: step.data.custom_api,
+        });
+      } else if (step.type === "Domain") {
+        await AdminService.updateDomain({
+          id: step.data.id,
+          name: step.data.custom_name,
+          desc: step.data.custom_desc,
+        });
+      } else if (step.type === "Balance") {
+        await AdminService.updateBalance({
+          id: step.data.id,
+          name: step.data.balance_name,
+          desc: step.data.balance_desc,
+          contracts: step.data.balance_contracts,
+          cta: step.data.balance_cta,
+          href: step.data.balance_href,
+        });
+      }
+    });
 
-      try {
-        if (step.type === "TwitterFw") {
-          await AdminService.updateTwitterFw({
-            id: step.data.id,
-            name: step.data.twfw_name,
-            desc: step.data.twfw_desc,
-            username: step.data.twfw_username,
-          });
-        } else if (step.type === "TwitterRw") {
-          await AdminService.updateTwitterRw({
-            id: step.data.id,
-            name: step.data.twrw_name,
-            desc: step.data.twrw_desc,
-            post_link: step.data.twrw_post_link,
-          });
-        } else if (step.type === "Discord") {
-          await AdminService.updateDiscord({
-            id: step.data.id,
-            name: step.data.dc_name,
-            desc: step.data.dc_desc,
-            invite_link: step.data.dc_invite_link,
-            guild_id: step.data.dc_guild_id,
-          });
-        } else if (step.type === "Custom") {
-          await AdminService.updateCustom({
-            id: step.data.id,
-            name: step.data.custom_name,
-            desc: step.data.custom_desc,
-            cta: step.data.custom_cta,
-            href: step.data.custom_href,
-            api: step.data.custom_api,
-          });
-        } else if (step.type === "Domain") {
-          await AdminService.updateDomain({
-            id: step.data.id,
-            name: step.data.domain_name,
-            desc: step.data.domain_desc,
-          });
-        } else if (step.type === "Balance") {
-          await AdminService.updateBalance({
-            id: step.data.id,
-            name: step.data.balance_name,
-            desc: step.data.balance_desc,
-            contracts: step.data.balance_contracts,
-            cta: step.data.balance_cta,
-            href: step.data.balance_href,
-          });
-        }
-      } catch (error) {
-        console.error("Error updating task:", error);
-      }
-    }
+    await Promise.all(taskPromises);
   }, []);
 
   const isButtonDisabled = useMemo(() => {
