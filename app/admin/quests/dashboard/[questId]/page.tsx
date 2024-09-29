@@ -216,7 +216,7 @@ export default function Page({ params }: QuestIdProps) {
             balance_href: task.href,
           },
         };
-      } else if(task.task_type === "customapi"){
+      } else if(task.task_type === "custom_api"){
         return {
           type: "CustomApi",
           data: {
@@ -632,6 +632,16 @@ export default function Page({ params }: QuestIdProps) {
           contracts: step.data.balance_contracts,
           cta: step.data.balance_cta,
           href: step.data.balance_href,
+        });
+      } else if (step.type === "CustomApi") {
+        await AdminService.updateCustomApi({
+          id: step.data.id,
+          name: step.data.api_name,
+          desc: step.data.api_desc,
+          api_url: step.data.api_url,
+          cta: step.data.api_cta,
+          href: step.data.api_href,
+          regex: step.data.api_regex,
         });
       }
     });
