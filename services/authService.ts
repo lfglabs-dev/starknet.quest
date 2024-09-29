@@ -22,6 +22,8 @@ import {
   AddUser,
   CreateBalance,
   UpdateBalance,
+  CreateCustomApi,
+  UpdateCustomApi,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -354,6 +356,38 @@ const updateBalance = async (params: UpdateBalance) => {
   }
 };
 
+const createCustomApi = async (params: CreateCustomApi) => {
+  try{
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while creating custom API task", err);
+  }
+}
+
+const updateCustomApi = async (params: UpdateCustomApi) => {
+  try{
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while updating custom API task", err);
+  }
+}
+
 const createQuiz = async (params: CreateQuiz) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/quiz/create`, {
@@ -532,6 +566,8 @@ export const AdminService = {
   getQuizDetails,
   updateDomain,
   createDomain,
+  createCustomApi,
+  updateCustomApi,
   createNftUri,
   updateNftUri,
   addUser,

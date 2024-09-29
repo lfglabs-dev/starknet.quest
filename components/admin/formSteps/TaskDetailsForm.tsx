@@ -15,6 +15,7 @@ import DomainStep from "../taskSteps/domainStep";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import BalanceStep from "../taskSteps/balanceStep";
+import CustomApiStep from "../taskSteps/customApiStep"
 
 type TaskDetailsFormProps = {
   steps: StepMap[];
@@ -104,6 +105,14 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
+    } else if(step?.type === "CustomApi"){
+      return(
+        <CustomApiStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
     }
   };
   return (
@@ -167,12 +176,10 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
                   className="py-3 px-5 rounded-xl w-fit"
                   style={{
                     cursor: "pointer",
-                    backgroundColor: steps[currentTask]?.type?.includes(
-                      category
-                    )
+                    backgroundColor: steps[currentTask]?.type === category
                       ? "#ffffff"
                       : "#29282B",
-                    color: steps[currentTask]?.type?.includes(category)
+                    color: steps[currentTask]?.type === category
                       ? "#29282B"
                       : "#ffffff",
                   }}
