@@ -40,6 +40,8 @@ type UserTask = {
   desc: string;
   href: string;
   cta?: string;
+  url?: string;
+  regex?: string;
   verify_endpoint: string;
   verify_endpoint_type: string;
   verify_redirect: string | null;
@@ -469,3 +471,23 @@ export type AddUser = {
   user: string;
   password: string;
 };
+
+export type CreateCustomApi =  {
+  quest_id: number;
+  name: string;
+  desc: string;
+  href: string;
+  cta: string;
+  url: string;
+  regex: string;
+}
+
+export type UpdateCustomApi =  {
+  id: number;
+  name?: string;
+  desc?: string;
+  href?: string;
+  cta?: string;
+  url?: string;
+  regex?: string;
+}

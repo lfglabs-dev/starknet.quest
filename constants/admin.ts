@@ -18,6 +18,7 @@ export const TASK_OPTIONS = [
   "Custom",
   "Domain",
   "Balance",
+  "Custom Api"
 ];
 
 export const TWITTER_OPTIONS = {
@@ -115,6 +116,15 @@ export const BalanceInput = {
   balance_href: "",
 };
 
+export const CustomApiInput = {
+  api_name: "",
+  api_dec: "",
+  api_href: "",
+  api_url: "",
+  api_cta: "",
+  api_regex: "",
+}
+
 export const getDefaultValues = (type: TaskType) => {
   if (type === "Quiz") return QuizDefaultInput;
   if (type === "TwitterFw") return TwitterFwInput;
@@ -122,6 +132,7 @@ export const getDefaultValues = (type: TaskType) => {
   if (type === "Discord") return DiscordInput;
   if (type === "Custom") return CustomInput;
   if (type === "Domain") return DomainInput;
+  if (type === "CustomApi") return CustomApiInput;
   if (type === "None") return {};
 
   return QuizDefaultInput;

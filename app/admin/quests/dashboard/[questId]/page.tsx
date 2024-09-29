@@ -46,6 +46,7 @@ type StepMap =
   | { type: "Custom"; data: WithNewField<CustomInputType, "id", number> }
   | { type: "Domain"; data: WithNewField<DomainInputType, "id", number> }
   | { type: "Balance"; data: WithNewField<BalanceInputType, "id", number> }
+  | { type: "CustomApi"; data: WithNewField<CustomApiInputType, "id", number> }
   | { type: "None"; data: object };
 
 export default function Page({ params }: QuestIdProps) {
@@ -215,7 +216,21 @@ export default function Page({ params }: QuestIdProps) {
             balance_href: task.href,
           },
         };
+      } else if(task.task_type === "customapi"){
+        return {
+          type: "CustomApi",
+          data: {
+            id: task.id,
+            api_name: task.name,
+            api_desc: task.desc,
+            api_href: task.href,
+            api_url: task.url,
+            api_cta: task.cta,
+            api_regex: task.regex
+          }
+        }
       }
+
     });
 
     const res = await Promise.all(taskPromises);
@@ -509,6 +524,17 @@ export default function Page({ params }: QuestIdProps) {
             cta: step.data.balance_cta,
             href: step.data.balance_href,
           });
+        }
+        else if(step.type === "CustomApi"){
+          await AdminService.createCustomApi({
+            quest_id: questId.current,
+            name: step.data.api_name,
+            desc: step.data.api_desc,
+            url: step.data.api_url,
+            regex: step.data.api_regex,
+            href: step.data.api_href,
+            cta: step.data.api_cta,
+          })
         }
       } catch (error) {
         console.error(`Error adding task of type ${step.type}:`, error);
