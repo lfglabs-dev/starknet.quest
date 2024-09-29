@@ -176,12 +176,10 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
                   className="py-3 px-5 rounded-xl w-fit"
                   style={{
                     cursor: "pointer",
-                    backgroundColor: steps[currentTask]?.type?.includes(
-                      category
-                    )
+                    backgroundColor: steps[currentTask]?.type === category
                       ? "#ffffff"
                       : "#29282B",
-                    color: steps[currentTask]?.type?.includes(category)
+                    color: steps[currentTask]?.type === category
                       ? "#29282B"
                       : "#ffffff",
                   }}

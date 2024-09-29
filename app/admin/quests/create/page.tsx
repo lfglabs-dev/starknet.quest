@@ -369,6 +369,20 @@ export default function Page() {
         } catch (error) {
           console.error("Error while creating balance task:", error);
         }
+      }else if (step.type === "CustomApi") {
+        try {
+          await AdminService.createCustomApi({
+            quest_id: questId,
+            name: step.data.api_name,
+            desc: step.data.api_desc,
+            api_url: step.data.api_url,
+            cta: step.data.api_cta,
+            href: step.data.api_href,
+            regex: step.data.api_regex
+          });
+        } catch (error) {
+          console.error("Error while creating balance task:", error);
+        }
       }
     });
     setButtonLoading(false);

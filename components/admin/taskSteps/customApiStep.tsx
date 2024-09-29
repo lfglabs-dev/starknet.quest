@@ -41,17 +41,17 @@ const CustomApiStep: FunctionComponent<CustomApiStepProps> = ({
         />
         <TextInput
             onChange={(e) => handleTasksInputChange(e, index)}
-            value={step.data.api_url}
-            name="api_url"
-            label="Custom URL"
-            placeholder="Custom URL"
-        />
-        <TextInput
-            onChange={(e) => handleTasksInputChange(e, index)}
             value={step.data.api_cta}
             name="api_cta"
             label="CTA"
             placeholder="CTA"
+        />
+        <TextInput
+            onChange={(e) => handleTasksInputChange(e, index)}
+            value={step.data.api_url}
+            name="api_url"
+            label="API URL"
+            placeholder="Custom URL"
         />
         <TextInput
             onChange={(e) => handleTasksInputChange(e, index)}
