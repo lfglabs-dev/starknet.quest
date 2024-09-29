@@ -118,7 +118,7 @@ export const BalanceInput = {
 
 export const CustomApiInput = {
   api_name: "",
-  api_dec: "",
+  api_desc: "",
   api_href: "",
   api_url: "",
   api_cta: "",

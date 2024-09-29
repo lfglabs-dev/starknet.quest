@@ -478,8 +478,8 @@ export type CreateCustomApi =  {
   desc: string;
   href: string;
   cta: string;
-  url: string;
-  regex: string;
+  url?: string;
+  regex?: string;
 }
 
 export type UpdateCustomApi =  {

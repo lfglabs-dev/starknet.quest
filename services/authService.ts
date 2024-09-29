@@ -356,9 +356,9 @@ const updateBalance = async (params: UpdateBalance) => {
   }
 };
 
-const createCustomApi = async(params: CreateCustomApi) => {
+const createCustomApi = async (params: CreateCustomApi) => {
   try{
-    const response = await fetch(`${baseurl}/admin/tasks/balance/create`, {
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -368,13 +368,13 @@ const createCustomApi = async(params: CreateCustomApi) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while creating custom api task", err);
+    console.log("Error while creating custom API task", err);
   }
 }
 
-const updateCustomApi = async(params: UpdateCustomApi) => {
+const updateCustomApi = async (params: UpdateCustomApi) => {
   try{
-    const response = await fetch(`${baseurl}/admin/tasks/balance/update`, {
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -384,7 +384,7 @@ const updateCustomApi = async(params: UpdateCustomApi) => {
     });
     return await response.json();
   } catch (err) {
-    console.log("Error while updating custom api task", err);
+    console.log("Error while updating custom API task", err);
   }
 }
 
