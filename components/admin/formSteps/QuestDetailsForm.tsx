@@ -130,7 +130,6 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           {CATEGORY_OPTIONS.map((category) => (
             <div
               onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 setQuestInput((prev: any) => ({ ...prev, category }));
               }}
               key={"category" + category}
