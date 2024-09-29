@@ -529,11 +529,11 @@ export default function Page({ params }: QuestIdProps) {
             desc: step.data.contract_desc,
             href: step.data.contract_href,
             cta: step.data.contract_cta,
-            calls: step.data.calls,
+            calls: JSON.parse(step.data.contract_calls),
           });
         }
       } catch (error) {
-        console.error(`Error adding task of type ${step.type}:`, error);
+        showNotification(`Error adding ${step.type} task: ${error}`, "error");
       }
     }
   }, []);
@@ -630,14 +630,18 @@ export default function Page({ params }: QuestIdProps) {
           href: step.data.balance_href,
         });
       } else if (step.type === "Contract") {
-        await AdminService.updateContract({
-          id: step.data.id,
-          name: step.data.contract_name,
-          desc: step.data.contract_desc,
-          href: step.data.contract_href,
-          cta: step.data.contract_cta,
-          calls: step.data.calls,
-        });
+        try {
+          await AdminService.updateContract({
+            id: step.data.id,
+            name: step.data.contract_name,
+            desc: step.data.contract_desc,
+            href: step.data.contract_href,
+            cta: step.data.contract_cta,
+            calls: JSON.parse(step.data.contract_calls),
+          });
+        } catch (error) {
+          showNotification(`Error adding ${step.type} task: ${error}`, "error");
+        }
       }
     });
 
@@ -777,7 +781,7 @@ export default function Page({ params }: QuestIdProps) {
         <AdminQuestDetails
           quest={questData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => {}}
+          setShowDomainPopup={() => { }}
           hasRootDomain={false}
           rewardButtonTitle={questData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
