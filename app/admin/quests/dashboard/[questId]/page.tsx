@@ -640,7 +640,7 @@ export default function Page({ params }: QuestIdProps) {
             calls: JSON.parse(step.data.contract_calls),
           });
         } catch (error) {
-          showNotification(`Error adding ${step.type} task: ${error}`, "error");
+          showNotification(`Error updating ${step.type} task: ${error}`, "error");
         }
       }
     });
