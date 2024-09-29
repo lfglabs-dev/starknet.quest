@@ -35,6 +35,15 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
   submitButtonDisabled,
 }) => {
   const currentUser = getUserFromJwt();
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setQuestInput((prev: any) => ({
+      ...prev,
+      [name]: checked, 
+    }));
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-1">
@@ -130,7 +139,6 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           {CATEGORY_OPTIONS.map((category) => (
             <div
               onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 setQuestInput((prev: any) => ({ ...prev, category }));
               }}
               key={"category" + category}
@@ -150,6 +158,24 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
           Choose a category that best fits the quest.
         </Typography>
       </div>
+
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="disabled"
+            checked={questInput.disabled ?? false}
+            onChange={handleCheckboxChange} 
+            id="disabled-checkbox"
+            className={styles.customCheckbox}
+          />
+          <label htmlFor="disabled-checkbox">Disabled</label>
+        </div>
+        <Typography type={TEXT_TYPE.BODY_MICRO} color="textGray">
+          Check this box to disable the quest.
+        </Typography>
+      </div>
+
       <div className="w-full sm:w-fit">
         <Button onClick={onSubmit} disabled={submitButtonDisabled}>
           <p>Save Changes</p>
