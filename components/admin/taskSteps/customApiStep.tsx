@@ -64,3 +64,5 @@ const CustomApiStep: FunctionComponent<CustomApiStepProps> = ({
     </div>
     );
 }
+
+export default CustomApiStep;

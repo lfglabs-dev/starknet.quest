@@ -224,7 +224,7 @@ export default function Page({ params }: QuestIdProps) {
             api_name: task.name,
             api_desc: task.desc,
             api_href: task.href,
-            api_url: task.url,
+            api_url: task.api_url,
             api_cta: task.cta,
             api_regex: task.regex
           }
@@ -530,7 +530,7 @@ export default function Page({ params }: QuestIdProps) {
             quest_id: questId.current,
             name: step.data.api_name,
             desc: step.data.api_desc,
-            url: step.data.api_url,
+            api_url: step.data.api_url,
             regex: step.data.api_regex,
             href: step.data.api_href,
             cta: step.data.api_cta,

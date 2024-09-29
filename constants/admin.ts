@@ -18,7 +18,7 @@ export const TASK_OPTIONS = [
   "Custom",
   "Domain",
   "Balance",
-  "Custom Api"
+  "CustomApi"
 ];
 
 export const TWITTER_OPTIONS = {

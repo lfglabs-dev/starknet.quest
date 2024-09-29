@@ -40,7 +40,7 @@ type UserTask = {
   desc: string;
   href: string;
   cta?: string;
-  url?: string;
+  api_url?: string;
   regex?: string;
   verify_endpoint: string;
   verify_endpoint_type: string;
@@ -478,7 +478,7 @@ export type CreateCustomApi =  {
   desc: string;
   href: string;
   cta: string;
-  url?: string;
+  api_url?: string;
   regex?: string;
 }
 
@@ -488,6 +488,6 @@ export type UpdateCustomApi =  {
   desc?: string;
   href?: string;
   cta?: string;
-  url?: string;
+  api_url?: string;
   regex?: string;
 }
