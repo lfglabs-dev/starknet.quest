@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import React, { FunctionComponent } from "react";
 import styles from "@styles/components/progressBar.module.css";
 import CheckMarkIcon from "@components/UI/iconsComponents/icons/checkMarkIcon";
 
@@ -11,48 +11,32 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
   doneSteps,
   totalSteps,
 }) => {
-  const container =
-    totalSteps === 1
-      ? `${styles.container} ${styles.single_step}`
-      : styles.container;
-      
-  const calculateRightDistance = useCallback(
-    (doneSteps: number, totalSteps: number) => {
-      return doneSteps >= totalSteps
-      ? 100
-      : `${((totalSteps - doneSteps - 1) / (totalSteps - 1)) * 99}%`;
-     },
-   []
-  );
-
   return (
-    <div className={container}>
-      {Array.from(Array(totalSteps).keys()).map((_, index) => {
-        return index + 1 <= doneSteps ? (
-          <div
-            key={"progressbar-" + index}
-            className={`${styles.checked_milestone} relative`}
-          >
-            <CheckMarkIcon width="20" />
-          </div>
-        ) : (
-          <div
-            key={"progressbar-empty-" + index}
-            className={styles.empty_milestone}
-          >
-            {index + 1}
-          </div>
-        );
-      })}
-      <div className={styles.base_line} />
-      {totalSteps > 0 ? (
+    <div className={styles.progressContainer}>
+      <div className={styles.baseLine} />
+      <div
+        className={styles.coloredLine}
+        style={{
+          width: `calc(${(doneSteps / (totalSteps - 1)) * 100}% - 16px)`,
+        }}
+      />
+      {Array.from({ length: totalSteps }).map((_, index) => (
         <div
-          className={styles.colored_line}
+          key={index}
+          className={styles.milestone}
           style={{
-            right: calculateRightDistance(doneSteps, totalSteps),
+            left: `calc(${(index / (totalSteps - 1)) * 100}%)`,
           }}
-        />
-      ) : null}
+        >
+          {index < doneSteps ? (
+            <div className={styles.checkedMilestone}>
+              <CheckMarkIcon width="20" />
+            </div>
+          ) : (
+            <div className={styles.emptyMilestone}>{index + 1}</div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
