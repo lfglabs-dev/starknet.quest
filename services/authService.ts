@@ -24,6 +24,8 @@ import {
   UpdateBalance,
   CreateContract,
   UpdateContract,
+  CreateCustomApi,
+  UpdateCustomApi,
 } from "../types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -359,6 +361,9 @@ const updateBalance = async (params: UpdateBalance) => {
 const createContract = async (params: CreateContract) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/contract/create`, {
+const createCustomApi = async (params: CreateCustomApi) => {
+  try{
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -375,6 +380,14 @@ const createContract = async (params: CreateContract) => {
 const updateContract = async (params: UpdateContract) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/contract/update`, {
+=======
+    console.log("Error while creating custom API task", err);
+  }
+}
+
+const updateCustomApi = async (params: UpdateCustomApi) => {
+  try{
+    const response = await fetch(`${baseurl}/admin/tasks/custom_api/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -387,6 +400,10 @@ const updateContract = async (params: UpdateContract) => {
     console.log("Error updating contract task", error);
   }
 };
+  } catch (err) {
+    console.log("Error while updating custom API task", err);
+  }
+}
 
 const createQuiz = async (params: CreateQuiz) => {
   try {
@@ -568,6 +585,8 @@ export const AdminService = {
   getQuizDetails,
   updateDomain,
   createDomain,
+  createCustomApi,
+  updateCustomApi,
   createNftUri,
   updateNftUri,
   addUser,

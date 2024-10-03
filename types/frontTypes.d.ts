@@ -317,6 +317,7 @@ type StepMap =
   | { type: "Domain"; data: DomainInputType }
   | { type: "Balance"; data: BalanceInputType }
   | { type: "Contract"; data: ContractInputType };
+  | { type: "CustomApi"; data: CustomApiInputType };
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
@@ -326,6 +327,7 @@ type TwitterFwInputType = typeof TwitterFwInput;
 type TwitterRwInputType = typeof TwitterRwInput;
 type BalanceInputType = typeof BalanceInput;
 type ContractInputType = typeof ContractInput;
+type CustomApiInputType = typeof CustomApiInput;
 type TaskType =
   | "Quiz"
   | "TwitterFw"
@@ -335,6 +337,7 @@ type TaskType =
   | "Domain"
   | "Balance"
   | "Contract"
+  | "CustomApi"
   | "None";
 
 type networks = "MAINNET" | "TESTNET";
