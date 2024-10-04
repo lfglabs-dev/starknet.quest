@@ -17,7 +17,7 @@ import homePagestyles from "@styles/Home.module.css";
 import { a11yProps } from "@components/UI/tabs/a11y";
 import { CustomTabPanel } from "@components/UI/tabs/customTab";
 import { Tab, Tabs } from "@mui/material";
-// import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
+
 import Loading from "@app/loading";
 
 export default function Page() {
