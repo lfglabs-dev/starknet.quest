@@ -26,7 +26,6 @@ export function useDomainFromAddress(
       setDomain(domain as string);
     };
     fetchStarkName();
-    return () => clearInterval(interval);
   }, [starknetIdNavigator, address]);
 
   return { domain, error };
