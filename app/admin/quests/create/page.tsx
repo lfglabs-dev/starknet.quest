@@ -369,7 +369,7 @@ export default function Page() {
         } catch (error) {
           console.error("Error while creating balance task:", error);
         }
-      }else if (step.type === "CustomApi") {
+      } else if (step.type === "CustomApi") {
         try {
           await AdminService.createCustomApi({
             quest_id: questId,
@@ -383,7 +383,8 @@ export default function Page() {
         } catch (error) {
           console.error("Error while creating balance task:", error);
         }
-      } else if (step.type === "Contract"){
+
+      } else if (step.type === "Contract") {
         try {
           await AdminService.createContract({
             quest_id: questId,
@@ -494,7 +495,7 @@ export default function Page() {
         <AdminQuestDetails
           quest={finalQuestData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => {}}
+          setShowDomainPopup={() => { }}
           hasRootDomain={false}
           rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {

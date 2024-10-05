@@ -316,8 +316,8 @@ type StepMap =
   | { type: "None"; data: object }
   | { type: "Domain"; data: DomainInputType }
   | { type: "Balance"; data: BalanceInputType }
-  | { type: "Contract"; data: ContractInputType };
-  | { type: "CustomApi"; data: CustomApiInputType };
+  | { type: "Contract"; data: ContractInputType }
+  | { type: "CustomApi"; data: CustomApiInputType }
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
