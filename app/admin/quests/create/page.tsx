@@ -392,7 +392,7 @@ export default function Page() {
             desc: step.data.contract_desc,
             href: step.data.contract_href,
             cta: step.data.contract_cta,
-            calls: step.data.contract_calls,
+            calls: JSON.parse(step.data.contract_calls),
           });
         } catch (error) {
           console.error("Error while creating contract task:", error);

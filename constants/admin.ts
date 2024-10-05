@@ -122,7 +122,7 @@ export const ContractInput = {
   contract_desc: "",
   contract_href: "",
   contract_cta: "",
-  calls: "",
+  contract_calls: "",
 };
 export const CustomApiInput = {
   api_name: "",

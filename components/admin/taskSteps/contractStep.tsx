@@ -48,7 +48,7 @@ const ContractStep: FunctionComponent<ContractStepProps> = ({
       />
       <TextInput
         onChange={(e) => handleTasksInputChange(e, index)}
-        value={step.data.calls || ""}
+        value={step.data.contract_calls || ""}
         name="calls"
         label="Calls (JSON)"
         placeholder='e.g.: [{ "contract": "0x...", "entry_point": "transfer", "call_data": ["0x..."], "regex": "..." }]'
