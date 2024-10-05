@@ -395,6 +395,7 @@ export default function Page() {
           });
         } catch (error) {
           console.error("Error while creating contract task:", error);
+          showNotification(`Error adding ${step.type} task: ${error}`, "error");
         }
       }
     });
