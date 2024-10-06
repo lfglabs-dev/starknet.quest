@@ -19,6 +19,8 @@ import TrophyIcon from "@components/UI/iconsComponents/icons/trophyIcon";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { Connector } from "starknetkit";
+import CopyAddress from "@components/UI/CopyAddress"; // Import the new CopyAddress component
+
 
 type WalletButtonProps = {
   setShowWallet: (showWallet: boolean) => void;
@@ -77,15 +79,6 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
       );
     }
   }, [notifications]);
-
-  const copyAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setCopied(true);
-    navigator.clipboard.writeText(address ?? "");
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
 
   const handleDisconnect = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -156,14 +149,13 @@ const WalletButton: FunctionComponent<WalletButtonProps> = ({
                     <Typography type={TEXT_TYPE.BUTTON_SMALL} color="secondary500">Leaderboard</Typography>
                   </button>
                 </Link>
-                <button onClick={copyAddress}>
-                  {copied ? (
-                    <VerifiedIcon width="24" />
-                  ) : (
-                    <CopyIcon width="24" />
-                  )}
-                  <Typography color="secondary500" type={TEXT_TYPE.BUTTON_SMALL}>Copy Address</Typography>
-                </button>
+                <div className="flex items-center">
+                  <CopyAddress
+                  address={address ?? ""} 
+                  iconSize="24" 
+                  className={styles.copyButton}
+                  wallet={true}/>
+                  </div>
                 {isWebWallet && (
                   <button onClick={handleOpenWebWallet}>
                     <ArgentIcon width="24" />
