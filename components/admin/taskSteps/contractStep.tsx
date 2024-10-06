@@ -49,7 +49,7 @@ const ContractStep: FunctionComponent<ContractStepProps> = ({
       <TextInput
         onChange={(e) => handleTasksInputChange(e, index)}
         value={step.data.contract_calls || ""}
-        name="calls"
+        name="contract_calls"
         label="Calls (JSON)"
         placeholder='e.g.: [{ "contract": "0x...", "entry_point": "transfer", "call_data": ["0x..."], "regex": "..." }]'
         multiline={4}
