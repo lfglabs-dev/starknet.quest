@@ -18,6 +18,7 @@ export const TASK_OPTIONS = [
   "Custom",
   "Domain",
   "Balance",
+  "Contract",
   "CustomApi"
 ];
 
@@ -116,6 +117,13 @@ export const BalanceInput = {
   balance_href: "",
 };
 
+export const ContractInput = {
+  contract_name: "",
+  contract_desc: "",
+  contract_href: "",
+  contract_cta: "",
+  contract_calls: "",
+};
 export const CustomApiInput = {
   api_name: "",
   api_desc: "",
@@ -132,6 +140,8 @@ export const getDefaultValues = (type: TaskType) => {
   if (type === "Discord") return DiscordInput;
   if (type === "Custom") return CustomInput;
   if (type === "Domain") return DomainInput;
+  if (type === "Balance") return BalanceInput;
+  if (type === "Contract") return ContractInput;
   if (type === "CustomApi") return CustomApiInput;
   if (type === "None") return {};
 

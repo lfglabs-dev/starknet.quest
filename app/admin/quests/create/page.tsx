@@ -369,7 +369,7 @@ export default function Page() {
         } catch (error) {
           console.error("Error while creating balance task:", error);
         }
-      }else if (step.type === "CustomApi") {
+      } else if (step.type === "CustomApi") {
         try {
           await AdminService.createCustomApi({
             quest_id: questId,
@@ -382,6 +382,21 @@ export default function Page() {
           });
         } catch (error) {
           console.error("Error while creating balance task:", error);
+        }
+
+      } else if (step.type === "Contract") {
+        try {
+          await AdminService.createContract({
+            quest_id: questId,
+            name: step.data.contract_name,
+            desc: step.data.contract_desc,
+            href: step.data.contract_href,
+            cta: step.data.contract_cta,
+            calls: JSON.parse(step.data.contract_calls),
+          });
+        } catch (error) {
+          console.error("Error while creating contract task:", error);
+          showNotification(`Error adding ${step.type} task: ${error}`, "error");
         }
       }
     });
@@ -480,7 +495,7 @@ export default function Page() {
         <AdminQuestDetails
           quest={finalQuestData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => {}}
+          setShowDomainPopup={() => { }}
           hasRootDomain={false}
           rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
