@@ -54,7 +54,7 @@ export default function RootLayout({
       <body className="default_background_color">
         <Providers>
           <Navbar />
-          <main>
+          <main className="mt-[48px]">
             {children}
           </main>
           <Footer />
