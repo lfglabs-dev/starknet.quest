@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Tooltip } from '@mui/material';
 import TwitterIcon from '@components/UI/iconsComponents/icons/twitterIcon';
 import GithubIcon from '@components/UI/iconsComponents/icons/githubIcon';
@@ -22,25 +22,7 @@ const ClickableSocialIcon: React.FC<ClickableSocialIconProps> = ({
   profileId,
   domain,
 }) => {
-  const [githubUsername, setGithubUsername] = useState<string | undefined>();
-
-  useEffect(() => {
-    if (platform === 'github' && profileId) {
-      fetch(`https://api.github.com/user/${profileId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          setGithubUsername(data.login);
-        })
-        .catch(error => {
-          console.error('Fetch error:', error);
-        });
-    }
-  }, [platform, profileId]);
+  const title = `Check ${domain ? domain + ' ' : ''}${platform}`;
 
   const getIcon = () => {
     switch (platform) {
@@ -55,22 +37,9 @@ const ClickableSocialIcon: React.FC<ClickableSocialIconProps> = ({
     }
   };
 
-  const getUrl = () => {
-    switch (platform) {
-      case 'twitter':
-        return `https://twitter.com/${profileId}`;
-      case 'github':
-        return githubUsername ? `https://github.com/${githubUsername}` : "#";
-      case 'discord':
-        return `https://discord.com/users/${profileId}`;
-      default:
-        return "#";
-    }
-  };
-
   return profileId ? (
-    <Tooltip title={`Check ${domain ? domain + ' ' : ''}${platform}`} arrow>
-      <div className={styles.clickableIcon} onClick={() => window.open(getUrl())}>
+    <Tooltip title={title} arrow>
+      <div className={styles.clickableIcon}>
         <div className={styles.verifiedIcon}>
           <VerifiedIcon width="18" color={theme.palette.primary.main} />
         </div>
