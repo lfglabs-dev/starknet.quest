@@ -50,6 +50,7 @@ type UserTask = {
   task_type: string | null;
   discord_guild_id: string | null;
   contracts: string[] | null;
+  calls: object | null;
 };
 
 type UserDocument = {
@@ -402,6 +403,24 @@ export type UpdateBalance = {
   contracts?: string[];
   cta?: string;
   href?: string;
+};
+
+export type CreateContract = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  href: string;
+  cta: string;
+  calls: object; 
+};
+
+export type UpdateContract = {
+  id: number;
+  name?: string;
+  desc?: string;
+  href?: string;
+  cta?: string;
+  calls?: object;
 };
 
 export type UpdateCustom = {

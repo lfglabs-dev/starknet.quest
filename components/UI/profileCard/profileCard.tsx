@@ -16,7 +16,7 @@ import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
 import { Tooltip } from "@mui/material";
-import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
+import CopyAddress from "@components/UI/CopyAddress"; 
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
@@ -38,13 +38,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [userXp, setUserXp] = useState<number>();
 
-  const copyToClipboard = () => {
-    setCopied(true);
-    writeToClipboard(identity?.owner);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
 
   const rankFormatter = useCallback((rank: number) => {
     if (rank > 10000) return "+10k";
@@ -92,57 +85,23 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           )}
         </div>
 
-        <div className="flex flex-col h-full justify-between">
-          <Typography
-            type={TEXT_TYPE.BODY_SMALL}
-            color="secondary"
-            className={styles.accountCreationDate}
-          >
-            {sinceDate ? `${sinceDate}` : ""}
-          </Typography>
-          <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>
-            {identity.domain.domain}
-          </Typography>
-          <div className={styles.address_div}>
-            <div onClick={() => copyToClipboard()}>
-              {!copied ? (
-                <Tooltip title="Copy" arrow>
-                  <div onClick={() => copyToClipboard()}>
-                    <CopyIcon width="20" color="#F4FAFF" />
-                  </div>
-                </Tooltip>
-              ) : (
-                <VerifiedIcon width="20" />
-              )}
-            </div>
-            <Typography
-              type={TEXT_TYPE.BODY_SMALL}
-              className={styles.addressText}
-              color="secondary"
-            >
-              {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
+          <div className="flex flex-col h-full justify-between">
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="secondary" className={styles.accountCreationDate}>
+              {sinceDate ? `${sinceDate}` : ""}
             </Typography>
-          </div>
-          <div className="flex sm:hidden justify-center py-4">
-            <SocialMediaActions identity={identity} />
-            <Link href={shareLink} target="_blank" rel="noreferrer">
-              <div className={styles.right_share_button}>
-                <CDNImage
-                  src={shareSrc}
-                  width={20}
-                  height={20}
-                  alt={"share-icon"}
+            <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>{identity.domain.domain}</Typography>
+            <div className={styles.address_div}>
+            <CopyAddress
+                  address={identity?.owner ?? ""}
+                  iconSize="24"
+                  className={styles.copyButton}
+                  wallet={false}
                 />
-                <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className={styles.right}>
-        <div className="hidden sm:flex">
-          <div className={styles.right_top}>
-            <div className={styles.right_socials}>
+              <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.addressText} color="secondary">
+                {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
+              </Typography>
+            </div>
+            <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
               <Link href={shareLink} target="_blank" rel="noreferrer">
                 <div className={styles.right_share_button}>
@@ -158,6 +117,25 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </div>
           </div>
         </div>
+        <div className={styles.right}>
+          <div className="hidden sm:flex">
+            <div className={styles.right_top}>
+              <div className={styles.right_socials}>
+                <SocialMediaActions identity={identity} />
+                <Link href={shareLink} target="_blank" rel="noreferrer">
+                  <div className={styles.right_share_button}>
+                    <CDNImage
+                      src={shareSrc}
+                      width={20}
+                      height={20}
+                      alt={"share-icon"}
+                    />
+                    <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
 
         <div className={styles.right_bottom}>
           {leaderboardData && leaderboardData?.total_users > 0 ? (

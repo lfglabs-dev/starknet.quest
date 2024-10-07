@@ -3,7 +3,7 @@
 import { getCurrentNetwork } from "@utils/network";
 import React from "react";
 import { ReactNode, createContext, useMemo } from "react";
-import { Provider, constants } from "starknet";
+import { RpcProvider, constants } from "starknet";
 import { StarknetIdNavigator } from "starknetid.js";
 
 interface StarknetIdJsConfig {
@@ -21,10 +21,8 @@ export const StarknetIdJsProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const provider = useMemo(() => {
-    return new Provider({
-      rpc: {
-        nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
-      },
+    return new RpcProvider({
+      nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
     });
   }, []);
 

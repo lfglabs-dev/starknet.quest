@@ -316,7 +316,8 @@ type StepMap =
   | { type: "None"; data: object }
   | { type: "Domain"; data: DomainInputType }
   | { type: "Balance"; data: BalanceInputType }
-  | { type: "CustomApi"; data: CustomApiInputType };
+  | { type: "Contract"; data: ContractInputType }
+  | { type: "CustomApi"; data: CustomApiInputType }
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
@@ -325,6 +326,7 @@ type QuizInputType = typeof QuizDefaultInput;
 type TwitterFwInputType = typeof TwitterFwInput;
 type TwitterRwInputType = typeof TwitterRwInput;
 type BalanceInputType = typeof BalanceInput;
+type ContractInputType = typeof ContractInput;
 type CustomApiInputType = typeof CustomApiInput;
 type TaskType =
   | "Quiz"
@@ -334,6 +336,7 @@ type TaskType =
   | "TwitterRw"
   | "Domain"
   | "Balance"
+  | "Contract"
   | "CustomApi"
   | "None";
 
