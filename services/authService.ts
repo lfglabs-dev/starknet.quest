@@ -22,6 +22,8 @@ import {
   AddUser,
   CreateBalance,
   UpdateBalance,
+  CreateContract,
+  UpdateContract,
   CreateCustomApi,
   UpdateCustomApi,
 } from "../types/backTypes";
@@ -356,6 +358,38 @@ const updateBalance = async (params: UpdateBalance) => {
   }
 };
 
+const createContract = async (params: CreateContract) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/contract/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while creating contract task", err);
+  }
+};
+
+const updateContract = async (params: UpdateContract) => {
+  try {
+    const response = await fetch(`${baseurl}/admin/tasks/contract/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(params),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while updating contract task", err);
+  }
+};
+
 const createCustomApi = async (params: CreateCustomApi) => {
   try{
     const response = await fetch(`${baseurl}/admin/tasks/custom_api/create`, {
@@ -549,6 +583,8 @@ export const AdminService = {
   createCustom,
   createBalance,
   updateBalance,
+  createContract,
+  updateContract,
   createQuiz,
   createQuizQuestion,
   deleteTask,

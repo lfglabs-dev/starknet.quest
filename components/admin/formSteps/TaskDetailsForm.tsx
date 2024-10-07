@@ -15,6 +15,7 @@ import DomainStep from "../taskSteps/domainStep";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import BalanceStep from "../taskSteps/balanceStep";
+import ContractStep from "../taskSteps/contractStep";
 import CustomApiStep from "../taskSteps/customApiStep"
 
 type TaskDetailsFormProps = {
@@ -105,8 +106,16 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
           step={step}
         />
       );
-    } else if(step?.type === "CustomApi"){
-      return(
+    } else if (step?.type === "Contract") {
+      return (
+        <ContractStep
+          handleTasksInputChange={handleTasksInputChange}
+          index={currentTask}
+          step={step}
+        />
+      );
+    } else if (step?.type === "CustomApi") {
+      return (
         <CustomApiStep
           handleTasksInputChange={handleTasksInputChange}
           index={currentTask}
@@ -207,7 +216,7 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
                       ] as TaskType,
                       data: getDefaultValues(
                         TWITTER_OPTIONS[
-                          category as keyof typeof TWITTER_OPTIONS
+                        category as keyof typeof TWITTER_OPTIONS
                         ] as TaskType
                       ),
                     };
@@ -220,12 +229,12 @@ const TaskDetailsForm: FunctionComponent<TaskDetailsFormProps> = ({
                   cursor: "pointer",
                   backgroundColor:
                     steps[currentTask]?.type ===
-                    TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
+                      TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
                       ? "#ffffff"
                       : "#29282B",
                   color:
                     steps[currentTask]?.type ===
-                    TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
+                      TWITTER_OPTIONS[category as keyof typeof TWITTER_OPTIONS]
                       ? "#29282B"
                       : "#ffffff",
                 }}

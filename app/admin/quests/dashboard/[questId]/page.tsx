@@ -46,6 +46,7 @@ type StepMap =
   | { type: "Custom"; data: WithNewField<CustomInputType, "id", number> }
   | { type: "Domain"; data: WithNewField<DomainInputType, "id", number> }
   | { type: "Balance"; data: WithNewField<BalanceInputType, "id", number> }
+  | { type: "Contract"; data: WithNewField<ContractInputType, "id", number> }
   | { type: "CustomApi"; data: WithNewField<CustomApiInputType, "id", number> }
   | { type: "None"; data: object };
 
@@ -214,6 +215,18 @@ export default function Page({ params }: QuestIdProps) {
             balance_contracts: task.contracts,
             balance_cta: task.cta,
             balance_href: task.href,
+          },
+        };
+      } else if (task.task_type === "contract") {
+        return {
+          type: "Contract",
+          data: {
+            id: task.id,
+            contract_name: task.name,
+            contract_desc: task.desc,
+            contract_href: task.href,
+            contract_cta: task.cta,
+            contract_calls: task.calls,
           },
         };
       } else if(task.task_type === "custom_api"){
@@ -524,6 +537,15 @@ export default function Page({ params }: QuestIdProps) {
             cta: step.data.balance_cta,
             href: step.data.balance_href,
           });
+        } else if (step.type === "Contract") {
+          await AdminService.createContract({
+            quest_id: questId.current,
+            name: step.data.contract_name,
+            desc: step.data.contract_desc,
+            href: step.data.contract_href,
+            cta: step.data.contract_cta,
+            calls: JSON.parse(step.data.contract_calls),
+          });
         }
         else if(step.type === "CustomApi"){
           await AdminService.createCustomApi({
@@ -537,7 +559,7 @@ export default function Page({ params }: QuestIdProps) {
           })
         }
       } catch (error) {
-        console.error(`Error adding task of type ${step.type}:`, error);
+        showNotification(`Error adding ${step.type} task: ${error}`, "error");
       }
     }
   }, []);
@@ -633,6 +655,19 @@ export default function Page({ params }: QuestIdProps) {
           cta: step.data.balance_cta,
           href: step.data.balance_href,
         });
+      } else if (step.type === "Contract") {
+        try {
+          await AdminService.updateContract({
+            id: step.data.id,
+            name: step.data.contract_name,
+            desc: step.data.contract_desc,
+            href: step.data.contract_href,
+            cta: step.data.contract_cta,
+            calls: JSON.parse(step.data.contract_calls),
+          });
+        } catch (error) {
+          showNotification(`Error updating ${step.type} task: ${error}`, "error");
+        }
       } else if (step.type === "CustomApi") {
         await AdminService.updateCustomApi({
           id: step.data.id,
@@ -782,7 +817,7 @@ export default function Page({ params }: QuestIdProps) {
         <AdminQuestDetails
           quest={questData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => {}}
+          setShowDomainPopup={() => { }}
           hasRootDomain={false}
           rewardButtonTitle={questData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {

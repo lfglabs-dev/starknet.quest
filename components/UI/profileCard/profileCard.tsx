@@ -17,7 +17,7 @@ import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
 import { Skeleton, Tooltip } from "@mui/material";
-import VerifiedIcon from "../iconsComponents/icons/verifiedIcon";
+import CopyAddress from "@components/UI/CopyAddress"; 
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
@@ -41,13 +41,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const [userPercentile, setUserPercentile] = useState("");
   const [userXp, setUserXp] = useState<number>();
 
-  const copyToClipboard = () => {
-    setCopied(true);
-    writeToClipboard(identity?.owner);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
 
   const rankFormatter = useCallback((rank: number) => {
     if (rank > 10000) return "+10k";
@@ -111,17 +104,12 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </Typography>
             <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>{identity.domain.domain}</Typography>
             <div className={styles.address_div}>
-              <div onClick={() => copyToClipboard()}>
-                {!copied ? (
-                  <Tooltip title="Copy" arrow>
-                    <div onClick={() => copyToClipboard()}>
-                      <CopyIcon width="20" color="#F4FAFF" />
-                    </div>
-                  </Tooltip>
-                ) : (
-                  <VerifiedIcon width="20" />
-                )}
-              </div>
+            <CopyAddress
+                  address={identity?.owner ?? ""}
+                  iconSize="24"
+                  className={styles.copyButton}
+                  wallet={false}
+                />
               <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.addressText} color="secondary">
                 {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
               </Typography>
