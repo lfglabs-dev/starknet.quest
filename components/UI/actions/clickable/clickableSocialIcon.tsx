@@ -27,9 +27,17 @@ const ClickableSocialIcon: React.FC<ClickableSocialIconProps> = ({
   useEffect(() => {
     if (platform === 'github' && profileId) {
       fetch(`https://api.github.com/user/${profileId}`)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
         .then(data => {
           setGithubUsername(data.login);
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
         });
     }
   }, [platform, profileId]);
@@ -52,7 +60,7 @@ const ClickableSocialIcon: React.FC<ClickableSocialIconProps> = ({
       case 'twitter':
         return `https://twitter.com/${profileId}`;
       case 'github':
-        return githubUsername ? `https://github.com/${githubUsername}` : "#"	;
+        return githubUsername ? `https://github.com/${githubUsername}` : "#";
       case 'discord':
         return `https://discord.com/users/${profileId}`;
       default:

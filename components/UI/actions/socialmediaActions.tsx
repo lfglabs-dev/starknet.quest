@@ -9,14 +9,16 @@ type SocialMediaActionsProps = {
   identity: Identity;
 };
 
+type SocialProfiles = {
+  twitter?: string;
+  discord?: string;
+  github?: string;
+};
+
 const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   identity,
 }) => {
-  const [socialProfiles, setSocialProfiles] = useState<{
-    twitter?: string;
-    discord?: string;
-    github?: string;
-  }>({
+  const [socialProfiles, setSocialProfiles] = useState<SocialProfiles>({
     twitter: undefined,
     discord: undefined,
     github: undefined,
@@ -24,13 +26,15 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
 
   useEffect(() => {
     if (isStarkRootDomain(identity?.domain.domain)) {
-      const newProfiles: { twitter?: string; discord?: string; github?: string } = {};
+      const newProfiles: SocialProfiles = {};
+
       identity?.verifier_data?.forEach(verifier => {
-        const field = cairo.felt(verifier.field);
-        if (field === cairo.felt('twitter')) newProfiles.twitter = verifier.data;
-        if (field === cairo.felt('discord')) newProfiles.discord = verifier.data;
-        if (field === cairo.felt('github')) newProfiles.github = verifier.data;
+        const field = cairo.felt(verifier.field) as SocialPlatform;
+        if (field in newProfiles) {
+          newProfiles[field] = verifier.data;
+        }
       });
+
       setSocialProfiles(newProfiles);
     }
   }, [identity]);
