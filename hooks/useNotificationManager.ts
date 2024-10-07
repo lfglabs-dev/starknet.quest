@@ -34,21 +34,16 @@ export function useNotificationManager() {
       }
       return notification;
     });
-  
+
     setNotifications(updatedNotifications);
   };
 
   const checkTransactionStatus = async (txHash: string) => {
     const data = await provider.getTransactionReceipt(txHash);
-    if (data?.status === "REJECTED" || data?.status === "REVERTED") {
+    if (data?.isRejected() || data?.isReverted()) {
       updateNotificationStatus(txHash, "error");
       setUnread(true);
-    } else if (
-      data?.status === "ACCEPTED_ON_L2" ||
-      data?.status === "ACCEPTED_ON_L1" ||
-      data?.finality_status === "ACCEPTED_ON_L2" ||
-      data?.finality_status === "ACCEPTED_ON_L1"
-    ) {
+    } else if (data?.isSuccess()) {
       updateNotificationStatus(txHash, "success");
       setUnread(true);
     }
