@@ -6,6 +6,9 @@ const AppIcon = ({ app }: { app: string }) => {
     if (appName.toLocaleLowerCase().includes("jediswap")) {
       return "/jediswap/favicon.ico";
     }
+    if (appName.toLocaleLowerCase().includes("haiko_solvers")) {
+      return "/haiko/favicon.ico";
+    }
     return `/${appName.toLowerCase()}/favicon.ico`;
   }, []);
   return (
