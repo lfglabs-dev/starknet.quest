@@ -17,7 +17,8 @@ import homePagestyles from "@styles/Home.module.css";
 import { a11yProps } from "@components/UI/tabs/a11y";
 import { CustomTabPanel } from "@components/UI/tabs/customTab";
 import { Tab, Tabs } from "@mui/material";
-import FeaturedQuestSkeleton from "@components/skeletons/questsSkeleton";
+
+import Loading from "@app/loading";
 
 export default function Page() {
   const router = useRouter();
@@ -90,9 +91,8 @@ export default function Page() {
             </Button>
           </div>
         </div>
-        {loading ? (
-          <FeaturedQuestSkeleton />
-        ) : (
+        {loading && (
+          <Loading isLoading={loading} loadingType="skeleton">
           <section className={homePagestyles.section}>
             <div className="w-full">
               <div>
@@ -179,6 +179,7 @@ export default function Page() {
               <CustomTabPanel value={tabIndex} index={2}></CustomTabPanel>
             </div>
           </section>
+          </Loading>
         )}
       </div>
     </div>
