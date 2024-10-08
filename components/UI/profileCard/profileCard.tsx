@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
-import questStyles from "@styles/quests.module.css";
 import CopyIcon from "@components/UI/iconsComponents/icons/copyIcon";
 import { CDNImage } from "@components/cdn/image";
 import { useStarkProfile } from "@starknet-react/core";
@@ -16,14 +15,13 @@ import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
-import { Skeleton, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import CopyAddress from "@components/UI/CopyAddress"; 
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
 import { getTweetLink, writeToClipboard } from "@utils/browserService";
 import { hexToDecimal } from "@utils/feltService";
-import { calculatePercentile } from "@utils/numberService";
 import { Url } from "next/dist/shared/lib/router/router";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
@@ -38,7 +36,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const [copied, setCopied] = useState(false);
   const sinceDate = useCreationDate(identity);
   const { data: profileData } = useStarkProfile({ address: identity.owner });
-  const [userPercentile, setUserPercentile] = useState("");
   const [userXp, setUserXp] = useState<number>();
 
 
@@ -60,15 +57,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
         (user) => user.address === hexToDecimal(identity.owner)
       );
       if (user) {
-        if (!leaderboardData.position) {
-          setUserPercentile("NA");
-          return;
-        }
-        const computedUserPercentile = calculatePercentile(
-          leaderboardData?.position ?? 0,
-          leaderboardData?.total_users ?? 0
-        ).toString();
-        setUserPercentile(computedUserPercentile);
         setUserXp(user.xp);
       }
     }
@@ -87,16 +75,15 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   }, []);
 
   return (
-    <>
-      <div className={styles.dashboard_profile_card}>
-        <div className={styles.left}>
-          <div className={styles.profile_picture_div}>
-            {profileData?.profilePicture ? (
-              <img src={profileData?.profilePicture} className="rounded-full" />
-            ) : (
-              <ProfilIcon width="120" color={theme.palette.secondary.main} />
-            )}
-          </div>
+    <div className={styles.dashboard_profile_card}>
+      <div className={styles.left}>
+        <div className={styles.profile_picture_div}>
+          {profileData?.profilePicture ? (
+            <img src={profileData?.profilePicture} className="rounded-full" />
+          ) : (
+            <ProfilIcon width="120" color={theme.palette.secondary.main} />
+          )}
+        </div>
 
           <div className="flex flex-col h-full justify-between">
             <Typography type={TEXT_TYPE.BODY_SMALL} color="secondary" className={styles.accountCreationDate}>
@@ -128,24 +115,6 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                 </div>
               </Link>
             </div>
-
-            <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.percentileText} color="secondary">
-              {userPercentile.length > 0 && userPercentile !== "NA" ? (
-                <>
-                  {isOwner ? "You are " : "This user is "}
-                  <span className={styles.green_span}>
-                    better than {userPercentile}%
-                  </span>{" "}
-                  of other players.
-                </>
-              ) : (
-                <Skeleton
-                  variant="text"
-                  className={questStyles.featuredQuestContentLoading}
-                  sx={{ fontSize: "1rem", bgcolor: "grey.800" }}
-                />
-              )}
-            </Typography>
           </div>
         </div>
         <div className={styles.right}>
@@ -168,39 +137,46 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
             </div>
           </div>
 
-          <div className={styles.right_bottom}>
-            {leaderboardData && leaderboardData?.total_users > 0 ? (
-              <div className={styles.right_bottom_content}>
-                <CDNImage
-                  src={trophyIcon}
-                  priority
-                  width={25}
-                  height={25}
-                  alt="trophy icon"
-                />
-                <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.statsText}>
-                  {leaderboardData?.position
-                    ? rankFormatter(leaderboardData?.position)
-                    : "NA"}
-                </Typography>
-              </div>
-            ) : null}
-            {userXp !== undefined ? (
-              <div className={styles.right_bottom_content}>
-                <CDNImage
-                  src={xpIcon}
-                  priority
-                  width={30}
-                  height={30}
-                  alt="xp badge"
-                />
-                <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.statsText}>{userXp ?? "0"}</Typography>
-              </div>
-            ) : null}
-          </div>
+        <div className={styles.right_bottom}>
+          {leaderboardData && leaderboardData?.total_users > 0 ? (
+            <div className={styles.right_bottom_content}>
+              <CDNImage
+                src={trophyIcon}
+                priority
+                width={25}
+                height={25}
+                alt="trophy icon"
+              />
+              <Typography
+                type={TEXT_TYPE.BODY_SMALL}
+                className={styles.statsText}
+              >
+                {leaderboardData?.position
+                  ? rankFormatter(leaderboardData?.position)
+                  : "NA"}
+              </Typography>
+            </div>
+          ) : null}
+          {userXp !== undefined ? (
+            <div className={styles.right_bottom_content}>
+              <CDNImage
+                src={xpIcon}
+                priority
+                width={30}
+                height={30}
+                alt="xp badge"
+              />
+              <Typography
+                type={TEXT_TYPE.BODY_SMALL}
+                className={styles.statsText}
+              >
+                {userXp ?? "0"}
+              </Typography>
+            </div>
+          ) : null}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
