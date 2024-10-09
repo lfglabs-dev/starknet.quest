@@ -1,13 +1,13 @@
 {
-  "projectName": "starknet-id",
-  "projectOwner": "starknet.quest",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "projectName": "Starknet Quest",
+  "projectOwner": "lfglabs-dev",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "files": [
-    "README.md"
-  ],
-  "imageSize": 100,
-  "commit": true,
-  "commitConvention": "angular",
-  "contributorsPerLine": 7
+  "skipCi": true,
+  "commitConvention": "none"
 }
