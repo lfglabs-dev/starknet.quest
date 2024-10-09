@@ -1,40 +1,42 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import ClickableSocialIcon from './clickable/clickableSocialIcon';
-import { isStarkRootDomain } from 'starknetid.js/packages/core/dist/utils';
-import { cairo } from 'starknet';
-
-type SocialPlatform = 'twitter' | 'discord' | 'github';
+import React, { FunctionComponent, useEffect, useState } from "react";
+import ClickableSocialIcon from "./clickable/clickableSocialIcon";
+import { isStarkRootDomain } from "starknetid.js/packages/core/dist/utils";
+import { cairo } from "starknet";
 
 type SocialMediaActionsProps = {
   identity: Identity;
 };
 
-type SocialProfiles = {
-  twitter?: string;
-  discord?: string;
-  github?: string;
-};
+type SocialPlatform = 'twitter' | 'discord' | 'github';
 
 const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   identity,
 }) => {
-  const [socialProfiles, setSocialProfiles] = useState<SocialProfiles>({
-    twitter: undefined,
-    discord: undefined,
-    github: undefined,
-  });
+  const [socialProfiles, setSocialProfiles] = useState<{
+    twitter?: string;
+    discord?: string;
+    github?: string;
+  }>({});
 
   useEffect(() => {
     if (isStarkRootDomain(identity?.domain.domain)) {
-      const newProfiles: SocialProfiles = {};
-
-      identity?.verifier_data?.forEach(verifier => {
-        const field = cairo.felt(verifier.field) as SocialPlatform;
-        if (field in newProfiles) {
-          newProfiles[field] = verifier.data;
+      const newProfiles: {
+        twitter?: string;
+        discord?: string;
+        github?: string;
+      } = {};
+  
+      identity?.verifier_data?.forEach((verifier) => {
+        const field = cairo.felt(verifier.field);
+        if (field === cairo.felt("twitter") && verifier.data) {
+          newProfiles.twitter = verifier.data;
+        } else if (field === cairo.felt("discord") && verifier.data) {
+          newProfiles.discord = verifier.data;
+        } else if (field === cairo.felt("github") && verifier.data) {
+          newProfiles.github = verifier.data;
         }
       });
-
+  
       setSocialProfiles(newProfiles);
     }
   }, [identity]);
