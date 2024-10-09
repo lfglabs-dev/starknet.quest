@@ -81,8 +81,7 @@ For a full list of contribution types, check out the [emoji key](https://allcont
 
 
 ## Contributors ✨
-
-Thanks goes to these wonderful people 1:
+Thanks go to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
