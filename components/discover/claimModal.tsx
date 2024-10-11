@@ -9,17 +9,50 @@ import { TEXT_TYPE } from "@constants/typography";
 import AppIcon from "./appIcon";
 import TokenIcon from "./tokenIcon";
 
-type rewardItem = {
+type RewardItem = {
   appName: string, 
   currencies: {currencyName: string, value: number}[]
+}
+
+type CurrencyRowProps = {
+  currencyName: string;
+  currencyValue: number;
 }
 
 type ClaimModalProps = {
   closeModal: () => void;
   claimRewards: () => void;
   open: boolean;
-  rewards: rewardItem[];
+  rewards: RewardItem[];
 };
+
+const RewardComponent: FunctionComponent<RewardItem> = ({appName, currencies}) => (
+  <div className="flex w-full justify-between items-center bg-background px-2 py-3 my-1 rounded-lg">
+    <div className="flex flex-row gap-4">
+      <AppIcon app={appName} />
+      <Typography type={TEXT_TYPE.BODY_MIDDLE}>
+        {appName}
+      </Typography>
+    </div>
+    <div className="flex w-fit flex-col items-end">
+      {currencies.map((currency, idx) => (
+        <CurrencyRow key={idx} currencyName={currency.currencyName} currencyValue={currency.value} />
+      ))}
+    </div>
+  </div>
+);
+
+const CurrencyRow: FunctionComponent<CurrencyRowProps> = ({currencyName, currencyValue}) => (
+  <div className="flex flex-row items-center gap-4">
+    <Typography type={TEXT_TYPE.BODY_SMALL}>
+      {currencyValue < 1000 ? currencyValue : `${currencyValue / 1000}K`}
+    </Typography>
+    <Typography type={TEXT_TYPE.BODY_SMALL}>
+      {currencyName}
+    </Typography>
+    <TokenIcon token={currencyName} />
+  </div>
+);
 
 const ClaimModal: FunctionComponent<ClaimModalProps> = ({
   closeModal,
@@ -31,8 +64,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
     <Modal
       disableAutoFocus
       onClose={closeModal}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      aria-label="Reward claim success modal"
       open={open}
     >
       <div className={`${styles.popup} !overflow-y-hidden !rounded-2xl !mt-0 !px-1 !py-1 md:!px-0 md:!py-0`}>
@@ -56,45 +88,18 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
             </div>
             <div className="flex w-full flex-col mt-4 max-h-80 overflow-auto">
               {rewards.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex w-full justify-between items-center bg-background px-2 py-3 my-1 rounded-lg"
-                >
-                  <div className="flex flex-row gap-4">
-                    <AppIcon
-                      app={item.appName}
-                    />
-                    <Typography type={TEXT_TYPE.BODY_MIDDLE}>
-                      {item.appName}
-                    </Typography>
-                  </div>
-                  <div className="flex w-fit flex-col items-end">
-                    {item.currencies.map((currency, idx) => (
-                      <div key={idx} className="flex flex-row items-center gap-4">
-                        <Typography type={TEXT_TYPE.BODY_SMALL}>
-                          {currency.value < 1000 ? currency.value : `${currency.value / 1000}K`}
-                        </Typography>
-                        <Typography type={TEXT_TYPE.BODY_SMALL}>
-                          {currency.currencyName}
-                        </Typography>
-                        <TokenIcon
-                          token={currency.currencyName}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <RewardComponent key={index} appName={item.appName} currencies={item.currencies} />
               ))}
             </div>
           </div>
         </div>
         <div className={`${styles.bottomContent} !gap-6 !py-6 !px-5`}>
           <div className="flex w-full justify-between items-center">
-            <div className="modified-cursor-pointer" onClick={() => closeModal()}>
+            <button onClick={() => closeModal()} aria-label="Cancel claiming rewards">
               <Typography type={TEXT_TYPE.BODY_MIDDLE}>
                 Cancel
               </Typography>
-            </div>
+            </button>
             <div className="w-fit">
               <Button
                 onClick={() => claimRewards()}
@@ -110,4 +115,3 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
 };
 
 export default ClaimModal;
-
