@@ -16,15 +16,28 @@ const TokenIcon: FunctionComponent<TokenIconProps> = ({
   customStyle = {}
 }) => {
 
-  const getTokenIcon = useCallback((tokenName: string) => {
-    if (tokenName.toUpperCase() === "USDC") return "/icons/usdc.svg";
-    if (tokenName.toUpperCase() === "ETH") return "/icons/eth.svg";
-    if (tokenName.toUpperCase() === "LORDS") return "/icons/lords.webp";
-    if (tokenName.toUpperCase() === "SITH") return "/icons/sith.png";
-    if (tokenName.toUpperCase() === "STRK") return "/icons/strk.webp";
+  const tokenIconMap: { [key: string]: string } = {
+    USDC: "/icons/usdc.svg",
+    ETH: "/icons/eth.svg",
+    LORDS: "/icons/lords.webp",
+    SITH: "/icons/sith.png",
+    STRK: "/icons/strk.webp",
+  };
 
-    return "/icons/usdc.svg";
+  const getTokenIcon = useCallback((tokenName: string) => {
+    return tokenIconMap[tokenName.toUpperCase()] || "/icons/usdc.svg";
   }, []);
+
+  const getTokenStyle = (token: string, customStyle: CSSProperties = {}) => {
+    const specialStyles: Record<string, CSSProperties> = {
+      STRK: { transform: "rotateY(180deg)" }, // webp is mirrored, so need to flip it to be displayed correctly.
+    };
+  
+    return {
+      ...specialStyles[token.toUpperCase()],
+      ...customStyle
+    };
+  };
 
   return (
     <CDNImg
@@ -33,7 +46,7 @@ const TokenIcon: FunctionComponent<TokenIconProps> = ({
       width={imageDimensions.width}
       src={getTokenIcon(token)}
       alt={token}
-      style={token.toUpperCase() === "STRK" ? { transform: "rotateY(180deg)", ...customStyle } : customStyle}
+      style={getTokenStyle(token, customStyle)}
     />
   );
 };
