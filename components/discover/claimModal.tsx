@@ -159,9 +159,9 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
     >
       <div className={`${styles.popup} !overflow-y-hidden !rounded-2xl !mt-0 !px-1 !py-1 md:!px-0 md:!py-0`}>
         <Loading isLoading={loading} loadingType="spinner">
-          <div className={`${styles.popupContent} !px-0 !py-2 md:!px-12 md:!py-6`}>
+          <div className={`${styles.popupContent} !px-0 !pt-6 !pb-0 md:!px-12 md:!pt-14`}>
             <div className="flex w-full flex-col self-start">
-              <div className="flex w-full lg:flex-row flex-col-reverse lg:items-start items-center justify-between gap-4">
+              <div className="flex w-full lg:flex-row flex-col-reverse lg:items-start items-center justify-between gap-4 md:pb-2">
                 <div className="flex flex-col gap-4 lg:text-left text-center">
                   <Typography type={TEXT_TYPE.BODY_MIDDLE}>
                     Collect your rewards from all supported protocols on Starknet

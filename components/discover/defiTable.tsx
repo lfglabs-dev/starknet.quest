@@ -323,8 +323,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
           <div
             onClick={() => setShowClaimModal(true)}
-            className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-lg modified-cursor-pointer h-min lg:mt-2 mt-8 px-4 lg:py-1 py-2">
-            <AppIcon app="starknet" />
+            className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-xl modified-cursor-pointer h-min lg:mt-2 mt-8 px-6 py-2.5">
+            <AppIcon app="starknet" className="w-5 h-5" />
             <Typography type={TEXT_TYPE.BUTTON_LARGE} color="background">
               Claim all
             </Typography>

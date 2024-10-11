@@ -1,7 +1,23 @@
 import { CDNImg } from "@components/cdn/image";
-import React, { useCallback } from "react";
+import React, { CSSProperties, FunctionComponent, useCallback } from "react";
 
-const AppIcon = ({ app }: { app: string }) => {
+type AppIconProps = {
+  app: string;
+  imageDimensions?: {
+    width: number;
+    height: number;
+  };
+  className?: string;
+  customStyle?: CSSProperties;
+};
+
+const AppIcon: FunctionComponent<AppIconProps> = ({
+  app,
+  imageDimensions = {width: 25, height: 25},
+  className = "",
+  customStyle = {}
+}) => {
+
   const getAppLogo = useCallback((appName: string) => {
     if (appName.toLocaleLowerCase().includes("jediswap")) {
       return "/jediswap/favicon.ico";
@@ -11,14 +27,15 @@ const AppIcon = ({ app }: { app: string }) => {
     }
     return `/${appName.toLowerCase()}/favicon.ico`;
   }, []);
+
   return (
     <div className="app-icon">
       <CDNImg
-        style={{
-          borderRadius: "50%",
-        }}
+        className={className}
+        style={{borderRadius: "50%", ...customStyle}}
         loading="eager"
-        width={25}
+        width={imageDimensions.width}
+        height={imageDimensions.height}
         src={getAppLogo(app)}
         alt={app}
       />
