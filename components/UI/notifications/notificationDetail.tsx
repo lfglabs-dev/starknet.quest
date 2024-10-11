@@ -40,7 +40,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
     if (notification.type === NotificationType.TRANSACTION) {
       if (isLoading) {
         return <CircularProgress color="secondary" size={24} />;
-      } else if (isError || data?.status === "REJECTED") {
+      } else if (isError || data?.isRejected()) {
         return <CloseCircleIcon width="24" color="" />;
       } else {
         return <DoneIcon width="24" color={theme.palette.primary.main} />;
@@ -61,7 +61,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
       ? "pending"
       : isError
       ? "error"
-      : data?.status === "REJECTED"
+      : data?.isRejected()
       ? "error"
       : "success";
   }, [notification, isLoading, error, isError, data]);
@@ -79,7 +79,7 @@ const NotificationDetail: FunctionComponent<NotificationDetailProps> = ({
     if (status !== notification.data.status) {
       updateNotificationStatus(notification.data.hash, status);
     }
-  }, [ isLoading, error, isError, data, status]);
+  }, [isLoading, error, isError, data, status]);
 
   return (
     <div className={styles.notif_detail}>

@@ -287,3 +287,31 @@
     text-align: center;
   }
 }
+
+
+.customCheckbox {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+  border: 2px solid #61EEE1;
+  border-radius: 3px;
+  outline: none;
+}
+
+.customCheckbox:checked {
+  background-color: #61EEE1;
+}
+
+.customCheckbox:checked::before {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: white;
+}

@@ -70,16 +70,34 @@ for more information on how to get started.
 To connect with us regarding any queries about contributing to the repo, feel free to join our telegram group [here](https://t.me/SQcontributors)
 
 
+## Adding yourself as a contributor
 
-## Contributors
+If you've contributed to this project, you can easily add yourself to the contributors list by commenting on any issue or pull request with: `@all-contributors please add <your-github-username> for <contribution-type>`
+
+For example: `@all-contributors please add @fricoben for code, doc, business, and ideas`
+ 
+For a full list of contribution types, check out the [emoji key](https://allcontributors.org/docs/en/emoji-key).
+
+
+
+## Contributors ✨
+Thanks go to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.starknet.id/"><img src="https://avatars.githubusercontent.com/u/78437165?v=4?s=100" width="100px;" alt="Fricoben"/><br /><sub><b>Fricoben</b></sub></a><br /><a href="https://github.com/lfglabs-dev/starknet.quest/commits?author=fricoben" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!

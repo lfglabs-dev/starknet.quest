@@ -40,6 +40,8 @@ type UserTask = {
   desc: string;
   href: string;
   cta?: string;
+  api_url?: string;
+  regex?: string;
   verify_endpoint: string;
   verify_endpoint_type: string;
   verify_redirect: string | null;
@@ -48,6 +50,7 @@ type UserTask = {
   task_type: string | null;
   discord_guild_id: string | null;
   contracts: string[] | null;
+  calls: object | null;
 };
 
 type UserDocument = {
@@ -402,6 +405,24 @@ export type UpdateBalance = {
   href?: string;
 };
 
+export type CreateContract = {
+  quest_id: number;
+  name: string;
+  desc: string;
+  href: string;
+  cta: string;
+  calls: object; 
+};
+
+export type UpdateContract = {
+  id: number;
+  name?: string;
+  desc?: string;
+  href?: string;
+  cta?: string;
+  calls?: object;
+};
+
 export type UpdateCustom = {
   id: number;
   name?: string;
@@ -469,3 +490,23 @@ export type AddUser = {
   user: string;
   password: string;
 };
+
+export type CreateCustomApi =  {
+  quest_id: number;
+  name: string;
+  desc: string;
+  href: string;
+  cta: string;
+  api_url?: string;
+  regex?: string;
+}
+
+export type UpdateCustomApi =  {
+  id: number;
+  name?: string;
+  desc?: string;
+  href?: string;
+  cta?: string;
+  api_url?: string;
+  regex?: string;
+}

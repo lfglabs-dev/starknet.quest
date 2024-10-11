@@ -1,13 +1,26 @@
 {
-  "projectName": "starknet-id",
-  "projectOwner": "starknet.quest",
-  "repoType": "github",
-  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
   "imageSize": 100,
-  "commit": true,
-  "commitConvention": "angular",
-  "contributorsPerLine": 7
+  "commit": false,
+  "contributors": [
+    {
+      "login": "fricoben",
+      "name": "Fricoben",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78437165?v=4",
+      "profile": "https://www.starknet.id/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "starknet.quest",
+  "projectOwner": "lfglabs-dev",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true,
+  "commitConvention": "none",
+  "commitType": "docs"
 }
