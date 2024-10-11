@@ -158,15 +158,15 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "apr",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          APR
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <DownIcon width="10" color="#a6a5a7" />
-          <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            APR
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <DownIcon width="10" color="#a6a5a7" />
+            <UpIcon width="10" color="#a6a5a7" />
+          </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -178,19 +178,19 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "volume",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          TVL
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <div>
-            <DownIcon width="10" color="#a6a5a7" />
-          </div>
-          <div>
-            <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            TVL
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <div>
+              <DownIcon width="10" color="#a6a5a7" />
+            </div>
+            <div>
+              <UpIcon width="10" color="#a6a5a7" />
+            </div>
           </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -211,15 +211,15 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "daily_rewards",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center justify-end">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          Daily Rewards
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <DownIcon width="10" color="#a6a5a7" />
-          <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center justify-end">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            Daily Rewards
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <DownIcon width="10" color="#a6a5a7" />
+            <UpIcon width="10" color="#a6a5a7" />
+          </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -251,9 +251,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
-  const [showClaimModal, setShowClaimModal] = useState<boolean>(false);
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
 
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
   const table = useReactTable({
     data,
     columns,
@@ -308,61 +309,6 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     table.resetColumnFilters();
   }, [table]);
 
-  const getClaimRewards = useCallback(() => {
-    // TODO: Implement fetch from backend. Returning mock values.
-    return [
-      {
-        appName: "EKUBO", 
-        currencies: [
-          {currencyName: "STRK", value: 11570}
-        ],
-      },
-      {
-        appName: "NOSTRA", 
-        currencies: [
-          {currencyName: "STRK", value: 12.124},
-          {currencyName: "ETH", value: 1.1245}
-        ],
-      },
-      {
-        appName: "zkLend", 
-        currencies: [
-          {currencyName: "USDT", value: 124.12}
-        ],
-      },
-      {
-        appName: "VESU", 
-        currencies: [
-          {currencyName: "STRK", value: 36}
-        ],
-      },
-      {
-        appName: "Nimbora", 
-        currencies: [
-          {currencyName: "STRK", value: 70.145}
-        ],
-      },
-      {
-        appName: "zkLend", 
-        currencies: [
-          {currencyName: "USDT", value: 124.12}
-        ],
-      },
-      {
-        appName: "VESU", 
-        currencies: [
-          {currencyName: "STRK", value: 36}
-        ],
-      },
-      {
-        appName: "Nimbora", 
-        currencies: [
-          {currencyName: "STRK", value: 70.145}
-        ],
-      },
-    ];
-  }, []);
-
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
@@ -378,7 +324,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           <div
             onClick={() => setShowClaimModal(true)}
             className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-lg modified-cursor-pointer h-min lg:mt-2 mt-8 px-4 lg:py-1 py-2">
-            <AppIcon app="starknet"/>
+            <AppIcon app="starknet" />
             <Typography type={TEXT_TYPE.BUTTON_LARGE} color="background">
               Claim all
             </Typography>
@@ -386,14 +332,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         </div>
         <ClaimModal
           open={showClaimModal}
-          rewards={getClaimRewards()}
           closeModal={() => setShowClaimModal(false)}
-          claimRewards={() => {
-            setShowClaimModal(false);
-            setShowSuccessModal(true);
-          }}
+          showSuccess={() => setShowSuccessModal(true)}
         />
-        <SuccessModal 
+        <SuccessModal
           open={showSuccessModal}
           closeModal={() => setShowSuccessModal(false)}
         />
@@ -476,9 +418,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
@@ -491,7 +433,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() =>{
+                    onClick={() => {
                       window.open(
                         getRedirectLink(row.getValue("app"), row.getValue("action")),
                         "_blank"
@@ -521,7 +463,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
-              style= {table.getCanPreviousPage() ? {} : {cursor:'not-allowed' } }
+              style={table.getCanPreviousPage() ? {} : { cursor: 'not-allowed' }}
             >
               <CDNImage
                 src="/icons/chevronLeft.svg"
@@ -533,7 +475,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             <div
               className="flex modified-cursor-pointer"
               onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-              style= {table.getCanNextPage() ? {} : {cursor:'not-allowed' } }
+              style={table.getCanNextPage() ? {} : { cursor: 'not-allowed' }}
             >
               <CDNImage
                 src="/icons/chevronRight.svg"
