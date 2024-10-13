@@ -91,8 +91,7 @@ export default function Page() {
             </Button>
           </div>
         </div>
-        {loading && (
-          <Loading isLoading={loading} loadingType="skeleton">
+        <Loading isLoading={loading} loadingType="skeleton">
           <section className={homePagestyles.section}>
             <div className="w-full">
               <div>
@@ -179,8 +178,7 @@ export default function Page() {
               <CustomTabPanel value={tabIndex} index={2}></CustomTabPanel>
             </div>
           </section>
-          </Loading>
-        )}
+        </Loading>
       </div>
     </div>
   );
