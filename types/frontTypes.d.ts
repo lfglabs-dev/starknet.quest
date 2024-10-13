@@ -342,7 +342,7 @@ type TaskType =
 
 type networks = "MAINNET" | "TESTNET";
 
-export type Call = {
+type Call = {
   contractAddress: string;
   calldata: string[];
   entrypoint: string;

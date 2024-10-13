@@ -14,7 +14,6 @@ import { useAccount, useContractWrite } from "@starknet-react/core";
 import { RewardsPerProtocol } from "../../types/backTypes";
 import { getRewards } from "@services/apiService";
 import { gweiToEth } from "@utils/feltService";
-import { Call } from "../../types/frontTypes";
 
 type RewardItem = {
   appName: string;
