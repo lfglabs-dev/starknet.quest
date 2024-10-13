@@ -317,7 +317,7 @@ type StepMap =
   | { type: "Domain"; data: DomainInputType }
   | { type: "Balance"; data: BalanceInputType }
   | { type: "Contract"; data: ContractInputType }
-  | { type: "CustomApi"; data: CustomApiInputType }
+  | { type: "CustomApi"; data: CustomApiInputType };
 
 type CustomInputType = typeof CustomInput;
 type DiscordInputType = typeof DiscordInput;
@@ -341,3 +341,9 @@ type TaskType =
   | "None";
 
 type networks = "MAINNET" | "TESTNET";
+
+export type Call = {
+  contractAddress: string;
+  calldata: string[];
+  entrypoint: string;
+};
