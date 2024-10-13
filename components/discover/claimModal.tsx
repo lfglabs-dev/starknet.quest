@@ -87,7 +87,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
   const [rewards, setRewards] = useState<RewardsPerProtocol | null>(null);
   const [calls, setCalls] = useState<Call[]>();
   const { writeAsync: execute } = useContractWrite({
-    calls: calls || [],
+    calls: calls,
   });
 
   useEffect(() => {
