@@ -185,7 +185,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
               </button>
               <div className="w-fit">
                 <Button
-                  disabled={calls ? false : true}
+                  disabled={!calls}
                   onClick={doClaimRewards}
                 >
                   Claim all
