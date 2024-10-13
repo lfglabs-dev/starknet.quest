@@ -34,6 +34,8 @@ import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
 import { getRedirectLink } from "@utils/defi";
 import DefiTableSkeleton from "./defiTableSkeleton";
+import ClaimModal from "./claimModal";
+import SuccessModal from "./successModal";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -156,15 +158,15 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "apr",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          APR
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <DownIcon width="10" color="#a6a5a7" />
-          <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            APR
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <DownIcon width="10" color="#a6a5a7" />
+            <UpIcon width="10" color="#a6a5a7" />
+          </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -176,19 +178,19 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "volume",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          TVL
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <div>
-            <DownIcon width="10" color="#a6a5a7" />
-          </div>
-          <div>
-            <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            TVL
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <div>
+              <DownIcon width="10" color="#a6a5a7" />
+            </div>
+            <div>
+              <UpIcon width="10" color="#a6a5a7" />
+            </div>
           </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -209,15 +211,15 @@ export const columns: ColumnDef<TableInfo>[] = [
     accessorKey: "daily_rewards",
     header: () => (
       <div className="flex items-center modified-cursor-pointer w-full h-full">
-      <div className="flex flex-row gap-2 items-center justify-end">
-        <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-          Daily Rewards
-        </Typography>
-        <div className="flex flex-col gap-0">
-          <DownIcon width="10" color="#a6a5a7" />
-          <UpIcon width="10" color="#a6a5a7" />
+        <div className="flex flex-row gap-2 items-center justify-end">
+          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+            Daily Rewards
+          </Typography>
+          <div className="flex flex-col gap-0">
+            <DownIcon width="10" color="#a6a5a7" />
+            <UpIcon width="10" color="#a6a5a7" />
+          </div>
         </div>
-      </div>
       </div>
     ),
     cell: ({ row }) => {
@@ -250,6 +252,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
 
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
   const table = useReactTable({
     data,
     columns,
@@ -289,11 +294,13 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     setSecurityFilter(e.target.value);
     column?.setFilterValue(e.target.value);
   }, []);
+
   const handleAirdropFilter = useCallback((e: SelectChangeEvent) => {
     const column = table.getColumn("app");
     setAirdropFilter(e.target.value);
     column?.setFilterValue(e.target.value);
   }, []);
+
   const resetFilters = useCallback(() => {
     setLiquidityFilter("");
     setTokenFilter("");
@@ -305,14 +312,33 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
-        <div className={`flex w-100 flex-col gap-2`}>
-          <Typography type={TEXT_TYPE.H4} color="secondary">
-            Explore reward opportunities
-          </Typography>
-          <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
-            Find the best opportunities, and earn tokens
-          </Typography>
+        <div className={`flex w-100 lg:flex-row flex-col justify-between items-start`}>
+          <div className={`flex w-100 flex-col gap-2`}>
+            <Typography type={TEXT_TYPE.H4} color="secondary">
+              Explore reward opportunities
+            </Typography>
+            <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
+              Find the best opportunities, and earn tokens
+            </Typography>
+          </div>
+          <div
+            onClick={() => setShowClaimModal(true)}
+            className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-xl modified-cursor-pointer h-min lg:mt-2 mt-8 px-6 py-2.5">
+            <AppIcon app="starknet" className="w-5 h-5" />
+            <Typography type={TEXT_TYPE.BUTTON_LARGE} color="background">
+              Claim all
+            </Typography>
+          </div>
         </div>
+        <ClaimModal
+          open={showClaimModal}
+          closeModal={() => setShowClaimModal(false)}
+          showSuccess={() => setShowSuccessModal(true)}
+        />
+        <SuccessModal
+          open={showSuccessModal}
+          closeModal={() => setShowSuccessModal(false)}
+        />
         <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
           <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center lg:justify-start">
             <div className="w-full lg:w-fit">
@@ -392,9 +418,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
@@ -407,7 +433,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() =>{
+                    onClick={() => {
                       window.open(
                         getRedirectLink(row.getValue("app"), row.getValue("action")),
                         "_blank"
@@ -437,7 +463,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
-              style= {table.getCanPreviousPage() ? {} : {cursor:'not-allowed' } }
+              style={table.getCanPreviousPage() ? {} : { cursor: 'not-allowed' }}
             >
               <CDNImage
                 src="/icons/chevronLeft.svg"
@@ -449,7 +475,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             <div
               className="flex modified-cursor-pointer"
               onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-              style= {table.getCanNextPage() ? {} : {cursor:'not-allowed' } }
+              style={table.getCanNextPage() ? {} : { cursor: 'not-allowed' }}
             >
               <CDNImage
                 src="/icons/chevronRight.svg"
