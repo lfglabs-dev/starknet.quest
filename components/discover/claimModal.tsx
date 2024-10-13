@@ -148,11 +148,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                 />
               </div>
               <div className="flex w-full flex-col py-4 max-h-80 overflow-auto">
-                {!rewards ? (
-                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>
-                    No rewards available
-                  </Typography>
-                ) : (
+                {rewards ? (
                   Object.keys(rewards)
                     .map((key) =>
                       rewards[key as keyof RewardsPerProtocol].length > 0 ? (
@@ -174,6 +170,10 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                       ) : null
                     )
                     .flat()
+                ) : (
+                  <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                    No rewards available
+                  </Typography>
                 )}
               </div>
             </div>
@@ -184,10 +184,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                 <Typography type={TEXT_TYPE.BODY_MIDDLE}>Cancel</Typography>
               </button>
               <div className="w-fit">
-                <Button
-                  disabled={!calls}
-                  onClick={doClaimRewards}
-                >
+                <Button disabled={!calls} onClick={doClaimRewards}>
                   Claim all
                 </Button>
               </div>
