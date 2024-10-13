@@ -148,33 +148,25 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                 />
               </div>
               <div className="flex w-full flex-col py-4 max-h-80 overflow-auto">
-                {rewards ? (
-                  Object.keys(rewards)
-                    .map((key) =>
-                      rewards[key as keyof RewardsPerProtocol].length > 0 ? (
-                        <RewardComponent
-                          key={key}
-                          appName={key}
-                          currencies={rewards[
-                            key as keyof RewardsPerProtocol
-                          ].map((reward) => {
-                            return {
-                              currencyName: reward.token_symbol,
-                              value:
-                                Math.round(
-                                  parseFloat(gweiToEth(reward.amount)) * 100
-                                ) / 100,
-                            };
-                          })}
-                        />
-                      ) : null
-                    )
-                    .flat()
+                {rewards && Object.keys(rewards).length > 0 ? (
+                  Object.entries(rewards)
+                    .filter(([_, rewardList]) => rewardList.length > 0)
+                    .map(([key, rewardList]) => (
+                      <RewardComponent
+                        key={key}
+                        appName={key}
+                        currencies={rewardList.map((reward) => ({
+                          currencyName: reward.token_symbol,
+                          value: Math.round(parseFloat(gweiToEth(reward.amount)) * 100) / 100,
+                        }))}
+                      />
+                    ))
                 ) : (
                   <Typography type={TEXT_TYPE.BODY_DEFAULT}>
                     No rewards available
                   </Typography>
                 )}
+              </div>
               </div>
             </div>
           </div>
