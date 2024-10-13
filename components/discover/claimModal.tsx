@@ -85,7 +85,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
   const { showNotification } = useNotification();
   const { address } = useAccount();
   const [rewards, setRewards] = useState<RewardsPerProtocol | null>(null);
-  const [calls, setCalls] = useState<Call[]>();
+  const [calls, setCalls] = useState<Call[]>([]);
   const { writeAsync: execute } = useContractWrite({
     calls: calls,
   });
