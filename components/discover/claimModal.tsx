@@ -148,7 +148,7 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                 />
               </div>
               <div className="flex w-full flex-col py-4 max-h-80 overflow-auto">
-                {rewards && Object.keys(rewards).length > 0 ? (
+                {rewards && calls.length > 0 ? (
                   Object.entries(rewards)
                     .filter(([key, rewardList]) => key && rewardList.length > 0)
                     .map(([key, rewardList]) => (
@@ -178,7 +178,10 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
                 <Typography type={TEXT_TYPE.BODY_MIDDLE}>Cancel</Typography>
               </button>
               <div className="w-fit">
-                <Button disabled={!calls} onClick={doClaimRewards}>
+                <Button
+                  disabled={!calls || calls.length === 0 || loading}
+                  onClick={doClaimRewards}
+                >
                   Claim all
                 </Button>
               </div>
