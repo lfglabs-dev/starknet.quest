@@ -411,7 +411,7 @@ export type CreateContract = {
   desc: string;
   href: string;
   cta: string;
-  calls: object; 
+  calls: object;
 };
 
 export type UpdateContract = {
@@ -491,7 +491,7 @@ export type AddUser = {
   password: string;
 };
 
-export type CreateCustomApi =  {
+export type CreateCustomApi = {
   quest_id: number;
   name: string;
   desc: string;
@@ -499,9 +499,9 @@ export type CreateCustomApi =  {
   cta: string;
   api_url?: string;
   regex?: string;
-}
+};
 
-export type UpdateCustomApi =  {
+export type UpdateCustomApi = {
   id: number;
   name?: string;
   desc?: string;
@@ -509,4 +509,22 @@ export type UpdateCustomApi =  {
   cta?: string;
   api_url?: string;
   regex?: string;
-}
+};
+
+export type Reward = {
+  amount: string;
+  token_symbol: string;
+};
+
+export type RewardsPerProtocol = {
+  zklend: Reward[];
+  nostra: Reward[];
+  nimbora: Reward[];
+  ekubo: Reward[];
+};
+
+export type Call = {
+  contractaddress: string;
+  calldata: string[];
+  entrypoint: string;
+};

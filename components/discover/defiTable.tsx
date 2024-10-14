@@ -36,6 +36,7 @@ import { getRedirectLink } from "@utils/defi";
 import DefiTableSkeleton from "./defiTableSkeleton";
 import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
+import { useAccount } from "@starknet-react/core";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -247,6 +248,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     },
   ]);
 
+  const { address } = useAccount();
+
   const [tokenFilter, setTokenFilter] = useState<string>();
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
@@ -254,7 +257,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -312,7 +315,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
-        <div className={`flex w-100 lg:flex-row flex-col justify-between items-start`}>
+        <div
+          className={`flex w-100 lg:flex-row flex-col justify-between items-start`}
+        >
           <div className={`flex w-100 flex-col gap-2`}>
             <Typography type={TEXT_TYPE.H4} color="secondary">
               Explore reward opportunities
@@ -321,14 +326,17 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               Find the best opportunities, and earn tokens
             </Typography>
           </div>
-          <div
-            onClick={() => setShowClaimModal(true)}
-            className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-xl modified-cursor-pointer h-min lg:mt-2 mt-8 px-6 py-2.5">
-            <AppIcon app="starknet" className="w-5 h-5" />
-            <Typography type={TEXT_TYPE.BUTTON_LARGE} color="background">
-              Claim all
-            </Typography>
-          </div>
+          {address && (
+            <div
+              onClick={() => setShowClaimModal(true)}
+              className="flex flex-row items-center justify-evenly gap-4 bg-white rounded-xl modified-cursor-pointer h-min lg:mt-2 mt-8 px-6 py-2.5"
+            >
+              <AppIcon app="starknet" className="w-5 h-5" />
+              <Typography type={TEXT_TYPE.BUTTON_LARGE} color="background">
+                Claim all
+              </Typography>
+            </div>
+          )}
         </div>
         <ClaimModal
           open={showClaimModal}
@@ -414,13 +422,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                     return (
                       <TableHead
                         key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}>
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
@@ -435,9 +444,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
                       window.open(
-                        getRedirectLink(row.getValue("app"), row.getValue("action")),
+                        getRedirectLink(
+                          row.getValue("app"),
+                          row.getValue("action")
+                        ),
                         "_blank"
-                      )
+                      );
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -463,7 +475,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
-              style={table.getCanPreviousPage() ? {} : { cursor: 'not-allowed' }}
+              style={
+                table.getCanPreviousPage() ? {} : { cursor: "not-allowed" }
+              }
             >
               <CDNImage
                 src="/icons/chevronLeft.svg"
@@ -475,7 +489,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             <div
               className="flex modified-cursor-pointer"
               onClick={() => (table.getCanNextPage() ? table.nextPage() : null)}
-              style={table.getCanNextPage() ? {} : { cursor: 'not-allowed' }}
+              style={table.getCanNextPage() ? {} : { cursor: "not-allowed" }}
             >
               <CDNImage
                 src="/icons/chevronRight.svg"
