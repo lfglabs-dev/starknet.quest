@@ -92,11 +92,16 @@ const ClaimModal: FunctionComponent<ClaimModalProps> = ({
 
   useEffect(() => {
     if (!address) return;
-    getRewards(address).then((res) => {
-      setRewards(res?.rewards);
-      setCalls(res?.calls);
-      setLoading(false);
-    });
+    getRewards(address)
+      .then((res) => {
+        setRewards(res?.rewards);
+        setCalls(res?.calls);
+        setLoading(false);
+      })
+      .catch((error) => {
+        showNotification("Error while fetching rewards", "error");
+        console.log("Error while fetching rewards", error);
+      });
   }, [address]);
 
   const doClaimRewards = useCallback(async () => {
