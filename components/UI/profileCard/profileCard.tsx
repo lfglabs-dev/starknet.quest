@@ -85,11 +85,11 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
           )}
         </div>
 
-          <div className="flex flex-col h-full justify-between">
+          <div className="flex flex-col h-full justify-center">
             <Typography type={TEXT_TYPE.BODY_SMALL} color="secondary" className={styles.accountCreationDate}>
               {sinceDate ? `${sinceDate}` : ""}
             </Typography>
-            <Typography type={TEXT_TYPE.H2} className={styles.profile_name}>{identity.domain.domain}</Typography>
+            <Typography type={TEXT_TYPE.H2} className={`${styles.profile_name} mt-2`}>{identity.domain.domain}</Typography>
             <div className={styles.address_div}>
             <CopyAddress
                   address={identity?.owner ?? ""}

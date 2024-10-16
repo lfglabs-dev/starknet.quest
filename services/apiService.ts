@@ -25,6 +25,7 @@ import {
   altProtocolStats,
   pairStats,
   lendStats,
+  Call,
 } from "types/backTypes";
 
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
@@ -411,3 +412,23 @@ export const getAltProtocolStats =
       return null;
     }
   };
+
+export const getRewards = async (address: string) => {
+  try {
+    const response = await fetch(`${baseurl}/defi/rewards?addr=${address}`);
+    const data = await response.json();
+    const rewards = data.rewards;
+    const calls = data.calls;
+    const parsedCalls = calls.map((call: Call) => {
+      return {
+        contractAddress: call.contractaddress,
+        entrypoint: call.entrypoint,
+        calldata: call.calldata,
+      };
+    });
+    return { rewards, calls: parsedCalls };
+  } catch (err) {
+    console.log("Error while fetching rewards", err);
+    return null;
+  }
+};
