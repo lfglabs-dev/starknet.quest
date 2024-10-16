@@ -142,7 +142,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             handleChange={handleBoostTokenChange}
             options={Object.keys(TOKEN_ADDRESS_MAP[network]).map((eachItem) => {
               return {
-                value: eachItem,
+                value: TOKEN_ADDRESS_MAP[network][eachItem],
                 label: eachItem,
               };
             })}
