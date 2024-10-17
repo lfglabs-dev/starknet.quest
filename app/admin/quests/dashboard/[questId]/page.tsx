@@ -229,7 +229,7 @@ export default function Page({ params }: QuestIdProps) {
             contract_calls: task.calls,
           },
         };
-      } else if(task.task_type === "custom_api"){
+      } else if (task.task_type === "custom_api") {
         return {
           type: "CustomApi",
           data: {
@@ -239,11 +239,10 @@ export default function Page({ params }: QuestIdProps) {
             api_href: task.href,
             api_url: task.api_url,
             api_cta: task.cta,
-            api_regex: task.regex
-          }
-        }
+            api_regex: task.regex,
+          },
+        };
       }
-
     });
 
     const res = await Promise.all(taskPromises);
@@ -270,6 +269,9 @@ export default function Page({ params }: QuestIdProps) {
         await AdminService.updateBoost({
           ...boostInput,
           hidden: !showBoost,
+          amount: Number(boostInput.amount),
+          num_of_winners: Number(boostInput.num_of_winners),
+          token_decimals: Number(boostInput.token_decimals),
         });
 
         return;
@@ -546,8 +548,7 @@ export default function Page({ params }: QuestIdProps) {
             cta: step.data.contract_cta,
             calls: JSON.parse(step.data.contract_calls),
           });
-        }
-        else if(step.type === "CustomApi"){
+        } else if (step.type === "CustomApi") {
           await AdminService.createCustomApi({
             quest_id: questId.current,
             name: step.data.api_name,
@@ -556,7 +557,7 @@ export default function Page({ params }: QuestIdProps) {
             regex: step.data.api_regex,
             href: step.data.api_href,
             cta: step.data.api_cta,
-          })
+          });
         }
       } catch (error) {
         showNotification(`Error adding ${step.type} task: ${error}`, "error");
@@ -666,7 +667,10 @@ export default function Page({ params }: QuestIdProps) {
             calls: JSON.parse(step.data.contract_calls),
           });
         } catch (error) {
-          showNotification(`Error updating ${step.type} task: ${error}`, "error");
+          showNotification(
+            `Error updating ${step.type} task: ${error}`,
+            "error"
+          );
         }
       } else if (step.type === "CustomApi") {
         await AdminService.updateCustomApi({
@@ -817,7 +821,7 @@ export default function Page({ params }: QuestIdProps) {
         <AdminQuestDetails
           quest={questData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => { }}
+          setShowDomainPopup={() => {}}
           hasRootDomain={false}
           rewardButtonTitle={questData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {
