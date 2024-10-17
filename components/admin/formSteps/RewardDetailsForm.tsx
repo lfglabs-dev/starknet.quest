@@ -54,18 +54,19 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
 
   const handleBoostTokenChange = useCallback(
     (event: SelectChangeEvent) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tokenAddress = event.target.value;
+      const tokenName =
+        Object.keys(TOKEN_ADDRESS_MAP[network]).find(
+          (key) => TOKEN_ADDRESS_MAP[network][key] === tokenAddress
+        ) || "";
       setBoostInput((prev: any) => ({
         ...prev,
-        token: event.target.value,
-        // token decimals is a value which has different tokens which we support and use their decimals here
+        token: tokenAddress,
         token_decimals:
-          TOKEN_DECIMAL_MAP[
-            event.target.value as keyof typeof TOKEN_DECIMAL_MAP
-          ],
+          TOKEN_DECIMAL_MAP[tokenName as keyof typeof TOKEN_DECIMAL_MAP],
       }));
     },
-    [setBoostInput]
+    [setBoostInput, network]
   );
 
   return (
@@ -142,7 +143,7 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             handleChange={handleBoostTokenChange}
             options={Object.keys(TOKEN_ADDRESS_MAP[network]).map((eachItem) => {
               return {
-                value: eachItem,
+                value: TOKEN_ADDRESS_MAP[network][eachItem],
                 label: eachItem,
               };
             })}
