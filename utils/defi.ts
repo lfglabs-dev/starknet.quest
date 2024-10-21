@@ -43,6 +43,9 @@ const linkMap: { [key: string]: { [key: string]: string } } = {
   carmine: {
     Derivatives: "https://app.carmine.finance/trade",
   },
+  opus: {
+    Strategies: "https://app.opus.money/",
+  },
 };
 
 export const getRedirectLink = (appName: string, actionType: string) => {
