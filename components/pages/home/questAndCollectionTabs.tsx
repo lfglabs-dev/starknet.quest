@@ -112,10 +112,6 @@ const QuestAndCollectionTabs: FunctionComponent<
       });
       if (!filteredBoosts || filteredBoosts.length === 0) return;
       setDisplayBoosts(filteredBoosts);
-      console.log("Boosts:", boosts);
-      console.log("Filtered Boosts:", filteredBoosts);
-      console.log("Relevant Boosts:", relevantBoosts);
-      console.log("Display Boosts:", displayBoosts);
     } catch (err) {
       console.log("Error while fetching boosts", err);
     }
