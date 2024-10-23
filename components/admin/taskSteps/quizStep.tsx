@@ -102,37 +102,36 @@ const QuizStep: FunctionComponent<QuizStepProps> = ({
     [steps]
   );
 
-  const handleCorrectAnswer = useCallback(
-    (optionIndex: number, questionIndex: number) => {
-      const updatedSteps = steps.map((step, i) => {
-        if (i === index && step.type === "Quiz") {
-          const updatedQuestions = step.data.questions.map(
-            (questionObj: typeof QuizQuestionDefaultInput, qIndex: number) => {
-              if (qIndex === questionIndex) {
-                return {
-                  ...questionObj,
-                  correct_answers: [optionIndex],
-                };
-              }
-              return questionObj;
+ const handleCorrectAnswer = useCallback(
+  (optionIndex: number, questionIndex: number) => {
+    const updatedSteps = steps.map((step, i) => {
+      if (i === index && step.type === "Quiz") {
+        const updatedQuestions = step.data.questions.map(
+          (questionObj: typeof QuizQuestionDefaultInput, qIndex: number) => {
+            if (qIndex === questionIndex) {
+              return {
+                ...questionObj,
+                correct_answers: [optionIndex - 1], // Subtract 1 to map to API
+              };
             }
-          );
+            return questionObj;
+          }
+        );
 
-          return {
-            ...step,
-            data: {
-              ...step.data,
-              questions: updatedQuestions,
-            },
-          };
-        }
-        return step;
-      });
-      setSteps(updatedSteps);
-    },
-    [steps]
-  );
-
+        return {
+          ...step,
+          data: {
+            ...step.data,
+            questions: updatedQuestions,
+          },
+        };
+      }
+      return step;
+    });
+    setSteps(updatedSteps);
+  },
+  [steps, index, setSteps]
+);
   const handleAddQuestion = useCallback(() => {
     const updatedSteps = steps.map((step, i) => {
       if (i === index && step.type === "Quiz") {
