@@ -46,6 +46,9 @@ const linkMap: { [key: string]: { [key: string]: string } } = {
   opus: {
     Strategies: "https://app.opus.money/",
   },
+  haiko_solvers: {
+    "Provide Liquidity": "https://app.haiko.xyz/positions",
+  },
 };
 
 export const getRedirectLink = (appName: string, actionType: string) => {
