@@ -254,7 +254,7 @@ const QuestAndCollectionTabs: FunctionComponent<
                         ) : (
                           `${completedBoostNumber}/${
                             relevantBoosts.length
-                          } Boost${boosts.length > 1 ? "s" : ""} done`
+                          } Boost${relevantBoosts.length > 1 ? "s" : ""} done`
                         )}
                       </Typography>
                     </div>
