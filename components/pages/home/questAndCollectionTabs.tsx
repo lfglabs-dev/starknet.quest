@@ -183,27 +183,28 @@ const QuestAndCollectionTabs: FunctionComponent<
                   fontFamily: "Sora",
                   minHeight: "32px",
                 }}
-                label={`Collections (${filteredCategories.length + (boosts ? 1 : 0)
-                  })`}
+                label={`Collections (${
+                  filteredCategories.length + (boosts ? 1 : 0)
+                })`}
                 {...a11yProps(1)}
               />
-              {address && (displayBoosts.length > 0 ? (
-                <Tab
-                  disableRipple
-                  sx={{
-                    borderRadius: "10px",
-                    padding: "0px 12px 0px 12px",
-                    textTransform: "none",
-                    fontWeight: "600",
-                    fontSize: "12px",
-                    fontFamily: "Sora",
-                    minHeight: "32px",
-                  }}
-                  label={`To claim (${displayBoosts.length})`}
-                  {...a11yProps(2)}
-                />
-              ) : null
-              )}
+              {address &&
+                (displayBoosts.length > 0 ? (
+                  <Tab
+                    disableRipple
+                    sx={{
+                      borderRadius: "10px",
+                      padding: "0px 12px 0px 12px",
+                      textTransform: "none",
+                      fontWeight: "600",
+                      fontSize: "12px",
+                      fontFamily: "Sora",
+                      minHeight: "32px",
+                    }}
+                    label={`To claim (${displayBoosts.length})`}
+                    {...a11yProps(2)}
+                  />
+                ) : null)}
             </Tabs>
           </div>
           <CustomTabPanel value={tabIndex} index={0}>
@@ -245,14 +246,15 @@ const QuestAndCollectionTabs: FunctionComponent<
                         type={TEXT_TYPE.BODY_DEFAULT}
                         className={`${styles.categoryInfosText} text-gray-200 normal-case`}
                       >
-                        {completedBoostNumber === boosts.length ? (
+                        {completedBoostNumber === relevantBoosts.length ? (
                           <span className="flex">
-                            <span className="mr-2">All boosts done</span>
+                            <span className="mr-2">All quests were done</span>{" "}
                             <CheckIcon width="24" color="#6AFFAF" />
                           </span>
                         ) : (
-                          `${completedBoostNumber}/${relevantBoosts.length
-                          } Boost${boosts.length > 1 ? "s" : ""} done`
+                          `${completedBoostNumber}/${
+                            relevantBoosts.length
+                          } Boost${relevantBoosts.length > 1 ? "s" : ""} done`
                         )}
                       </Typography>
                     </div>
