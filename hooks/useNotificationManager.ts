@@ -35,7 +35,7 @@ export function useNotificationManager() {
       return notification;
     });
 
-    setNotifications(updatedNotifications);
+    setNotifications([...updatedNotifications]);
   };
 
   const checkTransactionStatus = async (txHash: string) => {
