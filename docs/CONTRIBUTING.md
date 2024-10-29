@@ -15,6 +15,12 @@ To set up a development environment, please follow these steps:
    cd starknet.quest
    npm i && npm run dev
    ```
+### 
+To avoid any failure to resolve the dependency tree, the --force flag should be added:
+
+```
+npm i --force
+```
 
 ## Issues and feature requests
 
