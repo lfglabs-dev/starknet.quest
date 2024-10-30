@@ -15,6 +15,7 @@ import {
   UpdateQuest,
   UpdateQuiz,
   UpdateQuizQuestion,
+  DeleteQuizQuestion,
   UpdateTwitterFw,
   UpdateTwitterRw,
   CreateNftUri,
@@ -492,6 +493,25 @@ const updateQuizQuestion = async (params: UpdateQuizQuestion) => {
   }
 };
 
+const deleteQuizQuestion = async (params: DeleteQuizQuestion) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/admin/tasks/quiz/question/delete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(params),
+      }
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while deleting quiz question", err);
+  }
+}; 
+
 const deleteTask = async (params: { id: number }) => {
   try {
     const response = await fetch(`${baseurl}/admin/tasks/remove_task`, {
@@ -595,6 +615,7 @@ export const AdminService = {
   updateTwitterRw,
   updateTwitterFw,
   updateQuizQuestion,
+  deleteQuizQuestion,
   updateQuiz,
   updateCustom,
   updateDiscord,

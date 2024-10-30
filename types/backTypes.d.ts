@@ -466,6 +466,11 @@ export type UpdateQuizQuestion = {
   quiz_id: number;
 };
 
+export type DeleteQuizQuestion = {
+  id: number;
+  quiz_id: number;
+};
+
 export type NFTUri = {
   name: string;
   description: string;
