@@ -1,4 +1,4 @@
-import React, {
+add walletimport React, {
   FunctionComponent,
   useCallback,
   useEffect,
@@ -25,6 +25,7 @@ import { hexToDecimal } from "@utils/feltService";
 import { Url } from "next/dist/shared/lib/router/router";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
+import ShowHideAddress from "../ShowHideAddress";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -37,7 +38,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   const sinceDate = useCreationDate(identity);
   const { data: profileData } = useStarkProfile({ address: identity.owner });
   const [userXp, setUserXp] = useState<number>();
-
+  const [hideBalance, setHideBalance] = useState(true);
 
   const rankFormatter = useCallback((rank: number) => {
     if (rank > 10000) return "+10k";
@@ -100,6 +101,17 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.addressText} color="secondary">
                 {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
               </Typography>
+            </div>
+            <div className={styles.address_div}>
+              {hideBalance ? ("*") : ("$ 2,334.34")}
+              <ShowHideAddress
+                      address={identity?.owner ?? ""}
+                      iconSize="24"
+                      className={styles.copyButton}
+                      wallet={false}
+                      hideBalance={hideBalance}
+                      setHideBalance={setHideBalance}
+                    />
             </div>
             <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
