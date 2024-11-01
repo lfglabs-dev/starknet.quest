@@ -25,7 +25,7 @@ import { hexToDecimal } from "@utils/feltService";
 import { Url } from "next/dist/shared/lib/router/router";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
-import ToggleVisibility from "@components/UI/ShowHideAddressProps";
+import ToggleVisibility from "@components/UI/ToggleVisibility";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
