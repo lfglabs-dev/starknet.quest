@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import EyeIcon from "@components/UI/iconsComponents/icons/eyeIcon";
-import EyeOffIcon from '@components/UI/iconsComponents/icons/EyeOffIcon';
+import EyeOffIcon from './iconsComponents/icons/eyeOffIcon';
 
-interface ShowHideAddressProps {
+type  ToggleVisibilityProps = {
   address: string;
   className?: string;
   iconSize?: string;
@@ -11,7 +11,7 @@ interface ShowHideAddressProps {
   setHideBalance: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ShowHideAddress: React.FC<ShowHideAddressProps> = ({ address, className, iconSize = "24",wallet=false, hideBalance, setHideBalance }) => {
+const  ToggleVisibility: React.FC< ToggleVisibilityProps> = ({ address, className, iconSize = "24",wallet=false, hideBalance, setHideBalance }) => {
     const toggleBalance = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       setHideBalance(!hideBalance);
@@ -28,4 +28,4 @@ const ShowHideAddress: React.FC<ShowHideAddressProps> = ({ address, className, i
   );
 };
 
-export default ShowHideAddress;
+export default  ToggleVisibility;

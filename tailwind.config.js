@@ -2,6 +2,12 @@
 module.exports = {
   content: ["./app/**/*.{html,tsx}", "./components/**/*.{html,tsx}"],
   theme: {
+    extend: {
+      fontFamily: {
+        sora: ['Sora', 'sans-serif'],
+      },
+    },  
+
     colors: {
       primary: "#6AFFAF",
       secondary: "#F4FAFF",
@@ -20,12 +26,7 @@ module.exports = {
         300: "#1F1F25",
         900: "#1a202c",
       },
-      extend: {
-        fontFamily: {
-          sora: ['Sora', 'sans-serif'],
-        },
-      },  
-
+      
       // ... Other colors you want to add
     },
   },
