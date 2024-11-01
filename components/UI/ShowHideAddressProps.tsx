@@ -28,4 +28,4 @@ const  ToggleVisibility: React.FC< ToggleVisibilityProps> = ({ address, classNam
   );
 };
 
-export default  ToggleVisibility;
+export default ToggleVisibility;

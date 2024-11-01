@@ -1,8 +1,8 @@
-add walletimport React, {
+import React, {
   FunctionComponent,
   useCallback,
   useEffect,
-  useMemo, 
+  useMemo,
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
@@ -25,7 +25,7 @@ import { hexToDecimal } from "@utils/feltService";
 import { Url } from "next/dist/shared/lib/router/router";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
-import ToggleVisibility from "../ShowHideAddress";
+import ToggleVisibility from "@components/UI/ShowHideAddressProps";
 
 const ProfileCard: FunctionComponent<ProfileCard> = ({
   rankingData,
@@ -88,16 +88,16 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
 
           <div className="flex flex-col h-full justify-center">
             <Typography type={TEXT_TYPE.BODY_SMALL} color="secondary" className={styles.accountCreationDate}>
-              {sinceDate ? `${sinceDate}` : ""}
+              {sinceDate ? ${sinceDate} : ""}
             </Typography>
-            <Typography type={TEXT_TYPE.H2} className={`${styles.profile_name} mt-2`}>{identity.domain.domain}</Typography>
+            <Typography type={TEXT_TYPE.H2} className={${styles.profile_name} mt-2}>{identity.domain.domain}</Typography>
             
-            {/* {toggle currency} */}
+           {/* Balance visibility toggle section */}
             <div className={styles.address_div}>
               <span className={styles.hide}>
               {hideBalance ? ("*") : ("$ 2,334.34")}
               </span>
-              <ShowHideAddress
+              <ToggleVisibility
                       address={identity?.owner ?? ""}
                       iconSize="24"
                       className={styles.copyButton}
@@ -106,7 +106,7 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                       setHideBalance={setHideBalance}
                     />
             </div>
-              {/* {toggle currency close} */}
+              {/* { Balance visibility toggle section close} */}
 
             <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
@@ -187,4 +187,4 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
   );
 };
 
-export default ProfileCard;
+export default ProfileCard;
