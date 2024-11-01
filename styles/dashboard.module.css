@@ -30,6 +30,16 @@
     width: 100%;
 }
 
+.hide{
+    font-family: Sora;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    text-align:left;
+    
+    }
+
 .profileCardLoading {
     position: absolute;
     top: 0;

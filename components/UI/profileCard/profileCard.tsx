@@ -2,7 +2,7 @@ add walletimport React, {
   FunctionComponent,
   useCallback,
   useEffect,
-  useMemo,
+  useMemo, 
   useState,
 } from "react";
 import styles from "@styles/dashboard.module.css";
@@ -91,19 +91,12 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
               {sinceDate ? `${sinceDate}` : ""}
             </Typography>
             <Typography type={TEXT_TYPE.H2} className={`${styles.profile_name} mt-2`}>{identity.domain.domain}</Typography>
+            
+            {/* {toggle currency} */}
             <div className={styles.address_div}>
-            <CopyAddress
-                  address={identity?.owner ?? ""}
-                  iconSize="24"
-                  className={styles.copyButton}
-                  wallet={false}
-                />
-              <Typography type={TEXT_TYPE.BODY_SMALL} className={styles.addressText} color="secondary">
-                {minifyAddress(addressOrDomain ?? identity?.owner, 8)}
-              </Typography>
-            </div>
-            <div className={styles.address_div}>
+              <span className={styles.hide}>
               {hideBalance ? ("*") : ("$ 2,334.34")}
+              </span>
               <ShowHideAddress
                       address={identity?.owner ?? ""}
                       iconSize="24"
@@ -113,6 +106,8 @@ const ProfileCard: FunctionComponent<ProfileCard> = ({
                       setHideBalance={setHideBalance}
                     />
             </div>
+              {/* {toggle currency close} */}
+
             <div className="flex sm:hidden justify-center py-4">
               <SocialMediaActions identity={identity} />
               <Link href={shareLink} target="_blank" rel="noreferrer">
