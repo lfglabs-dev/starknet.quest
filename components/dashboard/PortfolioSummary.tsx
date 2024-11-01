@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo } from "react";
+import React, { FunctionComponent, useMemo, useState } from "react";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "@components/UI/typography/typography";
 import { Doughnut } from "react-chartjs-2";
@@ -8,7 +8,8 @@ import { CDNImg } from "@components/cdn/image";
 import starknetIcon from "../../public/starknet/favicon.ico";
 import cursor from '../../public/icons/cursor.png';
 import cursorPointer from '../../public/icons/pointer-cursor.png';
-
+import ClaimModal from "../discover/claimModal";
+import SuccessModal from "../discover/successModal";
 Chart.register(ArcElement, DoughnutController, Tooltip);
 
 type PortfolioSummaryProps = {
@@ -18,6 +19,7 @@ type PortfolioSummaryProps = {
   isProtocol: boolean,
   minSlicePercentage?: number
 }
+
 
 const ChartEntry: FunctionComponent<ChartItem> = ({
   color,
@@ -80,6 +82,9 @@ const PortfolioSummary: FunctionComponent<PortfolioSummaryProps> = ({ title, dat
     }
   }), [data]);
 
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
   return data.length > 0 ? (
     <div className={styles.dashboard_portfolio_summary}>
       <div className="flex flex-col md:flex-row w-full justify-between items-center mb-4">
@@ -88,7 +93,7 @@ const PortfolioSummary: FunctionComponent<PortfolioSummaryProps> = ({ title, dat
         </div>
         {isProtocol && (
           <button
-            onClick={() => { }}
+            onClick={() => setShowClaimModal(true)}
             className="flex items-center justify-evenly gap-1.5 lg:gap-4 bg-white rounded-xl modified-cursor-pointer h-min px-6 py-2 mb-4 md:mb-0"
           >
             <CDNImg width={20} src={starknetIcon.src} loading="lazy" />
@@ -97,6 +102,15 @@ const PortfolioSummary: FunctionComponent<PortfolioSummaryProps> = ({ title, dat
             </Typography>
           </button>
         )}
+        <ClaimModal
+          open={showClaimModal}
+          closeModal={() => setShowClaimModal(false)}
+          showSuccess={() => setShowSuccessModal(true)}
+        />
+        <SuccessModal
+          open={showSuccessModal}
+          closeModal={() => setShowSuccessModal(false)}
+        />
       </div>
       <div className={styles.dashboard_portfolio_summary_info}>
         <div className="flex flex-col justify-between w-10/12 md:w-8/12 h-fit">

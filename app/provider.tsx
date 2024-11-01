@@ -37,7 +37,9 @@ if (typeof window !== "undefined") {
 export const availableConnectors = [
   new InjectedConnector({ options: { id: "braavos", name: "Braavos" } }),
   new InjectedConnector({ options: { id: "argentX", name: "Argent X" } }),
+  new InjectedConnector({ options: { id: "bitkeep", name: "Bitget Wallet" } }),
   new InjectedConnector({ options: { id: "okxwallet", name: "Okx Wallet" } }), // Added okxwallet
+
   new WebWalletConnector({
     url:
       getCurrentNetwork() === "TESTNET"
@@ -50,8 +52,8 @@ export const availableConnectors = [
     chainId: constants.NetworkName.SN_MAIN,
     icons: ["https://starknet.quest/visuals/starknetquestLogo.svg"],
   }),
-  
-  new InjectedConnector({ options: { id: "keplr", name: "Keplr" } })
+
+  new InjectedConnector({ options: { id: "keplr", name: "Keplr" } }),
 ];
 
 export function Providers({ children }: { children: React.ReactNode }) {

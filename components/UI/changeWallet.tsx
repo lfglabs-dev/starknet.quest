@@ -10,6 +10,10 @@ import useGetDiscoveryWallets from "@hooks/useGetDiscoveryWallets";
 import Typography from "./typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 
+// Define an array of wallet IDs with explicit types
+const INSTALLABLE_WALLETS = ["braavos", "argentX", "bitkeep"] as const;
+type WalletId = typeof INSTALLABLE_WALLETS[number];
+
 type ChangeWalletProps = {
   closeWallet: () => void;
   hasWallet: boolean;
@@ -53,7 +57,13 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
             ></path>
           </svg>
         </button>
-        <Typography type={TEXT_TYPE.BODY_NORMAL} color="secondary" className={styles.menu_title}>Change wallet</Typography>
+        <Typography
+          type={TEXT_TYPE.BODY_NORMAL}
+          color="secondary"
+          className={styles.menu_title}
+        >
+          Change wallet
+        </Typography>
         {connectors.map((connector) => {
           if (connector.available()) {
             return (
@@ -61,8 +71,7 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
                 <Button onClick={() => connectWallet(connector)}>
                   <div className="flex justify-center items-center">
                     <WalletIcons id={connector.id} />
-                    {connector.id === "braavos" ||
-                    connector.id === "argentX" ||
+                    {INSTALLABLE_WALLETS.includes(connector.id as WalletId) ||
                     connector.id === "okxwallet"
                       ? `Connect ${connector.name}`
                       : "Login with Email"}
@@ -71,7 +80,7 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
               </div>
             );
           } else {
-            if (connector.id === "braavos" || connector.id === "argentX") {
+            if (INSTALLABLE_WALLETS.includes(connector.id as WalletId)) {
               return (
                 <div className="mt-5 flex justify-center" key={connector.id}>
                   <Button
@@ -95,11 +104,17 @@ const ChangeWallet: FunctionComponent<ChangeWalletProps> = ({
             }
           }
         })}
-        <Typography color="secondary" type={TEXT_TYPE.BODY_MIDDLE} onClick={() => closeWallet()} className={styles.closeMobile}>
+        <Typography
+          color="secondary"
+          type={TEXT_TYPE.BODY_MIDDLE}
+          onClick={() => closeWallet()}
+          className={styles.closeMobile}
+        >
           Close
         </Typography>
       </div>
     </Modal>
   );
 };
+
 export default ChangeWallet;

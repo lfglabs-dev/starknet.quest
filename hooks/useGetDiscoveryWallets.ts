@@ -7,6 +7,7 @@ export default function useGetDiscoveryWallets(
 ) {
   const [argentX, setArgentX] = useState<string>("");
   const [braavos, setBraavos] = useState<string>("");
+  const [bitkeep, setBitkeep] = useState<string>("");
 
   useEffect(() => {
     if (typeof navigator !== "undefined") {
@@ -26,11 +27,17 @@ export default function useGetDiscoveryWallets(
                 ? wallet.downloads[browser as keyof typeof wallet.downloads]
                 : "https://braavos.app/download-braavos-wallet/"
             );
+          } else if (wallet.id === "bitkeep") {
+            setBitkeep(
+              browser
+                ? wallet.downloads[browser as keyof typeof wallet.downloads]
+                : "https://web3.bitget.com/en/wallet-download"
+            );
           }
         });
       });
     }
   }, [getDiscoveryWallets]);
 
-  return { argentX, braavos };
+  return { argentX, braavos, bitkeep };
 }
