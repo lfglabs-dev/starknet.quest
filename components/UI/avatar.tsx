@@ -32,6 +32,7 @@ const Avatar: FunctionComponent<AvatarProps> = ({ address, width = "32" }) => {
           width={width}
           height={width}
           className="rounded-full"
+          alt={`${profile?.name?.length !== 0 ? profile?.name : "User"}'s avatar`}
         />
       ) : (
         <ProfilIcon width={width} color={theme.palette.secondary.main} />

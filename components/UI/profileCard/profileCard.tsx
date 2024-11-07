@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styles from "@styles/dashboard.module.css";
 import { CDNImage } from "@components/cdn/image";
-import { useStarkProfile, type Address } from "@starknet-react/core";
+import { useAccount, type Address } from "@starknet-react/core";
 import Skeleton from "@mui/material/Skeleton";
 import trophyIcon from "public/icons/trophy.svg";
 import xpIcon from "public/icons/xpBadge.svg";
@@ -23,6 +23,7 @@ import { hexToDecimal } from "@utils/feltService";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
 import { calculateTotalBalance } from "../../../services/argentPortfolioService";
+import Avatar from "../avatar";
 const MAX_RETRIES = 1000;
 const RETRY_DELAY = 2000;
 const controller = new AbortController();
@@ -47,7 +48,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
   const formattedAddress = (
     identity.owner.startsWith("0x") ? identity.owner : `0x${identity.owner}`
   ) as Address;
-  const { data: profileData } = useStarkProfile({ address: formattedAddress });
+  const { address, status: accountStatus } = useAccount();
 
   const rankFormatter = useCallback((rank: number) => {
     if (rank > 10000) return "+10k";
@@ -112,8 +113,8 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
     <div className={styles.dashboard_profile_card}>
       <div className={styles.left}>
         <div className={styles.profile_picture_div}>
-          {profileData?.profilePicture ? (
-            <img src={profileData.profilePicture} className="rounded-full" />
+          { formattedAddress && formattedAddress?.length !== 0 ? ( // show the avatar of the address in the URL
+            <Avatar width="120" address={formattedAddress} />
           ) : (
             <ProfilIcon width="120" color={theme.palette.secondary.main} />
           )}
