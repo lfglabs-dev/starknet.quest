@@ -48,7 +48,6 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
   const formattedAddress = (
     identity.owner.startsWith("0x") ? identity.owner : `0x${identity.owner}`
   ) as Address;
-  const { address, status: accountStatus } = useAccount();
 
   const rankFormatter = useCallback((rank: number) => {
     if (rank > 10000) return "+10k";
