@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styles from "@styles/dashboard.module.css";
 import { CDNImage } from "@components/cdn/image";
-import { useAccount, type Address } from "@starknet-react/core";
+import { type Address } from "@starknet-react/core";
 import Skeleton from "@mui/material/Skeleton";
 import trophyIcon from "public/icons/trophy.svg";
 import xpIcon from "public/icons/xpBadge.svg";
@@ -112,7 +112,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
     <div className={styles.dashboard_profile_card}>
       <div className={styles.left}>
         <div className={styles.profile_picture_div}>
-          { formattedAddress && formattedAddress?.length !== 0 ? ( // show the avatar of the address in the URL
+          { formattedAddress?.length !== 0 ? ( // show the avatar of the address in the URL
             <Avatar width="120" address={formattedAddress} />
           ) : (
             <ProfilIcon width="120" color={theme.palette.secondary.main} />
