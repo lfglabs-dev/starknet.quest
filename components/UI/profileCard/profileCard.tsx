@@ -14,7 +14,7 @@ import xpIcon from "public/icons/xpBadge.svg";
 import useCreationDate from "@hooks/useCreationDate";
 import shareSrc from "public/icons/share.svg";
 import theme from "@styles/theme";
-import EyeIcon from "../iconsComponents/icons/eyeIcon";
+import { EyeIcon, EyeIconSlashed } from "../iconsComponents/icons/eyeIcon";
 import ProfilIcon from "../iconsComponents/icons/profilIcon";
 import Link from "next/link";
 import SocialMediaActions from "../actions/socialmediaActions";
@@ -24,6 +24,8 @@ import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
 import { calculateTotalBalance } from "../../../services/argentPortfolioService";
 import Avatar from "../avatar";
+import { useHidePortfolio } from "@hooks/useHidePortfolio";
+
 const MAX_RETRIES = 1000;
 const RETRY_DELAY = 2000;
 const controller = new AbortController();
@@ -42,6 +44,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
   leaderboardData,
   isOwner,
 }) => {
+  const { hidePortfolio, setHidePortfolio } = useHidePortfolio();
   const [userXp, setUserXp] = useState<number>();
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
   const sinceDate = useCreationDate(identity);
@@ -60,13 +63,13 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
       let attempts = 0;
       while (true) {
         try {
-          const balance = await calculateTotalBalance(formattedAddress, "USD", {signal});
+          const balance = await calculateTotalBalance(formattedAddress, "USD", { signal });
           setTotalBalance(balance);
           return; // Exit if successful
         } catch (err) {
           attempts++;
           console.error(`Attempt ${attempts} - Error fetching total balance:`, err);
-          
+
           if (attempts >= MAX_RETRIES) {
             console.error("Failed to fetch total balance after multiple attempts.");
           } else {
@@ -102,8 +105,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
 
   const tweetShareLink: string = useMemo(() => {
     return `${getTweetLink(
-      `Check out${isOwner ? " my " : " "}Starknet Quest Profile at ${
-        window.location.href
+      `Check out${isOwner ? " my " : " "}Starknet Quest Profile at ${window.location.href
       } #Starknet #StarknetID`
     )}`;
   }, [isOwner]);
@@ -140,12 +142,14 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
                 className={`${styles.wallet_amount} font-extrabold`}
               >
                 {totalBalance !== null ? (
-                  `$${totalBalance.toFixed(2)}`
+                  hidePortfolio ? "******" : `$${totalBalance.toFixed(2)}`
                 ) : (
                   <Skeleton variant="text" width={60} height={30} />
                 )}
               </Typography>
-              <EyeIcon />
+              <div onClick={() => setHidePortfolio(!hidePortfolio)} className="cursor-pointer">
+                {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
+              </div>
             </div>
           </div>
           <div className="flex sm:hidden justify-center py-4">

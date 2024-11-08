@@ -10,6 +10,8 @@ import cursor from '../../public/icons/cursor.png';
 import cursorPointer from '../../public/icons/pointer-cursor.png';
 import ClaimModal from "../discover/claimModal";
 import SuccessModal from "../discover/successModal";
+import { useHidePortfolio } from "@hooks/useHidePortfolio";
+
 Chart.register(ArcElement, DoughnutController, Tooltip);
 
 type PortfolioSummaryProps = {
@@ -17,7 +19,7 @@ type PortfolioSummaryProps = {
   data: ChartItem[],
   totalBalance: number,
   isProtocol: boolean,
-  minSlicePercentage?: number
+  minSlicePercentage?: number,
 }
 
 
@@ -25,8 +27,9 @@ const ChartEntry: FunctionComponent<ChartItem> = ({
   color,
   itemLabel,
   itemValue,
-  itemValueSymbol
+  itemValueSymbol,
 }) => {
+  const { hidePortfolio } = useHidePortfolio();
   const value = itemValueSymbol === '%' ? itemValue + itemValueSymbol : itemValueSymbol + itemValue;
   return (
     <div className="flex w-full justify-between my-1">
@@ -36,7 +39,7 @@ const ChartEntry: FunctionComponent<ChartItem> = ({
         </svg>
         <Typography type={TEXT_TYPE.BODY_MIDDLE}>{itemLabel}</Typography>
       </div>
-      <Typography type={TEXT_TYPE.BODY_MIDDLE}>{value}</Typography>
+      <Typography type={TEXT_TYPE.BODY_MIDDLE}>{hidePortfolio ? "******" : value}</Typography>
     </div>
   );
 };
