@@ -29,6 +29,7 @@ import Typography from "../typography/typography";
 import { calculateTotalBalance } from "../../../services/argentPortfolioService";
 import Avatar from "../avatar";
 import { useHidePortfolio } from "@hooks/useHidePortfolio";
+import Loading from '@components/skeletons/loading';
 
 const MAX_RETRIES = 1000;
 const RETRY_DELAY = 2000;
@@ -165,7 +166,8 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
           </Typography>
           <div className={styles.address_div}>
             <div className='flex items-center gap-2'>
-              <Typography
+                  <Loading isLoading={totalBalance === null}>
+                   <Typography
                 type={TEXT_TYPE.BODY_SMALL}
                 className={`${styles.wallet_amount} font-extrabold`}
               >
@@ -173,7 +175,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
                   hidePortfolio ? (
                     '******'
                   ) : (
-                    `$${totalBalance.toFixed(2)}`
+                    `$${totalBalance?.toFixed(2)}`
                   )
                 ) : (
                   <Skeleton
@@ -189,6 +191,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
               >
                 {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
               </div>
+                  </Loading>
             </div>
           </div>
           <div className='flex sm:hidden justify-center py-4'>
