@@ -165,7 +165,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
             {identity.domain?.domain || 'Unknown Domain'}
           </Typography>
           <div className={styles.address_div}>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 h-6'>
                   <Loading isLoading={totalBalance === null}>
                    <Typography
                 type={TEXT_TYPE.BODY_SMALL}
@@ -185,13 +185,15 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
                   />
                 )}
               </Typography>
-              <div
-                onClick={() => setHidePortfolio(!hidePortfolio)}
-                className='cursor-pointer'
-              >
-                {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
-              </div>
                   </Loading>
+                <Loading isLoading={totalBalance === null} loadingType='spinner'>
+                <div
+                  onClick={() => setHidePortfolio(!hidePortfolio)}
+                  className='cursor-pointer'
+                >
+                  {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
+                </div>
+                </Loading>
             </div>
           </div>
           <div className='flex sm:hidden justify-center py-4'>
