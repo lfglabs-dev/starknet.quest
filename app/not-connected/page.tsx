@@ -12,7 +12,7 @@ export default function Page() {
   const { connectAsync } = useConnect();
   const { push } = useRouter();
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
-    connectors: availableConnectors as any,  
+    connectors: availableConnectors as any,
     modalTheme: "dark",
   });
 
@@ -25,7 +25,7 @@ export default function Page() {
     if (!connector) {
       return;
     }
-    await connectAsync({ connector: connector as Connector });  // Type casted
+    await connectAsync({ connector: connector as Connector }); // Type casted
     localStorage.setItem("SQ-connectedWallet", connector.id);
   };
 

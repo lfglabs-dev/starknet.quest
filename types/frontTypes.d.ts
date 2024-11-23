@@ -349,8 +349,8 @@ type Call = {
 };
 
 type ChartItem = {
-  color: string,
-  itemLabel: string,
-  itemValue: string,
-  itemValueSymbol: string
-}
+  color: string;
+  itemLabel: string;
+  itemValue: string;
+  itemValueSymbol: string;
+};
