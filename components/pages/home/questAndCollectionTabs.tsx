@@ -231,7 +231,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="flex flex-col items-center space-y-6">
+            <div className="flex flex-col items-center space-y-6 pb-5">
               {boosts.length !== 0 ? (
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
