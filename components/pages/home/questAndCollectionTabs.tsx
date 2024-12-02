@@ -211,7 +211,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             {isConnecting ? (
               "Connecting to wallet..."
             ) : (
-              <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+              <div className="flex flex-wrap gap-10 justify-center lg:justify-start pb-5 lg:pb-0">
                 {sortedAndFilteredQuests.map((quest) => (
                   <Quest
                     key={quest.id}
@@ -231,7 +231,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             )}
           </CustomTabPanel>
           <CustomTabPanel value={tabIndex} index={1}>
-            <div className="flex flex-col items-center space-y-6 pb-5 lg:pb-0">
+            <div className="flex flex-col items-center space-y-6">
               {boosts.length !== 0 ? (
                 <div className={styles.questCategoryContainer}>
                   <Link href={`/quest-boost`} className={styles.questCategory}>
