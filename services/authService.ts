@@ -614,6 +614,25 @@ const addUser = async (params: AddUser) => {
     console.log("Error while adding user", err);
   }
 };
+
+const getQuestParticipantsByQuestId = async (params: { id: number }) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/admin/quests/get_quest_participants?quest_id=${params.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (err) {
+    console.log("Error while getting quest participants", err);
+    throw err;
+  }
+}; 
+
 export const AdminService = {
   login,
   getQuests,
@@ -651,4 +670,5 @@ export const AdminService = {
   createNftUri,
   updateNftUri,
   addUser,
+  getQuestParticipantsByQuestId,
 };
