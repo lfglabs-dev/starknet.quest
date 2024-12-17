@@ -1,26 +1,152 @@
-import { FC } from 'react';
+import { FC } from "react";
 
-export const BridgeIcon:FC = () => (
-    <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-yellow-500/10">
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="Bridge icon"
-        >
-          <rect
-            width="48"
-            height="48"
-            rx="24"
-            fill="white"
-            fillOpacity="0.04"
-          />
-          <path
-            d="M32.1251 26.1875H29.9376V22.7102C30.4722 23.21 31.0943 23.6072 31.7727 23.882C32.0032 23.9753 32.2613 23.9731 32.4903 23.8761C32.7192 23.779 32.9002 23.595 32.9934 23.3645C33.0867 23.1339 33.0845 22.8758 32.9874 22.6469C32.8904 22.418 32.7063 22.237 32.4758 22.1437C31.7242 21.8417 31.0805 21.321 30.628 20.6491C30.1755 19.9773 29.9349 19.1851 29.9376 18.375C29.9376 18.1264 29.8388 17.8879 29.663 17.7121C29.4871 17.5363 29.2487 17.4375 29.0001 17.4375C28.7514 17.4375 28.513 17.5363 28.3371 17.7121C28.1613 17.8879 28.0626 18.1264 28.0626 18.375C28.0626 19.4524 27.6345 20.4858 26.8727 21.2476C26.1108 22.0095 25.0775 22.4375 24.0001 22.4375C22.9226 22.4375 21.8893 22.0095 21.1274 21.2476C20.3656 20.4858 19.9376 19.4524 19.9376 18.375C19.9376 18.1264 19.8388 17.8879 19.663 17.7121C19.4871 17.5363 19.2487 17.4375 19.0001 17.4375C18.7514 17.4375 18.513 17.5363 18.3371 17.7121C18.1613 17.8879 18.0626 18.1264 18.0626 18.375C18.0648 19.1849 17.824 19.9768 17.3714 20.6484C16.9187 21.32 16.275 21.8403 15.5235 22.1422C15.293 22.2354 15.1089 22.4164 15.0119 22.6453C14.9148 22.8743 14.9127 23.1324 15.0059 23.3629C15.0992 23.5934 15.2801 23.7774 15.5091 23.8745C15.738 23.9716 15.9961 23.9737 16.2266 23.8805C16.905 23.6057 17.5271 23.2084 18.0618 22.7086V26.1875H15.8751C15.6264 26.1875 15.388 26.2863 15.2121 26.4621C15.0363 26.6379 14.9376 26.8764 14.9376 27.125C14.9376 27.3736 15.0363 27.6121 15.2121 27.7879C15.388 27.9637 15.6264 28.0625 15.8751 28.0625H18.0626V29.625C18.0626 29.8736 18.1613 30.1121 18.3371 30.2879C18.513 30.4637 18.7514 30.5625 19.0001 30.5625C19.2487 30.5625 19.4871 30.4637 19.663 30.2879C19.8388 30.1121 19.9376 29.8736 19.9376 29.625V28.0625H28.0626V29.625C28.0626 29.8736 28.1613 30.1121 28.3371 30.2879C28.513 30.4637 28.7514 30.5625 29.0001 30.5625C29.2487 30.5625 29.4871 30.4637 29.663 30.2879C29.8388 30.1121 29.9376 29.8736 29.9376 29.625V28.0625H32.1251C32.3737 28.0625 32.6121 27.9637 32.788 27.7879C32.9638 27.6121 33.0626 27.3736 33.0626 27.125C33.0626 26.8764 32.9638 26.6379 32.788 26.4621C32.6121 26.2863 32.3737 26.1875 32.1251 26.1875ZM24.9376 24.2383V26.1875H23.0626V24.2383C23.6836 24.3372 24.3165 24.3372 24.9376 24.2383ZM19.9376 22.7016C20.3136 23.0546 20.7337 23.3573 21.1876 23.6023V26.1875H19.9376V22.7016ZM26.8126 26.1875V23.6023C27.2664 23.3573 27.6866 23.0546 28.0626 22.7016V26.1875H26.8126Z"
-            className="fill-yellow-300"
-          />
-        </svg>
-      </div>
+export const BridgeIcon: FC = () => (
+  <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-yellow-500/10">
+    <svg
+      width="64px"
+      height="64px"
+      viewBox="-21.12 -21.12 90.24 90.24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="#FBBF24"
+    >
+      <g
+        id="SVGRepo_bgCarrier"
+        stroke-width="0"
+        transform="translate(0,0), scale(1)"
+      >
+        <rect
+          x="-21.12"
+          y="-21.12"
+          width="90.24"
+          height="90.24"
+          rx="45.12"
+          fill="white"
+          fillOpacity="0.04"
+        ></rect>
+      </g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke="#CCCCCC"
+        stroke-width="0.096"
+      >
+        {" "}
+        <path
+          d="M8 13C8 13 14 23 24 23C34 23 40 13 40 13"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+        ></path>{" "}
+        <path
+          d="M8 10V38"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>{" "}
+        <path
+          d="M40 10V38"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>{" "}
+        <path
+          d="M4 30.5C4 30.5 16.1877 29.9026 24 30C31.8196 30.0975 44 31 44 31"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M16 21V30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M24 23L24 30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M32 21L32 30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M8 13L4 18"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M44 18L40 13"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+      </g>
+      <g id="SVGRepo_iconCarrier">
+        {" "}
+        <path
+          d="M8 13C8 13 14 23 24 23C34 23 40 13 40 13"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+        ></path>{" "}
+        <path
+          d="M8 10V38"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>{" "}
+        <path
+          d="M40 10V38"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>{" "}
+        <path
+          d="M4 30.5C4 30.5 16.1877 29.9026 24 30C31.8196 30.0975 44 31 44 31"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M16 21V30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M24 23L24 30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M32 21L32 30"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M8 13L4 18"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+        <path
+          d="M44 18L40 13"
+          stroke="#000000\FBBF24"
+          stroke-width="4"
+          stroke-linecap="round"
+        ></path>{" "}
+      </g>
+    </svg>
+  </div>
 );

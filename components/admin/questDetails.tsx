@@ -18,6 +18,7 @@ import Timer from "@components/quests/timer";
 import NftImage from "@components/quests/nftImage";
 import Task from "@components/quests/task";
 import Reward from "@components/quests/reward";
+import DownloadQuestUsersButton from "@components/quests/downloadQuestUsersButton"
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
 import Button from "@components/UI/button";
@@ -34,6 +35,7 @@ type QuestDetailsProps = {
   rewardButtonTitle?: string;
   onRewardButtonClick?: () => void;
   overrideDisabledState?: boolean;
+  isEdit?: boolean;
 };
 
 const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -43,6 +45,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   hasNftReward,
   rewardButtonTitle,
   onRewardButtonClick,
+  isEdit,
 }) => {
   const { address } = useAccount();
   const router = useRouter();
@@ -234,7 +237,13 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
             <p>Go To Quest</p>
           </Button>
         </div>
+        {isEdit && (
+          <div className="w-fit">
+            <DownloadQuestUsersButton questId={questId} />
+          </div>
+        )}
       </div>
+
     </>
   );
 };

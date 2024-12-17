@@ -53,13 +53,12 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
     const [totalBalance, setTotalBalance] = useState<number | null>(null);
     const sinceDate = useCreationDate(identity);
     const { address } = useAccount();
-
     const formattedAddress = useMemo(
-        () =>
-            (identity.owner.startsWith('0x')
-                ? identity.owner
-                : `0x${address}`) as Address,
-        [identity.owner]
+    () =>
+      (identity.owner.startsWith('0x')
+        ? identity.owner
+        : address) as Address,
+    [identity.owner]
     );
 
     const { data: profileData } = useStarkProfile({ address: formattedAddress });

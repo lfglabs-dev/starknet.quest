@@ -32,7 +32,7 @@ import {
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 
 const login = async (params: { passcode: string }) => {
-  try {
+  try {    
     const { passcode } = params;
     const response = await fetch(`${baseurl}/admin/login?code=${passcode}`);
     return await response.json();
@@ -89,6 +89,28 @@ const getTasksByQuestId = async (id: number) => {
     console.log("Error while getting tasks by id", err);
   }
 };
+
+const getQuestUsersByQuestId = async (params: { id: number }) => {
+  try {
+    const response = await fetch(
+      `${baseurl}/admin/quests/get_quest_users?quest_id=${params.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch quest users");
+    }
+    return await response.json();
+  } catch (err) {
+    console.log("Error while getting quest users by quest id", err);
+    throw err;
+  }
+};
+
 const getQuests = async () => {
   try {
     const response = await fetch(`${baseurl}/admin/quest/get_quests`, {
@@ -611,6 +633,7 @@ export const AdminService = {
   updateQuest,
   getQuestById,
   getTasksByQuestId,
+  getQuestUsersByQuestId,
   updateBoost,
   updateTwitterRw,
   updateTwitterFw,

@@ -4,6 +4,8 @@ import { Providers } from "./provider";
 import "@styles/globals.css";
 import Navbar from "@components/UI/navbar";
 import Footer from "@components/UI/footer";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "@components/UI/theme";
 
 export const metadata: Metadata = {
   title: "Starknet Quest",
@@ -53,11 +55,13 @@ export default function RootLayout({
     <html lang="en">
       <body className="default_background_color">
         <Providers>
-          <Navbar />
-          <main className="mt-[48px]">
-            {children}
-          </main>
-          <Footer />
+          <ThemeProvider theme={theme}>
+            <Navbar />
+            <main className="mt-[48px]">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
         </Providers>
       </body>
     </html>

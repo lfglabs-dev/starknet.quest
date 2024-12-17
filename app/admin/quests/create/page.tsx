@@ -508,6 +508,7 @@ export default function Page() {
             await fetchQuestData();
           }}
           overrideDisabledState={false}
+          isEdit={false}
         />
       );
     }
