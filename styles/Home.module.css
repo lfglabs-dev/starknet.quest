@@ -68,11 +68,13 @@
   box-shadow: 0px 2px 30px 0px rgba(16, 16, 18, 0.06);
   border: solid 1px transparent;
   cursor: url(../public/icons/pointer-cursor.png), pointer;
+  transition: all 0.3s ease-in-out;
 }
 
 .questCategory:hover {
-  border-color: var(--secondary500);
-  transition: all 0.2s ease;
+  transform: translateY(-4px);
+  background-color: var(--hover-background-color);
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.1);
 }
 
 .questCategory img {
@@ -102,7 +104,6 @@
   .title {
     font-size: 2rem;
   }
-
 }
 
 @media (max-width: 768px) {
@@ -191,9 +192,11 @@
   }
 
   .featured_quest_banner_container {
-    background: linear-gradient(180deg,
-        var(--background) 0.04%,
-        var(--background600) 347.42%);
+    background: linear-gradient(
+      180deg,
+      var(--background) 0.04%,
+      var(--background600) 347.42%
+    );
     margin-bottom: 0;
   }
 
@@ -237,12 +240,14 @@
     right: -1px;
     left: 0;
     bottom: 0;
-    background: linear-gradient(90deg,
-        #437aba 0%,
-        #59c2e8 45%,
-        #00ff77 60%,
-        #59c2e8 70%,
-        #437aba50 100%);
+    background: linear-gradient(
+      90deg,
+      #437aba 0%,
+      #59c2e8 45%,
+      #00ff77 60%,
+      #59c2e8 70%,
+      #437aba50 100%
+    );
     border-radius: 8px;
     mask: linear-gradient(8deg, transparent 85%, black);
   }
@@ -280,12 +285,13 @@
   }
 
   .section {
-    background: linear-gradient(180deg,
-        var(--background) 0.04%,
-        var(--background600) 347.42%);
+    background: linear-gradient(
+      180deg,
+      var(--background) 0.04%,
+      var(--background600) 347.42%
+    );
     padding-top: 3rem;
   }
-
 
   .questContainer {
     margin-top: 1.5rem;
@@ -326,12 +332,14 @@
   right: -2px;
   left: -1px;
   bottom: -1px;
-  background: linear-gradient(90deg,
-      #437aba 0%,
-      #59c2e8 45%,
-      #00ff77 60%,
-      #59c2e8 70%,
-      #437aba50 100%);
+  background: linear-gradient(
+    90deg,
+    #437aba 0%,
+    #59c2e8 45%,
+    #00ff77 60%,
+    #59c2e8 70%,
+    #437aba50 100%
+  );
   border-radius: 8px;
   z-index: -1;
   mask: linear-gradient(4deg, transparent 92%, black);

@@ -133,3 +133,50 @@ export const formatStatsData = (
 
   return res;
 };
+
+export const splitTitle = (title: string) => {
+  const delimiters = ["/", "|", "-", " ", "_"];
+  for (const delimiter of delimiters) {
+    if (title.includes(delimiter)) {
+      const [first, second] = title.split(delimiter);
+      return {
+        first: first.trim(),
+        second: second?.trim() ?? "",
+      };
+    }
+  }
+  return {
+    first: title.trim(),
+    second: "",
+  };
+};
+
+export const getTokenIcon = (token: string): string => {
+  if (!token) return "";
+  token = token.includes("btc") ? "btc" : token;
+  const normalizedToken = token.toLowerCase().trim();
+  return `/tokens/${normalizedToken}.svg`;
+};
+
+export const getProtocolIcon = (token: string): string => {
+  if (!token) return "";
+  const normalizedToken = token.toLowerCase().trim();
+  return `/${normalizedToken}/favicon.ico`;
+};
+
+export const getProtocolName = (title: string): string => {
+  const titleObj = splitTitle(title);
+  return titleObj.first;
+};
+
+export const parseTokenPair = (title: string) => {
+  if (!title) return { first: "", second: "" };
+  const normalizedTitle = title.trim();
+  if (!normalizedTitle) return { first: "", second: "" };
+  const normalizedTitleLower = normalizedTitle.toLowerCase();
+  if (normalizedTitleLower.includes("staking")) {
+    const token = normalizedTitleLower.replace(/\bstaking\b/gi, "").trim();
+    return { first: token, second: "" };
+  }
+  return splitTitle(normalizedTitle);
+};

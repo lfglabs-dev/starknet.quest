@@ -2,6 +2,12 @@
   display: flex;
   align-items: center;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
+  transition: opacity 0.3s;
+  opacity: 0.7;
+}
+
+.backButton:hover {
+  opacity: 1;
 }
 
 .backButton svg {

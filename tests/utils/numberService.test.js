@@ -3,6 +3,7 @@ import {
   numberWithCommas,
   formatNumberThousandEqualsK,
   formatNumberWithCommas,
+  formatNumber,
 } from "@utils/numberService";
 
 describe("calculatePercentile function", () => {
@@ -86,5 +87,62 @@ describe("formatNumberWithCommas function", () => {
 
   it("should return '0' for input 0", () => {
     expect(formatNumberWithCommas(0)).toBe("0");
+  });
+});
+
+describe("formatNumber function", () => {
+  it("should return a percentage representation of the number to two decimal place", () => {
+    expect(
+      formatNumber(123.242434, { style: "percent", maximumFractionDigits: 2 })
+    ).toBe("123.24%");
+    expect(
+      formatNumber(90.011113332, { style: "percent", maximumFractionDigits: 2 })
+    ).toBe("90.01%");
+    expect(
+      formatNumber(1.2394, { style: "percent", maximumFractionDigits: 2 })
+    ).toBe("1.24%");
+  });
+  it("should return a compact amount representation of the number", () => {
+    expect(
+      formatNumber(1500, {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+      })
+    ).toBe("$1.5K");
+    expect(
+      formatNumber(9800000, {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+      })
+    ).toBe("$9.8M");
+    expect(
+      formatNumber(1000000000, {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+      })
+    ).toBe("$1B");
+  });
+  it("should return a standard amount representation of the number", () => {
+    expect(
+      formatNumber(1000, {
+        style: "currency",
+        currency: "USD",
+      })
+    ).toBe("$1,000.00");
+    expect(
+      formatNumber(91232.354, {
+        style: "currency",
+        currency: "USD",
+      })
+    ).toBe("$91,232.35");
+    expect(
+      formatNumber(1000000000, {
+        style: "currency",
+        currency: "USD",
+      })
+    ).toBe("$1,000,000,000.00");
   });
 });

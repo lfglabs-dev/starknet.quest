@@ -430,7 +430,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
                 />
               );
             })}
-            <QuestBanner questId={questId} />
+            {quest.banner && <QuestBanner banner={quest.banner} />}
             <Reward
               quest={quest}
               hasNftReward={hasNftReward}

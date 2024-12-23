@@ -58,7 +58,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
     () =>
       (identity.owner.startsWith('0x')
         ? identity.owner
-        : `0x${address}`) as Address,
+        : address) as Address,
     [identity.owner]
   );
 
@@ -230,21 +230,23 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
             <div className={styles.right_socials}>
               <SocialMediaActions identity={identity} />
               {tweetShareLink && (
-                <Link
-                  href={tweetShareLink}
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <div className={styles.right_share_button}>
-                    <CDNImage
-                      src={shareSrc}
-                      width={20}
-                      height={20}
-                      alt='share-icon'
-                    />
-                    <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
-                  </div>
-                </Link>
+                <div className={styles.share_button_wrapper}>
+                  <Link
+                    href={tweetShareLink}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    <div className={styles.right_share_button}>
+                      <CDNImage
+                        src={shareSrc}
+                        width={20}
+                        height={20}
+                        alt='share-icon'
+                      />
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
+                    </div>
+                  </Link>
+                </div>
               )}
             </div>
           </div>

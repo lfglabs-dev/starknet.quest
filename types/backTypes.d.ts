@@ -4,12 +4,14 @@ type QuestDocument = {
   id: number;
   name: string;
   desc: string;
+  additional_desc: string | null;
   issuer: string;
   category: string;
   rewards_endpoint: string;
   logo: string;
   rewards_img: string;
   rewards_title: string;
+  rewards_description: string | null;
   rewards_nfts: NFTItem[];
   img_card: string;
   title_card: string;
@@ -20,8 +22,17 @@ type QuestDocument = {
   mandatory_domain: string | null;
   expired: boolean;
   visible: boolean;
-  rewards_description: string | null;
-  additional_desc: string | null;
+  banner?: Banner;
+  boosts: Boost[];
+};
+
+type Banner = {
+  image: string;
+  tag?: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
 };
 
 type ClaimableQuestDocument = QuestDocument & {
@@ -625,9 +636,9 @@ export type ArgentTokenValue = {
   ccyValue: string;
   ethDayChange: string;
   ccyDayChange: string;
-}
+};
 
 export type ArgentUserToken = {
   tokenAddress: string;
-  tokenBalance: string; 
-}
+  tokenBalance: string;
+};

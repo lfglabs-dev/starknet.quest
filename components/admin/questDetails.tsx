@@ -18,10 +18,13 @@ import Timer from "@components/quests/timer";
 import NftImage from "@components/quests/nftImage";
 import Task from "@components/quests/task";
 import Reward from "@components/quests/reward";
+import DownloadQuestUsersButton from "@components/quests/downloadQuestUsersButton";
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
 import Button from "@components/UI/button";
 import { useRouter } from "next/navigation";
+import DownloadQuestParticipantsButton from "./DownloadQuestParticipantsButton";
+import DownloadBoostWinnersButton from "./DownloadBoostWinnersButton";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -34,6 +37,7 @@ type QuestDetailsProps = {
   rewardButtonTitle?: string;
   onRewardButtonClick?: () => void;
   overrideDisabledState?: boolean;
+  isEdit?: boolean;
 };
 
 const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
@@ -43,6 +47,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   hasNftReward,
   rewardButtonTitle,
   onRewardButtonClick,
+  isEdit,
 }) => {
   const { address } = useAccount();
   const router = useRouter();
@@ -223,7 +228,7 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
         )}
       </div>
 
-      <div className="w-full flex justify-center gap-8">
+      <div className="w-full flex justify-center gap-8 flex-wrap">
         <div className="w-fit">
           <Button onClick={handleNavigate}>
             <p>Done</p>
@@ -234,6 +239,23 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
             <p>Go To Quest</p>
           </Button>
         </div>
+        {isEdit &&
+          quest.boosts?.length > 0 &&
+          quest.boosts.map((boost) => (
+            <div className="w-fit" key={boost.id}>
+              <DownloadBoostWinnersButton boostId={boost.id.toString()} />
+            </div>
+          ))}
+        {isEdit && (
+          <>
+            <div className="w-fit">
+              <DownloadQuestUsersButton questId={questId} />
+            </div>
+            <div className="w-fit">
+              <DownloadQuestParticipantsButton questId={quest.id} />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

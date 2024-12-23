@@ -164,9 +164,14 @@
 .social_icon {
   width: 32px;
   height: 32px;
+  margin-left: 8px;
   border-radius: 12px;
   background-color: white;
   cursor: pointer;
+}
+
+.share_button_wrapper {
+  margin-left: 48px;
 }
 
 .right_share_button {

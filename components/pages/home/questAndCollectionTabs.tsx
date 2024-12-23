@@ -211,7 +211,7 @@ const QuestAndCollectionTabs: FunctionComponent<
             {isConnecting ? (
               "Connecting to wallet..."
             ) : (
-              <div className="flex flex-wrap gap-10 justify-center lg:justify-start">
+              <div className="flex flex-wrap gap-10 justify-center lg:justify-start pb-5 lg:pb-0">
                 {sortedAndFilteredQuests.map((quest) => (
                   <Quest
                     key={quest.id}

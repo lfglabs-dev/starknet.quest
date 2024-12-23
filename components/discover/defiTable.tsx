@@ -32,11 +32,18 @@ import AppIcon from "./appIcon";
 import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
-import { getRedirectLink } from "@utils/defi";
+import {
+  getProtocolIcon,
+  getProtocolName,
+  getRedirectLink,
+  getTokenIcon,
+  parseTokenPair,
+} from "@utils/defi";
 import DefiTableSkeleton from "./defiTableSkeleton";
 import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
+import DefiOpportunityCardComponent from "./defiOpportunityCard";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -312,6 +319,18 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     table.resetColumnFilters();
   }, [table]);
 
+  const filteredData = table.getRowModel().rows.map((row) => row.original);
+  const topThreeOpportunities = filteredData
+    .sort((a, b) => {
+      const aprA = parseFloat(String(a.apr)) || 0;
+      const aprB = parseFloat(String(b.apr)) || 0;
+      if (aprB !== aprA) {
+        return aprB - aprA;
+      }
+      return (parseFloat(String(b.volume)) || 0) - (parseFloat(String(a.volume)) || 0);
+    })
+    .slice(0, 3);
+
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
@@ -412,6 +431,38 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
         </div>
+        {topThreeOpportunities.length > 0 ? (
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch py-12">
+            {topThreeOpportunities.map((opportunity) => (
+              <DefiOpportunityCardComponent
+                key={`${opportunity.app}-${opportunity.title}-${opportunity.action}`}
+                tokenPair={opportunity.title}
+                type={opportunity.action}
+                apr={opportunity.apr}
+                tvl={opportunity.volume}
+                dailyRewards={opportunity.daily_rewards}
+                protocol={{
+                  name: opportunity.app,
+                  icon: getProtocolIcon(
+                    getProtocolName(opportunity.app.toLowerCase())
+                  ),
+                }}
+                token1Icon={getTokenIcon(
+                  parseTokenPair(opportunity.title.toLowerCase()).first
+                )}
+                token2Icon={getTokenIcon(
+                  parseTokenPair(opportunity.title.toLowerCase()).second
+                )}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="w-full text-center py-12">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
+              No opportunities available with current filters
+            </Typography>
+          </div>
+        )}
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
           <Table>

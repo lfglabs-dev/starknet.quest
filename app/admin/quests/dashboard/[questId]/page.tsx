@@ -834,6 +834,7 @@ export default function Page({ params }: QuestIdProps) {
             await fetchPageData();
           }}
           overrideDisabledState={false}
+          isEdit={true}
         />
       );
     }

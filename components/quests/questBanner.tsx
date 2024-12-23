@@ -1,39 +1,38 @@
-import { FunctionComponent, useMemo } from "react";
-import questBanners from "../../public/utils/questbanners.json";
+import { FunctionComponent } from "react";
 import styles from "@styles/quests.module.css";
 import Button from "@components/UI/button";
+import type { Banner } from "types/backTypes";
 
 type QuestBannerProps = {
-  questId: string;
+  banner: Banner;
 };
 
-const QuestBanner: FunctionComponent<QuestBannerProps> = ({ questId }) => {
-  const bannerDetails = useMemo(() => {
-    return questBanners.find((banner) => banner.questId === questId);
-  }, [questId]);
-  return bannerDetails ? (
+const QuestBanner: FunctionComponent<QuestBannerProps> = ({ banner }) => {
+  return banner ? (
     <div className={styles.questBanner}>
       <div
         className={styles.questBannerImage}
-        style={{ backgroundImage: `url(${bannerDetails.image})` }}
+        style={{ backgroundImage: `url(${banner.image})` }}
       />
       <div className={styles.questBannerContent}>
         <h2 className={styles.questBannerTitle}>
-          {bannerDetails.tag ? (
-            <span className={styles.bannerTag}>{bannerDetails.tag} - </span>
+          {banner.tag ? (
+            <span className={styles.bannerTag}>{banner.tag} - </span>
           ) : null}
-          {bannerDetails.title}
+          {banner.title}
         </h2>
-        <p>{bannerDetails.description}</p>
-        <div className="w-fit">
-          <Button
-            onClick={() => {
-              window.open(bannerDetails.href, "_blank");
-            }}
-          >
-            {bannerDetails.cta}
-          </Button>
-        </div>
+        <p>{banner.description}</p>
+        {banner.cta ? (
+          <div className="w-fit">
+            <Button
+              onClick={() => {
+                window.open(banner.href, "_blank");
+              }}
+            >
+              {banner.cta}
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   ) : null;

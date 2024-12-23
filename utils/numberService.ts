@@ -10,14 +10,23 @@ export const numberWithCommas = (x: number) => {
 };
 
 export const formatNumberThousandEqualsK = (num: number) => {
-    if (num >= 1000) {
-      const thousands = (num / 1000).toFixed(0);
-      return '+' + thousands + 'k';
-    } else {
-      return num.toString();
-    }
+  if (num >= 1000) {
+    const thousands = (num / 1000).toFixed(0);
+    return "+" + thousands + "k";
+  } else {
+    return num.toString();
+  }
 };
 
 export const formatNumberWithCommas = (number: number): string => {
-  return number.toLocaleString(); 
+  return number.toLocaleString();
+};
+
+export const formatNumber = (
+  num: number,
+  options: Intl.NumberFormatOptions
+): string => {
+  let value = options?.style == "percent" ? num / 100 : num;
+  const formatter = new Intl.NumberFormat("en-US", options);
+  return formatter.format(value);
 };

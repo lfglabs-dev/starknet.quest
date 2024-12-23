@@ -22,6 +22,15 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "KeneePatel",
+      "name": "Kenee Patel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59523692?v=4",
+      "profile": "https://github.com/KeneePatel",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

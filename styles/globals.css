@@ -35,6 +35,7 @@
   --textGray: #a6a5a7;
   --transparent: transparent;
   --dashboard-max-width: clamp(320px, 90%, 1500px);
+  --hover-background-color: #4a4c53;
 }
 
 html,
@@ -122,6 +123,6 @@ button {
   cursor: url(../public/icons/pointer-cursor.png), auto;
 }
 
-.modified-cursor-normal{
+.modified-cursor-normal {
   cursor: url(../public/icons/cursor.png), auto;
 }
