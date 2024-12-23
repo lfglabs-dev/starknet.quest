@@ -22,15 +22,17 @@ const QuestBanner: FunctionComponent<QuestBannerProps> = ({ banner }) => {
           {banner.title}
         </h2>
         <p>{banner.description}</p>
-        <div className="w-fit">
-          <Button
-            onClick={() => {
-              window.open(banner.href, "_blank");
-            }}
-          >
-            {banner.cta}
-          </Button>
-        </div>
+        {banner.cta ? (
+          <div className="w-fit">
+            <Button
+              onClick={() => {
+                window.open(banner.href, "_blank");
+              }}
+            >
+              {banner.cta}
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   ) : null;
