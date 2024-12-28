@@ -17,12 +17,12 @@ export default function Page() {
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [quests, setQuests] = useState<QuestList> ({} as QuestList);
+  const [quests, setQuests] = useState<QuestList>({} as QuestList);
 
   const fetchQuests = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await getQuests() || {};
+      const res = (await getQuests()) || {};
       setQuests(res);
       setLoading(false);
     } catch (error) {
@@ -39,34 +39,42 @@ export default function Page() {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <Typography type={TEXT_TYPE.H1} color="transparent" className={styles.title}>Quest Analytics</Typography>
+      <Typography
+        type={TEXT_TYPE.H1}
+        color="transparent"
+        className={styles.title}
+      >
+        Quest Analytics
+      </Typography>
       <div className={styles.card_container}>
         {loading ? (
           <FeaturedQuestSkeleton />
         ) : (
-          (Object.keys(quests) as (keyof typeof quests)[]).map((categoryName: keyof typeof quests) => {
-            const categoryValue = quests[categoryName];
-            if (Array.isArray(categoryValue)) {
-              return categoryValue.map((quest: QuestDocument) => {
-                return (
-                  <Quest
-                    key={quest.id}
-                    title={quest.title_card}
-                    onClick={() => router.push(`/analytics/${quest.id}`)}
-                    imgSrc={quest.img_card}
-                    issuer={{
-                      name: quest.issuer,
-                      logoFavicon: quest.logo,
-                    }}
-                    reward={quest.rewards_title}
-                    id={quest.id}
-                    expired={false}
-                  />
-                );
-              });
+          (Object.keys(quests) as (keyof typeof quests)[]).map(
+            (categoryName: keyof typeof quests) => {
+              const categoryValue = quests[categoryName];
+              if (Array.isArray(categoryValue)) {
+                return categoryValue.map((quest: QuestDocument) => {
+                  return (
+                    <Quest
+                      key={quest.id}
+                      title={quest.title_card}
+                      onClick={() => router.push(`/analytics/${quest.id}`)}
+                      imgSrc={quest.img_card}
+                      issuer={{
+                        name: quest.issuer,
+                        logoFavicon: quest.logo,
+                      }}
+                      reward={quest.rewards_title}
+                      id={quest.id}
+                      expired={false}
+                    />
+                  );
+                });
+              }
+              return null;
             }
-            return null; 
-          })
+          )
         )}
       </div>
     </div>

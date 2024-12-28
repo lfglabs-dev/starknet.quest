@@ -30,7 +30,8 @@
     "chart.js": "^4.3.0",
     "dayjs": "^1.11.11",
     "eslint-config-next": "^14.0.1",
-    "get-starknet-core": "^3.2.0",
+    "get-starknet": "^3.3.3",
+    "get-starknet-core": "^3.3.3",
     "jotai": "^2.5.0",
     "jwt-decode": "^4.0.0",
     "lottie-react": "^2.4.0",
@@ -51,7 +52,7 @@
     "recharts": "^2.12.2",
     "starknet": "^6.11.0",
     "starknetid.js": "^4.0.1",
-    "starknetkit": "^2.3.3",
+    "starknetkit": "^2.6.1",
     "three": "^0.155.0",
     "twitter-api-sdk": "^1.2.1"
   },

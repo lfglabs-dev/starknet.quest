@@ -138,7 +138,6 @@ export const QuestsContextProvider = ({
             !quest.expired
         )
       : undefined;
-
     setFeaturedQuest(
       lastBoostedQuest ||
         notExpired[Math.floor(Math.random() * notExpired.length)]

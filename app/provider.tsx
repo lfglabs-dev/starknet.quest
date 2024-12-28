@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import { InjectedConnector } from "starknetkit/injected";
-import { WebWalletConnector } from "starknetkit/webwallet";
-import { ArgentMobileConnector } from "starknetkit/argentMobile";
 import { Chain, mainnet, sepolia } from "@starknet-react/chains";
 import {
   Connector,
@@ -11,10 +8,9 @@ import {
   jsonRpcProvider,
 } from "@starknet-react/core";
 import { StarknetIdJsProvider } from "@context/StarknetIdJsProvider";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { QuestsContextProvider } from "@context/QuestsProvider";
 import { getCurrentNetwork } from "@utils/network";
-import { constants } from "starknet";
 import { PostHogProvider } from "posthog-js/react";
 import posthog from "posthog-js";
 import { NotificationProvider } from "@context/NotificationProvider";
