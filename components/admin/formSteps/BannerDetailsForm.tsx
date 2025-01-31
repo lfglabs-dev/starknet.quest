@@ -20,42 +20,42 @@ const BannerDetailsForm: FunctionComponent<BannerDetailsFormProps> = ({
   return (
     <div className="flex flex-col gap-4">
       <TextInput
-        name="tag"
+        name="banner.tag"
         value={questInput.banner?.tag || ""}
         onChange={handleQuestInputChange}
         label="Tag"
         placeholder="Enter banner tag"
       />
       <TextInput
-        name="title"
+        name="banner.title"
         value={questInput.banner?.title || ""}
         onChange={handleQuestInputChange}
         label="Title"
         placeholder="Enter banner title"
       />
       <TextInput
-        name="description"
+        name="banner.description"
         value={questInput.banner?.description || ""}
         onChange={handleQuestInputChange}
         label="Description"
         placeholder="Enter banner description"
       />
       <TextInput
-        name="cta"
+        name="banner.cta"
         value={questInput.banner?.cta || ""}
         onChange={handleQuestInputChange}
         label="CTA"
         placeholder="Enter Call-to-Action"
       />
       <TextInput
-        name="href"
+        name="banner.href"
         value={questInput.banner?.href || ""}
         onChange={handleQuestInputChange}
         label="Link"
         placeholder="Enter Link"
       />
       <TextInput
-        name="image"
+        name="banner.image"
         value={questInput.banner?.image || ""}
         onChange={handleQuestInputChange}
         label="Image URL"

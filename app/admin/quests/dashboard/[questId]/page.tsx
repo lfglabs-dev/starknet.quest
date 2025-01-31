@@ -355,26 +355,25 @@ export default function Page({ params }: QuestIdProps) {
     return { updatedTasks, removedTasks, addedTasks };
   }, [steps, intialSteps]);
 
-  console.log(questInput);
-
   const handleQuestInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
+      const nameSplit = name.split(".");
 
-      setQuestInput((prev) => ({
-        ...prev,
-        [name]: value,
-        banner: {
-          ...(prev.banner ?? {
-            tag: "",
-            title: "",
-            description: "",
-            cta: "",
-            href: "",
-            image: "",
-          }),
-        },
-      }));
+      setQuestInput((prev) => {
+        const updated = { ...prev };
+        let current: any = updated;
+
+        for (let i = 0; i < nameSplit.length - 1; i++) {
+          if (!current[nameSplit[i]]) {
+            current[nameSplit[i]] = {};
+          }
+          current = current[nameSplit[i]];
+        }
+
+        current[nameSplit[nameSplit.length - 1]] = value;
+        return updated;
+      });
     },
     []
   );
