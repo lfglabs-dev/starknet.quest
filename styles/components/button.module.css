@@ -5,13 +5,13 @@
 
 .nq-button {
   position: relative;
-  height: 3rem;
+  height: 3.5rem;
   line-height: 2.5rem;
   color: var(--secondary);
-  font-size: 0.9rem;
+  font-size: 1.125rem;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.094em;
+  text-transform: capitalize;
+  letter-spacing: 0%;
   border: none;
   padding: 0 2rem;
   border-radius: 10px;

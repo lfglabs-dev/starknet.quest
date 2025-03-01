@@ -60,7 +60,7 @@
 }
 
 .menuButtons {
-  width: calc(100% - 10px);
+  max-width:fit-content;
   display: flex;
   margin: 2em auto 0 auto;
   white-space: nowrap;
