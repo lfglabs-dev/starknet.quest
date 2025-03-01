@@ -8,6 +8,7 @@ type ButtonProps = {
   disabled?: boolean;
   color?: string;
   loading?: boolean;
+  className?: string;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -16,17 +17,14 @@ const Button: FunctionComponent<ButtonProps> = ({
   disabled = false,
   color = "primary",
   loading = false,
+  className = "",
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
       className={
-        styles["nq-button"] +
-        " " +
-        (color === "primary" ? "" : styles["nq-button-secondary"]) +
-        " " +
-        (disabled ? styles.disabled_button : "")
+        `${styles["nq-button"]} ${color === "primary" ? "" : styles["nq-button-secondary"]} ${disabled ? styles.disabled_button : ""} ${className}`.trim()
       }
     >
       {loading ? (

@@ -16,7 +16,7 @@ const QuizControls: FunctionComponent<QuizControlsProps> = ({
   return (
     <div className={styles.controls}>
       <BackButton onClick={() => setStep(step - 1)} />
-      <button onClick={() => (onCancel ? onCancel() : setStep(-2))}>
+      <button className={styles.closeButton} onClick={() => (onCancel ? onCancel() : setStep(-2))}>
         Cancel
       </button>
     </div>
