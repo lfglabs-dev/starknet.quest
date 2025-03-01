@@ -30,9 +30,10 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           actionBar={
             <Button onClick={() => setStep(-2)}>Go back to the quest</Button>
           }
-          highlightTitle={false}
-        >
-          <Typography type={TEXT_TYPE.BODY_SMALL} className="text-white/50 text-sm/6 mt-3">
+          highlightTitle={false}>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            className="text-white/50 text-sm/6 mt-3">
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </Typography>
@@ -45,21 +46,24 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           title="Too bad ! "
           actionBar={
             <>
-              <div className={styles.soft}>
-                <Button onClick={() => setStep(-2)}>
-                  Go back to the quest
-                </Button>
-              </div>
-              <div>
-                <Button onClick={() => setRestart(true)}>
-                  Restart the quiz
-                </Button>
+              <div className="flex gap-6">
+                <div className={styles.soft}>
+                  <Button onClick={() => setStep(-2)}>
+                    Go back to the quest
+                  </Button>
+                </div>
+                <div>
+                  <Button onClick={() => setRestart(true)}>
+                    Restart the quiz
+                  </Button>
+                </div>
               </div>
             </>
           }
-          highlightTitle={false}
-        >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+          highlightTitle={false}>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            className="text-white/50 text-sm/6 mt-3">
             You didn&apos;t pass the quiz. You can try again or go back to the
             quest.
           </Typography>
