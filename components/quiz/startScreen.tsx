@@ -28,7 +28,12 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
             <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
           }
         >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT}>{description}</Typography>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            color="secondary50"
+          >
+            {description}
+          </Typography>
         </ScreenLayout>
       </div>
       <QuizControls step={step} setStep={setStep} />
