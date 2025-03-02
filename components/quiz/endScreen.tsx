@@ -32,7 +32,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           }
           highlightTitle={false}
         >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+          <Typography type={TEXT_TYPE.BODY_SMALL} className="text-white/50 text-sm/6 mt-3">
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </Typography>
