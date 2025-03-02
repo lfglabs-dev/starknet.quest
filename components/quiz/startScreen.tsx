@@ -29,8 +29,8 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
           }
         >
           <Typography
-            type={TEXT_TYPE.BODY_DEFAULT}
-            color="secondary"
+            type={TEXT_TYPE.BODY_SMALL}
+            color="secondary50"
           >
             {description}
           </Typography>
