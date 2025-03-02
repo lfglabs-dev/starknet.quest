@@ -77,14 +77,6 @@
 }
 
 @media (max-width: 1000px) {
-  .menuButtons {
-    flex-direction: column;
-  }
-
-  .menuButtons div + div {
-    margin: 1em;
-  }
-
   .menuButtons * {
     width: 100%;
   }

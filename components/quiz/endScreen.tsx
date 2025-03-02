@@ -46,7 +46,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           title="Too bad ! "
           actionBar={
             <>
-              <div className="flex gap-6">
+              <div className="flex sm:flex-row flex-col gap-6">
                 <div className={styles.soft}>
                   <Button onClick={() => setStep(-2)}>
                     Go back to the quest
