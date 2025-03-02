@@ -72,6 +72,12 @@ a {
   color: transparent;
 }
 
+.title.quiz {
+  color: var(--secondary);
+  background: transparent;
+  -webkit-text-fill-color: var(--secondary);
+}
+
 .title.extrabold {
   font-family: "Sora-ExtraBold";
 }
