@@ -51,6 +51,7 @@
 }
 
 .menu {
+  gap: 1rem;
   max-width: 600px;
   height: 100%;
   display: flex;
@@ -62,7 +63,7 @@
 .menuButtons {
   max-width:fit-content;
   display: flex;
-  margin: 2em auto 0 auto;
+  margin: 2rem auto 0 auto;
   white-space: nowrap;
   align-items: center;
   justify-content: center;
