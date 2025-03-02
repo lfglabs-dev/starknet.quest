@@ -51,6 +51,7 @@
 }
 
 .menu {
+  gap: 0.5rem;
   max-width: 600px;
   height: 100%;
   display: flex;
@@ -63,6 +64,7 @@
   width: calc(100% - 10px);
   display: flex;
   margin: 2em auto 0 auto;
+  margin-top: 1rem;
   white-space: nowrap;
   align-items: center;
   justify-content: center;
