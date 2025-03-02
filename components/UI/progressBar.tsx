@@ -15,7 +15,7 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
     <div className={styles.progressContainer}>
       <div className={styles.baseLine} />
       <div
-        className={styles.coloredLine}
+        className={`${styles.coloredLine} ${doneSteps > 0 ? styles.active : ""}`}
         style={{
           width: `calc(${(doneSteps / (totalSteps - 1)) * 100}% - 16px)`,
         }}
@@ -30,7 +30,7 @@ const ProgressBar: FunctionComponent<ProgressBarProps> = ({
         >
           {index < doneSteps ? (
             <div className={styles.checkedMilestone}>
-              <CheckMarkIcon width="20" />
+              <CheckMarkIcon width="24" />
             </div>
           ) : (
             <div className={styles.emptyMilestone}>{index + 1}</div>
