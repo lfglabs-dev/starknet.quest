@@ -176,8 +176,8 @@
   font-weight: 700;
   line-height: 38px;
   /* 105.556% */
-  margin-bottom: auto;
-  margin-top: 1rem;
+  padding-top: 16px;
+  padding-bottom: 48px;
 }
 
 .issuer {
