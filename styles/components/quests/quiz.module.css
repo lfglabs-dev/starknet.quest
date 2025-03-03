@@ -24,7 +24,7 @@
 }
 
 .content {
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,6 +48,7 @@
 }
 
 .menu {
+  gap: 1rem;
   max-width: 600px;
   height: 100%;
   display: flex;
@@ -60,8 +61,8 @@
 .menuButtons {
   max-width:fit-content;
   display: flex;
-  margin: 2em auto 0 auto;
-  white-space: nowrap;
+  margin: 2rem auto 0 auto;
+  white-space: wrap;
   align-items: center;
   justify-content: center;
   z-index: 1;
@@ -75,15 +76,7 @@
   margin: auto;
 }
 
-@media (max-width: 1000px) {
-  .menuButtons {
-    flex-direction: column;
-  }
-
-  .menuButtons div + div {
-    margin: 1em;
-  }
-
+@media (max-width: 640px) {
   .menuButtons * {
     width: 100%;
   }
@@ -176,8 +169,8 @@
   font-weight: 700;
   line-height: 38px;
   /* 105.556% */
-  margin-bottom: auto;
-  margin-top: 1rem;
+  padding-top: 16px;
+  padding-bottom: 48px;
 }
 
 .issuer {
@@ -300,42 +293,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 12px;
-  border-radius: 10px;
-  background-color: var(--background600);
-  font-weight: bold;
+  padding: 24px 16px;
+  border-radius: 8px;
+  background-color:#1F1F25;
+  font-size: 16px;
+  font-weight: 400;
   cursor: url(../../../public/icons/pointer-cursor.png), pointer;
-}
-
-.checkboxLabel:after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(1deg, var(--background) 65%, transparent);
-  border-radius: 10px;
-  z-index: -1;
-}
-
-.checkboxLabel::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  left: 1px;
-  bottom: 1px;
-  background: linear-gradient(
-    90deg,
-    #437aba 0%,
-    #1e74d6 40%,
-    #00fbff 50%,
-    #1e74d6 70%,
-    #437aba50 100%
-  );
-  border-radius: 10px;
-  z-index: -1;
 }
 
 .checkbox:checked + .checkboxLabel {

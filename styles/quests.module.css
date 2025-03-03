@@ -269,7 +269,7 @@
   height: 36px;
   /* Background/600 */
   background: var(--background600);
-  border-radius: 100px;
+  border-radius: 8px;
 }
 
 .claimer {

@@ -100,7 +100,7 @@ const Step: FunctionComponent<StepProps> = ({
                 onClick={() => selected && handleNext()}
                 className={selected ? "" : styles.disabled}
               >
-                OK <CheckMarkIcon width="24" />
+                OK 
               </button>
             </div>
           </div>

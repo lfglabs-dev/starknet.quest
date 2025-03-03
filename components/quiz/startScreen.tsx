@@ -28,7 +28,12 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
           actionBar={
             <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
           }>
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="z-[1]">{description}</Typography>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            color="secondary50"
+            className="z-[1]">
+            {description}
+          </Typography>
           <ParticleBackground />
         </ScreenLayout>
       </div>

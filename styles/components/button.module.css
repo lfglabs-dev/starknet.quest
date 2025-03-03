@@ -105,7 +105,7 @@ a.nq-button {
 
 @media (max-width: 1024px) {
   .nq-button {
-    font-size: 0.75rem;
-    line-height: 1.2rem;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
   }
 }
