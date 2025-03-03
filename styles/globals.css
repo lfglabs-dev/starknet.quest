@@ -22,6 +22,7 @@
 :root {
   --primary: #6affaf;
   --secondary: #f4faff;
+  --secondary50: #ffffff80;
   --secondary500: #e1dcea;
   --secondary300: #eae0d5;
   --tertiary: #5ce3fe;
@@ -70,6 +71,12 @@ a {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+.title.quiz {
+  color: var(--secondary);
+  background: transparent;
+  -webkit-text-fill-color: var(--secondary);
 }
 
 .title.extrabold {

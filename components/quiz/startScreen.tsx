@@ -29,7 +29,12 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
           }
           highlightTitle={false}
         >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="mt-4 text-white/50 text-sm">{description}</Typography>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            color="secondary50"
+          >
+            {description}
+          </Typography>
         </ScreenLayout>
       </div>
       <QuizControls step={step} setStep={setStep} />

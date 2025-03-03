@@ -8,7 +8,6 @@ type ButtonProps = {
   disabled?: boolean;
   color?: string;
   loading?: boolean;
-  className?: string;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -17,15 +16,14 @@ const Button: FunctionComponent<ButtonProps> = ({
   disabled = false,
   color = "primary",
   loading = false,
-  className = "",
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
-      className={
-        `${styles["nq-button"]} ${color === "primary" ? "" : styles["nq-button-secondary"]} ${disabled ? styles.disabled_button : ""} ${className}`.trim()
-      }
+      className={`${styles["nq-button"]} 
+                  ${color === "primary" ? "" : styles["nq-button-secondary"]} 
+                  ${disabled ? styles.disabled_button : ""}`.trim()}
     >
       {loading ? (
         <div className="flex justify-center items-center">
