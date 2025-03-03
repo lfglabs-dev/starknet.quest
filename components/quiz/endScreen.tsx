@@ -8,6 +8,7 @@ import successAnimation from "@public/visuals/verifiedLottie.json";
 import Lottie from "lottie-react";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import ParticleBackground from "./particleBackground";
 
 type EndScreenProps = {
   setStep: (s: number) => void;
@@ -33,10 +34,11 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           highlightTitle={false}>
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
-            className="text-white/50 text-sm/6 mt-3">
+            className="text-white/50 text-sm/6 mt-3 z-[1]">
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </Typography>
+          <ParticleBackground />
           <div className={styles.successLottie}>
             <Lottie animationData={successAnimation} loop={false} />
           </div>
@@ -63,10 +65,11 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           highlightTitle={false}>
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
-            className="text-white/50 text-sm/6 mt-3">
+            className="text-white/50 text-sm/6 mt-3 z-[1]">
             You didn&apos;t pass the quiz. You can try again or go back to the
             quest.
           </Typography>
+          <ParticleBackground />
           <div className={styles.wrongLottie}>
             <Lottie animationData={wrongAnimation} loop={false} />
           </div>
