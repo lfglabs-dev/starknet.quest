@@ -63,7 +63,7 @@
   max-width:fit-content;
   display: flex;
   margin: 2em auto 0 auto;
-  white-space: nowrap;
+  white-space: wrap;
   align-items: center;
   justify-content: center;
 }
@@ -76,7 +76,7 @@
   margin: auto;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 640px) {
   .menuButtons * {
     width: 100%;
   }
