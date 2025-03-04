@@ -21,6 +21,20 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
   setRestart,
   passed,
 }) => {
+  const handleRestart = (
+    e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (e) {
+
+      console.log('clicked');
+      e.stopPropagation();
+      sessionStorage.setItem(
+        "mousePosition",
+        JSON.stringify({ x: e.clientX, y: e.clientY })
+      );
+      setRestart(true);
+    }
+  };
   return passed === "loading" ? (
     <QuizLoading />
   ) : (
@@ -55,7 +69,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
                   </Button>
                 </div>
                 <div>
-                  <Button onClick={() => setRestart(true)}>
+                  <Button onClick={(e) => handleRestart(e)}>
                     Restart the quiz
                   </Button>
                 </div>

@@ -3,7 +3,7 @@ import styles from "@styles/components/button.module.css";
 import { CircularProgress } from "@mui/material";
 
 type ButtonProps = {
-  onClick: () => void;
+  onClick: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: string | ReactNode;
   disabled?: boolean;
   color?: string;

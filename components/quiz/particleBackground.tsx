@@ -4,39 +4,37 @@ import type { Container, Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 
 const MouseMask = () => {
-  const [mousePosition, setMousePosition] = useState<{
-    x: number;
-    y: number;
-  } | null>({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const [mousePosition, setMousePosition] = useState<{ x: number | null; y: number | null }>({
+    x: null,
+    y: null,
+  });
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
+    const storedPosition = sessionStorage.getItem("mousePosition");
+    if (storedPosition) {
+      const { x, y } = JSON.parse(storedPosition);
+      setMousePosition({ x, y });
+      sessionStorage.removeItem("mousePosition");
+    }
+
+    const updateMousePosition = (event: MouseEvent) => {
       setMousePosition({ x: event.clientX, y: event.clientY });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", updateMousePosition);
 
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", updateMousePosition);
   }, []);
 
-  const maskStyle = mousePosition
-    ? {
-        position: "fixed" as const,
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        pointerEvents: "none" as const,
-        background: `radial-gradient(350px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(16, 16, 16, 0) 0%, rgba(16, 16, 16, 1) 100%)`,
-      }
-    : {
-        position: "fixed" as const,
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(16, 16, 16, 1)",
-      };
+  const maskStyle = {
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    pointerEvents: "none" as const,
+    background: `radial-gradient(350px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(16, 16, 16, 0) 0%, rgba(16, 16, 16, 1) 100%)`,
+  };
 
   return <div style={maskStyle} />;
 };
