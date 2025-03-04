@@ -36,6 +36,7 @@
 .controls {
   display: flex;
   width: 100%;
+  z-index: 1;
 }
 
 .controls button:has(+ button) {
@@ -55,6 +56,7 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  z-index: 1;
 }
 
 .menuButtons {
@@ -65,6 +67,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
+  z-index: 1;
 }
 
 .menuButtons div + div {
@@ -97,6 +100,7 @@
   font-family: "Sora-ExtraBold";
   font-size: 3rem;
   text-align: center;
+  z-index: 1;
 }
 
 .successLottie {
