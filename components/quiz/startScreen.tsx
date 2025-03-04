@@ -27,7 +27,9 @@ const StartScreen: FunctionComponent<StartScreenProps> = ({
           title={name}
           actionBar={
             <Button onClick={() => setStep(step + 1)}>Start Quiz</Button>
-          }>
+          }
+          highlightTitle={false}
+        >
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
             color="secondary50"

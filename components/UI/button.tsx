@@ -21,13 +21,9 @@ const Button: FunctionComponent<ButtonProps> = ({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={
-        styles["nq-button"] +
-        " " +
-        (color === "primary" ? "" : styles["nq-button-secondary"]) +
-        " " +
-        (disabled ? styles.disabled_button : "")
-      }
+      className={`${styles["nq-button"]} 
+                  ${color === "primary" ? "" : styles["nq-button-secondary"]} 
+                  ${disabled ? styles.disabled_button : ""}`.trim()}
     >
       {loading ? (
         <div className="flex justify-center items-center">
