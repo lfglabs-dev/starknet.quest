@@ -7,7 +7,7 @@ const MouseMask = () => {
   const [mousePosition, setMousePosition] = useState<{
     x: number;
     y: number;
-  } | null>(null);
+  } | null>({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
