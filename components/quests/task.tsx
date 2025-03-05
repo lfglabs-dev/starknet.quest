@@ -181,6 +181,7 @@ const Task: FunctionComponent<Task> = ({
           <div
             onClick={(e) => {
               e.stopPropagation();
+              sessionStorage.setItem("mousePosition", JSON.stringify({ x: e.clientX, y: e.clientY }));
               if (!address) return setError("Please connect your wallet first");
               if (!hasRootDomain) return setShowDomainPopup(true);
               if (verifyEndpointType === "quiz") return openTask();
