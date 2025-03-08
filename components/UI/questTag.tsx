@@ -29,12 +29,12 @@ const QuestTag: FunctionComponent<TagProps> = ({
       <Avatar
         alt={label}
         src={icon}
-        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important' }}
+        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important', marginLeft: '0px !important', marginRight: '-3px !important' }}
       />
     ) : (
       <Avatar
         alt={label}
-        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important' }}
+        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important', marginLeft: '0px !important', marginRight: '-3px !important' }}
       >
         {icon}
       </Avatar>
