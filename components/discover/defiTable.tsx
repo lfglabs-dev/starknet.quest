@@ -44,6 +44,7 @@ import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
+import { IoIosClose } from "react-icons/io";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -368,11 +369,25 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         />
         <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
           <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center lg:justify-start">
+          <div className="w-full lg:w-fit">
+              <Dropdown
+                value={tokenFilter}
+                backgroundColor="linear-gradient(to right, #6AFFAF, #5CE3FE)"
+                padding="8px 12px"
+                fontWeight="600"
+                textColor="#101012"
+                handleChange={handleTokenFiltering}
+                placeholder="Type of token"
+                options={TOKEN_OPTIONS}
+              />
+            </div>
             <div className="w-full lg:w-fit">
               <Dropdown
                 value={liquidityFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleLiquidityFiltering}
                 placeholder="Type of liquidity"
                 options={[
@@ -383,21 +398,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="w-full lg:w-fit">
-              <Dropdown
-                value={tokenFilter}
-                backgroundColor="#101012"
-                textColor="#fff"
-                handleChange={handleTokenFiltering}
-                placeholder="Type of token"
-                options={TOKEN_OPTIONS}
-              />
-            </div>
+           
             <div className="w-full lg:w-fit">
               <Dropdown
                 value={securityFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleSecurityFilter}
                 placeholder="Type of Security"
                 options={[
@@ -410,7 +418,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               <Dropdown
                 value={airdropFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleAirdropFilter}
                 placeholder="Airdrop Status"
                 options={[
@@ -424,8 +434,15 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             className="flex w-full xl:justify-end flex-grow-0 justify-center items-center"
             onClick={resetFilters}
           >
-            <div className="w-fit  modified-cursor-pointer border-[1px] border-[#f4faff4d] px-4 rounded-md">
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+            <div className="w-fit modified-cursor-pointer border border-dashed border-[#f4faff30] rounded-[4px] leading-[18px] flex justify-between items-center pr-4 pl-1">
+              <span>
+                <IoIosClose
+                  style={{
+                    color: "#F4FAFF90",
+                    fontSize: "30px",
+                  }} />
+              </span>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} style={{ fontSize: "12px", color: "#F4FAFF90" }}>
                 Clear All
               </Typography>
             </div>
@@ -482,9 +499,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
