@@ -8,6 +8,8 @@ import { IoIosArrowDown } from "react-icons/io";
 
 type DropdownProps = {
   backgroundColor?: string;
+  padding?: string;
+  fontWeight?: string;
   borderColor?: string;
   textColor?: string;
   options?: { value: string; label: string }[];
@@ -19,17 +21,25 @@ type DropdownProps = {
 const StyledFormControl = styled(FormControl, {
   shouldForwardProp: (prop) =>
     prop !== "backgroundColor" &&
+    prop !== "padding" &&
+    prop !== "fontWeight" &&
     prop !== "borderColor" &&
-    prop !== "textColor",
-})<DropdownProps>(({ backgroundColor, borderColor, textColor }) => ({
-  backgroundColor: backgroundColor || "transparent",
+    prop !== "textColor"
+})<DropdownProps>(({ backgroundColor, borderColor, textColor, padding, fontWeight }) => ({
+  background: backgroundColor || "transparent",
   color: textColor || "inherit",
-  borderRadius: 10,
+  borderRadius: "4px",
   cursor: 'url("/icons/pointer-cursor.png"), pointer',
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+    borderRadius: "4px",
     borderWidth: "0.5px",
-    borderColor: "#f4faff4d",
+    borderColor: "#F4FAFF30",
+    display: "flex",
+    flexDirection: "row-reverse",
+    borderStyle: "dashed",
+    gap: "8px",
+    padding: padding || "0px",
+    fontWeight: fontWeight || "400",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
     "& fieldset": {
       borderColor: "transparent",
@@ -62,12 +72,16 @@ const StyledFormControl = styled(FormControl, {
     display: "flex",
     alignItems: "center",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    fontSize: "12px",
+    lineHeight: "16px",
+    "&.MuiInputBase-input": {
+      padding: "0px", // removes default padding
+    },
   },
   "& .MuiSelect-icon": {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: "20px",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
   },
 }));
@@ -103,6 +117,8 @@ const StyledMenuProps = {
 
 const Dropdown: React.FC<DropdownProps> = ({
   backgroundColor,
+  padding,
+  fontWeight,
   textColor,
   options,
   handleChange,
@@ -126,6 +142,8 @@ const Dropdown: React.FC<DropdownProps> = ({
       variant="outlined"
       fullWidth
       backgroundColor={backgroundColor}
+      padding={padding}
+      fontWeight={fontWeight}
       textColor={textColor}
     >
       <Select
@@ -142,11 +160,13 @@ const Dropdown: React.FC<DropdownProps> = ({
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
         IconComponent={() => (
-          <span
-            style={{ padding: "0 15px 0 0", cursor: 'url("/icons/pointer-cursor.png"), pointer' }}
-            onClick={() => setOpen(!open)}
-          >
-            <IoIosArrowDown style={{ color: "white", fontSize: "20px" }} />
+          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }} onClick={() => setOpen(!open)} >
+            <IoIosArrowDown
+              style={{
+                color: `${textColor}`,
+                fontSize: "20px",
+                strokeWidth: 20
+              }} />
           </span>
         )}
         inputProps={{
@@ -158,6 +178,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         }}
         sx={{
           cursor: 'url("/icons/pointer-cursor.png"), pointer',
+          padding: "0px"
         }}
       >
         {options?.map((option) => (
