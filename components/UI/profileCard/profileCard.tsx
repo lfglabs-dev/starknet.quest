@@ -4,16 +4,16 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import styles from '@styles/dashboard.module.css';
+} from "react";
+import styles from "@styles/dashboard.module.css";
 import {
   useAccount,
   useStarkProfile,
   type Address,
-} from '@starknet-react/core';
-import trophyIcon from 'public/icons/trophy.svg';
-import useCreationDate from '@hooks/useCreationDate';
-import shareSrc from 'public/icons/share.svg';
+} from "@starknet-react/core";
+import trophyIcon from "public/icons/trophy.svg";
+import useCreationDate from "@hooks/useCreationDate";
+import shareSrc from "public/icons/share.svg";
 import { CDNImage } from "@components/cdn/image";
 import Skeleton from "@mui/material/Skeleton";
 import xpIcon from "public/icons/xpBadge.svg";
@@ -56,17 +56,15 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
 
   const formattedAddress = useMemo(
     () =>
-      (identity.owner.startsWith('0x')
-        ? identity.owner
-        : address) as Address,
-    [identity.owner]
+      (identity.owner.startsWith("0x") ? identity.owner : address) as Address,
+    [identity.owner, address]
   );
 
   const { data: profileData } = useStarkProfile({ address: formattedAddress });
 
   const rankFormatter = useCallback((rank: number) => {
-    if (rank > 10000) return '+10k';
-    if (rank > 5000) return '+5k';
+    if (rank > 10000) return "+10k";
+    if (rank > 5000) return "+5k";
     return rank;
   }, []);
 
@@ -75,7 +73,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
       let attempts = 0;
       while (true) {
         try {
-          const balance = await calculateTotalBalance(formattedAddress, 'USD', {
+          const balance = await calculateTotalBalance(formattedAddress, "USD", {
             signal,
           });
           setTotalBalance(balance);
@@ -89,7 +87,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
 
           if (attempts >= MAX_RETRIES) {
             console.error(
-              'Failed to fetch total balance after multiple attempts.'
+              "Failed to fetch total balance after multiple attempts."
             );
           } else {
             await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
@@ -126,7 +124,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
 
   const tweetShareLink: string = useMemo(() => {
     return `${getTweetLink(
-      `Check out${isOwner ? ' my ' : ' '}Starknet Quest Profile at ${
+      `Check out${isOwner ? " my " : " "}Starknet Quest Profile at ${
         window.location.href
       } #Starknet #StarknetID`
     )}`;
@@ -136,86 +134,86 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
     <div className={styles.dashboard_profile_card}>
       <div className={styles.left}>
         <div className={styles.profile_picture_div}>
-          {profileData?.profilePicture ? (
-            <img
-              src={profileData.profilePicture}
-              className='rounded-full'
-            />
+          {identity ? (
+            <div className="rounded-full w-[120px] h-[120px]">
+              {profileData?.profilePicture ? (
+                <img
+                  src={profileData.profilePicture}
+                  className="w-full h-full rounded-full"
+                />
+              ) : (
+                <Avatar address={identity.owner} width="120" />
+              )}
+            </div>
           ) : (
-            <ProfilIcon
-              width='120'
-              color={theme.palette.secondary.main}
+            <Skeleton
+              variant="circular"
+              width={120}
+              height={120}
+              sx={{ bgcolor: "grey.900" }}
             />
           )}
         </div>
 
-        <div className='flex flex-col h-full justify-center'>
+        <div className="flex flex-col h-full justify-center">
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
-            color='secondary'
+            color="secondary"
             className={styles.accountCreationDate}
           >
-            {sinceDate ? `${sinceDate}` : ''}
+            {sinceDate ? `${sinceDate}` : ""}
           </Typography>
           <Typography
             type={TEXT_TYPE.H2}
             className={`${styles.profile_name} mt-2`}
           >
-            {identity.domain?.domain || 'Unknown Domain'}
+            {identity.domain?.domain || "Unknown Domain"}
           </Typography>
           <div className={styles.address_div}>
-            <div className='flex items-center gap-2 h-6'>
-            {totalBalance === null?
-            <Skeleton
-            variant='text'
-            sx={{ bgcolor: "grey.600" }}
-            width={60}
-            height={30}
-          />
-            :
-            <>
-               <Typography
-                type={TEXT_TYPE.BODY_SMALL}
-                className={`${styles.wallet_amount} font-extrabold`}
-              >
-                {totalBalance !== null ? (
-                  hidePortfolio ? (
-                    '******'
-                  ) : (
-                    `$${totalBalance?.toFixed(2)}`
-                  )
-                ) : (
-                  <Skeleton
-                    variant='text'
-                    width={60}
-                    height={30}
-                  />
-                )}
-              </Typography>
-              <div
-                  onClick={() => setHidePortfolio(!hidePortfolio)}
-                  className='cursor-pointer'
-                >
-                  {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
-                </div>
-            </>  
-          }   
+            <div className="flex items-center gap-2 h-6">
+              {totalBalance === null ? (
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: "grey.600" }}
+                  width={60}
+                  height={30}
+                />
+              ) : (
+                <>
+                  <Typography
+                    type={TEXT_TYPE.BODY_SMALL}
+                    className={`${styles.wallet_amount} font-extrabold`}
+                  >
+                    {totalBalance !== null ? (
+                      hidePortfolio ? (
+                        "******"
+                      ) : (
+                        `$${totalBalance?.toFixed(2)}`
+                      )
+                    ) : (
+                      <Skeleton variant="text" width={60} height={30} />
+                    )}
+                  </Typography>
+                  <div
+                    onClick={() => setHidePortfolio(!hidePortfolio)}
+                    className="cursor-pointer"
+                  >
+                    {hidePortfolio ? <EyeIconSlashed /> : <EyeIcon />}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-          <div className='flex sm:hidden justify-center py-4'>
+          <div className="flex sm:hidden justify-center py-4">
             <SocialMediaActions identity={identity} />
             {tweetShareLink && (
-              <Link
-                href={tweetShareLink}
-                target='_blank'
-                rel='noreferrer'
-              >
+              <Link href={tweetShareLink} target="_blank" rel="noreferrer">
                 <div className={styles.right_share_button}>
                   <CDNImage
                     src={shareSrc}
                     width={20}
                     height={20}
-                    alt='share-icon'
+                    alt="share-icon"
                   />
                   <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
                 </div>
@@ -225,25 +223,23 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
         </div>
       </div>
       <div className={styles.right}>
-        <div className='hidden sm:flex'>
+        <div className="hidden sm:flex">
           <div className={styles.right_top}>
             <div className={styles.right_socials}>
               <SocialMediaActions identity={identity} />
               {tweetShareLink && (
                 <div className={styles.share_button_wrapper}>
-                  <Link
-                    href={tweetShareLink}
-                    target='_blank'
-                    rel='noreferrer'
-                  >
+                  <Link href={tweetShareLink} target="_blank" rel="noreferrer">
                     <div className={styles.right_share_button}>
                       <CDNImage
                         src={shareSrc}
                         width={20}
                         height={20}
-                        alt='share-icon'
+                        alt="share-icon"
                       />
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT}>Share</Typography>
+                      <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+                        Share
+                      </Typography>
                     </div>
                   </Link>
                 </div>
@@ -260,7 +256,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
                 priority
                 width={25}
                 height={25}
-                alt='trophy icon'
+                alt="trophy icon"
               />
               <Typography
                 type={TEXT_TYPE.BODY_SMALL}
@@ -268,7 +264,7 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
               >
                 {leaderboardData.position
                   ? rankFormatter(leaderboardData.position)
-                  : 'NA'}
+                  : "NA"}
               </Typography>
             </div>
           )}
@@ -279,13 +275,13 @@ const ProfileCard: FunctionComponent<ProfileCardProps> = ({
                 priority
                 width={30}
                 height={30}
-                alt='xp badge'
+                alt="xp badge"
               />
               <Typography
                 type={TEXT_TYPE.BODY_SMALL}
                 className={styles.statsText}
               >
-                {userXp ?? '0'}
+                {userXp ?? "0"}
               </Typography>
             </div>
           )}
