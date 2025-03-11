@@ -48,7 +48,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           highlightTitle={false}>
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
-            className="text-white/50 text-sm/6 mt-3 z-[1]">
+            className="text-white/50 text-sm/6 z-[1]">
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </Typography>
@@ -79,7 +79,7 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           highlightTitle={false}>
           <Typography
             type={TEXT_TYPE.BODY_SMALL}
-            className="text-white/50 text-sm/6 mt-3 z-[1]">
+            className="text-white/50 text-sm/6 z-[1]">
             You didn&apos;t pass the quiz. You can try again or go back to the
             quest.
           </Typography>
