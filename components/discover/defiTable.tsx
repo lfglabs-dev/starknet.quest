@@ -453,6 +453,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
+                onClick={() => window.open(
+                  getRedirectLink(opportunity.app, opportunity.action),
+                  "_blank"
+                )}
               />
             ))}
           </div>

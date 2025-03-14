@@ -29,12 +29,12 @@ const QuestTag: FunctionComponent<TagProps> = ({
       <Avatar
         alt={label}
         src={icon}
-        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B" }}
+        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important', marginLeft: '0px !important', marginRight: '-3px !important' }}
       />
     ) : (
       <Avatar
         alt={label}
-        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B" }}
+        sx={{ border: "none", backgroundColor: backgroundColor || "#29282B", width: '20px !important', height: '20px !important', marginLeft: '0px !important', marginRight: '-3px !important' }}
       >
         {icon}
       </Avatar>
@@ -53,7 +53,10 @@ const QuestTag: FunctionComponent<TagProps> = ({
         color: textColor || defaultTextColor,
         width: "auto",
         minWidth: "7rem",
-        fontSize: "16px",
+        fontSize: "12px",
+        lineHeight: "16px",
+        padding: "0 12px",
+        borderRadius: "8px",
         height: "36px",
         flexDirection:
           label === "Done" || label === "Expired" ? "row-reverse" : "row", // Adjust direction based on label

@@ -111,6 +111,19 @@
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
+.title {
+  font-family: "Sora";
+  font-size: 3rem;
+  line-height: 3.625rem;
+  font-weight: 700;
+  text-align: center;
+  background: var(--secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
 .taskDescription.visible {
   overflow: default;
   opacity: 1;
@@ -441,5 +454,8 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 8px;
     aspect-ratio: unset;
+  }
+  .title {
+    font-size: 2rem;
   }
 }
