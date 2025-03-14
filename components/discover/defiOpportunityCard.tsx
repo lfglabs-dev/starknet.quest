@@ -49,7 +49,7 @@ export default function DefiOpportunityCardComponent({
         </div>
         <div className="flex items-center justify-center -space-x-6 -mt-10">
           {token1Icon ? (
-            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden">
+            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[56px] xl:h-[56px] rounded-full overflow-hidden">
               <img
                 src={token1Icon}
                 alt="Token 1"
@@ -60,7 +60,7 @@ export default function DefiOpportunityCardComponent({
             ""
           )}
           {token2Icon ? (
-            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden">
+            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[56px] xl:h-[56px] rounded-full overflow-hidden">
               <img
                 src={token2Icon}
                 alt="Token 2"
