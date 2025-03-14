@@ -16,7 +16,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="default_background_color">
+      <body className="default_background_color  overflow-x-hidden">
         <Providers>
           <Navbar />
           <main className="mt-[48px]">{children}</main>

@@ -1,7 +1,12 @@
-"use client";
+"use client"
 
+import React, { useEffect, useCallback } from "react";
 import DataTable from "@components/discover/defiTable";
 import DeFiConceptCard from "@components/UI/DefiConceptCard";
+import Typography from "@components/UI/typography/typography";
+import { TEXT_TYPE } from "@constants/typography";
+import { DEFI_CONCEPTS } from "./constants";
+import Image from "next/image";
 import {
   getAltProtocolStats,
   getDerivatesStats,
@@ -9,11 +14,6 @@ import {
   getPairingStats,
 } from "@services/apiService";
 import { formatStatsData } from "@utils/defi";
-import React, { useEffect, useCallback } from "react";
-import Typography from "@components/UI/typography/typography";
-import { TEXT_TYPE } from "@constants/typography";
-import { DEFI_CONCEPTS } from "./constants";
-import Image from "next/image";
 
 export default function Page() {
   const [data, setData] = React.useState<TableInfo[]>([]);
@@ -51,8 +51,8 @@ export default function Page() {
         <DataTable loading={loading} data={data} />
       </div>
 
-      <div className="w-full lg:w-3/4 px-4 sm:px-6 md:px-8 2xl:px-32 relative overflow-x-hidden no-scrollbar">
-        <div className="absolute left-1/2 top-0 translate-x-[5rem] md:translate-x-[8rem]  2xl:translate-x-[34rem] w-[781px] h-[764px] opacity-30 pointer-events-none">
+      <div className="w-full lg:w-3/4 px-4 sm:px-6 md:px-8 2xl:px-32 relative">
+        <div className="absolute -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
           <Image
             src="/icons/patternCircle.svg"
             alt="pattern-circle"
