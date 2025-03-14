@@ -19,6 +19,7 @@ interface PoolCardProps {
   };
   token1Icon?: string;
   token2Icon?: string;
+  onClick?: () => void;
 }
 
 export default function DefiOpportunityCardComponent({
@@ -33,9 +34,10 @@ export default function DefiOpportunityCardComponent({
   },
   token1Icon,
   token2Icon,
+  onClick,
 }: PoolCardProps) {
   return (
-    <div className="w-full bg-[#1F1F25] py-4 rounded-lg mt-6 lg:mt-0 _border _box-shadow">
+    <div onClick={onClick} className="w-full bg-[#1F1F25] hover:bg-white/40 transition-colors py-4 rounded-lg mt-6 lg:mt-0 _border _box-shadow modified-cursor-pointer">
       <div className="w-full flex justify-between items-start mb-2 relative px-4">
         <div>
           <h2 className="text-[18px] md:text-[14px] xl:text-[24px] font-[700] text-white mb-1">
