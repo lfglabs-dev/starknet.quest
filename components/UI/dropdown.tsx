@@ -74,9 +74,9 @@ const StyledFormControl = styled(FormControl, {
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
     fontSize: "12px",
     lineHeight: "16px",
-    "&.MuiInputBase-input": {
+    "&.MuiInputBase-input.MuiOutlinedInput-input": {
       padding: "0px", // removes default padding
-    },
+    }
   },
   "& .MuiSelect-icon": {
     display: "flex",
@@ -149,7 +149,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       <Select
         labelId="dropdown-label"
         id="dropdown"
-        value={value} // Use the provided value
+        value={value}
         onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
         renderValue={() =>
@@ -159,12 +159,13 @@ const Dropdown: React.FC<DropdownProps> = ({
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
+        onClick={() => setOpen(!open)}
         IconComponent={() => (
-          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }} onClick={() => setOpen(!open)} >
+          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }}>
             <IoIosArrowDown
               style={{
                 color: `${textColor}`,
-                fontSize: "20px",
+                fontSize: "14px",
                 strokeWidth: 20
               }} />
           </span>
