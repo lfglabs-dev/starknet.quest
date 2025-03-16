@@ -67,7 +67,7 @@ export default function Page() {
             Essential DeFi Concepts
           </Typography>
           <div
-            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 relative z-5"
             aria-label="DeFi concept cards grid"
           >
             {DEFI_CONCEPTS.map((concept) => (
