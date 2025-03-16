@@ -324,7 +324,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ) : (
           <Typography
             type={TEXT_TYPE.H1}
-            className={` ${styles.title} extrabold mt-5 mw-90`}
+            className={` ${styles.title} mt-5 mw-90`}
 
           >
             {quest.name}
