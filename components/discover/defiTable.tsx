@@ -336,9 +336,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     <div className="w-full overflow-x-auto">
       <div className="">
         <div
-          className={`flex w-100 lg:flex-row flex-col justify-between items-start`}
+          className="flex w-100 lg:flex-row flex-col justify-between items-start"
         >
-          <div className={`flex w-100 flex-col gap-2`}>
+          <div className="flex w-100 flex-col gap-2">
             <Typography type={TEXT_TYPE.H4} color="secondary">
               Explore reward opportunities
             </Typography>
@@ -367,21 +367,21 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           open={showSuccessModal}
           closeModal={() => setShowSuccessModal(false)}
         />
-        <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
-          <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center lg:justify-start">
-          <div className="w-full lg:w-fit">
+        <div className="flex flex-col gap-2 md:py-4 md:flex-row xl:py-0 md:justify-between">
+          <div className="grid grid-cols-6 py-4 gap-2 md:flex md:justify-center lg:justify-start">
+            <div className="col-span-3 md:w-full lg:w-fit bg-[#101012] text-[#F4FAFF] md:bg-gradient-to-r from-[#6AFFAF] to-[#5CE3FE] md:text-[#101012] md:rounded-[4px] md:font-semibold">
               <Dropdown
                 value={tokenFilter}
-                backgroundColor="linear-gradient(to right, #6AFFAF, #5CE3FE)"
+                backgroundColor="inherit"
                 padding="8px 12px"
-                fontWeight="600"
-                textColor="#101012"
+                fontWeight="inherit"
+                textColor="inherit"
                 handleChange={handleTokenFiltering}
                 placeholder="Type of token"
                 options={TOKEN_OPTIONS}
               />
             </div>
-            <div className="w-full lg:w-fit">
+            <div className="col-span-3 md:w-full lg:w-fit">
               <Dropdown
                 value={liquidityFilter}
                 backgroundColor="#101012"
@@ -398,8 +398,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-           
-            <div className="w-full lg:w-fit">
+            <div className="col-span-2 md:w-full lg:w-fit">
               <Dropdown
                 value={securityFilter}
                 backgroundColor="#101012"
@@ -414,7 +413,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="w-full lg:w-fit">
+            <div className="col-span-2 md:w-full lg:w-fit">
               <Dropdown
                 value={airdropFilter}
                 backgroundColor="#101012"
@@ -431,7 +430,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
           <div
-            className="flex w-full xl:justify-end flex-grow-0 justify-center items-center"
+            className="flex w-fit flex-grow-0 items-center self-start md:self-center md:justify-end md:w-fit"
             onClick={resetFilters}
           >
             <div className="w-fit modified-cursor-pointer border border-dashed border-[#f4faff30] rounded-[4px] leading-[18px] flex justify-between items-center pr-4 pl-1">

@@ -41,6 +41,7 @@ const StyledFormControl = styled(FormControl, {
     padding: padding || "0px",
     fontWeight: fontWeight || "400",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    color: textColor || "inherit",
     "& fieldset": {
       borderColor: "transparent",
       borderWidth: "1px",
@@ -110,7 +111,7 @@ const StyledMenuProps = {
       borderStyle: "solid",
       borderRadius: "10px",
       boxShadow: "none",
-      width: "140px",
+      width: "fit",
     },
   },
 };
@@ -161,7 +162,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onClose={() => setOpen(false)}
         onClick={() => setOpen(!open)}
         IconComponent={() => (
-          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }}>
+          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }}  className="rotate-90 md:rotate-0">
             <IoIosArrowDown
               style={{
                 color: `${textColor}`,
@@ -169,26 +170,27 @@ const Dropdown: React.FC<DropdownProps> = ({
                 strokeWidth: 20
               }} />
           </span>
-        )}
-        inputProps={{
-          style: {
-            borderColor: "transparent",
-            borderWidth: "1px",
-            cursor: 'url("/icons/pointer-cursor.png"), pointer',
+  )
+}
+inputProps = {{
+  style: {
+    borderColor: "transparent",
+      borderWidth: "1px",
+        cursor: 'url("/icons/pointer-cursor.png"), pointer',
           },
-        }}
-        sx={{
-          cursor: 'url("/icons/pointer-cursor.png"), pointer',
-          padding: "0px"
-        }}
+}}
+sx = {{
+  cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    padding: "0px"
+}}
       >
-        {options?.map((option) => (
-          <StyledMenuItem key={option.value} value={option.value}>
-            {option.label}
-          </StyledMenuItem>
-        ))}
-      </Select>
-    </StyledFormControl>
+  { options?.map((option) => (
+    <StyledMenuItem key={option.value} value={option.value}>
+      {option.label}
+    </StyledMenuItem>
+  ))}
+      </Select >
+    </StyledFormControl >
   );
 };
 
