@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
+import React, { FunctionComponent, useCallback, useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -67,7 +67,6 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     enableSorting: false, // disable sorting for this column
-
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
       if (filterValue === "Audit") {
@@ -262,6 +261,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
+  const [securityPlaceholder, setSecurityPlaceholder] = useState<string>("Security"); // Added for dynamic placeholder
+  const [airdropPlaceholder, setAirdropPlaceholder] = useState<string>("Airdrop"); // Added for dynamic placeholder
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -287,6 +288,24 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       sorting,
     },
   });
+
+  // Dynamically update the placeholders based on screen size
+  useEffect(() => {
+    const updatePlaceholder = () => {
+      if (window.innerWidth >= 768) {
+        setAirdropPlaceholder("Airdrop Status");
+        setSecurityPlaceholder("Type of Security")
+      } else {
+        setAirdropPlaceholder("Airdrop");
+        setSecurityPlaceholder("Security")
+      }
+    };
+
+    updatePlaceholder(); // Set initial value
+    window.addEventListener("resize", updatePlaceholder); // Update on resize
+
+    return () => window.removeEventListener("resize", updatePlaceholder); // Cleanup
+  }, []);
 
   const handleLiquidityFiltering = useCallback((e: SelectChangeEvent) => {
     const column = table.getColumn("action");
@@ -368,8 +387,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           closeModal={() => setShowSuccessModal(false)}
         />
         <div className="flex flex-col gap-2 md:py-4 md:flex-row xl:py-0 md:justify-between">
-          <div className="grid grid-cols-6 py-4 gap-2 md:flex md:justify-center lg:justify-start">
-            <div className="col-span-3 md:w-full lg:w-fit bg-[#101012] text-[#F4FAFF] md:bg-gradient-to-r from-[#6AFFAF] to-[#5CE3FE] md:text-[#101012] md:rounded-[4px] md:font-semibold">
+          <div className="grid grid-cols-12 py-4 gap-2 md:flex md:justify-center lg:justify-start">
+            <div className="col-span-6 md:w-full lg:w-fit bg-[#101012] text-[#F4FAFF] md:bg-gradient-to-r from-[#6AFFAF] to-[#5CE3FE] md:text-[#101012] md:rounded-[4px] md:font-semibold">
               <Dropdown
                 value={tokenFilter}
                 backgroundColor="inherit"
@@ -381,7 +400,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 options={TOKEN_OPTIONS}
               />
             </div>
-            <div className="col-span-3 md:w-full lg:w-fit">
+            <div className="col-span-6 md:w-full lg:w-fit">
               <Dropdown
                 value={liquidityFilter}
                 backgroundColor="#101012"
@@ -398,7 +417,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="col-span-2 md:w-full lg:w-fit">
+            <div className="col-span-5 md:w-full lg:w-fit">
               <Dropdown
                 value={securityFilter}
                 backgroundColor="#101012"
@@ -406,14 +425,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 fontWeight="400"
                 textColor="#F4FAFF"
                 handleChange={handleSecurityFilter}
-                placeholder="Type of Security"
+                placeholder={securityPlaceholder}
                 options={[
                   { value: "Audit", label: "Audit" },
                   { value: "No Audit", label: "No Audit" },
                 ]}
               />
             </div>
-            <div className="col-span-2 md:w-full lg:w-fit">
+            <div className="col-span-5 md:w-full lg:w-fit">
               <Dropdown
                 value={airdropFilter}
                 backgroundColor="#101012"
@@ -421,7 +440,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 fontWeight="400"
                 textColor="#F4FAFF"
                 handleChange={handleAirdropFilter}
-                placeholder="Airdrop Status"
+                placeholder={airdropPlaceholder}
                 options={[
                   { value: "Airdropped", label: "Airdropped" },
                   { value: "Hasn't Airdropped", label: "Hasn't Airdropped" },
