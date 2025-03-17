@@ -503,7 +503,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
+        <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
