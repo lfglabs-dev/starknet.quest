@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
+import React, { FunctionComponent, useCallback, useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -44,6 +44,7 @@ import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
+import { IoIosClose } from "react-icons/io";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -66,7 +67,6 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     enableSorting: false, // disable sorting for this column
-
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
       if (filterValue === "Audit") {
@@ -261,6 +261,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
+  const [securityPlaceholder, setSecurityPlaceholder] = useState<string>("Security"); // Added for dynamic placeholder
+  const [airdropPlaceholder, setAirdropPlaceholder] = useState<string>("Airdrop"); // Added for dynamic placeholder
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -286,6 +288,24 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       sorting,
     },
   });
+
+  // Dynamically update the placeholders based on screen size
+  useEffect(() => {
+    const updatePlaceholder = () => {
+      if (window.innerWidth >= 768) {
+        setAirdropPlaceholder("Airdrop Status");
+        setSecurityPlaceholder("Type of Security")
+      } else {
+        setAirdropPlaceholder("Airdrop");
+        setSecurityPlaceholder("Security")
+      }
+    };
+
+    updatePlaceholder(); // Set initial value
+    window.addEventListener("resize", updatePlaceholder); // Update on resize
+
+    return () => window.removeEventListener("resize", updatePlaceholder); // Cleanup
+  }, []);
 
   const handleLiquidityFiltering = useCallback((e: SelectChangeEvent) => {
     const column = table.getColumn("action");
@@ -335,9 +355,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     <div className="w-full overflow-x-auto">
       <div className="">
         <div
-          className={`flex w-100 lg:flex-row flex-col justify-between items-start`}
+          className="flex w-100 lg:flex-row flex-col justify-between items-start"
         >
-          <div className={`flex w-100 flex-col gap-2`}>
+          <div className="flex w-100 flex-col gap-2">
             <Typography type={TEXT_TYPE.H4} color="secondary">
               Explore reward opportunities
             </Typography>
@@ -366,13 +386,27 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           open={showSuccessModal}
           closeModal={() => setShowSuccessModal(false)}
         />
-        <div className="flex xl:flex-row flex-col sm:justify-between gap-4 justify-center items-center py-4 xl:py-0">
-          <div className="w-full gap-4 flex flex-row py-4 flex-wrap xl:flex-nowrap justify-center lg:justify-start">
-            <div className="w-full lg:w-fit">
+        <div className="flex flex-col gap-2 md:py-4 md:flex-row xl:py-0 md:justify-between">
+          <div className="grid grid-cols-12 py-4 gap-2 md:flex md:justify-center lg:justify-start">
+            <div className="col-span-6 md:w-full lg:w-fit bg-[#101012] text-[#F4FAFF] md:bg-gradient-to-r from-[#6AFFAF] to-[#5CE3FE] md:text-[#101012] md:rounded-[4px] md:font-semibold">
+              <Dropdown
+                value={tokenFilter}
+                backgroundColor="inherit"
+                padding="8px 12px"
+                fontWeight="inherit"
+                textColor="inherit"
+                handleChange={handleTokenFiltering}
+                placeholder="Type of token"
+                options={TOKEN_OPTIONS}
+              />
+            </div>
+            <div className="col-span-6 md:w-full lg:w-fit">
               <Dropdown
                 value={liquidityFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleLiquidityFiltering}
                 placeholder="Type of liquidity"
                 options={[
@@ -383,36 +417,30 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 ]}
               />
             </div>
-            <div className="w-full lg:w-fit">
-              <Dropdown
-                value={tokenFilter}
-                backgroundColor="#101012"
-                textColor="#fff"
-                handleChange={handleTokenFiltering}
-                placeholder="Type of token"
-                options={TOKEN_OPTIONS}
-              />
-            </div>
-            <div className="w-full lg:w-fit">
+            <div className="col-span-5 md:w-full lg:w-fit">
               <Dropdown
                 value={securityFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleSecurityFilter}
-                placeholder="Type of Security"
+                placeholder={securityPlaceholder}
                 options={[
                   { value: "Audit", label: "Audit" },
                   { value: "No Audit", label: "No Audit" },
                 ]}
               />
             </div>
-            <div className="w-full lg:w-fit">
+            <div className="col-span-5 md:w-full lg:w-fit">
               <Dropdown
                 value={airdropFilter}
                 backgroundColor="#101012"
-                textColor="#fff"
+                padding="8px 16px"
+                fontWeight="400"
+                textColor="#F4FAFF"
                 handleChange={handleAirdropFilter}
-                placeholder="Airdrop Status"
+                placeholder={airdropPlaceholder}
                 options={[
                   { value: "Airdropped", label: "Airdropped" },
                   { value: "Hasn't Airdropped", label: "Hasn't Airdropped" },
@@ -421,11 +449,18 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
           <div
-            className="flex w-full xl:justify-end flex-grow-0 justify-center items-center"
+            className="flex w-fit flex-grow-0 items-center self-start md:self-center md:justify-end md:w-fit"
             onClick={resetFilters}
           >
-            <div className="w-fit  modified-cursor-pointer border-[1px] border-[#f4faff4d] px-4 rounded-md">
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+            <div className="w-fit modified-cursor-pointer border border-dashed border-[#f4faff30] rounded-[4px] leading-[18px] flex justify-between items-center pr-4 pl-1">
+              <span>
+                <IoIosClose
+                  style={{
+                    color: "#F4FAFF90",
+                    fontSize: "30px",
+                  }} />
+              </span>
+              <Typography type={TEXT_TYPE.BODY_DEFAULT} style={{ fontSize: "12px", color: "#F4FAFF90" }}>
                 Clear All
               </Typography>
             </div>
@@ -468,7 +503,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
+        <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -482,9 +517,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
