@@ -357,14 +357,6 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         <div
           className="flex w-100 lg:flex-row flex-col justify-between items-start"
         >
-          <div className="flex w-100 flex-col gap-2">
-            <Typography type={TEXT_TYPE.H4} color="secondary">
-              Explore reward opportunities
-            </Typography>
-            <Typography type={TEXT_TYPE.BODY_MICRO} color="secondary">
-              Find the best opportunities, and earn tokens
-            </Typography>
-          </div>
           {address && (
             <div
               onClick={() => setShowClaimModal(true)}
