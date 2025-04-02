@@ -26,7 +26,7 @@ export default function Page() {
 
       let allQuests: QuestDocument[] = [];
       Object.keys(res).forEach((category) => {
-        const categoryQuests = res[category]; 
+        const categoryQuests = res[category];
         if (Array.isArray(categoryQuests)) {
           allQuests = allQuests.concat(categoryQuests);
         }
@@ -36,7 +36,6 @@ export default function Page() {
 
       setQuests(sortedAllQuests);
       setLoading(false);
-
     } catch (error) {
       console.log("Error while fetching quests", error);
     }
