@@ -156,7 +156,6 @@ export const sortConnectors = (connectors: Connector[]): Connector[] => {
   const notAvailable: Connector[] = [];
 
   connectors.forEach((connector) => {
-    console.log(connector);
     connector.available()
       ? available.push(connector)
       : notAvailable.push(connector);

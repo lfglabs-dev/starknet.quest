@@ -23,8 +23,6 @@ export default function Page() {
     try {
       setLoading(true);
       const res = (await getQuests()) || {};
-      setQuests(res);
-      const res = (await getQuests()) || {};
 
       let allQuests: QuestDocument[] = [];
       Object.keys(res).forEach((category) => {
