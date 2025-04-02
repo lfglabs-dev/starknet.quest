@@ -9,7 +9,7 @@ export const CATEGORY_OPTIONS = [
     "Starknet Pro Score by Braavos",
 ];
 
-export const formSteps = ["Setup", "Reward", "Tasks", "Preview"];
+export const formSteps = ["Setup", "Reward", "Tasks", "Banner", "Preview"];
 
 export const TASK_OPTIONS = [
     "Quiz",

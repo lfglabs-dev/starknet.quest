@@ -3,7 +3,7 @@ import styles from "@styles/components/button.module.css";
 import { CircularProgress } from "@mui/material";
 
 type ButtonProps = {
-  onClick: () => void;
+  onClick: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: string | ReactNode;
   disabled?: boolean;
   color?: string;
@@ -21,13 +21,9 @@ const Button: FunctionComponent<ButtonProps> = ({
     <button
       disabled={disabled}
       onClick={onClick}
-      className={
-        styles["nq-button"] +
-        " " +
-        (color === "primary" ? "" : styles["nq-button-secondary"]) +
-        " " +
-        (disabled ? styles.disabled_button : "")
-      }
+      className={`${styles["nq-button"]} 
+                  ${color === "primary" ? "" : styles["nq-button-secondary"]} 
+                  ${disabled ? styles.disabled_button : ""}`.trim()}
     >
       {loading ? (
         <div className="flex justify-center items-center">

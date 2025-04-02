@@ -130,6 +130,7 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     if (!quests.length) return;
+
     const notExpired = quests.filter((quest) => !quest.expired);
     const lastBoostedQuest = boostedQuests.length
       ? quests.find(
@@ -138,8 +139,17 @@ export const QuestsContextProvider = ({
             !quest.expired
         )
       : undefined;
+
+    const recentQuest = notExpired.find(
+      (quest) =>
+        quest.start_timestamp &&
+        new Date(quest.start_timestamp) >=
+          new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Check if less than a week ago
+    );
+
     setFeaturedQuest(
       lastBoostedQuest ||
+        recentQuest ||
         notExpired[Math.floor(Math.random() * notExpired.length)]
     );
   }, [quests, boostedQuests]);

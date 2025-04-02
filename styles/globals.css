@@ -22,6 +22,7 @@
 :root {
   --primary: #6affaf;
   --secondary: #f4faff;
+  --secondary50: #ffffff80;
   --secondary500: #e1dcea;
   --secondary300: #eae0d5;
   --tertiary: #5ce3fe;
@@ -45,10 +46,13 @@ body {
   font-family: "Sora";
   background-color: var(--background);
   color: var(--secondary);
-  cursor: url(../public/icons/cursor.png), auto;
+  cursor: url(/icons/cursor.png), auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
 }
 
 main {
@@ -72,11 +76,21 @@ a {
   color: transparent;
 }
 
+.title.quiz {
+  color: var(--secondary);
+  background: transparent;
+  -webkit-text-fill-color: var(--secondary);
+}
+
 .title.extrabold {
   font-family: "Sora-ExtraBold";
 }
 
 /* Scroll bar */
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none ;
+}
 
 /* width */
 ::-webkit-scrollbar {

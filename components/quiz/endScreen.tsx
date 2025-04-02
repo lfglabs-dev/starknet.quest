@@ -8,6 +8,7 @@ import successAnimation from "@public/visuals/verifiedLottie.json";
 import Lottie from "lottie-react";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import ParticleBackground from "./particleBackground";
 
 type EndScreenProps = {
   setStep: (s: number) => void;
@@ -20,6 +21,20 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
   setRestart,
   passed,
 }) => {
+  const handleRestart = (
+    e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (e) {
+
+      console.log('clicked');
+      e.stopPropagation();
+      sessionStorage.setItem(
+        "mousePosition",
+        JSON.stringify({ x: e.clientX, y: e.clientY })
+      );
+      setRestart(true);
+    }
+  };
   return passed === "loading" ? (
     <QuizLoading />
   ) : (
@@ -30,12 +45,14 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           actionBar={
             <Button onClick={() => setStep(-2)}>Go back to the quest</Button>
           }
-          highlightTitle={false}
-        >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+          highlightTitle={false}>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            className="text-white/50 text-sm/6 z-[1]">
             You passed the quiz. Congratulations on your efforts and progress!
             Keep up the good work and continue to explore new challenges.
           </Typography>
+          <ParticleBackground />
           <div className={styles.successLottie}>
             <Lottie animationData={successAnimation} loop={false} />
           </div>
@@ -45,24 +62,28 @@ const EndScreen: FunctionComponent<EndScreenProps> = ({
           title="Too bad ! "
           actionBar={
             <>
-              <div className={styles.soft}>
-                <Button onClick={() => setStep(-2)}>
-                  Go back to the quest
-                </Button>
-              </div>
-              <div>
-                <Button onClick={() => setRestart(true)}>
-                  Restart the quiz
-                </Button>
+              <div className="flex sm:flex-row flex-col gap-6">
+                <div className={styles.soft}>
+                  <Button onClick={() => setStep(-2)}>
+                    Go back to the quest
+                  </Button>
+                </div>
+                <div>
+                  <Button onClick={(e) => handleRestart(e)}>
+                    Restart the quiz
+                  </Button>
+                </div>
               </div>
             </>
           }
-          highlightTitle={false}
-        >
-          <Typography type={TEXT_TYPE.BODY_DEFAULT}>
+          highlightTitle={false}>
+          <Typography
+            type={TEXT_TYPE.BODY_SMALL}
+            className="text-white/50 text-sm/6 z-[1]">
             You didn&apos;t pass the quiz. You can try again or go back to the
             quest.
           </Typography>
+          <ParticleBackground />
           <div className={styles.wrongLottie}>
             <Lottie animationData={wrongAnimation} loop={false} />
           </div>

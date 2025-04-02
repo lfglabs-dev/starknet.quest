@@ -17,6 +17,7 @@
 }
 
 .coloredLine {
+  width: 0%;
   position: absolute;
   top: 50%;
   left: 16px;
@@ -24,6 +25,27 @@
   background-color: var(--primary);
   transform: translateY(-50%);
   transition: width 0.3s ease-out;
+}
+
+.coloredLine::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 72px;
+  height: 28px;
+  background: #66ff99;
+  border-radius: 50%;
+  filter: blur(15px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.coloredLine.active::after {
+  opacity: 0.2;
+  visibility: visible;
 }
 
 .milestone {
@@ -47,7 +69,7 @@
 
 .checkedMilestone {
   background-color: var(--primary);
-  color: white;
+  color: #101012;
 }
 
 .emptyMilestone {

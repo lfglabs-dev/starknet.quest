@@ -61,7 +61,8 @@
 .typography-body-small {
   font-family: "Sora", sans-serif;
   font-size: 14px;
-  line-height: 20px;
+  font-weight: 400;
+  line-height: 25px;
   letter-spacing: 0;
 }
 

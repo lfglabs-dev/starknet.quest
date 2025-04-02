@@ -26,6 +26,9 @@ module.exports = {
       lineHeight: {
         '12': '3.8rem'
       },
+      animation: {
+        'spin-slow': 'spin 20s linear infinite',
+      },
     }
   },
   plugins: [],

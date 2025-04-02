@@ -17,13 +17,26 @@ export default function Page() {
   const { address } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [quests, setQuests] = useState<QuestList>({} as QuestList);
+  const [quests, setQuests] = useState<QuestDocument[]>([]);
 
   const fetchQuests = useCallback(async () => {
     try {
       setLoading(true);
       const res = (await getQuests()) || {};
       setQuests(res);
+      const res = (await getQuests()) || {};
+
+      let allQuests: QuestDocument[] = [];
+      Object.keys(res).forEach((category) => {
+        const categoryQuests = res[category];
+        if (Array.isArray(categoryQuests)) {
+          allQuests = allQuests.concat(categoryQuests);
+        }
+      });
+
+      const sortedAllQuests = allQuests.sort((a, b) => b.id - a.id);
+
+      setQuests(sortedAllQuests);
       setLoading(false);
     } catch (error) {
       console.log("Error while fetching quests", error);
@@ -33,7 +46,6 @@ export default function Page() {
   useEffect(() => {
     fetchQuests();
   }, [address]);
-
   return (
     <div className={styles.container}>
       <div className={styles.backButton}>
@@ -50,31 +62,21 @@ export default function Page() {
         {loading ? (
           <FeaturedQuestSkeleton />
         ) : (
-          (Object.keys(quests) as (keyof typeof quests)[]).map(
-            (categoryName: keyof typeof quests) => {
-              const categoryValue = quests[categoryName];
-              if (Array.isArray(categoryValue)) {
-                return categoryValue.map((quest: QuestDocument) => {
-                  return (
-                    <Quest
-                      key={quest.id}
-                      title={quest.title_card}
-                      onClick={() => router.push(`/analytics/${quest.id}`)}
-                      imgSrc={quest.img_card}
-                      issuer={{
-                        name: quest.issuer,
-                        logoFavicon: quest.logo,
-                      }}
-                      reward={quest.rewards_title}
-                      id={quest.id}
-                      expired={false}
-                    />
-                  );
-                });
-              }
-              return null;
-            }
-          )
+          quests.map((quest) => (
+            <Quest
+              key={quest.id}
+              title={quest.title_card}
+              onClick={() => router.push(`/analytics/${quest.id}`)}
+              imgSrc={quest.img_card}
+              issuer={{
+                name: quest.issuer,
+                logoFavicon: quest.logo,
+              }}
+              reward={quest.rewards_title}
+              id={quest.id}
+              expired={false}
+            />
+          ))
         )}
       </div>
     </div>

@@ -324,7 +324,8 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
         ) : (
           <Typography
             type={TEXT_TYPE.H1}
-            className="title extrabold mt-5 mw-90"
+            className={` ${styles.title} mt-5 mw-90`}
+
           >
             {quest.name}
           </Typography>
@@ -339,7 +340,7 @@ const QuestDetails: FunctionComponent<QuestDetailsProps> = ({
           <>
             <Typography
               type={TEXT_TYPE.BODY_DEFAULT}
-              className="text-center max-w-[90%] md:max-w-[50vw]"
+              className="text-center max-w-[90%] md:max-w-[50vw] text-white/50 leading-[25px] text-sm"
             >
               {quest.desc}
             </Typography>
