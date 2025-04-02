@@ -250,7 +250,7 @@ export default function Page() {
     await handleCreateBoost(id);
     await handleCreateNftUri(id);
     await setButtonLoading(false);
-    handlePagination("Next");
+    router.push(`/admin/quests/dashboard/${id}?tab=2`);
   }, [questInput, boostInput, nfturi]);
 
   const handleCreateTask = useCallback(async () => {
@@ -259,187 +259,163 @@ export default function Page() {
       isSaving.current = true;
       setButtonLoading(true);
       const unsavedSteps = steps.filter((step) => !step.data.id);
-      let failedQuestions = [];
+  
       for (const step of unsavedSteps) {
-        if (step.type === "Quiz") {
-          if (
-            step.data.quiz_name?.length === 0 ||
-            step.data.quiz_desc?.length === 0 ||
-            step.data.quiz_intro?.length === 0 ||
-            step.data.quiz_cta?.length === 0 ||
-            step.data.quiz_help_link?.length === 0
-          ) {
-            showNotification("Please fill all fields for Quiz", "info");
-            continue;
-          }
-          const response = await AdminService.createQuiz({
-            quest_id: questId,
-            name: step.data.quiz_name,
-            desc: step.data.quiz_desc,
-            intro: step.data.quiz_intro,
-            cta: step.data.quiz_cta,
-            help_link: step.data.quiz_help_link,
-          });
-
-          if (response) {
-            for (const question of step.data.questions) {
-              try {
-                await AdminService.createQuizQuestion({
-                  quiz_id: response.quiz_id,
-                  question: question.question,
-                  options: question.options,
-                  correct_answers: question.correct_answers,
-                });
-              } catch (error) {
-                console.error("Error executing promise:", error);
-                failedQuestions.push(question.question);
+        try {
+          let response: any;
+          switch (step.type) {
+            case "Quiz":
+              if (!["quiz_name", "quiz_desc", "quiz_intro", "quiz_cta", "quiz_help_link"]
+                .every(field => step.data[field]?.length > 0)) {
+                showNotification("Please fill all fields for Quiz", "info");
+                continue;
               }
-            }
-            if (failedQuestions.length > 0) {
-              showNotification(
-                `Failed to create ${failedQuestions.length} questions. Please review and try again.`,
-                "warning"
-              );
-            }
-            step.data.id = response.id;
-          }
-        } else if (step.type === "TwitterFw") {
-          if (
-            step.data.twfw_name?.length === 0 ||
-            step.data.twfw_desc?.length === 0 ||
-            step.data.twfw_username?.length === 0
-          ) {
-            showNotification(
-              "Please fill all fields for Twitter Follow",
-              "info"
-            );
-            continue;
-          }
-          const response = await AdminService.createTwitterFw({
-            quest_id: questId,
-            name: step.data.twfw_name,
-            desc: step.data.twfw_desc,
-            username: step.data.twfw_username,
-          });
-          if (response) step.data.id = response.id;
-        } else if (step.type === "TwitterRw") {
-          if (
-            step.data.twrw_name?.length === 0 ||
-            step.data.twrw_desc?.length === 0 ||
-            step.data.twrw_post_link?.length === 0
-          ) {
-            showNotification(
-              "Please fill all fields for Twitter Retweet",
-              "info"
-            );
-            continue;
-          }
-          const response = await AdminService.createTwitterRw({
-            quest_id: questId,
-            name: step.data.twrw_name,
-            desc: step.data.twrw_desc,
-            post_link: step.data.twrw_post_link,
-          });
-          if (response) step.data.id = response.id;
-        } else if (step.type === "Discord") {
-          if (
-            step.data.dc_name?.length === 0 ||
-            step.data.dc_desc?.length === 0 ||
-            step.data.dc_invite_link?.length === 0 ||
-            step.data.dc_guild_id?.length === 0
-          ) {
-            showNotification("Please fill all fields for Discord", "info");
-            continue;
-          }
-          const response = await AdminService.createDiscord({
-            quest_id: questId,
-            name: step.data.dc_name,
-            desc: step.data.dc_desc,
-            invite_link: step.data.dc_invite_link,
-            guild_id: step.data.dc_guild_id,
-          });
-          if (response) step.data.id = response.id;
-        } else if (step.type === "Custom") {
-          if (
-            step.data.custom_name?.length === 0 ||
-            step.data.custom_desc?.length === 0 ||
-            step.data.custom_cta?.length === 0 ||
-            step.data.custom_href?.length === 0 ||
-            step.data.custom_api?.length === 0
-          ) {
-            showNotification("Please fill all fields for Custom", "info");
-            continue;
-          }
-          const response = await AdminService.createCustom({
-            quest_id: questId,
-            name: step.data.custom_name,
-            desc: step.data.custom_desc,
-            cta: step.data.custom_cta,
-            href: step.data.custom_href,
-            api: step.data.custom_api,
-          });
-          if (response) step.data.id = response.id;
-        } else if (step.type === "Domain") {
-          const response = await AdminService.createDomain({
-            quest_id: questId,
-            name: step.data.domain_name,
-            desc: step.data.domain_desc,
-          });
-          if (response) step.data.id = response.id;
-        } else if (step.type === "Balance") {
-          try {
-            const response = await AdminService.createBalance({
-              quest_id: questId,
-              name: step.data.balance_name,
-              desc: step.data.balance_desc,
-              contracts: step.data.balance_contracts,
-              cta: step.data.balance_cta,
-              href: step.data.balance_href,
-            });
-            if (response) step.data.id = response.id;
-          } catch (error) {
-            console.error("Error while creating balance task:", error);
-          }
-        } else if (step.type === "CustomApi") {
-          try {
-            const response = await AdminService.createCustomApi({
-              quest_id: questId,
-              name: step.data.api_name,
-              desc: step.data.api_desc,
-              api_url: step.data.api_url,
-              cta: step.data.api_cta,
-              href: step.data.api_href,
-              regex: step.data.api_regex,
-            });
-            if (response) step.data.id = response.id;
-          } catch (error) {
-            console.error("Error while creating CustomApi task:", error);
-          }
-        } else if (step.type === "Contract") {
-          try {
-            const response = await AdminService.createContract({
-              quest_id: questId,
-              name: step.data.contract_name,
-              desc: step.data.contract_desc,
-              href: step.data.contract_href,
-              cta: step.data.contract_cta,
-              calls: (() => {
-                try {
-                  return JSON.parse(step.data.contract_calls);
-                } catch (error) {
-                  showNotification("Invalid contract calls format", "error");
-                  throw error;
+              response = await AdminService.createQuiz({
+                quest_id: questId,
+                name: step.data.quiz_name,
+                desc: step.data.quiz_desc,
+                intro: step.data.quiz_intro,
+                cta: step.data.quiz_cta,
+                help_link: step.data.quiz_help_link,
+              });
+  
+              if (response) {
+                const failedQuestions = await Promise.allSettled(
+                  step.data.questions.map((question: any) => 
+                    AdminService.createQuizQuestion({
+                      quiz_id: response.quiz_id,
+                      question: question.question,
+                      options: question.options,
+                      correct_answers: question.correct_answers,
+                    })
+                  )
+                ).then(results => 
+                  results
+                    .filter((result: any) => result.status === 'rejected')
+                    .map((result: any) => result.reason)
+                );
+  
+                if (failedQuestions.length > 0) {
+                  showNotification(
+                    `Failed to create ${failedQuestions.length} questions. Please review and try again.`,
+                    "warning"
+                  );
                 }
-              })(),
-            });
-            if (response) step.data.id = response.id;
-          } catch (error) {
-            console.error("Error while creating contract task:", error);
-            showNotification(
-              `Error adding ${step.type} task: ${error}`,
-              "error"
-            );
+                step.data.id = response.id;
+              }
+              break;
+  
+            case "TwitterFw":
+              if (!["twfw_name", "twfw_desc", "twfw_username"]
+                .every(field => step.data[field]?.length > 0)) {
+                showNotification("Please fill all fields for Twitter Follow", "info");
+                continue;
+              }
+              response = await AdminService.createTwitterFw({
+                quest_id: questId,
+                name: step.data.twfw_name,
+                desc: step.data.twfw_desc,
+                username: step.data.twfw_username,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "TwitterRw":
+              if (!["twrw_name", "twrw_desc", "twrw_post_link"]
+                .every(field => step.data[field]?.length > 0)) {
+                showNotification("Please fill all fields for Twitter Retweet", "info");
+                continue;
+              }
+              response = await AdminService.createTwitterRw({
+                quest_id: questId,
+                name: step.data.twrw_name,
+                desc: step.data.twrw_desc,
+                post_link: step.data.twrw_post_link,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "Discord":
+              if (!["dc_name", "dc_desc", "dc_invite_link", "dc_guild_id"]
+                .every(field => step.data[field]?.length > 0)) {
+                showNotification("Please fill all fields for Discord", "info");
+                continue;
+              }
+              response = await AdminService.createDiscord({
+                quest_id: questId,
+                name: step.data.dc_name,
+                desc: step.data.dc_desc,
+                invite_link: step.data.dc_invite_link,
+                guild_id: step.data.dc_guild_id,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "Custom":
+              if (!["custom_name", "custom_desc", "custom_cta", "custom_href", "custom_api"]
+                .every(field => step.data[field]?.length > 0)) {
+                showNotification("Please fill all fields for Custom", "info");
+                continue;
+              }
+              response = await AdminService.createCustom({
+                quest_id: questId,
+                name: step.data.custom_name,
+                desc: step.data.custom_desc,
+                cta: step.data.custom_cta,
+                href: step.data.custom_href,
+                api: step.data.custom_api,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "Domain":
+              response = await AdminService.createDomain({
+                quest_id: questId,
+                name: step.data.domain_name,
+                desc: step.data.domain_desc,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "Balance":
+              response = await AdminService.createBalance({
+                quest_id: questId,
+                name: step.data.balance_name,
+                desc: step.data.balance_desc,
+                contracts: step.data.balance_contracts,
+                cta: step.data.balance_cta,
+                href: step.data.balance_href,
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "Contract":
+              response = await AdminService.createContract({
+                quest_id: questId,
+                name: step.data.contract_name,
+                desc: step.data.contract_desc,
+                href: step.data.contract_href,
+                cta: step.data.contract_cta,
+                calls: JSON.parse(step.data.contract_calls),
+              });
+              if (response) step.data.id = response.id;
+              break;
+  
+            case "CustomApi":
+              response = await AdminService.createCustomApi({
+                quest_id: questId,
+                name: step.data.api_name,
+                desc: step.data.api_desc,
+                api_url: step.data.api_url,
+                cta: step.data.api_cta,
+                href: step.data.api_href,
+                regex: step.data.api_regex,
+              });
+              if (response) step.data.id = response.id;
+              break;
           }
+        } catch (error) {
+          showNotification(`Error adding ${step.type} task: ${error}`, "error");
         }
       }
       setSteps([...steps]);
@@ -541,7 +517,7 @@ export default function Page() {
         <AdminQuestDetails
           quest={finalQuestData}
           // eslint-disable-next-line @typescript-eslint/no-empty-function
-          setShowDomainPopup={() => {}}
+          setShowDomainPopup={() => { }}
           hasRootDomain={false}
           rewardButtonTitle={finalQuestData.disabled ? "Enable" : "Disable"}
           onRewardButtonClick={async () => {

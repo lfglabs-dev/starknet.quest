@@ -15,20 +15,17 @@
   overflow: hidden auto;
 }
 
-.mainContainer:has(.menu) {
-  background: url("/utils/dotBackground.svg") no-repeat center var(--background);
-}
-
 .contentContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .content {
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,6 +36,7 @@
 .controls {
   display: flex;
   width: 100%;
+  z-index: 1;
 }
 
 .controls button:has(+ button) {
@@ -51,40 +49,34 @@
 }
 
 .menu {
+  gap: 1rem;
   max-width: 600px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  z-index: 1;
 }
 
 .menuButtons {
-  width: calc(100% - 10px);
+  max-width:fit-content;
   display: flex;
-  margin: 2em auto 0 auto;
-  white-space: nowrap;
+  margin: 0 auto 0 auto;
+  white-space: wrap;
   align-items: center;
   justify-content: center;
+  padding: 24px 16px;
+  z-index: 1;
 }
 
 .menuButtons div + div {
   margin-left: auto;
 }
 
-.menuButtons button {
-  margin: auto;
-}
 
-@media (max-width: 1000px) {
-  .menuButtons {
-    flex-direction: column;
-  }
 
-  .menuButtons div + div {
-    margin: 1em;
-  }
-
+@media (max-width: 640px) {
   .menuButtons * {
     width: 100%;
   }
@@ -105,9 +97,10 @@
 }
 
 .menuTitle {
-  font-family: "Sora-ExtraBold";
-  font-size: 2.5rem;
+  font-family: "Sora-Bold";
+  font-size: 3rem;
   text-align: center;
+  z-index: 1;
 }
 
 .successLottie {
@@ -115,7 +108,7 @@
   height: 218px;
   max-width: 100%;
   display: block;
-  margin: 2em auto;
+  margin: 1em auto;
 }
 
 .wrongLottie {
@@ -123,7 +116,7 @@
   height: 218px;
   max-width: 100%;
   display: block;
-  margin: 2em auto;
+  margin: 1em auto;
 }
 
 .successLottie div {
@@ -176,8 +169,8 @@
   font-weight: 700;
   line-height: 38px;
   /* 105.556% */
-  margin-bottom: auto;
-  margin-top: 1rem;
+  padding-top: 16px;
+  padding-bottom: 48px;
 }
 
 .issuer {
@@ -300,42 +293,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 12px;
-  border-radius: 10px;
-  background-color: var(--background600);
-  font-weight: bold;
+  padding: 24px 16px;
+  border-radius: 8px;
+  background-color:#1F1F25;
+  font-size: 16px;
+  font-weight: 400;
   cursor: url(../../../public/icons/pointer-cursor.png), pointer;
-}
-
-.checkboxLabel:after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(1deg, var(--background) 65%, transparent);
-  border-radius: 10px;
-  z-index: -1;
-}
-
-.checkboxLabel::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  left: 1px;
-  bottom: 1px;
-  background: linear-gradient(
-    90deg,
-    #437aba 0%,
-    #1e74d6 40%,
-    #00fbff 50%,
-    #1e74d6 70%,
-    #437aba50 100%
-  );
-  border-radius: 10px;
-  z-index: -1;
 }
 
 .checkbox:checked + .checkboxLabel {
@@ -444,3 +407,31 @@
   margin: 24px 20px;
   width: 100%;
 }
+
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  cursor: url(../../../public/icons/pointer-cursor.png), pointer;
+  transition: opacity 0.3s;
+  opacity: 0.7;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.closeButton svg {
+  width: 16px;
+  margin-right: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .closeButton {
+    font-size: 18px;
+    color: var(--secondary);
+  }
+}
+
+
+

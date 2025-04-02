@@ -18,7 +18,7 @@ const ScreenLayout: FunctionComponent<ScreenLayoutProps> = ({
 }) => {
   return (
     <div className={styles.menu}>
-      <Typography type={TEXT_TYPE.H1} className={highlightTitle ? "title extrabold" : styles.menuTitle}>
+      <Typography type={TEXT_TYPE.H1} className={highlightTitle ? "title extrabold z-[1]" : styles.menuTitle}>
         {title}
       </Typography>
       {children}

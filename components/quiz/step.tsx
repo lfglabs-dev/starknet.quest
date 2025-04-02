@@ -34,7 +34,12 @@ const Step: FunctionComponent<StepProps> = ({
     setSelected(false);
   }, [step]);
 
-  const handleNext = () => {
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    sessionStorage.setItem(
+      "mousePosition",
+      JSON.stringify({ x: e.clientX, y: e.clientY })
+    );
     if (answers[step]) {
       setAnswers(
         answers.map((item, index) => {
@@ -97,10 +102,10 @@ const Step: FunctionComponent<StepProps> = ({
             {layoutElements}
             <div className={styles.okButtonContainer}>
               <button
-                onClick={() => selected && handleNext()}
+                onClick={(e) => selected && handleNext(e)}
                 className={selected ? "" : styles.disabled}
               >
-                OK <CheckMarkIcon width="24" />
+                OK 
               </button>
             </div>
           </div>

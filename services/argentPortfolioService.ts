@@ -14,6 +14,8 @@ const API_HEADERS = {
   "argent-client": "portfolio",
   "argent-network": "mainnet",
   "argent-version": "1.4.3",
+  "content-type": "application/json",
+  "referer": "https://portfolio.argent.xyz/",
 };
 
 const DEFAULT_MAX_RETRIES = 3;
@@ -101,7 +103,10 @@ export const fetchUserTokens = async (walletAddress: string, { signal }: { signa
 };
 
 export const fetchUserDapps = async (walletAddress: string, { signal }: { signal?: AbortSignal }) => {
-  const data = await fetchDataWithRetry<{ dapps: ArgentUserDapp[] }>(`${API_BASE}/${API_VERSION}/tokens/defi/decomposition/${walletAddress}?chain=starknet`, { signal });
+  const data = await fetchDataWithRetry<{ dapps: ArgentUserDapp[] }>(
+    `${API_BASE}/${API_VERSION}/tokens/defi/${walletAddress}/investments?chain=starknet&application=webwallet`,
+    { signal }
+  );
   return data.dapps;
 };
 

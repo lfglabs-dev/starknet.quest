@@ -7,6 +7,7 @@ import React, {
   FunctionComponent,
   useCallback,
 } from "react";
+import DownloadButton from "@components/shared/DownloadButton";
 import styles from "@styles/quests.module.css";
 import { useAccount } from "@starknet-react/core";
 import { hexToDecimal } from "@utils/feltService";
@@ -18,13 +19,10 @@ import Timer from "@components/quests/timer";
 import NftImage from "@components/quests/nftImage";
 import Task from "@components/quests/task";
 import Reward from "@components/quests/reward";
-import DownloadQuestUsersButton from "@components/quests/downloadQuestUsersButton";
 import { AdminService } from "@services/authService";
 import { useNotification } from "@context/NotificationProvider";
 import Button from "@components/UI/button";
 import { useRouter } from "next/navigation";
-import DownloadQuestParticipantsButton from "./DownloadQuestParticipantsButton";
-import DownloadBoostWinnersButton from "./DownloadBoostWinnersButton";
 
 type QuestDetailsProps = {
   quest: QuestDocument;
@@ -243,16 +241,35 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
           quest.boosts?.length > 0 &&
           quest.boosts.map((boost) => (
             <div className="w-fit" key={boost.id}>
-              <DownloadBoostWinnersButton boostId={boost.id.toString()} />
+              <DownloadButton
+                label="Download Boost Winners"
+                endpoint={() =>
+                  AdminService.getBoostWinnersByBoostId({
+                    id: Number(boost.id),
+                  })
+                }
+              />{" "}
             </div>
           ))}
         {isEdit && (
           <>
             <div className="w-fit">
-              <DownloadQuestUsersButton questId={questId} />
+              <DownloadButton
+                label="Download Quest Users"
+                endpoint={() =>
+                  AdminService.getQuestUsersByQuestId({ id: Number(questId) })
+                }
+              />{" "}
             </div>
             <div className="w-fit">
-              <DownloadQuestParticipantsButton questId={quest.id} />
+              <DownloadButton
+                label="Download Quest Participants"
+                endpoint={() =>
+                  AdminService.getQuestParticipantsByQuestId({
+                    id: Number(questId),
+                  })
+                }
+              />
             </div>
           </>
         )}

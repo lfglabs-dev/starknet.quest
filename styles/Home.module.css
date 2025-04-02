@@ -11,6 +11,15 @@
   height: 100vh;
 }
 
+.questsButtonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  text-wrap: nowrap;
+}
+
 .questContainer,
 .container {
   display: flex;

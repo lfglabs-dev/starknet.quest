@@ -23,11 +23,11 @@ type RewardDetailsFormProps = {
   nfturi: NFTUri;
   setNftUri: React.Dispatch<React.SetStateAction<NFTUri>>;
   setQuestInput:
-    | React.Dispatch<React.SetStateAction<CreateQuest>>
-    | React.Dispatch<React.SetStateAction<UpdateQuest>>;
+  | React.Dispatch<React.SetStateAction<CreateQuest>>
+  | React.Dispatch<React.SetStateAction<UpdateQuest>>;
   setBoostInput:
-    | React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>
-    | React.Dispatch<React.SetStateAction<UpdateBoost>>;
+  | React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>
+  | React.Dispatch<React.SetStateAction<UpdateBoost>>;
   setShowBoost: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: () => void;
   submitButtonDisabled: boolean;
@@ -91,13 +91,20 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           label="Rewards Title"
           placeholder="NFT Name"
         />
-        <TextInput
-          onChange={handleQuestImageChange}
-          value={nfturi?.image}
-          name="nft_image"
-          label="NFT Image Path"
-          placeholder="NFT Image Path"
-        />
+        <div className="flex flex-col gap-5">
+          <TextInput
+            onChange={handleQuestImageChange}
+            value={nfturi?.image}
+            name="nft_image"
+            label="NFT Image Path"
+            placeholder="NFT Image Path"
+          />
+          <input
+            type="file"
+            name="nft_image_file"
+            className="border border-[#f4faff4d] rounded-lg p-2 w-80"
+          />
+        </div>
 
         <TextInput
           onChange={(e) => {
@@ -111,13 +118,21 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
           label="NFT Description"
           placeholder="NFT Description"
         />
-        <TextInput
-          onChange={handleQuestInputChange}
-          value={questInput?.logo ?? ""}
-          name="logo"
-          label="Issuer Logo"
-          placeholder="Issuer logo"
-        />
+        <div className="flex flex-col gap-5">
+          <TextInput
+            onChange={handleQuestInputChange}
+            value={questInput?.logo ?? ""}
+            name="logo"
+            label="Issuer Logo"
+            placeholder="Issuer logo"
+          />
+          <input
+            type="file"
+            name="issuer_logo_file"
+            className="border border-[#f4faff4d] rounded-lg p-2 w-80"
+          />
+        </div>
+
         <div className="flex gap-2 items-center">
           <p>Boost this quest</p>
           <Switch

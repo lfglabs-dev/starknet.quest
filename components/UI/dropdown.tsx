@@ -8,6 +8,8 @@ import { IoIosArrowDown } from "react-icons/io";
 
 type DropdownProps = {
   backgroundColor?: string;
+  padding?: string;
+  fontWeight?: string;
   borderColor?: string;
   textColor?: string;
   options?: { value: string; label: string }[];
@@ -19,18 +21,27 @@ type DropdownProps = {
 const StyledFormControl = styled(FormControl, {
   shouldForwardProp: (prop) =>
     prop !== "backgroundColor" &&
+    prop !== "padding" &&
+    prop !== "fontWeight" &&
     prop !== "borderColor" &&
-    prop !== "textColor",
-})<DropdownProps>(({ backgroundColor, borderColor, textColor }) => ({
-  backgroundColor: backgroundColor || "transparent",
+    prop !== "textColor"
+})<DropdownProps>(({ backgroundColor, borderColor, textColor, padding, fontWeight }) => ({
+  background: backgroundColor || "transparent",
   color: textColor || "inherit",
-  borderRadius: 10,
+  borderRadius: "4px",
   cursor: 'url("/icons/pointer-cursor.png"), pointer',
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+    borderRadius: "4px",
     borderWidth: "0.5px",
-    borderColor: "#f4faff4d",
+    borderColor: "#F4FAFF30",
+    display: "flex",
+    flexDirection: "row-reverse",
+    borderStyle: "dashed",
+    gap: "8px",
+    padding: padding || "0px",
+    fontWeight: fontWeight || "400",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    color: textColor || "inherit",
     "& fieldset": {
       borderColor: "transparent",
       borderWidth: "1px",
@@ -62,12 +73,16 @@ const StyledFormControl = styled(FormControl, {
     display: "flex",
     alignItems: "center",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    fontSize: "12px",
+    lineHeight: "16px",
+    "&.MuiInputBase-input.MuiOutlinedInput-input": {
+      padding: "0px", // removes default padding
+    }
   },
   "& .MuiSelect-icon": {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    paddingLeft: "20px",
     cursor: 'url("/icons/pointer-cursor.png"), pointer',
   },
 }));
@@ -96,13 +111,15 @@ const StyledMenuProps = {
       borderStyle: "solid",
       borderRadius: "10px",
       boxShadow: "none",
-      width: "140px",
+      width: "fit",
     },
   },
 };
 
 const Dropdown: React.FC<DropdownProps> = ({
   backgroundColor,
+  padding,
+  fontWeight,
   textColor,
   options,
   handleChange,
@@ -126,12 +143,14 @@ const Dropdown: React.FC<DropdownProps> = ({
       variant="outlined"
       fullWidth
       backgroundColor={backgroundColor}
+      padding={padding}
+      fontWeight={fontWeight}
       textColor={textColor}
     >
       <Select
         labelId="dropdown-label"
         id="dropdown"
-        value={value} // Use the provided value
+        value={value}
         onChange={handleMenuChange}
         MenuProps={StyledMenuProps}
         renderValue={() =>
@@ -141,32 +160,37 @@ const Dropdown: React.FC<DropdownProps> = ({
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
+        onClick={() => setOpen(!open)}
         IconComponent={() => (
-          <span
-            style={{ padding: "0 15px 0 0", cursor: 'url("/icons/pointer-cursor.png"), pointer' }}
-            onClick={() => setOpen(!open)}
-          >
-            <IoIosArrowDown style={{ color: "white", fontSize: "20px" }} />
+          <span style={{ cursor: 'url("/icons/pointer-cursor.png"), pointer' }}  className="rotate-90 md:rotate-0">
+            <IoIosArrowDown
+              style={{
+                color: `${textColor}`,
+                fontSize: "14px",
+                strokeWidth: 20
+              }} />
           </span>
-        )}
-        inputProps={{
-          style: {
-            borderColor: "transparent",
-            borderWidth: "1px",
-            cursor: 'url("/icons/pointer-cursor.png"), pointer',
+  )
+}
+inputProps = {{
+  style: {
+    borderColor: "transparent",
+      borderWidth: "1px",
+        cursor: 'url("/icons/pointer-cursor.png"), pointer',
           },
-        }}
-        sx={{
-          cursor: 'url("/icons/pointer-cursor.png"), pointer',
-        }}
+}}
+sx = {{
+  cursor: 'url("/icons/pointer-cursor.png"), pointer',
+    padding: "0px"
+}}
       >
-        {options?.map((option) => (
-          <StyledMenuItem key={option.value} value={option.value}>
-            {option.label}
-          </StyledMenuItem>
-        ))}
-      </Select>
-    </StyledFormControl>
+  { options?.map((option) => (
+    <StyledMenuItem key={option.value} value={option.value}>
+      {option.label}
+    </StyledMenuItem>
+  ))}
+      </Select >
+    </StyledFormControl >
   );
 };
 

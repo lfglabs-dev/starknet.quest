@@ -40,7 +40,7 @@ export default function Page() {
     try {
       setLoading(true);
       const res = await AdminService.getQuests();
-      setQuests(res);
+      setQuests(res.reverse());
       setLoading(false);
     } catch (error) {
       showNotification("Error while fetching quests", "error");
@@ -72,6 +72,10 @@ export default function Page() {
     []
   );
 
+  const handleOpenAnalytics = () => {
+    window.open("/analytics", "_blank");
+  };
+
   return (
     <div className="flex flex-col w-full pt-28 g-8">
       <div className={styles.backButton}>
@@ -84,9 +88,12 @@ export default function Page() {
             <p className={styles.questListHeading}>Your quests</p>
             <p>{quests?.length} quests</p>
           </div>
-          <div>
+          <div className={homePagestyles.questsButtonContainer}>
             <Button onClick={handleCreateQuest}>
-              <p>Create new quest</p>
+              <p>New quest</p>
+            </Button>
+            <Button onClick={handleOpenAnalytics}>
+              <p>Analytics</p>
             </Button>
           </div>
         </div>
