@@ -56,13 +56,6 @@ export default function Page() {
       >
         Quest Analytics
       </Typography>
-      <Typography
-        type={TEXT_TYPE.H1}
-        color="transparent"
-        className={styles.title}
-      >
-        Quest Analytics
-      </Typography>
       <div className={styles.card_container}>
         {loading ? (
           <FeaturedQuestSkeleton />
