@@ -48,6 +48,7 @@ export const TOKEN_ADDRESS_MAP: Record<string, Record<string, string>> = {
     LORDS: "0x0124aeb495b947201f5fac96fd1138e326ad86195b98df6dec9009158a533b49",
     STRK: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
     SITH: "0x06fedc8e5246e38e06c08c2e784e6a46eb2ae69433be04fe911f5726cb96b67e",
+    CASH: "0x0498edfaf50ca5855666a700c25dd629d577eb9afccdf3b5977aec79aee55ada",
   },
   TESTNET: {
     USDC: "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
@@ -55,6 +56,7 @@ export const TOKEN_ADDRESS_MAP: Record<string, Record<string, string>> = {
     LORDS: "0x05e367ac160e5f90c5775089b582dfc987dd148a5a2f977c49def2a6644f724b",
     STRK: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
     SITH: "0x009630D117684520d7617Ca94b222C46110EAe1f2a76752C4088c7bFaf978B7e",
+    CASH: "0x0498edfaf50ca5855666a700c25dd629d577eb9afccdf3b5977aec79aee55ada",
   },
 };
 
@@ -64,6 +66,7 @@ export const TOKEN_DECIMAL_MAP = {
   LORDS: 18,
   STRK: 18,
   SITH: 18,
+  CASH: 18,
 };
 
 export const MILLISECONDS_PER_WEEK = 1000 * 60 * 60 * 24 * 7;
