@@ -40,6 +40,10 @@ const TokenSymbol: FunctionComponent<TokenSymbolProps> = ({
         setTokenImageLink("/icons/sith.png");
         imageDimensions = { width: 20, height: 20 };
         break;
+      case TOKEN_ADDRESS_MAP[network].CASH:
+        setTokenImageLink("/icons/cash.png");
+        imageDimensions = { width: 20, height: 20 };
+        break;
       default:
         setTokenImageLink("/icons/usdc.svg");
         break;
