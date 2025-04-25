@@ -295,10 +295,10 @@ export const columns: ColumnDef<TableInfo>[] = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [sorting, setSorting] = useState<SortingState>([
-    // {
-    //   id: "apr",
-    //   desc: true,
-    // },
+    {
+      id: "apr",
+      desc: true,
+    },
   ]);
 
   const { address } = useAccount();
@@ -308,9 +308,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
   const [securityPlaceholder, setSecurityPlaceholder] =
-    useState<string>("Security"); // Added for dynamic placeholder
+    useState<string>("Security");
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop"); // Added for dynamic placeholder
+    useState<string>("Airdrop"); 
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
