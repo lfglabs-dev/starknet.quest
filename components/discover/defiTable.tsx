@@ -253,7 +253,7 @@ export const columns: ColumnDef<TableInfo>[] = [
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
+            className={`flex flex-row gap-2 items-center rounded-lg py-1 hover:bg-[#414349] ${
               isSorted ? "bg-[#414349]" : ""
             }`}
           >
