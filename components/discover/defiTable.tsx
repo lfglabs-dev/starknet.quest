@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useState, useEffect } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import {
   Table,
   TableBody,
@@ -164,19 +169,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "apr",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            APR
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              APR
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("apr")).toFixed(2);
       return <div className="font-medium">{amount} %</div>;
@@ -184,23 +204,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "volume",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            TVL
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <div>
-              <DownIcon width="10" color="#a6a5a7" />
-            </div>
-            <div>
-              <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              TVL
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
             </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("volume"));
 
@@ -217,19 +248,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "daily_rewards",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center justify-end">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            Daily Rewards
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              Daily Rewards
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("daily_rewards"));
 
@@ -261,8 +307,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
-  const [securityPlaceholder, setSecurityPlaceholder] = useState<string>("Security"); // Added for dynamic placeholder
-  const [airdropPlaceholder, setAirdropPlaceholder] = useState<string>("Airdrop"); // Added for dynamic placeholder
+  const [securityPlaceholder, setSecurityPlaceholder] =
+    useState<string>("Security");
+  const [airdropPlaceholder, setAirdropPlaceholder] =
+    useState<string>("Airdrop"); 
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -294,10 +342,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     const updatePlaceholder = () => {
       if (window.innerWidth >= 768) {
         setAirdropPlaceholder("Airdrop Status");
-        setSecurityPlaceholder("Type of Security")
+        setSecurityPlaceholder("Type of Security");
       } else {
         setAirdropPlaceholder("Airdrop");
-        setSecurityPlaceholder("Security")
+        setSecurityPlaceholder("Security");
       }
     };
 
@@ -347,16 +395,17 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       if (aprB !== aprA) {
         return aprB - aprA;
       }
-      return (parseFloat(String(b.volume)) || 0) - (parseFloat(String(a.volume)) || 0);
+      return (
+        (parseFloat(String(b.volume)) || 0) -
+        (parseFloat(String(a.volume)) || 0)
+      );
     })
     .slice(0, 3);
 
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
-        <div
-          className="flex w-100 lg:flex-row flex-col justify-between items-start"
-        >
+        <div className="flex w-100 lg:flex-row flex-col justify-between items-start">
           {address && (
             <div
               onClick={() => setShowClaimModal(true)}
@@ -450,9 +499,13 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   style={{
                     color: "#F4FAFF90",
                     fontSize: "30px",
-                  }} />
+                  }}
+                />
               </span>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} style={{ fontSize: "12px", color: "#F4FAFF90" }}>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                style={{ fontSize: "12px", color: "#F4FAFF90" }}
+              >
                 Clear All
               </Typography>
             </div>
@@ -480,10 +533,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
-                onClick={() => window.open(
-                  getRedirectLink(opportunity.app, opportunity.action),
-                  "_blank"
-                )}
+                onClick={() =>
+                  window.open(
+                    getRedirectLink(opportunity.app, opportunity.action),
+                    "_blank"
+                  )
+                }
               />
             ))}
           </div>
@@ -509,9 +564,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
