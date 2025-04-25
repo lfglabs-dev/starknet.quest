@@ -253,7 +253,7 @@ export const columns: ColumnDef<TableInfo>[] = [
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 items-center rounded-lg py-1 hover:bg-[#414349] ${
+            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${
               isSorted ? "bg-[#414349]" : ""
             }`}
           >
@@ -295,10 +295,10 @@ export const columns: ColumnDef<TableInfo>[] = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: "apr",
-      desc: true,
-    },
+    // {
+    //   id: "apr",
+    //   desc: true,
+    // },
   ]);
 
   const { address } = useAccount();
