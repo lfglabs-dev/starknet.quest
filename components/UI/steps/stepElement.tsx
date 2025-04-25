@@ -24,14 +24,7 @@ const StepElement: FunctionComponent<StepElementProps> = ({
 }) => {
   return (
     <div className={styles.cardContainer}>
-      <div className={styles.barsContainer}>
-        <CDNImg className={styles.icon} src={step.icon} loading="lazy" />
-        {index !== steps.length - 1 && (
-          <div className={styles.verticalBarContainer}>
-            <VerticalBar />
-          </div>
-        )}
-      </div>
+    
       <OnScrollIntoView animation="slideInFromTop">
         <AccentBox>
           <div key={"step_card_" + index} className={styles.card}>

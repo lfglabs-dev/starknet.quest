@@ -26,9 +26,7 @@ const HowToParticipate: FunctionComponent = () => {
               title: "Reward Quests",
               subtitle: "02",
               description:
-                "Discover the thrill of reward quests on Starknet. Engage in challenges and accumulate rare tokens and NFTs as you elevate your collection.",
-              icon: "/icons/crown.svg",
-              banner: "/visuals/reward-quests.svg",
+                "Turn actions into assets with Reward Quests. Complete challenges to claim rare NFTs and tokens in the Starknet ecosystem",
             }
           ]}
         />
