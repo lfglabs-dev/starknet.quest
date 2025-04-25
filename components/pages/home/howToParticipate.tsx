@@ -6,10 +6,6 @@ import styles from "@styles/components/pages/home/howToParticipate.module.css";
 const HowToParticipate: FunctionComponent = () => {
   return (
     <section className={styles.section}>
-      <CategoryTitle
-        title="Amplify your rewards"
-        subtitle="Engage in the Starknet Experience: Unlock New Possibilities"
-      />
       <div className={styles.stepsContainer}>
         <Steps
           subTitleBefore={true}
