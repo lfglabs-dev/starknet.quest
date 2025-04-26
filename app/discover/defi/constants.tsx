@@ -18,65 +18,109 @@ interface DefiConcept {
   icon: JSX.Element;
 }
 
+interface DiscoverCard {
+  title: string;
+  image: string;
+  link: string;
+}
+
 export const DEFI_CONCEPTS: DefiConcept[] = [
   {
     title: "Provide liquidity",
     description: "Add token pairs to pools and earn fees from trades",
-    icon: <ProvideLiquidityIcon/>,
+    icon: <ProvideLiquidityIcon />,
   },
   {
     title: "Stake",
     description: "Lock tokens to earn passive rewards and voting rights",
-    icon: <StakeIcon/>,
+    icon: <StakeIcon />,
   },
   {
     title: "Yield Farming",
     description: "Earn additional tokens by participating in DeFi protocols",
-    icon: <YieldFarmingIcon/>,
+    icon: <YieldFarmingIcon />,
   },
   {
     title: "Supply",
     description: "Deposit assets into a protocol to earn yield",
-    icon: <SupplyIcon/>,
+    icon: <SupplyIcon />,
   },
   {
     title: "Lend & Borrow",
     description: "Supply assets to earn interest or borrow against collateral",
-    icon: <LendBorrow/>,
+    icon: <LendBorrow />,
   },
   {
     title: "Collateral",
     description: "Assets deposited as security for borrowing",
-    icon: <CollateralIcon/>,
+    icon: <CollateralIcon />,
   },
   {
     title: "Impermanent Loss",
     description: "Potential loss when providing liquidity compared to holding",
-    icon: <ImpermanentLossIcon/>,
+    icon: <ImpermanentLossIcon />,
   },
   {
     title: "TVL",
     description: "Total value of assets deposited in a protocol",
-    icon: <TvlIcon/>,
+    icon: <TvlIcon />,
   },
   {
     title: "APR",
     description: "Simple interest rate earned over one year",
-    icon: <AprIcon/>,
+    icon: <AprIcon />,
   },
   {
     title: "APY",
     description: "Compound interest rate earned over one year",
-    icon: <ApyIcon/>,
+    icon: <ApyIcon />,
   },
   {
     title: "Swap",
     description: "Exchange one token for another at market price",
-    icon: <SwapIcon/>,
+    icon: <SwapIcon />,
   },
   {
     title: "Bridge",
     description: "Transfer assets between different blockchains",
-    icon: <BridgeIcon/>,
+    icon: <BridgeIcon />,
   },
 ];
+
+export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
+  "Yield Strategies": [
+    /*
+     * Public have folders for each ecosystem project, put your icon images there and pass it.
+     * Remove this comment and "discoverDefiDummyImg" file from public when done.
+     */
+    {
+      title: "Title",
+      image: "/discoverDefiDummyImg.svg",
+      link: "https://google.com",
+    }
+  ],
+  "Lending & Borrowing": [
+    
+  ],
+  "Liquid Staking": [
+    
+  ],
+  "Perpetuals & Derivatives": [
+    
+  ],
+  "AMM & DEX": [
+    
+  ],
+  "Wallets, Bridges & On-Ramps": [
+    
+  ],
+  "Insurance & Risk Management": [
+   
+  ],
+  "Real World Assets (RWA)": [
+   
+  ],
+  "Payments": [
+    
+  ],
+};
