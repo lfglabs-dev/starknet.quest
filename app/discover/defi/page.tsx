@@ -5,7 +5,7 @@ import DataTable from "@components/discover/defiTable";
 import DeFiConceptCard from "@components/UI/DefiConceptCard";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
-import { DEFI_CONCEPTS } from "./constants";
+import { DEFI_CONCEPTS, DISCOVER_DEFI } from "./constants";
 import Image from "next/image";
 import {
   getAltProtocolStats,
@@ -14,10 +14,16 @@ import {
   getPairingStats,
 } from "@services/apiService";
 import { formatStatsData } from "@utils/defi";
+import DefiDiscoverCard from "@components/UI/DefiDiscoverCard";
+
+const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
+
 
 export default function Page() {
   const [data, setData] = React.useState<TableInfo[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
+
+  const [activeTab, setActiveTab] = React.useState(DISCOVER_DEFI_TABS[0]);
 
   const fetchPageData = useCallback(async () => {
     try {
@@ -51,7 +57,7 @@ export default function Page() {
         <DataTable loading={loading} data={data} />
       </div>
 
-      <div className="w-full lg:w-3/4 px-5 lg:px-0 relative">
+      <div className="w-full lg:w-3/4 px-5 lg:px-0 relative mb-32">
         <div className="absolute -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
           <Image
             src="/icons/patternCircle.svg"
@@ -79,6 +85,37 @@ export default function Page() {
               />
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="w-full lg:w-3/4 px-5 lg:px-0 relative mb-20 sm:mb-0">
+
+        <div className="max-w-sm md:max-w-none mx-auto">
+          <Typography type={TEXT_TYPE.H2} className="mb-8 text-center lg:text-left text-white font-bold text-2xl">
+            Discover Starknet DeFi Ecosystem
+          </Typography>
+      <div className="flex flex-wrap gap-3 mb-10 items-center justify-center md:justify-start md:items-start">
+        {DISCOVER_DEFI_TABS.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`text-sm px-4 py-2 rounded-xl transition font-semibold capitalize ${
+              activeTab === tab
+                ? 'bg-white text-background'
+                : 'text-[#E1DCEA]'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
+      {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
+          <DefiDiscoverCard key={idx} title={card.title} image={card.image} link={card.link} />
+        ))}
+      </div>
+          
         </div>
       </div>
     </div>
