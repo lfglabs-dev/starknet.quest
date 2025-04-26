@@ -97,30 +97,35 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
       title: "Title",
       image: "/discoverDefiDummyImg.svg",
       link: "https://google.com",
-    }
+    },
   ],
   "Lending & Borrowing": [
-    
+    {
+      title: "Nostra",
+      link: "https://nostra.finance/",
+      image: "/nostra/nostraIcon.svg",
+    },
+    {
+      title: "Opus",
+      link: "https://app.opus.money/",
+      image: "/opus/opusIcon.svg",
+    },
+    {
+      title: "Vesu",
+      link: "https://vesu.xyz/",
+      image: "/vesu/vesuIcon.svg",
+    },
+    {
+      title: "zkLend",
+      link: "https://zklend.com/",
+      image: "/zklend/zklendIcon.svg",
+    },
   ],
-  "Liquid Staking": [
-    
-  ],
-  "Perpetuals & Derivatives": [
-    
-  ],
-  "AMM & DEX": [
-    
-  ],
-  "Wallets, Bridges & On-Ramps": [
-    
-  ],
-  "Insurance & Risk Management": [
-   
-  ],
-  "Real World Assets (RWA)": [
-   
-  ],
-  "Payments": [
-    
-  ],
+  "Liquid Staking": [],
+  "Perpetuals & Derivatives": [],
+  "AMM & DEX": [],
+  "Wallets, Bridges & On-Ramps": [],
+  "Insurance & Risk Management": [],
+  "Real World Assets (RWA)": [],
+  Payments: [],
 };
