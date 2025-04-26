@@ -23,8 +23,12 @@ export function EcosystemCard({
         <LuExternalLink />
       </div>
 
-      <div className="relative overflow-hidden rounded-full aspect-square size-12 ">
-        <Image src={image} alt="Starknet DeFi Ecosystem" object-fit="cover" />
+      <div className="relative overflow-hidden rounded-full aspect-square w-12 h-12">
+        <Image
+          src={image}
+          alt={`${title} - Starknet DeFi Ecosystem`}
+          className="object-cover"
+        />
       </div>
 
       <p className="font-bold text-secondary text-xl">{title}</p>
