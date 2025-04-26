@@ -539,12 +539,6 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   getRedirectLink(opportunity.app, opportunity.action, opportunity.title),
                   "_blank"
                 )}
-                onClick={() =>
-                  window.open(
-                    getRedirectLink(opportunity.app, opportunity.action),
-                    "_blank"
-                  )
-                }
               />
             ))}
           </div>
