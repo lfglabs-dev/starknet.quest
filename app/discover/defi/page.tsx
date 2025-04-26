@@ -94,11 +94,13 @@ export default function Page() {
           <Typography type={TEXT_TYPE.H2} className="mb-8 text-center lg:text-left text-white font-bold text-2xl">
             Discover Starknet DeFi Ecosystem
           </Typography>
-      <div className="flex flex-wrap gap-3 mb-10 items-center justify-center md:justify-start md:items-start">
+      <div role="tablist" className="flex flex-wrap gap-3 mb-10 items-center justify-center md:justify-start md:items-start">
         {DISCOVER_DEFI_TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
+            role="tab"
+            aria-selected={activeTab === tab}
             className={`text-sm px-4 py-2 rounded-xl transition font-semibold capitalize ${
               activeTab === tab
                 ? 'bg-white text-background'
