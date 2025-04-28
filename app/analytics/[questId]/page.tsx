@@ -39,6 +39,8 @@ import {
   GraphSkeleton,
   TasksSkeleton,
 } from "@components/skeletons/allAnalysticQuestSkeleton";
+import { ExpiredIcon } from "@components/UI/iconsComponents/icons/expiredIcon";
+import { OngoingIcon } from "@components/UI/iconsComponents/icons/ongoingIcon";
 
 type BoostQuestPageProps = {
   params: {
@@ -223,7 +225,15 @@ export default function Page({ params }: BoostQuestPageProps) {
                   {questData?.name}
                 </Typography>
                 <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
-                  {questData?.expired ? "Finished" : "Ongoing"}
+                  {questData?.expired ? (
+                    <div className="flex gap-1 justify-center items-center">
+                      Expired <ExpiredIcon />
+                    </div>
+                  ) : (
+                    <div className="flex gap-1 justify-center items-center">
+                      Ongoing <OngoingIcon />
+                    </div>
+                  )}
                 </Typography>
               </>
             ) : null}

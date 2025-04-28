@@ -129,11 +129,13 @@ export const columns: ColumnDef<TableInfo>[] = [
         <div className="flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               window.open(
-                getRedirectLink(row.getValue("app"), row.getValue("action")),
+                getRedirectLink(row.getValue("app"), row.getValue("action"), row.getValue("title")),
                 "_blank"
               )
+            }
             }
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
@@ -329,8 +331,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       desc: true,
     },
   ]);
-
-  const { address } = useAccount();
+  
+  const { address } = useAccount();  
 
   const [tokenFilter, setTokenFilter] = useState<string>();
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
@@ -562,12 +564,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
-                onClick={() =>
-                  window.open(
-                    getRedirectLink(opportunity.app, opportunity.action),
-                    "_blank"
-                  )
-                }
+                onClick={() => window.open(
+                  getRedirectLink(opportunity.app, opportunity.action, opportunity.title),
+                  "_blank"
+                )}
               />
             ))}
           </div>
@@ -612,7 +612,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                       window.open(
                         getRedirectLink(
                           row.getValue("app"),
-                          row.getValue("action")
+                          row.getValue("action"),
+                          row.getValue("title")
                         ),
                         "_blank"
                       );

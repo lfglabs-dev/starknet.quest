@@ -51,14 +51,110 @@ const linkMap: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export const getRedirectLink = (appName: string, actionType: string) => {
-  if (appName.toLocaleLowerCase().includes("jediswap")) {
-    if (actionType === "Provide Liquidity")
+
+export const getRedirectLink = (appName: string, actionType: string, poolInfo?: string) => {
+  const app = appName.toLowerCase();
+
+  if (app.includes("jediswap")) {
+    if (actionType === "Provide Liquidity") {
+      if (poolInfo) {
+        const { first, second } = parseTokenPair(poolInfo);
+        if (first && second) {
+          return `https://app.jediswap.xyz/#/add/`;
+        }
+      }
       return "https://app.jediswap.xyz/#/pools";
+    }
   }
-  if (!linkMap[appName.toLowerCase()]) return "";
-  return linkMap[appName.toLowerCase()][actionType] || "";
+
+  const baseUrl = linkMap[app]?.[actionType];
+  if (!baseUrl) return "";
+
+  if (!poolInfo) return baseUrl;
+
+  const { first, second } = parseTokenPair(poolInfo);
+
+  switch (app) {
+    case "myswap":
+      if (first && second) {
+        return `${baseUrl.replace(/#\/positions$/, "#/create-position")}`;
+      }
+      break;
+
+    case "sithswap":
+      if (first && second) {
+        return baseUrl; 
+      }
+      break;
+
+    case "starkdefi":
+      if (first && second) {
+        return `${baseUrl}/add/`;
+      }
+      break;
+
+    case "nostra":
+      if (first && second) {
+        return `${baseUrl}/${first.toUpperCase()}-${second.toUpperCase()}/deposit`;
+      }
+      break;
+
+    case "haiko":
+    case "haiko_solvers":
+      if (first && second) {
+        return `https://app.haiko.xyz/positions/new`;
+      }
+      break;
+
+    case "ekubo":
+      if (first && second) {
+        return `${baseUrl}/new?baseCurrency=${first.toUpperCase()}&quoteCurrency=${second.toUpperCase()}`;
+      }
+      break;
+
+    case "10kswap":
+      if (first && second) {
+        return `${baseUrl}`;
+      }
+      break;
+
+    case "zklend":
+      if (first) {
+        return `https://app.zklend.com/asset/${first}`;
+      }
+      break;
+
+    case "hashstack":
+      if (first) {
+        return baseUrl;
+      }
+      break;
+
+    case "nimbora":
+      if ((actionType === "Strategies" || actionType === "Lend") && first) {
+        return baseUrl;
+      }
+      break;
+
+    case "zkx":
+    case "carmine":
+      if (first && second) {
+        return `${baseUrl}?pair=${first}-${second}`;
+      } else if (first) {
+        return `${baseUrl}?token=${first}`;
+      }
+      break;
+
+    case "opus":
+      if (first) {
+        return `${baseUrl}`;
+      }
+      break;
+  }
+
+  return baseUrl;
 };
+
 
 export const formatStatsData = (
   derivatesStats: derivateStats | null,
