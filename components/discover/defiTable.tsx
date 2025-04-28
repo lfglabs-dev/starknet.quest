@@ -50,6 +50,7 @@ import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
 import { IoIosClose } from "react-icons/io";
+import Tooltip from '@mui/material/Tooltip';
 
 type DataTableProps = {
   data: TableInfo[];
@@ -66,11 +67,42 @@ export const columns: ColumnDef<TableInfo>[] = [
         </Typography>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        <AppIcon app={row.getValue("app")} />
+  cell: ({ row }) =>{ 
+    const appIdentifier = row.getValue("app") as string;
+    const appDisplayName = getProtocolName(appIdentifier.toUpperCase()) || appIdentifier;
+    return (
+    <Tooltip 
+      title={appDisplayName} 
+      placement="right-start"
+      slotProps={{
+        // Target the tooltip element itself (the box)
+        tooltip: {
+          sx: {
+            backgroundColor: 'rgba(40, 40, 40, 0.95)', // Dark background (adjust color/opacity as needed)
+            color: '#ffffff',                       // Ensure text is white for contrast
+            maxWidth: '250px',                        // Increase max-width (adjust as needed)
+            padding: '12px 24px',                      // Optional: Adjust padding if desired
+            fontSize: '0.8rem',
+            display: "flex",
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: 0,                    // Optional: Adjust font size if needed
+            // You can add any valid CSS properties here via the sx prop
+          },
+        },
+        // Target the arrow element
+        arrow: {
+          sx: {
+            color: 'rgba(40, 40, 40, 0.95)', // Match arrow color to the tooltip background
+          },
+        },
+      }}
+    >
+      <div className="capitalize text-left inline-block">
+        <AppIcon app={appIdentifier} />
       </div>
-    ),
+    </Tooltip>
+  )},
     enableSorting: false, // disable sorting for this column
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
