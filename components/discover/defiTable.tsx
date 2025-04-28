@@ -78,22 +78,19 @@ export const columns: ColumnDef<TableInfo>[] = [
         // Target the tooltip element itself (the box)
         tooltip: {
           sx: {
-            backgroundColor: 'rgba(40, 40, 40, 0.95)', // Dark background (adjust color/opacity as needed)
-            color: '#ffffff',                       // Ensure text is white for contrast
-            maxWidth: '250px',                        // Increase max-width (adjust as needed)
-            padding: '12px 24px',                      // Optional: Adjust padding if desired
+            backgroundColor: 'rgba(40, 40, 40, 0.95)', 
+            color: '#ffffff',                       
+            maxWidth: '250px',                        
+            padding: '12px 24px',              
             fontSize: '0.8rem',
             display: "flex",
             justifyContent: 'center',
-            alignItems: 'center',
-            marginLeft: 0,                    // Optional: Adjust font size if needed
-            // You can add any valid CSS properties here via the sx prop
+            alignItems: 'center',                    
           },
         },
-        // Target the arrow element
         arrow: {
           sx: {
-            color: 'rgba(40, 40, 40, 0.95)', // Match arrow color to the tooltip background
+            color: 'rgba(40, 40, 40, 0.95)',
           },
         },
       }}
