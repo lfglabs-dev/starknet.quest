@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import Steps from "@components/UI/steps/steps";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
 import styles from "@styles/components/pages/home/howToParticipate.module.css";
+import { isNull } from "@tsparticles/engine";
 
 const HowToParticipate: FunctionComponent = () => {
   return (
@@ -23,6 +24,8 @@ const HowToParticipate: FunctionComponent = () => {
               subtitle: "02",
               description:
                 "Turn actions into assets with Reward Quests. Complete challenges to claim rare NFTs and tokens in the Starknet ecosystem",
+                icon: "",
+                banner: "",
             }
           ]}
         />
