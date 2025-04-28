@@ -93,11 +93,6 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
      * Public have folders for each ecosystem project, put your icon images there and pass it.
      * Remove this comment and "discoverDefiDummyImg" file from public when done.
      */
-    // {
-    //   title: "Title",
-    //   image: "/discoverDefiDummyImg.svg",
-    //   link: "https://google.com",
-    // },
     {
       title: "Bountive",
       image: "/bountive/favicon.ico",
@@ -117,7 +112,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
       title: "STRKFarm",
       image: "/strkfarm/favicon-96x96.png",
       link: "https://app.strkfarm.com/",
-    }
+    },
   ],
   "Lending & Borrowing": [
     {
