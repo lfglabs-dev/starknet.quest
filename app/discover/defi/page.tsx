@@ -18,7 +18,6 @@ import DefiDiscoverCard from "@components/UI/DefiDiscoverCard";
 
 const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
 
-
 export default function Page() {
   const [data, setData] = React.useState<TableInfo[]>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -57,7 +56,7 @@ export default function Page() {
         <DataTable loading={loading} data={data} />
       </div>
 
-      <div className="relative w-full px-5 mb-32 lg:w-3/4 lg:px-0">
+      <div className="relative w-full px-5 mb-32 lg:w-3/4 lg:px-0 mx-auto">
         <div className="absolute -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
           <Image
             src="/icons/patternCircle.svg"
@@ -91,36 +90,45 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="relative w-full px-5 mb-20 lg:w-3/4 lg:px-0 sm:mb-0">
-
+      <div className="relative w-full px-5 mb-20 lg:w-3/4 lg:px-0 sm:mb-0 mx-auto">
         <div className="max-w-sm mx-auto md:max-w-none">
-          <Typography type={TEXT_TYPE.H2} className="mb-8 text-2xl font-bold text-center text-white lg:text-left">
+          <Typography
+            type={TEXT_TYPE.H2}
+            className="mb-8 text-2xl font-bold text-center text-white lg:text-left"
+          >
             Discover Starknet DeFi Ecosystem
           </Typography>
-      <div role="tablist" className="flex flex-wrap items-center justify-center gap-3 mb-10 md:justify-start md:items-start">
-        {DISCOVER_DEFI_TABS.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            role="tab"
-            aria-selected={activeTab === tab}
-            className={`text-sm px-4 py-2 rounded-xl transition font-semibold capitalize ${
-              activeTab === tab
-                ? 'bg-white text-background'
-                : 'text-[#E1DCEA]'
-            }`}
+          <div
+            role="tablist"
+            className="flex flex-wrap items-center justify-center gap-3 mb-10 md:justify-start md:items-start"
           >
-            {tab}
-          </button>
-        ))}
-      </div>
+            {DISCOVER_DEFI_TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                role="tab"
+                aria-selected={activeTab === tab}
+                className={`text-sm px-4 py-2 rounded-xl transition font-semibold capitalize ${
+                  activeTab === tab
+                    ? "bg-white text-background"
+                    : "text-[#E1DCEA]"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
-      {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
-          <DefiDiscoverCard key={idx} title={card.title} image={card.image} link={card.link} />
-        ))}
-      </div>
-          
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
+            {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
+              <DefiDiscoverCard
+                key={idx}
+                title={card.title}
+                image={card.image}
+                link={card.link}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
