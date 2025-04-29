@@ -550,8 +550,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
-          <div className="text-sm text-muted-foreground flex gap-8">
+        <div className="flex items-center justify-center space-x-2 pt-8">
+          <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
               onClick={() =>
