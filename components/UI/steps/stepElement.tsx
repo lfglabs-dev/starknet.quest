@@ -26,7 +26,6 @@ const StepElement: FunctionComponent<StepElementProps> = ({
     <div className={styles.cardContainer}>
     
       <OnScrollIntoView animation="slideInFromTop">
-        <AccentBox>
           <div key={"step_card_" + index} className={styles.card}>
             <div>
               <div className={(subTitleBefore && styles.subTitleBefore) || ""}>
@@ -46,7 +45,6 @@ const StepElement: FunctionComponent<StepElementProps> = ({
               <CDNImg className={styles.banner} src={step.banner} loading="lazy"/>
             </div>
           </div>
-        </AccentBox>
       </OnScrollIntoView>
     </div>
   );
