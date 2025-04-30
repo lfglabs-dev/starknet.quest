@@ -552,7 +552,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-[#1F1F25]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -605,7 +605,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
+        <div className="flex items-center justify-center space-x-2 pt-4 bg-[#1F1F25]">
           <div className="text-sm text-muted-foreground flex gap-8">
             <div
               className="flex modified-cursor-pointer"
