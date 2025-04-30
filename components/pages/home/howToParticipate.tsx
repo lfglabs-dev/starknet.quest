@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Steps from "@components/UI/steps/steps";
-import CategoryTitle from "@components/UI/titles/categoryTitle";
 import styles from "@styles/components/pages/home/howToParticipate.module.css";
-import { isNull } from "@tsparticles/engine";
 
 const HowToParticipate: FunctionComponent = () => {
   return (
