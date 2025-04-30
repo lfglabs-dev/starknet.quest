@@ -50,6 +50,8 @@ import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
 import { IoIosClose } from "react-icons/io";
+import Tooltip from "@mui/material/Tooltip";
+import { capitalize } from "@utils/stringService";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -66,11 +68,40 @@ export const columns: ColumnDef<TableInfo>[] = [
         </Typography>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        <AppIcon app={row.getValue("app")} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const appIdentifier = row.getValue("app") as string;
+      const appDisplayName =
+        getProtocolName(capitalize(appIdentifier)) || appIdentifier;
+      return (
+        <Tooltip
+          title={appDisplayName}
+          placement="right-start"
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "rgba(40, 40, 40, 0.95)",
+                color: "#ffffff",
+                maxWidth: "250px",
+                padding: "12px 24px",
+                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            },
+            arrow: {
+              sx: {
+                color: "rgba(40, 40, 40, 0.95)",
+              },
+            },
+          }}
+        >
+          <div className="capitalize text-left inline-block">
+            <AppIcon app={appIdentifier} />
+          </div>
+        </Tooltip>
+      );
+    },
     enableSorting: false, // disable sorting for this column
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
@@ -103,11 +134,14 @@ export const columns: ColumnDef<TableInfo>[] = [
             onClick={(e) => {
               e.stopPropagation();
               window.open(
-                getRedirectLink(row.getValue("app"), row.getValue("action"), row.getValue("title")),
+                getRedirectLink(
+                  row.getValue("app"),
+                  row.getValue("action"),
+                  row.getValue("title")
+                ),
                 "_blank"
-              )
-            }
-            }
+              );
+            }}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
@@ -302,8 +336,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       desc: true,
     },
   ]);
-  
-  const { address } = useAccount();  
+
+  const { address } = useAccount();
 
   const [tokenFilter, setTokenFilter] = useState<string>();
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
@@ -312,7 +346,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityPlaceholder, setSecurityPlaceholder] =
     useState<string>("Security");
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop"); 
+    useState<string>("Airdrop");
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -535,10 +569,16 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
-                onClick={() => window.open(
-                  getRedirectLink(opportunity.app, opportunity.action, opportunity.title),
-                  "_blank"
-                )}
+                onClick={() =>
+                  window.open(
+                    getRedirectLink(
+                      opportunity.app,
+                      opportunity.action,
+                      opportunity.title
+                    ),
+                    "_blank"
+                  )
+                }
               />
             ))}
           </div>
