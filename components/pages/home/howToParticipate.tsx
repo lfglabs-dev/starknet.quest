@@ -16,17 +16,17 @@ const HowToParticipate: FunctionComponent = () => {
               subtitle: "01",
               description:
                 "Unlock the full potential of your Starknet journey. Complete Boost Quests to earn exclusive tokens and NFTs that enrich your digital experience.",
-              icon: "/icons/starknet.svg",
-              banner: "/visuals/boost-quests.svg",
+              icon: "",
+              banner: "",
             },
             {
               title: "Reward Quests",
               subtitle: "02",
               description:
                 "Turn actions into assets with Reward Quests. Complete challenges to claim rare NFTs and tokens in the Starknet ecosystem",
-                icon: "",
-                banner: "",
-            }
+              icon: "",
+              banner: "",
+            },
           ]}
         />
       </div>
