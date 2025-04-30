@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 import Steps from "@components/UI/steps/steps";
-import CategoryTitle from "@components/UI/titles/categoryTitle";
 import styles from "@styles/components/pages/home/howToParticipate.module.css";
 
 const HowToParticipate: FunctionComponent = () => {
@@ -15,17 +14,17 @@ const HowToParticipate: FunctionComponent = () => {
               subtitle: "01",
               description:
                 "Unlock the full potential of your Starknet journey. Complete Boost Quests to earn exclusive tokens and NFTs that enrich your digital experience.",
-              icon: "/icons/starknet.svg",
-              banner: "/visuals/boost-quests.svg",
+              icon: "",
+              banner: "",
             },
             {
               title: "Reward Quests",
               subtitle: "02",
               description:
-                "Discover the thrill of reward quests on Starknet. Engage in challenges and accumulate rare tokens and NFTs as you elevate your collection.",
-              icon: "/icons/crown.svg",
-              banner: "/visuals/reward-quests.svg",
-            }
+                "Turn actions into assets with Reward Quests. Complete challenges to claim rare NFTs and tokens in the Starknet ecosystem",
+              icon: "",
+              banner: "",
+            },
           ]}
         />
       </div>
