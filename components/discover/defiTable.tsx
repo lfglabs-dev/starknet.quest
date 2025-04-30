@@ -344,9 +344,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
   const [securityPlaceholder, setSecurityPlaceholder] =
-    useState<string>("Security");
+    useState<string>("Security"); // Added for dynamic placeholder
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop");
+    useState<string>("Airdrop"); // Added for dynamic placeholder
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -571,11 +571,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 )}
                 onClick={() =>
                   window.open(
-                    getRedirectLink(
-                      opportunity.app,
-                      opportunity.action,
-                      opportunity.title
-                    ),
+                    getRedirectLink(opportunity.app, opportunity.action),
                     "_blank"
                   )
                 }
@@ -646,8 +642,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
-          <div className="text-sm text-muted-foreground flex gap-8">
+        <div className="flex items-center justify-center space-x-2 py-5">
+          <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
               onClick={() =>
