@@ -50,6 +50,8 @@ import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
 import { IoIosClose } from "react-icons/io";
+import Tooltip from "@mui/material/Tooltip";
+import { capitalize } from "@utils/stringService";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -66,11 +68,40 @@ export const columns: ColumnDef<TableInfo>[] = [
         </Typography>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        <AppIcon app={row.getValue("app")} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const appIdentifier = row.getValue("app") as string;
+      const appDisplayName =
+        getProtocolName(capitalize(appIdentifier)) || appIdentifier;
+      return (
+        <Tooltip
+          title={appDisplayName}
+          placement="right-start"
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "rgba(40, 40, 40, 0.95)",
+                color: "#ffffff",
+                maxWidth: "250px",
+                padding: "12px 24px",
+                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            },
+            arrow: {
+              sx: {
+                color: "rgba(40, 40, 40, 0.95)",
+              },
+            },
+          }}
+        >
+          <div className="capitalize text-left inline-block">
+            <AppIcon app={appIdentifier} />
+          </div>
+        </Tooltip>
+      );
+    },
     enableSorting: false, // disable sorting for this column
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
@@ -100,12 +131,17 @@ export const columns: ColumnDef<TableInfo>[] = [
         <div className="flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               window.open(
-                getRedirectLink(row.getValue("app"), row.getValue("action")),
+                getRedirectLink(
+                  row.getValue("app"),
+                  row.getValue("action"),
+                  row.getValue("title")
+                ),
                 "_blank"
-              )
-            }
+              );
+            }}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
@@ -169,19 +205,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "apr",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            APR
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              APR
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("apr")).toFixed(2);
       return <div className="font-medium">{amount} %</div>;
@@ -189,23 +240,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "volume",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            TVL
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <div>
-              <DownIcon width="10" color="#a6a5a7" />
-            </div>
-            <div>
-              <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              TVL
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
             </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("volume"));
 
@@ -222,19 +284,34 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "daily_rewards",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center justify-end">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            Daily Rewards
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${
+              isSorted ? "bg-[#414349]" : ""
+            }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              Daily Rewards
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("daily_rewards"));
 
@@ -542,7 +619,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                       window.open(
                         getRedirectLink(
                           row.getValue("app"),
-                          row.getValue("action")
+                          row.getValue("action"),
+                          row.getValue("title")
                         ),
                         "_blank"
                       );
