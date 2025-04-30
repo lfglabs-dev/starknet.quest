@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useState, useEffect } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import {
   Table,
   TableBody,
@@ -261,8 +266,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
-  const [securityPlaceholder, setSecurityPlaceholder] = useState<string>("Security"); // Added for dynamic placeholder
-  const [airdropPlaceholder, setAirdropPlaceholder] = useState<string>("Airdrop"); // Added for dynamic placeholder
+  const [securityPlaceholder, setSecurityPlaceholder] =
+    useState<string>("Security"); // Added for dynamic placeholder
+  const [airdropPlaceholder, setAirdropPlaceholder] =
+    useState<string>("Airdrop"); // Added for dynamic placeholder
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -294,10 +301,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     const updatePlaceholder = () => {
       if (window.innerWidth >= 768) {
         setAirdropPlaceholder("Airdrop Status");
-        setSecurityPlaceholder("Type of Security")
+        setSecurityPlaceholder("Type of Security");
       } else {
         setAirdropPlaceholder("Airdrop");
-        setSecurityPlaceholder("Security")
+        setSecurityPlaceholder("Security");
       }
     };
 
@@ -347,16 +354,17 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       if (aprB !== aprA) {
         return aprB - aprA;
       }
-      return (parseFloat(String(b.volume)) || 0) - (parseFloat(String(a.volume)) || 0);
+      return (
+        (parseFloat(String(b.volume)) || 0) -
+        (parseFloat(String(a.volume)) || 0)
+      );
     })
     .slice(0, 3);
 
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
-        <div
-          className="flex w-100 lg:flex-row flex-col justify-between items-start"
-        >
+        <div className="flex w-100 lg:flex-row flex-col justify-between items-start">
           {address && (
             <div
               onClick={() => setShowClaimModal(true)}
@@ -450,9 +458,13 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   style={{
                     color: "#F4FAFF90",
                     fontSize: "30px",
-                  }} />
+                  }}
+                />
               </span>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} style={{ fontSize: "12px", color: "#F4FAFF90" }}>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                style={{ fontSize: "12px", color: "#F4FAFF90" }}
+              >
                 Clear All
               </Typography>
             </div>
@@ -480,10 +492,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
-                onClick={() => window.open(
-                  getRedirectLink(opportunity.app, opportunity.action),
-                  "_blank"
-                )}
+                onClick={() =>
+                  window.open(
+                    getRedirectLink(opportunity.app, opportunity.action),
+                    "_blank"
+                  )
+                }
               />
             ))}
           </div>
@@ -509,9 +523,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
@@ -550,7 +564,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-8">
+        <div className="flex items-center justify-center space-x-2 py-5">
           <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
