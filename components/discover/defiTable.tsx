@@ -606,9 +606,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </Table>
         </div>
         <div className=" rounded-b-xl border  flex items-center justify-center space-x-2 pt-8 bg-[#1F1F25] ">
-          <div className="text-sm text-muted-foreground flex gap-8 mb-5">
+          <div className="text-sm text-muted-foreground flex gap-8 mb-6">
             <div
-              className="flex modified-cursor-pointer mt-0"
+              className="flex modified-cursor-pointer"
               onClick={() =>
                 table.getCanPreviousPage() ? table.previousPage() : null
               }
