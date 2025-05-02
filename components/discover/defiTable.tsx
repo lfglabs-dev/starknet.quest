@@ -550,9 +550,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
+        <div className=" rounded-t-xl border border-[#f4faff4d] xl:w-full">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-[#1F1F25] rounded-xl border-[1px]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -605,8 +605,8 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
-          <div className="text-sm text-muted-foreground flex gap-8">
+        <div className=" rounded-b-xl border  flex items-center justify-center space-x-2 pt-8 bg-[#1F1F25] ">
+          <div className="text-sm text-muted-foreground flex gap-8 mb-6">
             <div
               className="flex modified-cursor-pointer"
               onClick={() =>
