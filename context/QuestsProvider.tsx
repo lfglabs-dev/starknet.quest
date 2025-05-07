@@ -123,7 +123,7 @@ export const QuestsContextProvider = ({
 
   useMemo(() => {
     getBoostedQuests().then((data: BoostedQuests | QueryError | undefined) => {
-      if ((data as QueryError).error) return;
+      if (!data || (data as QueryError).error) return; // Check if `data` is null or undefined
       setBoostedQuests(data as BoostedQuests);
     });
   }, []);
