@@ -642,7 +642,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-center space-x-2 py-6 rounded-b-xl border border-[#f4faff4d] border-t-0 bg-[#1F1F25]">
+        <div className="flex items-center justify-center space-x-2 py-5 rounded-b-xl border border-[#f4faff4d] border-t-0 bg-[#1F1F25]">
           <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
