@@ -30,6 +30,12 @@
   box-shadow: 0 0 30px 0 rgba(92, 227, 254, 0.16);
 }
 
+.cardContainer:nth-child(even) .card {
+  box-shadow: 0 0 30px 0 rgba(50, 205, 50, 0.16); 
+}
+
+
+
 .card::after {
   content: "";
   position: absolute;
