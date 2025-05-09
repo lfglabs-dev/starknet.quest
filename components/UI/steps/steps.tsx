@@ -7,10 +7,13 @@ type StepsProps = {
   steps: Step[];
 };
 
+
+
 const Steps: FunctionComponent<StepsProps> = ({
   subTitleBefore = false,
   steps,
 }) => {
+  console.log({steps})
   return (
     <div className={styles.container}>
       <div className={styles.cards}>

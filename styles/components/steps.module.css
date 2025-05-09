@@ -1,12 +1,18 @@
 .container {
   display: flex;
   justify-content: center;
+  
 }
 
 .cards {
-  max-width: min(1000px, calc(100% - 32px));
+  max-width: min(1200px, calc(100% - 32px));
   text-align: left;
   margin-top: 42px;
+   display: flex;
+  flex-direction: row;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .card {
@@ -18,6 +24,8 @@
   position: relative;
   margin-bottom: 40px;
   height: auto;
+
+  
 
   box-shadow: 0 0 30px 0 rgba(92, 227, 254, 0.16);
 }
@@ -34,6 +42,7 @@
   z-index: -1;
 }
 
+/* Blue gradient for first card */
 .card::before {
   content: "";
   position: absolute;
@@ -45,7 +54,7 @@
     90deg,
     #437aba 0%,
     #59c2e8 45%,
-    #00ff77 60%,
+    #00fbff 60%,
     #59c2e8 70%,
     #437aba50 100%
   );
@@ -53,14 +62,15 @@
   z-index: -1;
 }
 
+/* Green gradient for second card */
 .cardContainer:nth-child(even) .card::before {
   background: linear-gradient(
     90deg,
-    #437aba 0%,
-    #1e74d6 45%,
-    #00fbff 60%,
-    #1e74d6 70%,
-    #437aba50 100%
+    #228B22 0%,
+    #32CD32 45%,
+    #00ff77 60%,
+    #32CD32 70%,
+    #228B2250 100%
   );
 }
 
@@ -107,6 +117,7 @@
   margin-bottom: 8px;
 }
 
+/* Change text color for second card */
 .cardContainer:nth-child(even) .card .subtitle {
   color: var(--tertiary);
 }
@@ -168,9 +179,11 @@
     width: calc(100% - 2rem);
   }
   .card {
-    gap: 2rem;
+
+      gap: 2rem;
     padding: 24px 16px;
     margin: 0;
+    max-width: 100%;
   }
   .description {
     margin-top: 1.5rem;
