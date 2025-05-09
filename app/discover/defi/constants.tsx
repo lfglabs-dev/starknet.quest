@@ -122,7 +122,28 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
   ],
   "Liquid Staking": [],
-  "Perpetuals & Derivatives": [],
+  "Perpetuals & Derivatives": [
+    {
+      title: "EdgeX",
+      link: "https://www.edgex.exchange/en",
+      image: "/edgex.png",
+    },
+    {
+      title: "Extended",
+      link: "https://app.extended.exchange/perp",
+      image: "/extended.png",
+    },
+    {
+      title: "GokuHub",
+      link: "https://gokuhub.com/",
+      image: "/gokuhub.png",
+    },
+    {
+      title: "Paradex",
+      link: "https://www.paradex.trade/",
+      image: "/paradex.png",
+    }
+  ],
   "AMM & DEX": [],
   "Wallets, Bridges & On-Ramps": [],
   "Insurance & Risk Management": [],
