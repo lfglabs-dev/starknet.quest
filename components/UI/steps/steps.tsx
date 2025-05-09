@@ -13,7 +13,6 @@ const Steps: FunctionComponent<StepsProps> = ({
   subTitleBefore = false,
   steps,
 }) => {
-
   return (
     <div className={styles.container}>
       <div className={styles.cards}>
