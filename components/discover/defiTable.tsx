@@ -1,5 +1,5 @@
 import React, {
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useState,
   useEffect,
@@ -13,8 +13,8 @@ import {
   TableRow,
 } from "@components/UI/table/table";
 import {
-  ColumnDef,
-  SortingState,
+  type ColumnDef,
+  type SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -26,7 +26,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage, CDNImg } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
-import { SelectChangeEvent } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import {
   AIRDROP_APPS,
   AUDITED_APPS,
