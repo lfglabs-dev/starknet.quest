@@ -41,6 +41,9 @@ import {
 } from "@components/skeletons/allAnalysticQuestSkeleton";
 import { ExpiredIcon } from "@components/UI/iconsComponents/icons/expiredIcon";
 import { OngoingIcon } from "@components/UI/iconsComponents/icons/ongoingIcon";
+import ProfilIcon from "@components/UI/iconsComponents/icons/profilIcon";
+import ProfilFilledIcon from "@components/UI/iconsComponents/icons/profilFilledIcon";
+import ProfilPurpleIcon from "@components/UI/iconsComponents/icons/profileIconPurple";
 
 type BoostQuestPageProps = {
   params: {
@@ -245,12 +248,12 @@ export default function Page({ params }: BoostQuestPageProps) {
             {isVisitorsLoading ? (
               <MetricCardSkeleton />
             ) : (
-              <div className={analyticsStyles.dataCard}>
-                <div className="flex flex-col items-center justify-center w-full h-full">
+              <div className={`${analyticsStyles.uniqueUserCard}`}>
+                <div className="flex flex-col  justify-center  h-full">
                   <Typography
                     type={TEXT_TYPE.BODY_SMALL}
-                    color="textGray"
-                    className={analyticsStyles.metricName}
+                    color="white50"
+                    className={analyticsStyles.uniqueUserText}
                   >
                     Unique users
                   </Typography>
@@ -262,6 +265,9 @@ export default function Page({ params }: BoostQuestPageProps) {
                       ? numberWithCommas(uniqueVisitors)
                       : "NA"}
                   </Typography>
+                </div>
+                <div className="bg-[#FFFFFF0A] rounded-full h-[56px] w-[56px] min-w-[56px] min-h-[56px] flex items-center justify-center">
+                  <ProfilPurpleIcon width={"24"} />
                 </div>
               </div>
             )}
@@ -456,8 +462,8 @@ export default function Page({ params }: BoostQuestPageProps) {
                             <span className={analyticsStyles.highlightedText}>
                               {uniqueVisitors > 0
                                 ? `${computePercentage(
-                                    eachParticipation.count
-                                  )}%`
+                                  eachParticipation.count
+                                )}%`
                                 : "NA"}
                             </span>
                             <span className={analyticsStyles.normalText}>
