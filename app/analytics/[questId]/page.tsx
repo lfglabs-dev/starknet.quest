@@ -267,7 +267,7 @@ export default function Page({ params }: BoostQuestPageProps) {
                   </Typography>
                 </div>
                 <div className="bg-[#FFFFFF0A] rounded-full h-[56px] w-[56px] min-w-[56px] min-h-[56px] flex items-center justify-center">
-                  <ProfilPurpleIcon width={"24"} />
+                  <ProfilPurpleIcon />
                 </div>
               </div>
             )}
