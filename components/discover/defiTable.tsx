@@ -593,7 +593,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               Yield Opportunities
             </Typography>
             <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
-              ({table.getRowModel().rows.length} available)
+              ({data.length})
             </Typography>
           </div>
           <div className="border border-[#f4faff4d]  xl:w-full">
