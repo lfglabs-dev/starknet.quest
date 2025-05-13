@@ -41,8 +41,6 @@ import {
 } from "@components/skeletons/allAnalysticQuestSkeleton";
 import { ExpiredIcon } from "@components/UI/iconsComponents/icons/expiredIcon";
 import { OngoingIcon } from "@components/UI/iconsComponents/icons/ongoingIcon";
-import ProfilIcon from "@components/UI/iconsComponents/icons/profilIcon";
-import ProfilFilledIcon from "@components/UI/iconsComponents/icons/profilFilledIcon";
 import ProfilPurpleIcon from "@components/UI/iconsComponents/icons/profileIconPurple";
 
 type BoostQuestPageProps = {
@@ -462,8 +460,8 @@ export default function Page({ params }: BoostQuestPageProps) {
                             <span className={analyticsStyles.highlightedText}>
                               {uniqueVisitors > 0
                                 ? `${computePercentage(
-                                  eachParticipation.count
-                                )}%`
+                                    eachParticipation.count
+                                  )}%`
                                 : "NA"}
                             </span>
                             <span className={analyticsStyles.normalText}>
