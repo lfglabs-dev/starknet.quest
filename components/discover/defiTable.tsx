@@ -1,5 +1,5 @@
 import React, {
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useState,
   useEffect,
@@ -13,8 +13,8 @@ import {
   TableRow,
 } from "@components/UI/table/table";
 import {
-  ColumnDef,
-  SortingState,
+  type ColumnDef,
+  type SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -26,7 +26,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage, CDNImg } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
-import { SelectChangeEvent } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import {
   AIRDROP_APPS,
   AUDITED_APPS,
@@ -586,61 +586,72 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-t-xl border border-[#f4faff4d] xl:w-full">
-          <Table>
-            <TableHeader className="bg-[#1F1F25] rounded-xl m-5">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => {
-                      window.open(
-                        getRedirectLink(
-                          row.getValue("app"),
-                          row.getValue("action"),
-                          row.getValue("title")
-                        ),
-                        "_blank"
+        <div>
+          {/* New Yield Opportunities header */}
+          <div className="flex items-center space-x-3  px-4 py-3 bg-[#1F1F25] rounded-t-xl border border-[#f4faff4d] border-b-0">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+              Yield Opportunities
+            </Typography>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
+              ({data.length})
+            </Typography>
+          </div>
+          <div className="border border-[#f4faff4d]  xl:w-full">
+            <Table>
+              <TableHeader className="bg-[#1F1F25] rounded-xl m-5">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
                       );
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <DefiTableSkeleton />
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      onClick={() => {
+                        window.open(
+                          getRedirectLink(
+                            row.getValue("app"),
+                            row.getValue("action"),
+                            row.getValue("title")
+                          ),
+                          "_blank"
+                        );
+                      }}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <DefiTableSkeleton />
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
         <div className="flex items-center justify-center space-x-2 py-5 rounded-b-xl border border-[#f4faff4d] border-t-0 bg-[#1F1F25]">
           <div className="text-sm text-muted-foreground flex gap-20">
