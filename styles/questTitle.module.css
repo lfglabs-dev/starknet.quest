@@ -1,0 +1,47 @@
+.container {
+  z-index: 0;
+  position: relative;
+  text-align: left;
+  padding-top: calc(0vh);
+  display: flex;
+  width: 100%;
+  max-width: 945px;
+  flex-direction: column;
+  margin-bottom: calc(112px - 2em);
+}
+    
+.tagline {
+  color: var(--accent-green, #6AFFAF);
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+    
+.title {
+  color: var(--primary-text, #FFFFFF);
+  font-weight: 800;
+  font-size: 2.75rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+    
+.description {
+  color: var(--secondary-text, #999999);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+}
+  
+@media screen and (max-width: 768px) {
+    .title {
+    font-size: 2rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+}

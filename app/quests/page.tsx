@@ -9,6 +9,7 @@ import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
 import QuestAndCollectionTabs from "@components/pages/home/questAndCollectionTabs";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
+import QuestTitle from "@components/UI/titles/questTitle";
 
 export default function Page() {
   const router = useRouter();
@@ -43,11 +44,10 @@ export default function Page() {
           categories={categories}
           trendingQuests={trendingQuests}
         />
-        <CategoryTitle
-          subtitle="Get access to our community"
-          title="About our quests"
-          corner="bottomLeft"
-          squares="bottomRight"
+        <QuestTitle
+          title="Complete, Collect, Conquer"
+          subtitle="Level Up on Starknet"
+          description="The leading quest platform on Starknet with over 1M NFTs minted, empowering users through gamified challenges and exclusive rewards."
         />
         <Stats
           stats={[
@@ -55,6 +55,10 @@ export default function Page() {
             { name: "Unique addresses", value: "398K" },
             { name: "Unique visitors", value: "+200K" },
           ]}
+        />
+        <CategoryTitle
+          subtitle="Get access to our community"
+          title="About our quests"
         />
         <div className={styles.blur2}>
           <Blur green />
