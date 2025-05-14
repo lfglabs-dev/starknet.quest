@@ -1,5 +1,5 @@
 import React, {
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useState,
   useEffect,
@@ -13,8 +13,8 @@ import {
   TableRow,
 } from "@components/UI/table/table";
 import {
-  ColumnDef,
-  SortingState,
+  type ColumnDef,
+  type SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -26,7 +26,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage, CDNImg } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
-import { SelectChangeEvent } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import {
   AIRDROP_APPS,
   AUDITED_APPS,
@@ -50,6 +50,8 @@ import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
 import { IoIosClose } from "react-icons/io";
+import Tooltip from "@mui/material/Tooltip";
+import { capitalize } from "@utils/stringService";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -66,11 +68,40 @@ export const columns: ColumnDef<TableInfo>[] = [
         </Typography>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        <AppIcon app={row.getValue("app")} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const appIdentifier = row.getValue("app") as string;
+      const appDisplayName =
+        getProtocolName(capitalize(appIdentifier)) || appIdentifier;
+      return (
+        <Tooltip
+          title={appDisplayName}
+          placement="right-start"
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "rgba(40, 40, 40, 0.95)",
+                color: "#ffffff",
+                maxWidth: "250px",
+                padding: "12px 24px",
+                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            },
+            arrow: {
+              sx: {
+                color: "rgba(40, 40, 40, 0.95)",
+              },
+            },
+          }}
+        >
+          <div className="capitalize text-left inline-block">
+            <AppIcon app={appIdentifier} />
+          </div>
+        </Tooltip>
+      );
+    },
     enableSorting: false, // disable sorting for this column
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
@@ -100,12 +131,17 @@ export const columns: ColumnDef<TableInfo>[] = [
         <div className="flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               window.open(
-                getRedirectLink(row.getValue("app"), row.getValue("action")),
+                getRedirectLink(
+                  row.getValue("app"),
+                  row.getValue("action"),
+                  row.getValue("title")
+                ),
                 "_blank"
-              )
-            }
+              );
+            }}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
@@ -308,9 +344,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
   const [securityPlaceholder, setSecurityPlaceholder] =
-    useState<string>("Security");
+    useState<string>("Security"); // Added for dynamic placeholder
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop"); 
+    useState<string>("Airdrop"); // Added for dynamic placeholder
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -550,63 +586,75 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => {
-                      window.open(
-                        getRedirectLink(
-                          row.getValue("app"),
-                          row.getValue("action")
-                        ),
-                        "_blank"
+        <div>
+          {/* New Yield Opportunities header */}
+          <div className="flex items-center space-x-3  px-4 py-3 bg-[#1F1F25] rounded-t-xl border border-[#f4faff4d] border-b-0">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+              Yield Opportunities
+            </Typography>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
+              ({data.length})
+            </Typography>
+          </div>
+          <div className="border border-[#f4faff4d]  xl:w-full">
+            <Table>
+              <TableHeader className="bg-[#1F1F25] rounded-xl m-5">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
                       );
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <DefiTableSkeleton />
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      onClick={() => {
+                        window.open(
+                          getRedirectLink(
+                            row.getValue("app"),
+                            row.getValue("action"),
+                            row.getValue("title")
+                          ),
+                          "_blank"
+                        );
+                      }}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <DefiTableSkeleton />
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
-          <div className="text-sm text-muted-foreground flex gap-8">
+        <div className="flex items-center justify-center space-x-2 py-5 rounded-b-xl border border-[#f4faff4d] border-t-0 bg-[#1F1F25]">
+          <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
               onClick={() =>
