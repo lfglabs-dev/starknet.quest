@@ -28,7 +28,7 @@
 }
     
 .description {
-  color: var(--secondary-text, #999999);
+  color: var(--secondary-text, #A6A5A7);
   font-size: 1.125rem;
   line-height: 1.6;
   max-width: 700px;

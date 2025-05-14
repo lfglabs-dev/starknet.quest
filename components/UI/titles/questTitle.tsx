@@ -18,7 +18,7 @@ const QuestTitle: FunctionComponent<QuestTitleProps> = ({
     <div className={styles.container}>
       <Typography type={TEXT_TYPE.BODY_MIDDLE} color="primary" className={styles.questTagline}>{subtitle}</Typography>
       <Typography type={TEXT_TYPE.H1} color="secondary" className={styles.questTitle}>{title}</Typography>
-      <Typography type={TEXT_TYPE.H4} color="secondary" className={styles.questDescription}>{description}</Typography>
+      <Typography type={TEXT_TYPE.BODY_EXTRA_SMALL} color="secondary" className={styles.questDescription}>{description}</Typography>
     </div>
   );
 };
