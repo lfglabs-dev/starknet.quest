@@ -121,7 +121,13 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
       image: "/zklend/zklendIcon.svg",
     },
   ],
-  "Liquid Staking": [],
+  "Liquid Staking": [
+     {
+      title: "Endurfi",
+      link: "https://app.endur.fi/",
+      image: "/endurfi.svg",
+    },
+  ],
   "Perpetuals & Derivatives": [
     {
       title: "EdgeX",
