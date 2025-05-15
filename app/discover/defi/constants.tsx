@@ -162,7 +162,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Ekubo",
-      image: "/AMM-DEX/Ebuko.svg",
+      image: "/AMM-DEX/Ebubo.svg",
       link: "https://ekubo.org/",
     },
     {
