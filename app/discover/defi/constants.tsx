@@ -142,9 +142,75 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
       title: "Paradex",
       link: "https://www.paradex.trade/",
       image: "/paradex.png",
-    }
+    },
   ],
-  "AMM & DEX": [],
+  "AMM & DEX": [
+    {
+      title: "10K",
+      image: "/AMM-DEX/10kswap.svg",
+      link: "https://www.10kx.com/",
+    },
+    {
+      title: "AVNU",
+      image: "/AMM-DEX/Avnu.svg",
+      link: "https://app.avnu.fi/en",
+    },
+    {
+      title: "Carmine Options",
+      image: "/AMM-DEX/CarmineOptions.svg",
+      link: "https://www.carmine.finance/",
+    },
+    {
+      title: "Ekubo",
+      image: "/AMM-DEX/Ebuko.svg",
+      link: "https://ekubo.org/",
+    },
+    {
+      title: "Fibrous",
+      image: "/AMM-DEX/Fibrous.svg",
+      link: "https://fibrous.finance/",
+    },
+    {
+      title: "Haiko",
+      image: "/AMM-DEX/Haiko.svg",
+      link: "https://www.haiko.xyz/",
+    },
+    {
+      title: "JediSwap",
+      image: "/AMM-DEX/JediSwap.svg",
+      link: "https://www.jediswap.xyz/",
+    },
+    {
+      title: "Layer Akira",
+      image: "/AMM-DEX/LayerAkira.svg",
+      link: "https://layerakira.xyz/",
+    },
+    {
+      title: "MySwap",
+      image: "/AMM-DEX/MySwap.svg",
+      link: "https://www.myswap.xyz/",
+    },
+    {
+      title: "OpenOcean",
+      image: "/AMM-DEX/OpenOcean.svg",
+      link: "https://openocean.finance/",
+    },
+    {
+      title: "SimpleSwap",
+      image: "/AMM-DEX/SimpleSwap.svg",
+      link: "https://simpleswap.io/",
+    },
+    {
+      title: "SithSwap",
+      image: "/AMM-DEX/SithSwap.svg",
+      link: "https://sithswap.com/",
+    },
+    {
+      title: "StarkDefi",
+      image: "/AMM-DEX/StarkDefi.svg",
+      link: "https://www.starkdefi.com/",
+    },
+  ],
   "Wallets, Bridges & On-Ramps": [],
   "Insurance & Risk Management": [],
   "Real World Assets (RWA)": [],
