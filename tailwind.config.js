@@ -18,19 +18,18 @@ module.exports = {
         // ...
         200: "#d1d5db",
         300: "#1F1F25",
-        500: "#4a4c53",
         900: "#1a202c",
       },
       // ... Other colors you want to add
     },
     extend: {
       lineHeight: {
-        '12': '3.8rem'
+        12: "3.8rem",
       },
       animation: {
-        'spin-slow': 'spin 20s linear infinite',
+        "spin-slow": "spin 20s linear infinite",
       },
-    }
+    },
   },
   plugins: [],
 };
