@@ -24,12 +24,12 @@ module.exports = {
     },
     extend: {
       lineHeight: {
-        '12': '3.8rem'
+        12: "3.8rem",
       },
       animation: {
-        'spin-slow': 'spin 20s linear infinite',
+        "spin-slow": "spin 20s linear infinite",
       },
-    }
+    },
   },
   plugins: [],
 };
