@@ -220,5 +220,16 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
   "Wallets, Bridges & On-Ramps": [],
   "Insurance & Risk Management": [],
   "Real World Assets (RWA)": [],
-  Payments: [],
+  "Payments": [
+    {
+      title: "Kulipa",
+      link: "https://www.kulipa.xyz/",
+      image: "/icons/kulipa.svg",
+    },
+    {
+      title: "Pulsar Money",
+      link: "https://pulsar.money/",
+      image: "/icons/pulsarmoney.svg",
+    }
+  ],
 };
