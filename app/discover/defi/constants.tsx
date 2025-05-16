@@ -125,7 +125,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     {
       title: "Endurfi",
       link: "https://app.endur.fi/",
-      image: "/endurfi/endurfIcon.svg",
+      image: "/endurfi/endurfiIcon.svg",
     },
   ],
   "Perpetuals & Derivatives": [
