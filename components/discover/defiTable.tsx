@@ -127,6 +127,10 @@ export const columns: ColumnDef<TableInfo>[] = [
       </div>
     ),
     cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      const tokenPair = parseTokenPair(title.toLowerCase());
+      const token1Icon = getTokenIcon(tokenPair.first);
+      const token2Icon = getTokenIcon(tokenPair.second);
       return (
         <div className="flex flex-row items-center gap-4 h-10">
           <div
@@ -143,6 +147,38 @@ export const columns: ColumnDef<TableInfo>[] = [
               );
             }}
           >
+              {/* Token Icons Section */}
+            <div className="flex items-center -space-x-1"> 
+              {token1Icon && (
+                <div className="relative w-6 h-6 bg-white rounded-full p-0.5 border border-gray-200">
+                  <CDNImg 
+                    src={token1Icon} 
+                    width={20} 
+                    height={20}
+                    className="rounded-full"
+                    alt={`${tokenPair.first} token`}
+                  />
+                </div>
+              )}
+              {token2Icon && (
+                <div className="relative w-6 h-6 bg-white rounded-full p-0.5 border border-gray-200">
+                  <CDNImg 
+                    src={token2Icon} 
+                    width={20} 
+                    height={20}
+                    className="rounded-full"
+                    alt={`${tokenPair.second} token`}
+                  />
+                </div>
+              )}
+              {!token1Icon && !token2Icon && (
+                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white font-medium">
+                    {title.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+            </div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
             </Typography>
