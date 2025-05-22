@@ -21,7 +21,7 @@ const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
 export default function Page() {
   const [data, setData] = useState<TableInfo[]>([]);
   const [loading, setLoading] = useState<boolean>(true); 
-  const [mounted, setMounted] = useState(false); 
+  const [mounted, setMounted] = useState<boolean>(false); 
   const [activeTab, setActiveTab] = useState(DISCOVER_DEFI_TABS[0]);
 
   const fetchPageData = useCallback(async () => {
