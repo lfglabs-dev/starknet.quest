@@ -150,7 +150,7 @@ export const columns: ColumnDef<TableInfo>[] = [
               {/* Token Icons Section with Overlap */}
             <div className="flex items-center"> 
               {token1Icon && (
-                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 border border-gray-200 z-10">
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10">
                   <CDNImg 
                     src={token1Icon} 
                     width={20} 
@@ -161,7 +161,7 @@ export const columns: ColumnDef<TableInfo>[] = [
                 </div>
               )}
               {token2Icon && (
-                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 border border-gray-200 -ml-2">
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 ml-2">
                   <CDNImg 
                     src={token2Icon} 
                     width={20} 
