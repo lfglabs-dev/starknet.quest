@@ -28,6 +28,46 @@
   gap: 0.5rem;
 }
 
+.uniqueUserCard {
+  position: relative;
+  width: 100%;
+  background: #1f1f25;
+  border-radius: 8px;
+  box-shadow: 0px 2px 30px 0px #6affaf29;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  z-index: 0; /* allow pseudo-element to go behind */
+  overflow: hidden; /* clip any overflow from pseudo */
+}
+
+.uniqueUserCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* border thickness */
+  background: conic-gradient(
+    from 190deg at 24.95% 95%,
+    rgba(0, 0, 0, 0.105455) -2.11deg,
+    rgba(106, 255, 175, 0) 131.45deg,
+    #6affaf 175.58deg,
+    rgba(106, 255, 175, 0) 252.32deg,
+    rgba(0, 0, 0, 0.0885149) 310.85deg,
+    rgba(0, 0, 0, 0.105455) 357.89deg,
+    rgba(106, 255, 175, 0) 491.45deg
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  z-index: -1;
+  box-sizing: border-box;
+}
+
+
 .dataCard {
   background: linear-gradient(180deg, #29282b 0%, #101012 100%);
   width: 100%;
@@ -74,6 +114,14 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;
+  text-align: left;
+}
+
+.uniqueUserText {
+  font-family: "Sora";
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0em;
   text-align: left;
 }
 
