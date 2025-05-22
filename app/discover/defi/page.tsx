@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import DataTable from "@components/discover/defiTable";
 import DeFiConceptCard from "@components/UI/DefiConceptCard";
 import Typography from "@components/UI/typography/typography";
@@ -19,10 +19,10 @@ import DefiDiscoverCard from "@components/UI/DefiDiscoverCard";
 const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
 
 export default function Page() {
-  const [data, setData] = React.useState<TableInfo[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
-
-  const [activeTab, setActiveTab] = React.useState(DISCOVER_DEFI_TABS[0]);
+  const [data, setData] = useState<TableInfo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); 
+  const [mounted, setMounted] = useState(false); 
+  const [activeTab, setActiveTab] = useState(DISCOVER_DEFI_TABS[0]);
 
   const fetchPageData = useCallback(async () => {
     try {
@@ -47,8 +47,22 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    setMounted(true);
     fetchPageData();
-  }, []);
+  }, [fetchPageData]);
+
+  
+  if (!mounted) {
+    return (
+      <div className="flex flex-col items-center w-full gap-8 mt-24 mb-32">
+        <div className="w-full p-6 mx-4 rounded-xl lg:w-3/4 mb-36">
+          <div className="animate-pulse">
+            <div className="h-64 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center w-full gap-8 mt-24 mb-32">
@@ -64,6 +78,7 @@ export default function Page() {
             width={781}
             height={764}
             className="relative w-full h-full animate-spin-slow"
+            priority={false}
           />
         </div>
 
@@ -122,7 +137,7 @@ export default function Page() {
           <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
             {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
               <DefiDiscoverCard
-                key={idx}
+                key={`${activeTab}-${idx}`} 
                 title={card.title}
                 image={card.image}
                 link={card.link}
