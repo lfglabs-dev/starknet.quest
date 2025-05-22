@@ -150,7 +150,7 @@ export const columns: ColumnDef<TableInfo>[] = [
               {/* Token Icons Section with Overlap */}
             <div className="flex items-center min-w-[40px]"> 
               {token1Icon ? (
-                <div className="relative w-6 h-6 bg-white rounded-full p-0.5 border border-gray-300 z-10 flex-shrink-0">
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10 flex-shrink-0">
                   <CDNImg 
                     src={token1Icon} 
                     width={20} 
@@ -161,7 +161,7 @@ export const columns: ColumnDef<TableInfo>[] = [
                   />
                 </div>
               ) : (
-                <div className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0">
+                <div className="relative w-6 h-6 bg-transparent rounded-full z-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-xs text-white font-medium">
                     {tokenPair.first ? tokenPair.first.charAt(0).toUpperCase() : title.charAt(0).toUpperCase()}
                   </span>
