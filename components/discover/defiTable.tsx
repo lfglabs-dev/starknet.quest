@@ -148,36 +148,43 @@ export const columns: ColumnDef<TableInfo>[] = [
             }}
           >
               {/* Token Icons Section with Overlap */}
-            <div className="flex items-center"> 
-              {token1Icon && (
-                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10">
+            <div className="flex items-center min-w-[40px]"> 
+              {token1Icon ? (
+                <div className="relative w-6 h-6 bg-white rounded-full p-0.5 border border-gray-300 z-10 flex-shrink-0">
                   <CDNImg 
                     src={token1Icon} 
                     width={20} 
                     height={20}
-                    className="rounded-full"
+                    className="rounded-full w-full h-full object-cover"
                     alt={`${tokenPair.first} token`}
+                    
                   />
                 </div>
+              ) : (
+                <div className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs text-white font-medium">
+                    {tokenPair.first ? tokenPair.first.charAt(0).toUpperCase() : title.charAt(0).toUpperCase()}
+                  </span>
+                </div>
               )}
-              {token2Icon && (
-                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5  -ml-2">
+              
+              {token2Icon ? (
+                <div className="relative w-6 h-6 rounded-full p-0.5 -ml-2 flex-shrink-0">
                   <CDNImg 
                     src={token2Icon} 
                     width={20} 
                     height={20}
-                    className="rounded-full"
+                    className="rounded-full w-full h-full object-cover"
                     alt={`${tokenPair.second} token`}
                   />
                 </div>
-              )}
-              {!token1Icon && !token2Icon && (
-                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+              ) : tokenPair.second ? (
+                <div className="relative w-6 h-6 bg-gray-600 rounded-full -ml-2 flex items-center justify-center flex-shrink-0">
                   <span className="text-xs text-white font-medium">
-                    {title.charAt(0).toUpperCase()}
+                    {tokenPair.second.charAt(0).toUpperCase()}
                   </span>
                 </div>
-              )}
+              ) : null}
             </div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
