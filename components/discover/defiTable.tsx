@@ -119,8 +119,11 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "title",
+    size: 350, 
+    minSize: 350, 
+    maxSize: 400, 
     header: () => (
-      <div>
+      <div className="w-80 min-w-80">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Title
         </Typography>
@@ -132,7 +135,7 @@ export const columns: ColumnDef<TableInfo>[] = [
       const token1Icon = getTokenIcon(tokenPair.first);
       const token2Icon = getTokenIcon(tokenPair.second);
       return (
-        <div className="flex flex-row items-center gap-4 h-10">
+        <div className="w-80 min-w-80 flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
             onClick={(e) => {
@@ -248,6 +251,9 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "apr",
+    size: 120, 
+    minSize: 100,
+    maxSize: 140,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
@@ -283,6 +289,9 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "volume",
+    size: 140, 
+    minSize: 120,
+    maxSize: 160,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
@@ -327,6 +336,9 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "daily_rewards",
+    size: 160, 
+    minSize: 140,
+    maxSize: 180,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
@@ -387,9 +399,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
   const [securityPlaceholder, setSecurityPlaceholder] =
-    useState<string>("Security"); // Added for dynamic placeholder
+    useState<string>("Security"); 
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop"); // Added for dynamic placeholder
+    useState<string>("Airdrop"); 
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
