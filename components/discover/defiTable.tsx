@@ -120,11 +120,11 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "title",
-    size: 350,
+    size: 300,
     minSize: 250,
     maxSize: 400,
     header: () => (
-      <div className="w-80 min-w-80">
+<div className="w-full max-w-80 min-w-60">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Title
         </Typography>
@@ -152,15 +152,14 @@ export const columns: ColumnDef<TableInfo>[] = [
             }}
           >
             {/* Token Icons Section with Overlap */}
-            <div className="flex items-center min-w-[40px]">
+            <div className="flex items-center min-w-[44px]">
               {token1Icon ? (
-                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10 flex-shrink-0">
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10 flex-shrink-0 shadow-sm">
                   <CDNImg
                     src={token1Icon}
                     width={20}
                     height={20}
-                    className="rounded-full w-full h-full object-cover bg-transparent"
-                    style={{ filter: 'drop-shadow(0 0 0 transparent)' }}
+                    className="rounded-full w-full h-full object-cover"
                     alt={`${tokenPair.first} token`}
 
                   />
@@ -176,7 +175,7 @@ export const columns: ColumnDef<TableInfo>[] = [
               )}
 
               {token2Icon ? (
-                <div className="relative w-6 h-6 rounded-full p-0.5 -ml-3 flex-shrink-0">
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 -ml-3 flex-shrink-0 shadow-sm">
                   <CDNImg
                     src={token2Icon}
                     width={20}
@@ -186,7 +185,7 @@ export const columns: ColumnDef<TableInfo>[] = [
                   />
                 </div>
               ) : tokenPair.second ? (
-                <div className="relative w-6 h-6 bg-gray-600 rounded-full -ml-2 flex items-center justify-center flex-shrink-0">
+                <div className="relative w-6 h-6 bg-gray-600 rounded-full -ml-3 flex items-center justify-center flex-shrink-0">
                   <span className="text-xs text-white font-medium">
                     {tokenPair.second.charAt(0).toUpperCase()}
                   </span>
@@ -239,8 +238,11 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "action",
+    size: 150, // Set width for Action column
+    minSize: 90,
+    maxSize: 180,
     header: () => (
-      <div>
+      <div className="px-12 py-3">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Action
         </Typography>
@@ -263,12 +265,13 @@ export const columns: ColumnDef<TableInfo>[] = [
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+            className={`flex flex-row gap-2 items-center rounded-lg px-4 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
               }`}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               APR
             </Typography>
+          
             <div className="flex flex-col gap-0">
               {isSorted === "desc" ? (
                 <DownIcon width="10" color="#a6a5a7" />
@@ -338,9 +341,6 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "daily_rewards",
-    size: 160,
-    minSize: 140,
-    maxSize: 180,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
