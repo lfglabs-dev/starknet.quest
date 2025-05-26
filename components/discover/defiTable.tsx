@@ -124,7 +124,7 @@ export const columns: ColumnDef<TableInfo>[] = [
     minSize: 250,
     maxSize: 400,
     header: () => (
-<div className="w-full max-w-80 min-w-60">
+      <div className="w-full max-w-80 min-w-60">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Title
         </Typography>
@@ -160,16 +160,23 @@ export const columns: ColumnDef<TableInfo>[] = [
                     width={20}
                     height={20}
                     className="rounded-full w-full h-full object-cover"
+                    style={{
+                      filter: 'drop-shadow(0 0 0 transparent)',
+                      backgroundColor: 'transparent'
+                    }}
                     alt={`${tokenPair.first} token`}
-
                   />
                 </div>
               ) : (
-                <div className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0" 
-                   role="img" 
-                   aria-label={`${tokenPair.first || title} token placeholder`}>
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.first || title} token placeholder`}
+                >
                   <span className="text-xs text-white font-medium">
-                    {tokenPair.first ? tokenPair.first.charAt(0).toUpperCase() : title.charAt(0).toUpperCase()}
+                    {tokenPair.first
+                      ? tokenPair.first.charAt(0).toUpperCase()
+                      : title.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
@@ -185,7 +192,11 @@ export const columns: ColumnDef<TableInfo>[] = [
                   />
                 </div>
               ) : tokenPair.second ? (
-                <div className="relative w-6 h-6 bg-gray-600 rounded-full -ml-3 flex items-center justify-center flex-shrink-0">
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full -ml-3 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.second} token placeholder`}
+                >
                   <span className="text-xs text-white font-medium">
                     {tokenPair.second.charAt(0).toUpperCase()}
                   </span>
@@ -271,7 +282,7 @@ export const columns: ColumnDef<TableInfo>[] = [
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               APR
             </Typography>
-          
+
             <div className="flex flex-col gap-0">
               {isSorted === "desc" ? (
                 <DownIcon width="10" color="#a6a5a7" />
