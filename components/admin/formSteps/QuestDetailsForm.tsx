@@ -21,6 +21,7 @@ type QuestDetailsFormProps = {
     | React.Dispatch<React.SetStateAction<UpdateQuest>>;
   onSubmit: () => void;
   submitButtonDisabled: boolean;
+  buttonLoading: boolean;
 };
 
 const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
@@ -33,6 +34,7 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
   setQuestInput,
   onSubmit,
   submitButtonDisabled,
+  buttonLoading,
 }) => {
   const currentUser = getUserFromJwt();
 
@@ -199,7 +201,11 @@ const QuestDetailsForm: FunctionComponent<QuestDetailsFormProps> = ({
       </div>
 
       <div className="w-full sm:w-fit">
-        <Button onClick={onSubmit} disabled={submitButtonDisabled}>
+        <Button
+          loading={buttonLoading}
+          onClick={onSubmit}
+          disabled={submitButtonDisabled}
+        >
           <p>Save Changes</p>
         </Button>
       </div>
