@@ -1,7 +1,8 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useRef, useState } from "react";
 import TextInput from "../textInput";
 import { UpdateQuest } from "../../../types/backTypes";
 import Button from "@components/UI/button";
+import axios from "axios"; 
 
 type BannerDetailsFormProps = {
   questInput: UpdateQuest;
@@ -13,10 +14,54 @@ type BannerDetailsFormProps = {
 
 const BannerDetailsForm: FunctionComponent<BannerDetailsFormProps> = ({
   questInput,
+  setQuestInput,
   handleQuestInputChange,
   onSubmit,
   submitButtonDisabled,
 }) => {
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "image/webp") {
+      alert("Please upload a .webp image.");
+      return;
+    }
+    if (!questInput.id) {
+      alert("Quest ID is required to name the file.");
+      return;
+    }
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file, `${questInput.id}_banner.webp`);
+    try {
+      const res = await axios.post(
+        "https://api.starknet.quest/admin/upload_image", 
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      const imageUrl = res.data.url;
+      setQuestInput((prev) => ({
+        ...prev,
+        banner: {
+          tag: (prev.banner ?? {}).tag ?? "",
+          title: (prev.banner ?? {}).title ?? "",
+          description: (prev.banner ?? {}).description ?? "",
+          cta: (prev.banner ?? {}).cta ?? "",
+          href: (prev.banner ?? {}).href ?? "",
+          image: imageUrl,
+        },
+      }));
+    } catch (err) {
+      alert("Image upload failed.");
+    }
+    setUploading(false);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <TextInput
@@ -61,6 +106,29 @@ const BannerDetailsForm: FunctionComponent<BannerDetailsFormProps> = ({
         label="Image URL"
         placeholder="Enter Image URL"
       />
+      {/* Banner image upload */}
+      <div>
+        <label className="block mb-1 font-medium">Upload Banner (.webp)</label>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".webp"
+          onChange={handleFileChange}
+          disabled={uploading}
+        />
+        {uploading && (
+          <span className="text-sm text-gray-500 ml-2">Uploading...</span>
+        )}
+        {questInput.banner?.image && (
+          <div className="mt-2">
+            <img
+              src={questInput.banner.image}
+              alt="Banner Preview"
+              style={{ maxWidth: 300, borderRadius: 8 }}
+            />
+          </div>
+        )}
+      </div>
       <div className="w-full sm:w-fit">
         <Button onClick={onSubmit} disabled={submitButtonDisabled}>
           <p>Save Changes</p>

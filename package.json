@@ -28,6 +28,7 @@
     "@tsparticles/slim": "^3.8.1",
     "@use-gesture/react": "^10.2.27",
     "@vercel/analytics": "^0.1.5",
+    "axios": "^1.9.0",
     "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "chart.js": "^4.3.0",
