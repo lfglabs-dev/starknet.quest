@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useState,
   useEffect,
+  useMemo
 } from "react";
 import {
   Table,
@@ -119,16 +120,23 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "title",
+    size: 300,
+    minSize: 250,
+    maxSize: 400,
     header: () => (
-      <div>
+      <div className="w-full max-w-80 min-w-60">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Title
         </Typography>
       </div>
     ),
     cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      const tokenPair = useMemo(() => parseTokenPair(title.toLowerCase()), [title]);
+      const token1Icon = useMemo(() => getTokenIcon(tokenPair.first), [tokenPair.first]);
+      const token2Icon = useMemo(() => getTokenIcon(tokenPair.second), [tokenPair.second])
       return (
-        <div className="flex flex-row items-center gap-4 h-10">
+        <div className="w-80 min-w-80 flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
             onClick={(e) => {
@@ -143,6 +151,58 @@ export const columns: ColumnDef<TableInfo>[] = [
               );
             }}
           >
+            {/* Token Icons Section with Overlap */}
+            <div className="flex items-center min-w-[44px]">
+              {token1Icon ? (
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10 flex-shrink-0 shadow-sm">
+                  <CDNImg
+                    src={token1Icon}
+                    width={20}
+                    height={20}
+                    className="rounded-full w-full h-full object-cover"
+                    style={{
+                      filter: 'drop-shadow(0 0 0 transparent)',
+                      backgroundColor: 'transparent'
+                    }}
+                    alt={`${tokenPair.first} token`}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.first || title} token placeholder`}
+                >
+                  <span className="text-xs text-white font-medium">
+                    {tokenPair.first
+                      ? tokenPair.first.charAt(0).toUpperCase()
+                      : title.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+
+              {token2Icon ? (
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 -ml-3 flex-shrink-0 shadow-sm">
+                  <CDNImg
+                    src={token2Icon}
+                    width={20}
+                    height={20}
+                    className="rounded-full w-full h-full object-cover"
+                    alt={`${tokenPair.second} token`}
+                  />
+                </div>
+              ) : tokenPair.second ? (
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full -ml-3 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.second} token placeholder`}
+                >
+                  <span className="text-xs text-white font-medium">
+                    {tokenPair.second.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              ) : null}
+            </div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
             </Typography>
@@ -189,8 +249,11 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "action",
+    size: 150, // Set width for Action column
+    minSize: 90,
+    maxSize: 180,
     header: () => (
-      <div>
+      <div className="px-12 py-3">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Action
         </Typography>
@@ -205,18 +268,21 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "apr",
+    size: 120,
+    minSize: 80,
+    maxSize: 160,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
-              isSorted ? "bg-[#414349]" : ""
-            }`}
+            className={`flex flex-row gap-2 items-center rounded-lg px-4 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               APR
             </Typography>
+
             <div className="flex flex-col gap-0">
               {isSorted === "desc" ? (
                 <DownIcon width="10" color="#a6a5a7" />
@@ -240,14 +306,16 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "volume",
+    size: 140,
+    minSize: 120,
+    maxSize: 160,
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${
-              isSorted ? "bg-[#414349]" : ""
-            }`}
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               TVL
@@ -289,9 +357,8 @@ export const columns: ColumnDef<TableInfo>[] = [
       return (
         <div className="flex items-center modified-cursor-pointer w-full h-full">
           <div
-            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${
-              isSorted ? "bg-[#414349]" : ""
-            }`}
+            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
           >
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               Daily Rewards
@@ -344,9 +411,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
   const [securityPlaceholder, setSecurityPlaceholder] =
-    useState<string>("Security"); // Added for dynamic placeholder
+    useState<string>("Security");
   const [airdropPlaceholder, setAirdropPlaceholder] =
-    useState<string>("Airdrop"); // Added for dynamic placeholder
+    useState<string>("Airdrop");
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -610,9 +677,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                         </TableHead>
                       );
                     })}
