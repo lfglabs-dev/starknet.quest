@@ -153,29 +153,27 @@ const Task: FunctionComponent<Task> = ({
         className={styles.taskTitle}
         onClick={() => setIsClicked(!isClicked)}
       >
-        <div className="flex items-center">
-          <div className={isClicked ? "rotate-90" : undefined}>
+        <div className={styles.taskTitleLeft}>
+          <div className={`${styles.taskArrow} ${isClicked ? "rotate-90" : ""}`}>
             <ArrowRightIcon width={"16"} color="white" />
           </div>
-          <Typography type={TEXT_TYPE.BODY_DEFAULT} className="ml-2 mr-2">
+          <Typography type={TEXT_TYPE.BODY_DEFAULT} className={styles.taskName}>
             {name}
           </Typography>
         </div>
         {isVerified ? (
-          <div className="flex">
+          <div className={`${styles.taskStatus} ${styles.taskStatusDone}`}>
             Done
-            <CheckCircleIcon className="ml-2" width={25} color="primary" />
+            <CheckCircleIcon width={20} color="inherit" />
           </div>
         ) : isLoading ? (
-          <div className="w-20 flex justify-center items-center">
-            <>
-              <CircularProgress size={30} color="primary" />
-            </>
+          <div className={`${styles.taskStatus} ${styles.taskStatusLoading}`}>
+            <CircularProgress size={20} color="inherit" />
           </div>
         ) : error ? (
-          <div className="flex">
+          <div className={`${styles.taskStatus} ${styles.taskStatusError}`}>
             {error}
-            <ErrorRoundedIcon className="ml-2" width={25} color="error" />
+            <ErrorRoundedIcon width={20} color="inherit" />
           </div>
         ) : (
           <div

@@ -72,15 +72,22 @@
   width: 728px;
 
   background-color: var(--menu-background);
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 12px;
   cursor: url(../public/icons/pointer-cursor.png), pointer;
-  padding: 5px 24px;
+  padding: 20px 24px;
+  transition: all 0.2s ease-in-out;
 
   /* Inside auto layout */
 
   flex: none;
   order: 0;
   flex-grow: 0;
+}
+
+.task:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--hover-background-color);
 }
 
 .questStats {
@@ -94,8 +101,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 58px;
+  min-height: 60px;
   width: 100%;
+  padding: 8px 0;
 }
 
 .taskDescription {
@@ -148,23 +156,76 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 20px;
-  gap: 10px;
+  padding: 10px 20px;
+  gap: 8px;
 
-  width: 130px;
-  height: 38px;
+  min-width: 100px;
+  height: 40px;
 
   /* Background/500 */
 
   background: var(--secondary);
   color: var(--background600);
-  border-radius: 6px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
 
   /* Inside auto layout */
 
   flex: none;
   order: 1;
   flex-grow: 0;
+}
+
+.verifyButton:hover {
+  background: var(--secondary300);
+  transform: translateY(-1px);
+}
+
+.taskStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.taskStatusDone {
+  color: #10b981;
+}
+
+.taskStatusError {
+  color: #ef4444;
+  font-size: 13px;
+}
+
+.taskStatusLoading {
+  color: var(--textGray);
+}
+
+.taskTitleLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.taskArrow {
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.taskName {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--secondary);
 }
 
 .reward {
@@ -361,8 +422,18 @@
 
 @media (max-width: 1024px) {
   .verifyButton {
-    width: 100px;
-    height: 38px;
+    min-width: 80px;
+    height: 36px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .taskName {
+    font-size: 15px;
+  }
+
+  .taskStatus {
+    font-size: 13px;
   }
 
   .featuredQuest {
@@ -458,5 +529,35 @@
   }
   .title {
     font-size: 2rem;
+  }
+
+  .task {
+    padding: 16px 20px;
+    border-radius: 10px;
+  }
+
+  .taskTitleLeft {
+    gap: 10px;
+  }
+
+  .taskName {
+    font-size: 14px;
+  }
+
+  .taskStatus {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .verifyButton {
+    min-width: 70px;
+    height: 32px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .taskArrow {
+    width: 18px;
+    height: 18px;
   }
 }
