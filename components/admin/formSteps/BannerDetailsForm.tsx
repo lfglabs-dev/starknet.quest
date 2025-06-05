@@ -25,20 +25,31 @@ const BannerDetailsForm: FunctionComponent<BannerDetailsFormProps> = ({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.type !== "image/webp") {
-      alert("Please upload a .webp image.");
+
+    // Validate MIME type and extension
+    if (file.type !== "image/webp" || !file.name.toLowerCase().endsWith('.webp')) {
+      console.error("Please upload a .webp image.");
       return;
     }
+
+    // Enforce file size limit (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      console.error("File size must be less than 5MB.");
+      return;
+    }
+
     if (!questInput.id) {
-      alert("Quest ID is required to name the file.");
+      console.error("Quest ID is required to name the file.");
       return;
     }
+
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file, `${questInput.id}_banner.webp`);
+
     try {
       const res = await axios.post(
-        "https://api.starknet.quest/admin/upload_image", 
+        process.env.NEXT_PUBLIC_API_LINK + "/admin/upload_image",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -48,16 +59,16 @@ const BannerDetailsForm: FunctionComponent<BannerDetailsFormProps> = ({
       setQuestInput((prev) => ({
         ...prev,
         banner: {
-          tag: (prev.banner ?? {}).tag ?? "",
-          title: (prev.banner ?? {}).title ?? "",
-          description: (prev.banner ?? {}).description ?? "",
-          cta: (prev.banner ?? {}).cta ?? "",
-          href: (prev.banner ?? {}).href ?? "",
+          tag: prev.banner?.tag ?? "",
+          title: prev.banner?.title ?? "",
+          description: prev.banner?.description ?? "",
+          cta: prev.banner?.cta ?? "",
+          href: prev.banner?.href ?? "",
           image: imageUrl,
         },
       }));
-    } catch (err) {
-      alert("Image upload failed.");
+    } catch (err: unknown) {
+      console.error("Image upload failed:", err instanceof Error ? err.message : "Unknown error");
     }
     setUploading(false);
   };
