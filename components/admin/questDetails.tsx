@@ -59,10 +59,13 @@ const AdminQuestDetails: FunctionComponent<QuestDetailsProps> = ({
   // this fetches all tasks of this quest from db
   useEffect(() => {
     if (!questId) return;
-
-    AdminService.getTasksByQuestId(parseInt(questId)).then((data) => {
-      if ((data as UserTask[]).length) setTasks(data as UserTask[]);
-    });
+    const fetchTasks = async () => {
+      const tasks = await AdminService.getTasksByQuestId(parseInt(questId));
+      if (tasks?.length > 0) {
+        setTasks(tasks);
+      }
+    };
+    fetchTasks();
   }, [questId]);
 
   const handleQuestLinkRedirect = useCallback(() => {
