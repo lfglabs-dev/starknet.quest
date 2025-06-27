@@ -235,9 +235,9 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
   "Wallets, Bridges & On-Ramps": [],
   "Insurance & Risk Management": [
     {
-      title: 'Pramb Insurance',
-      link: ' https://pramb.com/',
-      image: '/pramb/pramb.svg',
+      title: "Pramb Insurance",
+      link: "https://pramb.com/",
+      image: "/pramb/pramb.svg",
     },
   ],
   "Real World Assets (RWA)": [],
