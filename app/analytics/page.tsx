@@ -49,13 +49,15 @@ export default function Page() {
       <div className={styles.backButton}>
         <BackButton onClick={() => router.back()} />
       </div>
-      <Typography
-        type={TEXT_TYPE.H1}
-        color="transparent"
-        className={styles.title}
-      >
-        Quest Analytics
-      </Typography>
+<Typography
+  type={TEXT_TYPE.H1}
+  className={styles.title}
+>
+  Quest Analytics
+</Typography>
+
+
+
       <div className={styles.card_container}>
         {loading ? (
           <FeaturedQuestSkeleton />
