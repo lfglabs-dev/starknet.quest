@@ -16,7 +16,7 @@ const SuggestedQuests: React.FC = () => {
     }, [contextQuests]);
 
     return (
-        <div className="text-center">
+        <div className="text-center w-full flex flex-col items-center">
             <Typography type={TEXT_TYPE.H1} className="title extrabold mb-3.5">New explorer, start your quest!</Typography>
             <div className="mb-12">Get started on your Starknet adventure by tackling your first quest and begin collecting rewards!</div>
             <div className={QuestStyles.questContainer}>
