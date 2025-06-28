@@ -108,10 +108,12 @@ export default function Page({ params }: BoostQuestPageProps) {
       }
     } catch (error) {
       console.log("Error while fetching quest data", error);
+      
       return QuestDefault;
     } finally {
       setIsQuestLoading(false);
     }
+
   }, [questId]);
 
   const fetchQuestParticipation = useCallback(async () => {
@@ -211,7 +213,7 @@ export default function Page({ params }: BoostQuestPageProps) {
             {questData ? (
               <>
                 <div>
-                  <div className={analyticsStyles.tag}>
+                  <div className="bg-[#1F1F25] flex items-center gap-3 rounded-xl py-2 px-4">
                     <CDNImg width={20} src={questData?.logo} />
                     <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
                       {questData?.issuer}
@@ -220,8 +222,8 @@ export default function Page({ params }: BoostQuestPageProps) {
                 </div>
                 <Typography
                   type={TEXT_TYPE.H1}
-                  className={`${analyticsStyles.title}`}
-                  color="transparent"
+                  className="text-white text-[48px] font-[700]"
+                  
                 >
                   {questData?.name}
                 </Typography>
@@ -246,62 +248,70 @@ export default function Page({ params }: BoostQuestPageProps) {
             {isVisitorsLoading ? (
               <MetricCardSkeleton />
             ) : (
-              <div className={`${analyticsStyles.uniqueUserCard}`}>
-                <div className="flex flex-col  justify-center  h-full">
-                  <Typography
-                    type={TEXT_TYPE.BODY_SMALL}
-                    color="white50"
-                    className={analyticsStyles.uniqueUserText}
-                  >
-                    Unique users
-                  </Typography>
-                  <Typography
-                    type={TEXT_TYPE.BODY_NORMAL}
-                    className={analyticsStyles.counterText}
-                  >
-                    {uniqueVisitors && uniqueVisitors > 0
-                      ? numberWithCommas(uniqueVisitors)
-                      : "NA"}
-                  </Typography>
-                </div>
-                <div className="bg-[#FFFFFF0A] rounded-full h-[56px] w-[56px] min-w-[56px] min-h-[56px] flex items-center justify-center">
-                  <ProfilPurpleIcon />
-                </div>
-              </div>
+           <div className={`${analyticsStyles.uniqueUserCard} bg-[#1F1F25]`}>
+  <div className="flex flex-col justify-center h-full">
+    <Typography
+      type={TEXT_TYPE.BODY_SMALL}
+      color="white50"
+      className={analyticsStyles.uniqueUserText}
+    >
+      Unique users
+    </Typography>
+    <Typography
+      type={TEXT_TYPE.BODY_NORMAL}
+      className={analyticsStyles.counterText}
+    >
+      {uniqueVisitors && uniqueVisitors > 0
+        ? numberWithCommas(uniqueVisitors)
+        : "NA"}
+    </Typography>
+  </div>
+  <div className="bg-[#FFFFFF0A] rounded-full h-[56px] w-[56px] min-w-[56px] min-h-[56px] flex items-center justify-center">
+    <ProfilPurpleIcon />
+  </div>
+</div>
+
             )}
 
             {isParticipantsLoading ? (
               <MetricCardSkeleton />
             ) : (
-              <div className={analyticsStyles.dataCard}>
-                <Typography
-                  type={TEXT_TYPE.BODY_SMALL}
-                  color="textGray"
-                  className={analyticsStyles.metricName}
-                >
-                  Users that finished the quest
-                </Typography>
-                <Typography
-                  type={TEXT_TYPE.BODY_NORMAL}
-                  className={analyticsStyles.counterText}
-                >
-                  {questParticipants > 0
-                    ? numberWithCommas(questParticipants)
-                    : "NA"}
-                </Typography>
-                {uniqueVisitors && uniqueVisitors > 0 ? (
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <span className={analyticsStyles.highlightedText}>
-                      {uniqueVisitors > 0
-                        ? `${computePercentage(questParticipants)}%`
-                        : "NA"}
-                    </span>
-                    <span className={analyticsStyles.normalText}>
-                      of unique users
-                    </span>
-                  </div>
-                ) : null}
-              </div>
+      <div className="bg-[#1F1F25] justify-between flex items-center border-t-2 border-[#5CE3FE29] shadow-[0px_4px_20px_0px_#5CE3FE29] rounded-md p-4 w-full max-w-[450px]">
+
+
+<div>
+    <Typography
+    type={TEXT_TYPE.BODY_SMALL}
+    color="textGray"
+    className={analyticsStyles.metricName}
+  >
+    Users that finished the quest
+  </Typography>
+  <Typography
+    type={TEXT_TYPE.BODY_NORMAL}
+    className={analyticsStyles.counterText}
+  >
+    {questParticipants > 0
+      ? numberWithCommas(questParticipants)
+      : "NA"}
+  </Typography>
+
+  {uniqueVisitors && uniqueVisitors > 0 ? (
+    <div className="flex flex-wrap items-baseline gap-2">
+      <span className={analyticsStyles.highlightedText}>
+        {`${computePercentage(questParticipants)}%`}
+      </span>
+      <span className={analyticsStyles.normalText}>
+        of unique users
+      </span>
+    </div>
+  ) : null}
+</div>
+    <div className="bg-[#FFFFFF0A] rounded-full h-[56px] w-[56px] min-w-[56px] min-h-[56px] flex items-center justify-center">
+<OngoingIcon /> 
+ </div>
+</div>
+
             )}
           </div>
         </div>
@@ -311,92 +321,93 @@ export default function Page({ params }: BoostQuestPageProps) {
         {isGraphLoading ? (
           <GraphSkeleton isMobile={isMobile} />
         ) : (
-          <div className={`${analyticsStyles.dataCard} max-w-[950px]`}>
+          <div className="max-w-[950px] bg-[#1F1F25] h-[450px] w-full p-6 py-6 rounded-md">
             {graphData?.length > 0 ? (
               <>
                 <div className="flex flex-col w-full gap-1 mb-6">
                   <Typography
                     type={TEXT_TYPE.BODY_SMALL}
-                    color="textGray"
-                    className={analyticsStyles.metricName}
+                    className={`${analyticsStyles.metricName} text-[#A6A5A7] font-[Sora] text-[12px]`}
                   >
                     User Progress Visualization
                   </Typography>
                   <Typography
                     type={TEXT_TYPE.BODY_NORMAL}
-                    className={analyticsStyles.counterText}
+                    className="text-2xl font-bold text-white"
                   >
-                    Quests Completion over time
+                    Quest Completion Over Time
                   </Typography>
                 </div>
-                <ResponsiveContainer width="100%" height={isMobile ? 200 : 300}>
-                  <AreaChart
-                    width={500}
-                    height={300}
-                    data={graphData}
-                    margin={{
-                      top: 10,
-                      right: 30,
-                      left: 0,
-                      bottom: 0,
-                    }}
-                  >
-                    <defs>
-                      <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="50%"
-                          stopColor="#6AFFAF"
-                          stopOpacity={1}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#5CE3FE"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <XAxis
-                      interval={"preserveEnd"}
-                      type="category"
-                      dataKey="_id"
-                      allowDuplicatedCategory={false}
-                      tickMargin={10}
-                      minTickGap={50}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickFormatter={(value) => formatYAxis(value)}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "black",
-                        borderRadius: "10px",
-                        opacity: 0.8,
-                        borderColor: "grey",
-                      }}
-                      itemStyle={{ textTransform: "capitalize" }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="participants"
-                      stroke="#6AFFAF"
-                      fill="url(#colorPv)"
-                      strokeWidth={2}
-                      connectNulls={true}
-                    />
-                    <CartesianGrid
-                      vertical={false}
-                      strokeDasharray="5 5"
-                      fillOpacity={0.6}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+               <ResponsiveContainer width="100%" height={isMobile ? 200 : 300}>
+  <AreaChart
+    width={500}
+    height={300}
+    data={graphData}
+    margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
+  >
+    <defs>
+      <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#6AFFAF" stopOpacity={1} />
+        <stop offset="100%" stopColor="#5CE3FE" stopOpacity={0} />
+      </linearGradient>
+    </defs>
+<XAxis
+  interval={"preserveEnd"}
+  type="category"
+  dataKey="_id"
+  allowDuplicatedCategory={false}
+  tickMargin={40}
+  minTickGap={40}
+  tick={{
+    fill: "#F4FAFF",        
+    fontSize: 10,           
+    fontFamily: "Sora",   
+  }}
+/>
+
+
+<YAxis
+  axisLine={false}
+  tickFormatter={(value) => formatYAxis(value)}
+  tickMargin={22}
+  tick={{
+    fill: "#F4FAFF",
+    fontSize: 10,
+    fontFamily: "Sora",
+  }}
+/>
+
+
+    <Tooltip
+      contentStyle={{
+        backgroundColor: "black",
+        borderRadius: "10px",
+        opacity: 0.8,
+        borderColor: "grey",
+      }}
+      itemStyle={{ textTransform: "capitalize", color: "#F4FAFF" }}
+    />
+    <Area
+      type="monotone"
+      dataKey="participants"
+      stroke="#6AFFAF"
+      fill="url(#colorPv)"
+      strokeWidth={2}
+      connectNulls={true}
+    />
+    <CartesianGrid
+      vertical={false}
+      strokeDasharray="5 5"
+      stroke="#F4FAFF"
+    />
+  </AreaChart>
+</ResponsiveContainer>
+
               </>
             ) : (
               <div
                 className="flex items-center justify-center w-full"
                 style={{
-                  // we need to dynamically change graph height
                   height: isMobile ? "200px" : "300px",
                 }}
               >
@@ -412,86 +423,72 @@ export default function Page({ params }: BoostQuestPageProps) {
         )}
       </div>
 
-      <div className="flex justify-center">
-        {isParticipationLoading ? (
-          <TasksSkeleton />
-        ) : (
-          <div className={analyticsStyles.tasksContainer}>
-            <div className="flex flex-col w-full gap-1">
+   <div className="flex justify-center">
+  {isParticipationLoading ? (
+    <TasksSkeleton />
+  ) : (
+    <div className="w-full sm:max-w-[980px] px-4">
+      <div className="flex flex-col gap-1 mb-6">
+        <Typography
+          type={TEXT_TYPE.BODY_NORMAL}
+          className="text-2xl font-bold text-white"
+        >
+          People who completed Task
+        </Typography>
+      </div>
+
+      {questParticipationData && questParticipationData?.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {questParticipationData.map((eachParticipation, index) => (
+            <div
+              key={index}
+              className="bg-[#1F1F25] rounded-md p-6 w-full shadow-md"
+            >
               <Typography
                 type={TEXT_TYPE.BODY_SMALL}
                 color="textGray"
                 className={analyticsStyles.metricName}
               >
-                People who completed
+                {eachParticipation.name}
               </Typography>
               <Typography
                 type={TEXT_TYPE.BODY_NORMAL}
                 className={analyticsStyles.counterText}
               >
-                Tasks
+                {numberWithCommas(eachParticipation.count)}
               </Typography>
-            </div>
-
-            <div className="flex flex-wrap justify-center w-full gap-6">
-              {questParticipationData && questParticipationData?.length > 0 ? (
-                questParticipationData?.map(
-                  (eachParticipation, index: number) => (
-                    <div
-                      key={index}
-                      className="flex w-full max-w-none sm:max-w-[245px]"
-                    >
-                      <div className={analyticsStyles.dataCard}>
-                        <Typography
-                          type={TEXT_TYPE.BODY_SMALL}
-                          color="textGray"
-                          className={analyticsStyles.metricName}
-                        >
-                          {eachParticipation.name}
-                        </Typography>
-                        <Typography
-                          type={TEXT_TYPE.BODY_NORMAL}
-                          className={analyticsStyles.counterText}
-                        >
-                          {numberWithCommas(eachParticipation.count)}
-                        </Typography>
-                        {uniqueVisitors && uniqueVisitors > 0 ? (
-                          <div className="flex flex-wrap items-baseline gap-2">
-                            <span className={analyticsStyles.highlightedText}>
-                              {uniqueVisitors > 0
-                                ? `${computePercentage(
-                                    eachParticipation.count
-                                  )}%`
-                                : "NA"}
-                            </span>
-                            <span className={analyticsStyles.normalText}>
-                              of unique users
-                            </span>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  )
-                )
-              ) : (
-                <div
-                  className="flex items-center justify-center w-full"
-                  style={{
-                    height: isMobile ? "200px" : "300px",
-                  }}
-                >
-                  <Typography
-                    type={TEXT_TYPE.BODY_NORMAL}
-                    className={analyticsStyles.counterText}
-                  >
-                    NA
-                  </Typography>
+              {uniqueVisitors && uniqueVisitors > 0 && (
+                <div className="flex flex-wrap items-baseline gap-2 mt-1">
+                  <span className={analyticsStyles.highlightedText}>
+                    {computePercentage(eachParticipation.count)}%
+                  </span>
+                  <span className={analyticsStyles.normalText}>
+                    of unique users
+                  </span>
                 </div>
               )}
             </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div
+          className="flex items-center justify-center w-full"
+          style={{
+            height: isMobile ? "200px" : "300px",
+          }}
+        >
+          <Typography
+            type={TEXT_TYPE.BODY_NORMAL}
+            className={analyticsStyles.counterText}
+          >
+            NA
+          </Typography>
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
     </div>
   );
 }
