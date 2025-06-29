@@ -3,13 +3,17 @@ module.exports = {
   content: ["./app/**/*.{html,tsx}", "./components/**/*.{html,tsx}"],
   theme: {
     extend: {
-        fontSize: {
+      fontSize: {
         xl2_5: "1.875rem",
       },
-        backgroundImage: {
-    'border-gradient-green': 'linear-gradient(to right, #6AFFAF, #5DE5FA)',
-    'border-gradient-blue': 'linear-gradient(to right, #5DE5FA, #6AFFAF)',
-  },
+
+      backgroundImage: {
+        'border-gradient-green': 'linear-gradient(to right, #6AFFAF, #5DE5FA)',
+        'border-gradient-blue': 'linear-gradient(to right, #5DE5FA, #6AFFAF)',
+        'gradient-green': 'linear-gradient(to right, #6AFFAF, transparent, #5DE5FA)',
+        'gradient-blue': 'linear-gradient(to right, #5DE5FA, transparent, #6AFFAF)',
+      },
+
       colors: {
         primary: "#6AFFAF",
         secondary: "#F4FAFF",
@@ -47,15 +51,12 @@ module.exports = {
         greenGlow: "#6AFFAF",
         blueGlow: "#5DE5FA",
       },
+
       boxShadow: {
-      greenGlow: "0 0 20px rgba(106, 255, 175, 0.15)",
-      blueGlow: "0 0 20px rgba(93, 229, 250, 0.15)", 
+        greenGlow: "0 0 20px rgba(106, 255, 175, 0.15)",
+        blueGlow: "0 0 20px rgba(93, 229, 250, 0.15)", 
       },
 
-      backgroundImage: {
-      'gradient-green': 'linear-gradient(to right, #6AFFAF, transparent, #5DE5FA)',
-      'gradient-blue': 'linear-gradient(to right, #5DE5FA, transparent, #6AFFAF)',
-    },
       fontFamily: {
         sora: ["Sora", "sans-serif"],
       },
