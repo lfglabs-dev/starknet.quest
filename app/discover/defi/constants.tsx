@@ -232,7 +232,113 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
       link: "https://www.starkdefi.com/",
     },
   ],
-  "Wallets, Bridges & On-Ramps": [],
+  "Wallets, Bridges & On-Ramps": [
+    {
+      title: "Starkgate",
+      image: "/starknet/starknet2.png",
+      link: "https://starkgate.starknet.io/"
+    },
+    {
+      title: "Argent",
+      image: "/argent/image.png",
+      link: "https://www.argent.xyz/"
+    },
+    {
+      title: "Banxa",
+      image: "/banxa/banxa.png",
+      link: "https://banxa.com/"
+    },
+    {
+      title: "Bitget",
+      image: "/bitget/image.png",
+      link: "https://www.bitget.com/"
+    },
+    {
+      title: "Braavos",
+      image: "/braavos/bravous.png",
+      link: "https://braavos.app/"
+    },
+    {
+      title: "Cartridge",
+      image: "/cartridge/image.png",
+      link: "https://cartridge.gg/"
+    },
+    {
+      title: "Chaineye Mini Bridge",
+      image: "/chaineye/image.png",
+      link: "https://minibridge.chaineye.tools/"
+    },
+    {
+      title: "Dfns",
+      image: "/dfns/image.png",
+      link: "https://www.dfns.co/"
+    },
+    {
+      title: "Keplr",
+      image: "/Kepir/image (1).png",
+      link: "https://www.keplr.app/"
+    },
+    {
+      title: "Layerswap",
+      image: "/layerswap/image.png",
+      link: "https://layerswap.io/"
+    },
+    {
+      title: "Ledger",
+      image: "/Ledger/image (1).png",
+      link: "https://www.ledger.com/"
+    },
+    {
+      title: "Metamask SNAPS",
+      image: "/masks/image.png",
+      link: "https://metamask.io/snaps/"
+    },
+    {
+      title: "OKX",
+      image: "/Okx/image (1).png",
+      link: "https://www.okx.com/"
+    },
+    {
+      title: "Onramp Money",
+      image: "/Onramp/image.png",
+      link: "https://onramp.money/"
+    },
+    {
+      title: "Orbiter",
+      image: "/orbiter/image (1).png",
+      link: "https://www.orbiter.finance/en?src_chain=1&tgt_chain=10&src_token=ETH"
+    },
+    {
+      title: "Owlto",
+      image: "/Owito/image.png",
+      link: "https://owlto.finance/"
+    },
+    {
+      title: "Retrobridge",
+      image: "/RetroBridge/image (1).png",
+      link: "https://retrobridge.io/"
+    },
+    {
+      title: "Rango",
+      image: "/rango/rango.png",
+      link: "https://rango.exchange/"
+    },
+    {
+      title: "Ramp",
+      image: "/pramb/image (1).png",
+      link: "https://ramp.network/"
+    },
+    {
+      title: "RhinoFi",
+      image: "/rhino/image.png",
+      link: "https://rhino.fi/"
+    },
+    {
+      title: "Unlimit Crypto",
+      image: "/Unlimit/image (1).png",
+      link: "https://www.crypto.unlimit.com/"
+    }
+  ],
   "Insurance & Risk Management": [
     {
       title: "Pramb Insurance",
