@@ -275,7 +275,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Keplr",
-      image: "/Kepir/image (1).png",
+      image: "/Kepir/image.png",
       link: "https://www.keplr.app/"
     },
     {
@@ -285,7 +285,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Ledger",
-      image: "/Ledger/image (1).png",
+      image: "/Ledger/image.png",
       link: "https://www.ledger.com/"
     },
     {
@@ -295,7 +295,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "OKX",
-      image: "/Okx/image (1).png",
+      image: "/Okx/image.png",
       link: "https://www.okx.com/"
     },
     {
@@ -305,7 +305,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Orbiter",
-      image: "/orbiter/image (1).png",
+      image: "/orbiter/image.png",
       link: "https://www.orbiter.finance/en?src_chain=1&tgt_chain=10&src_token=ETH"
     },
     {
@@ -315,7 +315,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Retrobridge",
-      image: "/RetroBridge/image (1).png",
+      image: "/RetroBridge/image.png",
       link: "https://retrobridge.io/"
     },
     {
@@ -325,7 +325,7 @@ export const DISCOVER_DEFI: Record<string, DiscoverCard[]> = {
     },
     {
       title: "Ramp",
-      image: "/pramb/image (1).png",
+      image: "/pramb/image.png",
       link: "https://ramp.network/"
     },
     {
