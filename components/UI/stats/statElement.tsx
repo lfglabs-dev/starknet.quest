@@ -13,10 +13,10 @@ type StatElementProps = {
 const StatElement: FunctionComponent<StatElementProps> = ({ name, value }) => {
   return (
     <div className="flex flex-1 w-full px-4 sm:px-2">
-      <Box>
-        <Typography type={TEXT_TYPE.BODY_NORMAL} color="transparent" className={styles.statValue}>{value}</Typography>
+      <div>
+        <Typography type={TEXT_TYPE.BODY_NORMAL} className={styles.statValue}>{value}</Typography>
         <Typography type={TEXT_TYPE.BODY_DEFAULT} color="secondary" className={styles.statName}>{name}</Typography>
-      </Box>
+      </div>
     </div>
     
   );
