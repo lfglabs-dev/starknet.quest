@@ -70,7 +70,7 @@ export default function Page() {
       </div>
 
       <div className="relative w-full px-5 mb-32 lg:w-3/4 lg:px-0 mx-auto">
-        <div className="absolute overflow-hidden -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
+        <div className="absolute -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
           <Image
             src="/icons/patternCircle.svg"
             alt="pattern-circle"
