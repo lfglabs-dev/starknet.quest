@@ -9,6 +9,7 @@ import { QuestsContext } from "@context/QuestsProvider";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
 import QuestAndCollectionTabs from "@components/pages/home/questAndCollectionTabs";
 import CategoryTitle from "@components/UI/titles/categoryTitle";
+import Image from "next/image";
 
 export default function Page() {
   const router = useRouter();
@@ -43,19 +44,30 @@ export default function Page() {
           categories={categories}
           trendingQuests={trendingQuests}
         />
-        <CategoryTitle
-          subtitle="Get access to our community"
-          title="About our quests"
-          corner="bottomLeft"
-          squares="bottomRight"
+        <div className="flex sm:flex-row flex-col items-center gap-2 justify-center">
+        <div>
+          <CategoryTitle
+            subtitle="Get access to our community"
+            title="About our quests"
+            corner="bottomLeft"
+            squares="bottomRight"
         />
-        <Stats
-          stats={[
-            { name: "Quests NFT minted", value: "+1M" },
-            { name: "Unique addresses", value: "398K" },
-            { name: "Unique visitors", value: "+200K" },
-          ]}
+          <Stats
+            stats={[
+              { name: "Quests NFT minted", value: "+1M" },
+              { name: "Unique addresses", value: "398K" },
+              { name: "Unique visitors", value: "+200K" },
+            ]}
+          />
+        </div>
+        <Image src="/tokens.webp"
+          priority
+          height={260}
+          width={294}
+          alt="Tokens"
+          className="object-contain max-w-full h-auto"
         />
+        </div>
         <div className={styles.blur2}>
           <Blur green />
         </div>
