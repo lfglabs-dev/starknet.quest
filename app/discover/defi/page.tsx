@@ -20,8 +20,8 @@ const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
 
 export default function Page() {
   const [data, setData] = useState<TableInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); 
-  const [mounted, setMounted] = useState<boolean>(false); 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(DISCOVER_DEFI_TABS[0]);
 
   const fetchPageData = useCallback(async () => {
@@ -51,7 +51,6 @@ export default function Page() {
     fetchPageData();
   }, [fetchPageData]);
 
- 
   if (!mounted) {
     return (
       <div className="flex flex-col items-center w-full gap-8 mt-24 mb-32">
@@ -137,7 +136,7 @@ export default function Page() {
           <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
             {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
               <DefiDiscoverCard
-                key={`${activeTab}-${idx}`} 
+                key={`${activeTab}-${idx}`}
                 title={card.title}
                 image={card.image}
                 link={card.link}
