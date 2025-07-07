@@ -61,10 +61,11 @@ export default function Page() {
           />
         </div>
         <Image src="/tokens.webp"
+          priority
           height={260}
           width={294}
           alt="Tokens"
-          className="object-contain"
+          className="object-contain max-w-full h-auto"
         />
         </div>
         <div className={styles.blur2}>
