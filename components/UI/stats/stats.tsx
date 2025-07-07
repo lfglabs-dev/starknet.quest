@@ -3,7 +3,6 @@ import styles from "@styles/components/stats.module.css";
 import StatElement from "./statElement";
 import Typography from "../typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
-import Image from "next/image";
 
 type StatsProps = {
   title?: string;
@@ -25,11 +24,7 @@ const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
             value={elt.value}
           />
         ))}
-      <Image src="/tokens.png"
-        height={260}
-        width={294}
-        alt="Tokens"
-      />
+     
       </div>
     </div>
   );
