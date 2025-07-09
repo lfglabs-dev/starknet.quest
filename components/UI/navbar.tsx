@@ -88,23 +88,25 @@ const Navbar: FunctionComponent = () => {
     fetchAndUpdateNotifications();
   }, [address]);
 
-  // Autoconnect
+  
   useEffect(() => {
     const connectToStarknet = async () => {
-      if (
-        !localStorage.getItem("SQ-connectedWallet") 
-      ) {
-        connectWallet();
-      } else {
-        const connectordId = localStorage.getItem("SQ-connectedWallet");
+      const connectorId = localStorage.getItem("SQ-connectedWallet");
+  
+      if (connectorId) {
         const connector = availableConnectors.find(
-          (item) => item.id === connectordId
+          (item) => item.id === connectorId
         );
-        await connectAsync({ connector: connector as Connector });
+        if (connector) {
+          await connectAsync({ connector: connector as Connector });
+        }
       }
+
     };
+  
     connectToStarknet();
   }, []);
+  
 
   useEffect(() => {
     address ? setIsConnected(true) : setIsConnected(false);
