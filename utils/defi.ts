@@ -119,10 +119,9 @@ export const getRedirectLink = (
             break
 
         case "haiko":
-            console.log(parseTokenPair(poolInfo), "login this", first && second)
+
         case "haiko_solvers":
             if (first && second) {
-                console.log("ekubo", first, second)
                 return `https://app.haiko.xyz/positions/new?token0=${first}&token1=${second}`
             }
             break

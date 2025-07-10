@@ -628,18 +628,17 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
                       onClick={() => {
-                      console.log(row, "login row");
-                      // router.push(`/pools/${row.id}`);
-                        // window.open(
-                        //   getRedirectLink(
-                        //     row.getValue("app"),
-                        //     row.getValue("action"),
-                        //     row.getValue("title")
+                      router.push(`/pools/${row.id}`);
+                        window.open(
+                          getRedirectLink(
+                            row.getValue("app"),
+                            row.getValue("action"),
+                            row.getValue("title")
                   
-                        //   ),
+                          ),
 
-                        //   // "_blank"
-                        // );
+                          "_blank"
+                        );
                       }}
                     >
                       {row.getVisibleCells().map((cell) => (
