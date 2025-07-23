@@ -53,9 +53,9 @@
     "react-loader-spinner": "5.4.5",
     "react-use": "^17.4.0",
     "recharts": "^2.12.2",
-    "starknet": "^6.11.0",
+    "starknet": "^7.6.4",
     "starknetid.js": "^4.0.1",
-    "starknetkit": "^2.6.1",
+    "starknetkit": "^3.0.1",
     "three": "^0.155.0",
     "twitter-api-sdk": "^1.2.1"
   },
