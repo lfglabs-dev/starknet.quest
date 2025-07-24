@@ -1,37 +1,30 @@
 import React, { FunctionComponent } from "react";
 import styles from "@styles/components/titles.module.css";
-import Corner from "@components/shapes/corner";
-import Squares from "@components/shapes/squares";
 import { TEXT_TYPE } from "@constants/typography";
 import Typography from "../typography/typography";
 
 type CategoryTitleProps = {
   title: string;
   subtitle: string;
-  corner?: CornerStyle;
-  squares?: SquareStyle;
+  description?: string;
+  useGradientSubtitle?: boolean;
+  alignLeft?: boolean;
 };
 
 const CategoryTitle: FunctionComponent<CategoryTitleProps> = ({
   title,
   subtitle,
-  corner,
-  squares,
+  description, 
+  useGradientSubtitle = false,
+  alignLeft = false,
 }) => {
   return (
-    <div className={styles.container}>
-      {corner && (
-        <div className={`${styles.corner} ${styles[corner]}`}>
-          <Corner />
-        </div>
-      )}
-      {squares && (
-        <div className={`${styles.squares} ${styles[squares]}`}>
-          <Squares />
-        </div>
-      )}
-      <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={styles.categorySubtitle}>{subtitle}</Typography>
+    <div className={alignLeft ? styles.containerLeft : styles.container}>      
+      <Typography type={TEXT_TYPE.BODY_MIDDLE} color="secondary" className={useGradientSubtitle ? styles.categorySubtitleGradient : styles.categorySubtitle}>{subtitle}</Typography>
       <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.categoryTitle}>{title}</Typography>
+      {description && (
+        <Typography type={TEXT_TYPE.BODY_MIDDLE} color="textGray" className={styles.categoryDescription}>{description}</Typography>
+      )}
     </div>
   );
 };

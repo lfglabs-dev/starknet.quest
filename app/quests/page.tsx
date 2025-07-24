@@ -44,29 +44,31 @@ export default function Page() {
           categories={categories}
           trendingQuests={trendingQuests}
         />
-        <div className="flex sm:flex-row flex-col items-center gap-2 justify-center">
-        <div>
-          <CategoryTitle
-            subtitle="Get access to our community"
-            title="About our quests"
-            corner="bottomLeft"
-            squares="bottomRight"
-        />
-          <Stats
-            stats={[
-              { name: "Quests NFT minted", value: "+1M" },
-              { name: "Unique addresses", value: "398K" },
-              { name: "Unique visitors", value: "+200K" },
-            ]}
+        <div className="flex sm:flex-row flex-col items-center gap-8 justify-center">
+          <div>
+            <CategoryTitle
+              subtitle="Level up on starknet"
+              title="Complete, Collect, Conquer"
+              description="The leading quest platform on Starknet with over 1M NFTs minted, empowering users through gamified challenges and exclusive rewards."
+              alignLeft={true}
+              useGradientSubtitle={true}
+            />
+
+            <Stats
+              stats={[
+                { name: "Quests NFT minted", value: "+1M" },
+                { name: "Unique addresses", value: "398K" },
+                { name: "Unique visitors", value: "+200K" },
+              ]}
+            />
+          </div>
+          <Image src="/tokens.webp"
+            priority
+            height={260}
+            width={294}
+            alt="Tokens"
+            className="object-contain max-w-full h-auto"
           />
-        </div>
-        <Image src="/tokens.webp"
-          priority
-          height={260}
-          width={294}
-          alt="Tokens"
-          className="object-contain max-w-full h-auto"
-        />
         </div>
         <div className={styles.blur2}>
           <Blur green />
