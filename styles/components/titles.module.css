@@ -207,6 +207,7 @@
   .categoryDescription {
     font-size: 16px;
     line-height: 26px;
+    max-width: 100%;
   }
   .container {
     padding-left: 0;
