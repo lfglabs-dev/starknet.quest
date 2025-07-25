@@ -6,6 +6,15 @@
   text-align: center;
 }
 
+.containerLeft {
+  position: relative;
+  padding: 12px 10px;
+  display: block;
+  max-width: 700px;
+  margin: 0;
+  text-align: left;
+}
+
 .mainTitleContainer {
   padding-left: 0;
 }
@@ -56,8 +65,19 @@
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
-  line-height: 38px;
+  line-height: 44px;
   margin-top: 8px;
+}
+
+.categoryDescription {
+  /* Body/middle/regular for description */
+  font-family: Sora;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin-top: 8px;
+  opacity: 0.8;
 }
 
 .newCategoryTitle {
@@ -80,6 +100,21 @@
   opacity: 0.8;
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+.categorySubtitleGradient {
+  /* Body/middle/regular with gradient */
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  margin-bottom: 4px;
+  /* text gradient */
+  background: linear-gradient(45deg, var(--primary), var(--tertiary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @media screen and (max-width: 950px) {
@@ -161,12 +196,26 @@
   .categorySubtitle {
     font-size: 16px;
   }
+  .categorySubtitleGradient {
+    font-size: 16px;
+    margin-top: 20px;
+  }
   .categoryTitle {
-    font-size: 24px;
+    font-size: 28px;
+    line-height: 34px;
+  }
+  .categoryDescription {
+    font-size: 16px;
+    line-height: 26px;
+    max-width: 100%;
   }
   .container {
     padding-left: 0;
     padding-right: 0;
+  }
+  .containerLeft {
+    max-width: 100%;
+    text-align: center;
   }
 }
 
