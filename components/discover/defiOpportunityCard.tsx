@@ -37,7 +37,7 @@ export default function DefiOpportunityCardComponent({
   onClick,
 }: PoolCardProps) {
   return (
-    <div onClick={onClick} className="w-full bg-[#1F1F25] hover:bg-white/40 transition-colors py-4 rounded-lg mt-6 lg:mt-0 _border _box-shadow modified-cursor-pointer">
+    <div onClick={onClick} className="transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:bg-[var(--hover-background-color)] hover:shadow-lg hover:shadow-[#ffffff0d]  w-full bg-[#1F1F25] py-4 rounded-lg mt-6 lg:mt-0 _border _box-shadow modified-cursor-pointer">
       <div className="w-full flex justify-between items-start mb-2 relative px-4">
         <div>
           <h2 className="text-[18px] md:text-[14px] xl:text-[24px] font-[700] text-white mb-1">
