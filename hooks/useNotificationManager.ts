@@ -40,7 +40,7 @@ export function useNotificationManager() {
 
   const checkTransactionStatus = async (txHash: string) => {
     const data = await provider.getTransactionReceipt(txHash);
-    if (data?.isRejected() || data?.isReverted()) {
+    if (data?.isReverted()) {
       updateNotificationStatus(txHash, "error");
       setUnread(true);
     } else if (data?.isSuccess()) {
