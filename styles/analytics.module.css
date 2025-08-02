@@ -58,15 +58,12 @@
     rgba(0, 0, 0, 0.105455) 357.89deg,
     rgba(106, 255, 175, 0) 491.45deg
   );
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: destination-out;
   z-index: -1;
   box-sizing: border-box;
 }
-
 
 .dataCard {
   background: linear-gradient(180deg, #29282b 0%, #101012 100%);
@@ -159,6 +156,38 @@
   gap: 1rem;
   max-width: 950px;
   border-radius: 8px;
+}
+
+.borderConicGradient {
+  /* The gradient from Figma */
+  border-image-source: conic-gradient(
+    from 180deg at 51.95% 49.81%,
+    rgba(0, 0, 0, 0.105455) -2.11deg,
+    rgba(106, 255, 175, 0) 131.45deg,
+    #6affaf 175.58deg,
+    rgba(106, 255, 175, 0) 252.32deg,
+    rgba(0, 0, 0, 0.0885149) 310.85deg,
+    rgba(0, 0, 0, 0.105455) 357.89deg,
+    rgba(106, 255, 175, 0) 491.45deg
+  );
+
+  /* This is essential for the border-image to work correctly */
+  border-image-slice: 1;
+}
+
+.borderConicGradientBlue {
+  border-image-slice: 1;
+
+  border-image-source: conic-gradient(
+    from 180deg at 51.95% 49.81%,
+    rgba(0, 0, 0, 0.105455) -2.11deg,
+    rgba(93, 229, 250, 0) 131.45deg,
+    #5de5fa 175.58deg,
+    rgba(93, 229, 250, 0) 252.32deg,
+    rgba(0, 0, 0, 0.0885149) 310.85deg,
+    rgba(0, 0, 0, 0.105455) 357.89deg,
+    rgba(93, 229, 250, 0) 491.45deg
+  );
 }
 
 @media screen and (max-width: 768px) {
