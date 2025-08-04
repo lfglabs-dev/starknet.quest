@@ -40,7 +40,7 @@ import {
 import { ExpiredIcon } from "@components/UI/iconsComponents/icons/expiredIcon";
 import { OngoingIcon } from "@components/UI/iconsComponents/icons/ongoingIcon";
 import ProfilPurpleIcon from "@components/UI/iconsComponents/icons/profileIconPurple";
-import styles from  "@styles/analytics.module.css";
+import styles from "@styles/analytics.module.css";
 
 type BoostQuestPageProps = {
   params: {
@@ -227,11 +227,11 @@ export default function Page({ params }: BoostQuestPageProps) {
               <div className="flex gap-1 justify-center items-center">
                 {questData?.expired ? (
                   <>
-                    Ongoing <OngoingIcon />
+                    Finished <ExpiredIcon />
                   </>
                 ) : (
                   <>
-                    Finished <ExpiredIcon />
+                    Ongoing <OngoingIcon />
                   </>
                 )}
               </div>
@@ -241,7 +241,9 @@ export default function Page({ params }: BoostQuestPageProps) {
       </div>
 
       <div className="max-w-[950px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
-        <div className={`bg-darkCard border-2 border-transparent shadow-greenGlow rounded-md p-4 flex justify-between items-center ${styles.borderConicGradient}`}>
+        <div
+          className={`bg-darkCard border-2 border-transparent shadow-greenGlow rounded-md p-4 flex justify-between items-center ${styles.borderConicGradient}`}
+        >
           <div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white50">
               Unique users
@@ -260,7 +262,9 @@ export default function Page({ params }: BoostQuestPageProps) {
           </div>
         </div>
 
-        <div className={`bg-darkCard border-2 border-transparent shadow-blueGlow  rounded-md p-4 flex justify-between items-center ${styles.borderConicGradientBlue}`}>
+        <div
+          className={`bg-darkCard border-2 border-transparent shadow-blueGlow  rounded-md p-4 flex justify-between items-center ${styles.borderConicGradientBlue}`}
+        >
           <div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
               Users that finished the quest
