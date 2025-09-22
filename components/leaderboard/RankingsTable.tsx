@@ -8,7 +8,6 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { getCompletedQuests } from "@services/apiService";
 import styles from "@styles/leaderboard.module.css";
 import { useMediaQuery } from "@mui/material";
-import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Link from "next/link";
 import { CDNImage } from "@components/cdn/image";
 
@@ -18,6 +17,7 @@ import Top3RankedUsers from "./Top3RankedUsers";
 import { CompletedQuests } from "types/backTypes";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
+import { isStarkDomain } from "starknetid.js/dist/utils";
 
 // show leaderboard ranking table
 const RankingsTable: FunctionComponent<RankingProps> = ({
@@ -141,14 +141,17 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                 >
                   <div className={styles.ranking_table_row_name_rank}>
                     <div className={styles.ranking_position_layout}>
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white text-center">
+                      <Typography
+                        type={TEXT_TYPE.BODY_DEFAULT}
+                        className="text-white text-center"
+                      >
                         {rankFormatter(itemRank)}
                       </Typography>
                     </div>
                     <div className={styles.ranking_profile_layout}>
-                      
                       <Avatar address={decimalToHex(item.address)} width="32" />
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT}
+                      <Typography
+                        type={TEXT_TYPE.BODY_DEFAULT}
                         style={{
                           color:
                             selectedAddress === item.address || isMyRank
@@ -169,9 +172,17 @@ const RankingsTable: FunctionComponent<RankingProps> = ({
                         height={35}
                         alt="xp badge"
                       />
-                      <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white text-center">{item.xp}</Typography>
+                      <Typography
+                        type={TEXT_TYPE.BODY_DEFAULT}
+                        className="text-white text-center"
+                      >
+                        {item.xp}
+                      </Typography>
                     </div>
-                    <Typography type={TEXT_TYPE.BODY_MICRO} className={styles.quests_text}>
+                    <Typography
+                      type={TEXT_TYPE.BODY_MICRO}
+                      className={styles.quests_text}
+                    >
                       {item.completedQuests} Quests
                     </Typography>
                   </div>
