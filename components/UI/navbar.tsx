@@ -91,9 +91,7 @@ const Navbar: FunctionComponent = () => {
   // Autoconnect
   useEffect(() => {
     const connectToStarknet = async () => {
-      if (
-        !localStorage.getItem("SQ-connectedWallet") 
-      ) {
+      if (!localStorage.getItem("SQ-connectedWallet")) {
         connectWallet();
       } else {
         const connectordId = localStorage.getItem("SQ-connectedWallet");
@@ -180,7 +178,14 @@ const Navbar: FunctionComponent = () => {
 
   return (
     <>
-      <div className={`fixed w-full z-20`} id="nav">
+      {/* Discontinuation Notice */}
+      <div className="fixed w-full z-30 bg-red-600 text-white text-center py-2 px-4">
+        <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white">
+          ⚠️ Starknet Quest has been discontinued. Thank you for your support!
+        </Typography>
+      </div>
+
+      <div className={`fixed w-full z-20`} id="nav" style={{ top: "48px" }}>
         <div
           className={`${styles.navbarContainer} ${
             navbarBg ? styles.navbarScrolled : ""
@@ -190,8 +195,8 @@ const Navbar: FunctionComponent = () => {
             <Link href="/" className="modified-cursor-pointer">
               <Image
                 className={styles.logo}
-                src='/visuals/starknetquestLogo.svg'
-                alt='Starknet Quest Logo'
+                src="/visuals/starknetquestLogo.svg"
+                alt="Starknet Quest Logo"
                 width={80}
                 height={80}
                 priority
@@ -199,11 +204,11 @@ const Navbar: FunctionComponent = () => {
             </Link>
           </div>
           <div>
-            <ul className='hidden lg:flex uppercase items-center '>
+            <ul className="hidden lg:flex uppercase items-center ">
               <Link href={`/discover/defi`}>
                 <li className={styles.menuItem}>DeFi</li>
               </Link>
-              <Link href='/quests'>
+              <Link href="/quests">
                 <li className={styles.menuItem}>Quests</li>
               </Link>
               {isConnected && (
@@ -250,12 +255,12 @@ const Navbar: FunctionComponent = () => {
         <div
           className={
             nav
-              ? "mt-24 lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10" //extra margin so page doesnt cover forst navbar buttons
+              ? "mt-32 lg:hidden fixed left-0 top-0 w-full h-screen bg-black/10 z-10" //extra margin so page doesnt cover first navbar buttons
               : ""
           }
         >
           <div
-            className={`mt-20 fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${
+            className={`mt-28 fixed left-0 top-0 w-full sm:w-[60%] lg:w-[45%] h-screen bg-background px-5 ease-in justify-between flex-col overflow-auto ${
               //extra margin so page doesnt overlap the navbar
               nav ? styles.mobileNavbarShown : styles.mobileNavbarHidden
             }`}
@@ -271,7 +276,7 @@ const Navbar: FunctionComponent = () => {
                       DeFi
                     </li>
                   </Link>
-                  <Link href='/quests'>
+                  <Link href="/quests">
                     <li
                       onClick={() => setNav(false)}
                       className={styles.menuItemSmall}

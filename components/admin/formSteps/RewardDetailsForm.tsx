@@ -1,33 +1,28 @@
 import React, { FunctionComponent, useCallback } from "react";
 import TextInput from "../textInput";
 import { SelectChangeEvent, Switch } from "@mui/material";
-import {
-  CreateQuest,
-  NFTUri,
-  UpdateBoost,
-  UpdateQuest,
-} from "../../../types/backTypes";
+import { NFTUri, UpdateBoost, UpdateQuest } from "../../../types/backTypes";
 import Button from "@components/UI/button";
 import { boostDefaultInput } from "@constants/admin";
 import { getTokenName } from "@utils/tokenService";
 import { TOKEN_ADDRESS_MAP, TOKEN_DECIMAL_MAP } from "@constants/common";
 import { getCurrentNetwork } from "@utils/network";
 import Dropdown from "@components/UI/dropdown";
+import { AdminService } from "@services/authService";
+import { useNotification } from "@context/NotificationProvider";
 
 type RewardDetailsFormProps = {
   handleQuestInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBoostInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleQuestImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  questInput: CreateQuest | UpdateQuest;
+  questInput: UpdateQuest;
   boostInput: typeof boostDefaultInput | UpdateBoost;
   nfturi: NFTUri;
   setNftUri: React.Dispatch<React.SetStateAction<NFTUri>>;
-  setQuestInput:
-  | React.Dispatch<React.SetStateAction<CreateQuest>>
-  | React.Dispatch<React.SetStateAction<UpdateQuest>>;
+  setQuestInput: React.Dispatch<React.SetStateAction<UpdateQuest>>;
   setBoostInput:
-  | React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>
-  | React.Dispatch<React.SetStateAction<UpdateBoost>>;
+    | React.Dispatch<React.SetStateAction<typeof boostDefaultInput>>
+    | React.Dispatch<React.SetStateAction<UpdateBoost>>;
   setShowBoost: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: () => void;
   submitButtonDisabled: boolean;
@@ -49,8 +44,10 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
   boostInput,
   setBoostInput,
   buttonLoading,
+  setQuestInput,
 }) => {
   const network = getCurrentNetwork();
+  const { showNotification } = useNotification();
 
   const handleBoostTokenChange = useCallback(
     (event: SelectChangeEvent) => {
@@ -103,6 +100,32 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             type="file"
             name="nft_image_file"
             className="border border-[#f4faff4d] rounded-lg p-2 w-80"
+            onChange={async (event) => {
+              const file = event.target.files?.[0];
+              if (!file) {
+                return;
+              }
+              const imageName = `${questInput.id}_nft`;
+              const imageUrl = `${process.env.NEXT_PUBLIC_API_LINK}/images/${imageName}`;
+              try {
+                await AdminService.uploadImage(file, imageName);
+                setNftUri((prev) => ({
+                  ...prev,
+                  image: imageUrl,
+                }));
+                setQuestInput((prev) => ({
+                  ...prev,
+                  rewards_img: imageUrl,
+                  img_card: imageUrl,
+                }));
+                showNotification("Image uploaded successfully", "success");
+              } catch (err) {
+                showNotification(
+                  err instanceof Error ? err.message : "Failed to upload image",
+                  "error"
+                );
+              }
+            }}
           />
         </div>
 
@@ -130,6 +153,27 @@ const RewardDetailsForm: FunctionComponent<RewardDetailsFormProps> = ({
             type="file"
             name="issuer_logo_file"
             className="border border-[#f4faff4d] rounded-lg p-2 w-80"
+            onChange={async (event) => {
+              const file = event.target.files?.[0];
+              if (!file) {
+                return;
+              }
+              const imageName = `${questInput.id}_issuer`;
+              const imageUrl = `${process.env.NEXT_PUBLIC_API_LINK}/images/${imageName}`;
+              try {
+                await AdminService.uploadImage(file, imageName);
+                setQuestInput((prev) => ({
+                  ...prev,
+                  logo: imageUrl,
+                }));
+                showNotification("Image uploaded successfully", "success");
+              } catch (err) {
+                showNotification(
+                  err instanceof Error ? err.message : "Failed to upload image",
+                  "error"
+                );
+              }
+            }}
           />
         </div>
 

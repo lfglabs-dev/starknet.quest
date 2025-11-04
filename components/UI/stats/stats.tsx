@@ -16,7 +16,7 @@ const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
   return (
     <div className={styles.container}>
       {title && <Typography type={TEXT_TYPE.H2} color="secondary" className={styles.title}>{title}</Typography>}
-      <div className={styles.elementsContainer}>
+      <div className="flex max-lg:flex-col gap-4">
         {stats.map((elt, index) => (
           <StatElement
             key={`stats_${index}`}
@@ -24,6 +24,7 @@ const Stats: FunctionComponent<StatsProps> = ({ title, stats }) => {
             value={elt.value}
           />
         ))}
+     
       </div>
     </div>
   );

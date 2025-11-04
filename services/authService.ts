@@ -32,7 +32,7 @@ import {
 const baseurl = process.env.NEXT_PUBLIC_API_LINK;
 
 const login = async (params: { passcode: string }) => {
-  try {    
+  try {
     const { passcode } = params;
     const response = await fetch(`${baseurl}/admin/login?code=${passcode}`);
     return await response.json();
@@ -414,7 +414,7 @@ const updateContract = async (params: UpdateContract) => {
 };
 
 const createCustomApi = async (params: CreateCustomApi) => {
-  try{
+  try {
     const response = await fetch(`${baseurl}/admin/tasks/custom_api/create`, {
       method: "POST",
       headers: {
@@ -427,10 +427,10 @@ const createCustomApi = async (params: CreateCustomApi) => {
   } catch (err) {
     console.log("Error while creating custom API task", err);
   }
-}
+};
 
 const updateCustomApi = async (params: UpdateCustomApi) => {
-  try{
+  try {
     const response = await fetch(`${baseurl}/admin/tasks/custom_api/update`, {
       method: "POST",
       headers: {
@@ -443,7 +443,7 @@ const updateCustomApi = async (params: UpdateCustomApi) => {
   } catch (err) {
     console.log("Error while updating custom API task", err);
   }
-}
+};
 
 const createQuiz = async (params: CreateQuiz) => {
   try {
@@ -532,7 +532,7 @@ const deleteQuizQuestion = async (params: DeleteQuizQuestion) => {
   } catch (err) {
     console.log("Error while deleting quiz question", err);
   }
-}; 
+};
 
 const deleteTask = async (params: { id: number }) => {
   try {
@@ -631,7 +631,7 @@ const getQuestParticipantsByQuestId = async (params: { id: number }) => {
     console.log("Error while getting quest participants", err);
     throw err;
   }
-}; 
+};
 
 const getBoostWinnersByBoostId = async (params: { id: number }) => {
   try {
@@ -650,6 +650,31 @@ const getBoostWinnersByBoostId = async (params: { id: number }) => {
     return await response.json();
   } catch (err) {
     console.log("Error while getting boost winners by boost id", err);
+    throw err;
+  }
+};
+
+const uploadImage = async (file: File, imageName: string) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await fetch(
+      `${baseurl}/admin/images/upload/${imageName}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      }
+    );
+    if (response.status !== 200) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+    return response.json();
+  } catch (err) {
+    console.log("Error while uploading image", err);
     throw err;
   }
 };
@@ -693,4 +718,5 @@ export const AdminService = {
   addUser,
   getQuestParticipantsByQuestId,
   getBoostWinnersByBoostId,
+  uploadImage,
 };

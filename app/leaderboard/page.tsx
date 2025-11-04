@@ -14,7 +14,7 @@ import {
 } from "@services/apiService";
 import { calculatePercentile } from "@utils/numberService";
 import styles from "@styles/leaderboard.module.css";
-import { useAccount,type Address } from "@starknet-react/core";
+import { useAccount, type Address } from "@starknet-react/core";
 import LeaderboardSkeleton from "@components/skeletons/leaderboardSkeleton";
 import FeaturedQuest from "@components/UI/featured_banner/featuredQuest";
 import { QuestsContext } from "@context/QuestsProvider";
@@ -26,7 +26,6 @@ import { Abi, Contract, Provider } from "starknet";
 import naming_abi from "@abi/naming_abi.json";
 import { StarknetIdJsContext } from "@context/StarknetIdJsProvider";
 import { utils } from "starknetid.js";
-import { isStarkDomain } from "starknetid.js/packages/core/dist/utils";
 import Divider from "@mui/material/Divider";
 import Blur from "@components/shapes/blur";
 import RankingsTable from "@components/leaderboard/RankingsTable";
@@ -43,7 +42,7 @@ import {
   LeaderboardTopperParams,
 } from "../../types/backTypes";
 import { decimalToHex } from "@utils/feltService";
-
+import { isStarkDomain } from "starknetid.js/dist/utils";
 
 export default function Page() {
   const router = useRouter();
@@ -73,10 +72,10 @@ export default function Page() {
   const [inititalFetchTop50, setInititalFetchTop50] = useState(false);
 
   const [leaderboardToppers, setLeaderboardToppers] =
-  useState<LeaderboardToppersData>({
-    best_users: [],
-    total_users: 0,
-  });
+    useState<LeaderboardToppersData>({
+      best_users: [],
+      total_users: 0,
+    });
 
   const isTop50RankedView = useMemo(
     () =>
@@ -97,18 +96,17 @@ export default function Page() {
     const timeoutId = setTimeout(() => setApiCallDelay(true), 1000);
     if (address) setUserAddress(address);
     if (status === "disconnected") setUserAddress("");
-    return () => clearTimeout(timeoutId); // Cleanup 
+    return () => clearTimeout(timeoutId); // Cleanup
   }, [address, status]);
 
   useEffect(() => {
     if (!apiCallDelay) return;
     const fetchTimeout = setTimeout(() => {
-        fetchPageData();
-    }, 500); 
+      fetchPageData();
+    }, 500);
 
     return () => clearTimeout(fetchTimeout);
-}, [apiCallDelay]);
-
+  }, [apiCallDelay]);
 
   const fetchRankingResults = useCallback(
     async (requestBody: LeaderboardRankingParams) => {
@@ -124,7 +122,10 @@ export default function Page() {
     async (requestBody: LeaderboardRankingParams) => {
       const response = await fetchLeaderboardRankings(requestBody);
       if (response) {
-        setRanking((prev) => ({ ...prev, ranking: [...prev.ranking, ...response.ranking] }));
+        setRanking((prev) => ({
+          ...prev,
+          ranking: [...prev.ranking, ...response.ranking],
+        }));
       }
     },
     []
@@ -140,7 +141,7 @@ export default function Page() {
 
   const fetchPageData = useCallback(async () => {
     const requestBody = {
-      addr: status === "connected" ? (address || userAddress) : "",
+      addr: status === "connected" ? address || userAddress : "",
       page_size: 10,
       shift: 0,
       duration: timeFrameMap(duration),
@@ -159,8 +160,6 @@ export default function Page() {
     userAddress,
     status,
   ]);
-
-
 
   const contract = useMemo(() => {
     return new Contract(
@@ -208,7 +207,9 @@ export default function Page() {
   useEffect(() => {
     const checkIfValidAddress = async (address: string) => {
       try {
-        const domain = isStarkDomain(address) ? getDomainWithoutStark(address) : address;
+        const domain = isStarkDomain(address)
+          ? getDomainWithoutStark(address)
+          : address;
         const res: { message: boolean } = await verifyDomain(domain);
         if (res.message) {
           setSearchResults([domain.concat(".stark")]);
@@ -259,7 +260,7 @@ export default function Page() {
     }
     if (!checkIfLastPage && viewMore) {
       const requestBody = {
-        addr: currentSearchedAddress || (userAddress ? (userAddress) : ""),
+        addr: currentSearchedAddress || (userAddress ? userAddress : ""),
         page_size: rowsPerPage,
         shift: currentPage,
         duration: timeFrameMap(duration),
@@ -288,7 +289,8 @@ export default function Page() {
   */
   useEffect(() => {
     const requestBody = {
-      addr: currentSearchedAddress || (userAddress ? (userAddress) : address || ""),
+      addr:
+        currentSearchedAddress || (userAddress ? userAddress : address || ""),
       page_size: rowsPerPage,
       shift: 0,
       duration: timeFrameMap(duration),
@@ -313,7 +315,8 @@ export default function Page() {
   useEffect(() => {
     if (inititalFetchTop50 && address && duration !== TOP_50_TAB_STRING) {
       const requestBody = {
-         addr: currentSearchedAddress || (userAddress ? (userAddress) : address || ""),
+        addr:
+          currentSearchedAddress || (userAddress ? userAddress : address || ""),
         page_size: rowsPerPage,
         shift: 0,
         duration: timeFrameMap(duration),
@@ -362,184 +365,149 @@ export default function Page() {
           <LeaderboardSkeleton />
         </div>
       // ) : ( */}
-        <>
-          <div className={styles.leaderboard_quest_banner}>
-            <div className={styles.blur1}>
-              <Blur green />
-            </div>
-            <div className={styles.blur2}>
-              <Blur green />
-            </div>
-
-            <FeaturedQuest
-              heading="Are you ready for this quest?"
-              key={featuredQuest?.id}
-              title={featuredQuest?.title_card}
-              onClick={() => router.push(`/quest/${featuredQuest?.id}`)}
-              imgSrc={featuredQuest?.img_card}
-              issuer={{
-                name: featuredQuest?.issuer ?? "",
-                logoFavicon: featuredQuest?.logo ?? "",
-              }}
-              reward={featuredQuest?.rewards_title}
-              desc={featuredQuest?.desc}
-              expiry={featuredQuest?.expiry_timestamp}
-              questId={featuredQuest?.id}
-            />
+      <>
+        <div className={styles.leaderboard_quest_banner}>
+          <div className={styles.blur1}>
+            <Blur green />
           </div>
-          <div className={styles.leaderboard_layout}>
-            <div className={styles.leaderboard_topbar}>
-              <div style={{ flex: 0.4 }}>
-                <Typography
-                  type={TEXT_TYPE.BODY_MIDDLE}
-                  className={styles.leaderboard_heading}
-                >
-                  Leaderboard
-                </Typography>
-              </div>
-              <div className={styles.leaderboard_chiplist} style={{ flex: 1 }}>
-                <ChipList
-                  selected={duration}
-                  handleChangeSelection={handleChangeSelection}
-                  tags={[
-                    "Last 7 Days",
-                    "Last 30 Days",
-                    "All time",
-                    TOP_50_TAB_STRING,
-                  ]}
-                />
-              </div>
-              <div style={{ flex: 0.4 }} className="w-full">
-                <Searchbar
-                  value={searchQuery}
-                  handleChange={handleChange}
-                  onKeyDown={handleKeyDown}
-                  suggestions={searchResults}
-                  handleSuggestionClick={(address) => {
-                    setCurrentSearchedAddress(address);
-                    setSearchResults([]);
-                    setCustomResult(true);
-                  }}
-                />
-              </div>
-            </div>
+          <div className={styles.blur2}>
+            <Blur green />
+          </div>
 
-            {/* this will be displayed if user is present otherwise will not be displayed */}
-            {userPercentile ? (
-              userPercentile >= 0 ? (
-                <div className={styles.percentile_container}>
-                  {currentSearchedAddress.length > 0 || userAddress ? (
-                    <div className="hidden md:block">
-                      <Avatar
-                        address={
-                          currentSearchedAddress.length > 0
-                            ? decimalToHex(currentSearchedAddress)
-                            : userAddress
-                        }
-                      />
-                    </div>
-                  ) : null}
-                  <div className={styles.percentile_text_container}>
-                    <Typography
-                      type={TEXT_TYPE.BODY_DEFAULT}
-                      color="textGray"
-                      className={styles.percentile_text_normal}
-                    >
-                      {currentSearchedAddress.length > 0 ? "He is" : "You are "}
-                    </Typography>
-                    <span className={styles.percentile_text_green}>
-                      &nbsp;better than {userPercentile}%&nbsp;
-                    </span>
-                    <Typography
-                      type={TEXT_TYPE.BODY_DEFAULT}
-                      color="textGray"
-                      className={styles.percentile_text_normal}
-                    >
-                      of the other players
-                    </Typography>
+          <FeaturedQuest
+            heading="Are you ready for this quest?"
+            key={featuredQuest?.id}
+            title={featuredQuest?.title_card}
+            onClick={() => router.push(`/quest/${featuredQuest?.id}`)}
+            imgSrc={featuredQuest?.img_card}
+            issuer={{
+              name: featuredQuest?.issuer ?? "",
+              logoFavicon: featuredQuest?.logo ?? "",
+            }}
+            reward={featuredQuest?.rewards_title}
+            desc={featuredQuest?.desc}
+            expiry={featuredQuest?.expiry_timestamp}
+            questId={featuredQuest?.id}
+          />
+        </div>
+        <div className={styles.leaderboard_layout}>
+          <div className={styles.leaderboard_topbar}>
+            <div style={{ flex: 0.4 }}>
+              <Typography
+                type={TEXT_TYPE.BODY_MIDDLE}
+                className={styles.leaderboard_heading}
+              >
+                Leaderboard
+              </Typography>
+            </div>
+            <div className={styles.leaderboard_chiplist} style={{ flex: 1 }}>
+              <ChipList
+                selected={duration}
+                handleChangeSelection={handleChangeSelection}
+                tags={[
+                  "Last 7 Days",
+                  "Last 30 Days",
+                  "All time",
+                  TOP_50_TAB_STRING,
+                ]}
+              />
+            </div>
+            <div style={{ flex: 0.4 }} className="w-full">
+              <Searchbar
+                value={searchQuery}
+                handleChange={handleChange}
+                onKeyDown={handleKeyDown}
+                suggestions={searchResults}
+                handleSuggestionClick={(address) => {
+                  setCurrentSearchedAddress(address);
+                  setSearchResults([]);
+                  setCustomResult(true);
+                }}
+              />
+            </div>
+          </div>
+
+          {/* this will be displayed if user is present otherwise will not be displayed */}
+          {userPercentile ? (
+            userPercentile >= 0 ? (
+              <div className={styles.percentile_container}>
+                {currentSearchedAddress.length > 0 || userAddress ? (
+                  <div className="hidden md:block">
+                    <Avatar
+                      address={
+                        currentSearchedAddress.length > 0
+                          ? decimalToHex(currentSearchedAddress)
+                          : userAddress
+                      }
+                    />
                   </div>
-                </div>
-              ) : address ? (
-                <div className={styles.percentile_container}>
+                ) : null}
+                <div className={styles.percentile_text_container}>
                   <Typography
                     type={TEXT_TYPE.BODY_DEFAULT}
                     color="textGray"
                     className={styles.percentile_text_normal}
                   >
-                    You were not active this week. ready to jump back in?
+                    {currentSearchedAddress.length > 0 ? "He is" : "You are "}
                   </Typography>
-                  <Link href="/">
-                    <Typography
-                      type={TEXT_TYPE.BODY_DEFAULT}
-                      color="white"
-                      className={styles.percentile_text_link}
-                    >
-                      Start your quest
-                    </Typography>
-                  </Link>
-                </div>
-              ) : null
-            ) : null}
-            <Divider
-              orientation="horizontal"
-              variant="fullWidth"
-              className={styles.divider}
-            />
-
-            {/* shows loader skeleton while data is still being fetched*/}
-
-            {rankingdataloading ? (
-              <RankingSkeleton />
-            ) : ranking ? (
-              isNoSearchResults ? (
-                // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
-                <div className={styles.no_result_container}>
-                  <img
-                    src="/visuals/animals/tiger.webp"
-                    height={256}
-                    width={254}
-                    alt="error image"
-                  />
+                  <span className={styles.percentile_text_green}>
+                    &nbsp;better than {userPercentile}%&nbsp;
+                  </span>
                   <Typography
                     type={TEXT_TYPE.BODY_DEFAULT}
-                    className="pb-[1.5rem]"
+                    color="textGray"
+                    className={styles.percentile_text_normal}
                   >
-                    No Results Found! Try a new search
+                    of the other players
                   </Typography>
-                  <Divider
-                    orientation="horizontal"
-                    variant="fullWidth"
-                    className={styles.divider}
-                  />
                 </div>
-              ) : (
-                <>
-                  <RankingsTable
-                    duration={duration}
-                    data={
-                      checkIfLastPage && !viewMore
-                        ? { ...ranking, ranking: ranking.ranking.slice(0, 10) }
-                        : ranking
-                    }
-                    selectedAddress={
-                      currentSearchedAddress.length > 0
-                        ? currentSearchedAddress
-                        : (userAddress)
-                    }
-                    searchedAddress={currentSearchedAddress}
-                    leaderboardToppers={leaderboardToppers}
-                    paginationLoading={paginationLoading}
-                    setPaginationLoading={setPaginationLoading}
-                  />
-                </>
-              )
-            ) : (
-              <div className={styles.no_result_container}>
+              </div>
+            ) : address ? (
+              <div className={styles.percentile_container}>
                 <Typography
                   type={TEXT_TYPE.BODY_DEFAULT}
-                  className="pb-[1.5rem] text-[1.5rem]"
+                  color="textGray"
+                  className={styles.percentile_text_normal}
                 >
-                  Something went wrong! Try again...
+                  You were not active this week. ready to jump back in?
+                </Typography>
+                <Link href="/">
+                  <Typography
+                    type={TEXT_TYPE.BODY_DEFAULT}
+                    color="white"
+                    className={styles.percentile_text_link}
+                  >
+                    Start your quest
+                  </Typography>
+                </Link>
+              </div>
+            ) : null
+          ) : null}
+          <Divider
+            orientation="horizontal"
+            variant="fullWidth"
+            className={styles.divider}
+          />
+
+          {/* shows loader skeleton while data is still being fetched*/}
+
+          {rankingdataloading ? (
+            <RankingSkeleton />
+          ) : ranking ? (
+            isNoSearchResults ? (
+              // {/* this will be displayed if searched user is not present in leaderboard or server returns 500*/}
+              <div className={styles.no_result_container}>
+                <img
+                  src="/visuals/animals/tiger.webp"
+                  height={256}
+                  width={254}
+                  alt="error image"
+                />
+                <Typography
+                  type={TEXT_TYPE.BODY_DEFAULT}
+                  className="pb-[1.5rem]"
+                >
+                  No Results Found! Try a new search
                 </Typography>
                 <Divider
                   orientation="horizontal"
@@ -547,22 +515,57 @@ export default function Page() {
                   className={styles.divider}
                 />
               </div>
+            ) : (
+              <>
+                <RankingsTable
+                  duration={duration}
+                  data={
+                    checkIfLastPage && !viewMore
+                      ? { ...ranking, ranking: ranking.ranking.slice(0, 10) }
+                      : ranking
+                  }
+                  selectedAddress={
+                    currentSearchedAddress.length > 0
+                      ? currentSearchedAddress
+                      : userAddress
+                  }
+                  searchedAddress={currentSearchedAddress}
+                  leaderboardToppers={leaderboardToppers}
+                  paginationLoading={paginationLoading}
+                  setPaginationLoading={setPaginationLoading}
+                />
+              </>
+            )
+          ) : (
+            <div className={styles.no_result_container}>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                className="pb-[1.5rem] text-[1.5rem]"
+              >
+                Something went wrong! Try again...
+              </Typography>
+              <Divider
+                orientation="horizontal"
+                variant="fullWidth"
+                className={styles.divider}
+              />
+            </div>
+          )}
+          {duration !== TOP_50_TAB_STRING &&
+            (address || (!isNoSearchResults && currentSearchedAddress)) &&
+            !isNoSearchResults && (
+              <Button
+                onClick={handleViewMore}
+                variant="text"
+                disableRipple
+                className="w-fit text-white text self-center"
+                style={{ textTransform: "none" }}
+              >
+                {checkIfLastPage && viewMore ? "View less" : "View more"}
+              </Button>
             )}
-            {duration !== TOP_50_TAB_STRING &&
-              (address || (!isNoSearchResults && currentSearchedAddress)) &&
-              !isNoSearchResults && (
-                <Button
-                  onClick={handleViewMore}
-                  variant="text"
-                  disableRipple
-                  className="w-fit text-white text self-center"
-                  style={{ textTransform: "none" }}
-                >
-                  {checkIfLastPage && viewMore ? "View less" : "View more"}
-                </Button>
-              )}
-          </div>
-        </>
+        </div>
+      </>
       {/* )} */}
     </div>
   );

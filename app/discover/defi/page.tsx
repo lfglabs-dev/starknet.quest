@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import DataTable from "@components/discover/defiTable";
 import DeFiConceptCard from "@components/UI/DefiConceptCard";
 import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
-import { DEFI_CONCEPTS } from "./constants";
+import { DEFI_CONCEPTS, DISCOVER_DEFI } from "./constants";
 import Image from "next/image";
 import {
   getAltProtocolStats,
@@ -14,10 +14,15 @@ import {
   getPairingStats,
 } from "@services/apiService";
 import { formatStatsData } from "@utils/defi";
+import DefiDiscoverCard from "@components/UI/DefiDiscoverCard";
+
+const DISCOVER_DEFI_TABS = Object.keys(DISCOVER_DEFI);
 
 export default function Page() {
-  const [data, setData] = React.useState<TableInfo[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [data, setData] = useState<TableInfo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState(DISCOVER_DEFI_TABS[0]);
 
   const fetchPageData = useCallback(async () => {
     try {
@@ -42,32 +47,49 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    setMounted(true);
     fetchPageData();
-  }, []);
+  }, [fetchPageData]);
+
+  if (!mounted) {
+    return (
+      <div className="flex flex-col items-center w-full gap-8 mt-24 mb-32">
+        <div className="w-full p-6 mx-4 rounded-xl lg:w-3/4 mb-36">
+          <div className="animate-pulse">
+            <div className="h-64 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex w-full flex-col mt-24 gap-8 items-center mb-32">
-      <div className="mx-4 p-6  rounded-xl w-full lg:w-3/4 mb-36">
+    <div className="flex flex-col items-center w-full gap-8 mt-24 mb-32">
+      <div className="w-full p-6 mx-4 rounded-xl lg:w-3/4 mb-36">
         <DataTable loading={loading} data={data} />
       </div>
 
-      <div className="w-full lg:w-3/4 px-5 lg:px-0 relative">
+      <div className="relative w-full px-5 mb-32 lg:w-3/4 lg:px-0 mx-auto">
         <div className="absolute -right-1/2 top-0 w-[781px] h-[764px] opacity-30 pointer-events-none">
           <Image
             src="/icons/patternCircle.svg"
             alt="pattern-circle"
             width={781}
             height={764}
-            className="w-full h-full relative animate-spin-slow"
+            className="relative w-full h-full animate-spin-slow"
+            priority={false}
           />
         </div>
 
-        <div className="max-w-sm md:max-w-none mx-auto">
-          <Typography type={TEXT_TYPE.H2} className="mb-8 text-center lg:text-left text-white font-bold text-2xl">
+        <div className="max-w-sm mx-auto md:max-w-none">
+          <Typography
+            type={TEXT_TYPE.H2}
+            className="mb-8 text-2xl font-bold text-center text-white lg:text-left"
+          >
             Essential DeFi Concepts
           </Typography>
           <div
-            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 relative z-5"
+            className="relative grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 z-5"
             aria-label="DeFi concept cards grid"
           >
             {DEFI_CONCEPTS.map((concept) => (
@@ -76,6 +98,48 @@ export default function Page() {
                 title={concept.title}
                 description={concept.description}
                 icon={concept.icon}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative w-full px-5 mb-20 lg:w-3/4 lg:px-0 sm:mb-0 mx-auto">
+        <div className="max-w-sm mx-auto md:max-w-none">
+          <Typography
+            type={TEXT_TYPE.H2}
+            className="mb-8 text-2xl font-bold text-center text-white lg:text-left"
+          >
+            Discover Starknet DeFi Ecosystem
+          </Typography>
+          <div
+            role="tablist"
+            className="flex flex-wrap items-center justify-center gap-3 mb-10 md:justify-start md:items-start"
+          >
+            {DISCOVER_DEFI_TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                role="tab"
+                aria-selected={activeTab === tab}
+                className={`text-sm px-4 py-2 rounded-xl transition font-semibold capitalize ${
+                  activeTab === tab
+                    ? "bg-white text-background"
+                    : "text-[#E1DCEA]"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-6 mx-auto">
+            {DISCOVER_DEFI[activeTab]?.map((card, idx) => (
+              <DefiDiscoverCard
+                key={`${activeTab}-${idx}`}
+                title={card.title}
+                image={card.image}
+                link={card.link}
               />
             ))}
           </div>

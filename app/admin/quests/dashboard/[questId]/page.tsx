@@ -129,11 +129,24 @@ export default function Page({ params }: QuestIdProps) {
       const nft_uri_data = await AdminService.getNftUriByQuestId({
         id: questId.current,
       });
-      setNftUri(nft_uri_data);
-      const quest_tasks = await AdminService.getTasksByQuestId(questId.current);
-      const formatted_steps = await tasksFormatter(quest_tasks);
-      setInitialSteps(formatted_steps);
-      setSteps(formatted_steps);
+      if (nft_uri_data) {
+        setNftUri(nft_uri_data);
+      } else {
+        setNftUri((prev) => ({
+          ...prev,
+          image: quest_details.img_card,
+        }));
+      }
+      try {
+        const quest_tasks = await AdminService.getTasksByQuestId(
+          questId.current
+        );
+        const formatted_steps = await tasksFormatter(quest_tasks);
+        setInitialSteps(formatted_steps);
+        setSteps(formatted_steps);
+      } catch (error) {
+        console.error(error);
+      }
     } catch (error) {
       showNotification("Failed to update quest. Please try again.", "error");
       console.log("Error while fetching quests", error);
@@ -307,8 +320,7 @@ export default function Page({ params }: QuestIdProps) {
   }, [boostInput, showBoost]);
 
   const checkQuestChanges = useCallback(() => {
-    const updatedQuest = questData !== questInput;
-    return updatedQuest;
+    return JSON.stringify(questData) !== JSON.stringify(questInput);
   }, [questInput, questData]);
 
   const checkBoostChanges = useCallback(() => {
@@ -837,7 +849,8 @@ export default function Page({ params }: QuestIdProps) {
           questInput={questInput}
           handleQuestInputChange={handleQuestInputChange}
           submitButtonDisabled={isButtonDisabled}
-          onSubmit={() => handleTabChange(currentPage + 1)}
+          onSubmit={async () => await handleQuestBoostNftChanges()}
+          buttonLoading={buttonLoading}
         />
       );
     } else if (currentPage === 1) {

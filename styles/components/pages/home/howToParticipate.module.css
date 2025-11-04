@@ -1,7 +1,12 @@
 .stepsContainer {
   position: relative;
+  flex-grow: 1;
 }
 
 .section {
   padding-top: 26px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
+

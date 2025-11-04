@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useCallback, useState, useEffect } from "react";
+import React, {
+  type FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+  useMemo
+} from "react";
 import {
   Table,
   TableBody,
@@ -8,8 +14,8 @@ import {
   TableRow,
 } from "@components/UI/table/table";
 import {
-  ColumnDef,
-  SortingState,
+  type ColumnDef,
+  type SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -21,7 +27,7 @@ import Typography from "@components/UI/typography/typography";
 import { TEXT_TYPE } from "@constants/typography";
 import { CDNImage, CDNImg } from "@components/cdn/image";
 import Dropdown from "@components/UI/dropdown";
-import { SelectChangeEvent } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import {
   AIRDROP_APPS,
   AUDITED_APPS,
@@ -45,6 +51,8 @@ import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
 import DefiOpportunityCardComponent from "./defiOpportunityCard";
 import { IoIosClose } from "react-icons/io";
+import Tooltip from "@mui/material/Tooltip";
+import { capitalize } from "@utils/stringService";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -61,11 +69,40 @@ export const columns: ColumnDef<TableInfo>[] = [
         </Typography>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        <AppIcon app={row.getValue("app")} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const appIdentifier = row.getValue("app") as string;
+      const appDisplayName =
+        getProtocolName(capitalize(appIdentifier)) || appIdentifier;
+      return (
+        <Tooltip
+          title={appDisplayName}
+          placement="right-start"
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "rgba(40, 40, 40, 0.95)",
+                color: "#ffffff",
+                maxWidth: "250px",
+                padding: "12px 24px",
+                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            },
+            arrow: {
+              sx: {
+                color: "rgba(40, 40, 40, 0.95)",
+              },
+            },
+          }}
+        >
+          <div className="capitalize text-left inline-block">
+            <AppIcon app={appIdentifier} />
+          </div>
+        </Tooltip>
+      );
+    },
     enableSorting: false, // disable sorting for this column
     filterFn: (row, columnId, filterValue) => {
       const rowValue: string = row.getValue(columnId);
@@ -83,25 +120,89 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "title",
+    size: 300,
+    minSize: 250,
+    maxSize: 400,
     header: () => (
-      <div>
+      <div className="w-full max-w-80 min-w-60">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Title
         </Typography>
       </div>
     ),
     cell: ({ row }) => {
+      const title = row.getValue("title") as string;
+      const tokenPair = useMemo(() => parseTokenPair(title.toLowerCase()), [title]);
+      const token1Icon = useMemo(() => getTokenIcon(tokenPair.first), [tokenPair.first]);
+      const token2Icon = useMemo(() => getTokenIcon(tokenPair.second), [tokenPair.second])
       return (
-        <div className="flex flex-row items-center gap-4 h-10">
+        <div className="w-80 min-w-80 flex flex-row items-center gap-4 h-10">
           <div
             className="flex flex-row gap-2 items-center justify-center"
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               window.open(
-                getRedirectLink(row.getValue("app"), row.getValue("action")),
+                getRedirectLink(
+                  row.getValue("app"),
+                  row.getValue("action"),
+                  row.getValue("title")
+                ),
                 "_blank"
-              )
-            }
+              );
+            }}
           >
+            {/* Token Icons Section with Overlap */}
+            <div className="flex items-center min-w-[44px]">
+              {token1Icon ? (
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 z-10 flex-shrink-0 shadow-sm">
+                  <CDNImg
+                    src={token1Icon}
+                    width={20}
+                    height={20}
+                    className="rounded-full w-full h-full object-cover"
+                    style={{
+                      filter: 'drop-shadow(0 0 0 transparent)',
+                      backgroundColor: 'transparent'
+                    }}
+                    alt={`${tokenPair.first} token`}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full z-10 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.first || title} token placeholder`}
+                >
+                  <span className="text-xs text-white font-medium">
+                    {tokenPair.first
+                      ? tokenPair.first.charAt(0).toUpperCase()
+                      : title.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+
+              {token2Icon ? (
+                <div className="relative w-6 h-6 bg-transparent rounded-full p-0.5 -ml-3 flex-shrink-0 shadow-sm">
+                  <CDNImg
+                    src={token2Icon}
+                    width={20}
+                    height={20}
+                    className="rounded-full w-full h-full object-cover"
+                    alt={`${tokenPair.second} token`}
+                  />
+                </div>
+              ) : tokenPair.second ? (
+                <div
+                  className="relative w-6 h-6 bg-gray-600 rounded-full -ml-3 flex items-center justify-center flex-shrink-0"
+                  role="img"
+                  aria-label={`${tokenPair.second} token placeholder`}
+                >
+                  <span className="text-xs text-white font-medium">
+                    {tokenPair.second.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              ) : null}
+            </div>
             <Typography type={TEXT_TYPE.BODY_SMALL} color="white">
               {row.getValue("title")}
             </Typography>
@@ -148,8 +249,11 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "action",
+    size: 150, // Set width for Action column
+    minSize: 90,
+    maxSize: 180,
     header: () => (
-      <div>
+      <div className="px-12 py-3">
         <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
           Action
         </Typography>
@@ -164,19 +268,37 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "apr",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            APR
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    size: 120,
+    minSize: 80,
+    maxSize: 160,
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-4 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              APR
+            </Typography>
+
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("apr")).toFixed(2);
       return <div className="font-medium">{amount} %</div>;
@@ -184,23 +306,36 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "volume",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            TVL
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <div>
-              <DownIcon width="10" color="#a6a5a7" />
-            </div>
-            <div>
-              <UpIcon width="10" color="#a6a5a7" />
+    size: 140,
+    minSize: 120,
+    maxSize: 160,
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 items-center rounded-lg px-3 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              TVL
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
             </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("volume"));
 
@@ -217,19 +352,33 @@ export const columns: ColumnDef<TableInfo>[] = [
   },
   {
     accessorKey: "daily_rewards",
-    header: () => (
-      <div className="flex items-center modified-cursor-pointer w-full h-full">
-        <div className="flex flex-row gap-2 items-center justify-end">
-          <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
-            Daily Rewards
-          </Typography>
-          <div className="flex flex-col gap-0">
-            <DownIcon width="10" color="#a6a5a7" />
-            <UpIcon width="10" color="#a6a5a7" />
+    header: ({ column }) => {
+      const isSorted = column.getIsSorted();
+      return (
+        <div className="flex items-center modified-cursor-pointer w-full h-full">
+          <div
+            className={`flex flex-row gap-2 hover:gap-1 items-center rounded-lg hover:px-1 py-1 hover:bg-[#414349] ${isSorted ? "bg-[#414349]" : ""
+              }`}
+          >
+            <Typography type={TEXT_TYPE.BODY_SMALL} color="textGray">
+              Daily Rewards
+            </Typography>
+            <div className="flex flex-col gap-0">
+              {isSorted === "desc" ? (
+                <DownIcon width="10" color="#a6a5a7" />
+              ) : isSorted === "asc" ? (
+                <UpIcon width="10" color="#a6a5a7" />
+              ) : (
+                <>
+                  <DownIcon width="10" color="#a6a5a7" />
+                  <UpIcon width="10" color="#a6a5a7" />
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    ),
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("daily_rewards"));
 
@@ -261,8 +410,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const [liquidityFilter, setLiquidityFilter] = useState<string>();
   const [securityFilter, setSecurityFilter] = useState<string>();
   const [airdropFilter, setAirdropFilter] = useState<string>();
-  const [securityPlaceholder, setSecurityPlaceholder] = useState<string>("Security"); // Added for dynamic placeholder
-  const [airdropPlaceholder, setAirdropPlaceholder] = useState<string>("Airdrop"); // Added for dynamic placeholder
+  const [securityPlaceholder, setSecurityPlaceholder] =
+    useState<string>("Security");
+  const [airdropPlaceholder, setAirdropPlaceholder] =
+    useState<string>("Airdrop");
 
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -294,10 +445,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     const updatePlaceholder = () => {
       if (window.innerWidth >= 768) {
         setAirdropPlaceholder("Airdrop Status");
-        setSecurityPlaceholder("Type of Security")
+        setSecurityPlaceholder("Type of Security");
       } else {
         setAirdropPlaceholder("Airdrop");
-        setSecurityPlaceholder("Security")
+        setSecurityPlaceholder("Security");
       }
     };
 
@@ -347,16 +498,17 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
       if (aprB !== aprA) {
         return aprB - aprA;
       }
-      return (parseFloat(String(b.volume)) || 0) - (parseFloat(String(a.volume)) || 0);
+      return (
+        (parseFloat(String(b.volume)) || 0) -
+        (parseFloat(String(a.volume)) || 0)
+      );
     })
     .slice(0, 3);
 
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
-        <div
-          className="flex w-100 lg:flex-row flex-col justify-between items-start"
-        >
+        <div className="flex w-100 lg:flex-row flex-col justify-between items-start">
           {address && (
             <div
               onClick={() => setShowClaimModal(true)}
@@ -450,9 +602,13 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   style={{
                     color: "#F4FAFF90",
                     fontSize: "30px",
-                  }} />
+                  }}
+                />
               </span>
-              <Typography type={TEXT_TYPE.BODY_DEFAULT} style={{ fontSize: "12px", color: "#F4FAFF90" }}>
+              <Typography
+                type={TEXT_TYPE.BODY_DEFAULT}
+                style={{ fontSize: "12px", color: "#F4FAFF90" }}
+              >
                 Clear All
               </Typography>
             </div>
@@ -480,10 +636,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 token2Icon={getTokenIcon(
                   parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
-                onClick={() => window.open(
-                  getRedirectLink(opportunity.app, opportunity.action),
-                  "_blank"
-                )}
+                onClick={() =>
+                  window.open(
+                    getRedirectLink(opportunity.app, opportunity.action),
+                    "_blank"
+                  )
+                }
               />
             ))}
           </div>
@@ -495,63 +653,75 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         )}
 
-        <div className="rounded-xl border-[1px] border-[#f4faff4d] xl:w-full">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => {
-                      window.open(
-                        getRedirectLink(
-                          row.getValue("app"),
-                          row.getValue("action")
-                        ),
-                        "_blank"
+        <div>
+          {/* New Yield Opportunities header */}
+          <div className="flex items-center space-x-3  px-4 py-3 bg-[#1F1F25] rounded-t-xl border border-[#f4faff4d] border-b-0">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="white">
+              Yield Opportunities
+            </Typography>
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
+              ({data.length})
+            </Typography>
+          </div>
+          <div className="border border-[#f4faff4d]  xl:w-full">
+            <Table>
+              <TableHeader className="bg-[#1F1F25] rounded-xl m-5">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        </TableHead>
                       );
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <DefiTableSkeleton />
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      onClick={() => {
+                        window.open(
+                          getRedirectLink(
+                            row.getValue("app"),
+                            row.getValue("action"),
+                            row.getValue("title")
+                          ),
+                          "_blank"
+                        );
+                      }}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <DefiTableSkeleton />
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-        <div className="flex items-center justify-center space-x-2 pt-4">
-          <div className="text-sm text-muted-foreground flex gap-8">
+        <div className="flex items-center justify-center space-x-2 py-5 rounded-b-xl border border-[#f4faff4d] border-t-0 bg-[#1F1F25]">
+          <div className="text-sm text-muted-foreground flex gap-20">
             <div
               className="flex modified-cursor-pointer"
               onClick={() =>

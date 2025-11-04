@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import ClickableSocialIcon from "./clickable/clickableSocialIcon";
-import { isStarkRootDomain } from "starknetid.js/packages/core/dist/utils";
 import { cairo } from "starknet";
+import { isStarkRootDomain } from "starknetid.js/dist/utils";
 
 type SocialMediaActionsProps = {
   identity: Identity;
 };
 
-type SocialPlatform = 'twitter' | 'discord' | 'github';
+type SocialPlatform = "twitter" | "discord" | "github";
 
 const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
   identity,
@@ -25,7 +25,7 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
         discord?: string;
         github?: string;
       } = {};
-  
+
       identity?.verifier_data?.forEach((verifier) => {
         const field = cairo.felt(verifier.field);
         if (field === cairo.felt("twitter") && verifier.data) {
@@ -36,7 +36,7 @@ const SocialMediaActions: FunctionComponent<SocialMediaActionsProps> = ({
           newProfiles.github = verifier.data;
         }
       });
-  
+
       setSocialProfiles(newProfiles);
     }
   }, [identity]);
