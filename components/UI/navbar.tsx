@@ -181,7 +181,7 @@ const Navbar: FunctionComponent = () => {
       {/* Discontinuation Notice */}
       <div className="fixed w-full z-30 bg-red-600 text-white text-center py-2 px-4">
         <Typography type={TEXT_TYPE.BODY_DEFAULT} className="text-white">
-          ⚠️ Starknet Quest has been discontinued. Thank you for your support!
+          ⚠️ Starknet Quest has been discontinued because we're now focusing on <a href="https://relens.ai" rel="dofollow" style={{ textDecoration: 'underline', color: 'inherit' }}>ReLens AI</a>. Thank you for your support!
         </Typography>
       </div>
 

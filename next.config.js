@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const { withAxiom } = require("next-axiom");
 
-module.exports = module.exports = withAxiom({
+module.exports = withAxiom({
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
     if (!isServer) {
