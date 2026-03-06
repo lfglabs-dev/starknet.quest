@@ -53,8 +53,9 @@ module.exports = {
       },
 
       boxShadow: {
-        greenGlow: "0 0 20px rgba(106, 255, 175, 0.15)",
-        blueGlow: "0 0 20px rgba(93, 229, 250, 0.15)", 
+        greenGlow: "0px 2px 30px 0px #6AFFAF29",
+        blueGlow: "0px 2px 30px 0px #5CE3FE29",
+
       },
 
       fontFamily: {
