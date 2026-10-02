@@ -1,0 +1,38 @@
+[
+  {
+    "id": "centrifuge",
+    "name": "Centrifuge",
+    "url": "https://centrifuge.io/",
+    "description": "Asset tokenization and real-world asset lending",
+    "category": "rwa",
+    "image": "/images/categories/rwa/centrifuge.png",
+    "color": "#5B4CBF"
+  },
+  {
+    "id": "goldfinch",
+    "name": "Goldfinch",
+    "url": "https://goldfinch.finance/",
+    "description": "Decentralized credit protocol for real-world assets",
+    "category": "rwa",
+    "image": "/images/categories/rwa/goldfinch.png",
+    "color": "#F7931A"
+  },
+  {
+    "id": "maple-finance",
+    "name": "Maple Finance",
+    "url": "https://www.maple.finance/",
+    "description": "Institutional capital marketplace for crypto-native businesses",
+    "category": "rwa",
+    "image": "/images/categories/rwa/maple.png",
+    "color": "#0066FF"
+  },
+  {
+    "id": "realt",
+    "name": "RealT",
+    "url": "https://realt.co/",
+    "description": "Tokenized real estate investment platform",
+    "category": "rwa",
+    "image": "/images/categories/rwa/realt.png",
+    "color": "#2ECC71"
+  }
+]
