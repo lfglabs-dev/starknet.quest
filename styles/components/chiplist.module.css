@@ -4,7 +4,7 @@
   background-color: rgba(16, 16, 18, 0.3);
   gap: 0.5rem;
 
-  border-radius: 10px;
+  border-radius: 8px;
   @media (max-width: 767px) {
     display: flex;
     flex-direction: column;
@@ -16,7 +16,7 @@
   padding: 0.5rem 0.25rem;
   text-align: center;
   cursor: url(../../public/icons/pointer-cursor.png), pointer;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 @media (min-width: 768px) {
